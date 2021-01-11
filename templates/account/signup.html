@@ -24,6 +24,19 @@
             </div>
 
 
+            {% if request.GET.invitation_id %}
+              <input type="hidden" name="invitation_id" value="{{ request.GET.invitation_id }}">
+              {{ form.invitation_id.errors }}
+            {% else %}
+            <div class="field">
+              <label class="label">Team Name</label>
+              <div class="control">
+                {{ form.team_name }}
+              </div>
+              {{ form.team_name.errors }}
+            </div>
+            {% endif %}
+
             <input class="button is-primary is-fullwidth" type="submit" value="Sign Up">
 
             <p class="has-text-centered">or</p>

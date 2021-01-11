@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'IeLjSOJpEfEdlgABMkUsJgmqfjLrfXALYFOILVWf'
+SECRET_KEY = 'qalmBLWQkLCnXTfVerqHkLLnfetyObQYVStZfuBw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -66,6 +66,8 @@ PROJECT_APPS = [
     'apps.subscriptions.apps.SubscriptionConfig',
     'apps.users.apps.UserConfig',
     'apps.web',
+
+    'apps.teams.apps.TeamConfig',
 
 ]
 
@@ -147,7 +149,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Allauth setup
 
-ACCOUNT_ADAPTER = 'apps.users.adapter.EmailAsUsernameAdapter'
+ACCOUNT_ADAPTER = 'apps.teams.adapter.AcceptInvitationAdapter'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
@@ -157,6 +159,10 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_LOGOUT_ON_GET = True
 
+
+ACCOUNT_FORMS = {
+    'signup': 'apps.teams.forms.TeamSignupForm',
+}
 
 
 # User signup configuration: change to "mandatory" to require users to confirm email before signing in.

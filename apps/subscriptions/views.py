@@ -24,6 +24,8 @@ from .helpers import get_friendly_currency_amount
 from .metadata import get_active_products_with_metadata, \
     get_product_and_metadata_for_subscription, ACTIVE_PLAN_INTERVALS, get_active_plan_interval_metadata
 
+from apps.teams.decorators import team_admin_required, login_and_team_required
+from apps.teams.models import Team
 
 
 class ProductWithMetadataAPI(APIView):
@@ -112,7 +114,7 @@ def _get_payment_metadata_from_request(request):
     return {
         'user_id': request.user.id,
         'user_email': request.user.email,
-        
+        'team_id': request.team.id,
     }
 
 
@@ -148,7 +150,8 @@ def _subscription_success(request, subscription_holder):
             fail_silently=True,
         )
     
-    redirect = reverse('subscriptions:subscription_details')
+    assert isinstance(subscription_holder, Team)
+    redirect = reverse('subscriptions:team_subscription_details', args=[subscription_holder.slug])
     
     return HttpResponseRedirect(redirect)
 
@@ -193,6 +196,10 @@ def create_customer(request, subscription_holder=None):
     assert request.user.id == user_id
     assert request.user.email == email
 
+    
+    assert isinstance(subscription_holder, Team)
+    team_id = int(request_body['team_id'])
+    assert request.team.id == team_id
     
 
     payment_method = request_body['payment_method']
@@ -253,7 +260,7 @@ def _get_subscription_urls(subscription_holder):
     ]
 
     def _construct_url(base):
-        return reverse(f'subscriptions:{base}')
+        return reverse(f'subscriptions:team_{base}', args=[subscription_holder.slug])
         
 
     return {
@@ -283,4 +290,37 @@ def subscription_gated_page(request, subscription_holder=None):
         return render(request, 'subscriptions/subscription_gated_page.html')
 
 
+
+@team_admin_required
+def team_subscription(request, team_slug):
+    return subscription(request, subscription_holder=request.team)
+
+
+@team_admin_required
+def team_subscription_success(request, team_slug):
+    return _subscription_success(request, subscription_holder=request.team)
+
+
+@team_admin_required
+@require_POST
+def team_create_stripe_portal_session(request, team_slug):
+    return create_stripe_portal_session(request, request.team)
+
+
+@team_admin_required
+@require_POST
+@catch_stripe_errors
+@transaction.atomic
+def team_create_customer(request, team_slug):
+    return create_customer(request, request.team)
+
+
+@login_and_team_required
+def team_subscription_demo(request, team_slug):
+    return subscription_demo(request, request.team)
+
+
+@login_and_team_required
+def team_subscription_gated_page(request, team_slug):
+    return subscription_gated_page(request, subscription_holder=request.team)
 

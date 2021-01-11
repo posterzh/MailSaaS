@@ -10,12 +10,7 @@
       </li>
 
 
-
-    <li>
-      <a href="{% url 'subscriptions:subscription_demo' %}" {% if active_tab == 'subscription_demo' %}class="is-active"{% endif %}>
-          <span class="icon"><i class="fa fa-desktop"></i></span><span class="is-hidden-tablet-only">Subscription Demo</span>
-      </a>
-    </li>
+    {% include "web/components/team_nav.html" %}
 
 
   </ul>
@@ -23,12 +18,6 @@
     My Account
   </p>
   <ul class="menu-list">
-
-    <li>
-        <a href="{% url 'subscriptions:subscription_details' %}" {% if active_tab == 'subscription' %}class="is-active"{% endif %}>
-            <span class="icon"><i class="fa fa-repeat"></i></span><span class="is-hidden-tablet-only">Subscription</span>
-        </a>
-    </li>
 
 
     <li>
@@ -46,6 +35,18 @@
     <li>
         <a href="{% url 'account_logout' %}" {% if 'accounts/logout' in request.path %}class="is-active"{% endif %}>
             <span class="icon"><i class="fa fa-sign-out"></i></span><span class="is-hidden-tablet-only">Sign out</span>
+        </a>
+    </li>
+  </ul>
+
+
+  <p class="menu-label is-hidden-tablet-only">
+    Teams
+  </p>
+  <ul class="menu-list">
+    <li>
+        <a href="{% url 'teams:manage_teams' %}" {% if 'teams' in request.path %}class="is-active"{% endif %}>
+            <span class="icon"><i class="fa fa-group"></i></span><span class="is-hidden-tablet-only">Teams</span>
         </a>
     </li>
   </ul>

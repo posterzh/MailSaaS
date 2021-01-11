@@ -6,10 +6,10 @@ from .models import CustomUser
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-    list_display = UserAdmin.list_display + ('subscription',)
+    list_display = UserAdmin.list_display
 
     fieldsets = UserAdmin.fieldsets + (
         ('Custom Fields', {
-            'fields': ('avatar', 'subscription')
+            'fields': ('avatar',)
         }),
     )

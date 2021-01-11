@@ -30,6 +30,8 @@ urlpatterns = [
     path('subscriptions/', include('apps.subscriptions.urls')),
 
 
+    path('teams/', include('apps.teams.urls')),
+
     path('', include('apps.web.urls')),
     path('pegasus/', include('pegasus.apps.examples.urls')),
     path('celery-progress/', include('celery_progress.urls')),

@@ -4,16 +4,13 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from apps.subscriptions.helpers import SubscriptionModelMixin
 
-class CustomUser(SubscriptionModelMixin, AbstractUser):
+
+class CustomUser(AbstractUser):
     """
     Add additional fields to the user model here.
     """
     avatar = models.FileField(upload_to='profile-pictures/', null=True, blank=True)
-
-    subscription = models.ForeignKey('djstripe.Subscription', null=True, blank=True, on_delete=models.SET_NULL,
-                                     help_text=_("The user's Stripe Subscription object, if it exists"))
 
     def __str__(self):
         return self.email
