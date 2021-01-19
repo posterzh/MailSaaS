@@ -4,7 +4,7 @@
   </p>
   <ul class="menu-list">
       <li>
-          <a href="{% url 'pegasus_examples:examples_home' %}" {% if active_tab == 'home' %}class="is-active"{% endif %}>
+          <a href="{% url 'pegasus_examples:react_object_lifecycle' %}" {% if active_tab == 'home' %}class="is-active"{% endif %}>
               <span class="icon"><i class="fa fa-home"></i></span><span class="is-hidden-tablet-only">Examples Home</span>
           </a>
       </li>
@@ -16,11 +16,6 @@
       <li>
           <a href="{% url 'pegasus_examples:react_object_lifecycle' %}" {% if active_tab == 'react_object_lifecycle' %}class="is-active"{% endif %}>
               <span class="icon"><i class="fa fa-edit"></i></span><span class="is-hidden-tablet-only">React Object Demo</span>
-          </a>
-      </li>
-      <li>
-          <a href="{% url 'pegasus_examples:vue_object_lifecycle' %}" {% if active_tab == 'vue_object_lifecycle' %}class="is-active"{% endif %}>
-              <span class="icon"><i class="fa fa-edit"></i></span><span class="is-hidden-tablet-only">Vue Object Demo</span>
           </a>
       </li>
       <li>

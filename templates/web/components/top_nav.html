@@ -16,7 +16,7 @@
         </div>
         <div class="navbar-end">
           {% if user.is_authenticated %}
-            <a class="navbar-item {% if '/pegasus/' in request.path %}is-active{% endif %}" href="{% url 'pegasus_examples:examples_home' %}">
+            <a class="navbar-item {% if '/pegasus/' in request.path %}is-active{% endif %}" href="{% url 'pegasus_examples:react_object_lifecycle' %}">
                 Examples Gallery
             </a>
             <div class="navbar-item has-dropdown is-hoverable">
