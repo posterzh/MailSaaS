@@ -21,23 +21,23 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
-/***/ "./assets/javascript/pegasus/examples/charts.js":
-/*!******************************************************!*\
-  !*** ./assets/javascript/pegasus/examples/charts.js ***!
-  \******************************************************/
+/***/ "./assets/javascript/pegasus/charts.js":
+/*!*********************************************!*\
+  !*** ./assets/javascript/pegasus/charts.js ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Charts\": () => /* binding */ Charts\n/* harmony export */ });\n/* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./const */ \"./assets/javascript/pegasus/examples/const.js\");\n/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../api */ \"./assets/javascript/api.js\");\n\n\n\n\n\nfunction renderChart(chartType, bindTo, data) {\n  c3.generate({\n    bindto: bindTo,\n    data: {\n      columns: data,\n      type: chartType\n    }\n  });\n}\n\nfunction getListEmployeesAction() {\n  return (0,_api__WEBPACK_IMPORTED_MODULE_1__.getAction)(_const__WEBPACK_IMPORTED_MODULE_0__.API_ROOT, [\"employee-data\", \"list\"]);\n}\n\nvar Charts = {\n  renderChart: renderChart,\n  getListEmployeesAction: getListEmployeesAction\n};\n\n//# sourceURL=webpack://SiteJS.%5Bname%5D/./assets/javascript/pegasus/examples/charts.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Charts\": () => /* binding */ Charts\n/* harmony export */ });\n/* harmony import */ var _const__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./const */ \"./assets/javascript/pegasus/const.js\");\n/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../api */ \"./assets/javascript/api.js\");\n\n\n\n\n\nfunction renderChart(chartType, bindTo, data) {\n  c3.generate({\n    bindto: bindTo,\n    data: {\n      columns: data,\n      type: chartType\n    }\n  });\n}\n\nfunction getListEmployeesAction() {\n  return (0,_api__WEBPACK_IMPORTED_MODULE_1__.getAction)(_const__WEBPACK_IMPORTED_MODULE_0__.API_ROOT, [\"employee-data\", \"list\"]);\n}\n\nvar Charts = {\n  renderChart: renderChart,\n  getListEmployeesAction: getListEmployeesAction\n};\n\n//# sourceURL=webpack://SiteJS.%5Bname%5D/./assets/javascript/pegasus/charts.js?");
 
 /***/ }),
 
-/***/ "./assets/javascript/pegasus/examples/const.js":
-/*!*****************************************************!*\
-  !*** ./assets/javascript/pegasus/examples/const.js ***!
-  \*****************************************************/
+/***/ "./assets/javascript/pegasus/const.js":
+/*!********************************************!*\
+  !*** ./assets/javascript/pegasus/const.js ***!
+  \********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"API_ROOT\": () => /* binding */ API_ROOT\n/* harmony export */ });\n// if your API lives at a different namespace you can add it here\n// e.g. API_ROOT = [\"myapp\", \"api\"];\nvar API_ROOT = [\"pegasus\", \"api\"];\n\n//# sourceURL=webpack://SiteJS.%5Bname%5D/./assets/javascript/pegasus/examples/const.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"API_ROOT\": () => /* binding */ API_ROOT\n/* harmony export */ });\n// if your API lives at a different namespace you can add it here\n// e.g. API_ROOT = [\"myapp\", \"api\"];\nvar API_ROOT = [\"pegasus\", \"api\"];\n\n//# sourceURL=webpack://SiteJS.%5Bname%5D/./assets/javascript/pegasus/const.js?");
 
 /***/ }),
 
@@ -47,7 +47,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \**********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Charts\": () => /* reexport safe */ _examples_charts__WEBPACK_IMPORTED_MODULE_0__.Charts\n/* harmony export */ });\n/* harmony import */ var _examples_charts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./examples/charts */ \"./assets/javascript/pegasus/examples/charts.js\");\n\n\n//# sourceURL=webpack://SiteJS.%5Bname%5D/./assets/javascript/pegasus/pegasus.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Charts\": () => /* reexport safe */ _charts__WEBPACK_IMPORTED_MODULE_0__.Charts\n/* harmony export */ });\n/* harmony import */ var _charts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./charts */ \"./assets/javascript/pegasus/charts.js\");\n\n\n//# sourceURL=webpack://SiteJS.%5Bname%5D/./assets/javascript/pegasus/pegasus.js?");
 
 /***/ })
 

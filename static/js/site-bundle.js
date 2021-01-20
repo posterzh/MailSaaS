@@ -16,7 +16,18 @@ var SiteJS;(SiteJS = typeof SiteJS === "undefined" ? {} : SiteJS).site =
   \************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("__webpack_require__(/*! ./styles/site.scss */ \"./assets/styles/site.scss\");\n\n//# sourceURL=webpack://SiteJS.%5Bname%5D/./assets/site.js?");
+eval("__webpack_require__(/*! ./styles/site.scss */ \"./assets/styles/site.scss\");\n\n__webpack_require__(/*! ./scss/argon-dashboard-pro-react.scss */ \"./assets/scss/argon-dashboard-pro-react.scss\");\n\n//# sourceURL=webpack://SiteJS.%5Bname%5D/./assets/site.js?");
+
+/***/ }),
+
+/***/ "./assets/scss/argon-dashboard-pro-react.scss":
+/*!****************************************************!*\
+  !*** ./assets/scss/argon-dashboard-pro-react.scss ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extract-plugin\n\n\n//# sourceURL=webpack://SiteJS.%5Bname%5D/./assets/scss/argon-dashboard-pro-react.scss?");
 
 /***/ }),
 

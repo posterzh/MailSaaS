@@ -1,2 +1,2 @@
-export { Charts } from './examples/charts';
+export { Charts } from './charts';
 

@@ -58,7 +58,7 @@ THIRD_PARTY_APPS = [
 ]
 
 PEGASUS_APPS = [
-    'pegasus.apps.examples.apps.PegasusExamplesConfig',
+    'apps.pegasus',
 ]
 
 # Put your project-specific apps here

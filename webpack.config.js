@@ -7,7 +7,7 @@ module.exports = {
     app: './assets/javascript/app.js',
     teams: './assets/javascript/teams.js',
     pegasus: './assets/javascript/pegasus/pegasus.js',
-    'react-object-lifecycle': './assets/javascript/pegasus/examples/react/react-object-lifecycle.js',
+    'react-object-lifecycle': './assets/javascript/pegasus/react/src/index.js',
   },
   output: {
     path: path.resolve(__dirname, './static'),
