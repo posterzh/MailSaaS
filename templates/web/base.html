@@ -18,20 +18,20 @@
     {% endblock %}
 </head>
 <body>
-{% block top_nav %}
+{% comment %} {% block top_nav %}
 {% include 'web/components/top_nav.html' %}
-{% endblock %}
-{% block messages %}
+{% endblock %} {% endcomment %}
+{% comment %} {% block messages %}
 {% include 'web/components/messages.html' %}
-{% endblock %}
+{% endblock %} {% endcomment %}
 {% block body %}
 {% endblock %}
-{% block footer %}
+{% comment %} {% block footer %}
 {% include 'web/components/footer.html' %}
-{% endblock %}
+{% endblock %} {% endcomment %}
 {% block page_js %}
 {% endblock %}
-{% include 'web/components/messages-js.html' %}
-{% include 'web/components/navbar-js.html' %}
+{% comment %} {% include 'web/components/messages-js.html' %} {% endcomment %}
+{% comment %} {% include 'web/components/navbar-js.html' %} {% endcomment %}
 </body>
 </html>

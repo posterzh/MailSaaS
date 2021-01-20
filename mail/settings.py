@@ -58,7 +58,7 @@ THIRD_PARTY_APPS = [
 ]
 
 PEGASUS_APPS = [
-    'pegasus.apps.examples.apps.PegasusExamplesConfig',
+    'apps.pegasus',
 ]
 
 # Put your project-specific apps here
@@ -118,7 +118,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'mail',
         'USER': 'postgres',
-        'PASSWORD': '***',
+        'PASSWORD': 'aniruddh',
         'HOST': 'localhost',
         'PORT': '5432',
     }
