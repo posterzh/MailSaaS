@@ -6,8 +6,7 @@ module.exports = {
     site: './assets/site.js',  // required for bulma sass/css styles
     app: './assets/javascript/app.js',
     teams: './assets/javascript/teams.js',
-    pegasus: './assets/javascript/pegasus/pegasus.js',
-    'react-object-lifecycle': './assets/javascript/pegasus/react/src/index.js',
+    'react-object-lifecycle': './assets/javascript/src/index.js',
   },
   output: {
     path: path.resolve(__dirname, './static'),
