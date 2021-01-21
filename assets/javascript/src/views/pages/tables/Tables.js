@@ -39,7 +39,7 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 // core components
-import SimpleHeader from "components/Headers/SimpleHeader.js";
+import SimpleHeader from "../../../components/Headers/SimpleHeader"
 
 class Tables extends React.Component {
   render() {
@@ -84,7 +84,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/bootstrap.jpg")}
+                              src={STATIC_FILES.bootstrap}
                             />
                           </a>
                           <Media>
@@ -111,7 +111,8 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                              src={STATIC_FILES.team-1}
+                              
                             />
                           </a>
                           <UncontrolledTooltip
@@ -128,7 +129,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                              src={STATIC_FILES.team-2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -145,7 +146,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATIC_FILES.teaam-3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -162,7 +163,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                              src={STATIC_FILES.team-4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -224,7 +225,8 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/angular.jpg")}
+                              src={STATIC_FILES.angular}
+
                             />
                           </a>
                           <Media>
@@ -251,7 +253,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                              src={STATIC_FILES.team-1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -268,7 +270,8 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                              src={STATIC_FILES.team-2}
+                              // src={STATIC_FILES.team-2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -285,7 +288,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATIC_FILES.teaam-3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -302,7 +305,8 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                              src={STATIC_FILES.team-4}
+
                             />
                           </a>
                           <UncontrolledTooltip
@@ -364,7 +368,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/sketch.jpg")}
+                              src={STATIC_FILES.sketch}
                             />
                           </a>
                           <Media>
@@ -391,7 +395,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                              src={STATIC_FILES.team-1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -408,7 +412,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                              src={STATIC_FILES.team-2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -425,7 +429,8 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATIC_FILES.team-3}
+
                             />
                           </a>
                           <UncontrolledTooltip
@@ -442,7 +447,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                              src={STATIC_FILES.team-4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -504,7 +509,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/react.jpg")}
+                              src={STATIC_FILES.react}
                             />
                           </a>
                           <Media>
@@ -531,7 +536,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                              src={STATIC_FILES.team-1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -548,7 +553,9 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                              // src={STATIC_FILES.team-2}
+                              src={STATIC_FILES.team-2}
+
                             />
                           </a>
                           <UncontrolledTooltip
@@ -565,7 +572,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATIC_FILES.teaam-3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -582,7 +589,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                              src={STATIC_FILES.team-4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -644,7 +651,10 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/vue.jpg")}
+                              // src={require("assets/img/theme/vue.jpg")}
+                              src={STATIC_FILES.vue}
+
+
                             />
                           </a>
                           <Media>
@@ -671,8 +681,10 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
-                            />
+                              // src={STATIC_FILES.team-1}
+                              src={STATIC_FILES.team-1}
+
+                          />
                           </a>
                           <UncontrolledTooltip
                             delay={0}
@@ -688,7 +700,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                              src={STATIC_FILES.team-2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -705,7 +717,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATIC_FILES.teaam-3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -722,7 +734,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                              src={STATIC_FILES.team-4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -874,7 +886,7 @@ class Tables extends React.Component {
                     <img
                       alt="..."
                       className="avatar rounded-circle mr-3"
-                      src={require("assets/img/theme/team-1.jpg")}
+                      src={STATIC_FILES.team-1}
                     />
                     <b>John Michael</b>
                   </td>
@@ -920,7 +932,7 @@ class Tables extends React.Component {
                     <img
                       alt="..."
                       className="avatar rounded-circle mr-3"
-                      src={require("assets/img/theme/team-2.jpg")}
+                      src={STATIC_FILES.team-2}
                     />
                     <b>Alex Smith</b>
                   </td>
@@ -966,7 +978,7 @@ class Tables extends React.Component {
                     <img
                       alt="..."
                       className="avatar rounded-circle mr-3"
-                      src={require("assets/img/theme/team-3.jpg")}
+                      src={STATIC_FILES.teaam-3}
                     />
                     <b>Samantha Ivy</b>
                   </td>
@@ -1012,7 +1024,7 @@ class Tables extends React.Component {
                     <img
                       alt="..."
                       className="avatar rounded-circle mr-3"
-                      src={require("assets/img/theme/team-1.jpg")}
+                      src={STATIC_FILES.team-1}
                     />
                     <b>John Michael</b>
                   </td>
@@ -1058,7 +1070,7 @@ class Tables extends React.Component {
                     <img
                       alt="..."
                       className="avatar rounded-circle mr-3"
-                      src={require("assets/img/theme/team-2.jpg")}
+                      src={STATIC_FILES.team-2}
                     />
                     <b>John Michael</b>
                   </td>
@@ -1148,7 +1160,7 @@ class Tables extends React.Component {
                     <img
                       alt="..."
                       className="avatar rounded-circle mr-3"
-                      src={require("assets/img/theme/team-1.jpg")}
+                      src={STATIC_FILES.team-1}
                     />
                     <b>John Michael</b>
                   </td>
@@ -1194,7 +1206,7 @@ class Tables extends React.Component {
                     <img
                       alt="..."
                       className="avatar rounded-circle mr-3"
-                      src={require("assets/img/theme/team-2.jpg")}
+                      src={STATIC_FILES.team-2}
                     />
                     <b>Alex Smith</b>
                   </td>
@@ -1240,7 +1252,7 @@ class Tables extends React.Component {
                     <img
                       alt="..."
                       className="avatar rounded-circle mr-3"
-                      src={require("assets/img/theme/team-3.jpg")}
+                      src={STATIC_FILES.teaam-3}
                     />
                     <b>Samantha Ivy</b>
                   </td>
@@ -1286,7 +1298,7 @@ class Tables extends React.Component {
                     <img
                       alt="..."
                       className="avatar rounded-circle mr-3"
-                      src={require("assets/img/theme/team-1.jpg")}
+                      src={STATIC_FILES.team-1}
                     />
                     <b>John Michael</b>
                   </td>
@@ -1332,7 +1344,7 @@ class Tables extends React.Component {
                     <img
                       alt="..."
                       className="avatar rounded-circle mr-3"
-                      src={require("assets/img/theme/team-2.jpg")}
+                      src={STATIC_FILES.team-2}
                     />
                     <b>John Michael</b>
                   </td>
@@ -1917,7 +1929,8 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/bootstrap.jpg")}
+                          src={STATIC_FILES.bootstrap}
+
                         />
                       </a>
                       <Media>
@@ -1944,7 +1957,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-1.jpg")}
+                          src={STATIC_FILES.team-1}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip715349713">
@@ -1958,7 +1971,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-2.jpg")}
+                          src={STATIC_FILES.team-2}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip852299360">
@@ -1972,7 +1985,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-3.jpg")}
+                          src={STATIC_FILES.teaam-3}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip333095755">
@@ -1986,7 +1999,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-4.jpg")}
+                          src={STATIC_FILES.team-4}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip917841216">
@@ -2045,7 +2058,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/angular.jpg")}
+                          src={STATIC_FILES.angular}
                         />
                       </a>
                       <Media>
@@ -2072,7 +2085,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-1.jpg")}
+                          src={STATIC_FILES.team-1}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip345778553">
@@ -2086,7 +2099,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-2.jpg")}
+                          src={STATIC_FILES.team-2}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip847386767">
@@ -2100,7 +2113,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-3.jpg")}
+                          src={STATIC_FILES.teaam-3}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip759583934">
@@ -2114,7 +2127,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-4.jpg")}
+                          src={STATIC_FILES.team-4}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip310037110">
@@ -2173,7 +2186,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/sketch.jpg")}
+                          src={STATIC_FILES.sketch}
                         />
                       </a>
                       <Media>
@@ -2200,7 +2213,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-1.jpg")}
+                          src={STATIC_FILES.team-1}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip145549156">
@@ -2214,7 +2227,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-2.jpg")}
+                          src={STATIC_FILES.team-2}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip250561822">
@@ -2228,7 +2241,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-3.jpg")}
+                          src={STATIC_FILES.teaam-3}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip684500175">
@@ -2242,7 +2255,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-4.jpg")}
+                          src={STATIC_FILES.team-4}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip82846147">
@@ -2301,7 +2314,8 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/react.jpg")}
+                          src={STATIC_FILES.react}
+
                         />
                       </a>
                       <Media>
@@ -2328,7 +2342,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-1.jpg")}
+                          src={STATIC_FILES.team-1}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip763716067">
@@ -2342,7 +2356,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-2.jpg")}
+                          src={STATIC_FILES.team-2}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip629596306">
@@ -2356,7 +2370,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-3.jpg")}
+                          src={STATIC_FILES.teaam-3}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip973702792">
@@ -2370,7 +2384,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-4.jpg")}
+                          src={STATIC_FILES.team-4}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip765231102">
@@ -2429,7 +2443,9 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/vue.jpg")}
+                          // src={require("assets/img/theme/vue.jpg")}
+                          src={STATIC_FILES.vue}
+
                         />
                       </a>
                       <Media>
@@ -2456,7 +2472,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-1.jpg")}
+                          src={STATIC_FILES.team-1}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip244510364">
@@ -2470,7 +2486,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-2.jpg")}
+                          src={STATIC_FILES.team-2}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip651263728">
@@ -2484,7 +2500,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-3.jpg")}
+                          src={STATIC_FILES.teaam-3}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip105516609">
@@ -2498,7 +2514,7 @@ class Tables extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-4.jpg")}
+                          src={STATIC_FILES.team-4}
                         />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip765317415">
@@ -2590,7 +2606,8 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/bootstrap.jpg")}
+                              src={STATIC_FILES.bootstrap}
+                              
                             />
                           </a>
                           <Media>
@@ -2617,7 +2634,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                              src={STATIC_FILES.team-1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -2634,7 +2651,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                              src={STATIC_FILES.team-2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -2651,7 +2668,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATIC_FILES.teaam-3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -2668,7 +2685,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                              src={STATIC_FILES.team-4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -2730,7 +2747,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/angular.jpg")}
+                              src={STATIC_FILES.angular}
                             />
                           </a>
                           <Media>
@@ -2757,7 +2774,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                              src={STATIC_FILES.team-1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -2774,7 +2791,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                              src={STATIC_FILES.team-2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -2791,7 +2808,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATIC_FILES.teaam-3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -2808,7 +2825,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                              src={STATIC_FILES.team-4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -2870,7 +2887,8 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/sketch.jpg")}
+                              src={STATIC_FILES.sketch}
+
                             />
                           </a>
                           <Media>
@@ -2897,7 +2915,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                              src={STATIC_FILES.team-1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -2914,7 +2932,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                              src={STATIC_FILES.team-2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -2931,7 +2949,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATIC_FILES.teaam-3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -2948,7 +2966,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                              src={STATIC_FILES.team-4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -3010,7 +3028,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/react.jpg")}
+                              src={STATIC_FILES.react}
                             />
                           </a>
                           <Media>
@@ -3037,7 +3055,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                              src={STATIC_FILES.team-1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -3054,7 +3072,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                              src={STATIC_FILES.team-2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -3071,7 +3089,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                          src={STATIC_FILES.teaam-3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -3088,7 +3106,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                              src={STATIC_FILES.team-4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -3150,7 +3168,9 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/vue.jpg")}
+                              // src={require("assets/img/theme/vue.jpg")}
+                              src={STATIC_FILES.vue}
+
                             />
                           </a>
                           <Media>
@@ -3177,7 +3197,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                              src={STATIC_FILES.team-1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -3194,7 +3214,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                              src={STATIC_FILES.team-2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -3211,7 +3231,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATIC_FILES.teaam-3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -3228,7 +3248,7 @@ class Tables extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                              src={STATIC_FILES.team-4}
                             />
                           </a>
                           <UncontrolledTooltip

@@ -42,7 +42,7 @@ import {
 } from "reactstrap";
 // core components
 
-import { events } from "variables/general.js";
+import { events } from "../../variables/general.js";
 
 let calendar;
 

@@ -1,45 +1,46 @@
-/*!
+// /*!
 
-=========================================================
-* Argon Dashboard PRO React - v1.1.0
-=========================================================
+// =========================================================
+// * Argon Dashboard PRO React - v1.1.0
+// =========================================================
 
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-pro-react
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
+// * Product Page: https://www.creative-tim.com/product/argon-dashboard-pro-react
+// * Copyright 2020 Creative Tim (https://www.creative-tim.com)
 
-* Coded by Creative Tim
+// * Coded by Creative Tim
 
-=========================================================
+// =========================================================
 
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+// * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-*/
-import Alternative from "views/pages/dashboards/Alternative.js";
-import Buttons from "views/pages/components/Buttons.js";
-import Calendar from "views/pages/Calendar.js";
-import Cards from "views/pages/components/Cards.js";
-import Charts from "views/pages/Charts.js";
-import Components from "views/pages/forms/Components.js";
-import Dashboard from "views/pages/dashboards/Dashboard.js";
-import Elements from "views/pages/forms/Elements.js";
-import Google from "views/pages/maps/Google.js";
-import Grid from "views/pages/components/Grid.js";
-import Icons from "views/pages/components/Icons.js";
-import Lock from "views/pages/examples/Lock.js";
-import Login from "views/pages/examples/Login.js";
-import Notifications from "views/pages/components/Notifications.js";
-import Pricing from "views/pages/examples/Pricing.js";
-import Profile from "views/pages/examples/Profile.js";
-import ReactBSTables from "views/pages/tables/ReactBSTables.js";
-import Register from "views/pages/examples/Register.js";
-import RTLSupport from "views/pages/examples/RTLSupport.js";
-import Sortable from "views/pages/tables/Sortable.js";
-import Tables from "views/pages/tables/Tables.js";
-import Timeline from "views/pages/examples/Timeline.js";
-import Typography from "views/pages/components/Typography.js";
-import Validation from "views/pages/forms/Validation.js";
-import Vector from "views/pages/maps/Vector.js";
-import Widgets from "views/pages/Widgets.js";
+// */
+import Alternative from "./views/pages/dashboards/Alternative.js";
+// import Buttons from "views/pages/components/Buttons.js";
+import Buttons from "./views/pages/components/Buttons"
+import Calendar from "./views/pages/Calendar.js";
+import Cards from "./views/pages/components/Cards.js";
+import Charts from "./views/pages/Charts.js";
+import Components from "./views/pages/forms/Components.js";
+import Dashboard from "./views/pages/dashboards/Dashboard.js";
+import Elements from "./views/pages/forms/Elements.js";
+import Google from "./views/pages/maps/Google.js";
+import Grid from "./views/pages/components/Grid.js";
+import Icons from "./views/pages/components/Icons.js";
+import Lock from "./views/pages/examples/Lock.js";
+import Login from "./views/pages/examples/Login.js";
+import Notifications from "./views/pages/components/Notifications.js";
+import Pricing from "./views/pages/examples/Pricing.js";
+import Profile from "./views/pages/examples/Profile.js";
+import ReactBSTables from "./views/pages/tables/ReactBSTables.js";
+import Register from "./views/pages/examples/Register.js";
+// import RTLSupport from "./views/pages/examples/RTLSupport.js";
+import Sortable from "./views/pages/tables/Sortable.js";
+import Tables from "./views/pages/tables/Tables.js";
+import Timeline from "./views/pages/examples/Timeline.js";
+import Typography from "./views/pages/components/Typography.js";
+import Validation from "./views/pages/forms/Validation.js";
+import Vector from "./views/pages/maps/Vector.js";
+import Widgets from "./views/pages/Widgets.js";
 
 const routes = [
   {
@@ -75,7 +76,7 @@ const routes = [
         name: "Pricing",
         miniName: "P",
         component: Pricing,
-        layout: "/auth"
+        layout: "/pegasus/auth"
       },
       {
         path: "/login",
@@ -113,11 +114,11 @@ const routes = [
         layout: "/admin"
       },
       {
-        path: "/rtl-support",
-        name: "RTL Support",
-        miniName: "RS",
-        component: RTLSupport,
-        layout: "/rtl"
+        // path: "/rtl-support",
+        // name: "RTL Support",
+        // miniName: "RS",
+        // component: RTLSupport,
+        // layout: "/rtl"
       }
     ]
   },
@@ -301,3 +302,282 @@ const routes = [
 ];
 
 export default routes;
+
+
+
+
+
+// import Alternative from "views/pages/dashboards/Alternative.js";
+// import API from "views/pages/Extension/API"
+// import AppsandCrm from "views/pages/Extension/Apps&Crm"
+// import Billing from "views/pages/TeamSetting/Billing"
+// import Buttons from "views/pages/components/Buttons.js";
+// import Calendar from "views/pages/Calendar.js";
+// import Campaign from "views/pages/Campaigns/Campaign"                          
+// import Cards from "views/pages/components/Cards.js";
+// import Charts from "views/pages/Charts.js";
+// import Components from "views/pages/forms/Components.js";
+// import ConversionTracking from "views/pages/Extension/ConversionTracking"
+// import Dashboard from "views/pages/dashboards/Dashboard.js";
+// import Elements from "views/pages/forms/Elements.js";
+// import Google from "views/pages/maps/Google.js";
+// import Grid from "views/pages/components/Grid.js";
+// import Icons from "views/pages/components/Icons.js";
+// // import Lead from "views/pages/Campaigns/Lead"
+// import Lock from "views/pages/examples/Lock.js";
+// import Login from "views/pages/examples/Login.js";
+// import MailAccount from "views/pages/MailAccount/MailAccount"
+// import Notifications from "views/pages/components/Notifications.js";
+// import Pricing from "views/pages/examples/Pricing.js";
+// import Profile from "views/pages/examples/Profile.js";
+// import Prospects from "views/pages/Prospects/Prospects"
+// import ReactBSTables from "views/pages/tables/ReactBSTables.js";
+// import Register from "views/pages/examples/Register.js";
+// import RTLSupport from "views/pages/examples/RTLSupport.js";
+// import Sortable from "views/pages/tables/Sortable.js";
+// import Tables from "views/pages/tables/Tables.js";
+// import Timeline from "views/pages/examples/Timeline.js";
+// import Typography from "views/pages/components/Typography.js";
+// import Validation from "views/pages/forms/Validation.js";
+// import Vector from "views/pages/maps/Vector.js";
+// import Widgets from "views/pages/Widgets.js";
+// import SendingCalender from "views/pages/Campaigns/SendindCalender";
+// import Setting from "views/pages/TeamSetting/Setting"
+// import TeamMates from "views/pages/TeamSetting/Teammates"
+// import Redeem from "views/pages/TeamSetting/Redeem"
+// import Unsubscribes from "views/pages/Unsubscribes/Unsubscribes"
+
+// const routes = [
+//   // for dashboard
+//   {
+//     collapse: true,
+//     hidden: false,
+//     name: "Dashboards",
+//     icon: "ni ni-shop text-primary",
+//     state: "dashboardsCollapse",
+//     views: [
+//       {
+//         path: "/dashboard",
+//         name: "Dashboard",
+//         miniName: "D",
+//         component: Dashboard,
+//         layout: "/admin"
+//       },
+//       // {
+//       //   path: "/alternative-dashboard",
+//       //   name: "Alternative",
+//       //   miniName: "A",
+//       //   component: Alternative,
+//       //   layout: "/admin"
+//       // }
+//     ]
+//   },
+//   // for campaign
+//   {
+//     collapse:true,
+//     name:"Campaign",
+//     icon: "ni ni-shop text-primary",
+//     views:[
+//       {
+//         path: "/Campaign",
+//         name: "Campaign",
+//         miniName: "Ca",
+//         component: Campaign,
+//         layout: "/admin"
+//       },
+//       {
+//         // path: "/Lead",
+//         // name: "Lead Catcher",
+//         // miniName: "L",
+//         // component: Lead,
+//         // layout: "/admin"
+//       },
+//       {
+//         path: "/SendingCalender",
+//         name: "Sending Calender",
+//         miniName: "Sc",
+//         component: SendingCalender,
+//         layout: "/admin"
+//       },
+     
+//     ]
+
+//   },
+//   // for Prospects
+//   {
+//     collapse:true,
+//     name:"Prospects",
+//     icon: "ni ni-ungroup text-orange",
+//     views:[
+//       {
+//         path: "/Prospects",
+//         name: "Prospects",
+//         miniName: "pro",
+//         component: Prospects,
+//          layout: "/admin"
+        
+
+//       },
+//     ]
+
+//   },
+//   // for MailAccount
+//   {
+//     collapse:true,
+//     name:"Mail Accounts",
+//     icon: "ni ni-shop text-primary",
+//     views:[
+//       {
+//         path: "/MailAccount",
+//         name: "MailAccount",
+//         miniName: "Ma",
+//         component: MailAccount,
+//         layout: "/admin"
+
+//       },
+//     ]
+
+//   },
+//   // for TeamSetting
+//   {
+//     collapse:true,
+//     name:"Team Settings",
+//     icon: "ni ni-shop text-primary",
+//     views:[
+//       {
+//         path: "/Setting",
+//         name: "Setting",
+//         miniName: "Ts",
+//         component: Setting,
+//         layout: "/admin"
+//       },
+//       {
+//         path: "/TeamMates",
+//       name: "TeamMates",
+//       miniName: "Tm",
+//       component: TeamMates,
+//       layout: "/admin"
+//     },
+//     {
+//       path: "/Billing",
+//       name: "Billing",
+//       miniName: "B",
+//       component: Billing,
+//       layout: "/admin"
+//     },
+//     {
+//       path: "/Redeem",
+//       name: "Redeem",
+//       miniName: "R",
+//       component: Redeem,
+//       layout: "/admin"
+//     },
+//     ]
+//   },
+//   // for Extension
+//   {
+//       collapse:true,
+//       name:"Extension",
+//       icon: "ni ni-shop text-primary",
+//       views:[
+//         {
+//           path: "/Apps&Crm",
+//           name: "Apps&Crm",
+//           miniName: "A&C",
+//           component: AppsandCrm,
+//           layout: "/admin"
+//         },
+//         {
+//           path: "/API",
+//           name: "API",
+//           miniName: "API",
+//           component: API,
+//           layout: "/admin"
+//         },
+//         {
+//           path: "/ConversionTracking",
+//           name: "ConversionTracking",
+//           miniName: "CT",
+//           component: ConversionTracking,
+//           layout: "/admin"
+
+//         }
+//       ]
+    
+//   },
+//   // for Unsubscribes
+//   {
+//     collapse:true,
+//     name:" Unsubscribes",
+//     icon: "ni ni-ungroup text-orange",
+//     views:[
+//       {
+//         path: "/ Unsubscribes",
+//         name: " Unsubscribes",
+//         miniName: "Us",
+//         component:  Unsubscribes,
+//         layout: "/admin"
+//       },
+//     ]
+
+//   },
+//   //for User
+//   {
+//         collapse: true,
+//         name: "User",
+//         icon: "ni ni-ungroup text-orange",
+//         state: "examplesCollapse",
+//         views: [
+//           {
+//             path: "/pricing",
+//             name: "Pricing",
+//             miniName: "P",
+//             component: Pricing,
+//             layout: "/auth"
+//           },
+//           {
+//             path: "/login",
+//             name: "Login",
+//             miniName: "L",
+//             component: Login,
+//             layout: "/auth"
+//           },
+//           {
+//             path: "/register",
+//             name: "Register",
+//             miniName: "R",
+//             component: Register,
+//             layout: "/auth"
+//           },
+//           // {
+//           //   path: "/lock",
+//           //   name: "Lock",
+//           //   miniName: "L",
+//           //   component: Lock,
+//           //   layout: "/auth"
+//           // },
+//           {
+//             path: "/timeline",
+//             name: "Timeline",
+//             miniName: "T",
+//             component: Timeline,
+//             layout: "/admin"
+//           },
+//           {
+//             path: "/profile",
+//             name: "Profile",
+//             miniName: "P",
+//             component: Profile,
+//             layout: "/admin"
+//           },
+//           // {
+//           //   path: "/rtl-support",
+//           //   name: "RTL Support",
+//           //   miniName: "RS",
+//           //   component: RTLSupport,
+//           //   layout: "/rtl"
+//           // }
+//         ]
+//       },
+// ];
+//  export default routes;

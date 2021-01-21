@@ -48,15 +48,15 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 
-// core components
-import CardsHeader from "components/Headers/CardsHeader.js";
+// core componentser.js";
+import CardsHeader from "../../../components/Headers/CardsHeader";
 
 import {
   chartOptions,
   parseOptions,
   chartExample1,
   chartExample2
-} from "variables/charts.js";
+} from "../../../variables/charts.js";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -180,7 +180,7 @@ class Dashboard extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                             src={STATIC_FILES.team-1}
                             />
                           </a>
                         </Col>
@@ -210,8 +210,7 @@ class Dashboard extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
-                            />
+                               src={STATIC_FILES.team-2}                            />
                           </a>
                         </Col>
                         <div className="col ml--2">
@@ -240,7 +239,7 @@ class Dashboard extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATIC_FILES.team-3}
                             />
                           </a>
                         </Col>
@@ -270,7 +269,7 @@ class Dashboard extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                               src={STATIC_FILES.team-4}
                             />
                           </a>
                         </Col>
@@ -418,7 +417,7 @@ class Dashboard extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/bootstrap.jpg")}
+                              src={STATIC_FILES.bootstrap}
                             />
                           </a>
                         </Col>
@@ -443,7 +442,7 @@ class Dashboard extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/angular.jpg")}
+                               src={STATIC_FILES.angular}
                             />
                           </a>
                         </Col>
@@ -468,7 +467,8 @@ class Dashboard extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/sketch.jpg")}
+                              src={STATIC_FILES.sketch}
+                             
                             />
                           </a>
                         </Col>
@@ -493,7 +493,8 @@ class Dashboard extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/react.jpg")}
+                              src={STATIC_FILES.react}
+                             
                             />
                           </a>
                         </Col>
@@ -525,7 +526,7 @@ class Dashboard extends React.Component {
                       <img
                         alt="..."
                         className="avatar"
-                        src={require("assets/img/theme/team-1.jpg")}
+                       src={STATIC_FILES.team-1}
                       />
                     </a>
                     <div className="mx-3">
@@ -563,7 +564,7 @@ class Dashboard extends React.Component {
                   <img
                     alt="..."
                     className="img-fluid rounded"
-                    src={require("assets/img/theme/img-1-1000x600.jpg")}
+                    src={STATIC_FILES.img1}
                   />
                   <Row className="align-items-center my-3 pb-3 border-bottom">
                     <Col sm="6">
@@ -597,7 +598,7 @@ class Dashboard extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                             src={STATIC_FILES.team-1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -615,8 +616,7 @@ class Dashboard extends React.Component {
                             <img
                               alt="..."
                               className="rounded-circle"
-                              src={require("assets/img/theme/team-2.jpg")}
-                            />
+                               src={STATIC_FILES.team-2}                            />
                           </a>
                           <UncontrolledTooltip
                             delay={0}
@@ -633,7 +633,7 @@ class Dashboard extends React.Component {
                             <img
                               alt="..."
                               className="rounded-circle"
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATIC_FILES.team-3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -655,7 +655,7 @@ class Dashboard extends React.Component {
                       <img
                         alt="..."
                         className="avatar avatar-lg media-comment-avatar rounded-circle"
-                        src={require("assets/img/theme/team-1.jpg")}
+                       src={STATIC_FILES.team-1}
                       />
                       <Media>
                         <div className="media-comment-text">
@@ -686,8 +686,7 @@ class Dashboard extends React.Component {
                       <img
                         alt="..."
                         className="avatar avatar-lg media-comment-avatar rounded-circle"
-                        src={require("assets/img/theme/team-2.jpg")}
-                      />
+                         src={STATIC_FILES.team-2}                      />
                       <Media>
                         <div className="media-comment-text">
                           <h6 className="h5 mt-0">Jessica Stones</h6>
@@ -719,7 +718,7 @@ class Dashboard extends React.Component {
                       <img
                         alt="..."
                         className="avatar avatar-lg rounded-circle mr-4"
-                        src={require("assets/img/theme/team-3.jpg")}
+                        src={STATIC_FILES.team-3}
                       />
                       <Media body>
                         <Form>
@@ -779,7 +778,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/bootstrap.jpg")}
+                                     src={STATIC_FILES.bootstrap}
                                 />
                               </a>
                               <Media>
@@ -806,7 +805,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-1.jpg")}
+                                 src={STATIC_FILES.team-1}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -823,8 +822,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-2.jpg")}
-                                />
+                                   src={STATIC_FILES.team-2}                                />
                               </a>
                               <UncontrolledTooltip
                                 delay={0}
@@ -840,7 +838,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-3.jpg")}
+                                  src={STATIC_FILES.team-3}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -857,7 +855,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-4.jpg")}
+                                  src={STATIC_FILES.team-4}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -925,7 +923,8 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/angular.jpg")}
+                                   src={STATIC_FILES.angular}
+                                
                                 />
                               </a>
                               <Media>
@@ -952,7 +951,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-1.jpg")}
+                                 src={STATIC_FILES.team-1}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -969,8 +968,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-2.jpg")}
-                                />
+                                   src={STATIC_FILES.team-2}                                />
                               </a>
                               <UncontrolledTooltip
                                 delay={0}
@@ -986,7 +984,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-3.jpg")}
+                                  src={STATIC_FILES.team-3}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1003,7 +1001,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-4.jpg")}
+                                   src={STATIC_FILES.team-4}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1071,7 +1069,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/sketch.jpg")}
+                                  src={STATIC_FILES.sketch}
                                 />
                               </a>
                               <Media>
@@ -1098,7 +1096,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-1.jpg")}
+                                 src={STATIC_FILES.team-1}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1115,7 +1113,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-2.jpg")}
+                                   src={STATIC_FILES.team-2}                                
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1132,7 +1130,8 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-3.jpg")}
+                                  src={STATIC_FILES.team-3}
+                                  
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1149,7 +1148,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-4.jpg")}
+                                   src={STATIC_FILES.team-4}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1213,7 +1212,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/react.jpg")}
+                                  src={STATIC_FILES.react}
                                 />
                               </a>
                               <Media>
@@ -1240,7 +1239,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-1.jpg")}
+                                 src={STATIC_FILES.team-1}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1257,8 +1256,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-2.jpg")}
-                                />
+                                   src={STATIC_FILES.team-2}                                />
                               </a>
                               <UncontrolledTooltip
                                 delay={0}
@@ -1274,7 +1272,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-3.jpg")}
+                                  src={STATIC_FILES.team-3}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1291,7 +1289,8 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-4.jpg")}
+                                   src={STATIC_FILES.team-4}
+                                 
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1355,7 +1354,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/vue.jpg")}
+                                  src={STATIC_FILES.vue}
                                 />
                               </a>
                               <Media>
@@ -1382,7 +1381,8 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-1.jpg")}
+                                 src={STATIC_FILES.team-1}
+                                  
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1399,8 +1399,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-2.jpg")}
-                                />
+                                   src={STATIC_FILES.team-2}                                />
                               </a>
                               <UncontrolledTooltip
                                 delay={0}
@@ -1416,7 +1415,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-3.jpg")}
+                                  src={STATIC_FILES.team-3}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1433,7 +1432,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-4.jpg")}
+                                   src={STATIC_FILES.team-4}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1501,7 +1500,8 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/bootstrap.jpg")}
+                                     src={STATIC_FILES.bootstrap}
+                              
                                 />
                               </a>
                               <Media>
@@ -1528,7 +1528,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-1.jpg")}
+                                 src={STATIC_FILES.team-1}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1545,8 +1545,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-2.jpg")}
-                                />
+                                   src={STATIC_FILES.team-2}                                />
                               </a>
                               <UncontrolledTooltip
                                 delay={0}
@@ -1562,7 +1561,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-3.jpg")}
+                                  src={STATIC_FILES.team-3}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1579,7 +1578,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-4.jpg")}
+                                   src={STATIC_FILES.team-4}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1647,7 +1646,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/angular.jpg")}
+                                   src={STATIC_FILES.angular}
                                 />
                               </a>
                               <Media>
@@ -1674,7 +1673,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-1.jpg")}
+                                 src={STATIC_FILES.team-1}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1691,8 +1690,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-2.jpg")}
-                                />
+                                   src={STATIC_FILES.team-2}                                />
                               </a>
                               <UncontrolledTooltip
                                 delay={0}
@@ -1708,7 +1706,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-3.jpg")}
+                                  src={STATIC_FILES.team-3}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1725,7 +1723,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-4.jpg")}
+                                   src={STATIC_FILES.team-4}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1793,7 +1791,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/sketch.jpg")}
+                                  src={STATIC_FILES.sketch}
                                 />
                               </a>
                               <Media>
@@ -1820,7 +1818,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-1.jpg")}
+                                 src={STATIC_FILES.team-1}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1837,8 +1835,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-2.jpg")}
-                                />
+                                   src={STATIC_FILES.team-2}                                />
                               </a>
                               <UncontrolledTooltip
                                 delay={0}
@@ -1854,7 +1851,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-3.jpg")}
+                                  src={STATIC_FILES.team-3}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1871,7 +1868,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-4.jpg")}
+                                   src={STATIC_FILES.team-4}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1935,7 +1932,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/angular.jpg")}
+                                  src={STATIC_FILES.angular}
                                 />
                               </a>
                               <Media>
@@ -1962,7 +1959,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-1.jpg")}
+                                 src={STATIC_FILES.team-1}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -1979,8 +1976,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-2.jpg")}
-                                />
+                                   src={STATIC_FILES.team-2}                                />
                               </a>
                               <UncontrolledTooltip
                                 delay={0}
@@ -1996,7 +1992,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-3.jpg")}
+                                  src={STATIC_FILES.team-3}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -2013,7 +2009,7 @@ class Dashboard extends React.Component {
                               >
                                 <img
                                   alt="..."
-                                  src={require("assets/img/theme/team-4.jpg")}
+                                   src={STATIC_FILES.team-4}
                                 />
                               </a>
                               <UncontrolledTooltip
@@ -2130,7 +2126,7 @@ class Dashboard extends React.Component {
                       <div className="col">
                         <img
                           alt="..."
-                          src={require("assets/img/icons/cards/bitcoin.png")}
+                          src={STATIC_FILES.bitcoin}
                         />
                       </div>
                       <Col className="col-auto">

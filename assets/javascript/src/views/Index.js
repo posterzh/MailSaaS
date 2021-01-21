@@ -30,17 +30,17 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 // core components
-// import IndexNavbar from "components/Navbars/IndexNavbar.js";
-// import IndexHeader from "components/Headers/IndexHeader.js";
-// import AuthFooter from "components/Footers/AuthFooter.js";
+import IndexNavbar from "../components/Navbars/IndexNavbar.js";
+ import IndexHeader from "../components/Headers/IndexHeader.js";
+ import AuthFooter from "../components/Footers/AuthFooter.js";
 
 class Index extends React.Component {
   render() {
     return (
       <>
-        {/* <IndexNavbar /> */}
+        <IndexNavbar />
         <div className="main-content">
-          {/* <IndexHeader /> */}
+          <IndexHeader />
           <section className="py-6 pb-9 bg-default">
             <Container fluid>
               <Row className="justify-content-center text-center">
@@ -75,9 +75,9 @@ class Index extends React.Component {
                             Based on React and Reactstrap
                           </h4>
                           <p className="description mt-3">
-                            Argon is built on top of the most popular open
+                            {/* Argon is built on top of the most popular open
                             source toolkit for developing with HTML, CSS, and
-                            JS.
+                            JS. */}
                           </p>
                           <div>
                             <Badge color="info" pill>
@@ -557,7 +557,7 @@ class Index extends React.Component {
             </Container>
           </section>
         </div>
-        {/* <AuthFooter /> */}
+        <AuthFooter />
       </>
     );
   }

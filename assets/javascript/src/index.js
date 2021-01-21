@@ -34,18 +34,19 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 // // core styles
 // import "assets/scss/argon-dashboard-pro-react.scss?v1.1.0";
 
-// import AdminLayout from "layouts/Admin.js";
 // import RTLLayout from "layouts/RTL.js";
 // import AuthLayout from "layouts/Auth.js";
+import AdminLayout from "./layouts/Admin"
+import AuthLayout from "./layouts/Auth"
 import IndexView from "./views/Index.js";
 
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route path="/admin" render={props => <AdminLayout {...props} />} />
+      <Route path="/pegasus/admin" render={props => <AdminLayout {...props} />} />
       {/* <Route path="/rtl" render={props => <RTLLayout {...props} />} /> */}
-      <Route path="/auth" render={props => <AuthLayout {...props} />} />
-      <Route path="/" render={props => <IndexView {...props} />} />
+      <Route path="/pegasus/auth" render={props => <AuthLayout {...props} />} />
+      <Route path="/pegasus" render={props => <IndexView {...props} />} />
       <Redirect from="*" to="/" />
     </Switch>
   </BrowserRouter>,

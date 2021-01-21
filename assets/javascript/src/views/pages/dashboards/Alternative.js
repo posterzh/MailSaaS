@@ -44,14 +44,13 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 // core components
-import AlternativeHeader from "components/Headers/AlternativeHeader.js";
-
+import AlternativeHeader from "../../../components/Headers/AlternativeHeader.js";
 import {
   chartOptions,
   parseOptions,
   chartExample2,
   chartExample3
-} from "variables/charts.js";
+} from "../../../variables/charts";
 
 let mapData = {
   AU: 760,
@@ -417,7 +416,7 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/bootstrap.jpg")}
+                           src={STATTIC_FILES.bootstrap}
                           />
                         </a>
                       </Col>
@@ -442,7 +441,7 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/angular.jpg")}
+                              src={STATTIC_FILES.angular}
                           />
                         </a>
                       </Col>
@@ -467,7 +466,8 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/sketch.jpg")}
+                             src={STATTIC_FILES.sketh}
+                          
                           />
                         </a>
                       </Col>
@@ -492,7 +492,7 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/react.jpg")}
+                             src={STATTIC_FILES.react}
                           />
                         </a>
                       </Col>
@@ -517,7 +517,7 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/vue.jpg")}
+                            src={STATTIC_FILES.vue}
                           />
                         </a>
                       </Col>
@@ -586,7 +586,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/bootstrap.jpg")}
+                             src={STATTIC_FILES.bootstrap}
                             />
                           </a>
                           <Media>
@@ -613,7 +613,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                              src={STATTIC_FILES.team-1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -630,7 +630,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                               src={STATTIC_FILES.team-2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -647,7 +647,8 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATTIC_FILES.team-3}
+                             
                             />
                           </a>
                           <UncontrolledTooltip
@@ -664,7 +665,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                               src={STATTIC_FILES.team-4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -725,7 +726,8 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/angular.jpg")}
+                                src={STATTIC_FILES.angular}
+                            
                             />
                           </a>
                           <Media>
@@ -752,7 +754,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                              src={STATTIC_FILES.team-1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -769,7 +771,8 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                               src={STATTIC_FILES.team-2}
+                             
                             />
                           </a>
                           <UncontrolledTooltip
@@ -786,7 +789,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATTIC_FILES.team-3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -803,7 +806,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                               src={STATTIC_FILES.team-4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -864,7 +867,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/sketch.jpg")}
+                               src={STATTIC_FILES.sketh}
                             />
                           </a>
                           <Media>
@@ -891,7 +894,8 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                              src={STATTIC_FILES.team-1}
+                              
                             />
                           </a>
                           <UncontrolledTooltip
@@ -908,7 +912,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                               src={STATTIC_FILES.team-2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -925,7 +929,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATTIC_FILES.team-3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -942,7 +946,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                               src={STATTIC_FILES.team-4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1003,7 +1007,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/react.jpg")}
+                               src={STATTIC_FILES.react}
                             />
                           </a>
                           <Media>
@@ -1030,7 +1034,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                              src={STATTIC_FILES.team-1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1047,7 +1051,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                               src={STATTIC_FILES.team-2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1064,7 +1068,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATTIC_FILES.team-3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1081,7 +1085,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                               src={STATTIC_FILES.team-4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1142,7 +1146,8 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/vue.jpg")}
+                              src={STATTIC_FILES.vue}
+                             
                             />
                           </a>
                           <Media>
@@ -1169,7 +1174,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                              src={STATTIC_FILES.team-1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1186,7 +1191,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                               src={STATTIC_FILES.team-2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1203,7 +1208,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATTIC_FILES.team-3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1220,7 +1225,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                               src={STATTIC_FILES.team-4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1281,7 +1286,8 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/bootstrap.jpg")}
+                             src={STATTIC_FILES.bootstrap}
+                             
                             />
                           </a>
                           <Media>
@@ -1308,7 +1314,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                              src={STATTIC_FILES.team-1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1325,7 +1331,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                               src={STATTIC_FILES.team-2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1342,7 +1348,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATTIC_FILES.team-3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1359,7 +1365,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                               src={STATTIC_FILES.team-4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1530,7 +1536,7 @@ class Alternative extends React.Component {
                         <Col className="col-auto">
                           <img
                             alt="..."
-                            src={require("assets/img/icons/flags/US.png")}
+                            src={STATTIC_FILES.us}
                           />
                         </Col>
                         <div className="col">
@@ -1552,7 +1558,7 @@ class Alternative extends React.Component {
                         <Col className="col-auto">
                           <img
                             alt="..."
-                            src={require("assets/img/icons/flags/DE.png")}
+                            src={STATTIC_FILES.de}
                           />
                         </Col>
                         <div className="col">
@@ -1574,7 +1580,7 @@ class Alternative extends React.Component {
                         <Col className="col-auto">
                           <img
                             alt="..."
-                            src={require("assets/img/icons/flags/GB.png")}
+                            src={STATTIC_FILES.gb}
                           />
                         </Col>
                         <div className="col">
@@ -1613,7 +1619,7 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-1.jpg")}
+                            src={STATTIC_FILES.team-1}
                           />
                         </a>
                       </Col>
@@ -1643,7 +1649,7 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-2.jpg")}
+                             src={STATTIC_FILES.team-2}
                           />
                         </a>
                       </Col>
@@ -1673,7 +1679,7 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-3.jpg")}
+                            src={STATTIC_FILES.team-3}
                           />
                         </a>
                       </Col>
@@ -1703,7 +1709,8 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-4.jpg")}
+                             src={STATTIC_FILES.team-4}
+                          
                           />
                         </a>
                       </Col>
@@ -1841,7 +1848,7 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/bootstrap.jpg")}
+                           src={STATTIC_FILES.bootstrap}
                           />
                         </a>
                       </Col>
@@ -1866,7 +1873,7 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/angular.jpg")}
+                              src={STATTIC_FILES.angular}
                           />
                         </a>
                       </Col>
@@ -1891,7 +1898,7 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/sketch.jpg")}
+                             src={STATTIC_FILES.sketh}
                           />
                         </a>
                       </Col>
@@ -1916,7 +1923,8 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/react.jpg")}
+                             src={STATTIC_FILES.react}
+                          
                           />
                         </a>
                       </Col>

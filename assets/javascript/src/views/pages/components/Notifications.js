@@ -40,7 +40,7 @@ import {
   Col
 } from "reactstrap";
 // core components
-import SimpleHeader from "components/Headers/SimpleHeader.js";
+import SimpleHeader from "../../../components/Headers/SimpleHeader.js";
 
 class Notifications extends React.Component {
   state = {
@@ -419,7 +419,7 @@ class Notifications extends React.Component {
                                   <span className="btn-inner--icon mr-1">
                                     <img
                                       alt="..."
-                                      src={require("assets/img/icons/common/github.svg")}
+                                      src={STATIC_FILES.github}
                                     />
                                   </span>
                                   <span className="btn-inner--text">
@@ -435,7 +435,7 @@ class Notifications extends React.Component {
                                   <span className="btn-inner--icon mr-1">
                                     <img
                                       alt="..."
-                                      src={require("assets/img/icons/common/google.svg")}
+                                      src={STATIC_FILES.google}
                                     />
                                   </span>
                                   <span className="btn-inner--text">
