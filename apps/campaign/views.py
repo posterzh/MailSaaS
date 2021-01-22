@@ -47,20 +47,26 @@ class create_campaign_recipients(APIView):
                     return Response({"message":"No campiagn availabe for this id", "success":"false"})
                 camp.csvFile_op1 = postData['csvFile']
                 camp.save()
+                print('media/'+str(camp.csvFile_op1))
                 with open('media/'+str(camp.csvFile_op1)) as csv_file:
                     csv_reader = csv.reader(csv_file, delimiter=',')
+                    print("csv row = ",csv_reader)
                     line_count = 0
                     resp = []
                     for row in csv_reader:
                         if line_count == 0:
                             line_count += 1
+                            # return Response({"message":"No Rows in file", "success":False})
                         else:
                             data = {'email':row[0], 'full_name':row[1], 'campaign':postData['campaign']}
+                            print("rowdataaaa ",data)
                             serializer = CampaignEmailSerializer(data = data)
                             if serializer.is_valid():
                                 line_count += 1
                                 serializer.save()
                                 resp.append(serializer.data)
+                    print(resp)
+                    resp.append({"success":True})
                     return Response(resp)
 
             elif int(postData["option"]) == 2:
@@ -188,46 +194,56 @@ class CampaignGetAllEmailsPreview(generics.ListAPIView):
         return Response({"message":"Updated Successfully", "success":"True"})
 
 
+# class create_campaign_options(APIView):
+
+#     permission_classes = (permissions.IsAuthenticated,)
+
+#     def put(self, request, format=None):
+#         postData = request.data
+#         print("pppppppppp ", postData)
+#         if postData["termsAndLaws"] == 'true':
+#             # print("postDataaaaaaaaa ",postData)
+#             camp = Campaign.objects.get(id=postData['campaign'])
+#             campEmail = Campaign_email.objects.filter(campaign=postData['campaign'])
+#             # print("camppppppp ",camp)
+#             campData = CampaignSerializer(camp)
+#             campSerializerData = campData.data
+#             print("gettttttttttt ",campSerializerData["scheduleDateTime"], type(campSerializerData["scheduleDateTime"]))
+#             campSerializerData["trackOpens"] = postData["trackOpens"]
+#             campSerializerData["trackLinkClick"] = postData["trackLinkClick"]
+#             campSerializerData["scheduleThisSend"] = postData["scheduleThisSend"]
+
+#             campSerializerData["scheduleDateTime"] = postData["scheduleDateTime"]
+#             campSerializerData["termsAndLaws"] = postData["termsAndLaws"]
+#             print("\n\n\n", campSerializerData["scheduleDateTime"], type(campSerializerData["scheduleDateTime"]), "\n\n\n")
+#             campSerializer = CampaignSerializer(camp, data=campSerializerData)
+#             print(campSerializer)
+#             if campSerializer.is_valid():
+#                 print("Validddddddd")
+#                 campSerializer.save()
+
+
+#             return Response({"message":"Updated Successfully", "success":"true"})
+#         else:
+#             return Response({"message":"Please agree to the terms.", "success":"false"})
+
+
 class create_campaign_options(APIView):
-
     permission_classes = (permissions.IsAuthenticated,)
-
     def put(self, request, format=None):
-        postData = request.data
-        print("pppppppppp ", postData)
-        if postData["termsAndLaws"] == 'true':
-            # print("postDataaaaaaaaa ",postData)
-            camp = Campaign.objects.get(id=postData['campaign'])
-            campEmail = Campaign_email.objects.filter(campaign=postData['campaign'])
-            # print("camppppppp ",camp)
-            campData = CampaignSerializer(camp)
-            campSerializerData = campData.data
-            print("gettttttttttt ",campSerializerData["scheduleDateTime"], type(campSerializerData["scheduleDateTime"]))
-            campSerializerData["trackOpens"] = postData["trackOpens"]
-            campSerializerData["trackLinkClick"] = postData["trackLinkClick"]
-            campSerializerData["scheduleThisSend"] = postData["scheduleThisSend"]
+        if request.data['termsAndLaws'] == True or request.data['termsAndLaws'] == 'true':
+            queryset = Campaign.objects.get(id = request.data['campaign'])
+            request.data._mutable = True
+            request.data["assigned"] = request.user.id
+            request.data._mutable = False
+            print(request.data)
+            serilizer = CampaignSerializer(queryset, data=request.data)
+            if serilizer.is_valid():
+                serilizer.save()
+                return Response(serilizer.data)
+            return Response({'message':'invalid serilizer'})
+        return Response({"message":"Please agree to the terms.", "success":"false"})
 
-
-            # datetime_str = '2016-05-18T15:37:36.993048Z'
-            # old_format = '%Y-%m-%dT%H:%M:%S.%fZ'
-            # new_format = '%d-%m-%Y %H:%M:%S'
-            # new_datetime_str = datetime.datetime.strptime(datetime_str, old_format).strftime(new_format)
-            # print("new_datetime_str = ",new_datetime_str)
-
-
-            campSerializerData["scheduleDateTime"] = postData["scheduleDateTime"]
-            campSerializerData["termsAndLaws"] = postData["termsAndLaws"]
-            print("\n\n\n", campSerializerData["scheduleDateTime"], type(campSerializerData["scheduleDateTime"]), "\n\n\n")
-            campSerializer = CampaignSerializer(camp, data=campSerializerData)
-            print(campSerializer)
-            if campSerializer.is_valid():
-                print("Validddddddd")
-                campSerializer.save()
-
-
-            return Response({"message":"Updated Successfully", "success":"true"})
-        else:
-            return Response({"message":"Please agree to the terms.", "success":"false"})
 
 class CampaignView(generics.ListAPIView):
 
@@ -245,7 +261,49 @@ class CampaignView(generics.ListAPIView):
 class LeadsView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, *args,**kwargs):
-        data = request.data
-        query = Campaign_email.objects.filter(leads=True)
-        w = CampaignEmailSerializer(query, many = True)
-        return Response(w.data)
+        campEmail = Campaign_email.objects.filter(leads=True)
+        campEmailserializer = CampaignEmailSerializer(campEmail, many = True)
+        return Response(campEmailserializer.data)
+
+
+class Get_campaign_overview(APIView):
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        postData = request.data
+
+        campEmail = Campaign_email.objects.filter(campaign=postData["campaign"])
+        campEmailserializer = CampaignEmailSerializer(campEmail, many = True)
+        resp = {
+            "recipientCount": campEmail.count(),
+            "leadCount": 0,
+            "openLeadCount": 0,
+            "wonLeadCount": 0,
+            "lostLeadCount": 0,
+            "ignoredLeadCount": 0,
+            "openLeadPer": 0,
+            "data":campEmailserializer.data
+            }
+        for campData in campEmailserializer.data:
+            if campData["leads"]:
+                resp["leadCount"] = resp["leadCount"] + 1
+            if campData["leadStatus"]=="openLead":
+                resp["openLeadCount"] = resp["openLeadCount"] + 1
+                print(resp["leadCount"])
+                try:
+                    resp["openLeadPer"] = (resp["openLeadCount"]*100)/resp["leadCount"]
+                    print(resp["openLeadPer"])
+                except:
+                    resp["openLeadPer"] = 0
+                    print(resp["openLeadPer"])
+                    continue
+
+            if campData["leadStatus"]=="wonLead":
+                resp["wonLeadCount"] = resp["wonLeadCount"] + 1
+            if campData["leadStatus"]=="lostLead":
+                resp["lostLeadCount"] = resp["lostLeadCount"] + 1
+            if campData["leadStatus"]=="ignoredLead":
+                resp["ignoredLeadCount"] = resp["ignoredLeadCount"] + 1
+
+        return Response(resp)

@@ -8,9 +8,12 @@ class CampaignAdmin(admin.ModelAdmin):
     list_display = ('title', 'fromAddress','assigned', 'csvFile_op1', 'created_date_time', 'trackOpens', 'trackLinkClick', 'scheduleThisSend','scheduleDateTime','termsAndLaws')
 
 
+# admin.site.register(LeadType)
+
+
 @admin.register(Campaign_email)
 class Campaign_emailAdmin(admin.ModelAdmin):
-    list_display = ('campaign', 'email', 'subject', 'emailBody','sent', 'leads','replies', 'opens', 'bounces')
+    list_display = ('campaign', 'email', 'subject', 'emailBody','sent', 'leads','replies', 'opens', 'bounces', 'leadStatus')
 
 
 @admin.register(Follow_up_email)

@@ -10,4 +10,5 @@ urlpatterns = [
     path('options/', views.create_campaign_options.as_view(), name='create_campaign_options'),
     path('view/',views.CampaignView.as_view(),name = 'campaign_view'),
     path('leads_catcher/',views.LeadsView.as_view(),name = 'leads_catcher'),
+    path('Get_overview/',views.Get_campaign_overview.as_view(),name = 'Get_campaign_overview'),
 ]

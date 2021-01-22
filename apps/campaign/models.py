@@ -17,7 +17,14 @@ class Campaign(models.Model):
     def __str__(self):
         return self.title
 
-
+    
+LEAD_TYPE =( 
+    ("none", "none"), 
+    ("openLead", "openLead"), 
+    ("wonLead", "wonLead"), 
+    ("lostLead", "lostLead"), 
+    ("ignoredLead", "ignoredLead"), 
+) 
 class Campaign_email(models.Model):
     campaign = models.ForeignKey('Campaign', on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100,blank=True, null=True)
@@ -29,6 +36,7 @@ class Campaign_email(models.Model):
     replies = models.BooleanField(default=False)
     opens = models.BooleanField(default=False)
     bounces = models.BooleanField(default=False)
+    leadStatus = models.CharField(max_length=32,choices=LEAD_TYPE,default='none',blank = True, null = True)
 
     def __str__(self):
         return str(self.campaign)
