@@ -42,7 +42,7 @@ class Admin extends React.Component {
       if (prop.collapse) {
         return this.getRoutes(prop.views);
       }
-      if (prop.layout === "/admin") {
+      if (prop.layout && prop.layout.indexOf("/admin") !== -1) {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -97,7 +97,7 @@ class Admin extends React.Component {
           sidenavOpen={this.state.sidenavOpen}
           logo={{
             innerLink: "/",
-            imgsrc:STATIC_FILES.argon-react,
+            imgsrc:STATIC_FILES.argon_react,
             imgAlt: "..."
           }}
         />

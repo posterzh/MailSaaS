@@ -43,11 +43,11 @@ import IndexView from "./views/Index.js";
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route path="/pegasus/admin" render={props => <AdminLayout {...props} />} />
+      <Route path="/app/admin" render={props => <AdminLayout {...props} />} />
       {/* <Route path="/rtl" render={props => <RTLLayout {...props} />} /> */}
-      <Route path="/pegasus/auth" render={props => <AuthLayout {...props} />} />
-      <Route path="/pegasus" render={props => <IndexView {...props} />} />
-      <Redirect from="*" to="/" />
+      <Route path="/app/auth" render={props => <AuthLayout {...props} />} />
+      <Route path="/app" render={props => <IndexView {...props} />} />
+      {/* <Redirect from="*" to="/" /> */}
     </Switch>
   </BrowserRouter>,
   document.getElementById("object-lifecycle-home")
