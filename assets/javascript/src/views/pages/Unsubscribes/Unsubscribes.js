@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export class MailAccound extends Component {
+export class Unsubscribes extends Component {
     render() {
         return (
             <div>
@@ -10,4 +10,4 @@ export class MailAccound extends Component {
     }
 }
 
-export default MailAccound
+export default Unsubscribes
