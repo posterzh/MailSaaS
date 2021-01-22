@@ -19602,3 +19602,27 @@ button:focus, :focus {
   100% {
     opacity: 1; } }
 
+.Barcontainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  background-color: #ddd;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding-top: 20px;
+  padding-bottom: 20px; }
+
+.dropdown_campaign, .searchbar {
+  background-color: #ddd;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  width: 200px; }
+
+.table {
+  border-radius: 0px;
+  border: 1px solid rgba(0, 0, 0, 0.12); }
+
+.select {
+  background-color: brown; }
+

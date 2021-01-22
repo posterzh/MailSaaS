@@ -51,7 +51,7 @@ class Lock extends React.Component {
                       <img
                         alt="..."
                         className="rounded-circle border-secondary"
-                        src={STATIC_FILES.team-4}
+                        src={STATIC_FILES.team_4}
                       />
                     </div>
                   </Col>

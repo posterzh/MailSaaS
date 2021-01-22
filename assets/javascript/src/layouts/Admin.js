@@ -19,7 +19,7 @@ import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 // core components
 // import AdminNavbar from "components/Navbars/AdminNavbar.js";
-import AdminNavbar from "../components/Navbars/AdminNavbar"
+import AdminNavbar from "../components/Navbars/AdminNavbar";
 import AdminFooter from "../components/Footers/AdminFooter.js";
 import Sidebar from "../components/Sidebar/Sidebar.js";
 
@@ -42,7 +42,8 @@ class Admin extends React.Component {
       if (prop.collapse) {
         return this.getRoutes(prop.views);
       }
-      if (prop.layout && prop.layout.indexOf("/admin") !== -1) {
+      // if (prop.layout && prop.layout.indexOf("/admin") !== -1) {
+        if (prop.layout && prop.layout.indexOf("/dashboardd") !== -1) {
         return (
           <Route
             path={prop.layout + prop.path}

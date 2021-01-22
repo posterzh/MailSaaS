@@ -145,7 +145,7 @@ class Widgets extends React.Component {
                           >
                             <img
                               alt="..."
-                             src={STATIC_FILES.team-1}
+                             src={STATIC_FILES.team_1}
                             />
                           </a>
                         </Col>
@@ -175,7 +175,7 @@ class Widgets extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATIC_FILES.team-2}
+                              src={STATIC_FILES.team_2}
                             />
                           </a>
                         </Col>
@@ -205,7 +205,7 @@ class Widgets extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATIC_FILES.team-3}
+                              src={STATIC_FILES.team_3}
                             />
                           </a>
                         </Col>
@@ -235,7 +235,7 @@ class Widgets extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATIC_FILES.team-4}
+                              src={STATIC_FILES.team_4}
                             />
                           </a>
                         </Col>
@@ -265,7 +265,7 @@ class Widgets extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATIC_FILES.team-5}
+                              src={STATIC_FILES.team_5}
                             />
                           </a>
                         </Col>
@@ -306,7 +306,7 @@ class Widgets extends React.Component {
                             <img
                               alt="..."
                               className="avatar avatar-xs mr-2"
-                             src={STATIC_FILES.team-1}
+                             src={STATIC_FILES.team_1}
                             />
                             <h5 className="mb-1">Tim</h5>
                           </div>
@@ -333,7 +333,7 @@ class Widgets extends React.Component {
                             <img
                               alt="..."
                               className="avatar avatar-xs mr-2"
-                             src={STATIC_FILES.team-2}
+                             src={STATIC_FILES.team_2}
                             />
                             <h5 className="mb-1">Mike</h5>
                           </div>

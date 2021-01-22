@@ -96,27 +96,27 @@ class AdminNavbar extends React.Component {
               </div>
               <Nav className="mr-auto" navbar>
                 <NavItem>
-                  <NavLink to="/admin/dashboard" tag={Link}>
+                  <NavLink to="/app/dashboardd/dashboard" tag={Link}>
                     <span className="nav-link-inner--text">Dashboard</span>
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/auth/pricing" tag={Link}>
+                  <NavLink to="/app/auth/pricing" tag={Link}>
                     <span className="nav-link-inner--text">Pricing</span>
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/auth/login" tag={Link}>
+                  <NavLink to="/app/auth/login" tag={Link}>
                     <span className="nav-link-inner--text">Login</span>
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/auth/register" tag={Link}>
+                  <NavLink to="/app/auth/register" tag={Link}>
                     <span className="nav-link-inner--text">Register</span>
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/auth/lock" tag={Link}>
+                  <NavLink to="/app/auth/lock" tag={Link}>
                     <span className="nav-link-inner--text">Lock</span>
                   </NavLink>
                 </NavItem>

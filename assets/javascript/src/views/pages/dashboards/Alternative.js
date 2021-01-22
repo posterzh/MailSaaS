@@ -613,7 +613,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATTIC_FILES.team-1}
+                              src={STATTIC_FILES.team_1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -630,7 +630,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                               src={STATTIC_FILES.team-2}
+                               src={STATTIC_FILES.team_2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -647,7 +647,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATTIC_FILES.team-3}
+                              src={STATTIC_FILES.team_3}
                              
                             />
                           </a>
@@ -665,7 +665,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                               src={STATTIC_FILES.team-4}
+                               src={STATTIC_FILES.team_4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -754,7 +754,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATTIC_FILES.team-1}
+                              src={STATTIC_FILES.team_1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -771,7 +771,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                               src={STATTIC_FILES.team-2}
+                               src={STATTIC_FILES.team_2}
                              
                             />
                           </a>
@@ -789,7 +789,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATTIC_FILES.team-3}
+                              src={STATTIC_FILES.team_3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -806,7 +806,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                               src={STATTIC_FILES.team-4}
+                               src={STATTIC_FILES.team_4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -894,7 +894,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATTIC_FILES.team-1}
+                              src={STATTIC_FILES.team_1}
                               
                             />
                           </a>
@@ -912,7 +912,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                               src={STATTIC_FILES.team-2}
+                               src={STATTIC_FILES.team_2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -929,7 +929,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATTIC_FILES.team-3}
+                              src={STATTIC_FILES.team_3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -946,7 +946,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                               src={STATTIC_FILES.team-4}
+                               src={STATTIC_FILES.team_4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1034,7 +1034,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATTIC_FILES.team-1}
+                              src={STATTIC_FILES.team_1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1051,7 +1051,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                               src={STATTIC_FILES.team-2}
+                               src={STATTIC_FILES.team_2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1068,7 +1068,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATTIC_FILES.team-3}
+                              src={STATTIC_FILES.team_3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1085,7 +1085,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                               src={STATTIC_FILES.team-4}
+                               src={STATTIC_FILES.team_4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1174,7 +1174,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATTIC_FILES.team-1}
+                              src={STATTIC_FILES.team_1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1191,7 +1191,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                               src={STATTIC_FILES.team-2}
+                               src={STATTIC_FILES.team_2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1208,7 +1208,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATTIC_FILES.team-3}
+                              src={STATTIC_FILES.team_3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1225,7 +1225,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                               src={STATTIC_FILES.team-4}
+                               src={STATTIC_FILES.team_4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1314,7 +1314,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATTIC_FILES.team-1}
+                              src={STATTIC_FILES.team_1}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1331,7 +1331,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                               src={STATTIC_FILES.team-2}
+                               src={STATTIC_FILES.team_2}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1348,7 +1348,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={STATTIC_FILES.team-3}
+                              src={STATTIC_FILES.team_3}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1365,7 +1365,7 @@ class Alternative extends React.Component {
                           >
                             <img
                               alt="..."
-                               src={STATTIC_FILES.team-4}
+                               src={STATTIC_FILES.team_4}
                             />
                           </a>
                           <UncontrolledTooltip
@@ -1619,7 +1619,7 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={STATTIC_FILES.team-1}
+                            src={STATTIC_FILES.team_1}
                           />
                         </a>
                       </Col>
@@ -1649,7 +1649,7 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                             src={STATTIC_FILES.team-2}
+                             src={STATTIC_FILES.team_2}
                           />
                         </a>
                       </Col>
@@ -1679,7 +1679,7 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={STATTIC_FILES.team-3}
+                            src={STATTIC_FILES.team_3}
                           />
                         </a>
                       </Col>
@@ -1709,7 +1709,7 @@ class Alternative extends React.Component {
                         >
                           <img
                             alt="..."
-                             src={STATTIC_FILES.team-4}
+                             src={STATTIC_FILES.team_4}
                           
                           />
                         </a>

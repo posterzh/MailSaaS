@@ -43,7 +43,7 @@ import IndexView from "./views/Index.js";
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route path="/app/admin" render={props => <AdminLayout {...props} />} />
+      <Route path="/app/dashboardd" render={props => <AdminLayout {...props} />} />
       {/* <Route path="/rtl" render={props => <RTLLayout {...props} />} /> */}
       <Route path="/app/auth" render={props => <AuthLayout {...props} />} />
       <Route path="/app" render={props => <IndexView {...props} />} />

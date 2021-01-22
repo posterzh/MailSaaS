@@ -123,7 +123,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-1}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -140,7 +140,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-2}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -157,7 +157,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-3}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -174,7 +174,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-4}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -263,7 +263,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-1}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -280,7 +280,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-2}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -297,7 +297,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-3}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -314,7 +314,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-4}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -403,7 +403,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-1}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -420,7 +420,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-2}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -437,7 +437,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-3}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -454,7 +454,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-4}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -543,7 +543,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-1}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -560,7 +560,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-2}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -577,7 +577,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-3}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -594,7 +594,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-4}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -683,7 +683,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-1}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -700,7 +700,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-2}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -717,7 +717,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-3}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -734,7 +734,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-4}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -905,7 +905,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-1}
+                            src= {STATIC_FILES.team_1}
                            
                           />
                         </a>
@@ -923,7 +923,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-2}
+                            src= {STATIC_FILES.team_2}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -940,7 +940,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-3}
+                            src= {STATIC_FILES.team_3}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -957,7 +957,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-4}
+                            src= {STATIC_FILES.team_4}
                           />
                         </a>
                         <UncontrolledTooltip delay={0} target="tooltip49218996">
@@ -1043,7 +1043,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-1}
+                            src= {STATIC_FILES.team_1}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1060,7 +1060,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-2}
+                            src= {STATIC_FILES.team_2}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1077,7 +1077,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-3}
+                            src= {STATIC_FILES.team_3}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1094,7 +1094,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-4}
+                            src= {STATIC_FILES.team_4}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1183,7 +1183,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-1}
+                            src= {STATIC_FILES.team_1}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1200,7 +1200,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-2}
+                            src= {STATIC_FILES.team_2}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1217,7 +1217,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-3}
+                            src= {STATIC_FILES.team_3}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1234,7 +1234,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-4}
+                            src= {STATIC_FILES.team_4}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1323,7 +1323,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-1}
+                            src= {STATIC_FILES.team_1}
                           />
                         </a>
                         <UncontrolledTooltip delay={0} target="tooltip19030294">
@@ -1337,7 +1337,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-2}
+                            src= {STATIC_FILES.team_2}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1354,7 +1354,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-3}
+                            src= {STATIC_FILES.team_3}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1371,7 +1371,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-4}
+                            src= {STATIC_FILES.team_4}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1460,7 +1460,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-1}
+                            src= {STATIC_FILES.team_1}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1477,7 +1477,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-2}
+                            src= {STATIC_FILES.team_2}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1494,7 +1494,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-3}
+                            src= {STATIC_FILES.team_3}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1511,7 +1511,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src= {STATIC_FILES.team-4}
+                            src= {STATIC_FILES.team_4}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1632,7 +1632,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-1}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1649,7 +1649,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-2}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1666,7 +1666,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-3}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1683,7 +1683,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-4}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1772,7 +1772,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-1}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1789,7 +1789,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-2}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1806,7 +1806,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-3}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1823,7 +1823,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-4}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1912,7 +1912,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-1}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1929,7 +1929,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-2}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1946,7 +1946,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-3}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1963,7 +1963,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-4}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2052,7 +2052,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-1}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2069,7 +2069,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-2}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2086,7 +2086,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-3}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2103,7 +2103,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-4}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2192,7 +2192,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-1}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2209,7 +2209,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-2}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2226,7 +2226,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-3}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2243,7 +2243,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src= {STATIC_FILES.team-4}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip

@@ -25,6 +25,7 @@ import Campaign from "./views/pages/Campaing/Campaign";
 import Cards from "./views/pages/components/Cards.js";
 import Charts from "./views/pages/Charts.js";
 import Components from "./views/pages/forms/Components.js";
+import ConversionTracking from "./views/pages/Extension/ConversionTracking";
 import Dashboard from "./views/pages/dashboards/Dashboard.js";
 import Elements from "./views/pages/forms/Elements.js";
 import Google from "./views/pages/maps/Google.js";
@@ -42,6 +43,7 @@ import ReactBSTables from "./views/pages/tables/ReactBSTables.js";
 import Redeem from "./views/pages/TeamSettings/Redeem";
 import Register from "./views/pages/examples/Register.js";
 // import RTLSupport from "./views/pages/examples/RTLSupport.js";
+import SendingCalender from "./views/pages/Campaing/SedingCalender";
 import Setting from "./views/pages/TeamSettings/Setting"
 import Sortable from "./views/pages/tables/Sortable.js";
 import Tables from "./views/pages/tables/Tables.js";
@@ -65,16 +67,10 @@ const routes = [
         name: "Dashboard",
         miniName: "D",
         component: Dashboard,
-        layout: "/app/admin"
+        layout: "/app/dashboardd"
       },
-      {
-        path: "/alternative-dashboard",
-        name: "Alternative",
-        miniName: "A",
-        component: Alternative,
-        layout: "/app/admin"
-      }
     ]
+    
   },
 // for campaign
   {
@@ -87,21 +83,21 @@ const routes = [
         name: "Campaign",
         miniName: "Ca",
         component: Campaign,
-        layout: "/admin"
+        layout: "/app/dashboardd"
       },
       {
         path: "/LeadCatcher",
         name: "Lead Catcher",
         miniName: "Lc",
         component: LeadCatcher,
-        layout: "/admin"
+        layout: "/app/dashboardd"
       },
       {
         path: "/SendingCalender",
         name: "Sending Calender",
         miniName: "Sc",
         component: SendingCalender,
-        layout: "/admin"
+        layout: "/app/dashboardd"
       },
      
     ]
@@ -119,7 +115,7 @@ const routes = [
         name: "Prospects",
         miniName: "pro",
         component: Prospects,
-         layout: "/admin"
+         layout: "/app/dashboardd"
       },
     ]
   },
@@ -135,7 +131,7 @@ const routes = [
         name: "MailAccount",
         miniName: "Ma",
         component: MailAccount,
-        layout: "/admin"
+        layout:"/app/dashboardd"
       },
     ]
   },
@@ -150,28 +146,28 @@ const routes = [
         name: "Setting",
         miniName: "S",
         component: Setting,
-        layout: "/admin"
+        layout: "/app/dashboardd"
       },
       {
       path: "/Teammates",
       name: "Teammates",
       miniName: "Tm",
       component: Teammates,
-      layout: "/admin"
+      layout: "/app/dashboardd"
     },
     {
       path: "/Billing",
       name: "Billing",
       miniName: "B",
       component: Billing,
-      layout: "/admin"
+      layout: "/app/dashboardd"
     },
     {
       path: "/Redeem",
       name: "Redeem",
       miniName: "R",
       component: Redeem,
-      layout: "/admin"
+      layout: "/app/dashboardd"
     },
     ]
   },
@@ -187,21 +183,21 @@ const routes = [
           name: "Apps&CRMs",
           miniName: "A&C",
           component: AppsandCrm,
-          layout: "/admin"
+          layout:"/app/dashboardd"
         },
         {
           path: "/Api",
           name: "API",
           miniName: "API",
           component: Api,
-          layout: "/admin"
+          layout: "/app/dashboardd"
         },
         {
           path: "/ConversionTracking",
           name: "ConversionTracking",
           miniName: "CT",
           component: ConversionTracking,
-          layout: "/admin"
+          layout:"/app/dashboardd"
         }
       ]
   },
@@ -217,7 +213,7 @@ const routes = [
         name: "Unsubscribes",
         miniName: "Us",
         component:Unsubscribes,
-        layout: "/admin"
+        layout: "/app/dashboardd"
       },
     ]
   },

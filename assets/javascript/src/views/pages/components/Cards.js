@@ -111,7 +111,7 @@ class Cards extends React.Component {
                         <img
                           alt="..."
                           className="rounded-circle"
-                          src={STATIC_FILES.team-4}
+                          src={STATIC_FILES.team_4}
                         />
                       </a>
                     </div>
@@ -205,7 +205,7 @@ class Cards extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={STATIC_FILES.team-2}
+                          src={STATIC_FILES.team_2}
                         />
                       </a>
                     </Col>
@@ -236,7 +236,7 @@ class Cards extends React.Component {
                     <img
                       alt="..."
                       className="rounded-circle img-center img-fluid shadow shadow-lg--hover"
-                      src={STATIC_FILES.team-1}
+                      src={STATIC_FILES.team_1}
                       style={{ width: "140px" }}
                     />
                   </a>

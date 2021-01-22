@@ -1,13 +1,5 @@
 import React, { Component } from 'react'
 import Container from 'reactstrap/lib/Container'
-// importing css file
-import "../../../assets/css/Campaigntable.css"
-
-// importing material ui icons
-// import IconButton from "@material-ui/core/IconButton";
-import {InputAdornment,SearchIcon,TextField} from "@material-ui/core";
-
-
 
 // importing reacstrap elements
 import {
@@ -42,34 +34,14 @@ import {
 export class Campaign extends Component {
   render() {
     return (
-<div> 
-  <div className="Campaign_fields">
-    <Row>
-      <Col>
-      <TextField
-      id="std"
-      defaultValue="Bare"
-      InputProps={{
-        endAdornment:(
-          <InputAdornment position="start">
-            {/* <SearchIcon/> */}
-            </InputAdornment>
-        )
-      }}
-/>
-      </Col>
-      <Col className="last30days">
-      LAST 30 DAYS
-      </Col>
-      </Row>
+<div>   
+  <div>
+    <Input
+    style={{width:"400px"}}
+    placeholder="search"
+    />
     </div>
-  
-
-
-
-
-  
- <div className="Campaing_table_container">
+ <div class="Campaing_table_container" style={{marginleft:"20px"}}>
   <Card>  
 <table class="table">
   <thead>
