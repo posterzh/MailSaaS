@@ -46,7 +46,7 @@ class Auth extends React.Component {
       if (prop.collapse) {
         return this.getRoutes(prop.views);
       }
-      if (prop.layout.indexOf("/auth") !== -1) {
+      if (prop.layout && prop.layout.indexOf("/auth") !== -1) {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -66,7 +66,7 @@ class Auth extends React.Component {
           <AuthNavbar />
           <Switch>
             {this.getRoutes(routes)}
-            <Redirect from="*" to="/auth/login" />
+            <Redirect from="*" to="/pegasus/auth/login" />
           </Switch>
         </div>
         <AuthFooter />

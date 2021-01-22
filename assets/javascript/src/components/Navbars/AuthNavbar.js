@@ -101,7 +101,7 @@ class AdminNavbar extends React.Component {
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="pegasus/auth/pricing" tag={Link}>
+                  <NavLink to="/auth/pricing" tag={Link}>
                     <span className="nav-link-inner--text">Pricing</span>
                   </NavLink>
                 </NavItem>

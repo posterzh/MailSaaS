@@ -33,7 +33,7 @@ urlpatterns = [
     path('teams/', include('apps.teams.urls')),
 
     path('', include('apps.web.urls')),
-    path('pegasus/', include('apps.pegasus.urls')),
+    path('app/', include('apps.pegasus.urls')),
     path('celery-progress/', include('celery_progress.urls')),
     # API docs
     # these are needed for schema.js

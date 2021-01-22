@@ -54,14 +54,14 @@ const routes = [
         name: "Dashboard",
         miniName: "D",
         component: Dashboard,
-        layout: "/admin"
+        layout: "/app/admin"
       },
       {
         path: "/alternative-dashboard",
         name: "Alternative",
         miniName: "A",
         component: Alternative,
-        layout: "/admin"
+        layout: "/app/admin"
       }
     ]
   },
@@ -76,28 +76,28 @@ const routes = [
         name: "Pricing",
         miniName: "P",
         component: Pricing,
-        layout: "/pegasus/auth"
+        layout: "/app/auth"
       },
       {
         path: "/login",
         name: "Login",
         miniName: "L",
         component: Login,
-        layout: "/auth"
+        layout: "/app/auth"
       },
       {
         path: "/register",
         name: "Register",
         miniName: "R",
         component: Register,
-        layout: "/auth"
+        layout: "/app/auth"
       },
       {
         path: "/lock",
         name: "Lock",
         miniName: "L",
         component: Lock,
-        layout: "/auth"
+        layout: "/app/auth"
       },
       {
         path: "/timeline",
