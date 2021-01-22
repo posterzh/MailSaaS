@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 import csv
+import datetime 
 
 
 class create_campaign_start(APIView):
@@ -40,7 +41,10 @@ class create_campaign_recipients(APIView):
         postData = request.data
         if 'campaign.add_campaign' in request.user.get_group_permissions():
             if int(postData["option"]) == 1:
-                camp = Campaign.objects.get(id=postData['campaign'])
+                try:
+                    camp = Campaign.objects.get(id=postData['campaign'])
+                except:
+                    return Response({"message":"No campiagn availabe for this id", "success":"false"})
                 camp.csvFile_op1 = postData['csvFile']
                 camp.save()
                 with open('media/'+str(camp.csvFile_op1)) as csv_file:
@@ -51,7 +55,7 @@ class create_campaign_recipients(APIView):
                         if line_count == 0:
                             line_count += 1
                         else:
-                            data = {'email':row[0], 'campaign':postData['campaign']}
+                            data = {'email':row[0], 'full_name':row[1], 'campaign':postData['campaign']}
                             serializer = CampaignEmailSerializer(data = data)
                             if serializer.is_valid():
                                 line_count += 1
@@ -108,7 +112,14 @@ class CampaignGetAllEmailsPreview(generics.ListAPIView):
 
     def get(self, request, *args,**kwargs):
         getData = request.data
-        camp = Campaign.objects.get(id=getData["campaign"])
+        
+        # print("camppppppp ", camp)
+        try:
+            camp = Campaign.objects.get(id=getData["campaign"])
+
+        except:
+            return Response({"message":"No campiagn availabe for this id", "success":"false"})
+
         serializercamp = CampaignSerializer(camp)
 
         resp = {}
@@ -143,7 +154,7 @@ class CampaignGetAllEmailsPreview(generics.ListAPIView):
         resp["onLinkClick"] = onclickdatalist
 
         return Response(resp)
-
+        
     def put(self, request, *args,**kwargs):
         for campemail in request.data["campEamil"]:
             campEmalOb = Campaign_email.objects.get(id=campemail["id"])
@@ -174,8 +185,49 @@ class CampaignGetAllEmailsPreview(generics.ListAPIView):
             else:
                 return Response({"message":"On Link Click Email Error"})
 
-        return Response({"message":"Updated Successfully"})
+        return Response({"message":"Updated Successfully", "success":"True"})
 
+
+class create_campaign_options(APIView):
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def put(self, request, format=None):
+        postData = request.data
+        print("pppppppppp ", postData)
+        if postData["termsAndLaws"] == 'true':
+            # print("postDataaaaaaaaa ",postData)
+            camp = Campaign.objects.get(id=postData['campaign'])
+            campEmail = Campaign_email.objects.filter(campaign=postData['campaign'])
+            # print("camppppppp ",camp)
+            campData = CampaignSerializer(camp)
+            campSerializerData = campData.data
+            print("gettttttttttt ",campSerializerData["scheduleDateTime"], type(campSerializerData["scheduleDateTime"]))
+            campSerializerData["trackOpens"] = postData["trackOpens"]
+            campSerializerData["trackLinkClick"] = postData["trackLinkClick"]
+            campSerializerData["scheduleThisSend"] = postData["scheduleThisSend"]
+
+
+            # datetime_str = '2016-05-18T15:37:36.993048Z'
+            # old_format = '%Y-%m-%dT%H:%M:%S.%fZ'
+            # new_format = '%d-%m-%Y %H:%M:%S'
+            # new_datetime_str = datetime.datetime.strptime(datetime_str, old_format).strftime(new_format)
+            # print("new_datetime_str = ",new_datetime_str)
+
+
+            campSerializerData["scheduleDateTime"] = postData["scheduleDateTime"]
+            campSerializerData["termsAndLaws"] = postData["termsAndLaws"]
+            print("\n\n\n", campSerializerData["scheduleDateTime"], type(campSerializerData["scheduleDateTime"]), "\n\n\n")
+            campSerializer = CampaignSerializer(camp, data=campSerializerData)
+            print(campSerializer)
+            if campSerializer.is_valid():
+                print("Validddddddd")
+                campSerializer.save()
+
+
+            return Response({"message":"Updated Successfully", "success":"true"})
+        else:
+            return Response({"message":"Please agree to the terms.", "success":"false"})
 
 class CampaignView(generics.ListAPIView):
 
@@ -189,3 +241,11 @@ class CampaignView(generics.ListAPIView):
         serializer = CampaignViewSerializer(queryset,  many=True)
         return Response(serializer.data)
         
+
+class LeadsView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    def get(self, request, *args,**kwargs):
+        data = request.data
+        query = Campaign_email.objects.filter(leads=True)
+        w = CampaignEmailSerializer(query, many = True)
+        return Response(w.data)

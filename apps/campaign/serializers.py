@@ -6,7 +6,7 @@ class CampaignSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Campaign
-        fields = ['id','title', 'fromAddress','assigned', 'csvFile_op1']
+        fields = '__all__'
 
 class CampaignEmailSerializer(serializers.ModelSerializer):
 
