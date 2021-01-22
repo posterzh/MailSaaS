@@ -3,11 +3,22 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
-
+from django.views.decorators.csrf import csrf_exempt
 from .forms import CustomUserChangeForm, UploadAvatarForm
 from .helpers import require_email_confirmation, user_has_confirmed_email_address
-from .models import CustomUser
+from .models import CustomUser, MailsaasType
+from rest_framework import generics
+from rest_framework import permissions
+from apps.users.serializer import LoginSerilizer,RegisterSerializer,TokenSerializer,UserSettingSerilizer,ChangePasswordSerializer
+from django.contrib.auth import authenticate,login
+from rest_framework.response import Response
+from rest_framework_jwt.settings import api_settings
+from django.http import Http404
+from rest_framework import status
 
+jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
 
 @login_required
 def profile(request):
@@ -47,3 +58,102 @@ def upload_profile_image(request):
         user.avatar = request.FILES['avatar']
         user.save()
     return HttpResponse('Success!')
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = CustomUser.objects.all()
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = RegisterSerializer
+
+
+class UserLoginView(generics.CreateAPIView):
+    
+    serializer_class = LoginSerilizer
+    queryset = CustomUser.objects.all()
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, *args, **kwargs):
+        if request.data == {}:
+            return Response({'message':'Please fill details'})
+        email = request.data.get('email')
+        password = request.data.get('password')
+        user = authenticate(email=email,password=password)
+        if not email or not password:
+            return Response({"message":"Please Enter Email or Password"})
+        if user is not None:
+            login(request, user)
+            serialize = TokenSerializer(data={
+                "token": jwt_encode_handler(
+                    jwt_payload_handler(user)
+                )})
+            serialize.is_valid()
+            return Response(serialize.data)
+        return Response({"message": "Not Authenticated User"})
+
+
+class UserSettingsView(generics.RetrieveUpdateAPIView):
+        
+    """
+        API for updating login recruiter detail or admin can choose recruiter for update by username
+        PUT : recuriter/update/ 
+    """
+
+    permission_classes = (permissions.IsAuthenticated,)
+    
+    
+    def get_objects(self,request):
+        try:
+            current_user = request.user
+            custom_get =  CustomUser.objects.get(pk=current_user.pk)
+            response = {}
+            response["user_obj"] = custom_get
+            response["status_code"] = 200
+            return response
+            
+        except CustomUser.DoesNotExist: 
+            response = {}
+            response["status_code"]=400
+            return response
+    
+    def get(self,request):
+        queryset=self.get_objects(request)
+        serializer=UserSettingSerilizer(queryset["user_obj"])
+        return Response(serializer.data)
+    
+    def put(self,request):
+        new_email = request.data.get('email')
+        if CustomUser.objects.filter(email=request.user) != new_email:
+            queryset=self.get_objects(request)
+            serializer=UserSettingSerilizer(queryset["user_obj"],data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data,status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message':'This email is already exists'})
+
+class ChangePasswordView(generics.RetrieveUpdateAPIView):
+
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = ChangePasswordSerializer
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def put(self,request, *args, **kwargs):
+        queryset = self.get_object()
+        print(queryset,"queryset")
+        serializer = ChangePasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            old_password = serializer.data.get("old_password")
+            new_password  = serializer.data.get('new_password')
+            new_confirm_password = serializer.data.get('new_confirm_password')
+            if new_confirm_password == new_password:
+                if not queryset.check_password(old_password):
+                    return Response({"old_password": "Wrong password."},status=status.HTTP_400_BAD_REQUEST)
+                queryset.set_password(serializer.data.get("new_password"))
+                queryset.save()
+                return Response({"status":"success","response":"Password Sucessfully Updated"})
+            else:
+                return Response({'message':"confirm password did't match"})            
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
