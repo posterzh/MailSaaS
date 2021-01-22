@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export class Teammates extends Component {
+export class MailAccount extends Component {
     render() {
         return (
             <div>
@@ -10,4 +10,4 @@ export class Teammates extends Component {
     }
 }
 
-export default Teammates
+export default MailAccount
