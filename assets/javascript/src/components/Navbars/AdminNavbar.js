@@ -160,7 +160,7 @@ class AdminNavbar extends React.Component {
                               alt="..."
                               className="avatar rounded-circle"
                               // src={require("assets/img/theme/team-1.jpg")}
-                              src={STATIC_FILES.team-1}
+                              src={STATIC_FILES.team_1}
                             />
                           </Col>
                           <div className="col ml--2">
@@ -189,7 +189,7 @@ class AdminNavbar extends React.Component {
                             <img
                               alt="..."
                               className="avatar rounded-circle"
-                              src={STATIC_FILES.team-2}
+                              src={STATIC_FILES.team_2}
                             />
                           </Col>
                           <div className="col ml--2">
@@ -219,7 +219,7 @@ class AdminNavbar extends React.Component {
                               alt="..."
                               className="avatar rounded-circle"
                               // src={require("assets/img/theme/team-3.jpg")}
-                              src={STATIC_FILES.team-3}
+                              src={STATIC_FILES.team_3}
                             />
                           </Col>
                           <div className="col ml--2">
@@ -248,7 +248,7 @@ class AdminNavbar extends React.Component {
                             <img
                               alt="..."
                               className="avatar rounded-circle"
-                              src={STATIC_FILES.team-4}
+                              src={STATIC_FILES.team_4}
                             />
                           </Col>
                           <div className="col ml--2">
@@ -277,7 +277,7 @@ class AdminNavbar extends React.Component {
                             <img
                               alt="..."
                               className="avatar rounded-circle"
-                              src={STATIC_FILES.team-5}
+                              src={STATIC_FILES.team_5}
                             />
                           </Col>
                           <div className="col ml--2">
@@ -398,7 +398,7 @@ class AdminNavbar extends React.Component {
                       <span className="avatar avatar-sm rounded-circle">
                         <img
                           alt="..."
-                          src={STATIC_FILES.team-4}
+                          src={STATIC_FILES.team_4}
                         />
                       </span>
                       <Media className="ml-2 d-none d-lg-block">
