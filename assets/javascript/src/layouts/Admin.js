@@ -43,7 +43,7 @@ class Admin extends React.Component {
         return this.getRoutes(prop.views);
       }
       // if (prop.layout && prop.layout.indexOf("/admin") !== -1) {
-        if (prop.layout && prop.layout.indexOf("/dashboardd") !== -1) {
+        if (prop.layout && prop.layout.indexOf("/admin") !== -1) {
         return (
           <Route
             path={prop.layout + prop.path}

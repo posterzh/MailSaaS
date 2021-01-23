@@ -67,7 +67,7 @@ const routes = [
         name: "Dashboard",
         miniName: "D",
         component: Dashboard,
-        layout: "/app/dashboardd"
+        layout: "/app/admin"
       },
     ]
     
@@ -83,21 +83,21 @@ const routes = [
         name: "Campaign",
         miniName: "Ca",
         component: Campaign,
-        layout: "/app/dashboardd"
+        layout: "/app/admin"
       },
       {
         path: "/LeadCatcher",
         name: "Lead Catcher",
         miniName: "Lc",
         component: LeadCatcher,
-        layout: "/app/dashboardd"
+        layout: "/app/admin"
       },
       {
         path: "/SendingCalender",
         name: "Sending Calender",
         miniName: "Sc",
         component: SendingCalender,
-        layout: "/app/dashboardd"
+        layout: "/app/admin"
       },
      
     ]
@@ -115,7 +115,7 @@ const routes = [
         name: "Prospects",
         miniName: "pro",
         component: Prospects,
-         layout: "/app/dashboardd"
+         layout: "/app/admin"
       },
     ]
   },
@@ -131,7 +131,7 @@ const routes = [
         name: "MailAccount",
         miniName: "Ma",
         component: MailAccount,
-        layout:"/app/dashboardd"
+        layout:"/app/admin"
       },
     ]
   },
@@ -146,28 +146,28 @@ const routes = [
         name: "Setting",
         miniName: "S",
         component: Setting,
-        layout: "/app/dashboardd"
+        layout: "/app/admin"
       },
       {
       path: "/Teammates",
       name: "Teammates",
       miniName: "Tm",
       component: Teammates,
-      layout: "/app/dashboardd"
+      layout: "/app/admin"
     },
     {
       path: "/Billing",
       name: "Billing",
       miniName: "B",
       component: Billing,
-      layout: "/app/dashboardd"
+      layout: "/app/admin"
     },
     {
       path: "/Redeem",
       name: "Redeem",
       miniName: "R",
       component: Redeem,
-      layout: "/app/dashboardd"
+      layout: "/app/admin"
     },
     ]
   },
@@ -183,21 +183,21 @@ const routes = [
           name: "Apps&CRMs",
           miniName: "A&C",
           component: AppsandCrm,
-          layout:"/app/dashboardd"
+          layout:"/app/admin"
         },
         {
           path: "/Api",
           name: "API",
           miniName: "API",
           component: Api,
-          layout: "/app/dashboardd"
+          layout: "/app/admin"
         },
         {
           path: "/ConversionTracking",
           name: "ConversionTracking",
           miniName: "CT",
           component: ConversionTracking,
-          layout:"/app/dashboardd"
+          layout:"/app/admin"
         }
       ]
   },
@@ -213,7 +213,7 @@ const routes = [
         name: "Unsubscribes",
         miniName: "Us",
         component:Unsubscribes,
-        layout: "/app/dashboardd"
+        layout: "/app/admin"
       },
     ]
   },
