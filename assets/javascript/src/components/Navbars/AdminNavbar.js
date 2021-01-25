@@ -48,26 +48,26 @@ class AdminNavbar extends React.Component {
   // function that on mobile devices makes the search open
   openSearch = () => {
     document.body.classList.add("g-navbar-search-showing");
-    setTimeout(function() {
+    setTimeout(function () {
       document.body.classList.remove("g-navbar-search-showing");
       document.body.classList.add("g-navbar-search-show");
     }, 150);
-    setTimeout(function() {
+    setTimeout(function () {
       document.body.classList.add("g-navbar-search-shown");
     }, 300);
   };
   // function that on mobile devices makes the search close
   closeSearch = () => {
     document.body.classList.remove("g-navbar-search-shown");
-    setTimeout(function() {
+    setTimeout(function () {
       document.body.classList.remove("g-navbar-search-show");
       document.body.classList.add("g-navbar-search-hiding");
     }, 150);
-    setTimeout(function() {
+    setTimeout(function () {
       document.body.classList.remove("g-navbar-search-hiding");
       document.body.classList.add("g-navbar-search-hidden");
     }, 300);
-    setTimeout(function() {
+    setTimeout(function () {
       document.body.classList.remove("g-navbar-search-hidden");
     }, 500);
   };
@@ -459,7 +459,7 @@ class AdminNavbar extends React.Component {
   }
 }
 AdminNavbar.defaultProps = {
-  toggleSidenav: () => {},
+  toggleSidenav: () => { },
   sidenavOpen: false,
   theme: "dark"
 };

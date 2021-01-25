@@ -42,8 +42,7 @@ class Admin extends React.Component {
       if (prop.collapse) {
         return this.getRoutes(prop.views);
       }
-      // if (prop.layout && prop.layout.indexOf("/admin") !== -1) {
-        if (prop.layout && prop.layout.indexOf("/admin") !== -1) {
+      if (prop.layout && prop.layout.indexOf("/app/admin") !== -1) {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -83,7 +82,7 @@ class Admin extends React.Component {
   };
   getNavbarTheme = () => {
     return this.props.location.pathname.indexOf(
-      "admin/alternative-dashboard"
+      "dashboard"
     ) === -1
       ? "dark"
       : "light";
@@ -116,13 +115,13 @@ class Admin extends React.Component {
           />
           <Switch>
             {this.getRoutes(routes)}
-            <Redirect from="*" to="/admin/dashboard" />
+            <Redirect from="*" to="/app/admin/dashboard" />
           </Switch>
           <AdminFooter />
         </div>
-        {this.state.sidenavOpen ? (
+        {/* {this.state.sidenavOpen ? (
           <div className="backdrop d-xl-none" onClick={this.toggleSidenav} />
-        ) : null}
+        ) : null} */}
       </>
     );
   }

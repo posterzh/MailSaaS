@@ -25,7 +25,7 @@ import Campaign from "./views/pages/Campaing/Campaign";
 import Cards from "./views/pages/components/Cards.js";
 import Charts from "./views/pages/Charts.js";
 import Components from "./views/pages/forms/Components.js";
-import ConversionTracking from "./views/pages/Extension/ConversionTracking";
+// import ConversionTracking from "./views/pages/Extension/ConversionTracking";
 import Dashboard from "./views/pages/dashboards/Dashboard.js";
 import Elements from "./views/pages/forms/Elements.js";
 import Google from "./views/pages/maps/Google.js";
@@ -43,7 +43,7 @@ import ReactBSTables from "./views/pages/tables/ReactBSTables.js";
 import Redeem from "./views/pages/TeamSettings/Redeem";
 import Register from "./views/pages/examples/Register.js";
 // import RTLSupport from "./views/pages/examples/RTLSupport.js";
-import SendingCalender from "./views/pages/Campaing/SedingCalender";
+// import SendingCalender from "./views/pages/Campaing/SedingCalender";
 import Setting from "./views/pages/TeamSettings/Setting"
 import Sortable from "./views/pages/tables/Sortable.js";
 import Tables from "./views/pages/tables/Tables.js";
@@ -54,6 +54,8 @@ import Unsubscribes from "./views/pages/Unsubscribes/Unsubscribes";
 import Validation from "./views/pages/forms/Validation.js";
 import Vector from "./views/pages/maps/Vector.js";
 import Widgets from "./views/pages/Widgets.js";
+import ConversionTracking from "./views/pages/Extension/ConversionTracking";
+import SendingCalender from "./views/pages/Campaing/SedingCalender";
 
 const routes = [
   {
@@ -69,6 +71,13 @@ const routes = [
         component: Dashboard,
         layout: "/app/admin"
       },
+      // {
+      //   path: "/alternative-dashboard",
+      //   name: "Alternative",
+      //   miniName: "A",
+      //   component: Alternative,
+      //   layout: "/app/admin"
+      // }
     ]
     
   },
@@ -131,7 +140,7 @@ const routes = [
         name: "MailAccount",
         miniName: "Ma",
         component: MailAccount,
-        layout:"/app/admin"
+        layout: "/app/admin"
       },
     ]
   },
@@ -153,22 +162,19 @@ const routes = [
       name: "Teammates",
       miniName: "Tm",
       component: Teammates,
-      layout: "/app/admin"
-    },
+      layout: "/app/admin "},
     {
       path: "/Billing",
       name: "Billing",
       miniName: "B",
       component: Billing,
-      layout: "/app/admin"
-    },
+      layout: "/app/admin "},
     {
       path: "/Redeem",
       name: "Redeem",
       miniName: "R",
       component: Redeem,
-      layout: "/app/admin"
-    },
+      layout: "/app/admin"},
     ]
   },
 
@@ -183,8 +189,8 @@ const routes = [
           name: "Apps&CRMs",
           miniName: "A&C",
           component: AppsandCrm,
-          layout:"/app/admin"
-        },
+          layout: "/app/admin"
+         },
         {
           path: "/Api",
           name: "API",
@@ -197,7 +203,7 @@ const routes = [
           name: "ConversionTracking",
           miniName: "CT",
           component: ConversionTracking,
-          layout:"/app/admin"
+          layout: "/app/admin"
         }
       ]
   },
@@ -257,14 +263,14 @@ const routes = [
         name: "Timeline",
         miniName: "T",
         component: Timeline,
-        layout: "/admin"
+        layout: "/app/admin"
       },
       {
         path: "/profile",
         name: "Profile",
         miniName: "P",
         component: Profile,
-        layout: "/admin"
+        layout: "/app/admin"
       },
       {
         // path: "/rtl-support",

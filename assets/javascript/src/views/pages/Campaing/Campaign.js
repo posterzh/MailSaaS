@@ -34,12 +34,26 @@ import {
 export class Campaign extends Component {
   render() {
     return (
-<div>   
-  <div>
-    <Input
-    style={{width:"400px"}}
-    placeholder="search"
-    />
+<div> 
+  {/* <div className="Campaign_fields">
+    <Row>
+      <Col>
+      <TextField
+      id="std"
+      defaultValue="Bare"
+      InputProps={{
+        endAdornment:(
+          <InputAdornment position="start">
+            <SearchIcon/>
+            </InputAdornment>
+        )
+      }}
+/>
+      </Col>
+      <Col className="last30days">
+      LAST 30 DAYS
+      </Col>
+      </Row>
     </div>
  <div class="Campaing_table_container" style={{marginleft:"20px"}}>
   <Card>  
@@ -74,7 +88,7 @@ export class Campaign extends Component {
   </tbody>
 </table>
 </Card>
-</div>
+</div> */}
   </div>
     )
   }
