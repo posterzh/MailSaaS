@@ -19602,27 +19602,107 @@ button:focus, :focus {
   100% {
     opacity: 1; } }
 
-.Barcontainer {
+input:focus {
+  background-color: #ddd !important;
+  outline: none !important; }
+
+.searchbar {
+  padding: 4px 0px 0px; }
+
+.grand_parent {
+  display: flex;
+  width: 100%;
+  height: 50px; }
+
+.input_field {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  margin: 3px;
+  background: none; }
+
+.in {
+  height: 40px;
+  width: 200px;
+  border: none;
+  background-color: #F8F9FE;
+  border-radius: 10px; }
+
+.in:focus {
+  background-color: #f8f9fe !important;
+  outline: none !important; }
+
+.child {
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50px;
+  background-color: #f8f9fe; }
+
+.child:hover {
+  background-color: gray; }
+
+.font_icon {
+  font-size: 20px;
+  color: black; }
+
+.Leadcatcher_Barcontainer, .Campaign_barcontainer {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  background-color: #ddd;
+  background-color: #eee;
   border: 1px solid rgba(0, 0, 0, 0.12);
-  padding-top: 20px;
-  padding-bottom: 20px; }
+  padding: 20px 30px 0px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px; }
 
-.dropdown_campaign, .searchbar {
-  background-color: #ddd;
+.Leadcatcher_table, .Campaign_table, .graph_container {
+  margin-left: 20px;
+  margin-right: 20px; }
+
+.graph_title {
+  color: #666;
+  font-weight: 400; }
+
+.header_sent, .Sent {
+  background-color: rgba(0, 90, 172, 0.05); }
+
+.header_leads, .Leads {
+  background: rgba(255, 64, 129, 0.05); }
+
+.header_replies, .Replies {
+  background: rgba(135, 216, 69, 0.05); }
+
+.header_open, .Open {
+  background: rgba(165, 31, 99, 0.05); }
+
+.drop_span {
+  border: none;
+  outline: none;
+  width: 150px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 0px;
+  box-shadow: 0px; }
+
+.Api_access {
+  width: 100%;
+  height: 100%;
+  background-color: black; }
+
+.filter_select {
+  width: 150px;
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  width: 200px; }
+  background-color: #eee;
+  margin-bottom: 2px;
+  font-size: 12px; }
 
-.table {
-  border-radius: 0px;
-  border: 1px solid rgba(0, 0, 0, 0.12); }
-
-.select {
-  background-color: brown; }
+.filter_app {
+  color: #005aac;
+  font-size: 12px;
+  position: absolute;
+  top: 10px; }
 
