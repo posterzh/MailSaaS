@@ -196,13 +196,16 @@ class Sidebar extends React.Component {
         <div className="sidenav-header d-flex align-items-center">
           {logo ? (
             <NavbarBrand {...navbarBrandProps}>
-              <img
-                alt={logo.imgAlt}
+              { <img
+                 alt={logo.imgAlt}
                 className="navbar-brand-img"
                 src={logo.imgSrc}
-              />
+                src={STATIC_FILES.mailsaas_logo}
+            /> 
+              }
+              <span>MailSaaS</span>
             </NavbarBrand>
-          ) : null}
+            ):null}
           <div className="ml-auto">
             <div
               className={classnames("sidenav-toggler d-none d-xl-block", {
@@ -221,13 +224,13 @@ class Sidebar extends React.Component {
         <div className="navbar-inner">
           <Collapse navbar isOpen={true}>
             <Nav navbar>{this.createLinks(routes)}</Nav>
-            <hr className="my-3" />
+            {/* <hr className="my-3" /> */}
             <h6 className="navbar-heading p-0 text-muted">
-              <span className="docs-normal">Documentation</span>
-              <span className="docs-mini">D</span>
+              {/* <span className="docs-normal">Documentation</span> */}
+              {/* <span className="docs-mini">D</span> */}
             </h6>
-            <Nav className="mb-md-3" navbar>
-              <NavItem>
+            {/* <Nav className="mb-md-3" navbar> */}
+              {/* <NavItem>
                 <NavLink
                   href="https://demos.creative-tim.com/argon-dashboard-pro-react/#/documentation/overview?ref=adpr-sidebar"
                   target="_blank"
@@ -235,8 +238,8 @@ class Sidebar extends React.Component {
                   <i className="ni ni-spaceship" />
                   <span className="nav-link-text">Getting started</span>
                 </NavLink>
-              </NavItem>
-              <NavItem>
+              </NavItem> */}
+              {/* <NavItem>
                 <NavLink
                   href="https://demos.creative-tim.com/argon-dashboard-pro-react/#/documentation/colors?ref=adpr-sidebar"
                   target="_blank"
@@ -244,8 +247,8 @@ class Sidebar extends React.Component {
                   <i className="ni ni-palette" />
                   <span className="nav-link-text">Foundation</span>
                 </NavLink>
-              </NavItem>
-              <NavItem>
+              </NavItem> */}
+              {/* <NavItem>
                 <NavLink
                   href="https://demos.creative-tim.com/argon-dashboard-pro-react/#/documentation/alert?ref=adpr-sidebar"
                   target="_blank"
@@ -253,17 +256,17 @@ class Sidebar extends React.Component {
                   <i className="ni ni-ui-04" />
                   <span className="nav-link-text">Components</span>
                 </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
+              </NavItem> */}
+              {/* <NavItem> */}
+                {/* <NavLink
                   href="https://demos.creative-tim.com/argon-dashboard-pro-react/#/documentation/charts?ref=adpr-sidebar"
                   target="_blank"
                 >
                   <i className="ni ni-chart-pie-35" />
                   <span className="nav-link-text">Plugins</span>
-                </NavLink>
-              </NavItem>
-            </Nav>
+                </NavLink> */}
+              {/* </NavItem> */}
+            {/* </Nav> */}
           </Collapse>
         </div>
       </div>

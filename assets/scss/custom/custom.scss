@@ -47,23 +47,26 @@ input:focus{
 }
 .in{
     height: 40px;
-    // width: 400px;
     width: 200px;
     border: none;
-    background-color: #F8F9FE;
-    border-radius: 10px;
-    // background-color: indianred;
+    border-bottom: 1px solid  rgba(0,0,0, 0.12);
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    background: #eee;
 }
 .in:focus{
-    background-color:#f8f9fe !important ;
+    background-color:#eee !important ;
     outline: none !important;
+    box-shadow: none;
 }
 .child{
     text-align: center;
     width: 30px;
     height: 30px;
     border-radius: 50px;
-    background-color:#f8f9fe ;
+    background-color:#eee ;
+    position: absolute;
+    right:0px
 }
 .child:hover{
     background-color:gray;
@@ -131,12 +134,12 @@ input:focus{
 }   
 
 .filter_select{
-    width: 150px;
+    width: 180px;
     border: none;
     // background-color: #F5F5F5;
     border-bottom: 1px solid rgba(0,0,0, 0.12) ;
     background-color: #eee;
-    margin-bottom: 2px;
+    // margin-bottom: 2px;
     font-size: 12px;
 
 }
@@ -149,3 +152,42 @@ input:focus{
 // .v1,.v2{
 //     font-size: 14px;
 // }
+.scalender_filter_select{
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0, 0.12) ;
+    // background-color: #eee;
+    // margin-bottom: 2px;
+    font-size: 12px;
+    width:100%;
+    background: transparent;
+
+}
+.c1{
+    border:1px solid green;
+   height: 159px;
+   width:214px
+}
+
+.su,.tu,.we,.th,.fr,.sa{
+    font-size: 12px;
+    background-color: #ddd;
+    padding-right: 5px;
+    text-align: center;
+}
+    .mo{
+        font-size: 12px;
+        background-color: white;
+        padding-right: 5px;   
+    }
+   .su_box,.mo_box,.tu_box,.we_box,.th_box,.fr_box,.sa_box{
+       width:225px;
+       height: 141px;
+     border-right: 1px solid #fff;
+   }
+   div >p{
+       color:black;
+       border-bottom:1px solid #fff;
+    //    text-align:left;
+       font-size: 12px;
+    //    margin-left: 15px;
+       }

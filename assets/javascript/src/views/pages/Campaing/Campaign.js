@@ -6,9 +6,12 @@ class Campaign extends Component {
     super();
     this.state = {
       dd1: false,
-      value: 'Any'
+      value: 'Any',
+      show: true,
+      hide: true
     };
   }
+
   dropdownToggle = () => {
     this.setState({
       dd1: !this.state.dd1
@@ -21,13 +24,17 @@ class Campaign extends Component {
     });
   }
   render() {
+    const{show,hide}=this.state;
     return (
       <div>
+        <div className="graph_container" style={{ display: "flex", flexDirection: "row-reverse" }}>
+          <span className="graph_title">Last 30 days</span>
+        </div>
+
         <div className="Campaign_barcontainer">
           <Container fluid className='mt-0'>
-
             <Row>
-            <Col md='4' className=' '>
+            <Col md='3' className=' '>
                             <div className='grand_parent'>
                                 <div className='input_field'>
                                     <Input type='email' className='in' placeholder='Search' />
@@ -39,7 +46,7 @@ class Campaign extends Component {
                                 </div>
                             </div>
                         </Col>
-              <Col md='4'>
+              <Col md='3'>
               <div>
                         <label className='filter_app'>Filter by app</label><br/>
                         <select className='filter_select'>
@@ -63,9 +70,30 @@ class Campaign extends Component {
                 </Dropdown> */}
               </Col>
             </Row>
+            <Row>
+              <Col md="3">
+              {!show &&
+                <div className='grand_parent' >
+                  <div className='input_field'>
+                    <Input type='email' className='label_input' placeholder='Create a campaign label' />
+                    <div className='child mt-2'>
+                      <a href='' onClick={(e) => { e.preventDefault(), this.setState({ show: true }) }}>
+                        <span className='font_icon'><i class="fa fa-times" aria-hidden="true"></i></span>
+                      </a>
+                    </div>
+                    <div className='child mt-2'>
+                      <a href='' onClick={(e) => { e.preventDefault(), this.setState({ show: true }) }}>
+                        <span className='font_icon'><i class="fa fa-check" aria-hidden="true"></i></span>
+                      </a>
+                    </div>
+                  </div>
+                </div>}
+              </Col>
+              </Row>
 
           </Container>
         </div>
+        <div>
         <Container fluid className='mt-4' >
 
           <Card>
@@ -105,7 +133,7 @@ class Campaign extends Component {
             </Row>
           </Card>
         </Container>
-
+        </div>
       </div>
     )
   }
