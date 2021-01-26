@@ -199,7 +199,8 @@ class Sidebar extends React.Component {
               <img
                 alt={logo.imgAlt}
                 className="navbar-brand-img"
-                src={logo.imgSrc}
+                // src={logo.imgSrc}
+                src={STATIC_FILES.mailsaas_logo}
               />
             </NavbarBrand>
           ) : null}

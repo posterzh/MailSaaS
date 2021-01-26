@@ -1,0 +1,132 @@
+[33mcommit 67dd075b90e862b515489ae1cf10fa751d1b9acf[m[33m ([m[1;36mHEAD -> [m[1;32mAppsandCrm[m[33m, [m[1;31morigin/AppsandCrm[m[33m)[m
+Author: keshav goyal <keshavgoyal@externlabs.com>
+Date:   Mon Jan 25 18:43:59 2021 +0530
+
+    added appsandcrm
+
+[33mcommit a244615d56f219568fb7b931d5ee874b219fbc20[m[33m ([m[1;31morigin/Leadcatcher[m[33m, [m[1;32mLeadcatcher[m[33m)[m
+Author: triloksainexternlabs <trilok.sain@externlabs.com>
+Date:   Sat Jan 23 10:52:13 2021 +0530
+
+    added leadcatcher
+
+[33mcommit 41421f1411b18325baf201c018a5962d88f67b3e[m
+Author: triloksainexternlabs <trilok.sain@externlabs.com>
+Date:   Fri Jan 22 19:04:01 2021 +0530
+
+    added leadcatcher page code
+
+[33mcommit 2d71fa66b6bd89ac746173cea0f5e88cac01ee67[m[33m ([m[1;31morigin/sidebar[m[33m, [m[1;32msidebar[m[33m)[m
+Merge: 8ecb299e b95aeb92
+Author: Aniruddh Agarwal <aniagarwal97@gmail.com>
+Date:   Fri Jan 22 10:42:40 2021 +0530
+
+    Merge pull request #10 from omaidf/react-paths
+    
+    replaced - with _ for paths
+
+[33mcommit b95aeb924f9c6e72e7a70b0a0923b6ec0a0eb38a[m[33m ([m[1;31morigin/react-paths[m[33m, [m[1;32mreact-paths[m[33m)[m
+Author: keshav goyal <keshavgoyal@externlabs.com>
+Date:   Fri Jan 22 10:41:43 2021 +0530
+
+    replaced - with _ for paths
+
+[33mcommit 8ecb299e16a1965674964438ee54f5bf36169282[m
+Merge: 61b02bd3 8d828ec7
+Author: Aniruddh Agarwal <aniagarwal97@gmail.com>
+Date:   Fri Jan 22 10:41:09 2021 +0530
+
+    Merge pull request #8 from omaidf/react-paths
+    
+    Fixed react app paths and aligned the app from /pegasus to /app
+
+[33mcommit 8d828ec7e65aed82be28168bae79aef7d08cdd93[m
+Merge: 4c31a3f2 61b02bd3
+Author: keshav goyal <keshavgoyal@externlabs.com>
+Date:   Fri Jan 22 10:40:37 2021 +0530
+
+    Merge branch 'sidebar' of https://github.com/omaidf/MailSaaS into react-paths
+
+[33mcommit 61b02bd326553f92ad6788424bd488c4ef36ca59[m
+Author: triloksainexternlabs <trilok.sain@externlabs.com>
+Date:   Fri Jan 22 10:36:02 2021 +0530
+
+    sidebar
+
+[33mcommit 4c31a3f2df0521318c15fd7d54b5d7e65502abd6[m
+Author: keshav goyal <keshavgoyal@externlabs.com>
+Date:   Fri Jan 22 10:30:42 2021 +0530
+
+    Fixed react app paths and aligned the app from /pegasus to /app
+
+[33mcommit 3f5ca814e6e08893d696503262e13b0b24882377[m
+Author: triloksainexternlabs <trilok.sain@externlabs.com>
+Date:   Thu Jan 21 18:51:57 2021 +0530
+
+    worked on side bar
+
+[33mcommit d92c9cceb3671e7fb009177fd87e602da40ab07b[m[33m ([m[1;32mmaster[m[33m)[m
+Merge: a6872a7f ef8dc8af
+Author: Aniruddh Agarwal <aniagarwal97@gmail.com>
+Date:   Thu Jan 21 09:36:47 2021 +0530
+
+    Merge pull request #5 from omaidf/updating-settings
+    
+    Updated settings to use .env
+
+[33mcommit ef8dc8afe5759a28d7913daaa7fc1daf39c2d272[m
+Author: triloksainexternlabs <trilok.sain@externlabs.com>
+Date:   Thu Jan 21 09:35:57 2021 +0530
+
+    Updated settings to use .env
+
+[33mcommit a6872a7f80cf7dcd94283c2d52125d6725df1039[m
+Merge: 459bf8ed e70cebda
+Author: Aniruddh Agarwal <aniagarwal97@gmail.com>
+Date:   Wed Jan 20 16:01:58 2021 +0530
+
+    Merge pull request #4 from omaidf/refactoring-react
+    
+    Refactoring react
+
+[33mcommit e70cebda196a7c8cccc23ce90dceaaa40c1562e4[m
+Author: Aniruddh Agarwal <aniagarwal97@gmail.com>
+Date:   Wed Jan 20 15:14:45 2021 +0530
+
+    refactored the frontend directory  structure
+
+[33mcommit 1121e61786a8af00e32ebc1226be1614e916a928[m
+Author: Aniruddh Agarwal <aniagarwal97@gmail.com>
+Date:   Wed Jan 20 15:07:48 2021 +0530
+
+    Added argon as default fe
+
+[33mcommit cc7545c7c8b8c646e6bb0db24ecfeca957364a00[m
+Author: Aniruddh Agarwal <aniagarwal97@gmail.com>
+Date:   Tue Jan 19 12:23:22 2021 +0530
+
+    Remove Vue code and fix react setup
+
+[33mcommit 74a4299a4b0126f4af39f0ce3ed5dea44e0ffafd[m
+Author: Omaid Faizyar <omaid@faizyar.com>
+Date:   Mon Jan 11 11:19:29 2021 -0800
+
+    argon
+
+[33mcommit 459bf8ed591428e1fbd003fc953e216d5d8aa7a1[m
+Author: Omaid Faizyar <omaid@faizyar.com>
+Date:   Sun Jan 10 22:19:54 2021 -0800
+
+    init 1
+
+[33mcommit 86bfd367a1ef61555dee2b35ab5ddc7949e98b74[m
+Author: Omaid Faizyar <omaid@faizyar.com>
+Date:   Sun Jan 10 21:53:49 2021 -0800
+
+    init 1
+
+[33mcommit be298e05b825bcabc710d60c646504501ad37008[m
+Author: Omaid Faizyar <omaid@faizyar.com>
+Date:   Fri Jan 8 11:44:49 2021 -0800
+
+    init 1

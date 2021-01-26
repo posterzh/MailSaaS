@@ -23,9 +23,10 @@
     border-radius: 0px;
     border: 1px solid rgba(0,0,0, 0.12);
 }
-.select{
-    background-color: brown;
-}
+// .select{
+//     background-color: brown;
+// }
+
 
 // Scss for prospects code
 
@@ -39,41 +40,59 @@
     width:100%;
     height: 50px;
     
-    // background-color:#EEEEEE;
 }
-
+.input_search_div{
+    background-color: #eee;
+    border: 1px solid silver;
+    border-bottom: none;
+}
 .input_field{
     display: flex;
     flex-direction: row;
-    position: relative;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
     margin: 3px;
     border-bottom: 1px solid rgba(0,0,0, 0.12);
-    // border-radius: 10px;
 }
 .in{
     height: 40px;
-    width: 400px;
+    width: 100%;
     border: none;
-    background-color: #f8f9fe;
+    background-color: #eee;
+    // background-color: #f8f9fe;
 
-    border-radius: 10px;
+    // border-radius: 10px;
     // background-color: indianred;
 }
 .in:focus{
-    background-color:#f8f9fe !important ;
+    background-color:#eee !important ;
     outline: none !important;
+    box-shadow: none;
+
 }
 .child{
     text-align: center;
     width: 30px;
     height: 30px;
     border-radius: 50px;
-    background-color:#f8f9fe ;
+    background-color:#eee ;
 }
 .child:hover{
-    background-color:gray;
+    background-color:#ddd;
+}
+.select_div{
+    width: 100%;
+}
+.prospect_details{
+    margin: 15px;
+    margin-left: 0px;
+    opacity: 0.7;
+    text-align: center;
+}
+.prospect_details> span{
+    font-size: 12px;
+}
+.prospect_details:hover{
+        background-color: #eee;
 }
 
 .font_icon{
@@ -83,23 +102,55 @@
 }
 .prospect_table{
     background-color: #ffffff;
+    font-family: 'sans-serif';
 }
 
+
 .filter_select_prospect{
-    width: 400px;
+    width: 100%;
     border: none;
     background-color: #f8f9fe;
-    border-bottom: 2px solid;
+    border-bottom: 1px solid;
     opacity: 0.3;
 }
 
+// Campaign css
+
+.campaign_label{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    // border: 2px solid;
+}
+.add_label{
+    width: 100%;
+    display: flex;
+    border: 1px dashed;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 15px;
+    cursor: pointer;
+}
+.label_input{
+    height: 40px;
+    width: 30%;
+    border: none;
+    background-color: #eee;
+}
+
+
+
+// 
 
 // Apps&Crm
 
 .main-view{
     max-width: 100%;
     height:100%;
-    background-color:#f5f5f5;
+    background-color:#eee;
     overflow-y: auto;
 }
 .Apps{
@@ -128,7 +179,7 @@
     line-height: 1.6;
     text-align: center;
     border: 4px solid silver;
-    background-color: azure;
+    // background-color: #f8f9fe ;
 }
 .native_media_div > div >span{
     font-size: 1.2em;
@@ -172,6 +223,6 @@
 .filter_select{
     width: 300px;
     border: none;
-    background-color: #f5f5f5;
-    border-bottom: 2px solid;
+    background-color: #eee;
+    border-bottom: 1px solid rgba(0,0,0, 0.12);
 }

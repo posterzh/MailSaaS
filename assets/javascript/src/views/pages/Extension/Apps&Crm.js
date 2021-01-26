@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 // import Col from 'reactstrap/lib/Col'
-import { Container, Row, Col } from 'reactstrap'
+import { Container, Row, Col,Card} from 'reactstrap'
+
 
 export class AppsandCrm extends Component {
     render() {
@@ -90,6 +91,17 @@ export class AppsandCrm extends Component {
                             <option value='three'>three</option>
                             <option value='four'>Four</option>
                         </select>
+                    </div>
+                    <div>
+                        <Container>
+                            <Row>
+                                <Col>
+                                <Card>
+
+                                </Card>
+                                </Col>
+                            </Row>
+                        </Container>
                     </div>
                 </div>
             </div>
