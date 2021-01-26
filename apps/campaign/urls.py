@@ -11,4 +11,10 @@ urlpatterns = [
     path('view/',views.CampaignView.as_view(),name = 'campaign_view'),
     path('leads_catcher/',views.LeadsView.as_view(),name = 'leads_catcher'),
     path('Get_overview/',views.Get_campaign_overview.as_view(),name = 'Get_campaign_overview'),
+    path('recipients/people/',views.AllRecipientView.as_view(),name = 'recipients'),
+    path('recipients/<int:pk>/',views.RecipientDetailView.as_view(), name = "recipients_update"),
+    path('campaignleadcatcher/', views.CampaignleadCatcherView.as_view(),name = 'campaignleadcatcher'),
+    path('campaignleadcatcherview/', views.LeadCatcherUpdateView.as_view(),name = 'campaignleadcatcher'),
+
+    
 ]

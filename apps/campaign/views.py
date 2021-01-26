@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Campaign, Campaign_email, Follow_up_email, Drip_email, On_Link_Click
-from .serializers import CampaignSerializer, CampaignEmailSerializer,CampaignViewSerializer,FollowUpSerializer,OnclickSerializer,DripEmailSerilizer
+from .models import Campaign, Campaign_email, Follow_up_email, Drip_email, On_Link_Click,CampaignLeadCatcher
+from .serializers import CampaignSerializer, CampaignEmailSerializer,CampaignViewSerializer,FollowUpSerializer,OnclickSerializer,DripEmailSerilizer,CampaignLeadCatcherSerializer
 from rest_framework.response import Response
 from rest_framework import generics, permissions, status
 from django.contrib.auth.decorators import login_required
@@ -58,14 +58,12 @@ class create_campaign_recipients(APIView):
                             line_count += 1
                             # return Response({"message":"No Rows in file", "success":False})
                         else:
-                            data = {'email':row[0], 'full_name':row[1], 'campaign':postData['campaign']}
-                            print("rowdataaaa ",data)
+                            data = {'email':row[0], 'full_name':row[1], 'company_name':row[2], 'role':row[3], 'campaign':postData['campaign']}
                             serializer = CampaignEmailSerializer(data = data)
                             if serializer.is_valid():
                                 line_count += 1
                                 serializer.save()
                                 resp.append(serializer.data)
-                    print(resp)
                     resp.append({"success":True})
                     return Response(resp)
 
@@ -119,7 +117,6 @@ class CampaignGetAllEmailsPreview(generics.ListAPIView):
     def get(self, request, *args,**kwargs):
         getData = request.data
         
-        # print("camppppppp ", camp)
         try:
             camp = Campaign.objects.get(id=getData["campaign"])
 
@@ -231,12 +228,11 @@ class CampaignGetAllEmailsPreview(generics.ListAPIView):
 class create_campaign_options(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     def put(self, request, format=None):
-        if request.data['termsAndLaws'] == True or request.data['termsAndLaws'] == 'true':
+        if request.data['termsAndLaws'] == True:
             queryset = Campaign.objects.get(id = request.data['campaign'])
             request.data._mutable = True
             request.data["assigned"] = request.user.id
             request.data._mutable = False
-            print(request.data)
             serilizer = CampaignSerializer(queryset, data=request.data)
             if serilizer.is_valid():
                 serilizer.save()
@@ -307,3 +303,87 @@ class Get_campaign_overview(APIView):
                 resp["ignoredLeadCount"] = resp["ignoredLeadCount"] + 1
 
         return Response(resp)
+    
+
+class AllRecipientView(generics.ListAPIView):
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, *args,**kwargs):
+
+        campEmail = Campaign_email.objects.filter(campaign=request.data['campaign'])
+        campEmailserializer = CampaignEmailSerializer(campEmail, many = True)
+        return Response(campEmailserializer.data)
+
+class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
+
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Campaign_email.objects.all()
+    serializer_class = CampaignEmailSerializer
+
+    def get_object(self,request,pk):
+
+        try:        
+            return Campaign_email.objects.get(id = pk)
+        except Campaign_email.DoesNotExist:
+                raise Http404
+
+    def put(self, request, pk, format=None):
+        queryset = self.get_object(request,pk)
+        request.data['leads'] = True
+        serializer = CampaignEmailSerializer(queryset, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        queryset = self.get_object(request, pk)
+        queryset.delete()
+        return Response('Deleted',status=status.HTTP_200_OK)
+
+class CampaignleadCatcherView(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = CampaignLeadCatcherSerializer
+
+    def post(self, request, format=None):
+        request.data._mutable = True
+        request.data['assigned'] = request.user.id
+        request.data._mutable = False
+
+        serializer = CampaignLeadCatcherSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LeadCatcherUpdateView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = CampaignLeadCatcherSerializer
+        
+    def get(self, request, format=None):
+
+        queryset = CampaignLeadCatcher.objects.all()
+        serializer = CampaignLeadCatcherSerializer(queryset, many = True)
+        return Response(serializer.data)
+    
+    def put(self, request,format=None):
+        queryset = CampaignLeadCatcher.objects.get(campaign=request.data['campaign'])
+        request.data['assigned'] = request.user.id
+        serializer = CampaignLeadCatcherSerializer(queryset, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request,format=None):
+        queryset = CampaignLeadCatcher.objects.get(id=request.data['id'])
+        queryset.delete()
+        return Response('Deleted',status=status.HTTP_200_OK)
+        
+
+# class CampaignMessages(generics.RetrieveUpdateAPIView):
+#     permission_classes = (permissions.IsAuthenticated):
+    
+
+#     def get(self,request)
