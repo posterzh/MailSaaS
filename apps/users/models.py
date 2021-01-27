@@ -22,7 +22,7 @@ class CustomUser(AbstractUser):
     full_name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=12,null=False,blank=False)
     company_name = models.CharField(max_length=500,null=False,blank=False)
-    mailsaas_type = models.ForeignKey(MailsaasType,on_delete=models.CASCADE)
+    # mailsaas_type = models.ForeignKey(MailsaasType,on_delete=models.CASCADE)
     avatar = models.FileField(upload_to='profile-pictures/', null=True, blank=True)
 
     objects = UserManager()

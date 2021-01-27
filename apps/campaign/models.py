@@ -5,14 +5,19 @@ from apps.users.models import CustomUser
 class Campaign(models.Model):
     title = models.CharField(max_length=200)
     fromAddress = models.CharField(max_length=200)
+    full_name = models.CharField(max_length=200)
     csvFile_op1 = models.FileField(upload_to='csv_uploads/', blank=True, null=True)
     created_date_time = models.DateTimeField(auto_now=True)
+    update_date_time = models.DateTimeField(auto_now=True)
     assigned = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     trackOpens = models.BooleanField(default=False)
     trackLinkClick = models.BooleanField(default=False)
     scheduleThisSend = models.BooleanField(default=False)
-    scheduleDateTime = models.DateTimeField(auto_now_add=True, blank=True, null=True) 
+    # scheduleDateTime = models.DateTimeField(auto_now_add=True, blank=True, null=True) 
+    scheduleDate = models.DateField(blank=True, null=True)
+    scheduleTime = models.TimeField(blank=True, null=True)
     termsAndLaws = models.BooleanField(default=False)
+    isActiveCampaign = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
