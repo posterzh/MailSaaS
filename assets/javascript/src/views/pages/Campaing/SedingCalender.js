@@ -49,7 +49,7 @@ export class SendindCalender extends Component {
                           <span style={{fontSize:"10px"}}>about these settings</span>
                           </div>
                     </CardBody>
-                    <CardFooter>
+                    <CardFooter >
                       <Button className="b1">Edit Rules</Button>
                       </CardFooter>
                     

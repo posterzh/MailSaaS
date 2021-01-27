@@ -70,26 +70,85 @@ class Campaign extends Component {
                 </Dropdown> */}
               </Col>
             </Row>
-            <Row>
-              <Col md="3">
-              {!show &&
-                <div className='grand_parent' >
-                  <div className='input_field'>
-                    <Input type='email' className='label_input' placeholder='Create a campaign label' />
-                    <div className='child mt-2'>
-                      <a href='' onClick={(e) => { e.preventDefault(), this.setState({ show: true }) }}>
-                        <span className='font_icon'><i class="fa fa-times" aria-hidden="true"></i></span>
-                      </a>
-                    </div>
-                    <div className='child mt-2'>
-                      <a href='' onClick={(e) => { e.preventDefault(), this.setState({ show: true }) }}>
-                        <span className='font_icon'><i class="fa fa-check" aria-hidden="true"></i></span>
-                      </a>
-                    </div>
+
+
+
+            <Row className='mt-4'>
+            {show && <Col md='1' style={{ height: '40px' }}>
+              <div className='campaign_label'>
+                <div className='add_label' onClick={(e) => { e.preventDefault(), this.setState({ show: !show }) }}> <span>+ Label</span></div>
+              </div>
+            </Col>}
+            {!show && <Col md='3'>
+              <div className='grand_parent' >
+                <div className='input_field'>
+                  <Input type='email' className='label_input w-100' placeholder='Create a campaign label' />
+                  <div className='child mt-2'>
+                    <a href='' onClick={(e) => { e.preventDefault(), this.setState({ show: true }) }}>
+                      <span className='font_icon'><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </a>
                   </div>
-                </div>}
-              </Col>
-              </Row>
+                  <div className='child mt-2'>
+                    <a href='' onClick={(e) => { e.preventDefault(), this.setState({ show: true }) }}>
+                      <span className='font_icon'><i class="fa fa-check" aria-hidden="true"></i></span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </Col>}
+            <Col md='1'>
+              <div className='campaign_label'>
+                <div className='add_label'> <span>
+                  <i class="fa fa-ban" aria-hidden="true"></i>Unlabeled</span></div>
+              </div>
+            </Col>
+            <Col md='1'>
+              <div className='campaign_label'>
+                <div className='add_label' onMouseOut={(e) => { e.preventDefault(), this.setState({ hide: hide }) }} onMouseMove={(e) => { e.preventDefault(), this.setState({ hide: !hide }) }}>
+                  <span><i class="fa fa-tags" aria-hidden="true"></i>testlabel<span>
+                    {!hide &&
+                      <span><i class="fa fa-edit" aria-hidden="true"></i>
+                        <i class="fa fa-trash" aria-hidden="true"></i></span>
+                    }
+                  </span>
+                  </span>
+                </div>
+              </div>
+            </Col>
+          </Row>
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           </Container>
         </div>

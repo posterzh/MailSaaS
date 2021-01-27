@@ -19738,8 +19738,117 @@ input:focus {
   height: 141px;
   border-right: 1px solid #fff; }
 
-div > p {
+.su_box > p, .mo_box > p, .tu_box > p, .we_box > p, .th_box > p, .fr_box > p, .sa_box > p {
   color: black;
   border-bottom: 1px solid #fff;
   font-size: 12px; }
+
+modal-header {
+  background: red;
+  padding-bottom: 0px; }
+
+.Leadcatcher_modalbody {
+  background: aqua; }
+
+.lead_Action {
+  font-size: 12px;
+  color: blue; }
+
+.info_icon .fa {
+  color: blue;
+  font-size: 15px;
+  margin-left: 5px; }
+
+.link_icon {
+  font-size: 15px; }
+
+.user_name {
+  font-size: 12px;
+  color: #999; }
+
+.leadstatus_opened, .leadstatus_won, .leadstatus_rewon, .sent_status {
+  font-size: 14px;
+  margin-left: 40px;
+  font-weight: 400;
+  color: #333333; }
+
+.leadopened_date, .leadwon_date, .leadwon_redate, .sent_date {
+  font-size: 13px;
+  margin-left: 15px;
+  font-weight: 100;
+  color: #333333; }
+
+.leadopened_time, .leadwon_time, .leadwon_retime, .sent_time {
+  font-size: 13px;
+  margin-left: 15px;
+  font-weight: 100;
+  color: #333333; }
+
+.saparator .fa {
+  color: #ccc;
+  font-size: 6px;
+  position: relative; }
+
+.leadinfo_icon {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: auto;
+  border-radius: 50%;
+  background-color: skyblue;
+  border: 8px solid skyblue; }
+
+.leadinfo_icon .fa {
+  color: white;
+  position: absolute; }
+
+.saparator_row .fa {
+  color: #ccc;
+  font-size: 6px;
+  margin-top: 10px;
+  margin-left: 10px; }
+
+.leadwon_icon {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: auto;
+  border-radius: 50%;
+  background-color: #ff4081;
+  border: 8px solid #ff4081; }
+
+.leadwon_icon .fa {
+  color: white;
+  position: absolute; }
+
+.leadopened_icon {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: auto;
+  border-radius: 50%;
+  background-color: #a51f63;
+  border: 8px solid #a51f63; }
+
+.leadopened_icon .fa {
+  color: white;
+  position: absolute; }
+
+.initial_email {
+  font-size: 12px;
+  background-color: #eee;
+  margin-left: 4px; }
+
+.sent_icon {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: auto;
+  border-radius: 50%;
+  background-color: #005aac;
+  border: 8px solid #005aac; }
+
+.sent_icon .fa {
+  color: white;
+  position: absolute; }
 

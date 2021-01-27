@@ -1,30 +1,38 @@
 import React, { Component } from 'react'
+import LeadCatchermodel from "./LeadCatchermodel"
+// import LeadCatcherdata from "./LeadCatcherdata"
 // importing reacstrap elements
-import { Container, Row, Col, Label, Input, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Table, Button, Card } from 'reactstrap'
+import { Container, Row, Col, Label, Input, Dropdown, Modal, ModalHeader, ModalBody, ModalFooter, DropdownToggle, DropdownMenu, DropdownItem, Table, Button, Card } from 'reactstrap'
 
 class LeadCatcher extends Component {
-
   constructor() {
-    super();
+    super()
     this.state = {
-      dd1: false,
-      value: 'Any'
-    };
+      modal: false
+
+    }
   }
-  dropdownToggle = () => {
-    this.setState({
-      dd1: !this.state.dd1
-    });
-  }
-  select = (e) => {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen,
-      value: event.target.innerText
-    });
+  toggle = () => {
+    this.setState({ modal: !this.state.modal })
   }
   render() {
+    const { modal } = this.state;
     return (
       <div >
+        <div>
+          {/* <Button color="danger" onClick={this.toggle}>click me</Button> */}
+          <Modal isOpen={modal} toggle={this.toggle} className={LeadCatcher}>
+            <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+            <ModalBody>
+             <LeadCatchermodel/>
+           </ModalBody>
+            {/* <ModalFooter>
+              <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
+              <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+            </ModalFooter> */}
+          </Modal>
+        </div>
+
         <div className="graph_container" style={{ display: "flex", flexDirection: "row-reverse" }}>
           <span className="graph_title">Last 30 days</span>
         </div>
@@ -41,7 +49,7 @@ class LeadCatcher extends Component {
                         <Input type='email' className='in' placeholder='Search' />
                         <div className='child'>
                           <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                            <span className='font_icon'><i class="fa fa-search" aria-hidden="true"></i></span>
+                            <span className='font_icon'><i className="fa fa-search" aria-hidden="true"></i></span>
                           </a>
                         </div>
                       </div>
@@ -50,60 +58,39 @@ class LeadCatcher extends Component {
                 </div>
               </Col>
               <Col md="2">
-              <div>
-                        
-                        <select className='filter_select'>
-                            <option value='one'>All Campaigns</option>
-                            <option value='two'>Campaign 1</option>
-                            <option value='three'>Campaign 2</option>
-                           
-                        </select>
-                    </div>
-                {/* <Dropdown tabIndex={0} isOpen={this.state.dd1} toggle={this.dropdownToggle} >
-                  <DropdownToggle caret className='drop_span' >
-                    <span onClick={this.dropdownToggle}>
-                      {this.state.value}
-                    </span>
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem onClick={this.select}>Header</DropdownItem>
-                    <DropdownItem onClick={this.select}>Action</DropdownItem>
-                  </DropdownMenu>
-                </Dropdown> */}
+                <div>
+
+                  <select className='filter_select'>
+                    <option value='one'>All Campaigns</option>
+                    <option value='two'>Campaign 1</option>
+                    <option value='three'>Campaign 2</option>
+
+                  </select>
+                </div>
               </Col>
               <Col md="2">
-              <div>
-                        
-                        <select className='filter_select'>
-                            <option value='one'>unassigned</option>
-                            <option value='two'>unassigned1</option>
-                            <option value='three'>unassigned2</option>
-                           
-                        </select>
-                    </div>
-                {/* <Dropdown isOpen={this.state.dd1} toggle={this.dropdownToggle} >
-                  <DropdownToggle caret className='drop_span' >
-                    <span onClick={this.dropdownToggle}>
-                      {this.state.value}
-                    </span>
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem onClick={this.select}>Header</DropdownItem>
-                    <DropdownItem onClick={this.select}>Action</DropdownItem>
-                  </DropdownMenu>
-                </Dropdown> */}
+                <div>
+
+                  <select className='filter_select'>
+                    <option value='one'>unassigned</option>
+                    <option value='two'>unassigned1</option>
+                    <option value='three'>unassigned2</option>
+
+                  </select>
+                </div>
+               
               </Col>
               <Col md="2">
-              <div>
-                        
-                        <select className='filter_select'>
-                            <option  value='open'>open</option>
-                            <option  value='lost'>lost</option>
-                            <option value='won'>won</option>
-                            <option value='ignore'>ignore</option>
-                           
-                        </select>
-                    </div>
+                <div>
+
+                  <select className='filter_select'>
+                    <option value='open'>open</option>
+                    <option value='lost'>lost</option>
+                    <option value='won'>won</option>
+                    <option value='ignore'>ignore</option>
+
+                  </select>
+                </div>
                 {/* <Dropdown isOpen={this.state.dd1} toggle={this.dropdownToggle} >
                   <DropdownToggle caret className='drop_span' >
                     <span onClick={this.dropdownToggle}>
@@ -141,9 +128,9 @@ class LeadCatcher extends Component {
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr onClick={this.toggle}>
                   <td className="check_box"><input type="checkbox" /></td>
-                  <td className="Campaign_title">Person name</td>
+                  <td  className="Campaign_title">Person name</td>
                   <td className="Created">Campaign name</td>
                   <td className="Assigned">Omaid Faizyar</td>
                   <td className="Recipient">00:00</td>
@@ -152,6 +139,10 @@ class LeadCatcher extends Component {
             </table>
           </Card>
         </div>
+
+
+
+
       </div>
     )
   }
