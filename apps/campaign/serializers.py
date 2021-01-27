@@ -14,13 +14,6 @@ class CampaignEmailSerializer(serializers.ModelSerializer):
         model = Campaign_email
         fields = '__all__'
 
-
-class CampaignViewSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Campaign
-        fields = '__all__'
-
 class FollowUpSerializer(serializers.ModelSerializer):
 
     class Meta:

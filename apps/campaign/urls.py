@@ -15,6 +15,5 @@ urlpatterns = [
     path('recipients/<int:pk>/',views.RecipientDetailView.as_view(), name = "recipients_update"),
     path('campaignleadcatcher/', views.CampaignleadCatcherView.as_view(),name = 'campaignleadcatcher'),
     path('campaignleadcatcherview/', views.LeadCatcherUpdateView.as_view(),name = 'campaignleadcatcher'),
-
-    
+    path('campaignmessage/<int:pk>/', views.CampaignMessages.as_view(),name = 'campaignmessage'),
 ]
