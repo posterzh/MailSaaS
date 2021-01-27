@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 import csv
 import datetime 
+from django_filters import rest_framework as filters
+from django.db.models import Q
 
 
 class create_campaign_start(APIView):
@@ -389,7 +391,7 @@ class CampaignMessages(generics.RetrieveUpdateAPIView):
     def put(self, request, pk, format=None):
 
         """  For Update subject and emailbody of normal/Follow_up/Drip/On_click email """
-        
+
         normalemail = Campaign_email.objects.filter(id=request.data['normal']['id'])
         for normal_mail in normalemail:
             normalemaildata = CampaignEmailSerializer(normal_mail)
@@ -439,3 +441,92 @@ class CampaignMessages(generics.RetrieveUpdateAPIView):
             else:
                 return Response({"error2":onlinkclickserilize.errors})
         
+
+    # permission_classes = (permissions.AllowAny,)
+
+    # queryset = Campaign_email.objects.all()
+    # serializer_class = CampaignEmailSerializer
+    # filter_backends = (filters.DjangoFilterBackend,)
+    # filterset_fields = ('opens')
+
+class ProspectsView(generics.ListAPIView):
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, *args,**kwargs):
+        params = list(dict(request.GET).keys())
+        if len(params) == 3:
+            toSearch = request.GET['search']
+            title = request.GET['title']
+            if request.GET['leadstatus'] == "openlead":
+                leadstatus = "openLead"
+            elif request.GET['leadstatus'] == "wonlead":
+                leadstatus = "wonLead"
+            elif request.GET['leadstatus'] == "lostlead":
+                leadstatus = "lostLead"
+            elif request.GET['leadstatus'] == "ignorelead":
+                leadstatus = "ignoreLead"
+            else:
+                leadstatus = "openLead"
+
+            queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__title__contains=title, leadStatus=leadstatus, campaign__assigned=request.user.id)
+        elif len(params) == 2:
+            if 'search' and 'title' in params:
+                toSearch = request.GET['search']
+                title = request.GET['title']
+
+                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__title__contains=title, campaign__assigned=request.user.id)
+            
+            elif 'search' and "leadstatus" in params:
+                toSearch = request.GET['search']
+                if request.GET['leadstatus'] == "openlead":
+                    leadstatus = "openLead"
+                elif request.GET['leadstatus'] == "wonlead":
+                    leadstatus = "wonLead"
+                elif request.GET['leadstatus'] == "lostlead":
+                    leadstatus = "lostLead"
+                elif request.GET['leadstatus'] == "ignorelead":
+                    leadstatus = "ignoreLead"
+                else:
+                    leadstatus = "openLead"
+
+                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch), leadStatus=leadstatus, campaign__assigned=request.user.id)
+
+            elif "title" and "leadstatus" in params:
+                title = request.GET['title']
+                if request.GET['leadstatus'] == "openlead":
+                    leadstatus = "openLead"
+                elif request.GET['leadstatus'] == "wonlead":
+                    leadstatus = "wonLead"
+                elif request.GET['leadstatus'] == "lostlead":
+                    leadstatus = "lostLead"
+                elif request.GET['leadstatus'] == "ignorelead":
+                    leadstatus = "ignoreLead"
+                else:
+                    leadstatus = "openLead"
+
+                queryset = Campaign_email.objects.filter(campaign__title__contains=title, leadStatus=leadstatus, campaign__assigned=request.user.id)
+        elif len(params) == 1:
+            if "search" in params:
+                toSearch = request.GET['search']
+                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch), campaign__assigned=request.user.id)
+            elif "title" in params:
+                title = request.GET['title']
+                queryset = Campaign_email.objects.filter(campaign__title__contains=title, campaign__assigned=request.user.id) 
+            elif  "leadstatus" in params:
+                if request.GET['leadstatus'] == "openlead":
+                        leadstatus = "openLead"
+                elif request.GET['leadstatus'] == "wonlead":
+                    leadstatus = "wonLead"
+                elif request.GET['leadstatus'] == "lostlead":
+                    leadstatus = "lostLead"
+                elif request.GET['leadstatus'] == "ignorelead":
+                    leadstatus = "ignoreLead"
+                else:
+                    leadstatus = "openLead"
+                queryset = Campaign_email.objects.filter(leadStatus=leadstatus,campaign__assigned=request.user.id)     
+        else:
+            queryset = Campaign_email.objects.filter(campaign__assigned=request.user.id)
+
+        campEmailserializer = CampaignEmailSerializer(queryset, many = True)
+        return Response(campEmailserializer.data)

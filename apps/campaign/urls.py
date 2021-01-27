@@ -16,4 +16,7 @@ urlpatterns = [
     path('campaignleadcatcher/', views.CampaignleadCatcherView.as_view(),name = 'campaignleadcatcher'),
     path('campaignleadcatcherview/', views.LeadCatcherUpdateView.as_view(),name = 'campaignleadcatcher'),
     path('campaignmessage/<int:pk>/', views.CampaignMessages.as_view(),name = 'campaignmessage'),
+    path('procpects/', views.ProspectsView.as_view(),name = 'procpects'),
+
+   
 ]
