@@ -12,7 +12,11 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import datetime 
+# from decouple import config
 from decouple import config
+from dotenv import load_dotenv
+from pathlib import Path  # Python 3.6+ only
+env_path = Path('.') / '.env'
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -22,11 +26,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
-# SECRET_KEY = config('SECRET_KEY')
+# SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+# CORS_ALLOWED_ORIGINS = ['*']
+SITE_URL = 'http://localhost:8000'
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Application definition
@@ -54,6 +62,7 @@ THIRD_PARTY_APPS = [
     'celery_progress',
     'django_filters',
 
+    'corsheaders',
     # stripe integration
     'djstripe',
 ]
@@ -85,6 +94,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'mail.urls'
@@ -124,9 +135,10 @@ DATABASES = {
         'USER': config('DATABASE_USER'),
         'PASSWORD': config('DATABASE_PASSWORD'),
         'HOST': config('DATABASE_HOST'),
-        'PORT': config('DATABASE_PORT'),
+        'PORT':5433,
     }
 }
+
 
 
 
@@ -236,7 +248,7 @@ MEDIA_URL = '/media/'
 # Email setup
 
 # use in development
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # use in production
 # see https://github.com/anymail/django-anymail for more details/examples
 # EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
@@ -350,5 +362,13 @@ JWT_AUTH = {
     'JWT_AUTH_COOKIE': None,
 }
 
-SLACK_CLIENT_ID = config('SLACK_CLIENT_ID')
-SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
+# SLACK_CLIENT_ID = config('SLACK_CLIENT_ID')
+# SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
+
+
+EMAIL_HOST='sg3plcpnl0063.prod.sin3.secureserver.net'
+EMAIL_PORT=465
+EMAIL_USE_SSL=True
+EMAIL_HOST_USER='developer@externlabs.com'
+EMAIL_HOST_PASSWORD='developer@externlabs'
+
