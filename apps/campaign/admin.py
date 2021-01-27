@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Campaign, Campaign_email, Follow_up_email, Drip_email, On_Link_Click
+from .models import Campaign, Campaign_email, Follow_up_email, Drip_email, On_Link_Click,CampaignLeadCatcher
 
 
 @admin.register(Campaign)
@@ -29,3 +29,8 @@ class CampaignDrip_emailAdmin(admin.ModelAdmin):
 @admin.register(On_Link_Click)
 class CampaignOn_Link_ClickAdmin(admin.ModelAdmin):
     list_display = ('campaign', 'waitDays', 'url', 'subject', 'emailBody')
+
+
+@admin.register(CampaignLeadCatcher)
+class Campaign_Lead_Catcher(admin.ModelAdmin):
+    list_display = ('campaign', 'assigned', 'leadCatcherRecipient', 'of_times')

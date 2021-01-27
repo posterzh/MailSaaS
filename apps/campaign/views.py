@@ -1,6 +1,12 @@
 from django.shortcuts import render
-from .models import Campaign, Campaign_email, Follow_up_email, Drip_email, On_Link_Click
-from .serializers import CampaignSerializer, CampaignEmailSerializer,FollowUpSerializer,OnclickSerializer,DripEmailSerilizer
+from .models import Campaign, Campaign_email, Follow_up_email, Drip_email, On_Link_Click,CampaignLeadCatcher
+from .serializers import (
+    CampaignSerializer, 
+    CampaignEmailSerializer,
+    FollowUpSerializer,
+    OnclickSerializer,
+    DripEmailSerilizer,
+    CampaignLeadCatcherSerializer)
 from rest_framework.response import Response
 from rest_framework import generics, permissions, status
 from django.contrib.auth.decorators import login_required
@@ -41,10 +47,7 @@ class create_campaign_start(APIView):
             return Response({'message':"Has No Permissions",'status':401})
         return Response({'message':"Your account is not active",'status':status.HTTP_200_OK})
 
-    # def get(self, request, format=None):
-    #     camp = Campaign.objects.all()
-    #     serializer = CampaignSerializer(camp, many=True)
-    #     return Response(serializer.data)
+   
 class create_campaign_recipients(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
@@ -70,14 +73,12 @@ class create_campaign_recipients(APIView):
                             line_count += 1
                             # return Response({"message":"No Rows in file", "success":False})
                         else:
-                            data = {'email':row[0], 'full_name':row[1], 'campaign':postData['campaign']}
-                            print("rowdataaaa ",data)
+                            data = {'email':row[0], 'full_name':row[1], 'company_name':row[2], 'role':row[3], 'campaign':postData['campaign']}
                             serializer = CampaignEmailSerializer(data = data)
                             if serializer.is_valid():
                                 line_count += 1
                                 serializer.save()
                                 resp.append(serializer.data)
-                    print(resp)
                     resp.append({"success":True})
                     return Response(resp)
 
@@ -203,41 +204,6 @@ class CampaignGetAllEmailsPreview(generics.ListAPIView):
                 return Response({"message":"On Link Click Email Error"})
 
         return Response({"message":"Updated Successfully", "success":"True"})
-
-
-# class create_campaign_options(APIView):
-
-#     permission_classes = (permissions.IsAuthenticated,)
-
-#     def put(self, request, format=None):
-#         postData = request.data
-#         print("pppppppppp ", postData)
-#         if postData["termsAndLaws"] == 'true':
-#             # print("postDataaaaaaaaa ",postData)
-#             camp = Campaign.objects.get(id=postData['campaign'])
-#             campEmail = Campaign_email.objects.filter(campaign=postData['campaign'])
-#             # print("camppppppp ",camp)
-#             campData = CampaignSerializer(camp)
-#             campSerializerData = campData.data
-#             print("gettttttttttt ",campSerializerData["scheduleDateTime"], type(campSerializerData["scheduleDateTime"]))
-#             campSerializerData["trackOpens"] = postData["trackOpens"]
-#             campSerializerData["trackLinkClick"] = postData["trackLinkClick"]
-#             campSerializerData["scheduleThisSend"] = postData["scheduleThisSend"]
-
-#             campSerializerData["scheduleDateTime"] = postData["scheduleDateTime"]
-#             campSerializerData["termsAndLaws"] = postData["termsAndLaws"]
-#             print("\n\n\n", campSerializerData["scheduleDateTime"], type(campSerializerData["scheduleDateTime"]), "\n\n\n")
-#             campSerializer = CampaignSerializer(camp, data=campSerializerData)
-#             print(campSerializer)
-#             if campSerializer.is_valid():
-#                 print("Validddddddd")
-#                 campSerializer.save()
-
-
-#             return Response({"message":"Updated Successfully", "success":"true"})
-#         else:
-#             return Response({"message":"Please agree to the terms.", "success":"false"})
-
 
 class create_campaign_options(APIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -529,3 +495,177 @@ class Get_campaign_overview(APIView):
                 resp["ignoredLeadPer"] = (resp["ignoredLeadCount"]*100)/resp["leadCount"]
 
         return Response(resp)
+    
+
+class AllRecipientView(generics.ListAPIView):
+
+    """  For View  all Recipients """
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, *args,**kwargs):
+
+        campEmail = Campaign_email.objects.filter(campaign=request.data['campaign'])
+        campEmailserializer = CampaignEmailSerializer(campEmail, many = True)
+        return Response(campEmailserializer.data)
+
+class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
+
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Campaign_email.objects.all()
+    serializer_class = CampaignEmailSerializer
+
+    def get_object(self,request,pk):
+
+        try:        
+            return Campaign_email.objects.get(id = pk)
+        except Campaign_email.DoesNotExist:
+                raise Http404
+
+    def put(self, request, pk, format=None):
+        queryset = self.get_object(request,pk)
+        request.data['leads'] = True
+        serializer = CampaignEmailSerializer(queryset, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        queryset = self.get_object(request, pk)
+        queryset.delete()
+        return Response('Deleted',status=status.HTTP_200_OK)
+
+class CampaignleadCatcherView(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = CampaignLeadCatcherSerializer
+
+    def post(self, request, format=None):
+        request.data._mutable = True
+        request.data['assigned'] = request.user.id
+        request.data._mutable = False
+
+        serializer = CampaignLeadCatcherSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LeadCatcherUpdateView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = CampaignLeadCatcherSerializer
+        
+    def get(self, request, format=None):
+
+        queryset = CampaignLeadCatcher.objects.all()
+        serializer = CampaignLeadCatcherSerializer(queryset, many = True)
+        return Response(serializer.data)
+    
+    def put(self, request,format=None):
+        queryset = CampaignLeadCatcher.objects.get(campaign=request.data['campaign'])
+        request.data['assigned'] = request.user.id
+        serializer = CampaignLeadCatcherSerializer(queryset, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request,format=None):
+        queryset = CampaignLeadCatcher.objects.get(id=request.data['id'])
+        queryset.delete()
+        return Response('Deleted',status=status.HTTP_200_OK)
+        
+
+class CampaignMessages(generics.RetrieveUpdateAPIView):
+
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Campaign_email.objects.all()
+    serializer_class = CampaignEmailSerializer
+
+    """  For View subject and emailbody of normal/Follow_up/Drip/On_click email """
+
+    def get(self, request, pk, format=None):
+        alldata = {}
+        normallist = []
+        normal = Campaign_email.objects.filter(campaign=pk)
+        for nrml in normal:
+            serilizer = CampaignEmailSerializer(nrml)
+            normallist.append({'id':serilizer.data['id'],'subject':serilizer.data['subject'],'emailBody':serilizer.data['emailBody']})
+        alldata['normal'] = normallist[0]
+
+        follow_up_list = []
+        followup = Follow_up_email.objects.filter(campaign=pk)
+        for follow_up in followup:
+            serilizer = FollowUpSerializer(follow_up)
+            follow_up_list.append({'id':serilizer.data['id'],'subject':serilizer.data['subject'],'emailBody':serilizer.data['emailBody']})
+        alldata['followup'] = follow_up_list[0]
+
+        drip_list = []
+        drip = Drip_email.objects.filter(campaign=pk)
+        for drip_mail in drip:
+            serilizer = DripEmailSerilizer(drip_mail)
+            drip_list.append({'id':serilizer.data['id'],'subject':serilizer.data['subject'],'emailBody':serilizer.data['emailBody']})
+        alldata['drip'] = drip_list[0]
+
+        onclick_list = []
+        on_click = On_Link_Click.objects.filter(campaign=pk)
+        for onclick in on_click:
+            serilizer = OnclickSerializer(onclick)
+            onclick_list.append({'id':serilizer.data['id'],'subject':serilizer.data['subject'],'emailBody':serilizer.data['emailBody']})
+        alldata['on_click'] = onclick_list[0]
+
+        return Response(alldata)
+
+    def put(self, request, pk, format=None):
+
+        """  For Update subject and emailbody of normal/Follow_up/Drip/On_click email """
+        
+        normalemail = Campaign_email.objects.filter(id=request.data['normal']['id'])
+        for normal_mail in normalemail:
+            normalemaildata = CampaignEmailSerializer(normal_mail)
+            normalemaildata = dict(normalemaildata.data)
+            normalemaildata["subject"] = request.data['normal']['subject']
+            normalemaildata["emailBody"] = request.data['normal']['emailBody']
+            normalemailserilize = CampaignEmailSerializer(normal_mail, data=normalemaildata)
+            if normalemailserilize.is_valid():
+                normalemailserilize.save()
+            else:
+                return Response({"error":campEmailSave.errors})
+
+        followup = Follow_up_email.objects.filter(id=request.data['followup']['id'])
+        for follow_up in followup:
+            followupdata = FollowUpSerializer(follow_up)
+            followupdata = dict(followupdata.data)
+            followupdata["subject"] = request.data['followup']['subject']
+            followupdata["emailBody"] = request.data['followup']['emailBody']
+            followupserilize = FollowUpSerializer(follow_up, data=followupdata)
+            if followupserilize.is_valid():
+                followupserilize.save()
+            else:
+                return Response({"error2":followupserilize.errors})
+
+        dripmail = Drip_email.objects.filter(id=request.data['drip']['id'])
+        for drip_mail in dripmail:
+            dripmaildata = DripEmailSerilizer(drip_mail)
+            dripmaildata = dict(dripmaildata.data)
+            dripmaildata["subject"] = request.data['drip']['subject']
+            dripmaildata["emailBody"] = request.data['drip']['emailBody']
+            dripmailserilize = DripEmailSerilizer(drip_mail, data=dripmaildata)
+            if dripmailserilize.is_valid():
+                dripmailserilize.save()
+            else:
+                return Response({"error2":dripmailserilize.errors})
+
+        onlinkclickmail = On_Link_Click.objects.filter(id=request.data['on_click']['id'])
+        for on_click in onlinkclickmail:
+            onlinkclickmaildata = OnclickSerializer(on_click)
+            onlinkclickmaildata = dict(onlinkclickmaildata.data)
+            onlinkclickmaildata["subject"] = request.data['on_click']['subject']
+            onlinkclickmaildata["emailBody"] = request.data['on_click']['emailBody']
+            onlinkclickserilize = OnclickSerializer(on_click, data=onlinkclickmaildata)
+            if onlinkclickserilize.is_valid():
+                onlinkclickserilize.save()
+                return Response({"message":"Data updated sucessfully"})
+            else:
+                return Response({"error2":onlinkclickserilize.errors})
+        
