@@ -20,16 +20,11 @@ class LeadCatcher extends Component {
     return (
       <div >
         <div>
-          {/* <Button color="danger" onClick={this.toggle}>click me</Button> */}
-          <Modal isOpen={modal} toggle={this.toggle} className={LeadCatcher}>
-            <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
-            <ModalBody>
+          <Modal className="Leadcatcher_modal" isOpen={modal} toggle={this.toggle} className={LeadCatcher}>
+            <ModalHeader className="Leadcatcher_modalheader"  toggle={this.toggle}>Modal title</ModalHeader>
+            <ModalBody className="Leadcatcher_modalbody" >
              <LeadCatchermodel/>
            </ModalBody>
-            {/* <ModalFooter>
-              <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
-              <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-            </ModalFooter> */}
           </Modal>
         </div>
 

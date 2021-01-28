@@ -7,6 +7,7 @@ export class LeadCatchermodel extends Component {
     render() {
         return (
             <div>
+                <div className="lower_headerdiv">
                 <div>
                     <span className="lead_Action">Lead actions</span>
                     <span className="info_icon"><i class="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -18,29 +19,32 @@ export class LeadCatchermodel extends Component {
                 <div style={{ display: "flex", flexDirection: "row" }}>
                     <Row>
                         <Col >
-                            <span>REPLY</span>
+                            <span className="reply">REPLY</span  >
                         </Col>
                         <Col  >
-                            <select >
-                                <option value="" selected disabled hidden>Status</option>
-                                <option value="ignore">ignore</option>
-                                <option value='won'>won3</option>
-                                <option value='lost'>lost</option>
+                            <select className="selectbox_1" >
+                                <option value="" selected disabled hidden className="status">Status</option>
+                                <option value="ignore" className="ignore">ignore</option>
+                                <option value='won' className="won">won3</option>
+                                <option value='lost' className="lost">lost</option>
                             </select></Col >
                         <Col  >
-                            <select>
-                                <option value="" selected disabled hidden>Assign</option>
-                                <option value="ignore">Unassigned</option>
-                                <option value='won'>Me</option>
+                            <select className="selectbox_2">
+                                <option value="" selected disabled hidden className="Assign">Assign</option>
+                                <option value="" className="UnAssign">Unassigned</option>
+                                <option value="" className="me">Me</option>
                             </select>
                         </Col>
                         <Col  >
-                            <span>
+                        {/* <Button> */}
+                            <span className="next">
                                 Next
                         </span>
+                        {/* </Button> */}
                         </Col>
                     </Row>
                 </div>
+            </div>
                 <div>
                     <Row style={{ display: "flex" }}>
                         <div>
@@ -71,29 +75,35 @@ export class LeadCatchermodel extends Component {
                     </Row>
                 </div>
 
-                {/* <div>
-                    <Row>
+                <div>
+                <Row style={{ display: "flex" ,marginTop: "5px" }}>
                         <div>
-                            <i class="fa fa-reply"></i>
-                        </div>
-                        <div>
-                            replied
-                        </div>
-                        <div>
-                            jan 24,2020
-                        </div>
-                        <div>
-                            12:19pm
+                        <span className="repliy_icon"><i class="fa fa-reply"></i></span>
+                        <span className="repliy_status"> replied</span>
+                        <span className="repliy_date"> jan 24,2020</span>
+                        <span className="repliy_time">12:19pm</span>
                         </div>
                     </Row>
-                    <Row>
-                        
+                    <Row className="saparator_row" >
                             <i class="fa fa-circle"></i>
-                            <div>
-                                gf
+                            <div className="verticle_line"></div>
+                            {/* <Row  >   */}
+                            <div className="replied_mail_box" style={{ borderBottom: "1px solid #ddd" }}> 
+                             <div >
+                                <span className="from">From:</span>
+                                <span className="from_mailid"> prakhargupta@externlabs.com</span>
+                               </div>
+                               <div   style={{ borderBottom: "1px solid #ddd",width:"100%" }}>
+                                <span  className="mail_subject">subject:</span>
+                                <span  className="mail_subject_body">Re: Ashu campain msg</span>
                             </div>
+                            <div>
+                                <span className="reply_mag_body"> hi team lead </span>
+                                
+                            </div>
+                              </div>
                     </Row>
-                </div> */}
+                </div>
                 <div>
                     <Row style={{ display: "flex", marginTop: "5px" }}>
                         <div>
@@ -147,37 +157,26 @@ export class LeadCatchermodel extends Component {
                             <span className="sent_time">7:43pm</span>
                         </div>
                     </Row>
-                    <div >
-                        <Row>
-                            <div style={{ borderBottom: "1px solid #ddd" }}>
-
-                                <span>From:</span>
-                                <span>Gaurav surolia </span>
-                                <span>gauravsurolia@externlabs.com</span>
+                    <Row className="saparator_row" >
+                            <div className="replied_mail_box" style={{ borderBottom: "1px solid #ddd" }}> 
+                             <div >
+                                <span className="from">From:</span>
+                                <span className="from_mailid"> prakhargupta@externlabs.com</span>
+                               </div>
+                               <div   style={{ borderBottom: "1px solid #ddd",width:"100%" }}>
+                                <span  className="mail_subject">subject:</span>
+                                <span  className="mail_subject_body">Re: Ashu campain msg</span>
                             </div>
                             <div>
-                                <span>subject:</span>
-                                <span>Ashu Campaign mg</span>
+                                <span className="reply_mag_body"> Prakhar campaign msg<br/> </span>
+                                <span className="sent_body_status"> Testing </span>
+                                
                             </div>
-                            <div>
-                                msg body
-                                        </div>
-                        </Row>
-                    </div>
+                              </div>
+                    </Row>
+                    
 
                 </div>
-
-
-
-
-
-
-
-
-
-
-
-
 
             </div>
         )

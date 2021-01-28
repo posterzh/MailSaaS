@@ -120,36 +120,6 @@ class Campaign extends Component {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           </Container>
         </div>
         <div>

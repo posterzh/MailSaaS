@@ -1,25 +1,3 @@
-// .Barcontainer{
-//     display:flex;
-//     flex-direction: row;
-//     justify-content: space-evenly;
-//     background-color: #ddd;
-//     border: 1px solid rgba(0,0,0, 0.12);;
-//     padding:20px 30px 0px;
-// }
-
-// .searchbar,.dropdown_campaign,.search_feild_box{    
-//     background-color: #ddd;
-//     border:none;
-//     border-bottom: 1px solid rgba(0,0,0, 0.12);
-//     border-bottom-left-radius: 0px;
-//     border-bottom-right-radius: 0px;
-//     background: transparent; 
-//     width:190px; 
-// }
-// .table{
-//     border-radius: 0px;
-//     border: 1px solid rgba(0,0,0, 0.12);
-// }
 input:focus{
     background-color:#ddd !important ;
     outline: none !important;
@@ -189,12 +167,20 @@ input:focus{
    }
 
 // leadcatcher  modal css
-modal-header{
-    background: red;
-    padding-bottom: 0px;
+
+.Leadcatcher_modalheader{
+    //  background: #85b4d6;
+    background-color: #005aac;
+     padding-bottom: 0px;
+     opacity: 1;
 }
 .Leadcatcher_modalbody{
-    background: aqua;
+    padding-top:0px;
+    background-color: #f5f5f5;
+    // margin-left: 20px;
+    // margin-right: 20px;
+    // margin-top: 30px;
+    // margin-bottom: 30px;
 }
     .lead_Action{
         font-size: 12px;
@@ -214,19 +200,19 @@ modal-header{
     color: #999;
 
     }
-.leadstatus_opened,.leadstatus_won,.leadstatus_rewon,.sent_status{
+.leadstatus_opened,.leadstatus_won,.leadstatus_rewon,.sent_status,.repliy_status{
     font-size:14px;
     margin-left: 40px;
     font-weight: 400;
     color:#333333;
 }
-.leadopened_date,.leadwon_date,.leadwon_redate,.sent_date{
+.leadopened_date,.leadwon_date,.leadwon_redate,.sent_date,.repliy_date{
     font-size:13px;
     margin-left: 15px;
     font-weight: 100;
     color:#333333;
 }
-.leadopened_time,.leadwon_time,.leadwon_retime,.sent_time{
+.leadopened_time,.leadwon_time,.leadwon_retime,.sent_time,.repliy_time{
     font-size: 13px;
     margin-left: 15px;
     font-weight: 100;
@@ -308,6 +294,178 @@ margin-top: 10px;
 }
 .sent_icon .fa{
     color:white;
+    position: absolute;  
+}
+.lower_headerdiv{
+    // border: 1px solid blue;
+    // background-color: brown;
+    border-bottom:1px solid #ddd
+}
+.repliy_icon{
     position: absolute;
-    
+    width:30px;
+    height:30px;
+    margin:auto;
+    border-radius: 50%;
+    background-color:#87d845;
+    border:8px solid#87d845;
+
+}
+.repliy_icon .fa{
+    color:white;
+    position: absolute;
+}
+.verticle_line{
+    background-color:#ddd;
+    width:5px;
+    height:30px;
+    position: absolute;
+    top: 40%;
+    left: 4%;
+}
+.replied_mail_box{
+    margin-left: 38px;
+    margin-top:4px;
+    border:1px solid #ddd;
+    width: 100%;
+    padding-left: 12px;
+    padding-right: 12px;
+    box-shadow: 0px 2px 4px silver;
+}
+.from,.mail_subject{
+    color:#999;
+    font-weight: 100;
+    font-size: 13px;
+}
+.reply_mag_body,.sent_body_status{
+    font-family: arial,sans-serif;
+    font-size: 13px;
+    color: #222;
+
+}
+.from_mailid,.mail_subject_body{
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 400;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    color:#333333
+}
+.selectbox_1,.selectbox_2{
+    border: none;
+    background: transparent;
+    // width: 100%;
+    font-size: 14px;
+}
+.reply,.status{
+    color:blue;
+}
+
+
+// dashboard page
+.Main-title{
+    color:#333333;
+    font-size: 40px;
+}
+.new_campaign_container{
+    background-color: #fff;
+}
+.logo >img{
+    width:10%;
+}
+.create_campaign_selectbox{
+    display: flex;
+    width: 300px;
+    border-bottom: 1px solid black;
+    border: none;
+}
+.new_campaign{
+    display: flex;
+    justify-content: center;
+}
+.info_button{
+    display: flex;
+    flex-direction: row-reverse;
+}
+.backbutton_icon .fa{
+    color:black;
+    font-weight: 400;
+    font-size:15px;
+    margin-right: 3px;;
+}
+.back{
+    color: black;  
+        font-size: 12px;
+}
+
+
+.receipentlist_box{
+    border:2px dashed #ccc;
+}
+.receipentlist_data_box{
+    // border:2px dashed #ccc;
+    margin-left: 20px;
+    background-color: #eee;
+}
+.option1
+{
+    font-size: 12px;
+    color: #999;
+    margin-right: 20px;
+}
+.csv_logo{
+    border:1px solid red
+}
+.csv_logo_text{
+    font-size: 14px;
+    color: #333333;
+
+}
+.csv_logo .fa{
+    color:red;
+}
+.csv_note{
+    color:#999;
+    font-size: 14px;
+    margin-left: 80px;
+    font-weight: 100;
+}
+.choose_option{
+    color:#005aac;
+}
+.Beta{
+    background-color:#ffab40;
+    color:white;
+    border:none;
+    font-size: 10px;
+    width: 35%;
+    margin-left: 9px;
+    text-align: center;
+}
+.import_button{
+    background-color: #999;
+    border:none;
+}
+textarea{
+    border: none;
+    font-size: 12px;
+    background: #eee;
+    border-bottom: 1px solid black;
+    text-align: left;
+    width: 300px;
+    ::placeholder{
+        color:red
+    }
+}
+ 
+button .import_button{
+    border: none;
+    border-radius: 0px 0px 0px 0px;
+
+}
+.input_box_csv >input{
+    background: #eee;
+    border: none;
+    border-bottom: 1px solid black;
+    width: 300px;
+
 }
