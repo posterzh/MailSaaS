@@ -11,14 +11,14 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('id','password','email','full_name','company_name','mailsaas_type','phone_number','avatar')
+        fields = ('id','password','email','full_name','company_name','phone_number','avatar')
         extra_kwargs = {
             
             'email': {'required': True},
             'company_name': {'required': True},
             'full_name': {'required': True},
             'phone_number': {'required': True},
-            'mailsaas_type':{'required': True},
+            # 'mailsaas_type':{'required': True},
             'password': {'required': True},
             
         }
@@ -30,7 +30,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             full_name=validated_data['full_name'],
             company_name=validated_data['company_name'],
             phone_number=validated_data['phone_number'],
-            mailsaas_type=validated_data['mailsaas_type'],
+            # mailsaas_type=validated_data['mailsaas_type'],
             password=validated_data['password'],
         )
         user.save()

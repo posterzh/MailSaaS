@@ -12,7 +12,10 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import datetime 
+# from decouple import config
 from decouple import config
+from pathlib import Path  # Python 3.6+ only
+env_path = Path('.') / '.env'
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -22,11 +25,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
-# SECRET_KEY = config('SECRET_KEY')
+# SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+# CORS_ALLOWED_ORIGINS = ['*']
+SITE_URL = 'http://localhost:8000'
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Application definition
@@ -40,6 +47,12 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.forms',
+    'celery_progress',
+    "django_celery_results",
+     
+    'django_crontab',
+
+    'django_celery_beat',
 ]
 
 # Put your third-party apps here
@@ -51,8 +64,8 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount.providers.google',
 
     'rest_framework',
-    'celery_progress',
-
+    
+    'corsheaders',
     # stripe integration
     'djstripe',
 ]
@@ -85,6 +98,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'mail.urls'
@@ -124,7 +139,7 @@ DATABASES = {
         'USER': config('DATABASE_USER'),
         'PASSWORD': config('DATABASE_PASSWORD'),
         'HOST': config('DATABASE_HOST'),
-        'PORT': config('DATABASE_PORT'),
+        'PORT':config('DATABASE_PORT'),
     }
 }
 
@@ -134,6 +149,7 @@ EMAIL_USE_SSL = config('EMAIL_USE_SSL')
 EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD =config('EMAIL_HOST_PASSWORD')
+
 
 
 
@@ -243,7 +259,7 @@ MEDIA_URL = '/media/'
 # Email setup
 
 # use in development
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # use in production
 # see https://github.com/anymail/django-anymail for more details/examples
 # EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
@@ -260,6 +276,11 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,
+    
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+        ...
+    ),
 }
 
 
@@ -364,3 +385,6 @@ JWT_AUTH = {
 
 # SLACK_CLIENT_ID = config('SLACK_CLIENT_ID')
 # SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
+
+
+
