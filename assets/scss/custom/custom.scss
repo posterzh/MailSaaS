@@ -140,10 +140,227 @@
     border: none;
     background-color: #eee;
 }
+.header_sent,.Sent{
+    background-color: rgba(0,90,172,.05);
+}
+.header_leads,.Leads{
+    background: rgba(255,64,129,.05)
+}
+.header_replies,.Replies{
+    background: rgba(135,216,69,.05);
+}
+.header_open,.Open
+{
+    background: rgba(165,31,99,.05);
+}
+// 
 
+// campaing internal page css
 
+.overview_hr{
+    border-bottom: 1px solid #ddd;
+}
+.view_calender{
+    font-size: 13px;
+}
+.overview_calender{
+    width: 100%;
+    display: inline-flex;
+    flex-direction: row;
+    padding: 1px;
+}
+.overview_day_hd{
+    width: 14.28%;
+    font-size: 13px;
+    padding: 10px;
+}
+.overview_day_hd_detils{
+    background-color: #eee;
+    width: 14.28%;
+    font-size: 13px;
+    padding: 10px;
+}
+.display-4{
+    font-weight: 100;
+    margin-top: 20px;
+}
+.explain_number{
+    color: silver;
+    font-size: 14px;
+}
+.explain_number:hover{
+    color:black;
+}
+.good_test{
+    height: 100%;
+    width: 100%;
+    // border: 1px solid ;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+}
+.good_test_div{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
+.good_btn_span{
+    font-size: 12px;
+}
+.overview_div{
+    padding-top: 10px;
+    // padding: 10px;
+    box-shadow: 1px 1px 1px 1px silver;
+    background-color: #ffffff;
+}
+.text_purple{
+    color: #a51f63;
+}
+.text_leaf{
+    color: #41d3bd;
+}
+.text_green{
+    color: #87d845;
+}
+.text_lime{
+    color: #ffd140;
+}
+.text_warning{
+    color: #ffab40;
+}
+.btn_heading{
+    font-size: 25px;
+}
+.good_test_div>div{
+    width: 20%;
+    padding-bottom: 10px;
+}
+.good_test_div>div:hover{
+    cursor: pointer;
+    background-color: #ddd;
+}
+.draw_div,.sequence_draw_div{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.circle {
+    position: relative;
+    border-radius: 50%;
+    width: 6em;
+    height: 5em;
+    padding-top: 5em;
+    border: 0.5em solid rgba(0,90,172,.3) ;
+    }
+.line_div{
+    width: 0.5em;
+    height: 1em;
+    background-color: #ddd;
+}
+.line_div_second{
+    width: 0.5em;
+    height: 3em;
+    background-color: #ddd;
+}
+.pending_div{
+    display: flex;
+    height: 2em;
+    width: 100em;
+    background: repeating-linear-gradient(135deg,rgba(0,90,172,.15),rgba(0,90,172,.15) 10px,#f7f7f7 0,#f7f7f7 20px);
+}
+.w_h-100{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
+.w-14{
+    width: 14.28%;
+}
+@media (min-width:480px){
+    .over_sapn{
+        font-size: 10px;
+    }
+    
+}
+@media (min-width:768px){
+    .over_sapn{
+        font-size: 12px;
+    }
+}
+.table{
+    border: none;
+    padding: 5px;
+    background-color: #ffffff;
+    box-shadow: 1px 1px 1px 1px silver;
+}
+.select_overview{
+    width: 100%;
+    border: none;
+    background-color: #eee;
+}
 
 // 
+
+
+// sequence 
+
+.sequence_btn_div{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.sequence_btn{
+    display: flex;
+    // justify-content: center;
+    // align-items: center;
+    background-color:#ff4081;
+    color: white;
+    font-size: 15px;
+}
+.sequence_btn:hover{
+    opacity: 0.5;
+    color: white;
+}
+.Sequence_div{
+    background-color: #f5f5f5;;
+    padding: 10px;
+    width: 100%;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+.sequence_circle{
+    position: relative;
+    border-radius: 50%;
+    width: 3em;
+    height: 3em;
+    padding-top: 2em;
+    border: 0.2em solid silver;
+}
+.Recipients_details{
+    text-align: center;
+}
+.Recipients_details:hover{
+    background-color: silver;
+}
+.align-right{
+    height: 20%;
+    display: flex;
+    justify-content: flex-end;
+}
+.w-h-25{
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+
+
 
 // Apps&Crm
 
@@ -195,6 +412,7 @@
 .native_link{
     color: black;
 }
+
 .native_media_div:hover{
     color: black;
     border: 4px solid blue;
