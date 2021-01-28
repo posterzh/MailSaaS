@@ -480,17 +480,25 @@ class GetCampaignOverview(APIView):
         return Response(resp)
     
 
-class AllRecipientView(generics.ListAPIView):
+class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
 
     """  For View  all Recipients """
 
     permission_classes = (permissions.IsAuthenticated,)
 
-    def get(self, request, *args,**kwargs):
+    def get(self, request, pk, format=None):
 
-        campEmail = CampaignRecipient.objects.filter(campaign=request.data['campaign'])
+        campEmail = CampaignRecipient.objects.filter(campaign=pk)
         campEmailserializer = CampaignEmailSerializer(campEmail, many = True)
         return Response(campEmailserializer.data)
+    
+    def put(self, request,pk, formate = None):
+        for rec_id in request.data:
+            campEmail = CampaignRecipient.objects.get(id=rec_id)
+            campEmail.unsubscribe = True
+            campEmail.save()
+        return Response("DOne")
+
 
 class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
 
@@ -787,7 +795,7 @@ class ProspectsView(generics.ListAPIView):
 
 
 class ProspectsCampaignView(generics.ListAPIView):
-    
+
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, pk, *args, **kwargs):
