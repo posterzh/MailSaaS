@@ -5,7 +5,7 @@ from .models import Campaign, Campaign_email, Follow_up_email, Drip_email, On_Li
 
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
-    list_display = ('title', 'fromAddress','assigned', 'csvFile_op1', 'created_date_time', 'trackOpens', 'trackLinkClick', 'scheduleThisSend', 'scheduleDate', 'scheduleTime','termsAndLaws', 'isActiveCampaign')
+    list_display = ('title', 'fromAddress','assigned', 'csvFile_op1', 'created_date_time', 'trackOpens', 'trackLinkClick', 'scheduleThisSend', 'scheduleDate', 'scheduleTime','termsAndLaws', 'campaign_status')
 
 
 # admin.site.register(LeadType)
@@ -13,7 +13,7 @@ class CampaignAdmin(admin.ModelAdmin):
 
 @admin.register(Campaign_email)
 class Campaign_emailAdmin(admin.ModelAdmin):
-    list_display = ('campaign', 'email', 'subject', 'emailBody','sent', 'leads','replies', 'opens', 'bounces', 'leadStatus')
+    list_display = ('campaign', 'email', 'subject', 'emailBody','sent', 'leads','replies', 'opens', 'bounces', 'leadStatus','reciepent_status','unsubscribe')
 
 
 @admin.register(Follow_up_email)

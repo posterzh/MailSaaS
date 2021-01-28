@@ -17,21 +17,18 @@ class Campaign(models.Model):
     scheduleDate = models.DateField(blank=True, null=True)
     scheduleTime = models.TimeField(blank=True, null=True)
     termsAndLaws = models.BooleanField(default=False)
-    isActiveCampaign = models.BooleanField(default=False)
-
-
-
+    campaign_status = models.BooleanField(default=False)    #Start Campaign or Pause Campaign
 
     def __str__(self):
         return self.title
 
     
 LEAD_TYPE =( 
-    ("none", "none"), 
-    ("openLead", "openLead"), 
-    ("wonLead", "wonLead"), 
-    ("lostLead", "lostLead"), 
-    ("ignoredLead", "ignoredLead"), 
+    ("none", "None"), 
+    ("openLead", "Open Lead"), 
+    ("wonLead", "Won Lead"), 
+    ("lostLead", "Lost Lead"), 
+    ("ignoredLead", "Ignored Lead"),
 ) 
 class Campaign_email(models.Model):
     campaign = models.ForeignKey('Campaign', on_delete=models.CASCADE)
@@ -45,8 +42,11 @@ class Campaign_email(models.Model):
     leads = models.BooleanField(default=False)
     replies = models.BooleanField(default=False)
     opens = models.BooleanField(default=False)
+    has_link_clicked = models.BooleanField(default=False)
     bounces = models.BooleanField(default=False)
     leadStatus = models.CharField(max_length=32,choices=LEAD_TYPE,default='none',blank = True, null = True)
+    reciepent_status = models.BooleanField(default=False)    #Start Campaign or Pause Reciepent
+    unsubscribe = models.BooleanField(default=False)
 
 
     def __str__(self):

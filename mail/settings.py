@@ -14,7 +14,6 @@ import os
 import datetime 
 # from decouple import config
 from decouple import config
-from dotenv import load_dotenv
 from pathlib import Path  # Python 3.6+ only
 env_path = Path('.') / '.env'
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -135,7 +134,7 @@ DATABASES = {
         'USER': config('DATABASE_USER'),
         'PASSWORD': config('DATABASE_PASSWORD'),
         'HOST': config('DATABASE_HOST'),
-        'PORT':5433,
+        'PORT':config('DATABASE_PORT'),
     }
 }
 
