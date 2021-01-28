@@ -21,6 +21,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.sites.models import Site
 from django.conf import settings
+import re
 
 
 
@@ -302,22 +303,24 @@ class create_campaign_send(APIView):
                         base_open_tracking_url="http://localhost:8000/campaign/email/open/",
                         webhook_url="http://localhost:8000/campaign/email/open/", 
                         include_webhook_url=True
-                    )
+                        )
                     
                     # print("oo = ",open_tracking_url)
-                    import re
+                    
                     email_body_links = re.findall(r'(https?://\S+)', campemail.emailBody)
                     if email_body_links:
                         print("Hai Bhai hai")
                         # print("click_tracking_urllllllllll ",click_tracking_url)
                         emailData = campemail.emailBody
                         for link in email_body_links:
+                            print("linkkkkk ", link)
                             new_link = pytracking.get_click_tracking_url(
-                                "http://localhost:8000/campaign/email/click/?query=value", {"campEmailId": campemail.id, "campaign": campemail.campaign.id},
-                                base_click_tracking_url=link,
+                                link, {"campEmailId": campemail.id, "campaign": campemail.campaign.id},
+                                base_click_tracking_url="http://localhost:8000/campaign/email/click/",
                                 webhook_url="http://localhost:8000/campaign/email/click/", include_webhook_url=True)
                             # new_link = link+"/1234567890"
                             emailData = emailData.replace(link, new_link)
+                            # +"/?redirect_uri="+ link
                     else:
                         print("nahi h bhai")
                         emailData = campemail.emailBody + "<img width=0 height=0 src='"+open_tracking_url+"' />"
@@ -451,7 +454,17 @@ class TrackEmailClick(APIView):
     permission_classes = (permissions.AllowAny,)
     def get(self, request, format=None, id=None):
         
-        print("yoooooooooooooooooo ")
+        print("yoooooooooooooooooo ", request)
+
+        print(settings.SITE_URL + "/campaign/email/click/")
+        
+        full_url = settings.SITE_URL + request.get_full_path()
+
+        print("full_urlfull_urlfull_url",full_url)
+        tracking_result = pytracking.get_open_tracking_result(
+            full_url, base_click_tracking_url= settings.SITE_URL + "/campaign/email/click/")
+
+        print("tracking_resultttttt ",tracking_result)
         # full_url = settings.SITE_URL + request.get_full_path()
 
         # # print("fulllll urllll ",full_url)
@@ -459,9 +472,9 @@ class TrackEmailClick(APIView):
         # tracking_result = pytracking.get_open_tracking_result(
         #     full_url, base_open_tracking_url = settings.SITE_URL + "campaign/email/open/")
 
-        # # print("tracking_resultttttttttt ",tracking_result)
-        # # print("tracking_resultttttttttt tracking_result.metadata ",tracking_result.metadata)
-        # # print("tracking_resultttttttttt webhook_url ",tracking_result.webhook_url)
+        print("tracking_resultttttttttt ",tracking_result)
+        print("tracking_resultttttttttt tracking_result.metadata ",tracking_result.metadata)
+        print("tracking_resultttttttttt webhook_url ",tracking_result.webhook_url)
 
         # trackData = tracking_result.metadata
         # print(trackData)

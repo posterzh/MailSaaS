@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path('email/open/<slug:id>', views.TrackEmailOpen.as_view(), name='track_email_open'),
-    path('email/click', views.TrackEmailClick.as_view(), name='track_email_click'),
+    path('email/click/<slug:id>/', views.TrackEmailClick.as_view(), name='track_email_click'),
     path('start/', views.create_campaign_start.as_view(), name='create_campaign_start'),
     path('recipients/', views.create_campaign_recipients.as_view(), name='create_campaign_recipients'),
     path('message/', views.create_campaign_message.as_view(), name='create_campaign_message'),
