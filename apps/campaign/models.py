@@ -5,7 +5,7 @@ from apps.users.models import CustomUser
 class Campaign(models.Model):
     title = models.CharField(max_length=200)
     fromAddress = models.CharField(max_length=200)
-    full_name = models.CharField(max_length=200)
+    full_name = models.CharField(max_length=200, blank=True, null=True)
     csvFile_op1 = models.FileField(upload_to='csv_uploads/', blank=True, null=True)
     created_date_time = models.DateTimeField(auto_now=True)
     update_date_time = models.DateTimeField(auto_now=True)
@@ -17,9 +17,7 @@ class Campaign(models.Model):
     scheduleDate = models.DateField(blank=True, null=True)
     scheduleTime = models.TimeField(blank=True, null=True)
     termsAndLaws = models.BooleanField(default=False)
-    isActiveCampaign = models.BooleanField(default=False)
-
-
+    campaign_status = models.BooleanField(default=False)    #Start Campaign or Pause Campaign
 
 
     def __str__(self):
@@ -41,12 +39,14 @@ class Campaign_email(models.Model):
     company_name = models.CharField(max_length=1000, blank=True, null=True)
     role = models.CharField(max_length=1000, blank=True, null=True)
     emailBody = models.TextField(blank=True, null=True)
+    reciepent_status = models.BooleanField(default=False)    #Start Campaign Reciepent or Pause Campaign Reciepent
     sent = models.BooleanField(default=False)
     leads = models.BooleanField(default=False)
     replies = models.BooleanField(default=False)
     opens = models.BooleanField(default=False)
     bounces = models.BooleanField(default=False)
     leadStatus = models.CharField(max_length=32,choices=LEAD_TYPE,default='none',blank = True, null = True)
+    unsubscribe = models.BooleanField(default=False)
 
 
     def __str__(self):

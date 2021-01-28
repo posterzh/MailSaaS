@@ -60,7 +60,7 @@ THIRD_PARTY_APPS = [
 
     'rest_framework',
     'celery_progress',
-    'corsheaders',
+    # 'corsheaders',
     # stripe integration
     'djstripe',
 ]
