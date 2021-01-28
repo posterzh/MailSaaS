@@ -784,3 +784,23 @@ class ProspectsView(generics.ListAPIView):
             queryset = CampaignRecipient.objects.filter(campaign__assigned=request.user.id)
         serializer = CampaignEmailSerializer(queryset,many=True)
         return Response(serializer.data)
+
+
+class ProspectsCampaignView(generics.ListAPIView):
+    
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, pk, *args, **kwargs):
+        queryset = CampaignRecipient.objects.get(id=pk)
+        data = {
+                'campaign':queryset.campaign.title,
+                'email':queryset.email,
+                'full_name':queryset.full_name,
+                'sent':queryset.sent,
+                'lead_status':queryset.lead_status,
+                'opens':queryset.opens,
+                'has_link_clicked':queryset.has_link_clicked,
+                'replies':queryset.replies,
+                'created_date':queryset.created_date,
+            }
+        return Response(data)
