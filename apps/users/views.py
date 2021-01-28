@@ -6,7 +6,7 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from .forms import CustomUserChangeForm, UploadAvatarForm
 from .helpers import require_email_confirmation, user_has_confirmed_email_address
-from .models import CustomUser, MailsaasType
+from .models import CustomUser
 from rest_framework import generics
 from rest_framework import permissions
 from apps.users.serializer import LoginSerilizer,RegisterSerializer,TokenSerializer,UserSettingSerilizer,ChangePasswordSerializer

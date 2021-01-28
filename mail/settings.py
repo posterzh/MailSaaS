@@ -67,6 +67,7 @@ PROJECT_APPS = [
     'apps.users.apps.UserConfig',
     'apps.web',
     'apps.campaign',
+    'apps.campaignschedule.apps.CampaignscheduleConfig',
     'apps.teams.apps.TeamConfig',
     'apps.intigration',
     
@@ -126,6 +127,13 @@ DATABASES = {
         'PORT': config('DATABASE_PORT'),
     }
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_USE_SSL = config('EMAIL_USE_SSL')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD =config('EMAIL_HOST_PASSWORD')
 
 
 
@@ -256,8 +264,18 @@ REST_FRAMEWORK = {
 
 
 # Celery setup (using redis)
+# Celery setup (using redis)
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT=['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'django-db'
+# CELERY_RESULT_BACKEND = 'django-cache'
+CELERY_TASK_TRACK_STARTED = True
+
+CELERY_IMPORTS = (
+    'apps.campaignschedule.tasks'
+)
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -344,5 +362,5 @@ JWT_AUTH = {
     'JWT_AUTH_COOKIE': None,
 }
 
-SLACK_CLIENT_ID = config('SLACK_CLIENT_ID')
-SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
+# SLACK_CLIENT_ID = config('SLACK_CLIENT_ID')
+# SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')

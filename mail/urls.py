@@ -28,6 +28,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('users/', include('apps.users.urls')),
     path('subscriptions/', include('apps.subscriptions.urls')),
+    path('campaignschedule/',include('apps.campaignschedule.urls')),
     path('campaign/', include('apps.campaign.urls')),
     path('teams/', include('apps.teams.urls')),
 
