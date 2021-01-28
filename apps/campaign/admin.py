@@ -1,36 +1,36 @@
 from django.contrib import admin
 
-from .models import Campaign, Campaign_email, Follow_up_email, Drip_email, On_Link_Click,CampaignLeadCatcher
+from .models import Campaign, CampaignRecipient, FollowUpEmail, DripEmailModel, EmailOnLinkClick,CampaignLeadCatcher
 
 
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
-    list_display = ('title', 'fromAddress','assigned', 'csvFile_op1', 'created_date_time', 'trackOpens', 'trackLinkClick', 'scheduleThisSend', 'scheduleDate', 'scheduleTime','termsAndLaws', 'campaign_status')
+    list_display = ('title', 'from_address','assigned', 'csvfile_op1', 'created_date_time', 'track_opens', 'track_linkclick', 'schedule_send', 'schedule_date', 'schedule_time','terms_and_laws', 'campaign_status')
 
 
 # admin.site.register(LeadType)
 
 
-@admin.register(Campaign_email)
-class Campaign_emailAdmin(admin.ModelAdmin):
-    list_display = ('campaign', 'email', 'subject', 'emailBody','sent', 'leads','replies', 'opens', 'bounces', 'leadStatus','reciepent_status','unsubscribe')
+@admin.register(CampaignRecipient)
+class CampaignRecipientAdmin(admin.ModelAdmin):
+    list_display = ('campaign', 'email', 'subject', 'email_body','sent', 'leads','replies', 'opens', 'bounces', 'lead_status','reciepent_status','unsubscribe')
 
 
-@admin.register(Follow_up_email)
-class CampaignFollow_up_emailAdmin(admin.ModelAdmin):
-    list_display = ('campaign', 'waitDays', 'subject', 'emailBody')
+@admin.register(FollowUpEmail)
+class CampaignFollowUpEmailAdmin(admin.ModelAdmin):
+    list_display = ('campaign', 'waitDays', 'subject', 'email_body')
 
 
-@admin.register(Drip_email)
-class CampaignDrip_emailAdmin(admin.ModelAdmin):
-    list_display = ('campaign', 'waitDays', 'subject', 'emailBody')
+@admin.register(DripEmailModel)
+class CampaignDripEmailModelAdmin(admin.ModelAdmin):
+    list_display = ('campaign', 'waitDays', 'subject', 'email_body')
 
 
-@admin.register(On_Link_Click)
-class CampaignOn_Link_ClickAdmin(admin.ModelAdmin):
-    list_display = ('campaign', 'waitDays', 'url', 'subject', 'emailBody')
+@admin.register(EmailOnLinkClick)
+class EmailOnLinkClickAdmin(admin.ModelAdmin):
+    list_display = ('campaign', 'waitDays', 'url', 'subject', 'email_body')
 
 
 @admin.register(CampaignLeadCatcher)
 class Campaign_Lead_Catcher(admin.ModelAdmin):
-    list_display = ('campaign', 'assigned', 'leadCatcherRecipient', 'of_times')
+    list_display = ('campaign', 'assigned', 'leadcatcher_recipient', 'of_times')
