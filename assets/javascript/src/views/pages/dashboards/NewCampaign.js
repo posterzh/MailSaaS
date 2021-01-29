@@ -5,6 +5,7 @@ import { useState } from 'react';
 import classnames from 'classnames';
 import { container } from 'webpack';
 
+
 // const Prospects = (props) => {
 //     const [activeTab, setActiveTab] = useState('1');
 //     const toggle = tab => {
@@ -31,7 +32,7 @@ class NewCampaign extends Component {
         const { activeTab } = this.state;
         return (
             <div>
-                {/* <Container fluid >
+                <Container fluid >
                     <Row style={{ display: "flex" }}>
                         <Col className="logo">
                             <img
@@ -54,10 +55,11 @@ class NewCampaign extends Component {
                             <Nav><NavItem><NavLink >START</NavLink></NavItem>
                                 <NavItem><NavLink >RECIEPIENTS</NavLink></NavItem>
                                 <NavItem><NavLink >COMPOSE</NavLink></NavItem>
-                                <NavItem><NavLink className={classnames({ active: activeTab === '2' })} onClick={(e) => {alert('msg'), this.navvar(2) }}>SEQUENCE</NavLink></NavItem>
+                                <NavItem><NavLink className={classnames({ active: activeTab === '2' })} onClick={(e) => { alert('msg'), this.navvar(2) }}>SEQUENCE</NavLink></NavItem>
                                 <NavItem><NavLink >PREVIEW</NavLink></NavItem>
                                 <NavItem><NavLink >OPTIONS</NavLink></NavItem>
-                                <NavItem><NavLink >SEND</NavLink></NavItem></Nav>                        </Col>
+                                <NavItem><NavLink >SEND</NavLink></NavItem></Nav>
+                        </Col>
                     </Row>
                 </Container>
                 <Container fluid>
@@ -82,16 +84,6 @@ class NewCampaign extends Component {
                         </Col>
                     </Row>
                 </Container>
-                <Container>
-                    <Row>
-                        <Col>
-                            <Row>Add recipients to your campaign</Row>
-                            <Row>gfhjbklm;hjkl;</Row>
-                            <Row><Button>Next</Button></Row>
-                        </Col>
-                    </Row>
-
-                </Container> */}
                 <Container fluid>
                     <Row>
                         <Col>Drop in your first list of recipients
@@ -99,39 +91,41 @@ class NewCampaign extends Component {
                     </Row>
                     <Row>
                         <Col md="6" className="receipentlist_box">
-                            <div  className="receipentlist_data_box" >
-                                <div>
-                                    <span className="option1">OPTION #1</span>
-                                    <span className="csv_logo"><i class="fa fa-file-csv"></i></span>
-                                    <span className="csv_logo_text">Drop a CSV file here</span>
-                                    <span className="choose_option"> (<a href="">or choose one</a>)</span>
-                                </div>
-                                <div className="csv_note">
-                                    Campaigns are limited to 5k recipients; uploads to 1MB.
+                            <div className="receipentlist_data_box" >
+                                <div className="option1_container">
+                                    <div>
+                                        <span className="option1">OPTION #1</span>
+                                        <span className="csv_logo"><i class="fa fa-file-csv"></i></span>
+                                        <span className="csv_logo_text">Drop a CSV file here</span>
+                                        <span className="choose_option"> (<a href="">or choose one</a>)</span>
+                                    </div>
+                                    <div className="csv_note">
+                                        Campaigns are limited to 5k recipients; uploads to 1MB.
                                     <i class="fa fa-file-csv"></i>
+                                    </div>
                                 </div>
                                 <div>
-                                <span className="option1">OPTION #2</span>
-                                <span className="textarea"><textarea placeholder="type here"></textarea></span>
+                                    <span className="option1">OPTION #2</span>
+                                    <span className="textarea"><textarea placeholder="type here"></textarea></span>
                                 </div>
                                 <div>
-                                <span className="option1">OPTION #3</span>
-                                <span className="input_box_csv"><input></input></span>
+                                    <span className="option1">OPTION #3</span>
+                                    <span className="input_box_csv"><input></input></span>
                                 </div>
-                                <div style={{display:"flex"}}>
-                                <div style={{display:"flex",flexDirection:"column"}}>
-                                <span className="option1">OPTION #4</span>
-                                <span className="Beta" >BETA</span>
-                                </div>
-                                <div>
-                                <span><Button className="import_button">Import form app</Button></span>
-                                </div>
+                                <div style={{ display: "flex" }}>
+                                    <div style={{ display: "flex", flexDirection: "column" }}>
+                                        <span className="option1">OPTION #4</span>
+                                        <span className="Beta" >BETA</span>
+                                    </div>
+                                    <div>
+                                        <span><Button className="import_button">Import form app</Button></span>
+                                    </div>
                                 </div>
                             </div>
                         </Col>
                     </Row>
-
                 </Container>
+                
             </div>
         )
     }

@@ -20010,3 +20010,105 @@ button .import_button {
   border-bottom: 1px solid black;
   width: 300px; }
 
+.dashboard_title {
+  display: flex;
+  flex-Direction: column; }
+
+.main_title, .sub_title, .New_campaign_button {
+  justify-content: center; }
+
+.option_note {
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: -.02em;
+  opacity: .54;
+  font-size: 22px;
+  margin: 25px 0 55px;
+  text-align: center;
+  color: #333333;
+  display: flex;
+  justify-content: center; }
+
+.track_option, .track_line, .schedule, .time_zone {
+  color: #333;
+  font-size: 17px;
+  font-family: roboto;
+  padding-left: 5px; }
+
+.sending_calendar {
+  font-size: 12px;
+  color: #005aac; }
+
+.time_container {
+  margin-left: 15px;
+  margin-top: 5px; }
+
+.Leadcatcher_settingdiv {
+  margin-top: 30px; }
+
+.leadcatchersetting_icon .fa {
+  color: #005aac; }
+
+.leadcatchersetting_icon {
+  display: flex; }
+
+.leadcatchersetting_icon {
+  color: #005aac; }
+
+.leadcatchersetting {
+  font-size: 14px;
+  color: #005aac;
+  margin-left: 10px; }
+
+.about_leadcatcher {
+  font-size: 13px;
+  color: #005aac; }
+
+.about_leadcatchericon {
+  color: #005aac;
+  display: flex; }
+
+.leadcatcher_note {
+  font-size: 15px;
+  text-align: left; }
+
+.select_boxdiv {
+  margin-top: 40px; }
+
+.selectbox_label {
+  color: blue;
+  font-size: 12px;
+  margin-top: 0px; }
+
+.select_box {
+  width: 478px;
+  border: none;
+  background: transparent;
+  border-bottom: 1px solid #ccc; }
+
+.date_picker, .time_picker {
+  margin-top: 24px;
+  width: 150px;
+  border: none;
+  background: transparent;
+  border-bottom: 1px solid #ccc; }
+
+.time_picker {
+  margin-left: 50px; }
+
+.recipient_condition {
+  font-size: 14px;
+  color: #666; }
+
+.recipient_replies {
+  margin-top: 12px; }
+
+.Recipient_label {
+  color: #005aac;
+  font-size: 14px; }
+
+.replies_selectbox > select {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background: transparent; }
+

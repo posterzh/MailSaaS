@@ -131,7 +131,7 @@ class Sidebar extends React.Component {
               {prop.icon ? (
                 <>
                   <i className={prop.icon} />
-                  <span className="nav-link-text">{prop.name}</span>
+                  <span className="nav-link-text" style={{fontSize: '.875rem', color: '#000000e6'}}>{prop.name}</span>
                 </>
               ) : prop.miniName ? (
                 <>
@@ -153,11 +153,12 @@ class Sidebar extends React.Component {
           className={this.activeRoute(prop.layout + prop.path)}
           key={key}
         >
-          <NavLinkRRD
-            to={prop.layout + prop.path}
+          <NavLink
+            href={prop.layout + prop.path}
             activeClassName=""
+            // className="nav-link"
             onClick={this.closeSidenav}
-            tag={NavLinkRRD}
+            // tag={NavLinkRRD}
           >
             {prop.icon !== undefined ? (
               <>
@@ -167,12 +168,12 @@ class Sidebar extends React.Component {
             ) : prop.miniName !== undefined ? (
               <>
                 <span className="sidenav-mini-icon"> {prop.miniName} </span>
-                <span className="sidenav-normal"> {prop.name} </span>
+                <span className="sidenav-normal" style={{color: 'black', fontSize: '.8125rem'}}> {prop.name} </span>
               </>
             ) : (
               prop.name
             )}
-          </NavLinkRRD>
+          </NavLink>
         </NavItem>
       );
     });
@@ -199,7 +200,6 @@ class Sidebar extends React.Component {
               { <img
                  alt={logo.imgAlt}
                 className="navbar-brand-img"
-                src={logo.imgSrc}
                 src={STATIC_FILES.mailsaas_logo}
             /> 
               }

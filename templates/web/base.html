@@ -9,7 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 {% include 'web/components/meta.html' %}
 {% include 'web/components/favicon.html' %}
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/fullcalendar/dist/fullcalendar.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/sweetalert2/dist/sweetalert2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/select2/dist/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/quill/dist/quill.core.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/nucleo/css/nucleo.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/@fortawesome/fontawesome-free/css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/site.css' %}">
+
     <script src="https://use.fontawesome.com/72135c02f1.js"></script>
     {% if GOOGLE_ANALYTICS_ID %}
         {% include 'web/components/google_analytics.html' %}

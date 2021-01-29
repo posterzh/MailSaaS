@@ -24,6 +24,12 @@ import { Line, Bar } from "react-chartjs-2";
 // reactstrap components
 // importing new campaign creation component
 import NewCampaign from "./NewCampaign"
+import Option from "./option"
+
+
+// importing routing module
+import { BrowserRouter, Route, Link, Switch } from 'react-router-dom'
+
 import {
   Badge,
   Button,
@@ -81,14 +87,18 @@ class Dashboard extends React.Component {
   };
   render() {
     return (
-     <div>
-       {/* <Container  className="dashboard_title">
-         <Row className="r1"><h1 className="Main-title">Welcome to MailSaaS</h1></Row>
-         <Row><h3>A simple solution for email outreach.</h3></Row>
-         <Row><Button>NEW CAMPAIGN</Button></Row>
-         </Container> */}
-         <NewCampaign/>
-       </div>
+      <div>
+          <Container fluid className="dashboard_title" style={{}}>
+            <Row className="main_title"><h1 className="Main-title">Welcome to MailSaaS</h1></Row>
+            <Row className="sub_title"><h3>A simple solution for email outreach.</h3></Row>
+            <Row className="New_campaign_button">
+              <Link strict to="/app/admin/new-campaign">
+                <Button>NEW CAMPAIGN</Button>
+              </Link>
+            </Row>
+          </Container>
+          < Option />
+      </div>
     );
   }
 }

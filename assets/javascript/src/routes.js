@@ -54,22 +54,33 @@ import Unsubscribes from "./views/pages/Unsubscribes/Unsubscribes";
 import Validation from "./views/pages/forms/Validation.js";
 import Vector from "./views/pages/maps/Vector.js";
 import Widgets from "./views/pages/Widgets.js";
-
-const routes = [
-  {
-    collapse: true,
-    name: "Dashboards",
-    icon: "ni ni-shop text-primary",
-    state: "dashboardsCollapse",
-    views: [
-      {
-        path: "/dashboard",
-        name: "Dashboard",
-        miniName: "D",
-        component: Dashboard,
-        layout: "/app/admin"
-      },
-    ]
+import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
+  
+  const routes = [
+    {
+      collapse: false,
+      name: "Dashboard",
+      icon: "ni ni-shop text-primary",
+      state: "",
+      layout: "/app/admin",
+      path:"/dashboard",
+      component: Dashboard,
+    // views: [
+    //   {
+    //     path: "/dashboard",
+    //     name: "Dashboard",
+    //     miniName: "D",
+    //     component: Dashboard,
+    //     layout: "/app/admin"
+    //   },
+    //   {
+    //     path: "/new-campaign",
+    //     name: "Dashboard",
+    //     miniName: "D",
+    //     component: NewCampaign,
+    //     layout: "/app/admin"
+    //   },
+    // ]
     
   },
 // for campaign
@@ -78,6 +89,13 @@ const routes = [
     name:"Campaign",
     icon: "ni ni-shop text-primary",
     views:[
+      {
+        path: "/new-campaign",
+        name: "Create Campaign",
+        miniName: "Ca",
+        component: NewCampaign,
+        layout: "/app/admin"
+      },
       {
         path: "/Campaign",
         name: "Campaign",
@@ -98,10 +116,8 @@ const routes = [
         miniName: "Sc",
         component: SendingCalender,
         layout: "/app/admin"
-      },
-     
+      } ,    
     ]
-
   },
 
   // for Prospects
@@ -116,7 +132,7 @@ const routes = [
         miniName: "pro",
         component: Prospects,
          layout: "/app/admin"
-      },
+      }
     ]
   },
 
@@ -180,7 +196,7 @@ const routes = [
       views:[
         {
           path: "/Apps&Crm",
-          name: "Apps&CRMs",
+          name: "Apps & CRMs",
           miniName: "A&C",
           component: AppsandCrm,
           layout:"/app/admin"
