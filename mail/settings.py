@@ -64,7 +64,6 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount.providers.google',
 
     'rest_framework',
-    
     'corsheaders',
     # stripe integration
     'djstripe',
@@ -99,7 +98,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+   
 ]
 
 ROOT_URLCONF = 'mail.urls'

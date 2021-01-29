@@ -11,13 +11,25 @@ from django.core.mail import EmailMultiAlternatives, send_mail
 from django.db.models import Q
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from django_filters import rest_framework as filters
+# from django_filters import rest_framework as filters
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import csv
 import datetime 
 from django.db.models import Q
+from datetime import datetime 
+from django.core.mail import send_mail
+import pytracking
+from django.core.mail import EmailMultiAlternatives
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.sites.models import Site
+from django.conf import settings
+import re
+
+
+
+
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
                      DripEmailModel, EmailOnLinkClick, FollowUpEmail)
@@ -284,9 +296,12 @@ class CreateCampaignSendView(APIView):
         campData["campaign_status"] = request.data["startCampaign"]
         campData["csvfile_op1"] = camp.csvfile_op1
         CampSerializer = CampaignSerializer(camp, data=campData)
+        if request.data["startCampaign"]:
+            camp.campaign_status = True
+        camp.save()
         if CampSerializer.is_valid():
             CampSerializer.save()
-            if not camp.schedule_send:
+            if (not camp.schedule_send) and camp.campaign_status:
                 campEmail = CampaignRecipient.objects.filter(campaign=pk)
                 
                 for campemail in campEmail:
@@ -297,48 +312,31 @@ class CreateCampaignSendView(APIView):
                         base_open_tracking_url="http://localhost:8000/campaign/email/open/",
                         webhook_url="http://localhost:8000/campaign/email/open/", 
                         include_webhook_url=True
-                    )
-                    print("oo = ",open_tracking_url)
-
-
+                        )
                     
-
-                    # full_url = open_tracking_url
-
-                    # print("full urlllll 222 ", full_url)
-
-                    # tracking_result = pytracking.get_open_tracking_result(
-                    #     full_url, base_open_tracking_url="http://localhost:8000/campaign/email/open/")
-
-                    # print("tracking_resultttttttttt222 ",tracking_result)
-                    # print("tracking_resultttttttttt tracking_result.metadata222 ",tracking_result.metadata)
-                    # print("tracking_resultttttttttt webhook_url2222 ",tracking_result.webhook_url)
-
+                    # print("oo = ",open_tracking_url)
                     
-                        
-                    # tracking_result = pytracking.get_open_tracking_result(
-                    #     open_tracking_url, base_click_tracking_url=open_tracking_url)
-
-                    # print("tttt = ",tracking_result)
-                    # send_webhook(tracking_result)
-
-                    # from cryptography.fernet import Fernet
-                    # key = Fernet.generate_key()
-
-                    # (pixel_byte_string, mime_type) = pytracking.get_open_tracking_pixel()
-
-                    # print("pixel_byte_string     ",pixel_byte_string)
-
-                    # Decode
-                    # tracking_result = pytracking.get_open_tracking_result(
-                    #     full_url, base_click_tracking_url="https://trackingdomain.com/path/",
-                    #     encryption_bytestring_key=key)
-
-                    emailData = campemail.email_body + "<img width=0 height=0 src='"+open_tracking_url+"' />"
-
+                    email_body_links = re.findall(r'(https?://\S+)', campemail.emailBody)
+                    if email_body_links:
+                        print("Hai Bhai hai")
+                        # print("click_tracking_urllllllllll ",click_tracking_url)
+                        emailData = campemail.emailBody
+                        for link in email_body_links:
+                            print("linkkkkk ", link)
+                            new_link = pytracking.get_click_tracking_url(
+                                link, {"campEmailId": campemail.id, "campaign": campemail.campaign.id},
+                                base_click_tracking_url="http://localhost:8000/campaign/email/click/",
+                                webhook_url="http://localhost:8000/campaign/email/click/", include_webhook_url=True)
+                            # new_link = link+"/1234567890"
+                            emailData = emailData.replace(link, new_link)
+                            # +"/?redirect_uri="+ link
+                    else:
+                        print("nahi h bhai")
+                        emailData = campemail.emailBody + "<img width=0 height=0 src='"+open_tracking_url+"' />"
+                    # print("emailData\n\n\n",emailData)
                     subject = campemail.subject
                     text_content = 'plain text body message.'
-                   
+                    # print("\n\n",emailData,"\n\n")
                     html_content = emailData
                     msg = EmailMultiAlternatives(subject, text_content, 'developer@externlabs.com', ['gauravsurolia@externlabs.com'])
 
@@ -346,6 +344,7 @@ class CreateCampaignSendView(APIView):
                     msg.send()
 
                     campemail.sent = True
+                    campemail.reciepent_status = True
                     campemail.save()
                     
                     # send_mail(
@@ -375,6 +374,9 @@ class CampaignView(generics.ListAPIView):
             campEmail = CampaignRecipient.objects.filter(campaign=camp.id)
             campEmailserializer = CampaignEmailSerializer(campEmail, many = True)
             resp = {
+                "camp_title": camp.title,
+                "camp_created_date_time": camp.created_date_time,
+                "assigned": camp.assigned.full_name,
                 "recipientCount": campEmail.count(),
                 "sentCount":0,
                 "leadCount": 0,
@@ -498,13 +500,14 @@ class TrackEmailOpen(APIView):
     permission_classes = (permissions.AllowAny,)
     def get(self, request, format=None, id=None):
         
+        # print("settings.SITE_URL = ",settings.SITE_URL, request.get_full_path())
 
         full_url = settings.SITE_URL + request.get_full_path()
 
         # print("fulllll urllll ",full_url)
 
         tracking_result = pytracking.get_open_tracking_result(
-            full_url, base_open_tracking_url="http://localhost:8000/campaign/email/open/")
+            full_url, base_open_tracking_url = settings.SITE_URL + "/campaign/email/open/")
 
         # print("tracking_resultttttttttt ",tracking_result)
         # print("tracking_resultttttttttt tracking_result.metadata ",tracking_result.metadata)
@@ -518,7 +521,51 @@ class TrackEmailOpen(APIView):
         campEmail.opens = True
         campEmail.save()
         return Response({"message":"Saved Successfully"})
-class GetCampaignOverview(APIView):
+
+
+class TrackEmailClick(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def get(self, request, format=None, id=None):
+        
+        print("yoooooooooooooooooo ", request)
+
+        print(settings.SITE_URL + "/campaign/email/click/")
+        
+        full_url = settings.SITE_URL + request.get_full_path()
+
+        print("full_urlfull_urlfull_url",full_url)
+        tracking_result = pytracking.get_open_tracking_result(
+            full_url, base_click_tracking_url= settings.SITE_URL + "/campaign/email/click/")
+
+        print("tracking_resultttttt ",tracking_result)
+        # full_url = settings.SITE_URL + request.get_full_path()
+
+        # # print("fulllll urllll ",full_url)
+
+        # tracking_result = pytracking.get_open_tracking_result(
+        #     full_url, base_open_tracking_url = settings.SITE_URL + "campaign/email/open/")
+
+        print("tracking_resultttttttttt ",tracking_result)
+        print("tracking_resultttttttttt tracking_result.metadata ",tracking_result.metadata)
+        print("tracking_resultttttttttt webhook_url ",tracking_result.webhook_url)
+
+        # trackData = tracking_result.metadata
+        # print(trackData)
+
+        # camp = Campaign.objects.get(id = trackData["campaign"])
+        # print("campaignnnnnnnnn ",camp)
+
+        # campEmail = Campaign_email.objects.get(id = trackData["campEmailId"])
+        # campEmail.opens = True
+        # campEmail.save()
+        # if camp.trackOpens:
+        #     counttracking = countTracking + 1
+
+     
+        return Response({"message":"Saved Successfully"})
+
+
+class Get_campaign_overview(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
 
