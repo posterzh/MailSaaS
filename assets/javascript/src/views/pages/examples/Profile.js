@@ -35,7 +35,7 @@ import {
   Col
 } from "reactstrap";
 // core components
-import ProfileHeader from "components/Headers/ProfileHeader.js";
+import ProfileHeader from "../../../components/Headers/ProfileHeader"
 
 class Profile extends React.Component {
   render() {
@@ -48,7 +48,7 @@ class Profile extends React.Component {
               <Card className="card-profile">
                 <CardImg
                   alt="..."
-                  src={require("assets/img/theme/img-1-1000x600.jpg")}
+                 src={STATIC_FILES.img1}
                   top
                 />
                 <Row className="justify-content-center">
@@ -58,7 +58,7 @@ class Profile extends React.Component {
                         <img
                           alt="..."
                           className="rounded-circle"
-                          src={require("assets/img/theme/team-4.jpg")}
+                          src={STATIC_FILES.team_4}
                         />
                       </a>
                     </div>
@@ -143,7 +143,7 @@ class Profile extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/bootstrap.jpg")}
+                              src={STATIC_FILE.bootstrap}
                             />
                           </a>
                         </Col>
@@ -168,7 +168,7 @@ class Profile extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/angular.jpg")}
+                              src={STATIC_FILES.angular}
                             />
                           </a>
                         </Col>
@@ -193,7 +193,7 @@ class Profile extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/sketch.jpg")}
+                              src={STATIC_FILES.sketch}
                             />
                           </a>
                         </Col>
@@ -218,7 +218,7 @@ class Profile extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/react.jpg")}
+                              src={STATIC_FILES.react}
                             />
                           </a>
                         </Col>
@@ -243,7 +243,7 @@ class Profile extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/vue.jpg")}
+                              src={STATIC_FILES.vue}
                             />
                           </a>
                         </Col>

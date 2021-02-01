@@ -27,7 +27,7 @@ import {
   Col
 } from "reactstrap";
 // core components
-import SimpleHeader from "components/Headers/SimpleHeader.js";
+import SimpleHeader from "../../../components/Headers/SimpleHeader";
 
 class Timeline extends React.Component {
   render() {
