@@ -47,6 +47,12 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.forms',
+    'celery_progress',
+    "django_celery_results",
+     
+    'django_crontab',
+
+    'django_celery_beat',
 ]
 
 # Put your third-party apps here
@@ -58,13 +64,10 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount.providers.google',
 
     'rest_framework',
-    'celery_progress',
-    'django_filters',
-
     'corsheaders',
     # stripe integration
     'djstripe',
-    'salesforce',
+    # 'salesforce',
 ]
 
 PEGASUS_APPS = [
@@ -77,6 +80,7 @@ PROJECT_APPS = [
     'apps.users.apps.UserConfig',
     'apps.web',
     'apps.campaign',
+    'apps.campaignschedule.apps.CampaignscheduleConfig',
     'apps.teams.apps.TeamConfig',
     'apps.intigration',
     
@@ -95,7 +99,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+   
 ]
 
 ROOT_URLCONF = 'mail.urls'
@@ -138,6 +142,7 @@ DATABASES = {
         'PORT':config('DATABASE_PORT'),
     }
 }
+
 
 
 
@@ -274,8 +279,18 @@ REST_FRAMEWORK = {
 
 
 # Celery setup (using redis)
+# Celery setup (using redis)
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT=['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'django-db'
+# CELERY_RESULT_BACKEND = 'django-cache'
+CELERY_TASK_TRACK_STARTED = True
+
+CELERY_IMPORTS = (
+    'apps.campaignschedule.tasks'
+)
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -378,8 +393,8 @@ EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
 
 
 # Slack Configuration
-VERIFICATION_TOKEN = config('VERIFICATION_TOKEN')
-OAUTH_ACCESS_TOKEN = config('OAUTH_ACCESS_TOKEN')
-BOT_USER_ACCESS_TOKEN = config('BOT_USER_ACCESS_TOKEN')
-CLIENT_ID = config('CLIENT_ID')
-CLIENT_SECRET = config('CLIENT_SECRET')
+# VERIFICATION_TOKEN = config('VERIFICATION_TOKEN')
+# OAUTH_ACCESS_TOKEN = config('OAUTH_ACCESS_TOKEN')
+# BOT_USER_ACCESS_TOKEN = config('BOT_USER_ACCESS_TOKEN')
+# CLIENT_ID = config('CLIENT_ID')
+# CLIENT_SECRET = config('CLIENT_SECRET')
