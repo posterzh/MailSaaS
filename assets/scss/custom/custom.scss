@@ -359,9 +359,103 @@
     align-items: center;
 }
 
+// setting
+.boxShadow{
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+.setting_div{
+    background-color: #ffffff;
+}
+.settingSendingInput{
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid#ddd;
+}
+.settingUnderline{
+    height: auto;
+    border-bottom: 1px solid #ddd;
+}
+.settingUnderline>p{
+    color: silver;
+}
 
 
-
+// Edit equence
+.display-6{
+    text-align: center;
+    font-weight: 100;
+}
+.EditTest{
+    border: none;
+    color: #888;
+    padding: 10px;
+}
+.EditTest:hover{
+    background-color: #ddd;
+}
+// .wrapper-class {
+//     display: flex;
+//     padding: 1rem;
+//     border: 1px solid #ccc;
+//   }
+// .editor-class {
+//     display: flex;
+//     // flex-direction: row;
+//     background-color:lightgray;
+//     padding: 1rem;
+//     border: 1px solid #ccc;
+//   }
+// .toolbar-class {
+//       display: flex;
+//     border: 1px solid #ccc;
+//   }
+.Editor_div{
+    margin-top: 10px;
+    height:300px;
+    width: 100%;
+    background-color: white;
+    border: 1px solid silver;
+}
+.editorDiv{
+    background-color: #f5f5f5;
+    border: 2px solid;
+}
+.WaitDiv{
+    width: 7em;
+    height: 5em;
+    border: 1px solid;
+    background-color: #ffffff;
+}
+.QuestionCircle{
+    color: blue;
+}
+.WaitInput{
+    border: none;
+    width: 100%;
+    appearance: none;
+}
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.alignRight{
+    // border: 1px solid;
+    
+    // margin-left:85px;
+}
+.Add_follow_up{
+    width: 100%;
+    height: 3em;
+    background-color:#EEE;
+    border: 1px dashed;
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+}
+.Add_follow_up:hover{
+    background-color: #ddd;
+}
 // Apps&Crm
 
 .main-view{
@@ -416,16 +510,6 @@
 .native_media_div:hover{
     color: black;
     border: 4px solid blue;
-}
-.native_add{
-    width: 20%;
-    height: 15%;
-    text-align: center;
-    font-size: 15px;
-    margin-bottom: 10px;
-}
-.native_add:hover{
-    background-color: gray;
 }
 .native_img{
     width: 43px;

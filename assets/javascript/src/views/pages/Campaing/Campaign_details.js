@@ -12,7 +12,7 @@ const Campaign_Details = (props) => {
 
   return (
 
-    <div style={{ background: '#eee' }}>
+    <div style={{ background: '#ffffff' }}>
       <Nav tabs>
         <NavItem><NavLink><i class="fa fa-chevron-left" aria-hidden="true"></i></NavLink></NavItem>
         <NavItem><NavLink className={classnames({ active: activeTab === '1' })} to="/Campaign_data" onClick={() => { toggle('1'); }}>OVERVIEW</NavLink></NavItem>
