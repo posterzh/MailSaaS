@@ -800,15 +800,30 @@ class ProspectsCampaignView(generics.ListAPIView):
 
     def get(self, request, pk, *args, **kwargs):
         queryset = CampaignRecipient.objects.get(id=pk)
+        
+        # resp = {
+        #         "recipientCount": queryset.count(),
+        #         "campaign":0,
+        #         "sent": 0,
+        #         }
+
         data = {
                 'campaign':queryset.campaign.title,
                 'email':queryset.email,
                 'full_name':queryset.full_name,
-                'sent':queryset.sent,
+                'sent':0,
                 'lead_status':queryset.lead_status,
-                'opens':queryset.opens,
-                'has_link_clicked':queryset.has_link_clicked,
-                'replies':queryset.replies,
+                'opens':0,
+                'has_link_clicked':0,
+                'replies':0,
                 'created_date':queryset.created_date,
             }
+        if queryset.sent:
+            data['sent'] = data['sent']+1
+        if queryset.opens:
+            data['opens'] = data['opens']+1
+        if queryset.has_link_clicked:
+            data['has_link_clicked'] = data['has_link_clicked']+1
+        if queryset.replies:
+            data['replies'] = data['replies']+1
         return Response(data)

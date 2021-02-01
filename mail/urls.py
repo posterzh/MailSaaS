@@ -30,7 +30,7 @@ urlpatterns = [
     path('subscriptions/', include('apps.subscriptions.urls')),
     path('campaign/', include('apps.campaign.urls')),
     path('teams/', include('apps.teams.urls')),
-
+    path('intigration/', include('apps.intigration.urls')),
     path('', include('apps.web.urls')),
     path('pegasus/', include('apps.pegasus.urls')),
     path('celery-progress/', include('celery_progress.urls')),

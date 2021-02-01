@@ -1,6 +1,8 @@
-from django.conf.urls import url
+from django.urls import path
 from . import views
+
+
+
 urlpatterns = [
-    # url('^$', views.index),
-    url('slack/oauth/', views.SocialLoginView.as_view()),
+    path('event/hook/', views.event_hook, name='event_hook'),
 ]

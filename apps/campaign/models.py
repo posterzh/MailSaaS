@@ -23,6 +23,7 @@ class Campaign(models.Model):
 
     
 LEAD_TYPE =( 
+
     ("none", "None"), 
     ("openLead", "Open Lead"), 
     ("wonLead", "Won Lead"), 
@@ -46,7 +47,10 @@ class CampaignRecipient(models.Model):
     lead_status = models.CharField(max_length=32,choices=LEAD_TYPE,default='none',blank = True, null = True)
     reciepent_status = models.BooleanField(default=False)    #Start Campaign or Pause Reciepent
     unsubscribe = models.BooleanField(default=False)
+    is_delete = models.BooleanField(default=False)
     created_date = models.DateTimeField(default=date.today,blank=True,null=True)
+    update_date_time = models.DateTimeField(default=date.today,blank=True,null=True)
+
 
 
     def __str__(self):

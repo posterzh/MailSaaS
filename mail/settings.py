@@ -64,6 +64,7 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     # stripe integration
     'djstripe',
+    'salesforce',
 ]
 
 PEGASUS_APPS = [
@@ -365,9 +366,20 @@ JWT_AUTH = {
 # SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
 
 
-EMAIL_HOST='sg3plcpnl0063.prod.sin3.secureserver.net'
-EMAIL_PORT=465
-EMAIL_USE_SSL=True
-EMAIL_HOST_USER='developer@externlabs.com'
-EMAIL_HOST_PASSWORD='developer@externlabs'
+#Mail_configuration
 
+EMAIL_HOST='sg3plcpnl0063.prod.sin3.secureserver.net'
+EMAIL_PORT=config('EMAIL_PORT')
+EMAIL_USE_SSL=config('EMAIL_USE_SSL')
+EMAIL_HOST_USER=config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
+
+
+
+
+# Slack Configuration
+VERIFICATION_TOKEN = config('VERIFICATION_TOKEN')
+OAUTH_ACCESS_TOKEN = config('OAUTH_ACCESS_TOKEN')
+BOT_USER_ACCESS_TOKEN = config('BOT_USER_ACCESS_TOKEN')
+CLIENT_ID = config('CLIENT_ID')
+CLIENT_SECRET = config('CLIENT_SECRET')
