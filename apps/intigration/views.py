@@ -23,7 +23,7 @@ def event_hook(request):
             return HttpResponse(status=200)
     if event_msg['type'] == 'message':
         user = event_msg['user']
-        print(user['username'])
+        print(user)
         channel = event_msg['channel']
 
         response_msg = ":wave:, Hello gaurav" #% user
