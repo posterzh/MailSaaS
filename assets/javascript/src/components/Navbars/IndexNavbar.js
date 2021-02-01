@@ -69,7 +69,7 @@ class AdminNavbar extends React.Component {
               <div className="navbar-collapse-header">
                 <Row>
                   <Col className="collapse-brand" xs="6">
-                    <Link to="/admin/dashboard">
+                    <Link to="/app/admin/dashboard">
                       <img
                         alt="..."
                         // src={require("assets/img/brand/blue.png")}

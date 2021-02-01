@@ -16,7 +16,7 @@ export default function Setting() {
                                     <option value='three'>three</option>
                                     <option value='four'>Four</option>
                                 </select>
-                                {/* <label className='filter_app mt-3'>From name</label><br></br> */}
+                                <label className='filter_app mt-3'>From name</label><br></br>
                                 <input type='text' placeholder='' className='settingSendingInput'></input>
                             </div>
                             <div className='p-3'>
@@ -58,7 +58,7 @@ export default function Setting() {
                                     <option value='three'>three</option>
                                     <option value='four'>Four</option>
                                 </select>
-                                {/* <label className='filter_app mt-3'>From name</label><br></br> */}
+                                <label className='filter_app mt-3'>From name</label><br></br>
                                 <input type='text' placeholder='' className='settingSendingInput'></input>
                             </div>
                             <div className='p-3'>
@@ -71,3 +71,5 @@ export default function Setting() {
         </div>
     )
 }
+
+

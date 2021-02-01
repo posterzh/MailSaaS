@@ -1,16 +1,7 @@
-// import React, { Component } from 'react'
+import React, { Component } from 'react'
+// import Col from 'reactstrap/lib/Col'
+import { Container, Row, Col,Card} from 'reactstrap'
 
-// export class AppsandCrm extends Component {
-//     render() {
-//         return (
-//             <div>
-                
-//             </div>
-//         )
-//     }
-// }
-
-// export default AppsandCrm
 
 
 import React, { Component } from 'react'

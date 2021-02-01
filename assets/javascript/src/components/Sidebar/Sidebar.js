@@ -225,11 +225,11 @@ class Sidebar extends React.Component {
         <div className="navbar-inner">
           <Collapse navbar isOpen={true}>
             <Nav navbar>{this.createLinks(routes)}</Nav>
-            {/* <hr className="my-3" /> */}
+            {/* <hr className="my-3" />
             <h6 className="navbar-heading p-0 text-muted">
               {/* <span className="docs-normal">Documentation</span> */}
               {/* <span className="docs-mini">D</span> */}
-            </h6>
+            {/* </h6> */}
             {/* <Nav className="mb-md-3" navbar> */}
               {/* <NavItem>
                 <NavLink

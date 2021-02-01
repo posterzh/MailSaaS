@@ -25,7 +25,7 @@ import Campaign from "./views/pages/Campaing/Campaign";
 import Cards from "./views/pages/components/Cards.js";
 import Charts from "./views/pages/Charts.js";
 import Components from "./views/pages/forms/Components.js";
-import ConversionTracking from "./views/pages/Extension/ConversionTracking";
+// import ConversionTracking from "./views/pages/Extension/ConversionTracking";
 import Dashboard from "./views/pages/dashboards/Dashboard.js";
 import Elements from "./views/pages/forms/Elements.js";
 import Google from "./views/pages/maps/Google.js";
@@ -43,7 +43,7 @@ import ReactBSTables from "./views/pages/tables/ReactBSTables.js";
 import Redeem from "./views/pages/TeamSettings/Redeem";
 import Register from "./views/pages/examples/Register.js";
 // import RTLSupport from "./views/pages/examples/RTLSupport.js";
-import SendingCalender from "./views/pages/Campaing/SedingCalender";
+// import SendingCalender from "./views/pages/Campaing/SedingCalender";
 import Setting from "./views/pages/TeamSettings/Setting"
 import Sortable from "./views/pages/tables/Sortable.js";
 import Tables from "./views/pages/tables/Tables.js";
@@ -54,33 +54,32 @@ import Unsubscribes from "./views/pages/Unsubscribes/Unsubscribes";
 import Validation from "./views/pages/forms/Validation.js";
 import Vector from "./views/pages/maps/Vector.js";
 import Widgets from "./views/pages/Widgets.js";
+import ConversionTracking from "./views/pages/Extension/ConversionTracking";
+import SendingCalender from "./views/pages/Campaing/SedingCalender";
 import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
-  
-  const routes = [
-    {
-      collapse: false,
-      name: "Dashboard",
-      icon: "ni ni-shop text-primary",
-      state: "",
-      layout: "/app/admin",
-      path:"/dashboard",
-      component: Dashboard,
-    // views: [
-    //   {
-    //     path: "/dashboard",
-    //     name: "Dashboard",
-    //     miniName: "D",
-    //     component: Dashboard,
-    //     layout: "/app/admin"
-    //   },
-    //   {
-    //     path: "/new-campaign",
-    //     name: "Dashboard",
-    //     miniName: "D",
-    //     component: NewCampaign,
-    //     layout: "/app/admin"
-    //   },
-    // ]
+
+const routes = [
+  {
+    collapse: true,
+    name: "Dashboards",
+    icon: "ni ni-shop text-primary",
+    state: "dashboardsCollapse",
+    views: [
+      {
+        path: "/dashboard",
+        name: "Dashboard",
+        miniName: "D",
+        component: Dashboard,
+        layout: "/app/admin"
+      },
+      // {
+      //   path: "/alternative-dashboard",
+      //   name: "Alternative",
+      //   miniName: "A",
+      //   component: Alternative,
+      //   layout: "/app/admin"
+      // }
+    ]
     
   },
 // for campaign
@@ -152,7 +151,7 @@ import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
         name: "MailAccount",
         miniName: "Ma",
         component: MailAccount,
-        layout:"/app/admin"
+        layout: "/app/admin"
       },
     ]
   },
@@ -175,22 +174,19 @@ import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
       name: "Teammates",
       miniName: "Tm",
       component: Teammates,
-      layout: "/app/admin"
-    },
+      layout: "/app/admin "},
     {
       path: "/Billing",
       name: "Billing",
       miniName: "B",
       component: Billing,
-      layout: "/app/admin"
-    },
+      layout: "/app/admin "},
     {
       path: "/Redeem",
       name: "Redeem",
       miniName: "R",
       component: Redeem,
-      layout: "/app/admin"
-    },
+      layout: "/app/admin"},
     ]
   },
 
@@ -206,8 +202,8 @@ import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
           name: "Apps & CRMs",
           miniName: "A&C",
           component: AppsandCrm,
-          layout:"/app/admin"
-        },
+          layout: "/app/admin"
+         },
         {
           path: "/Api",
           name: "API",
@@ -220,7 +216,7 @@ import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
           name: "ConversionTracking",
           miniName: "CT",
           component: ConversionTracking,
-          layout:"/app/admin"
+          layout: "/app/admin"
         }
       ]
   },
@@ -281,14 +277,14 @@ import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
         name: "Timeline",
         miniName: "T",
         component: Timeline,
-        layout: "/admin"
+        layout: "/app/admin"
       },
       {
         path: "/profile",
         name: "Profile",
         miniName: "P",
         component: Profile,
-        layout: "/admin"
+        layout: "/app/admin"
       },
       {
         // path: "/rtl-support",

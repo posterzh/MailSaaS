@@ -1,19 +1,6 @@
-// import React, { Component } from 'react'
-
-// export class Prospects extends Component {
-//     render() {
-//         return (
-//             <div>
-//                 <h2 style={{color:"blue"}}>prospects page</h2>
-//             </div>
-//         )
-//     }
-// }
-
-// export default Prospects
-
 import React, { Component } from 'react'
 import { Container, Row, Col, Label, Input, Table, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
+
 class Prospects extends Component {
     constructor() {
         super();
@@ -22,6 +9,7 @@ class Prospects extends Component {
             value: 'Any'
         };
     }
+
     dropdownToggle = () => {
         this.setState({
             dd1: !this.state.dd1
@@ -33,7 +21,9 @@ class Prospects extends Component {
             value: e.target.innerText
         });
     }
+
     render() {
+
         return (
             <div>
                 <Container fluid className='mt-4' >
@@ -49,6 +39,7 @@ class Prospects extends Component {
                                 </select>
                             </div>
                         </Col>
+
                     </Row>
                     <Row className='mt-4'>
                         <Col md='1' className=' prospect_details'><h1>33</h1><span >TOTAl</span></Col>
@@ -70,6 +61,7 @@ class Prospects extends Component {
                                     </div>
                                 </div>
                             </div>
+
                         </Col>
                         <Col md='4'>
                             <div className='grand_parent mt-4'>

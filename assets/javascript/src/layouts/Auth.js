@@ -66,7 +66,7 @@ class Auth extends React.Component {
           <AuthNavbar />
           <Switch>
             {this.getRoutes(routes)}
-            <Redirect from="*" to="/pegasus/auth/login" />
+            <Redirect from="*" to="/app/auth/login" />
           </Switch>
         </div>
         <AuthFooter />
