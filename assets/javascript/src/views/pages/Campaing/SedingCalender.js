@@ -57,11 +57,11 @@ export class SendindCalender extends Component {
             </Col>
             </Row>
         </Container>
-        <div>
+        {/* <div>
           <p>This is an estimate. Actual times may change by recipient actions, pending changes, etc. </p>
-          </div>
+          </div> */}
 
-        <div className="calender_box" style={{backgroundColor:"#ddd",width:"100%", display:"flex",flexDirection:"row"}}> 
+        <div className="calender_box" style={{backgroundColor:"transparant",width:"100%", display:"flex",flexDirection:"row"}}> 
         <div className="su_box">
           <p>january 19</p>
           </div>

@@ -15,7 +15,7 @@
 
 */
 /*eslint-disable*/
-import React from "react";
+import React, { Component } from "react";
 // react library for routing
 import { Link } from "react-router-dom";
 // reactstrap components
@@ -31,10 +31,10 @@ import {
 } from "reactstrap";
 // core components
 import IndexNavbar from "../components/Navbars/IndexNavbar.js";
- import IndexHeader from "../components/Headers/IndexHeader.js";
- import AuthFooter from "../components/Footers/AuthFooter.js";
+import IndexHeader from "../components/Headers/IndexHeader.js";
+import AuthFooter from "../components/Footers/AuthFooter.js";
 
-class Index extends React.Component {
+class Index extends Component {
   render() {
     return (
       <>

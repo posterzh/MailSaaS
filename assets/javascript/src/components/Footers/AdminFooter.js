@@ -28,16 +28,16 @@ class Calendar extends React.Component {
           <footer className="footer pt-0">
             <Row className="align-items-center justify-content-lg-between">
               <Col lg="6">
-                <div className="copyright text-center text-lg-left text-muted">
-                  © {new Date().getFullYear()}{" "}
-                  <a
-                    className="font-weight-bold ml-1"
-                    href="https://www.creative-tim.com?ref=adpr-admin-footer"
-                    target="_blank"
-                  >
-                    Creative Tim
-                  </a>
-                </div>
+                {/* <div className="copyright text-center text-lg-left text-muted"> */}
+                  {/* © {new Date().getFullYear()}{" "} */}
+                  {/* <a */}
+                    {/* className="font-weight-bold ml-1" */}
+                    {/* href="https://www.creative-tim.com?ref=adpr-admin-footer" */}
+                    {/* target="_blank" */}
+                  {/* > */}
+                    {/* Creative Tim */}
+                  {/* </a> */}
+                {/* </div> */}
               </Col>
               <Col lg="6">
                 <Nav className="nav-footer justify-content-center justify-content-lg-end">
@@ -46,7 +46,7 @@ class Calendar extends React.Component {
                       href="https://www.creative-tim.com?ref=adpr-admin-footer"
                       target="_blank"
                     >
-                      Creative Tim
+                      {/* Creative Tim */}
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -54,7 +54,7 @@ class Calendar extends React.Component {
                       href="https://www.creative-tim.com/presentation?ref=adpr-admin-footer"
                       target="_blank"
                     >
-                      About Us
+                      {/* About Us */}
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -62,7 +62,7 @@ class Calendar extends React.Component {
                       href="http://blog.creative-tim.com?ref=adpr-admin-footer"
                       target="_blank"
                     >
-                      Blog
+                      {/* Blog */}
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -70,7 +70,7 @@ class Calendar extends React.Component {
                       href="https://www.creative-tim.com/license?ref=adpr-admin-footer"
                       target="_blank"
                     >
-                      License
+                      {/* License */}
                     </NavLink>
                   </NavItem>
                 </Nav>

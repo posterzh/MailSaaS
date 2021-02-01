@@ -55,7 +55,7 @@ class LeadCatcher extends Component {
               <Col md="2">
                 <div>
 
-                  <select className='filter_select'>
+                  <select className='filter_select1'>
                     <option value='one'>All Campaigns</option>
                     <option value='two'>Campaign 1</option>
                     <option value='three'>Campaign 2</option>
@@ -66,7 +66,7 @@ class LeadCatcher extends Component {
               <Col md="2">
                 <div>
 
-                  <select className='filter_select'>
+                  <select className='filter_select1'>
                     <option value='one'>unassigned</option>
                     <option value='two'>unassigned1</option>
                     <option value='three'>unassigned2</option>
@@ -78,7 +78,7 @@ class LeadCatcher extends Component {
               <Col md="2">
                 <div>
 
-                  <select className='filter_select'>
+                  <select className='filter_select1'>
                     <option value='open'>open</option>
                     <option value='lost'>lost</option>
                     <option value='won'>won</option>
@@ -86,17 +86,6 @@ class LeadCatcher extends Component {
 
                   </select>
                 </div>
-                {/* <Dropdown isOpen={this.state.dd1} toggle={this.dropdownToggle} >
-                  <DropdownToggle caret className='drop_span' >
-                    <span onClick={this.dropdownToggle}>
-                      {this.state.value}
-                    </span>
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem onClick={this.select}>Header</DropdownItem>
-                    <DropdownItem onClick={this.select}>Action</DropdownItem>
-                  </DropdownMenu>
-                </Dropdown> */}
               </Col>
               <Col md="2">
                 <div className='refresh_child mt-0'>

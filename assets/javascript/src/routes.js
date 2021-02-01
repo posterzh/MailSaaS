@@ -37,7 +37,7 @@ import Login from "./views/pages/examples/Login.js";
 import MailAccount from "./views/pages/MailAccount/MailAccount";
 import Notifications from "./views/pages/components/Notifications.js";
 import Pricing from "./views/pages/examples/Pricing.js";
-import Prospects from "./views/pages/Prospects/Prospects"
+import Prospects from "./views/pages/Prospects/Prospects.js"
 import Profile from "./views/pages/examples/Profile.js";
 import ReactBSTables from "./views/pages/tables/ReactBSTables.js";
 import Redeem from "./views/pages/TeamSettings/Redeem";
@@ -88,8 +88,10 @@ import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
     collapse:true,
     name:"Campaign",
     icon: "ni ni-shop text-primary",
+    state: "campaign",
     views:[
       {
+        show:false,
         path: "/new-campaign",
         name: "Create Campaign",
         miniName: "Ca",
@@ -116,7 +118,8 @@ import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
         miniName: "Sc",
         component: SendingCalender,
         layout: "/app/admin"
-      } ,    
+      } ,  
+        
     ]
   },
 
@@ -125,6 +128,7 @@ import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
     collapse:true,
     name:"Prospects",
     icon: "ni ni-ungroup text-orange",
+    state: "prospects",
     views:[
       {
         path: "/Prospects",
@@ -141,6 +145,7 @@ import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
     collapse:true,
     name:"Mail Accounts",
     icon: "ni ni-shop text-primary",
+    state: "mailAccount",
     views:[
       {
         path: "/MailAccount",
@@ -156,6 +161,7 @@ import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
     collapse:true,
     name:"Team Settings",
     icon: "ni ni-shop text-primary",
+    state: "teamSetting",
     views:[
       {
         path: "/Setting",
@@ -193,6 +199,7 @@ import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
       collapse:true,
       name:"Extension",
       icon: "ni ni-shop text-primary",
+      state: "extensions",
       views:[
         {
           path: "/Apps&Crm",
@@ -223,6 +230,7 @@ import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
     collapse:true,
     name:" Unsubscribes",
     icon: "ni ni-ungroup text-orange",
+    state: "unsubscribe",
     views:[
       {
         path: "/Unsubscribes",

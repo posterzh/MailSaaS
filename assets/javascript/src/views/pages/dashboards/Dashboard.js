@@ -93,11 +93,11 @@ class Dashboard extends React.Component {
             <Row className="sub_title"><h3>A simple solution for email outreach.</h3></Row>
             <Row className="New_campaign_button">
               <Link strict to="/app/admin/new-campaign">
-                <Button>NEW CAMPAIGN</Button>
+                <Button className="newcampaign_button">+ NEW CAMPAIGN</Button>
               </Link>
             </Row>
           </Container>
-          < Option />
+          {/* < Option /> */}
       </div>
     );
   }

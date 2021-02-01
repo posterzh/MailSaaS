@@ -118,7 +118,7 @@ class Admin extends React.Component {
             {this.getRoutes(routes)}
             <Redirect from="*" to="/admin/dashboard" />
           </Switch>
-          <AdminFooter />
+          {/* <AdminFooter /> */}
         </div>
         {this.state.sidenavOpen ? (
           <div className="backdrop d-xl-none" onClick={this.toggleSidenav} />
