@@ -95,9 +95,10 @@ class CreateCampaignRecipientsView(APIView):
                 serializer = CampaignEmailSerializer(data = postdata)
                 if serializer.is_valid():
                     camp = Campaign.objects.get(id=postdata['campaign'])
-                    CampaignEmail = CampaignRecipient(campaign=camp, email=postdata["email"])
-                    CampaignEmail.save()
-                    return Response(serializer.data)
+                    for email in postdata["email"]:
+                        CampaignEmail = CampaignRecipient(campaign=camp, email=email)
+                        CampaignEmail.save()
+                    return Response({"message":"Saved Successfully","success":True})
                 else:
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:

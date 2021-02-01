@@ -67,6 +67,7 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     # stripe integration
     'djstripe',
+    # 'salesforce',
 ]
 
 PEGASUS_APPS = [
