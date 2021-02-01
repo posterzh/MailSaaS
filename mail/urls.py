@@ -31,12 +31,7 @@ urlpatterns = [
     path('campaignschedule/',include('apps.campaignschedule.urls')),
     path('campaign/', include('apps.campaign.urls')),
     path('teams/', include('apps.teams.urls')),
-<<<<<<< HEAD
-    path('sforce/', include('apps.intigration.urls')),
-
-=======
     path('intigration/', include('apps.intigration.urls')),
->>>>>>> cf1d86faaed6510bbf192e10b49965582526416d
     path('', include('apps.web.urls')),
     path('pegasus/', include('apps.pegasus.urls')),
     path('celery-progress/', include('celery_progress.urls')),
