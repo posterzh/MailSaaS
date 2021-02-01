@@ -1,8 +1,10 @@
+from __future__ import absolute_import
 import os
 from celery import Celery
 from celery.schedules import crontab
 from datetime import timedelta
 import pytz
+# from django.conf import settings
 
 
 
@@ -15,8 +17,10 @@ django.setup()
 app = Celery('mail')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
+# app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 # from django_celery_beat.models import CrontabSchedule, PeriodicTask
+
 # schedule, _ = CrontabSchedule.objects.get_or_create(
 #     minute='30',
 #     hour='*',
@@ -36,6 +40,7 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.update(
     CELERYBEAT_SCHEDULE={
         'schedule_task':{
+            # 'my':print('from celery app for task by'),
             'task':'apps.campaignschedule.tasks.send_email_task',
             'schedule':crontab(),
             

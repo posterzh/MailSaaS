@@ -15,7 +15,7 @@ from datetime import datetime
 from pytz import timezone
 from django.conf import settings
 from django.http import JsonResponse
-
+# from .tasks import send_email_task
 
 
 class CampaignScheduleAdd(CreateAPIView):
@@ -78,8 +78,47 @@ class UpdateScheduleMail(APIView):
 
 
 # @csrf_exempt
-def PrintHey(request):
-    print(request.user.id)
-    print("hey hey hey hey hey hey")
-    return JsonResponse({'status': 'all done'})
+# def PrintHey(request):
+#     # print(request.user.id)
+#     print("hey hey hey hey hey hey")
+#     task= send_email_task
+#     print('task ', task)
+#     return JsonResponse({'status': 'all done'})
 
+class MailSendimgtask(APIView):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = CampaignscheduleSerializers
+   
+    def get_objects(self,request):
+        try:
+            user = request.user.id
+            schedule= Schedule.objects.get(user=user)
+            print("schedule ",schedule)
+            if(schedule):
+                response = {}
+                response["schedule_obj"] = schedule
+                response["status_code"] = 200
+                return response
+        except Schedule.DoesNotExist:
+            response = {}
+            response["status_code"]=400
+            return response
+
+    def get(self,request):
+        queryset=self.get_objects(request)
+        if queryset["status_code"]==400:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        elif queryset["status_code"]==200:
+            serializer=ScheduleUpdateSerializers(queryset["schedule_obj"])
+            timeset = serializer.data['time_zone']
+            start = serializer.data['start_time']
+            return Response(serializer.data)
+        return Response({'response':'please active user'})
+
+        
+
+
+    # def get(self,request):
+    #     send_mail('Subject', 'Message.', 'developer@externlabs.com', ['gauravsurolia@externlabs.com'],fail_silently=False)
+    #     print( ' mail send...........................')
+    #     return Response({'status': 'mail done'})

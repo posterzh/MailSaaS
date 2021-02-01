@@ -39,11 +39,12 @@ class Schedule(models.Model):
     max_email= models.PositiveIntegerField(blank=True,null=True)
     strategy = models.CharField(choices=STRATEGY_CHOICES,max_length=20)
     mint_between_sends = models.PositiveIntegerField(blank=True,null=True)
+    mint_email_send = models.PositiveIntegerField(blank=True,null=True)
     max_email_send = models.PositiveIntegerField(blank=True,null=True)
 
 
 
     def __str__(self):
-        return self.mail_account
+        return self.user.username
 
 

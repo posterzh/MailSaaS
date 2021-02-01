@@ -47,6 +47,7 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.forms',
+  
     'celery_progress',
     "django_celery_results",
      
@@ -83,9 +84,6 @@ PROJECT_APPS = [
     'apps.campaignschedule.apps.CampaignscheduleConfig',
     'apps.teams.apps.TeamConfig',
     'apps.intigration',
-    
-
-
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PEGASUS_APPS + PROJECT_APPS
@@ -99,7 +97,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'mail.urls'
@@ -228,7 +225,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Calcutta'
 
 USE_I18N = True
 
@@ -277,26 +274,24 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,
     
-    'DEFAULT_FILTER_BACKENDS': (
-        'django_filters.rest_framework.DjangoFilterBackend',
-        ...
-    ),
+    # 'DEFAULT_FILTER_BACKENDS': (
+    #     'django_filters.rest_framework.DjangoFilterBackend',
+    #     ...
+    # ),
 }
 
 
 # Celery setup (using redis)
 # Celery setup (using redis)
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-CELERY_ACCEPT_CONTENT=['json']
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TIMEZONE = 'Asia/Kolkata'
 CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_BACKEND = 'django-db'
-# CELERY_RESULT_BACKEND = 'django-cache'
-CELERY_TASK_TRACK_STARTED = True
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_IMPORTS = ('apps.campaignschedule.tasks',)
 
-CELERY_IMPORTS = (
-    'apps.campaignschedule.tasks'
-)
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -388,3 +383,4 @@ JWT_AUTH = {
 
 
 
+#   django.setup()

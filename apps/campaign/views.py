@@ -11,7 +11,7 @@ from django.core.mail import EmailMultiAlternatives, send_mail
 from django.db.models import Q
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from django_filters import rest_framework as filters
+# from django_filters import rest_framework as filters
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -53,6 +53,7 @@ class CreateCampaignRecipientsView(APIView):
 
     def post(self, request, format=None):
         postdata = request.data
+        
         if 'campaign.add_campaign' in request.user.get_group_permissions():
             if int(postdata["option"]) == 1:
                 try:
