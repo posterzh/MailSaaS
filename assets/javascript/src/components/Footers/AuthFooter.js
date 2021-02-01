@@ -35,7 +35,7 @@ class Login extends React.Component {
                     href="https://www.creative-tim.com?ref=adpr-auth-footer"
                     target="_blank"
                   >
-                    Creative Tim
+                    {/* Creative Tim */}
                   </a>
                 </div>
               </Col>
@@ -46,7 +46,7 @@ class Login extends React.Component {
                       href="https://www.creative-tim.com?ref=adpr-auth-footer"
                       target="_blank"
                     >
-                      Creative Tim
+                      {/* Creative Tim */}
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -54,7 +54,7 @@ class Login extends React.Component {
                       href="https://www.creative-tim.com/presentation?ref=adpr-auth-footer"
                       target="_blank"
                     >
-                      About Us
+                      {/* About Us */}
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -62,7 +62,7 @@ class Login extends React.Component {
                       href="http://blog.creative-tim.com?ref=adpr-auth-footer"
                       target="_blank"
                     >
-                      Blog
+                      {/* Blog */}
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -70,7 +70,7 @@ class Login extends React.Component {
                       href="https://www.creative-tim.com/license?ref=adpr-auth-footer"
                       target="_blank"
                     >
-                      License
+                      {/* License */}
                     </NavLink>
                   </NavItem>
                 </Nav>

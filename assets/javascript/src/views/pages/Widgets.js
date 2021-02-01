@@ -47,9 +47,9 @@ import {
   Col
 } from "reactstrap";
 // core components
-import CardsHeader from "components/Headers/CardsHeader.js";
+import CardsHeader from "../../components/Headers/CardsHeader.js";
 
-import { widgetEvents } from "variables/general.js";
+import { widgetEvents } from "../../variables/general.js";
 
 let calendar;
 
@@ -91,7 +91,7 @@ class Widgets extends React.Component {
               <Card>
                 <CardImg
                   alt="..."
-                  src={require("assets/img/theme/img-1-1000x900.jpg")}
+                  src={STATIC_FILES.img2}                  
                   top
                 />
                 <CardBody>
@@ -145,7 +145,7 @@ class Widgets extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-1.jpg")}
+                             src={STATIC_FILES.team_1}
                             />
                           </a>
                         </Col>
@@ -175,7 +175,7 @@ class Widgets extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-2.jpg")}
+                              src={STATIC_FILES.team_2}
                             />
                           </a>
                         </Col>
@@ -205,7 +205,7 @@ class Widgets extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-3.jpg")}
+                              src={STATIC_FILES.team_3}
                             />
                           </a>
                         </Col>
@@ -235,7 +235,7 @@ class Widgets extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-4.jpg")}
+                              src={STATIC_FILES.team_4}
                             />
                           </a>
                         </Col>
@@ -265,7 +265,7 @@ class Widgets extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/team-5.jpg")}
+                              src={STATIC_FILES.team_5}
                             />
                           </a>
                         </Col>
@@ -306,7 +306,7 @@ class Widgets extends React.Component {
                             <img
                               alt="..."
                               className="avatar avatar-xs mr-2"
-                              src={require("assets/img/theme/team-1.jpg")}
+                             src={STATIC_FILES.team_1}
                             />
                             <h5 className="mb-1">Tim</h5>
                           </div>
@@ -333,7 +333,7 @@ class Widgets extends React.Component {
                             <img
                               alt="..."
                               className="avatar avatar-xs mr-2"
-                              src={require("assets/img/theme/team-2.jpg")}
+                             src={STATIC_FILES.team_2}
                             />
                             <h5 className="mb-1">Mike</h5>
                           </div>
@@ -358,7 +358,7 @@ class Widgets extends React.Component {
                     <div className="col">
                       <img
                         alt="..."
-                        src={require("assets/img/icons/cards/mastercard.png")}
+                       src={STATIC_FILES.mastercard}
                       />
                     </div>
                     <Col className="col-auto">
@@ -589,7 +589,7 @@ class Widgets extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/bootstrap.jpg")}
+                              src={STATIC_FILES.bootstrap}
                             />
                           </a>
                         </Col>
@@ -614,7 +614,7 @@ class Widgets extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/angular.jpg")}
+                              src={STATIC_FILES.angular}
                             />
                           </a>
                         </Col>
@@ -639,7 +639,7 @@ class Widgets extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/sketch.jpg")}
+                              src={STATIC_FILES.sketch}
                             />
                           </a>
                         </Col>
@@ -664,7 +664,7 @@ class Widgets extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/react.jpg")}
+                              src={STATIC_FILES.react}
                             />
                           </a>
                         </Col>
@@ -689,7 +689,7 @@ class Widgets extends React.Component {
                           >
                             <img
                               alt="..."
-                              src={require("assets/img/theme/vue.jpg")}
+                             src={STATIC_FILES.vue}
                             />
                           </a>
                         </Col>
@@ -713,7 +713,7 @@ class Widgets extends React.Component {
                     <div className="col">
                       <img
                         alt="..."
-                        src={require("assets/img/icons/cards/paypal.png")}
+                        src={STATIC_FILES.paypal}
                       />
                     </div>
                     <Col className="col-auto">
@@ -853,7 +853,7 @@ class Widgets extends React.Component {
                         <Col className="col-auto">
                           <img
                             alt="..."
-                            src={require("assets/img/icons/flags/US.png")}
+                            src={STATIC_FILES.us}
                           />
                         </Col>
                         <div className="col">
@@ -875,7 +875,7 @@ class Widgets extends React.Component {
                         <Col className="col-auto">
                           <img
                             alt="..."
-                            src={require("assets/img/icons/flags/DE.png")}
+                           src={STATIC_FILES.de}
                           />
                         </Col>
                         <div className="col">
@@ -897,7 +897,7 @@ class Widgets extends React.Component {
                         <Col className="col-auto">
                           <img
                             alt="..."
-                            src={require("assets/img/icons/flags/GB.png")}
+                            src={STATIC_FILES.gb}
                           />
                         </Col>
                         <div className="col">
@@ -923,7 +923,7 @@ class Widgets extends React.Component {
                     <div className="col">
                       <img
                         alt="..."
-                        src={require("assets/img/icons/cards/visa.png")}
+                        src={STATIC_FILES.visa}
                       />
                     </div>
                     <Col className="col-auto">

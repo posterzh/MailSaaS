@@ -48,26 +48,26 @@ class AdminNavbar extends React.Component {
   // function that on mobile devices makes the search open
   openSearch = () => {
     document.body.classList.add("g-navbar-search-showing");
-    setTimeout(function() {
+    setTimeout(function () {
       document.body.classList.remove("g-navbar-search-showing");
       document.body.classList.add("g-navbar-search-show");
     }, 150);
-    setTimeout(function() {
+    setTimeout(function () {
       document.body.classList.add("g-navbar-search-shown");
     }, 300);
   };
   // function that on mobile devices makes the search close
   closeSearch = () => {
     document.body.classList.remove("g-navbar-search-shown");
-    setTimeout(function() {
+    setTimeout(function () {
       document.body.classList.remove("g-navbar-search-show");
       document.body.classList.add("g-navbar-search-hiding");
     }, 150);
-    setTimeout(function() {
+    setTimeout(function () {
       document.body.classList.remove("g-navbar-search-hiding");
       document.body.classList.add("g-navbar-search-hidden");
     }, 300);
-    setTimeout(function() {
+    setTimeout(function () {
       document.body.classList.remove("g-navbar-search-hidden");
     }, 500);
   };
@@ -159,7 +159,8 @@ class AdminNavbar extends React.Component {
                             <img
                               alt="..."
                               className="avatar rounded-circle"
-                              src={require("assets/img/theme/team-1.jpg")}
+                              // src={require("assets/img/theme/team-1.jpg")}
+                              src={STATIC_FILES.team_1}
                             />
                           </Col>
                           <div className="col ml--2">
@@ -188,7 +189,7 @@ class AdminNavbar extends React.Component {
                             <img
                               alt="..."
                               className="avatar rounded-circle"
-                              src={require("assets/img/theme/team-2.jpg")}
+                              src={STATIC_FILES.team_2}
                             />
                           </Col>
                           <div className="col ml--2">
@@ -217,7 +218,8 @@ class AdminNavbar extends React.Component {
                             <img
                               alt="..."
                               className="avatar rounded-circle"
-                              src={require("assets/img/theme/team-3.jpg")}
+                              // src={require("assets/img/theme/team-3.jpg")}
+                              src={STATIC_FILES.team_3}
                             />
                           </Col>
                           <div className="col ml--2">
@@ -246,7 +248,7 @@ class AdminNavbar extends React.Component {
                             <img
                               alt="..."
                               className="avatar rounded-circle"
-                              src={require("assets/img/theme/team-4.jpg")}
+                              src={STATIC_FILES.team_4}
                             />
                           </Col>
                           <div className="col ml--2">
@@ -275,7 +277,7 @@ class AdminNavbar extends React.Component {
                             <img
                               alt="..."
                               className="avatar rounded-circle"
-                              src={require("assets/img/theme/team-5.jpg")}
+                              src={STATIC_FILES.team_5}
                             />
                           </Col>
                           <div className="col ml--2">
@@ -396,7 +398,7 @@ class AdminNavbar extends React.Component {
                       <span className="avatar avatar-sm rounded-circle">
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-4.jpg")}
+                          src={STATIC_FILES.team_4}
                         />
                       </span>
                       <Media className="ml-2 d-none d-lg-block">
@@ -457,7 +459,7 @@ class AdminNavbar extends React.Component {
   }
 }
 AdminNavbar.defaultProps = {
-  toggleSidenav: () => {},
+  toggleSidenav: () => { },
   sidenavOpen: false,
   theme: "dark"
 };

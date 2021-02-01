@@ -114,6 +114,7 @@ class Sidebar extends React.Component {
       if (prop.collapse) {
         var st = {};
         st[prop["state"]] = !this.state[prop.state];
+        console.log('st', st, prop);
         return (
           <NavItem key={key}>
             <NavLink
@@ -131,7 +132,7 @@ class Sidebar extends React.Component {
               {prop.icon ? (
                 <>
                   <i className={prop.icon} />
-                  <span className="nav-link-text">{prop.name}</span>
+                  <span className="nav-link-text" style={{fontSize: '.875rem', color: '#000000e6'}}>{prop.name}</span>
                 </>
               ) : prop.miniName ? (
                 <>
@@ -154,10 +155,11 @@ class Sidebar extends React.Component {
           key={key}
         >
           <NavLink
-            to={prop.layout + prop.path}
+            href={prop.layout + prop.path}
             activeClassName=""
+            // className="nav-link"
             onClick={this.closeSidenav}
-            tag={NavLinkRRD}
+            // tag={NavLinkRRD}
           >
             {prop.icon !== undefined ? (
               <>
@@ -167,7 +169,7 @@ class Sidebar extends React.Component {
             ) : prop.miniName !== undefined ? (
               <>
                 <span className="sidenav-mini-icon"> {prop.miniName} </span>
-                <span className="sidenav-normal"> {prop.name} </span>
+                <span className="sidenav-normal" style={{color: 'black', fontSize: '.8125rem'}}> {prop.name} </span>
               </>
             ) : (
               prop.name
@@ -196,13 +198,15 @@ class Sidebar extends React.Component {
         <div className="sidenav-header d-flex align-items-center">
           {logo ? (
             <NavbarBrand {...navbarBrandProps}>
-              <img
-                alt={logo.imgAlt}
+              { <img
+                 alt={logo.imgAlt}
                 className="navbar-brand-img"
-                src={logo.imgSrc}
-              />
+                src={STATIC_FILES.mailsaas_logo}
+            /> 
+              }
+              <span>MailSaaS</span>
             </NavbarBrand>
-          ) : null}
+            ):null}
           <div className="ml-auto">
             <div
               className={classnames("sidenav-toggler d-none d-xl-block", {
@@ -221,13 +225,13 @@ class Sidebar extends React.Component {
         <div className="navbar-inner">
           <Collapse navbar isOpen={true}>
             <Nav navbar>{this.createLinks(routes)}</Nav>
-            <hr className="my-3" />
+            {/* <hr className="my-3" />
             <h6 className="navbar-heading p-0 text-muted">
-              <span className="docs-normal">Documentation</span>
-              <span className="docs-mini">D</span>
-            </h6>
-            <Nav className="mb-md-3" navbar>
-              <NavItem>
+              {/* <span className="docs-normal">Documentation</span> */}
+              {/* <span className="docs-mini">D</span> */}
+            {/* </h6> */}
+            {/* <Nav className="mb-md-3" navbar> */}
+              {/* <NavItem>
                 <NavLink
                   href="https://demos.creative-tim.com/argon-dashboard-pro-react/#/documentation/overview?ref=adpr-sidebar"
                   target="_blank"
@@ -235,8 +239,8 @@ class Sidebar extends React.Component {
                   <i className="ni ni-spaceship" />
                   <span className="nav-link-text">Getting started</span>
                 </NavLink>
-              </NavItem>
-              <NavItem>
+              </NavItem> */}
+              {/* <NavItem>
                 <NavLink
                   href="https://demos.creative-tim.com/argon-dashboard-pro-react/#/documentation/colors?ref=adpr-sidebar"
                   target="_blank"
@@ -244,8 +248,8 @@ class Sidebar extends React.Component {
                   <i className="ni ni-palette" />
                   <span className="nav-link-text">Foundation</span>
                 </NavLink>
-              </NavItem>
-              <NavItem>
+              </NavItem> */}
+              {/* <NavItem>
                 <NavLink
                   href="https://demos.creative-tim.com/argon-dashboard-pro-react/#/documentation/alert?ref=adpr-sidebar"
                   target="_blank"
@@ -253,17 +257,17 @@ class Sidebar extends React.Component {
                   <i className="ni ni-ui-04" />
                   <span className="nav-link-text">Components</span>
                 </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
+              </NavItem> */}
+              {/* <NavItem> */}
+                {/* <NavLink
                   href="https://demos.creative-tim.com/argon-dashboard-pro-react/#/documentation/charts?ref=adpr-sidebar"
                   target="_blank"
                 >
                   <i className="ni ni-chart-pie-35" />
                   <span className="nav-link-text">Plugins</span>
-                </NavLink>
-              </NavItem>
-            </Nav>
+                </NavLink> */}
+              {/* </NavItem> */}
+            {/* </Nav> */}
           </Collapse>
         </div>
       </div>
@@ -310,7 +314,7 @@ Sidebar.propTypes = {
     // it will be rendered as simple <a href="...">...</a> tag
     outterLink: PropTypes.string,
     // the image src of the logo
-    imgSrc: PropTypes.string.isRequired,
+    // imgSrc: PropTypes.string.isRequired,
     // the alt for the img
     imgAlt: PropTypes.string.isRequired
   }),
