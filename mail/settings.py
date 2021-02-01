@@ -67,7 +67,11 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     # stripe integration
     'djstripe',
+<<<<<<< HEAD
     # 'salesforce',
+=======
+    'salesforce',
+>>>>>>> cf1d86faaed6510bbf192e10b49965582526416d
 ]
 
 PEGASUS_APPS = [
@@ -387,4 +391,23 @@ JWT_AUTH = {
 # SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
 
 
+<<<<<<< HEAD
+=======
+#Mail_configuration
 
+EMAIL_HOST='sg3plcpnl0063.prod.sin3.secureserver.net'
+EMAIL_PORT=config('EMAIL_PORT')
+EMAIL_USE_SSL=config('EMAIL_USE_SSL')
+EMAIL_HOST_USER=config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
+
+
+
+>>>>>>> cf1d86faaed6510bbf192e10b49965582526416d
+
+# Slack Configuration
+VERIFICATION_TOKEN = config('VERIFICATION_TOKEN')
+OAUTH_ACCESS_TOKEN = config('OAUTH_ACCESS_TOKEN')
+BOT_USER_ACCESS_TOKEN = config('BOT_USER_ACCESS_TOKEN')
+CLIENT_ID = config('CLIENT_ID')
+CLIENT_SECRET = config('CLIENT_SECRET')

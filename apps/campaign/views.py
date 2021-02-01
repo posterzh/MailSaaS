@@ -566,7 +566,7 @@ class TrackEmailClick(APIView):
         return Response({"message":"Saved Successfully"})
 
 
-class Get_campaign_overview(APIView):
+class GetCampaignOverview(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -608,7 +608,7 @@ class Get_campaign_overview(APIView):
         return Response(resp)
     
 
-class AllRecipientView(generics.ListAPIView):
+class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
 
     """  For View  all Recipients """
 
@@ -707,6 +707,14 @@ class AllRecipientView(generics.ListAPIView):
             queryset = Campaign_email.objects.filter(campaign=pk)
         campEmailserializer = CampaignEmailSerializer(queryset, many = True)
         return Response(campEmailserializer.data)
+    
+    def put(self, request,pk, formate = None):
+        for rec_id in request.data:
+            campEmail = CampaignRecipient.objects.get(id=rec_id)
+            campEmail.unsubscribe = True
+            campEmail.save()
+        return Response("DOne")
+
 
 
 
@@ -1007,3 +1015,38 @@ class ProspectsView(generics.ListAPIView):
             queryset = CampaignRecipient.objects.filter(campaign__assigned=request.user.id)
         serializer = CampaignEmailSerializer(queryset,many=True)
         return Response(serializer.data)
+
+
+class ProspectsCampaignView(generics.ListAPIView):
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, pk, *args, **kwargs):
+        queryset = CampaignRecipient.objects.get(id=pk)
+        
+        # resp = {
+        #         "recipientCount": queryset.count(),
+        #         "campaign":0,
+        #         "sent": 0,
+        #         }
+
+        data = {
+                'campaign':queryset.campaign.title,
+                'email':queryset.email,
+                'full_name':queryset.full_name,
+                'sent':0,
+                'lead_status':queryset.lead_status,
+                'opens':0,
+                'has_link_clicked':0,
+                'replies':0,
+                'created_date':queryset.created_date,
+            }
+        if queryset.sent:
+            data['sent'] = data['sent']+1
+        if queryset.opens:
+            data['opens'] = data['opens']+1
+        if queryset.has_link_clicked:
+            data['has_link_clicked'] = data['has_link_clicked']+1
+        if queryset.replies:
+            data['replies'] = data['replies']+1
+        return Response(data)
