@@ -5,13 +5,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from .managers import UserManager
 
-class MailsaasType(models.Model):
-    name = models.CharField(max_length=500)
-    date = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return self.name
-
 
 class CustomUser(AbstractUser):
     """
@@ -22,7 +15,7 @@ class CustomUser(AbstractUser):
     full_name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=12,null=False,blank=False)
     company_name = models.CharField(max_length=500,null=False,blank=False)
-    mailsaas_type = models.ForeignKey(MailsaasType,on_delete=models.CASCADE)
+    mailsaas_type = models.CharField(max_length=100,null=False,blank=False)
     avatar = models.FileField(upload_to='profile-pictures/', null=True, blank=True)
 
     objects = UserManager()

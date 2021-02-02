@@ -12,7 +12,10 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import datetime 
+# from decouple import config
 from decouple import config
+from pathlib import Path  # Python 3.6+ only
+env_path = Path('.') / '.env'
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -22,11 +25,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
-# SECRET_KEY = config('SECRET_KEY')
+# SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+# CORS_ALLOWED_ORIGINS = ['*']
+SITE_URL = 'http://localhost:8000'
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Application definition
@@ -38,23 +45,38 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
     'django.forms',
+    'celery_progress',
+    "django_celery_results",
+     
+    'django_crontab',
+
+    'django_celery_beat',
 ]
 
 # Put your third-party apps here
 THIRD_PARTY_APPS = [
+    'rest_framework',
+    'rest_framework.authtoken', # temp
+
+    'rest_auth',
+
+    'django.contrib.sites',
+
+
     'allauth',  # allauth account/registration management
     'allauth.account',
 
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
 
-    'rest_framework',
-    'celery_progress',
+    'rest_auth.registration', # temp
 
+    'corsheaders',
     # stripe integration
     'djstripe',
+    # 'salesforce',
+    # 'django_pipedrive',
 ]
 
 PEGASUS_APPS = [
@@ -67,8 +89,9 @@ PROJECT_APPS = [
     'apps.users.apps.UserConfig',
     'apps.web',
     'apps.campaign',
+    'apps.campaignschedule.apps.CampaignscheduleConfig',
     'apps.teams.apps.TeamConfig',
-    'apps.intigration',
+    'apps.integration',
     
 
 
@@ -84,6 +107,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+   
 ]
 
 ROOT_URLCONF = 'mail.urls'
@@ -123,9 +148,11 @@ DATABASES = {
         'USER': config('DATABASE_USER'),
         'PASSWORD': config('DATABASE_PASSWORD'),
         'HOST': config('DATABASE_HOST'),
-        'PORT': config('DATABASE_PORT'),
+        'PORT':config('DATABASE_PORT'),
     }
 }
+
+
 
 
 
@@ -153,6 +180,16 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+REST_USE_JWT = True
+#rest allauth serializer
+REST_AUTH_SERIALIZERS = {
+    'LOGIN_SERIALIZER': 'apps.users.serializer.LoginSerializer',
+    # 'TOKEN_SERIALIZER': 'apps.users.serializer.TokenSerializer',
+    'REGISTER_SERIALIZER': 'apps.users.serializer.RegisterSerializer',
+    
+}
 
 # Allauth setup
 
@@ -235,7 +272,7 @@ MEDIA_URL = '/media/'
 # Email setup
 
 # use in development
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # use in production
 # see https://github.com/anymail/django-anymail for more details/examples
 # EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
@@ -252,12 +289,27 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,
+    
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+        ...
+    ),
 }
 
 
 # Celery setup (using redis)
+# Celery setup (using redis)
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT=['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'django-db'
+# CELERY_RESULT_BACKEND = 'django-cache'
+CELERY_TASK_TRACK_STARTED = True
+
+CELERY_IMPORTS = (
+    'apps.campaignschedule.tasks'
+)
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -287,7 +339,7 @@ PROJECT_METADATA = {
 }
 
 
-ADMINS = [('Elon Musk', 'elon.musk@localhost:8000')]
+# ADMINS = [('Elon Musk', 'elon.musk@localhost:8000')]
 
 GOOGLE_ANALYTICS_ID = ''  # replace with your google analytics ID to connect to Google Analytics
 
@@ -344,5 +396,34 @@ JWT_AUTH = {
     'JWT_AUTH_COOKIE': None,
 }
 
-SLACK_CLIENT_ID = config('SLACK_CLIENT_ID')
-SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
+
+
+#Mail_configuration
+
+EMAIL_HOST='sg3plcpnl0063.prod.sin3.secureserver.net'
+EMAIL_PORT=config('EMAIL_PORT')
+EMAIL_USE_SSL=config('EMAIL_USE_SSL')
+EMAIL_HOST_USER=config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
+
+
+
+
+# Slack Configuration
+VERIFICATION_TOKEN = config('VERIFICATION_TOKEN')
+OAUTH_ACCESS_TOKEN = config('OAUTH_ACCESS_TOKEN')
+BOT_USER_ACCESS_TOKEN = config('BOT_USER_ACCESS_TOKEN')
+CLIENT_ID = config('CLIENT_ID')
+CLIENT_SECRET = config('CLIENT_SECRET')
+
+#Salesforce Configuration
+
+SALESFORCE_USERNAME = config('SALESFORCE_USERNAME')
+SALESFORCE_PASSWORD = config('SALESFORCE_PASSWORD')
+SALESFORCE_SECURITY_TOKEN = config('SALESFORCE_SECURITY_TOKEN')
+SALESFORCE_DOMAIN = 'test'
+SALESFORCE_USE_SANDBOX = True
+SALESFORCE_API_VERSION = '43.0'
+
+
+PIPEDRIVE_API_KEY="67ffc61ad9d85760cee59c2115bddd5cc536e9c6"
