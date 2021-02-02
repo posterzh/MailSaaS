@@ -11,16 +11,14 @@ input:focus{
     display: flex;
     width:100%;
     height: 50px;
-    // background-color:#EEEEEE;
 }
 .input_field{
     display: flex;
     flex-direction: row;
+    background-color: transparent;
     position: relative;
     justify-content: center;
     align-items: center;
-    margin: 3px;
-    // border-bottom: 1px solid rgba(0,0,0, 0.12);
     background: none;
 }
 .in{
@@ -30,10 +28,10 @@ input:focus{
     border-bottom: 1px solid  rgba(0,0,0, 0.12);
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
-    background: #eee;
+    background:transparent;
 }
 .in:focus{
-    background-color:#eee !important ;
+    background-color:transparent !important ;
     outline: none !important;
     box-shadow: none;
 }
@@ -73,6 +71,13 @@ input:focus{
     color:#666;
     font-weight: 400;
 }
+.campaign_navbar{
+    height: 100px;
+    background-color: #035aac;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
  
 // campaign table css
 .header_sent,.Sent{
@@ -108,11 +113,13 @@ input:focus{
 }   
 
 .filter_select1{
-    width: 180px;
+    width: 100%;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
     border: none;
     border-bottom: 1px solid rgba(0,0,0, 0.12) ;
-    background-color: #eee;
-    font-size: 12px;
+    background-color: transparent;
 
 }
 .filter_app{
@@ -128,8 +135,6 @@ input:focus{
 .scalender_filter_select{
     border: none;
     border-bottom: 1px solid rgba(0,0,0, 0.12) ;
-    // background-color: #eee;
-    // margin-bottom: 2px;
     font-size: 12px;
     width:100%;
     background: transparent;
@@ -169,7 +174,6 @@ input:focus{
 // leadcatcher  modal css
 
 .Leadcatcher_modalheader{
-    //  background: #85b4d6;
     background-color: #005aac;
      padding-bottom: 0px;
      opacity: 1;
@@ -178,10 +182,6 @@ input:focus{
 .Leadcatcher_modalbody{
     padding-top:0px;
     background-color: #f5f5f5;
-    // margin-left: 20px;
-    // margin-right: 20px;
-    // margin-top: 30px;
-    // margin-bottom: 30px;
 }
     .lead_Action{
         font-size: 12px;
@@ -223,8 +223,6 @@ input:focus{
     color:#ccc;
     font-size: 6px;
     position: relative;
-    // top: 27%;
-    // left: 45%;
 }
     
 
@@ -298,8 +296,6 @@ margin-top: 10px;
     position: absolute;  
 }
 .lower_headerdiv{
-    // border: 1px solid blue;
-    // background-color: brown;
     border-bottom:1px solid #ddd
 }
 .repliy_icon{
@@ -354,7 +350,6 @@ margin-top: 10px;
 .selectbox_1,.selectbox_2{
     border: none;
     background: transparent;
-    // width: 100%;
     font-size: 14px;
 }
 .reply,.status{
@@ -405,7 +400,6 @@ margin-top: 10px;
     padding: 30px;
 }
 .receipentlist_data_box{
-    // border:2px dashed #ccc;
     width: 100%;
     background-color: #eee;
     justify-content: center;
@@ -510,7 +504,6 @@ button .import_button{
 
 // main dashboard page
 .dashboard_title{
-    // border:1px solid red;
     display:flex;
     flex-Direction:column;
 }
@@ -619,12 +612,7 @@ button .import_button{
     border:none;
     border-bottom: 1px solid #ccc;
     background: transparent;
-    // width: 240px;
 }
-// .numberof_replieslabel{}
-// .numberof_repliesinput{}
-// .delete_icon{}
-
 // 31/jan/2021
 .newcampaign_button{
     background: #ff4081;
@@ -733,7 +721,6 @@ button .import_button{
     margin-top: 25px;
     display:flex;
     flex-direction: column;
-    // align-items: center;
     justify-content: center;
 // }}
 }
@@ -747,16 +734,11 @@ button .import_button{
     color:#777;
     font-size:14px;
      }
-     .next_button{
-        background-color:  #ff4081;
-        border:0px;
-        color:white;
-     }
-     .recipientshow{
-         border:1px solid red;
-         display: flex;
-
-     }
+.next_button{
+    background-color:  #ff4081;
+    border:0px;
+    color:white;
+}
 
 
     //  editor
@@ -788,10 +770,6 @@ button .import_button{
     input::-webkit-inner-spin-button {
       -webkit-appearance: none;
       margin: 0;
-    }
-    .alignRight{
-        // border: 1px solid;
-        // margin-left:85px;
     }
     .Add_follow_up{
         width: 100%;
@@ -834,10 +812,6 @@ button .import_button{
     input::-webkit-inner-spin-button {
       -webkit-appearance: none;
       margin: 0;
-    }
-    .alignRight{
-        // border: 1px solid;
-        // margin-left:85px;
     }
     .Add_follow_up{
         width: 100%;
@@ -928,7 +902,6 @@ button .import_button{
     .good_test{
         height: 100%;
         width: 100%;
-        // border: 1px solid ;
         align-items: center;
         justify-content: center;
         display: flex;
@@ -946,7 +919,6 @@ button .import_button{
     }
     .overview_div{
         padding-top: 10px;
-        // padding: 10px;
         box-shadow: 1px 1px 1px 1px silver;
         background-color: #FFFFFF;
     }
@@ -1047,8 +1019,6 @@ button .import_button{
     }
     .sequence_btn{
         display: flex;
-        // justify-content: center;
-        // align-items: center;
         background-color:#ff4081;
         color: white;
         font-size: 15px;
@@ -1106,12 +1076,6 @@ button .import_button{
     .settingUnderline>p{
         color: silver;
     }
-// apps and crm
-// .select{
-//     background-color: brown;
-// }
-
-
 // Scss for prospects code
 
 .drop_span{
@@ -1142,10 +1106,6 @@ button .import_button{
     width: 100%;
     border: none;
     background-color: #eee;
-    // background-color: #f8f9fe;
-
-    // border-radius: 10px;
-    // background-color: indianred;
 }
 .in:focus{
     background-color:#eee !important ;
@@ -1205,7 +1165,6 @@ button .import_button{
     flex-direction: row;
     width: 100%;
     height: 100%;
-    // border: 2px solid;
 }
 .add_label{
     width: 100%;
@@ -1236,8 +1195,7 @@ button .import_button{
 .header_open,.Open
 {
     background: rgba(165,31,99,.05);
-}
-// 
+} 
 
 // campaing internal page css
 
@@ -1278,7 +1236,6 @@ button .import_button{
 .good_test{
     height: 100%;
     width: 100%;
-    // border: 1px solid ;
     align-items: center;
     justify-content: center;
     display: flex;
@@ -1296,7 +1253,6 @@ button .import_button{
 }
 .overview_div{
     padding-top: 10px;
-    // padding: 10px;
     box-shadow: 1px 1px 1px 1px silver;
     background-color: #ffffff;
 }
@@ -1402,8 +1358,6 @@ button .import_button{
 }
 .sequence_btn{
     display: flex;
-    // justify-content: center;
-    // align-items: center;
     background-color:#ff4081;
     color: white;
     font-size: 15px;
@@ -1443,7 +1397,7 @@ button .import_button{
     align-items: center;
 }
 
-// setting
+// css for setting
 .boxShadow{
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
@@ -1477,22 +1431,6 @@ button .import_button{
 .EditTest:hover{
     background-color: #ddd;
 }
-// .wrapper-class {
-//     display: flex;
-//     padding: 1rem;
-//     border: 1px solid #ccc;
-//   }
-// .editor-class {
-//     display: flex;
-//     // flex-direction: row;
-//     background-color:lightgray;
-//     padding: 1rem;
-//     border: 1px solid #ccc;
-//   }
-// .toolbar-class {
-//       display: flex;
-//     border: 1px solid #ccc;
-//   }
 .Editor_div{
     margin-top: 10px;
     height:300px;
@@ -1522,11 +1460,7 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-.alignRight{
-    // border: 1px solid;
-    
-    // margin-left:85px;
-}
+
 .Add_follow_up{
     width: 100%;
     height: 3em;
@@ -1584,7 +1518,6 @@ input::-webkit-inner-spin-button {
     line-height: 1;
     margin-left: 10px;
     margin-right: 10px;
-    // font-size: 10px;
 }
 .native_link{
     color: black;

@@ -1,14 +1,14 @@
 import React from 'react'
-import { Container, Row, Col, Table , Nav, NavItem, NavLink, TabContent, TabPane,} from 'reactstrap'
+import { Container, Row, Col, Table, Nav, NavItem, NavLink, TabContent, TabPane, } from 'reactstrap'
 
 export default function Overview_Summery() {
     return (
         <div>
             <Container fluid>
-                <Row className='mt-4'>
-                    <label className='filter_app'><a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
+                <Row className='mt-5'>
+                    {/* <label className='filter_app'><a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                         <i class="fa fa-calendar" aria-hidden="true"></i> Hide sending calender
-                </a></label>
+                </a></label> */}
                 </Row>
                 <Row>
                     <p className='view_calender'>This is an estimate. Actual times vary by recipient actions, pending changes, etc. <a href=''>View and tweak your full calendar.</a></p>

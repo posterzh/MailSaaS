@@ -5,7 +5,7 @@
 //         return (
 //             <div>
 //                 <h2>compose page</h2>
-                
+
 //             </div>
 //         )
 //     }
@@ -44,19 +44,17 @@ export default class Compose extends Component {
         const { editorState } = this.state;
         return (
             <div>
-               
                 <div className='main-view'>
                     <Container>
                         <Row>
                             <Col md='10' className='mx-auto'>
-                                <Row  className="composeemail_heading"> 
-                                Compose the emails in this campaign
-                                    </Row>
+                                <Row className="composeemail_heading">
+                                    Compose the emails in this campaign
+                                </Row>
                                 <Row className="mt-5">
                                     <div><button className='EditTest'><i class="fa fa-plus-circle" aria-hidden="true"></i> A/B TEST</button>
                                     </div>
                                 </Row>
-                                {/* <Row><label className='filter_app_new'>Subject</label></Row> */}
                                 <Row>
                                     <div className='grand_parent'>
                                         <div className='input_field'>
@@ -98,11 +96,6 @@ export default class Compose extends Component {
                                                 },
                                             }}
                                         />
-                                        {/* <textarea
-                                    readOnly
-                                    className="rdw-storybook-textarea"
-                                    value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
-                                /> */}
                                     </div>
                                 </Row>
                                 <Row className='mt-5'>
@@ -162,7 +155,8 @@ export default class Compose extends Component {
                                                             }}
                                                         />
                                                     </div>
-                                                </Row></Col>
+                                                </Row>
+                                            </Col>
                                         </Row>
                                     </Container>
                                 </Row>
@@ -181,7 +175,7 @@ export default class Compose extends Component {
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <Col className='mt-3'>
+                                    <Col className='mt-3 mb-5'>
                                         <div className='Add_follow_up'>
                                             <i class='fa fa-plus'></i> &nbsp;ADD ON CLICK<br />
                                         </div>

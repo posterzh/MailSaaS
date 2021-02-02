@@ -5,13 +5,13 @@ export class NewCampaign_recipients extends Component {
     render() {
         return (
             <div>
-                <div style={{ height: '100%', width: '100%' }}>
+                <div style={{ height: '100%', width: '100%',backgroundColor:"#eee" }}>
                     <Container fluid>
                         <Row>
-                            <Col md='12'>
+                            <Col md='12' style={{backgroundColor:"#eee"}}>
                                 <Container fluid>
                                     <Row className='mt-5'>
-                                        <Col><h1 style={{ fontSize: '30px', fontWeight: '200', textAlign: 'center', color: 'black' }}>Drop in your first list of recipients</h1></Col>
+                                        <Col><h1 style={{ fontSize: '30px', fontWeight: '200', textAlign: 'center', color: 'black',backgroundColor:"#eee" }}>Drop in your first list of recipients</h1></Col>
                                     </Row>
                                     <Row className='mt-5'>
                                         <Col md="6" className="receipentlist_box mx-auto">
