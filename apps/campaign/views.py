@@ -28,9 +28,6 @@ from django.conf import settings
 import re
 
 
-
-
-
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
                      DripEmailModel, EmailOnLinkClick, FollowUpEmail)
 from .serializers import (CampaignEmailSerializer,

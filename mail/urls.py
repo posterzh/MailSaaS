@@ -31,7 +31,7 @@ urlpatterns = [
     path('campaignschedule/',include('apps.campaignschedule.urls')),
     path('campaign/', include('apps.campaign.urls')),
     path('teams/', include('apps.teams.urls')),
-    path('intigration/', include('apps.intigration.urls')),
+    path('integration/', include('apps.integration.urls')),
     path('', include('apps.web.urls')),
     path('pegasus/', include('apps.pegasus.urls')),
     path('celery-progress/', include('celery_progress.urls')),

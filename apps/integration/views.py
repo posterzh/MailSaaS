@@ -88,6 +88,7 @@ class ContactViewSet(generics.CreateAPIView):
     def post(self, request, format=None):
         print("reqqqqq ", request.data)
         sf = login()
+        print(sf)
 
         # if request.method == 'POST':
         data = request.data.copy()
@@ -103,7 +104,7 @@ class ContactViewSet(generics.CreateAPIView):
         result = ContactSerializer(data['records'][0])
         return Response(result.data)
 
-        
+
 from django.http import HttpResponse, JsonResponse
 import slack
 
