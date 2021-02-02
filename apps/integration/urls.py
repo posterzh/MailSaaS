@@ -8,4 +8,5 @@ urlpatterns = [
     # url('slack/oauth/', views.SocialLoginView.as_view()),
     path('sforcepage/', views.ContactViewSet.as_view()),
     path('event/hook/', views.event_hook, name='event_hook'),
+    # path('sendmsgslack/', views.SlackSendMessage.as_view(), name='sendmsgslack'),
 ]

@@ -31,7 +31,7 @@ urlpatterns = [
     path('campaignschedule/',include('apps.campaignschedule.urls')),
     path('campaign/', include('apps.campaign.urls')),
     path('teams/', include('apps.teams.urls')),
-    path('intigration/', include('apps.intigration.urls')),
+    path('integration/', include('apps.integration.urls')),
     path('', include('apps.web.urls')),
     path('pegasus/', include('apps.pegasus.urls')),
     path('celery-progress/', include('celery_progress.urls')),
@@ -42,4 +42,10 @@ urlpatterns = [
 
     # djstripe urls - for webhooks
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
+
+    #rest all_auth
+    path('rest-auth/', include('rest_auth.urls')),
+      #rest auth
+    
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -26,6 +26,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.sites.models import Site
 from django.conf import settings
 import re
+from apps.integration.views import SendSlackMessage
 
 
 
@@ -71,7 +72,7 @@ class CreateCampaignRecipientsView(APIView):
                     camp = Campaign.objects.get(id=postdata['campaign'])
                 except:
                     return Response({"message":"No campiagn availabe for this id", "success":"false"})
-                camp.csvfile_op1 = postdata['csvFile']
+                camp.csvfile_op1 = postdata['csvfile_op1']
                 camp.save()
                 with open('media/'+str(camp.csvfile_op1)) as csv_file:
                     csv_reader = csv.reader(csv_file, delimiter=',')
@@ -738,10 +739,15 @@ class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def put(self, request, pk, format=None):
         queryset = self.get_object(request,pk)
+        request.data._mutable = True
         request.data['leads'] = True
+        request.data._mutable = False
+        
         serializer = CampaignEmailSerializer(queryset, data=request.data)
         if serializer.is_valid():
             serializer.save()
+            SendSlackMessage(serializer.data)
+
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

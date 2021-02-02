@@ -45,7 +45,6 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
     'django.forms',
     'celery_progress',
     "django_celery_results",
@@ -57,13 +56,22 @@ DJANGO_APPS = [
 
 # Put your third-party apps here
 THIRD_PARTY_APPS = [
+    'rest_framework',
+    'rest_framework.authtoken', # temp
+
+    'rest_auth',
+
+    'django.contrib.sites',
+
+
     'allauth',  # allauth account/registration management
     'allauth.account',
 
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
 
-    'rest_framework',
+    'rest_auth.registration', # temp
+
     'corsheaders',
     # stripe integration
     'djstripe',
@@ -82,7 +90,7 @@ PROJECT_APPS = [
     'apps.campaign',
     'apps.campaignschedule.apps.CampaignscheduleConfig',
     'apps.teams.apps.TeamConfig',
-    'apps.intigration',
+    'apps.integration',
     
 
 
@@ -171,6 +179,16 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+REST_USE_JWT = True
+#rest allauth serializer
+REST_AUTH_SERIALIZERS = {
+    'LOGIN_SERIALIZER': 'apps.users.serializer.LoginSerializer',
+    # 'TOKEN_SERIALIZER': 'apps.users.serializer.TokenSerializer',
+    'REGISTER_SERIALIZER': 'apps.users.serializer.RegisterSerializer',
+    
+}
 
 # Allauth setup
 
@@ -320,7 +338,7 @@ PROJECT_METADATA = {
 }
 
 
-ADMINS = [('Elon Musk', 'elon.musk@localhost:8000')]
+# ADMINS = [('Elon Musk', 'elon.musk@localhost:8000')]
 
 GOOGLE_ANALYTICS_ID = ''  # replace with your google analytics ID to connect to Google Analytics
 
@@ -377,8 +395,6 @@ JWT_AUTH = {
     'JWT_AUTH_COOKIE': None,
 }
 
-# SLACK_CLIENT_ID = config('SLACK_CLIENT_ID')
-# SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
 
 
 #Mail_configuration
@@ -392,9 +408,9 @@ EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
 
 
 
-# Slack Configuration
-# VERIFICATION_TOKEN = config('VERIFICATION_TOKEN')
-# OAUTH_ACCESS_TOKEN = config('OAUTH_ACCESS_TOKEN')
-# BOT_USER_ACCESS_TOKEN = config('BOT_USER_ACCESS_TOKEN')
-# CLIENT_ID = config('CLIENT_ID')
-# CLIENT_SECRET = config('CLIENT_SECRET')
+#Slack Configuration
+VERIFICATION_TOKEN = config('VERIFICATION_TOKEN')
+OAUTH_ACCESS_TOKEN = config('OAUTH_ACCESS_TOKEN')
+BOT_USER_ACCESS_TOKEN = config('BOT_USER_ACCESS_TOKEN')
+CLIENT_ID = config('CLIENT_ID')
+CLIENT_SECRET = config('CLIENT_SECRET')
