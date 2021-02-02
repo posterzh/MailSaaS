@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 
 
@@ -12,3 +11,10 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Contact(models.Model):
+   Parameter = models.CharField(max_length=50, blank=False, null=False)
+     
+   def __str__(self):
+        return self.Parameter
