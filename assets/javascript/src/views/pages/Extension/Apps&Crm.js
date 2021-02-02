@@ -1,12 +1,5 @@
 import React, { Component } from 'react'
-// import Col from 'reactstrap/lib/Col'
-import { Container, Row, Col,Card} from 'reactstrap'
-
-
-
-import React, { Component } from 'react'
-// import Col from 'reactstrap/lib/Col'
-import { Container, Row, Col,Card} from 'reactstrap'
+import { Container, Row, Col, Card } from 'reactstrap'
 export class AppsandCrm extends Component {
     render() {
         return (
@@ -75,11 +68,6 @@ export class AppsandCrm extends Component {
                                 </Col>
                             </Row>
                         </Container>
-                        {/* <div className='native_media_div'>
-                                    <img></img>
-                                    <span><b>SALESFORCE</b></span>
-                                    <p>Track activities and update lead statuses when actions are taken in Mailshake.</p>
-                                </div> */}
                     </div>
                     <div>
                         <h1 className='N-I display-4 mt-5'>OTHER APPS AND CRMS</h1>
@@ -99,8 +87,8 @@ export class AppsandCrm extends Component {
                         <Container>
                             <Row>
                                 <Col>
-                                <Card>
-                                </Card>
+                                    <Card>
+                                    </Card>
                                 </Col>
                             </Row>
                         </Container>

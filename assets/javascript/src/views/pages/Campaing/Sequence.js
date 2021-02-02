@@ -15,7 +15,7 @@ export default function Sequence() {
                             <div className='Sequence_div'>
                                 <span> <a href=''><i class="fa fa-envelope"></i> &nbsp;Initial campaign email</a></span><br></br>
                                 <span style={{ lineHeight: '1.4' }}>Hello all</span>
-                                <p>dhjhfjdhjdfs</p>
+                                <p>this is a pera graph</p>
                             </div>
                         </Row>
                         <Row>
@@ -29,11 +29,11 @@ export default function Sequence() {
                                 <div className='line_div'></div>
                             </div>
                         </Row>
-                        <Row>
+                        <Row className='mb-5'>
                             <div className='Sequence_div'>
                                 <span> <a href=''><i class="fa fa-reply"></i> &nbsp;follow up</a></span><br></br>
                                 <span style={{ lineHeight: '1.4' }}>Hello all</span>
-                                <p>dhjhfjdhjdfs</p>
+                                <p>this is a pera graph</p>
                             </div>
                         </Row>
                     </Col>

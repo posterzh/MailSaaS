@@ -26,8 +26,8 @@ const Campaign_data = (props) => {
                                 <option value='Date'>Date</option>
                             </select>
                         </Col>
-                        <Col md='3'><NavItem><NavLink className={classnames({ active: activeTab === '1' })} to="/Campaign_data" onClick={() => { toggle('1'); }}>SUMMARY</NavLink></NavItem></Col>
-                        <Col md='3'><NavItem><NavLink className={classnames({ active: activeTab === '2' })} to="/Overview_Activity" onClick={() => { toggle('2'); }}>ACTIVITY</NavLink></NavItem></Col>
+                        <Col md='3'><NavItem><NavLink className={classnames({ active: activeTab === '1' })}  onClick={() => { toggle('1'); }}>SUMMARY</NavLink></NavItem></Col>
+                        <Col md='3'><NavItem><NavLink className={classnames({ active: activeTab === '2' })}  onClick={() => { toggle('2'); }}>ACTIVITY</NavLink></NavItem></Col>
                         <Col md='2'><NavItem><NavLink className={classnames({ active: activeTab === '3' })} onClick={() => { toggle('3'); }}>TIMELINE</NavLink></NavItem></Col>
 
                         <Col md='1'><div className='child ml-3'>
@@ -37,7 +37,8 @@ const Campaign_data = (props) => {
                         </Col>
                     </Nav>
 
-                        <TabContent activeTab={activeTab}>
+                      <div className='mt-5' >
+                      <TabContent activeTab={activeTab}>
                             <TabPane tabId="1">
                                 <Overview_Summery />
 
@@ -55,6 +56,7 @@ const Campaign_data = (props) => {
                            
 
                         </TabContent>
+                      </div>
                     </Col>
                 </Row>
 

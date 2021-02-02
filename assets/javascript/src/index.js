@@ -44,10 +44,8 @@ ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <Route path="/app/admin" render={props => <AdminLayout {...props} />} />
-      {/* <Route path="/rtl" render={props => <RTLLayout {...props} />} /> */}
       <Route path="/app/auth" render={props => <AuthLayout {...props} />} />
       <Route path="/app" render={props => <IndexView {...props} />} />
-      {/* <Redirect from="*" to="/" /> */}
     </Switch>
   </BrowserRouter>,
   document.getElementById("object-lifecycle-home")

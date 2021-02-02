@@ -132,7 +132,7 @@ class Sidebar extends React.Component {
               {prop.icon ? (
                 <>
                   <i className={prop.icon} />
-                  <span className="nav-link-text" style={{fontSize: '.875rem', color: '#000000e6'}}>{prop.name}</span>
+                  <span className="nav-link-text" style={{fontSize: '.875rem', color: '#000000e6', marginLeft: 10}}>{prop.name}</span>
                 </>
               ) : prop.miniName ? (
                 <>
@@ -164,12 +164,12 @@ class Sidebar extends React.Component {
             {prop.icon !== undefined ? (
               <>
                 <i className={prop.icon} />
-                <span className="nav-link-text">{prop.name}</span>
+                <span className="nav-link-text" style={{marginLeft: 10}}>{prop.name}</span>
               </>
             ) : prop.miniName !== undefined ? (
               <>
                 <span className="sidenav-mini-icon"> {prop.miniName} </span>
-                <span className="sidenav-normal" style={{color: 'black', fontSize: '.8125rem'}}> {prop.name} </span>
+                <span className="sidenav-normal" style={{color: 'black', fontSize: '.8125rem', paddingLeft: 18}}> {prop.name} </span>
               </>
             ) : (
               prop.name
