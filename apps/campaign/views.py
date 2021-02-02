@@ -29,9 +29,6 @@ import re
 from apps.integration.views import SendSlackMessage
 
 
-
-
-
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
                      DripEmailModel, EmailOnLinkClick, FollowUpEmail)
 from .serializers import (CampaignEmailSerializer,
