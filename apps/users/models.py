@@ -10,7 +10,7 @@ class CustomUser(AbstractUser):
     """
     Add additional fields to the user model here.
     """
-    # username = None
+    username = None
     email = models.EmailField(unique=True,max_length=500)
     full_name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=12,null=False,blank=False)

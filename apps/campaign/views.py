@@ -528,13 +528,14 @@ class TrackEmailClick(APIView):
         print("yoooooooooooooooooo ", request)
 
         print(settings.SITE_URL + "/campaign/email/click/")
-        
+        tracking_result = pytracking.get_open_tracking_result(
+            full_url, base_click_tracking_url="https://trackingdomain.com/path/")
         full_url = settings.SITE_URL + request.get_full_path()
 
         print("full_urlfull_urlfull_url",full_url)
         tracking_result = pytracking.get_open_tracking_result(
             full_url, base_click_tracking_url= settings.SITE_URL + "/campaign/email/click/")
-
+        print("Doneeee")
         print("tracking_resultttttt ",tracking_result)
         # full_url = settings.SITE_URL + request.get_full_path()
 

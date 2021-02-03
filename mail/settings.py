@@ -84,6 +84,7 @@ PROJECT_APPS = [
     'apps.campaignschedule.apps.CampaignscheduleConfig',
     'apps.teams.apps.TeamConfig',
     'apps.integration',
+    "apps.unsubscribes"
     # 'apps.mailaccount',
 
     

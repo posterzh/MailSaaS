@@ -5,7 +5,7 @@ class Campaign(models.Model):
     title = models.CharField(max_length=200)
     from_address = models.CharField(max_length=200)
     full_name = models.CharField(max_length=200)
-    csvfile_op1 = models.FileField(upload_to='csv_uploads/', blank=True, null=True)
+    csvfile_op1 = models.FileField(upload_to='camp_csv_uploads/', blank=True, null=True)
     created_date_time = models.DateTimeField(auto_now=True)
     update_date_time = models.DateTimeField(auto_now=True)
     assigned = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
