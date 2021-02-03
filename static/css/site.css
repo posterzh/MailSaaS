@@ -3328,9 +3328,9 @@ input[type="button"].btn-block {
       border-color: transparent; }
   .nav-tabs .nav-link.active,
   .nav-tabs .nav-item.show .nav-link {
-    color: white;
-    background-color: #035aac ;
-    border-color: #dee2e6 #dee2e6 silver; }
+    color: #525f7f;
+    background-color: red;
+    border-color: #dee2e6 #dee2e6 red; }
   .nav-tabs .dropdown-menu {
     margin-top: -1px;
     border-top-left-radius: 0;
