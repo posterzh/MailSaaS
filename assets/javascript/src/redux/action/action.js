@@ -23,8 +23,8 @@ export const RegisterAction=(user)=>{
     return function(dispatch){
     dispatch(requestForRegister(user))
     Api.RegisterApi(user).then(result=>{
-        console.log(result.token,'registerSuccess')
-        dispatch(registerSuccess(result))
+        console.log(result.data,'registerSuccess')
+        dispatch(registerSuccess(result.data))
     }).catch(err=>{
         console.log(err)
     })

@@ -84,7 +84,7 @@ class Register extends React.Component {
   }
 
   render() {
-    console.log(this.props.user,'redux')
+    // console.log(this.props.token,'redux')
     return (
       <>
         <AuthHeader
@@ -305,9 +305,11 @@ class Register extends React.Component {
   }
 }
 // export default Register
-const mapStateToProps = (state, ownProps) => ({
-  // user: state.user
-})
+const mapStateToProps = (state) => {
+  return {
+    // token: state.token
+  };
+};
 const mapDispatchToProps = dispatch => ({
   RegisterAction: user => {
   dispatch(RegisterAction(user));
