@@ -73,14 +73,10 @@ class Register extends React.Component {
     };
     // console.log(user, "user data")
     this.props.RegisterAction(user)
+    console.log(user)
 
 
-    // axios.post(`http://127.0.0.1:8000/users/rest-auth-register/`, { user })
-    //   .then(res => {
-    //     console.log(res);
-    //     console.log(res.data);
-    //   })
-    // console.log(this.state)
+   
   }
 
   render() {
@@ -304,7 +300,7 @@ class Register extends React.Component {
     );
   }
 }
-// export default Register
+
 const mapStateToProps = (state) => {
   return {
     // token: state.token

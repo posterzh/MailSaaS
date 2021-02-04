@@ -95,6 +95,21 @@ input:focus{
     background: rgba(165,31,99,.05);
 }
 
+.new_add_button{
+    display: flex;
+    // position: fixed;
+    // top:55em;
+    // left: 110em;
+    border-radius: 50%;
+    width: 5em;
+    height: 4em;
+    padding-top: 5  em;
+    background-color: #FF4081;
+}
+
+
+
+
 // dropdown css
 .drop_span{
     border: none;
@@ -1477,6 +1492,7 @@ input::-webkit-inner-spin-button {
 // Apps&Crm
 
 .main-view{
+    position: relative;
     max-width: 100%;
     height:100%;
     background-color:#eee;
