@@ -7,10 +7,7 @@ import NewCampaign_recipients from "../dashboards/NewCampaign_recipients"
 export default function NewCampaign_start() {
     const [state, setstate] = useState(false)
     
-    const handleSwitchComponent= () =>{
-        console.log('<NavLink>');
-        setstate(true);
-    }
+    
     return (
         <div>
             {!state ?  
@@ -31,7 +28,7 @@ export default function NewCampaign_start() {
                                             <option value='value'>Values</option>
                                         </select></div>
                                 </Row>
-                                <Row  onClick={handleSwitchComponent}  className='mt-5'>
+                                <Row  onClick={()=>setstate(true)}  className='mt-5'>
                                     <Col style={{display:"flex",justifyContent:"center"}}>
                                         <button className='btn startBtn'>Next <i class="fa fa-arrow-right" aria-hidden="true"></i>
                                         </button>

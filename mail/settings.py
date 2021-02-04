@@ -45,6 +45,7 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'django.forms',
     'celery_progress',
     "django_celery_results",
@@ -56,27 +57,17 @@ DJANGO_APPS = [
 
 # Put your third-party apps here
 THIRD_PARTY_APPS = [
-    'rest_framework',
-    'rest_framework.authtoken', # temp
-
-    'rest_auth',
-
-    'django.contrib.sites',
-
-
     'allauth',  # allauth account/registration management
     'allauth.account',
 
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
 
-    'rest_auth.registration', # temp
-
+    'rest_framework',
     'corsheaders',
     # stripe integration
     'djstripe',
     # 'salesforce',
-    # 'django_pipedrive',
 ]
 
 PEGASUS_APPS = [
@@ -180,16 +171,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-
-REST_USE_JWT = True
-#rest allauth serializer
-REST_AUTH_SERIALIZERS = {
-    'LOGIN_SERIALIZER': 'apps.users.serializer.LoginSerializer',
-    # 'TOKEN_SERIALIZER': 'apps.users.serializer.TokenSerializer',
-    'REGISTER_SERIALIZER': 'apps.users.serializer.RegisterSerializer',
-    
-}
 
 # Allauth setup
 
@@ -339,7 +320,7 @@ PROJECT_METADATA = {
 }
 
 
-# ADMINS = [('Elon Musk', 'elon.musk@localhost:8000')]
+ADMINS = [('Elon Musk', 'elon.musk@localhost:8000')]
 
 GOOGLE_ANALYTICS_ID = ''  # replace with your google analytics ID to connect to Google Analytics
 
@@ -395,6 +376,7 @@ JWT_AUTH = {
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
     'JWT_AUTH_COOKIE': None,
 }
+
 
 
 
