@@ -72,6 +72,7 @@ THIRD_PARTY_APPS = [
 
 PEGASUS_APPS = [
     'apps.pegasus',
+     'django_google.apps.DjangoGoogleConfig',
 ]
 
 # Put your project-specific apps here
@@ -83,9 +84,8 @@ PROJECT_APPS = [
     'apps.campaignschedule.apps.CampaignscheduleConfig',
     'apps.teams.apps.TeamConfig',
     'apps.integration',
+    'apps.mailaccounts',
     
-
-
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PEGASUS_APPS + PROJECT_APPS
@@ -143,7 +143,11 @@ DATABASES = {
     }
 }
 
-
+GOOGLE_CLIENT_SECRET_FILE = os.path.join(BASE_DIR, 'client_secret_178038321765-1d24dsmngr7cmthb1ksvno3kehirnqbg.apps.googleusercontent.com.json')
+GOOGLE_AUTH_SCOPES = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]
 
 
 

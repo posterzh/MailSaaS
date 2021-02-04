@@ -1,7 +1,6 @@
 import csv
 import datetime
 from datetime import datetime
-
 import pytracking
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
