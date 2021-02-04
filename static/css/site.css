@@ -3328,9 +3328,9 @@ input[type="button"].btn-block {
       border-color: transparent; }
   .nav-tabs .nav-link.active,
   .nav-tabs .nav-item.show .nav-link {
-    color: white;
-    background-color: #035aac ;
-    border-color: #dee2e6 #dee2e6 silver; }
+    color: #525f7f;
+    background-color: red;
+    border-color: #dee2e6 #dee2e6 red; }
   .nav-tabs .dropdown-menu {
     margin-top: -1px;
     border-top-left-radius: 0;
@@ -19691,6 +19691,14 @@ input:focus {
 .header_open, .Open {
   background: rgba(165, 31, 99, 0.05); }
 
+.new_add_button {
+  display: flex;
+  border-radius: 50%;
+  width: 5em;
+  height: 4em;
+  padding-top: 5  em;
+  background-color: #FF4081; }
+
 .drop_span {
   border: none;
   outline: none;
@@ -20958,6 +20966,7 @@ input::-webkit-inner-spin-button {
   background-color: #ddd; }
 
 .main-view {
+  position: relative;
   max-width: 100%;
   height: 100%;
   background-color: #eee;
