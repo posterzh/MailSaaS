@@ -11,7 +11,7 @@ class UnsubscribeEmail(models.Model):
     mail_account = models.CharField(max_length=100,blank=True)
     Name = models.CharField(max_length=100,blank=True)
     date= models.DateTimeField(auto_now=True,blank=True)
-    
+    on_delete = models.BooleanField(default=False)
 
     def __str__(self):
         return self.email

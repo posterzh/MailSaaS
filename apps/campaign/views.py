@@ -1,7 +1,8 @@
 import csv
 import datetime
 from datetime import datetime
-
+from apps.unsubscribes.models import UnsubscribeEmail
+from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 import pytracking
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -1048,3 +1049,28 @@ class ProspectsCampaignView(generics.ListAPIView):
         if queryset.replies:
             data['replies'] = data['replies']+1
         return Response(data)
+
+
+class RecipientUnsubcribe(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = UnsubscribeEmailSerializers      
+    def put(self, request, format=None):
+        recipient_id =request.data["recipient_id"]
+        for id in recipient_id:
+            print('id',id)
+            recipient = CampaignRecipient.objects.get(id = id)
+            recipient.unsubscribe=True
+            recipient.save()
+            data = {
+                "email" : recipient.email,
+                "full_name" : recipient.full_name,
+                'user':request.user.id
+            }
+            serializer = UnsubscribeEmailSerializers(data=data)
+            if serializer.is_valid():
+                serializer.save()
+        return Response("Done")
+    
+
+
+       

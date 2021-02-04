@@ -21,6 +21,7 @@ urlpatterns = [
     path('campaignmessage/<int:pk>/', views.CampaignMessages.as_view(),name = 'campaignmessage'),
     path('prospects/', views.ProspectsView.as_view(),name = 'procpects'),
     path('prospects/<int:pk>/', views.ProspectsCampaignView.as_view(),name = 'procpects_campaign'),
+    path('recipientunsubcribe/', views.RecipientUnsubcribe.as_view(), name='recipient_unsubcribe'),
 
 
    

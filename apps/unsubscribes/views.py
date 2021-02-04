@@ -11,9 +11,9 @@ from django.http import request,Http404,HttpResponse
 from django.views.decorators.csrf import csrf_exempt 
 from .models import UnsubscribeEmail,UnsubcribeCsv
 from django.http import JsonResponse
-
 import csv, io
 from django.contrib import messages
+from django.db.models import Q
 
 class UnsubscribeEmailAdd(CreateAPIView):
     serializer_class = UnsubscribeEmailSerializers
@@ -69,21 +69,27 @@ class UnsubcribeEmailView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UnsubscribeEmailSerializers
     def get(self,request):
-        unsubcribe = UnsubscribeEmail.objects.filter(user=request.user.id)
+        params = list(dict(request.GET).keys())
+        if "search" in params:
+            toSearch = request.GET['search']
+            unsubcribe = UnsubscribeEmail.objects.filter(Q(email__contains=toSearch)|Q(Name__contains=toSearch),user=request.user.id,on_delete=False)
+        else:
+            unsubcribe = UnsubscribeEmail.objects.filter(user=request.user.id,on_delete=False)
         serializer=UnsubscribeEmailSerializers(unsubcribe, many=True)
         return Response(serializer.data)
-    
+
 
 class UnsubcribeEmailDelete(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    def get_object(self, pk):
-        try:
-            return UnsubscribeEmail.objects.get(pk=pk)
-        except UnsubscribeEmail.DoesNotExist:
-            raise Http404
-
-    def delete(self, request, pk, format=None):
-        unsubcribe = self.get_object(pk)
-        unsubcribe.delete()
-        return Response({"status":status.HTTP_204_NO_CONTENT,"response":" Sucessfully delete"})
-        
+    serializer_class = UnsubscribeEmailSerializers      
+    def put(self, request, format=None):
+        print(request.data)
+        data =request.data["data"]
+        for id in data:
+            print('id',id)
+            unsubcribe = UnsubscribeEmail.objects.get(id = id)
+            
+            unsubcribe.on_delete=True
+            unsubcribe.save()
+        return Response("Done")
+       
