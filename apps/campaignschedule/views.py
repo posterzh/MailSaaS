@@ -80,12 +80,7 @@ class UpdateScheduleMail(APIView):
         if queryset["status_code"]==400:
             return Response(status=status.HTTP_404_NOT_FOUND)
         elif queryset["status_code"]==200:
-            x = datetime.datetime.now()
-            now = datetime.now()
 
-            current_time = now.strftime("%H:%M:%S")
-            print(datetime.date.today())
-            print(current_time)
             serializer=ScheduleUpdateSerializers(queryset["schedule_obj"])
             return Response(serializer.data)
         return Response({'response':'please active user'})

@@ -12,26 +12,33 @@ for el in pytz.all_timezones:
     res.append(sub)
     res[-1].append(sub[0])
 
+
+
+class WeekDays(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
 class Schedule(models.Model):
-    DAY_CHOICES = (
-        ('sunday', 'Sunday'),
-        ('monday', 'Monday'),
-        ('tuesday', 'Tuesday'),
-        ('wednesday', 'Wednesday'),
-        ('thursday', 'Thursday'),
-        ('friday', 'Friday'),
-        ('saturday', 'Saturday')
-    )
+    # DAY_CHOICES = (
+    #     ('sunday', 'Sunday'),
+    #     ('monday', 'Monday'),
+    #     ('tuesday', 'Tuesday'),
+    #     ('wednesday', 'Wednesday'),
+    #     ('thursday', 'Thursday'),
+    #     ('friday', 'Friday'),
+    #     ('saturday', 'Saturday')
+    # )
     STRATEGY_CHOICES =(
-        ("Space","Space out over the day"),
-        ("Send","Send as fast as possible")
+        ("SPACE","Space out over the day"),
+        ("SEND","Send as fast as possible")
     )
 
     TIMEZONE_CHOICES = res
     
     user = models.OneToOneField(CustomUser,  on_delete=models.CASCADE)
     mail_account = models.EmailField(_("Mail Account"),blank=True,null=True)
-    block_days = ArrayField(models.CharField(max_length=500, blank=True),size=8)
+    block_days = models.ManyToManyField(WeekDays)
     date = models.DateField(default=date.today)
     start_time =models.TimeField(auto_now=False,blank=True,null=True)
     end_time = models.TimeField(auto_now=False,blank=True,null=True)
@@ -43,20 +50,20 @@ class Schedule(models.Model):
     max_email_send = models.PositiveIntegerField(blank=True,null=True)
 
 
-
     def __str__(self):
         return self.user.username
 
 class Email_schedule(models.Model):
  
-    mail_account = models.EmailField(_("Mail Account"),blank=True,null=True)
-    date = models.DateField(default=date.today)
     time =models.TimeField(auto_now=False,blank=True,null=True)
-    recipient = models.CharField(max_length=50)
+    date = models.DateField(default=date.today)
+    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    mail_account = models.CharField(max_length=50)
+    recipient_email = models.CharField(max_length=50)
 
     subject = models.CharField(max_length=50)
     email_body = models.CharField(max_length=50)
 
 
     def __str__(self):
-        return self.mail_account
+        return self.recipient_email
