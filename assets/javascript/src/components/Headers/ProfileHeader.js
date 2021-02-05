@@ -28,7 +28,7 @@ class ProfileHeader extends React.Component {
           style={{
             minHeight: "500px",
             backgroundImage:
-              'url("' + require("assets/img/theme/profile-cover.jpg") + '")',
+              'url("' + STATIC_FILES.profilecover + '")',
             backgroundSize: "cover",
             backgroundPosition: "center top"
           }}

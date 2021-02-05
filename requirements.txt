@@ -32,6 +32,9 @@ django-formtools==2.2
 django-pipedrive==0.1.14
 django-sekizai==2.0.0
 django-select2==7.6.1
+django-decouple==2.1
+django-rest-auth==0.9.5
+django-slack==5.16.0
 django-timezone-field==4.1.1
 django-treebeard==4.4
 djangocms-admin-style==2.0.2
@@ -49,6 +52,7 @@ MarkupSafe==1.1.1
 multidict==5.1.0
 oauthlib==3.1.0
 pipedrive-python-lib==1.1.4
+pkg-resources==0.0.0
 prompt-toolkit==3.0.8
 psycopg2-binary==2.8.6
 pycparser==2.20

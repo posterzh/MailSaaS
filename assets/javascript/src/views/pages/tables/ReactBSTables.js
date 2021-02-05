@@ -20,7 +20,8 @@ import ReactToPrint from "react-to-print";
 // react component for creating dynamic tables
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+// import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import ToolkitProvider from 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min';
 // react component used to create sweet alerts
 import ReactBSAlert from "react-bootstrap-sweetalert";
 // reactstrap components
@@ -35,9 +36,9 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 // core components
-import SimpleHeader from "components/Headers/SimpleHeader.js";
+import SimpleHeader from "../../../components/Headers/SimpleHeader.js";
 
-import { dataTable } from "variables/general";
+import { dataTable } from "../../../variables/general"
 
 const pagination = paginationFactory({
   page: 1,
@@ -67,7 +68,7 @@ const pagination = paginationFactory({
   )
 });
 
-const { SearchBar } = Search;
+// const { SearchBar } = Search;
 
 class ReactBSTables extends React.Component {
   state = {
@@ -173,14 +174,14 @@ class ReactBSTables extends React.Component {
                         id="datatable-basic_filter"
                         className="dataTables_filter px-4 pb-1"
                       >
-                        <label>
+                        {/* <label>
                           Search:
                           <SearchBar
                             className="form-control-sm"
                             placeholder=""
                             {...props.searchProps}
                           />
-                        </label>
+                        </label> */}
                       </div>
                       <BootstrapTable
                         {...props.baseProps}
@@ -286,7 +287,7 @@ class ReactBSTables extends React.Component {
                               of the table.
                             </UncontrolledTooltip>
                           </Col>
-                          <Col xs={12} sm={6}>
+                          {/* <Col xs={12} sm={6}>
                             <div
                               id="datatable-basic_filter"
                               className="dataTables_filter px-4 pb-1 float-right"
@@ -300,7 +301,7 @@ class ReactBSTables extends React.Component {
                                 />
                               </label>
                             </div>
-                          </Col>
+                          </Col> */}
                         </Row>
                       </Container>
                       <BootstrapTable

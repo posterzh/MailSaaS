@@ -34,7 +34,7 @@ import {
   Col
 } from "reactstrap";
 // core components
-import CardsHeader from "components/Headers/CardsHeader.js";
+import CardsHeader from "../../../components/Headers/CardsHeader.js";
 
 class Cards extends React.Component {
   render() {
@@ -47,7 +47,7 @@ class Cards extends React.Component {
               <Card>
                 <CardImg
                   alt="..."
-                  src={require("assets/img/theme/img-1-1000x600.jpg")}
+                  src={STATIC_FILES.img1}
                   top
                 />
 
@@ -101,7 +101,7 @@ class Cards extends React.Component {
               <Card className="card-profile">
                 <CardImg
                   alt="..."
-                  src={require("assets/img/theme/img-1-1000x600.jpg")}
+                  s src={STATIC_FILES.img2}
                   top
                 />
                 <Row className="justify-content-center">
@@ -111,7 +111,7 @@ class Cards extends React.Component {
                         <img
                           alt="..."
                           className="rounded-circle"
-                          src={require("assets/img/theme/team-4.jpg")}
+                          src={STATIC_FILES.team_4}
                         />
                       </a>
                     </div>
@@ -205,7 +205,7 @@ class Cards extends React.Component {
                       >
                         <img
                           alt="..."
-                          src={require("assets/img/theme/team-2.jpg")}
+                          src={STATIC_FILES.team_2}
                         />
                       </a>
                     </Col>
@@ -236,7 +236,7 @@ class Cards extends React.Component {
                     <img
                       alt="..."
                       className="rounded-circle img-center img-fluid shadow shadow-lg--hover"
-                      src={require("assets/img/theme/team-1.jpg")}
+                      src={STATIC_FILES.team_1}
                       style={{ width: "140px" }}
                     />
                   </a>
@@ -280,7 +280,7 @@ class Cards extends React.Component {
               <Card>
                 <CardImg
                   alt="..."
-                  src={require("assets/img/theme/img-1-1000x900.jpg")}
+                  src={STATIC_FILES.img2}
                   top
                 />
 
@@ -433,7 +433,7 @@ class Cards extends React.Component {
               <Card className="bg-dark text-white border-0">
                 <CardImg
                   alt="..."
-                  src={require("assets/img/theme/img-1-1000x600.jpg")}
+                  s src={STATIC_FILES.img1}
                 />
                 <CardImgOverlay className="d-flex align-items-center">
                   <div>

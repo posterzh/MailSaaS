@@ -16,6 +16,8 @@
 */
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { createStore } from 'redux'
 // react library for routing
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
@@ -34,20 +36,24 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 // // core styles
 // import "assets/scss/argon-dashboard-pro-react.scss?v1.1.0";
 
-// import AdminLayout from "layouts/Admin.js";
 // import RTLLayout from "layouts/RTL.js";
 // import AuthLayout from "layouts/Auth.js";
+import AdminLayout from "./layouts/Admin"
+import AuthLayout from "./layouts/Auth"
 import IndexView from "./views/Index.js";
+import store from './redux/store/store'
 
 ReactDOM.render(
   <BrowserRouter>
-    <Switch>
-      <Route path="/admin" render={props => <AdminLayout {...props} />} />
-      {/* <Route path="/rtl" render={props => <RTLLayout {...props} />} /> */}
-      <Route path="/auth" render={props => <AuthLayout {...props} />} />
-      <Route path="/" render={props => <IndexView {...props} />} />
-      <Redirect from="*" to="/" />
-    </Switch>
+    <Provider store={store}>
+      <Switch>
+        <Route path="/app/admin" render={props => <AdminLayout {...props} />} />
+        <Route path="/app/auth" render={props => <AuthLayout {...props} />} />
+        <Route path="/app" render={props => <IndexView {...props} />} />
+      </Switch>
+    </Provider>
   </BrowserRouter>,
   document.getElementById("object-lifecycle-home")
+  
+
 );

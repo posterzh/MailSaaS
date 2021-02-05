@@ -33,11 +33,35 @@ import {
   Row,
   Col
 } from "reactstrap";
-// core components
-import AuthHeader from "components/Headers/AuthHeader.js";
+import AuthHeader from "../../../components/Headers/AuthHeader.js";
+import { connect } from "react-redux";
+import { LoginAction } from "../../../redux/action/action";
 
 class Login extends React.Component {
-  state = {};
+  constructor() {
+    super()
+    this.state = {
+      email: '',
+      password: ''
+    }
+  }
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const Loginuser = {
+      email: this.state.email,
+      password: this.state.password
+    }
+
+    this.props.LoginAction(Loginuser)
+    console.log(Loginuser,'loginuser data')
+   
+  }
+
   render() {
     return (
       <>
@@ -63,7 +87,7 @@ class Login extends React.Component {
                       <span className="btn-inner--icon mr-1">
                         <img
                           alt="..."
-                          src={require("assets/img/icons/common/github.svg")}
+                          src={STATIC_FILES.github}
                         />
                       </span>
                       <span className="btn-inner--text">Github</span>
@@ -77,7 +101,7 @@ class Login extends React.Component {
                       <span className="btn-inner--icon mr-1">
                         <img
                           alt="..."
-                          src={require("assets/img/icons/common/google.svg")}
+                          src={STATIC_FILES.google}
                         />
                       </span>
                       <span className="btn-inner--text">Google</span>
@@ -88,7 +112,7 @@ class Login extends React.Component {
                   <div className="text-center text-muted mb-4">
                     <small>Or sign in with credentials</small>
                   </div>
-                  <Form role="form">
+                  <Form onSubmit={this.handleSubmit} role="form">
                     <FormGroup
                       className={classnames("mb-3", {
                         focused: this.state.focusedEmail
@@ -103,6 +127,9 @@ class Login extends React.Component {
                         <Input
                           placeholder="Email"
                           type="email"
+                          name='email'
+                          value={this.state.email}
+                          onChange={this.handleChange}
                           onFocus={() => this.setState({ focusedEmail: true })}
                           onBlur={() => this.setState({ focusedEmail: false })}
                         />
@@ -122,6 +149,9 @@ class Login extends React.Component {
                         <Input
                           placeholder="Password"
                           type="password"
+                          name='password'
+                          value={this.state.password}
+                          onChange={this.handleChange}
                           onFocus={() =>
                             this.setState({ focusedPassword: true })
                           }
@@ -145,7 +175,7 @@ class Login extends React.Component {
                       </label>
                     </div>
                     <div className="text-center">
-                      <Button className="my-4" color="info" type="button">
+                      <Button className="my-4" color="info" type="submit">
                         Sign in
                       </Button>
                     </div>
@@ -179,5 +209,15 @@ class Login extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    // token: state.token
+  };
+};
+const mapDispatchToProps = dispatch => ({
+  LoginAction: Loginuser => {
+    dispatch(LoginAction(Loginuser));
+  },
+});
 
-export default Login;
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

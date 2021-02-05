@@ -38,7 +38,7 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 // core components
-import SimpleHeader from "components/Headers/SimpleHeader.js";
+import SimpleHeader from "../../../components/Headers/SimpleHeader"
 
 class Sortable extends React.Component {
   componentDidMount() {
@@ -97,8 +97,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/bootstrap.jpg")}
-                              />
+                                src={STATIC_FILES.boottrap}                              />
                             </a>
                             <Media>
                               <span className="name mb-0 text-sm">
@@ -124,7 +123,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-1.jpg")}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -141,7 +140,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-2.jpg")}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -158,7 +157,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-3.jpg")}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -175,7 +174,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-4.jpg")}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -237,7 +236,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/angular.jpg")}
+                                src= {STATIC_FILES.angular}
                               />
                             </a>
                             <Media>
@@ -264,7 +263,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-1.jpg")}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -281,7 +280,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-2.jpg")}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -298,7 +297,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-3.jpg")}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -315,7 +314,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-4.jpg")}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -377,7 +376,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/sketch.jpg")}
+                                src=  {STATIC_FILES.sketch}
                               />
                             </a>
                             <Media>
@@ -404,7 +403,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-1.jpg")}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -421,7 +420,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-2.jpg")}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -438,7 +437,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-3.jpg")}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -455,7 +454,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-4.jpg")}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -517,7 +516,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/react.jpg")}
+                                src={STATIC_FILES.react}
                               />
                             </a>
                             <Media>
@@ -544,7 +543,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-1.jpg")}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -561,7 +560,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-2.jpg")}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -578,7 +577,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-3.jpg")}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -595,7 +594,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-4.jpg")}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -657,7 +656,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/vue.jpg")}
+                                src={STATIC_FILES.vue}
                               />
                             </a>
                             <Media>
@@ -684,7 +683,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-1.jpg")}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -701,7 +700,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-2.jpg")}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -718,7 +717,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-3.jpg")}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -735,7 +734,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-4.jpg")}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -880,8 +879,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/bootstrap.jpg")}
-                          />
+                            src={STATIC_FILES.boottrap}                          />
                         </a>
                         <Media>
                           <span className="name mb-0 text-sm">
@@ -907,7 +905,8 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-1.jpg")}
+                            src= {STATIC_FILES.team_1}
+                           
                           />
                         </a>
                         <UncontrolledTooltip
@@ -924,7 +923,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-2.jpg")}
+                            src= {STATIC_FILES.team_2}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -941,7 +940,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-3.jpg")}
+                            src= {STATIC_FILES.team_3}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -958,7 +957,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-4.jpg")}
+                            src= {STATIC_FILES.team_4}
                           />
                         </a>
                         <UncontrolledTooltip delay={0} target="tooltip49218996">
@@ -1017,7 +1016,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/angular.jpg")}
+                            src= {STATIC_FILES.angular}
                           />
                         </a>
                         <Media>
@@ -1044,7 +1043,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-1.jpg")}
+                            src= {STATIC_FILES.team_1}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1061,7 +1060,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-2.jpg")}
+                            src= {STATIC_FILES.team_2}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1078,7 +1077,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-3.jpg")}
+                            src= {STATIC_FILES.team_3}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1095,7 +1094,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-4.jpg")}
+                            src= {STATIC_FILES.team_4}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1157,7 +1156,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/sketch.jpg")}
+                            src=  {STATIC_FILES.sketch}
                           />
                         </a>
                         <Media>
@@ -1184,7 +1183,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-1.jpg")}
+                            src= {STATIC_FILES.team_1}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1201,7 +1200,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-2.jpg")}
+                            src= {STATIC_FILES.team_2}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1218,7 +1217,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-3.jpg")}
+                            src= {STATIC_FILES.team_3}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1235,7 +1234,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-4.jpg")}
+                            src= {STATIC_FILES.team_4}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1297,7 +1296,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/react.jpg")}
+                            src={STATIC_FILES.react}
                           />
                         </a>
                         <Media>
@@ -1324,7 +1323,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-1.jpg")}
+                            src= {STATIC_FILES.team_1}
                           />
                         </a>
                         <UncontrolledTooltip delay={0} target="tooltip19030294">
@@ -1338,7 +1337,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-2.jpg")}
+                            src= {STATIC_FILES.team_2}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1355,7 +1354,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-3.jpg")}
+                            src= {STATIC_FILES.team_3}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1372,7 +1371,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-4.jpg")}
+                            src= {STATIC_FILES.team_4}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1434,7 +1433,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/vue.jpg")}
+                            src={STATIC_FILES.vue}
                           />
                         </a>
                         <Media>
@@ -1461,7 +1460,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-1.jpg")}
+                            src= {STATIC_FILES.team_1}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1478,7 +1477,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-2.jpg")}
+                            src= {STATIC_FILES.team_2}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1495,7 +1494,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-3.jpg")}
+                            src= {STATIC_FILES.team_3}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1512,7 +1511,7 @@ class Sortable extends React.Component {
                         >
                           <img
                             alt="..."
-                            src={require("assets/img/theme/team-4.jpg")}
+                            src= {STATIC_FILES.team_4}
                           />
                         </a>
                         <UncontrolledTooltip
@@ -1606,7 +1605,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/bootstrap.jpg")}
+                                src={STATIC_FILES.boottrap}                                
                               />
                             </a>
                             <Media>
@@ -1633,7 +1632,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-1.jpg")}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1650,7 +1649,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-2.jpg")}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1667,7 +1666,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-3.jpg")}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1684,7 +1683,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-4.jpg")}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1746,7 +1745,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/angular.jpg")}
+                                src= {STATIC_FILES.angular}
                               />
                             </a>
                             <Media>
@@ -1773,7 +1772,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-1.jpg")}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1790,7 +1789,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-2.jpg")}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1807,7 +1806,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-3.jpg")}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1824,7 +1823,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-4.jpg")}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1886,7 +1885,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/sketch.jpg")}
+                                src=  {STATIC_FILES.sketch}
                               />
                             </a>
                             <Media>
@@ -1913,7 +1912,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-1.jpg")}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1930,7 +1929,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-2.jpg")}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1947,7 +1946,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-3.jpg")}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -1964,7 +1963,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-4.jpg")}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2026,7 +2025,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/react.jpg")}
+                                src={STATIC_FILES.react}
                               />
                             </a>
                             <Media>
@@ -2053,7 +2052,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-1.jpg")}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2070,7 +2069,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-2.jpg")}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2087,7 +2086,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-3.jpg")}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2104,7 +2103,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-4.jpg")}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2166,7 +2165,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/vue.jpg")}
+                                src={STATIC_FILES.vue}
                               />
                             </a>
                             <Media>
@@ -2193,7 +2192,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-1.jpg")}
+                                src= {STATIC_FILES.team_1}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2210,7 +2209,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-2.jpg")}
+                                src= {STATIC_FILES.team_2}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2227,7 +2226,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-3.jpg")}
+                                src= {STATIC_FILES.team_3}
                               />
                             </a>
                             <UncontrolledTooltip
@@ -2244,7 +2243,7 @@ class Sortable extends React.Component {
                             >
                               <img
                                 alt="..."
-                                src={require("assets/img/theme/team-4.jpg")}
+                                src= {STATIC_FILES.team_4}
                               />
                             </a>
                             <UncontrolledTooltip

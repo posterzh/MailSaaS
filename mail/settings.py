@@ -55,24 +55,23 @@ DJANGO_APPS = [
 
 # Put your third-party apps here
 THIRD_PARTY_APPS = [
+    'rest_framework.authtoken',
+    'rest_auth',
+    'rest_framework',
     'allauth',  # allauth account/registration management
     'allauth.account',
-
+    'rest_auth.registration',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'menus',
-    'rest_framework',
     'corsheaders',
     # stripe integration
     'djstripe',
     # 'salesforce',
-    # 'django_pipedrive',
-    # 'django_select2',
-    # 'djangocms_hubspot',
 ]
 
 PEGASUS_APPS = [
     'apps.pegasus',
+     'django_google.apps.DjangoGoogleConfig',
 ]
 
 # Put your project-specific apps here
@@ -84,12 +83,10 @@ PROJECT_APPS = [
     'apps.campaignschedule.apps.CampaignscheduleConfig',
     'apps.teams.apps.TeamConfig',
     'apps.integration',
-    "apps.unsubscribes"
-    # 'apps.mailaccount',
+    "apps.unsubscribes",
 
+    'apps.mailaccounts',
     
-
-
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PEGASUS_APPS + PROJECT_APPS
@@ -147,7 +144,11 @@ DATABASES = {
     }
 }
 
-
+GOOGLE_CLIENT_SECRET_FILE = os.path.join(BASE_DIR, 'client_secret_178038321765-1d24dsmngr7cmthb1ksvno3kehirnqbg.apps.googleusercontent.com.json')
+GOOGLE_AUTH_SCOPES = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]
 
 
 
@@ -157,7 +158,7 @@ DATABASES = {
 # Django recommends overriding the user model even if you don't think you need to because it makes
 # future changes much easier.
 AUTH_USER_MODEL = 'users.CustomUser'
-LOGIN_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = '/'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -270,6 +271,8 @@ SITE_ID = 1
 # DRF config
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
@@ -278,7 +281,13 @@ REST_FRAMEWORK = {
     
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
-        ...
+        
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ),
 }
 
@@ -297,20 +306,37 @@ CELERY_IMPORTS = (
     'apps.campaignschedule.tasks'
 )
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.IsAdminUser',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ),
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': (
+#         'rest_framework.permissions.IsAuthenticated',
+#         # 'rest_framework.permissions.IsAdminUser',
+#     ),
    
 
+# }
+
+
+JWT_AUTH = { 
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=500)
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ACCOUNT_ADAPTER = 'apps.users.adapter.CustomUserAccountAdapter'
+
+REST_SESSION_LOGIN = True
+REST_USE_JWT = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'apps.users.serializer.RegisterSerializer',
+}
+
 
 # Pegasus config
 
@@ -382,8 +408,7 @@ JWT_AUTH = {
     'JWT_AUTH_COOKIE': None,
 }
 
-# SLACK_CLIENT_ID = config('SLACK_CLIENT_ID')
-# SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
+
 
 
 #Mail_configuration
@@ -406,11 +431,12 @@ CLIENT_SECRET = config('CLIENT_SECRET')
 
 #Salesforce Configuration
 
-SALESFORCE_USERNAME = config('SALESFORCE_USERNAME')
-SALESFORCE_PASSWORD = config('SALESFORCE_PASSWORD')
-SALESFORCE_SECURITY_TOKEN = config('SALESFORCE_SECURITY_TOKEN')
-SALESFORCE_DOMAIN = 'test'
-SALESFORCE_USE_SANDBOX = True
-SALESFORCE_API_VERSION = '43.0'
+# SALESFORCE_USERNAME = config('SALESFORCE_USERNAME')
+# SALESFORCE_PASSWORD = config('SALESFORCE_PASSWORD')
+# SALESFORCE_SECURITY_TOKEN = config('SALESFORCE_SECURITY_TOKEN')
+# SALESFORCE_DOMAIN = 'test'
+# SALESFORCE_USE_SANDBOX = True
+# SALESFORCE_API_VERSION = '43.0'
 
-PIPEDRIVE_API_KEY = os.environ.get('DJANGO_PIPEDRIVE_API_KEY')
+
+PIPEDRIVE_API_KEY="67ffc61ad9d85760cee59c2115bddd5cc536e9c6"
