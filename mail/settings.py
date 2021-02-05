@@ -49,9 +49,7 @@ DJANGO_APPS = [
     'django.forms',
     'celery_progress',
     "django_celery_results",
-     
     'django_crontab',
-
     'django_celery_beat',
 ]
 
@@ -62,13 +60,15 @@ THIRD_PARTY_APPS = [
 
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-
+    'menus',
     'rest_framework',
     'corsheaders',
     # stripe integration
     'djstripe',
     # 'salesforce',
     # 'django_pipedrive',
+    # 'django_select2',
+    # 'djangocms_hubspot',
 ]
 
 PEGASUS_APPS = [
@@ -146,6 +146,7 @@ DATABASES = {
         'PORT':config('DATABASE_PORT'),
     }
 }
+
 
 
 
@@ -412,5 +413,4 @@ SALESFORCE_DOMAIN = 'test'
 SALESFORCE_USE_SANDBOX = True
 SALESFORCE_API_VERSION = '43.0'
 
-
-PIPEDRIVE_API_KEY="67ffc61ad9d85760cee59c2115bddd5cc536e9c6"
+PIPEDRIVE_API_KEY = os.environ.get('DJANGO_PIPEDRIVE_API_KEY')
