@@ -9,7 +9,7 @@ from .helpers import require_email_confirmation, user_has_confirmed_email_addres
 from .models import CustomUser
 from rest_framework import generics
 from rest_framework import permissions
-from apps.users.serializer import LoginSerilizer,RegisterSerializer,TokenSerializer,UserSettingSerilizer,ChangePasswordSerializer
+from apps.users.serializer import TokenSerializer,UserSettingSerilizer,ChangePasswordSerializer
 from django.contrib.auth import authenticate,login
 from rest_framework.response import Response
 from rest_framework_jwt.settings import api_settings
@@ -58,37 +58,6 @@ def upload_profile_image(request):
         user.avatar = request.FILES['avatar']
         user.save()
     return HttpResponse('Success!')
-
-
-class RegisterView(generics.CreateAPIView):
-    queryset = CustomUser.objects.all()
-    permission_classes = (permissions.AllowAny,)
-    serializer_class = RegisterSerializer
-
-
-class UserLoginView(generics.CreateAPIView):
-    
-    serializer_class = LoginSerilizer
-    queryset = CustomUser.objects.all()
-    permission_classes = (permissions.AllowAny,)
-
-    def post(self, request, *args, **kwargs):
-        if request.data == {}:
-            return Response({'message':'Please fill details'})
-        email = request.data.get('email')
-        password = request.data.get('password')
-        user = authenticate(email=email,password=password)
-        if not email or not password:
-            return Response({"message":"Please Enter Email or Password"})
-        if user is not None:
-            login(request, user)
-            serialize = TokenSerializer(data={
-                "token": jwt_encode_handler(
-                    jwt_payload_handler(user)
-                )})
-            serialize.is_valid()
-            return Response(serialize.data)
-        return Response({"message": "Not Authenticated User"})
 
 
 class UserSettingsView(generics.RetrieveUpdateAPIView):

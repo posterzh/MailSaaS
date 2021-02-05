@@ -57,13 +57,15 @@ DJANGO_APPS = [
 
 # Put your third-party apps here
 THIRD_PARTY_APPS = [
+    'rest_framework.authtoken',
+    'rest_auth',
+    'rest_framework',
     'allauth',  # allauth account/registration management
     'allauth.account',
-
+    'rest_auth.registration',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
 
-    'rest_framework',
     'corsheaders',
     # stripe integration
     'djstripe',
@@ -156,7 +158,7 @@ GOOGLE_AUTH_SCOPES = [
 # Django recommends overriding the user model even if you don't think you need to because it makes
 # future changes much easier.
 AUTH_USER_MODEL = 'users.CustomUser'
-LOGIN_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = '/'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -269,6 +271,8 @@ SITE_ID = 1
 # DRF config
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
@@ -277,7 +281,13 @@ REST_FRAMEWORK = {
     
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
-        ...
+        
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ),
 }
 
@@ -296,20 +306,37 @@ CELERY_IMPORTS = (
     'apps.campaignschedule.tasks'
 )
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.IsAdminUser',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ),
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': (
+#         'rest_framework.permissions.IsAuthenticated',
+#         # 'rest_framework.permissions.IsAdminUser',
+#     ),
    
 
+# }
+
+
+JWT_AUTH = { 
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=500)
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ACCOUNT_ADAPTER = 'apps.users.adapter.CustomUserAccountAdapter'
+
+REST_SESSION_LOGIN = True
+REST_USE_JWT = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'apps.users.serializer.RegisterSerializer',
+}
+
 
 # Pegasus config
 

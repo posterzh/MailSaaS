@@ -1,13 +1,21 @@
-from allauth.account import app_settings
 from allauth.account.adapter import DefaultAccountAdapter
-from allauth.account.utils import user_email, user_field
 
 
-class EmailAsUsernameAdapter(DefaultAccountAdapter):
-    """
-    Adapter that always sets the username equal to the user's email address.
-    """
+class CustomUserAccountAdapter(DefaultAccountAdapter):
 
-    def populate_username(self, request, user):
-        # override the username population to always use the email
-        user_field(user, app_settings.USER_MODEL_USERNAME_FIELD, user_email(user))
+    def save_user(self, request, user, form, commit=True):
+        """
+        Saves a new `User` instance using information provided in the
+        signup form.
+        """
+        from allauth.account.utils import user_field
+
+        user = super().save_user(request, user, form, False)
+        user_field(user, 'email', request.data.get('email', ''))
+        # user_field(user, 'username', request.data.get('username', ''))
+        user_field(user, 'full_name', request.data.get('full_name', ''))
+        user_field(user, 'phone_number', request.data.get('phone_number', ''))
+        user_field(user, 'company_name', request.data.get('company_name', ''))
+        user_field(user, 'mailsaas_type', request.data.get('mailsaas_type', ''))
+        user.save()
+        return user
