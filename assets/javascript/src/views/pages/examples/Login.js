@@ -35,7 +35,7 @@ import {
 } from "reactstrap";
 import AuthHeader from "../../../components/Headers/AuthHeader.js";
 import { connect } from "react-redux";
-import { LoginAction } from "../../../redux/action/action";
+import { LoginAction } from "../../../redux/action/AuthourizationAction";
 
 class Login extends React.Component {
   constructor() {
@@ -73,45 +73,7 @@ class Login extends React.Component {
           <Row className="justify-content-center">
             <Col lg="5" md="7">
               <Card className="bg-secondary border-0 mb-0">
-                <CardHeader className="bg-transparent pb-5">
-                  <div className="text-muted text-center mt-2 mb-3">
-                    <small>Sign in with</small>
-                  </div>
-                  <div className="btn-wrapper text-center">
-                    <Button
-                      className="btn-neutral btn-icon"
-                      color="default"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <span className="btn-inner--icon mr-1">
-                        <img
-                          alt="..."
-                          src={STATIC_FILES.github}
-                        />
-                      </span>
-                      <span className="btn-inner--text">Github</span>
-                    </Button>
-                    <Button
-                      className="btn-neutral btn-icon"
-                      color="default"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <span className="btn-inner--icon mr-1">
-                        <img
-                          alt="..."
-                          src={STATIC_FILES.google}
-                        />
-                      </span>
-                      <span className="btn-inner--text">Google</span>
-                    </Button>
-                  </div>
-                </CardHeader>
                 <CardBody className="px-lg-5 py-lg-5">
-                  <div className="text-center text-muted mb-4">
-                    <small>Or sign in with credentials</small>
-                  </div>
                   <Form onSubmit={this.handleSubmit} role="form">
                     <FormGroup
                       className={classnames("mb-3", {
