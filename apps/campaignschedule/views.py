@@ -29,7 +29,6 @@ class CampaignScheduleAdd(CreateAPIView):
         
         request.data._mutable = False
 
-        print(request.data)
         serializer = CampaignscheduleSerializers(data=request.data)
         if serializer.is_valid():
             serializer.save()
