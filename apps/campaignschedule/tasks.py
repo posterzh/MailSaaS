@@ -57,56 +57,99 @@ from apps.campaign.models import CampaignRecipient,Campaign
 def send_email_task():
     # print("schdule start")
     
-    all_schedules=Schedule.objects.all()
-    all_active_campaigns = []
-    campaign_schedule = {}
+    email_schedule_data = Email_schedule.objects.all()
 
-    for schedule in all_schedules:
-        campaigns = Campaign.objects.filter(assigned = schedule.user, campaign_status = True)
-        if campaigns.exists():
-            campaign_schedule[campaigns] = schedule
-            all_active_campaigns.append(campaigns.get())
-    print(all_active_campaigns)
+    for email_data in email_schedule_data:
+        schedule = Schedule.objects.get(user = email_data.user_id)
+        today_day = datetime.now().strftime("%A")
+        block_days_list = []
+        max_email_to_send_today = schedule.max_email
+        mail_sent_count = 0
+        for i in list(schedule.block_days.values()):
+            block_days_list.append(i["name"])
+        # print(today_day, block_days_list, datetime.now().time().strftime("%H:%M") == email_data.time.strftime("%H:%M"), today_day not in block_days_list)
+        if (datetime.now().time().strftime("%H:%M") == email_data.time.strftime("%H:%M")) and (today_day not in block_days_list) and (mail_sent_count < max_email_to_send_today):
+            print("Mail Gayo")
+            mail_sent_count += 1
 
-    for campaign in all_active_campaigns:
-        print(campaign)
-        schedule = campaign_schedule[campaigns]
-        user_id = schedule.user.id
-        mail_account = schedule.mail_account
-        start_time = schedule.start_time
-        end_time =  schedule.end_time
-        date = schedule.date
-        strategy = schedule.strategy
-        max_email = schedule.max_email
-        gap_between_mails = schedule.mint_between_sends
-        min_email_send = schedule.min_email_send
-        max_email_send = schedule.max_email_send
-        block_days = schedule.block_days
+            # send_mail(email_data.subject, email_data.email_body, email_data.mail_account, [email_data.recipient_email],fail_silently=False)
+            email_data.delete()
+        else:
+            print("Koni Gayo")
+        # print("Mail Send to "+email_data.recipient_email+" from "+email_data.mail_account+" with subjects "+email_data.subject+" with Email "+email_data.email_body)
+    return "tasks"
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    # all_schedules=Schedule.objects.all()
+    # all_active_campaigns = []
+    # campaign_schedule = {}
 
-        camp_recipients = CampaignRecipient.objects.filter(campaign = campaign.id, leads=False, replies=False, unsubscribe=False, sent=False, reciepent_status=True)
+    # for schedule in all_schedules:
+    #     campaigns = Campaign.objects.filter(assigned = schedule.user, campaign_status = True)
+    #     if campaigns.exists():
+    #         campaign_schedule[campaigns] = schedule
+    #         all_active_campaigns.append(campaigns.get())
+    # print(all_active_campaigns)
 
-        for recipient in camp_recipients:
-            block_days_list = []
-            for i in list(block_days.values()):
-                block_days_list.append(i["name"])
+    # for campaign in all_active_campaigns:
+    #     print(campaign)
+    #     schedule = campaign_schedule[campaigns]
+    #     user_id = schedule.user.id
+    #     mail_account = schedule.mail_account
+    #     start_time = schedule.start_time
+    #     end_time =  schedule.end_time
+    #     date = schedule.date
+    #     strategy = schedule.strategy
+    #     max_email = schedule.max_email
+    #     gap_between_mails = schedule.mint_between_sends
+    #     min_email_send = schedule.min_email_send
+    #     max_email_send = schedule.max_email_send
+    #     block_days = schedule.block_days
 
-            today_day = datetime.now().strftime("%A")
+    #     camp_recipients = CampaignRecipient.objects.filter(campaign = campaign.id, leads=False, replies=False, unsubscribe=False, sent=False, reciepent_status=True)
+
+    #     for recipient in camp_recipients:
+    #         print(recipient)
+    #         block_days_list = []
+    #         for i in list(block_days.values()):
+    #             block_days_list.append(i["name"])
+
+    #         today_day = datetime.now().strftime("%A")
             
-            if (strategy == 'SPACE') and (today_day not in block_days_list):
+    #         if (strategy == 'SPACE') and (today_day not in block_days_list):
                                 
-                current_time = datetime.now().time()
-                data = {
-                    "time": start_time,
-                    "date": date,
-                    "user_id": user_id,
-                    "mail_account": mail_account,
-                    "recipient_email": recipient.email,
-                    "subject": recipient.subject,
-                    "email_body": recipient.email_body,
-                }
-                email_schedule_serlzr = EmailScheduleSerializers(data = data)
-                if email_schedule_serlzr.is_valid():
-                    email_schedule_serlzr.save()
+    #             current_time = datetime.now().time()
+    #             data = {
+    #                 "time": start_time,
+    #                 "date": date,
+    #                 "user_id": user_id,
+    #                 "mail_account": mail_account,
+    #                 "recipient_email": recipient.email,
+    #                 "subject": recipient.subject,
+    #                 "email_body": recipient.email_body,
+    #             }
+                
+    #             email_schedule_serlzr = EmailScheduleSerializers(data = data)
+    #             if email_schedule_serlzr.is_valid():
+    #                 email_schedule_serlzr.save()
 
 
 
@@ -325,7 +368,6 @@ def send_email_task():
 
     # # print("times_list  ======>>>> ",times_list)
     # # print("recipients", recipient)
-    return "tasks"
   
     
 @shared_task

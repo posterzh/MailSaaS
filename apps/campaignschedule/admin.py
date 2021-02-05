@@ -5,4 +5,9 @@ from .models import Schedule, WeekDays, Email_schedule
 
 admin.site.register(Schedule)
 admin.site.register(WeekDays)
-admin.site.register(Email_schedule)
+# admin.site.register(Email_schedule)
+
+@admin.register(Email_schedule)
+class EmailScheduleAdmin(admin.ModelAdmin):
+    list_display = ('time','date', 'user_id', 'mail_account', 'recipient_email', 'subject', 'email_body')
+

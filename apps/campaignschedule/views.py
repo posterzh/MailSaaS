@@ -17,6 +17,11 @@ from django.conf import settings
 from django.http import JsonResponse
 # from .tasks import send_email_task
 import pytz, datetime
+from apps.campaign.models import Campaign, CampaignRecipient
+from apps.campaignschedule.serializers import EmailScheduleSerializers
+from datetime import datetime,time, timedelta
+
+
 
 
 
@@ -129,3 +134,48 @@ def tries(self):
     meses.append(FechaFin)
     print (meses)
     return "taskss"
+
+
+
+class PostToSchedule(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, format=None):
+        postData = request.data
+        # print(postData)
+
+        schedule = Schedule.objects.get(user = request.user.id)
+
+        # print(schedule)
+
+        next_email_send_at_time = schedule.start_time
+        for camp_id in postData["campaign_ids"]:
+            # camp = Campaign.objects.get(id = camp_id)
+            camp_email = CampaignRecipient.objects.filter(campaign = camp_id)
+            print(camp_email)
+            for recipient in camp_email:
+                print(next_email_send_at_time)
+                data = {
+                    "time": next_email_send_at_time,
+                    "date": schedule.date,
+                    "user_id": schedule.user.id,
+                    "mail_account": schedule.mail_account,
+                    "recipient_email": recipient.email,
+                    "subject": recipient.subject,
+                    "email_body": recipient.email_body,
+                }
+                print(data)
+                email_schedule_serlzr = EmailScheduleSerializers(data = data)
+                if email_schedule_serlzr.is_valid():
+                    print("validddddd")
+                    email_schedule_serlzr.save()
+                    
+                    delta = timedelta(minutes = schedule.mint_between_sends)
+                    next_email_send_at_time_str=next_email_send_at_time.strftime('%H:%M:%S')
+                    next_email_send_at_time_datetime = datetime.strptime(schedule.date.strftime('%Y-%m-%d')+" "+next_email_send_at_time_str, '%Y-%m-%d %H:%M:%S')
+                    next_email_send_at_time = (next_email_send_at_time_datetime + delta).time()
+
+        # all_campaigns = Campaign.objects.all(campaign_status = True)
+
+
+        return Response("Done")
