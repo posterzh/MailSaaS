@@ -33,11 +33,6 @@ export class NewCampaign_recipients extends Component {
                                                         <Col md='3'> <span className="option1">OPTION #3</span></Col>
                                                         <Col md='9'><span className="input_box_csv"><input  placeholder='Select an existing list'></input></span></Col>
                                                     </Row>
-                                                    <Row  className='mt-5'>
-                                                        <Col md='3'> <span className="option1">OPTION #4</span>
-                                                            <span className="Beta" >BETA</span></Col>
-                                                        <Col md='9'><span><Button className="import_button">IMPORT FROM APP</Button></span></Col>
-                                                    </Row>
 
                                                     {/* <div>
                                                         <span className="option1">OPTION #1</span>
