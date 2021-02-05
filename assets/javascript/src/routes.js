@@ -42,8 +42,6 @@ import Profile from "./views/pages/examples/Profile.js";
 import ReactBSTables from "./views/pages/tables/ReactBSTables.js";
 import Redeem from "./views/pages/TeamSettings/Redeem";
 import Register from "./views/pages/examples/Register.js";
-// import RTLSupport from "./views/pages/examples/RTLSupport.js";
-// import SendingCalender from "./views/pages/Campaing/SedingCalender";
 import Setting from "./views/pages/TeamSettings/Setting"
 import Sortable from "./views/pages/tables/Sortable.js";
 import Tables from "./views/pages/tables/Tables.js";
@@ -57,29 +55,23 @@ import Widgets from "./views/pages/Widgets.js";
 import ConversionTracking from "./views/pages/Extension/ConversionTracking";
 import SendingCalender from "./views/pages/Campaing/SedingCalender";
 import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
+import Campaign_Details from './views/pages/Campaing/Campaign_details.js'
 
 const routes = [
   {
-    collapse: true,
+    collapse: false,
     name: "Dashboards",
     icon: "ni ni-shop text-primary",
     state: "dashboardsCollapse",
-    views: [
-      {
-        path: "/dashboard",
-        name: "Dashboard",
-        miniName: "D",
-        component: Dashboard,
-        layout: "/app/admin"
-      },
-      // {
-      //   path: "/alternative-dashboard",
-      //   name: "Alternative",
-      //   miniName: "A",
-      //   component: Alternative,
-      //   layout: "/app/admin"
-      // }
-    ]
+    path: "/dashboard",
+    layout: "/app/admin",
+    component: Dashboard,
+    // views: [
+    //   {
+    //     name: "Dashboard",
+    //     miniName: "D",
+    //   },
+    // ]
     
   },
 // for campaign
@@ -93,28 +85,35 @@ const routes = [
         show:false,
         path: "/new-campaign",
         name: "Create Campaign",
-        miniName: "Ca",
+        miniName: "CC",
         component: NewCampaign,
         layout: "/app/admin"
       },
       {
-        path: "/Campaign",
+        path: "/campaign",
         name: "Campaign",
-        miniName: "Ca",
+        miniName: "CO",
         component: Campaign,
         layout: "/app/admin"
       },
       {
-        path: "/LeadCatcher",
+        path: "/campaign-detail",
+        name: "Campaign Details",
+        miniName: "CD",
+        component: Campaign_Details,
+        layout: "/app/admin"
+      },
+      {
+        path: "/lead-catcher",
         name: "Lead Catcher",
-        miniName: "Lc",
+        miniName: "LC",
         component: LeadCatcher,
         layout: "/app/admin"
       },
       {
-        path: "/SendingCalender",
+        path: "/sending-calender",
         name: "Sending Calender",
-        miniName: "Sc",
+        miniName: "SC",
         component: SendingCalender,
         layout: "/app/admin"
       } ,  
@@ -130,7 +129,7 @@ const routes = [
     state: "prospects",
     views:[
       {
-        path: "/Prospects",
+        path: "/prospects",
         name: "Prospects",
         miniName: "pro",
         component: Prospects,
@@ -147,7 +146,7 @@ const routes = [
     state: "mailAccount",
     views:[
       {
-        path: "/MailAccount",
+        path: "/mail-account",
         name: "MailAccount",
         miniName: "Ma",
         component: MailAccount,
@@ -163,26 +162,26 @@ const routes = [
     state: "teamSetting",
     views:[
       {
-        path: "/Setting",
+        path: "/setting",
         name: "Setting",
         miniName: "S",
         component: Setting,
         layout: "/app/admin"
       },
       {
-      path: "/Teammates",
+      path: "/teammates",
       name: "Teammates",
       miniName: "Tm",
       component: Teammates,
       layout: "/app/admin "},
     {
-      path: "/Billing",
+      path: "/billing",
       name: "Billing",
       miniName: "B",
       component: Billing,
       layout: "/app/admin "},
     {
-      path: "/Redeem",
+      path: "/redeem",
       name: "Redeem",
       miniName: "R",
       component: Redeem,
@@ -198,21 +197,21 @@ const routes = [
       state: "extensions",
       views:[
         {
-          path: "/Apps&Crm",
+          path: "/integrations",
           name: "Apps & CRMs",
           miniName: "A&C",
           component: AppsandCrm,
           layout: "/app/admin"
          },
         {
-          path: "/Api",
+          path: "/api",
           name: "API",
           miniName: "API",
           component: Api,
           layout: "/app/admin"
         },
         {
-          path: "/ConversionTracking",
+          path: "/conversionTracking",
           name: "ConversionTracking",
           miniName: "CT",
           component: ConversionTracking,
@@ -229,7 +228,7 @@ const routes = [
     state: "unsubscribe",
     views:[
       {
-        path: "/Unsubscribes",
+        path: "/unsubscribes",
         name: "Unsubscribes",
         miniName: "Us",
         component:Unsubscribes,

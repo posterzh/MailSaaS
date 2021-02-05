@@ -18,7 +18,7 @@ export default function Recipients() {
                             <div className='child ml-3'>
                                 <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                     <span className='font_icon'><i class="fa fa-undo" aria-hidden="true"></i></span>
-                                </a>Recipient
+                                </a>
                             </div>
                         </div>
                     </Col>

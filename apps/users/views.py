@@ -9,29 +9,12 @@ from .helpers import require_email_confirmation, user_has_confirmed_email_addres
 from .models import CustomUser
 from rest_framework import generics
 from rest_framework import permissions
-from apps.users.serializer import RegisterSerializer,TokenSerializer,UserSettingSerilizer,ChangePasswordSerializer
+from apps.users.serializer import TokenSerializer,UserSettingSerilizer,ChangePasswordSerializer
 from django.contrib.auth import authenticate,login
 from rest_framework.response import Response
 from rest_framework_jwt.settings import api_settings
 from django.http import Http404
 from rest_framework import status
-from django.conf import settings
-
-# rest allauth
-from allauth.account import app_settings as allauth_settings
-from allauth.account.utils import complete_signup
-from django.views.decorators.debug import sensitive_post_parameters
-from .app_settings import register_permission_classes
-from rest_auth.utils import jwt_encode
-from rest_auth.app_settings import (TokenSerializer,
-                                    JWTSerializer,
-                                    create_token)
-from rest_auth.models import TokenModel
-from django.utils.decorators import method_decorator
-
-sensitive_post_parameters_m = method_decorator(
-    sensitive_post_parameters('password1', 'password2')
-)
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
@@ -75,81 +58,6 @@ def upload_profile_image(request):
         user.avatar = request.FILES['avatar']
         user.save()
     return HttpResponse('Success!')
-
-
-# class RegisterView(generics.CreateAPIView):
-#     queryset = CustomUser.objects.all()
-#     permission_classes = (permissions.AllowAny,)
-#     serializer_class = RegisterSerializer
-class RegisterView(generics.CreateAPIView):
-    serializer_class = RegisterSerializer
-    permission_classes = register_permission_classes()
-    token_model = TokenModel
-
-    @sensitive_post_parameters_m
-    def dispatch(self, *args, **kwargs):
-        return super(RegisterView, self).dispatch(*args, **kwargs)
-
-    def get_response_data(self, user):
-        if allauth_settings.EMAIL_VERIFICATION == \
-                allauth_settings.EmailVerificationMethod.MANDATORY:
-            return {"detail": _("Verification e-mail sent.")}
-
-        if getattr(settings, 'REST_USE_JWT', False):
-            data = {
-                'user': user,
-                'token': self.token
-            }
-            return JWTSerializer(data).data
-        else:
-            return TokenSerializer(user.auth_token).data
-
-    def create(self, request,*args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-
-        return Response(self.get_response_data(user),
-                        status=status.HTTP_201_CREATED,
-                        headers=headers)
-
-    def perform_create(self,serializer,*args, **kwargs):
-        user = serializer.save(self.request)
-        if getattr(settings, 'REST_USE_JWT', False):
-            self.token = jwt_encode(user)
-        else:
-            create_token(self.token_model, user, serializer)
-
-        complete_signup(self.request._request, user,
-                        allauth_settings.EMAIL_VERIFICATION,
-                        None)
-        return user
-
-
-# class UserLoginView(generics.CreateAPIView):
-    
-#     serializer_class = LoginSerilizer
-#     queryset = CustomUser.objects.all()
-#     permission_classes = (permissions.AllowAny,)
-
-#     def post(self, request, *args, **kwargs):
-#         if request.data == {}:
-#             return Response({'message':'Please fill details'})
-#         email = request.data.get('email')
-#         password = request.data.get('password')
-#         user = authenticate(email=email,password=password)
-#         if not email or not password:
-#             return Response({"message":"Please Enter Email or Password"})
-#         if user is not None:
-#             login(request, user)
-#             serialize = TokenSerializer(data={
-#                 "token": jwt_encode_handler(
-#                     jwt_payload_handler(user)
-#                 )})
-#             serialize.is_valid()
-#             return Response(serialize.data)
-#         return Response({"message": "Not Authenticated User"})
 
 
 class UserSettingsView(generics.RetrieveUpdateAPIView):
@@ -217,4 +125,3 @@ class ChangePasswordView(generics.RetrieveUpdateAPIView):
             else:
                 return Response({'message':"confirm password did't match"})            
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-

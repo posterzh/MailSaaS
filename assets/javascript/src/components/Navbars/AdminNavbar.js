@@ -74,7 +74,7 @@ class AdminNavbar extends React.Component {
   render() {
     return (
       <>
-        <Navbar
+        {/* <Navbar
           className={classnames(
             "navbar-top navbar-expand border-bottom",
             { "navbar-dark bg-info": this.props.theme === "dark" },
@@ -453,7 +453,7 @@ class AdminNavbar extends React.Component {
               </Nav>
             </Collapse>
           </Container>
-        </Navbar>
+        </Navbar> */}
       </>
     );
   }

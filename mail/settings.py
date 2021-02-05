@@ -45,6 +45,7 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     'django.forms',
     'celery_progress',
     "django_celery_results",
@@ -56,31 +57,18 @@ DJANGO_APPS = [
 
 # Put your third-party apps here
 THIRD_PARTY_APPS = [
-    'rest_framework',
-    'rest_framework.authtoken', # temp
-
-    'rest_auth',
-
-    'django.contrib.sites',
-
-
-    'allauth',  # allauth account/registration management
-    'allauth.account',
-
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
-
-    'rest_auth.registration', # temp
+    
+    
 
     'corsheaders',
     # stripe integration
     'djstripe',
     # 'salesforce',
-    # 'django_pipedrive',
 ]
 
 PEGASUS_APPS = [
     'apps.pegasus',
+     'django_google.apps.DjangoGoogleConfig',
 ]
 
 # Put your project-specific apps here
@@ -92,12 +80,26 @@ PROJECT_APPS = [
     'apps.campaignschedule.apps.CampaignscheduleConfig',
     'apps.teams.apps.TeamConfig',
     'apps.integration',
+    'apps.mailaccounts',
+
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+
+    'django.contrib.sites',
+
+    'allauth',  # allauth account/registration management
+    'allauth.account',
+    'rest_auth.registration',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     
-
-
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PEGASUS_APPS + PROJECT_APPS
+
+SITE_ID = 1
+AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -152,7 +154,11 @@ DATABASES = {
     }
 }
 
-
+GOOGLE_CLIENT_SECRET_FILE = os.path.join(BASE_DIR, 'client_secret_178038321765-1d24dsmngr7cmthb1ksvno3kehirnqbg.apps.googleusercontent.com.json')
+GOOGLE_AUTH_SCOPES = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]
 
 
 
@@ -160,8 +166,7 @@ DATABASES = {
 
 # Django recommends overriding the user model even if you don't think you need to because it makes
 # future changes much easier.
-AUTH_USER_MODEL = 'users.CustomUser'
-LOGIN_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = '/'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -181,27 +186,24 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-REST_USE_JWT = True
-#rest allauth serializer
-REST_AUTH_SERIALIZERS = {
-    'LOGIN_SERIALIZER': 'apps.users.serializer.LoginSerializer',
-    # 'TOKEN_SERIALIZER': 'apps.users.serializer.TokenSerializer',
-    'REGISTER_SERIALIZER': 'apps.users.serializer.RegisterSerializer',
-    
-}
-
 # Allauth setup
+REST_SESSION_LOGIN = True
+REST_USE_JWT = True
 
 ACCOUNT_ADAPTER = 'apps.teams.adapter.AcceptInvitationAdapter'
+ACCOUNT_ADAPTER = 'apps.users.adapter.CustomUserAccountAdapter'
+
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+# ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
 
 
 ACCOUNT_FORMS = {
@@ -209,17 +211,11 @@ ACCOUNT_FORMS = {
 }
 
 
-# User signup configuration: change to "mandatory" to require users to confirm email before signing in.
-# or "optional" to send confirmation emails but not require them
-ACCOUNT_EMAIL_VERIFICATION = 'none'
 
-
-AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
-    "django.contrib.auth.backends.ModelBackend",
-    # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
+# AUTHENTICATION_BACKENDS = (
+#     "django.contrib.auth.backends.ModelBackend",
+#     "allauth.account.auth_backends.AuthenticationBackend",
+# )
 
 
 # enable social login
@@ -240,15 +236,10 @@ SOCIALACCOUNT_PROVIDERS = {
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 DATETIME_FORMAT = '%d-%m-%Y %H:%M:%S' 
 
 
@@ -272,18 +263,21 @@ MEDIA_URL = '/media/'
 # Email setup
 
 # use in development
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # use in production
 # see https://github.com/anymail/django-anymail for more details/examples
 # EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
 
 # Django sites
 
-SITE_ID = 1
+
 
 # DRF config
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
@@ -292,12 +286,16 @@ REST_FRAMEWORK = {
     
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
-        ...
+        
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ),
 }
 
 
-# Celery setup (using redis)
 # Celery setup (using redis)
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 # CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
@@ -311,20 +309,21 @@ CELERY_IMPORTS = (
     'apps.campaignschedule.tasks'
 )
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.IsAdminUser',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ),
-   
 
+
+# JWT_AUTH = { 
+#     'JWT_AUTH_HEADER_PREFIX': 'JWT',
+#     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=500)
+# }
+
+
+
+
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'apps.users.serializer.RegisterSerializer',
 }
+
 
 # Pegasus config
 
@@ -339,7 +338,7 @@ PROJECT_METADATA = {
 }
 
 
-# ADMINS = [('Elon Musk', 'elon.musk@localhost:8000')]
+ADMINS = [('Elon Musk', 'elon.musk@localhost:8000')]
 
 GOOGLE_ANALYTICS_ID = ''  # replace with your google analytics ID to connect to Google Analytics
 
@@ -398,6 +397,7 @@ JWT_AUTH = {
 
 
 
+
 #Mail_configuration
 
 EMAIL_HOST='sg3plcpnl0063.prod.sin3.secureserver.net'
@@ -418,12 +418,12 @@ CLIENT_SECRET = config('CLIENT_SECRET')
 
 #Salesforce Configuration
 
-SALESFORCE_USERNAME = config('SALESFORCE_USERNAME')
-SALESFORCE_PASSWORD = config('SALESFORCE_PASSWORD')
-SALESFORCE_SECURITY_TOKEN = config('SALESFORCE_SECURITY_TOKEN')
-SALESFORCE_DOMAIN = 'test'
-SALESFORCE_USE_SANDBOX = True
-SALESFORCE_API_VERSION = '43.0'
+# SALESFORCE_USERNAME = config('SALESFORCE_USERNAME')
+# SALESFORCE_PASSWORD = config('SALESFORCE_PASSWORD')
+# SALESFORCE_SECURITY_TOKEN = config('SALESFORCE_SECURITY_TOKEN')
+# SALESFORCE_DOMAIN = 'test'
+# SALESFORCE_USE_SANDBOX = True
+# SALESFORCE_API_VERSION = '43.0'
 
 
 PIPEDRIVE_API_KEY="67ffc61ad9d85760cee59c2115bddd5cc536e9c6"
