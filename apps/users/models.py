@@ -18,7 +18,10 @@ class CustomUser(AbstractUser):
     mailsaas_type = models.CharField(max_length=100,null=False,blank=False)
     avatar = models.FileField(upload_to='profile-pictures/', null=True, blank=True)
 
-    objects = UserManager()
+    # objects = UserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['full_name']
+
+    class Meta:
+        ordering = ['-date_joined']
 
