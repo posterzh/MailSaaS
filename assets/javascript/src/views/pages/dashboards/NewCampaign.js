@@ -147,6 +147,7 @@ import Send from "./NewCampaign_send"
 // import Recipients from './Recipients'
 // import Setting from './Setting'
 // import EditCampaign from './EditCampaign';
+
 const NewCampaign = (props) => {
     const [activeTab, setActiveTab] = useState('1');
 
@@ -157,17 +158,13 @@ const NewCampaign = (props) => {
     return (
         <>
             <div className='main-view'>
-                <div className='navbar' style={{ background: 'white', width: '100%',marginBottom:"3px" }}>
+                <div className='navbar' style={{ background: '#f5f5f5', width: '100%'}}>
                     <Container fluid>
                         <Row style={{ width: '100%' ,borderBottom:"1px solid #dedede"}}>
                             <Col md='2' style={{ display: 'flex', alignItems: 'center' }}>
                                 <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
                                     <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
                                         <span style={{ color: 'black', fontSize: '20px' }}>MailSaaaS</span></div>
-                                    {/* <div>
-                                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                                        <span>BACK</span>
-                                    </div> */}
                                 </div>
                             </Col>
                             <Col md='8'>
@@ -202,12 +199,9 @@ const NewCampaign = (props) => {
                 </div>
                 <div className='nav_details'>
                     <div>
-
-                        <TabContent activeTab={activeTab}>
+                        <TabContent activeTab={activeTab} className='hello-world'>
                             <TabPane tabId="1">
                                 <NewCampaign_start />
-                                {/* <Campaign_data /> */}
-                                {/* <EditCampaign /> */}
                             </TabPane>
                             <TabPane tabId="2">
                                 <NewCampaign_recipients />

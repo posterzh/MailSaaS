@@ -45,7 +45,7 @@ class AdminNavbar extends React.Component {
             <NavbarBrand to="/" tag={Link}>
               <img
                 alt="..."
-                src={STATIC_FILES.argon_react_white}
+                src={STATIC_FILES.mailsaas_logo}
                 // src={require("assets/img/brand/argon-react-white.png")}
               />
             </NavbarBrand>

@@ -16,55 +16,15 @@
 */
 import React from "react";
 // node.js library that concatenates classes (strings)
-import classnames from "classnames";
-// javascipt plugin for creating charts
-import Chart from "chart.js";
-// react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
-// reactstrap components
-// importing new campaign creation component
-import NewCampaign from "./NewCampaign"
-import Option from "./option"
-
 
 // importing routing module
-import { BrowserRouter, Route, Link, Switch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import {
-  Badge,
   Button,
-  Card,
-  CardHeader,
-  CardBody,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
-  UncontrolledDropdown,
-  Form,
-  Input,
-  ListGroupItem,
-  ListGroup,
-  Media,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
-  Table,
   Container,
   Row,
-  Col,
-  UncontrolledTooltip
 } from "reactstrap";
-
-// core componentser.js";
-import CardsHeader from "../../../components/Headers/CardsHeader";
-
-import {
-  chartOptions,
-  parseOptions,
-  chartExample1,
-  chartExample2
-} from "../../../variables/charts.js";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -73,9 +33,6 @@ class Dashboard extends React.Component {
       activeNav: 1,
       chartExample1Data: "data1"
     };
-    if (window.Chart) {
-      parseOptions(Chart, chartOptions());
-    }
   }
   toggleNavs = (e, index) => {
     e.preventDefault();
@@ -92,12 +49,11 @@ class Dashboard extends React.Component {
             <Row className="main_title"><h1 className="Main-title">Welcome to MailSaaS</h1></Row>
             <Row className="sub_title"><h3>A simple solution for email outreach.</h3></Row>
             <Row className="New_campaign_button">
-              <Link strict to="/app/admin/new-campaign">
+              <Link to="/app/admin/new-campaign">
                 <Button className="newcampaign_button">+ NEW CAMPAIGN</Button>
               </Link>
             </Row>
           </Container>
-          {/* < Option /> */}
       </div>
     );
   }
