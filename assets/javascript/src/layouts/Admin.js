@@ -19,8 +19,6 @@ import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 // core components
 // import AdminNavbar from "components/Navbars/AdminNavbar.js";
-import AdminNavbar from "../components/Navbars/AdminNavbar";
-import AdminFooter from "../components/Footers/AdminFooter.js";
 import Sidebar from "../components/Sidebar/Sidebar.js";
 
 // import routes from "routes.js";
@@ -106,13 +104,6 @@ class Admin extends React.Component {
           ref="mainContent"
           onClick={this.closeSidenav}
         >
-          <AdminNavbar
-            {...this.props}
-            theme={this.getNavbarTheme()}
-            toggleSidenav={this.toggleSidenav}
-            sidenavOpen={this.state.sidenavOpen}
-            brandText={this.getBrandText(this.props.location.pathname)}
-          />
           <Switch>
             {this.getRoutes(routes)}
             <Redirect from="*" to="/app/admin/dashboard" />
