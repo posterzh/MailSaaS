@@ -8,6 +8,7 @@ const initialState = {
 const Reducer = (state = { initialState }, action) => {
     console.log(action.data, 'action')
     switch (action.type) {
+        // cases for signup
         case REQUEST_FOR_REGISTER:
             return {
             }

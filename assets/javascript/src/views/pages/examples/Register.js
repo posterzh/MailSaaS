@@ -80,7 +80,7 @@ class Register extends React.Component {
   }
 
   render() {
-    // console.log(this.props.token,'redux')
+    console.log(STATIC_FILES.github)
     return (
       <>
         <AuthHeader

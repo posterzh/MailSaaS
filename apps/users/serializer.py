@@ -17,7 +17,7 @@ class RegisterSerializer(serializers.Serializer):
     company_name = serializers.CharField(required=True, write_only=True)
     mailsaas_type = serializers.CharField(required=True, write_only=True)
     password = serializers.CharField(required=True, write_only=True)
-    avatar = serializers.ImageField(required=True, write_only=True)
+    avatar = serializers.ImageField(required=False, write_only=True)
 
 
     def validate_email(self, email):

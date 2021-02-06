@@ -64,7 +64,7 @@ const routes = [
     icon: "ni ni-shop text-primary",
     state: "dashboardsCollapse",
     path: "/dashboard",
-    layout: "/app/admin",
+   layout: "/app/admin",
     component: Dashboard,
     // views: [
     //   {
@@ -87,35 +87,35 @@ const routes = [
         name: "Create Campaign",
         miniName: "CC",
         component: NewCampaign,
-        layout: "/app/admin"
+       layout: "/app/admin"
       },
       {
         path: "/campaign",
         name: "Campaign",
         miniName: "CO",
         component: Campaign,
-        layout: "/app/admin"
+       layout: "/app/admin"
       },
       {
         path: "/campaign-detail",
         name: "Campaign Details",
         miniName: "CD",
         component: Campaign_Details,
-        layout: "/app/admin"
+       layout: "/app/admin"
       },
       {
         path: "/lead-catcher",
         name: "Lead Catcher",
         miniName: "LC",
         component: LeadCatcher,
-        layout: "/app/admin"
+       layout: "/app/admin"
       },
       {
         path: "/sending-calender",
         name: "Sending Calender",
         miniName: "SC",
         component: SendingCalender,
-        layout: "/app/admin"
+       layout: "/app/admin"
       } ,  
         
     ]
@@ -133,7 +133,7 @@ const routes = [
         name: "Prospects",
         miniName: "pro",
         component: Prospects,
-         layout: "/app/admin"
+        layout: "/app/admin"
       }
     ]
   },
@@ -150,7 +150,7 @@ const routes = [
         name: "MailAccount",
         miniName: "Ma",
         component: MailAccount,
-        layout: "/app/admin"
+       layout: "/app/admin"
       },
     ]
   },
@@ -166,26 +166,29 @@ const routes = [
         name: "Setting",
         miniName: "S",
         component: Setting,
-        layout: "/app/admin"
+       layout: "/app/admin"
       },
       {
       path: "/teammates",
       name: "Teammates",
       miniName: "Tm",
       component: Teammates,
-      layout: "/app/admin "},
+     layout: "/app/admin"
+    },
     {
       path: "/billing",
       name: "Billing",
       miniName: "B",
       component: Billing,
-      layout: "/app/admin "},
+     layout: "/app/admin"
+    },
     {
       path: "/redeem",
       name: "Redeem",
       miniName: "R",
       component: Redeem,
-      layout: "/app/admin"},
+     layout: "/app/admin"
+    },
     ]
   },
 
@@ -201,21 +204,21 @@ const routes = [
           name: "Apps & CRMs",
           miniName: "A&C",
           component: AppsandCrm,
-          layout: "/app/admin"
+         layout: "/app/admin"
          },
         {
           path: "/api",
           name: "API",
           miniName: "API",
           component: Api,
-          layout: "/app/admin"
+         layout: "/app/admin"
         },
         {
           path: "/conversionTracking",
           name: "ConversionTracking",
           miniName: "CT",
           component: ConversionTracking,
-          layout: "/app/admin"
+         layout: "/app/admin"
         }
       ]
   },
@@ -232,7 +235,7 @@ const routes = [
         name: "Unsubscribes",
         miniName: "Us",
         component:Unsubscribes,
-        layout: "/app/admin"
+       layout: "/app/admin"
       },
     ]
   },
@@ -276,14 +279,14 @@ const routes = [
         name: "Timeline",
         miniName: "T",
         component: Timeline,
-        layout: "/app/admin"
+       layout: "/app/admin"
       },
       {
         path: "/profile",
         name: "Profile",
         miniName: "P",
         component: Profile,
-        layout: "/app/admin"
+       layout: "/app/admin"
       },
       {
         // path: "/rtl-support",

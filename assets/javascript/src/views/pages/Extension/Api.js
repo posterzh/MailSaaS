@@ -8,11 +8,12 @@ import { Container, Row, Col, Label, Input, Dropdown, DropdownToggle, DropdownMe
 
 export class Api extends Component {
     render() {
-        return (
-            // <div style={{ border: "1px solid red" }}>
+        return (            
             <div>
-                {/* <div style={{ border: "1px solid green" }}> */}
-                <div>
+                <div className='campaign_navbar' >
+                    <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>API</h1>
+                    <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i class="fa fa-question-circle-o" aria-hidden="true"></i></p>
+                </div>
                     <Container fluid>
                     <Row>
                         <Col md="7">
@@ -38,7 +39,7 @@ export class Api extends Component {
                         </Col>
                     </Row>
                    </Container>
-                </div>
+                {/* </div> */}
                <div style={{marginTop:"30px"}}>
                    <Container fluid>
                    <Row>

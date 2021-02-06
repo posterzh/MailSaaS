@@ -34,34 +34,35 @@ import {
   Col
 } from "reactstrap";
 import AuthHeader from "../../../components/Headers/AuthHeader.js";
-import { connect } from "react-redux";
-import { LoginAction } from "../../../redux/action/action";
+import {LoginAction} from "../../../redux/action/action"
+import {connect} from "react-redux"
 
 class Login extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      email: '',
-      password: ''
+  constructor(props)
+  {
+    super(props)
+    this.state={
+      email:'',
+      password:''
     }
   }
-  handleChange = (e) => {
+  handleChange = (event)=>{
     this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]:event.target.value
     });
+    
   }
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const Loginuser = {
-      email: this.state.email,
-      password: this.state.password
-    }
-
-    this.props.LoginAction(Loginuser)
-    console.log(Loginuser,'loginuser data')
-   
+  handleSubmit = (event)=>
+  {
+    event.preventDefault();
+    const loginuser={
+      email:this.state.email,
+      password:this.state.password
+    };
+  
+    this.props.LoginAction(loginuser)
+    console.log(loginuser)
   }
-
   render() {
     return (
       <>
@@ -127,9 +128,9 @@ class Login extends React.Component {
                         <Input
                           placeholder="Email"
                           type="email"
-                          name='email'
-                          value={this.state.email}
+                          name="email"
                           onChange={this.handleChange}
+                          value={this.state.email}
                           onFocus={() => this.setState({ focusedEmail: true })}
                           onBlur={() => this.setState({ focusedEmail: false })}
                         />
@@ -149,9 +150,9 @@ class Login extends React.Component {
                         <Input
                           placeholder="Password"
                           type="password"
-                          name='password'
-                          value={this.state.password}
+                          name="password"
                           onChange={this.handleChange}
+                          value={this.state.password}
                           onFocus={() =>
                             this.setState({ focusedPassword: true })
                           }
@@ -211,13 +212,14 @@ class Login extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    // token: state.token
+    //  token: state.token
   };
 };
-const mapDispatchToProps = dispatch => ({
-  LoginAction: Loginuser => {
-    dispatch(LoginAction(Loginuser));
-  },
-});
 
+const mapDispatchToProps = dispatch => ({
+  LoginAction: loginuser => {
+  dispatch(LoginAction(loginuser));
+  },
+ });
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
+

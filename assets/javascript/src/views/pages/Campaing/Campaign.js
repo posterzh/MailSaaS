@@ -24,7 +24,8 @@ class Campaign extends Component {
         <div className='main-view'>
           <div >
             <div className='campaign_navbar' >
-              <h1 style={{ color: 'white', fontSize: '30px', marginLeft: '20px' }}>Campaigns</h1>
+              <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px',marginTop:"20px" }}>Campaigns</h1>
+              <p style={{color:"white",fontSize:"20px",marginTop:"20px",marginRight:"20px"}}><i class="fa fa-question-circle-o" aria-hidden="true"></i></p>
             </div>
             <div className=''>
               <Container fluid className=''>
@@ -129,8 +130,11 @@ class Campaign extends Component {
                   </Row>
                 </Card>
               </Container>
-              <div className='d-flex'>
-                <div className='new_add_button'><span style={{ fontSize: '1em', color: 'white' }}>+</span></div>
+              <div className='plus-button-div'>
+                <div className='new_add_button'>
+                 <span className="plusicon"> +</span>
+                  {/* <span style={{ fontSize: '1em', color: 'white' }}>+</span> */}
+                  </div>
               </div>
             </div>
           </div>

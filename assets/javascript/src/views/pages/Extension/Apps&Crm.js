@@ -4,12 +4,16 @@ export class AppsandCrm extends Component {
     render() {
         return (
             <div className='main-view'>
+                <div className='campaign_navbar' >
+                    <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Apps & CRMs</h1>
+                    <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i class="fa fa-question-circle-o" aria-hidden="true"></i></p>
+                </div>
                 <div className='Apps'>
-                    <h1 className='N-I display-4'>NATIVE INTEGRATIONS</h1>
-                    <hr color='silver'></hr>
+                    <h1 className='N-I display-4'style={{borderBottom:"1px solid #ccc",paddingBottom:"10px"}} >NATIVE INTEGRATIONS</h1>
+                    {/* <hr color='silver'></hr> */}
                     <div className='native_media'>
                         <Container >
-                            <Row>
+                            <Row className="mt-5">
                                 <Col md='3'>
                                     <a href="" className='native_link'>
                                         <div className='native_media_div'>
@@ -70,8 +74,8 @@ export class AppsandCrm extends Component {
                         </Container>
                     </div>
                     <div>
-                        <h1 className='N-I display-4 mt-5'>OTHER APPS AND CRMS</h1>
-                        <hr color='silver'></hr>
+                        <h1 className='N-I display-4 mt-5' style={{borderBottom:"1px solid #ccc",paddingBottom:"10px"}}>OTHER APPS AND CRMS</h1>
+                        {/* <hr color='silver'></hr> */}
                         <p>Through the power of <a href=''><b>Zapier</b></a>, you can connect Mailshake to all sorts of apps:</p>
                     </div>
                     <div>

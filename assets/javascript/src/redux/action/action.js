@@ -55,7 +55,6 @@ export const LoginAction = (Loginuser) => {
     return function (dispatch) {
         dispatch(requestForLogin(Loginuser))
         Api.LoginApi(Loginuser).then(result => {
-            console.log(result.data, 'LoginSuccess')
             dispatch(LoginSuccess(result.data))
         }).catch(err => {
             console.log(err)
