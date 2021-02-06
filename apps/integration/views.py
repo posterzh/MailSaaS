@@ -17,15 +17,17 @@ from rest_framework.response import Response
 
 def login():
   return Salesforce(
-      username='divyakhandelwal@externlabs',
-      password='Gaurav@1234',
-      organizationId='00D5g000004Dsji')
+      username='divyakhandelwal-mlsz@force.com',
+      password='divya1234',
+    #   security_token='TJbGsbaRmxpKqwg2vIzjnVGl'
+      organizationId='00D5g000004Eewv'
+      )
 
 
 
 class ContactViewSet(generics.CreateAPIView):
-    # queryset = Contact.objects.all()
-    # serializer_class = ContactSerializer
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer
     permission_classes = (permissions.IsAuthenticated,)
       
     def post(self, request, format=None):
@@ -33,19 +35,30 @@ class ContactViewSet(generics.CreateAPIView):
         sf = login()
         print(sf)
 
-        # if request.method == 'POST':
-        data = request.data.copy()
-        serializer = ContactSerializer(data=data)
-        if serializer.is_valid():
-            return_dict = serializer.validated_data
-            query = sf.Contact.create(return_dict)
-            return Response(query)
+        if request.method == 'POST':
+            data = request.data.copy()
+            serializer = ContactSerializer(data=data)
+            if serializer.is_valid():
+                return_dict = serializer.validated_data
+                query = sf.Contact.create(return_dict)
+                return Response(query)
+            else:
+                return Response(serializer.errors)
         else:
-            return Response(serializer.errors)
+            data = sf.query("Select Id,Name from Contact")
+            result = ContactSerializer(data['records'][0])
+            return Response(result.data)
     def get(self, request, format=None):
         data = sf.query("Select Id,Name from Contact")
         result = ContactSerializer(data['records'][0])
         return Response(result.data)
+
+
+
+
+
+
+#**************************slack***********************
 
 
 from django.http import HttpResponse, JsonResponse
@@ -80,6 +93,9 @@ def event_hook(request):
     return HttpResponse(status=200)
 
 
+
+
+
 import requests
 import json
 import os
@@ -108,3 +124,7 @@ def SendSlackMessage(data):
     except SlackApiError as e:
         assert e.response["error"]  # str like 'invalid_auth', 'channel_not_found'
         return Response("Not Sent")
+
+
+# **************************************Hubspot**************************
+

@@ -66,12 +66,13 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     # stripe integration
     'djstripe',
-    # 'salesforce',
+    'salesforce',
+   
 ]
 
 PEGASUS_APPS = [
     'apps.pegasus',
-     'django_google.apps.DjangoGoogleConfig',
+    'django_google.apps.DjangoGoogleConfig',
 ]
 
 # Put your project-specific apps here
