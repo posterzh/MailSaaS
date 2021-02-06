@@ -114,7 +114,7 @@ class Sidebar extends React.Component {
       if (prop.collapse) {
         var st = {};
         st[prop["state"]] = !this.state[prop.state];
-        console.log('st', st, prop);
+
         return (
           <NavItem key={key}>
             <NavLink
