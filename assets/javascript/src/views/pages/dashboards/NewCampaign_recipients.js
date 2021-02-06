@@ -5,13 +5,13 @@ export class NewCampaign_recipients extends Component {
     render() {
         return (
             <div>
-                <div style={{ height: '100%', width: '100%',backgroundColor:"#eee" }}>
+                <div style={{ height: '100%', width: '100%',backgroundColor:"#f5f5f5" }}>
                     <Container fluid>
                         <Row>
-                            <Col md='12' style={{backgroundColor:"#eee"}}>
+                            <Col md='12' style={{backgroundColor:"#f5f5f5"}}>
                                 <Container fluid>
                                     <Row className='mt-5'>
-                                        <Col><h1 style={{ fontSize: '30px', fontWeight: '200', textAlign: 'center', color: 'black',backgroundColor:"#eee" }}>Drop in your first list of recipients</h1></Col>
+                                        <Col><h1 style={{ fontSize: '30px', fontWeight: '200', textAlign: 'center', color: 'black',backgroundColor:"#f5f5f5" }}>Drop in your first list of recipients</h1></Col>
                                     </Row>
                                     <Row className='mt-5'>
                                         <Col md="6" className="receipentlist_box mx-auto">
@@ -32,11 +32,6 @@ export class NewCampaign_recipients extends Component {
                                                     <Row className='mt-5'>
                                                         <Col md='3'> <span className="option1">OPTION #3</span></Col>
                                                         <Col md='9'><span className="input_box_csv"><input  placeholder='Select an existing list'></input></span></Col>
-                                                    </Row>
-                                                    <Row  className='mt-5'>
-                                                        <Col md='3'> <span className="option1">OPTION #4</span>
-                                                            <span className="Beta" >BETA</span></Col>
-                                                        <Col md='9'><span><Button className="import_button">IMPORT FROM APP</Button></span></Col>
                                                     </Row>
 
                                                     {/* <div>

@@ -38,7 +38,7 @@ import {
 import AuthHeader from "../../../components/Headers/AuthHeader"
 import { connect } from "react-redux";
 import { REQUEST_FOR_REGISTER } from "../../../redux/actionType/actionType";
-import { RegisterAction } from "../../../redux/action/action";
+import { RegisterAction } from "../../../redux/action/AuthourizationAction";
 
 class Register extends React.Component {
   constructor(props) {
@@ -67,7 +67,7 @@ class Register extends React.Component {
       email: this.state.Email,
       phone_number: this.state.PhoneNumber,
       company_name: this.state.CompanyName,
-      password: this.state.Password,
+      password1: this.state.Password,
       mailsaas_type:this.state.mailsaas_type
 
     };

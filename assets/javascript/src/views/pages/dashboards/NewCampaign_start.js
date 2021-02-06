@@ -11,7 +11,7 @@ export default function NewCampaign_start() {
     return (
         <div>
             {!state ?  
-                <div style={{ height: '100%', width: '100%' }}>
+                <div style={{ height: '100%', width: '100%', background: '#f5f5f5' }}>
                     <Container fluid>
                         <Row >
                             <Col md='5' className='mx-auto mt-5'>
