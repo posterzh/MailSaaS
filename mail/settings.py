@@ -45,7 +45,7 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
+    
     'django.forms',
     'celery_progress',
     "django_celery_results",
@@ -55,14 +55,9 @@ DJANGO_APPS = [
 
 # Put your third-party apps here
 THIRD_PARTY_APPS = [
-    'rest_framework.authtoken',
-    'rest_auth',
-    'rest_framework',
-    'allauth',  # allauth account/registration management
-    'allauth.account',
-    'rest_auth.registration',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
+    
+    
+
     'corsheaders',
     # stripe integration
     'djstripe',
@@ -87,10 +82,25 @@ PROJECT_APPS = [
     "apps.unsubscribes",
 
     'apps.mailaccounts',
+
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+
+    'django.contrib.sites',
+
+    'allauth',  # allauth account/registration management
+    'allauth.account',
+    'rest_auth.registration',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PEGASUS_APPS + PROJECT_APPS
+
+SITE_ID = 1
+AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -158,7 +168,6 @@ GOOGLE_AUTH_SCOPES = [
 
 # Django recommends overriding the user model even if you don't think you need to because it makes
 # future changes much easier.
-AUTH_USER_MODEL = 'users.CustomUser'
 # LOGIN_REDIRECT_URL = '/'
 
 # Password validation
@@ -180,16 +189,23 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Allauth setup
+REST_SESSION_LOGIN = True
+REST_USE_JWT = True
 
 ACCOUNT_ADAPTER = 'apps.teams.adapter.AcceptInvitationAdapter'
+ACCOUNT_ADAPTER = 'apps.users.adapter.CustomUserAccountAdapter'
+
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+# ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
 
 
 ACCOUNT_FORMS = {
@@ -197,17 +213,11 @@ ACCOUNT_FORMS = {
 }
 
 
-# User signup configuration: change to "mandatory" to require users to confirm email before signing in.
-# or "optional" to send confirmation emails but not require them
-ACCOUNT_EMAIL_VERIFICATION = 'none'
 
-
-AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
-    "django.contrib.auth.backends.ModelBackend",
-    # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
+# AUTHENTICATION_BACKENDS = (
+#     "django.contrib.auth.backends.ModelBackend",
+#     "allauth.account.auth_backends.AuthenticationBackend",
+# )
 
 
 # enable social login
@@ -228,15 +238,10 @@ SOCIALACCOUNT_PROVIDERS = {
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 DATETIME_FORMAT = '%d-%m-%Y %H:%M:%S' 
 
 
@@ -260,14 +265,15 @@ MEDIA_URL = '/media/'
 # Email setup
 
 # use in development
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # use in production
 # see https://github.com/anymail/django-anymail for more details/examples
 # EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
 
 # Django sites
 
-SITE_ID = 1
+
 
 # DRF config
 REST_FRAMEWORK = {
@@ -287,13 +293,11 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
 }
 
 
-# Celery setup (using redis)
 # Celery setup (using redis)
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 # CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
@@ -307,32 +311,16 @@ CELERY_IMPORTS = (
     'apps.campaignschedule.tasks'
 )
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated',
-#         # 'rest_framework.permissions.IsAdminUser',
-#     ),
-   
 
+
+# JWT_AUTH = { 
+#     'JWT_AUTH_HEADER_PREFIX': 'JWT',
+#     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=500)
 # }
 
 
-JWT_AUTH = { 
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=500)
-}
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-ACCOUNT_ADAPTER = 'apps.users.adapter.CustomUserAccountAdapter'
-
-REST_SESSION_LOGIN = True
-REST_USE_JWT = True
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_EMAIL_VERIFICATION = 'optional'
 
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'apps.users.serializer.RegisterSerializer',

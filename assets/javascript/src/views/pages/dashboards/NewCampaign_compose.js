@@ -17,16 +17,15 @@ import React, { Component } from 'react'
 import {
     Container,
     Row,
-    Navbar,
-    Nav,
-    NavItem,
-    NavLink,
-    NavbarText, Input, Col
+    Button, Input, Col,Form
 } from 'reactstrap';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
+import FollowUpPage from './FollowUpPage';
+import Drips from './Drips'
+import LinkClicksPage from './LinkClicksPage'
 // import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 // import Container from 'reactstrap/lib/Container';
 export default class Compose extends Component {
@@ -34,17 +33,46 @@ export default class Compose extends Component {
         super();
         this.state = {
             editorState: EditorState.createEmpty(),
+            inputListFollow: [],
+            inputListDrips: [],
+            inputListLinkClick: [],
         }
     }
+
+    onAddBtnClickFollow = () => {
+        const inputListFollow = this.state.inputListFollow;
+        this.setState({
+            inputListFollow: inputListFollow.concat(<FollowUpPage key={inputListFollow.length} />)
+        });
+        console.log(inputListFollow)
+    }
+    onAddBtnClickDrips = () => {
+        const inputListDrips = this.state.inputListDrips;
+        this.setState({
+            inputListDrips: inputListDrips.concat(<Drips key={inputListDrips.length} />)
+        });
+        console.log(inputListDrips)
+    }
+    onAddBtnClickLinkClick = () => {
+        const inputListLinkClick = this.state.inputListLinkClick;
+        this.setState({
+            inputListLinkClick: inputListLinkClick.concat(<LinkClicksPage key={inputListLinkClick.length} />)
+        });
+        console.log(inputListLinkClick)
+    }
     onEditorStateChange = (editorState) => {
-        console.log('editorState', editorState.getCurrentContent())
+
         this.setState({ editorState })
+    }
+    handleSubmit=()=>{
+        alert('msg')
     }
     render() {
         const { editorState } = this.state;
         return (
             <div>
                 <div className='main-view'>
+                    <Form onSubmit={this.handleSubmit}>
                     <Container>
                         <Row>
                             <Col md='10' className='mx-auto'>
@@ -58,7 +86,7 @@ export default class Compose extends Component {
                                 <Row>
                                     <div className='grand_parent'>
                                         <div className='input_field'>
-                                            <Input type='email' className='in' placeholder='Subject' />
+                                            <Input type='email' className='in' placeholder='Subject' required />
                                             <div className='mt-3'>
                                                 <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                                     <span><i class="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -71,119 +99,54 @@ export default class Compose extends Component {
                                     <div className='Editor_div'>
                                         <Editor
                                             className='editorDiv'
-                                            mention={{
-                                                separator: ' ',
-                                                trigger: '@',
-                                                suggestions: [
-                                                    { text: 'APPLE', value: 'apple', url: 'apple' },
-                                                    { text: 'BANANA', value: 'banana', url: 'banana' },
-                                                    { text: 'CHERRY', value: 'cherry', url: 'cherry' },
-                                                    { text: 'DURIAN', value: 'durian', url: 'durian' },
-                                                    { text: 'EGGFRUIT', value: 'eggfruit', url: 'eggfruit' },
-                                                    { text: 'FIG', value: 'fig', url: 'fig' },
-                                                    { text: 'GRAPEFRUIT', value: 'grapefruit', url: 'grapefruit' },
-                                                    { text: 'HONEYDEW', value: 'honeydew', url: 'honeydew' },
-                                                ],
-                                            }}
                                             editorState={editorState}
                                             toolbarClassName="rdw-storybook-toolbar"
                                             wrapperClassName="rdw-storybook-wrapper"
                                             editorClassName="rdw-storybook-editor"
                                             onEditorStateChange={this.onEditorStateChange}
-                                            toolbar={{
-                                                link: {
-                                                    defaultTargetOption: '_blank',
-                                                },
-                                            }}
+                                            required
                                         />
                                     </div>
                                 </Row>
                                 <Row className='mt-5'>
-                                    <Container fluid>
-                                        <Row>
-                                            <Col md='11' className='alignRight'>
-                                                <Row>
-                                                    <h1 className='display-6'>Follow-ups &nbsp;<a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                                        <span><i className='QuestionCircle' class="fa fa-question-circle-o" aria-hidden="true"></i></span>
-                                                    </a></h1>
-                                                </Row>
-                                                <Row>
-                                                    <p style={{ fontSize: '14px' }}>Follow-ups are stopped when a recipient becomes a lead. <a href=''>Learn how to customize Lead Catcher.</a></p>
-                                                </Row>
-                                                <Row>
-                                                    <Col md='2' className='WaitDiv'>
-                                                        <label className='filter_app_new'>Wait X days</label><br></br>
-                                                        <input type='number' className='WaitInput'></input>
-                                                    </Col>
-                                                </Row>
-                                                <Row className='mt-3'>
-                                                    <label className='filter_app_new'>Reply Chain</label><br></br>
-                                                    <div className='select_div'>
-                                                        <select className='filter_select_prospect'>
-                                                            <option value='one'>--New Email--</option>
-                                                            <option>Re:hello all</option>
-                                                        </select>
-                                                    </div>
-                                                </Row>
-                                                <Row className='mt-3'>
-                                                    <div className='Editor_div'>
-                                                        <Editor
-                                                            className='editorDiv'
-                                                            mention={{
-                                                                separator: ' ',
-                                                                trigger: '@',
-                                                                suggestions: [
-                                                                    { text: 'APPLE', value: 'apple', url: 'apple' },
-                                                                    { text: 'BANANA', value: 'banana', url: 'banana' },
-                                                                    { text: 'CHERRY', value: 'cherry', url: 'cherry' },
-                                                                    { text: 'DURIAN', value: 'durian', url: 'durian' },
-                                                                    { text: 'EGGFRUIT', value: 'eggfruit', url: 'eggfruit' },
-                                                                    { text: 'FIG', value: 'fig', url: 'fig' },
-                                                                    { text: 'GRAPEFRUIT', value: 'grapefruit', url: 'grapefruit' },
-                                                                    { text: 'HONEYDEW', value: 'honeydew', url: 'honeydew' },
-                                                                ],
-                                                            }}
-                                                            editorState={editorState}
-                                                            toolbarClassName="rdw-storybook-toolbar"
-                                                            wrapperClassName="rdw-storybook-wrapper"
-                                                            editorClassName="rdw-storybook-editor"
-                                                            onEditorStateChange={this.onEditorStateChange}
-                                                            toolbar={{
-                                                                link: {
-                                                                    defaultTargetOption: '_blank',
-                                                                },
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </Row>
-                                            </Col>
-                                        </Row>
-                                    </Container>
+                                    {this.state.inputListFollow}
                                 </Row>
+
                                 <Row>
                                     <Col className='mt-3'>
-                                        <div className='Add_follow_up'>
+                                        <div className='Add_follow_up' onClick={this.onAddBtnClickFollow}>
                                             <i class='fa fa-plus'></i> &nbsp;ADD FOLLOW-UP<br />
                                         </div>
                                     </Col>
                                 </Row>
                                 <Row>
+                                    {this.state.inputListDrips}
+                                </Row>
+                                <Row>
                                     <Col className='mt-3'>
-                                        <div className='Add_follow_up'>
+                                        <div className='Add_follow_up' onClick={this.onAddBtnClickDrips}>
                                             <i class='fa fa-plus'></i> &nbsp;ADD DRIP<br />
                                         </div>
                                     </Col>
                                 </Row>
                                 <Row>
+                                    {this.state.inputListLinkClick}
+                                </Row>
+                                <Row>
                                     <Col className='mt-3 mb-5'>
-                                        <div className='Add_follow_up'>
+                                        <div className='Add_follow_up' onClick={this.onAddBtnClickLinkClick}>
                                             <i class='fa fa-plus'></i> &nbsp;ADD ON CLICK<br />
                                         </div>
                                     </Col>
                                 </Row>
+                                <Row className='mx-auto'>
+                                    <Col md='3'><Button>CANCLE EDITS</Button></Col>
+                                    <Col md='2'><Button className="newcampaign_button btn" type='submit' >NEXT<i className="fa fa-arrow-right" aria-hidden="true"></i></Button></Col>
+                                </Row>
                             </Col>
                         </Row>
                     </Container>
+                    </Form>
                 </div>
             </div>
         )

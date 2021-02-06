@@ -97,18 +97,12 @@ input:focus{
 
 .new_add_button{
     display: flex;
-    // position: fixed;
-    // top:55em;
-    // left: 110em;
     border-radius: 50%;
     width: 5em;
     height: 4em;
     padding-top: 5  em;
-    background-color: #FF4081;
+    background-color: #55acee;
 }
-
-
-
 
 // dropdown css
 .drop_span{
@@ -269,8 +263,8 @@ margin-top: 10px;
     height:30px;
     margin:auto;
     border-radius: 50%;
-    background-color: #ff4081;
-    border:8px solid #ff4081;
+    background-color: #55acee;
+    border:8px solid #55acee;
 }
 .leadwon_icon .fa{
     color:white;
@@ -504,7 +498,7 @@ button .import_button{
     background:transparent
 }
 .startBtn{
-    background-color: #ff4081;
+    background-color: #55acee;
     color:white;
 }
 .start_input:hover{
@@ -630,7 +624,7 @@ button .import_button{
 }
 // 31/jan/2021
 .newcampaign_button{
-    background: #ff4081;
+    background: #55acee;
     outline: none;
     border: none;
     color: white;
@@ -750,7 +744,7 @@ button .import_button{
     font-size:14px;
      }
 .next_button{
-    background-color:  #ff4081;
+    background-color:  #55acee;
     border:0px;
     color:white;
 }
@@ -1034,7 +1028,7 @@ button .import_button{
     }
     .sequence_btn{
         display: flex;
-        background-color:#ff4081;
+        background-color:#55acee;
         color: white;
         font-size: 15px;
     }
@@ -1373,7 +1367,7 @@ button .import_button{
 }
 .sequence_btn{
     display: flex;
-    background-color:#ff4081;
+    background-color:#55acee;
     color: white;
     font-size: 15px;
 }
@@ -1495,7 +1489,7 @@ input::-webkit-inner-spin-button {
     position: relative;
     max-width: 100%;
     height:100%;
-    background-color:#eee;
+    background-color:#f5f5f5;
     overflow-y: auto;
 }
 .Apps{
@@ -1559,4 +1553,14 @@ input::-webkit-inner-spin-button {
     border: none;
     background-color: #eee;
     border-bottom: 1px solid rgba(0,0,0, 0.12);
+}
+
+.navbar-vertical{
+    &.navbar-expand-xs{
+        &.fixed-left{
+            overflow-y: hidden;
+            overflow-x: hidden;
+        }
+    }
+
 }

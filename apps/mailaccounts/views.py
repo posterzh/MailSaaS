@@ -11,7 +11,7 @@ from rest_framework.response import Response
 
 
 class SendSmtpMailView(generics.ListCreateAPIView):
-    serializer_class = SmtpMailSerilizer
+    # serializer_class = SmtpMailSerilizer
     permission_classes = (permissions.IsAuthenticated,)
     queryset = SmtpMail.objects.all()
 
