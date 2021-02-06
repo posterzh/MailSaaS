@@ -49,8 +49,8 @@ class CampaignRecipient(models.Model):
     reciepent_status = models.BooleanField(default=False)    #Start Campaign or Pause Reciepent
     unsubscribe = models.BooleanField(default=False)
     is_delete = models.BooleanField(default=False)
-    created_date = models.DateTimeField(auto_now_add=True,blank=True,null=True)
-    update_date_time = models.DateTimeField(auto_now_add=True,blank=True,null=True)
+    created_date = models.DateTimeField(auto_now=True,blank=True,null=True)
+    update_date_time = models.DateTimeField(auto_now=True,blank=True,null=True)
 
 
 

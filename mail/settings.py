@@ -49,9 +49,7 @@ DJANGO_APPS = [
     'django.forms',
     'celery_progress',
     "django_celery_results",
-     
     'django_crontab',
-
     'django_celery_beat',
 ]
 
@@ -63,12 +61,13 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     # stripe integration
     'djstripe',
-    # 'salesforce',
+    'salesforce',
+   
 ]
 
 PEGASUS_APPS = [
     'apps.pegasus',
-     'django_google.apps.DjangoGoogleConfig',
+    'django_google.apps.DjangoGoogleConfig',
 ]
 
 # Put your project-specific apps here
@@ -80,6 +79,8 @@ PROJECT_APPS = [
     'apps.campaignschedule.apps.CampaignscheduleConfig',
     'apps.teams.apps.TeamConfig',
     'apps.integration',
+    "apps.unsubscribes",
+
     'apps.mailaccounts',
 
     'rest_framework',
@@ -159,6 +160,7 @@ GOOGLE_AUTH_SCOPES = [
     'https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile',
 ]
+
 
 
 
