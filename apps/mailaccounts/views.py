@@ -49,7 +49,6 @@ class EmailAccountsView(generics.ListCreateAPIView):
         if request.data['smtp_username'] == request.data['email'] and request.data['imap_username'] == request.data['email']:
             serializer = EmailAccountSerializer(data=request.data)
             if serializer.is_valid():
-                serializer(send_mail())
                 serializer.save()
                 return Response({"message":serializer.data,"sucess":True})
             return Response({'message':'Invalid Serializer'})
@@ -82,7 +81,7 @@ class EmailAccountsUpdateView(generics.UpdateAPIView):
 
 
 
-def send_mail():
+def send_mail_with_smtp():
     try:
         con = mail.get_connection()
         con.open()
