@@ -1,4 +1,7 @@
-import { FAILURE_REGISTER, REQUEST_FOR_REGISTER, SUCCESS_REGISTER, FAILURE_LOGIN, REQUEST_FOR_LOGIN, SUCCESS_LOGIN } from "../actionType/actionType"
+import { FAILURE_REGISTER, REQUEST_FOR_REGISTER, SUCCESS_REGISTER, 
+    FAILURE_LOGIN, REQUEST_FOR_LOGIN, SUCCESS_LOGIN 
+    ,FAILURE_START, REQUEST_FOR_START, SUCCESS_START
+} from "../actionType/actionType"
 import Api from "../api/api"
 
 
@@ -75,25 +78,22 @@ export const LoginAction = (Loginuser) => {
     return function (dispatch) {
         dispatch(requestForLogin(Loginuser))
         Api.LoginApi(Loginuser).then(result => {
-
             const token = result.data.token;
-            localStorage.setItem('jwtToken', token)
+            localStorage.setItem('token', token)
             console.log(token)
-
             dispatch(LoginSuccess(result.data))
         }).catch(err => {
             console.log(err)
         })
     }
 }
-export const StartAction = () => {
+export const StartCampaignAction = (data) => {
     return function (dispatch) {
-        dispatch(requestForStart(user))
-        Api.StartApi(user).then(result => {
-            const token =localStorage.getItem(token)
-            console.log(token)
-
-            dispatch(registerSuccess(result.data))
+      const token=localStorage.getItem('token')
+        console.log('this is a token',token)
+        dispatch(requestForStart(data,token))
+        Api.StartApi(data,token).then(result => {
+            dispatch(StartSuccess(result.data))
         }).catch(err => {
             console.log(err)
         })

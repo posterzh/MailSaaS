@@ -17,7 +17,7 @@ import React, { Component } from 'react'
 import {
     Container,
     Row,
-    Button, Input, Col,Form
+    Button, Input, Col, Form
 } from 'reactstrap';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertToRaw } from 'draft-js';
@@ -32,39 +32,43 @@ export default class Compose extends Component {
     constructor() {
         super();
         this.state = {
+            subject:'',
+          
             editorState: EditorState.createEmpty(),
             inputListFollow: [],
             inputListDrips: [],
             inputListLinkClick: [],
         }
     }
-
+    handleChange=(e)=>{
+        this.setState({
+            [e.target.name]:e.target.value
+        })
+        console.log(this.state)
+    }
     onAddBtnClickFollow = () => {
         const inputListFollow = this.state.inputListFollow;
         this.setState({
             inputListFollow: inputListFollow.concat(<FollowUpPage key={inputListFollow.length} />)
-        });
-        console.log(inputListFollow)
+        }, () => { });
     }
     onAddBtnClickDrips = () => {
         const inputListDrips = this.state.inputListDrips;
         this.setState({
             inputListDrips: inputListDrips.concat(<Drips key={inputListDrips.length} />)
-        });
-        console.log(inputListDrips)
+        }, () => { });
     }
     onAddBtnClickLinkClick = () => {
         const inputListLinkClick = this.state.inputListLinkClick;
         this.setState({
             inputListLinkClick: inputListLinkClick.concat(<LinkClicksPage key={inputListLinkClick.length} />)
-        });
-        console.log(inputListLinkClick)
+        }, () => { });
     }
     onEditorStateChange = (editorState) => {
 
         this.setState({ editorState })
     }
-    handleSubmit=()=>{
+    handleSubmit = () => {
         alert('msg')
     }
     render() {
@@ -73,79 +77,81 @@ export default class Compose extends Component {
             <div>
                 <div className='main-view'>
                     <Form onSubmit={this.handleSubmit}>
-                    <Container>
-                        <Row>
-                            <Col md='10' className='mx-auto'>
-                                <Row className="composeemail_heading">
-                                    Compose the emails in this campaign
+                        <Container>
+                            <Row>
+                                <Col md='10' className='mx-auto'>
+                                    <Row className="composeemail_heading">
+                                        Compose the emails in this campaign
                                 </Row>
-                                <Row className="mt-5">
-                                    <div><button className='EditTest'><i class="fa fa-plus-circle" aria-hidden="true"></i> A/B TEST</button>
-                                    </div>
-                                </Row>
-                                <Row>
-                                    <div className='grand_parent'>
-                                        <div className='input_field'>
-                                            <Input type='email' className='in' placeholder='Subject' required />
-                                            <div className='mt-3'>
-                                                <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                                    <span><i class="fa fa-question-circle-o" aria-hidden="true"></i></span>
-                                                </a>
+                                    <Row className="mt-5">
+                                        <div><button className='EditTest'><i class="fa fa-plus-circle" aria-hidden="true"></i> A/B TEST</button>
+                                        </div>
+                                    </Row>
+                                    <Row>
+                                        <div className='grand_parent'>
+                                            <div className='input_field'>
+                                                <Input type='email' className='in' name='subject' value={this.state.subject} onChange={this.handleChange} placeholder='Subject' required />
+                                                <div className='mt-3'>
+                                                    <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
+                                                        <span><i class="fa fa-question-circle-o" aria-hidden="true"></i></span>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </Row>
-                                <Row>
-                                    <div className='Editor_div'>
-                                        <Editor
-                                            className='editorDiv'
-                                            editorState={editorState}
-                                            toolbarClassName="rdw-storybook-toolbar"
-                                            wrapperClassName="rdw-storybook-wrapper"
-                                            editorClassName="rdw-storybook-editor"
-                                            onEditorStateChange={this.onEditorStateChange}
-                                            required
-                                        />
-                                    </div>
-                                </Row>
-                                <Row className='mt-5'>
-                                    {this.state.inputListFollow}
-                                </Row>
+                                    </Row>
+                                    <Row>
+                                        <div className='Editor_div'>
+                                            <Editor
+                                                className='editorDiv'
+                                                editorState={editorState}
+                                                toolbarClassName="rdw-storybook-toolbar"
+                                                wrapperClassName="rdw-storybook-wrapper"
+                                                editorClassName="rdw-storybook-editor"
+                                                onEditorStateChange={this.onEditorStateChange}
+                                                required
+                                                value={this.state.editor}
+                                                onChange={this.handleChange}
+                                            />
+                                        </div>
+                                    </Row>
+                                    <Row className='mt-5'>
+                                        {this.state.inputListFollow}
+                                    </Row>
 
-                                <Row>
-                                    <Col className='mt-3'>
-                                        <div className='Add_follow_up' onClick={this.onAddBtnClickFollow}>
-                                            <i class='fa fa-plus'></i> &nbsp;ADD FOLLOW-UP<br />
-                                        </div>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    {this.state.inputListDrips}
-                                </Row>
-                                <Row>
-                                    <Col className='mt-3'>
-                                        <div className='Add_follow_up' onClick={this.onAddBtnClickDrips}>
-                                            <i class='fa fa-plus'></i> &nbsp;ADD DRIP<br />
-                                        </div>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    {this.state.inputListLinkClick}
-                                </Row>
-                                <Row>
-                                    <Col className='mt-3 mb-5'>
-                                        <div className='Add_follow_up' onClick={this.onAddBtnClickLinkClick}>
-                                            <i class='fa fa-plus'></i> &nbsp;ADD ON CLICK<br />
-                                        </div>
-                                    </Col>
-                                </Row>
-                                <Row className='mx-auto'>
-                                    <Col md='3'><Button>CANCLE EDITS</Button></Col>
-                                    <Col md='2'><Button className="newcampaign_button btn" type='submit' >NEXT<i className="fa fa-arrow-right" aria-hidden="true"></i></Button></Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </Container>
+                                    <Row>
+                                        <Col className='mt-3'>
+                                            <div className='Add_follow_up' onClick={this.onAddBtnClickFollow}>
+                                                <i class='fa fa-plus'></i> &nbsp;ADD FOLLOW-UP<br />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        {this.state.inputListDrips}
+                                    </Row>
+                                    <Row>
+                                        <Col className='mt-3'>
+                                            <div className='Add_follow_up' onClick={this.onAddBtnClickDrips}>
+                                                <i class='fa fa-plus'></i> &nbsp;ADD DRIP<br />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        {this.state.inputListLinkClick}
+                                    </Row>
+                                    <Row>
+                                        <Col className='mt-3 mb-5'>
+                                            <div className='Add_follow_up' onClick={this.onAddBtnClickLinkClick}>
+                                                <i class='fa fa-plus'></i> &nbsp;ADD ON CLICK<br />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Row className='mx-auto'>
+                                        <Col md='3'><Button>CANCLE EDITS</Button></Col>
+                                        <Col md='2'><Button className="newcampaign_button btn" type='submit' >NEXT<i className="fa fa-arrow-right" aria-hidden="true"></i></Button></Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </Container>
                     </Form>
                 </div>
             </div>

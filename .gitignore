@@ -11,6 +11,7 @@ __pycache__/
 .Python
 env/
 build/
+__pycache__/
 develop-eggs/
 dist/
 downloads/

@@ -64,6 +64,7 @@ class CreateCampaignRecipientsView(APIView):
 
     def post(self, request, format=None):
         postdata = request.data
+        
         if 'campaign.add_campaign' in request.user.get_group_permissions():
             if int(postdata["option"]) == 1:
                 try:
@@ -231,7 +232,9 @@ class CreateCampaignOptionView(APIView):
             request.data["created_date_time"] = queryset.created_date_time
             if request.data["schedule_send"] and not (request.data["schedule_date"] or request.data["schedule_time"]):
                 return Response({"message":"Please Enter Date Time", "success":"false"})
-            if not request.data["schedule_send"]:
+            if request.data["schedule_send"]:
+                print(request.data)
+            else:
                 request.data["schedule_date"] = None
                 request.data["schedule_time"] = None
             serilizer = CampaignSerializer(queryset, data=request.data)
@@ -413,7 +416,7 @@ class CampaignView(generics.ListAPIView):
 
 
 class LeadsCatcherView(generics.ListAPIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, *args,**kwargs):
         params = list(dict(request.GET).keys())
         if len(params) == 3:
@@ -431,14 +434,14 @@ class LeadsCatcherView(generics.ListAPIView):
             else:
                 leadstatus = "openLead"
 
-            queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__title__contains=title, leadStatus=leadstatus, campaign__assigned=request.user.id, leads=True)
+            queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__title__contains=title, leadStatus=leadstatus, campaign__assigned=request.user.id, leads=True)
         elif len(params) == 2:
             print("LEN = 2",params, ['search', 'title'] in params)
             if 'search' and 'title' in params:
                 toSearch = request.GET['search']
                 title = request.GET['title']
 
-                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__title__contains=title, campaign__assigned=request.user.id, leads=True)
+                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__title__contains=title, campaign__assigned=request.user.id, leads=True)
             
             elif 'search' and "leadstatus" in params:
                 toSearch = request.GET['search']
@@ -453,7 +456,7 @@ class LeadsCatcherView(generics.ListAPIView):
                 else:
                     leadstatus = "openLead"
 
-                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch), leadStatus=leadstatus, campaign__assigned=request.user.id, leads=True)
+                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch), leadStatus=leadstatus, campaign__assigned=request.user.id, leads=True)
             
             
             elif "title" and "leadstatus" in params:
@@ -470,14 +473,14 @@ class LeadsCatcherView(generics.ListAPIView):
                 else:
                     leadstatus = "openLead"
 
-                queryset = Campaign_email.objects.filter(campaign__title__contains=title, leadStatus=leadstatus, campaign__assigned=request.user.id, leads=True)
+                queryset = CampaignRecipient.objects.filter(campaign__title__contains=title, leadStatus=leadstatus, campaign__assigned=request.user.id, leads=True)
         elif len(params) == 1:
             if "search" in params:
                 toSearch = request.GET['search']
-                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch), campaign__assigned=request.user.id, leads=True)
+                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch), campaign__assigned=request.user.id, leads=True)
             elif "title" in params:
                 title = request.GET['title']
-                queryset = Campaign_email.objects.filter(campaign__title__contains=title, campaign__assigned=request.user.id, leads=True) 
+                queryset = CampaignRecipient.objects.filter(campaign__title__contains=title, campaign__assigned=request.user.id, leads=True) 
             elif  "leadstatus" in params:
                 if request.GET['leadstatus'] == "openlead":
                         leadstatus = "openLead"
@@ -489,9 +492,9 @@ class LeadsCatcherView(generics.ListAPIView):
                     leadstatus = "ignoreLead"
                 else:
                     leadstatus = "openLead"
-                queryset = Campaign_email.objects.filter(leadStatus=leadstatus,campaign__assigned=request.user.id, leads=True)     
+                queryset = CampaignRecipient.objects.filter(leadStatus=leadstatus,campaign__assigned=request.user.id, leads=True)     
         else:
-            queryset = Campaign_email.objects.filter(leads=True,campaign__assigned=request.user.id)
+            queryset = CampaignRecipient.objects.filter(leads=True,campaign__assigned=request.user.id)
         campEmailserializer = CampaignEmailSerializer(queryset, many = True)
         return Response(campEmailserializer.data)
 
@@ -556,7 +559,7 @@ class TrackEmailClick(APIView):
         # camp = Campaign.objects.get(id = trackData["campaign"])
         # print("campaignnnnnnnnn ",camp)
 
-        # campEmail = Campaign_email.objects.get(id = trackData["campEmailId"])
+        # campEmail = CampaignRecipient.objects.get(id = trackData["campEmailId"])
         # campEmail.opens = True
         # campEmail.save()
         # if camp.trackOpens:
@@ -626,7 +629,7 @@ class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
             toSearch = request.GET['search']
             tofilter=request.GET['tofilter']
             if request.GET['tofilter'] == 'paused_reciepent':
-                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,reciepent_status=False)    
+                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,reciepent_status=False)    
             elif request.GET['tofilter'] == 'leads':
                 choice=request.GET['choice']
                 if request.GET['choice'] == "openlead":
@@ -639,32 +642,32 @@ class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
                     choice = "ignoreLead"
                 else:
                     choice = "none"
-                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,leads=True,leadStatus=choice) 
+                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,leads=True,leadStatus=choice) 
             elif request.GET['tofilter']  == 'was_sent_message':
-                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,sent=True) 
+                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,sent=True) 
             elif request.GET['tofilter'] == 'has_opened':
-                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,opens=True) 
+                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,opens=True) 
             # elif request.GET['tofilter'] == 'has_clicked':
-            #     queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,opens=True) 
+            #     queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,opens=True) 
             elif request.GET['tofilter'] == 'has_replied':
-                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,replies=True)
+                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,replies=True)
             elif request.GET['tofilter'] == 'has_bounced':
-                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,bounces=True)
+                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,bounces=True)
             elif request.GET['tofilter'] == 'has_unsubscribed':
-                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,unsubscribe=True)
+                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,unsubscribe=True)
             elif request.GET['tofilter']  == 'was_not_sent_messagese':
-                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,sent=False) 
+                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,sent=False) 
             elif request.GET['tofilter'] == 'has_not_opened':
-                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,opens=False) 
+                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,opens=False) 
             # elif request.GET['tofilter'] == 'has_not_clicked':
-            #     queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,opens=False) 
+            #     queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,opens=False) 
             elif request.GET['tofilter'] == 'has_not_replied':
-                queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,replies=False)
+                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,replies=False)
         elif 'tofilter' in params:
             tofilter=request.GET['tofilter']
             print('tofilter ', tofilter)
             if request.GET['tofilter'] == 'paused_reciepent':
-                queryset = Campaign_email.objects.filter(campaign=pk,reciepent_status=False)    
+                queryset = CampaignRecipient.objects.filter(campaign=pk,reciepent_status=False)    
             elif request.GET['tofilter'] == 'leads':
                 choice=request.GET['choice']
                 if request.GET['choice'] == "openlead":
@@ -677,34 +680,34 @@ class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
                     choice = "ignoreLead"
                 else:
                     choice = "none"
-                queryset = Campaign_email.objects.filter(campaign=pk,leads=True,leadStatus=choice) 
+                queryset = CampaignRecipient.objects.filter(campaign=pk,leads=True,leadStatus=choice) 
             elif request.GET['tofilter']  == 'was_sent_message':
-                queryset = Campaign_email.objects.filter(campaign=pk,sent=True) 
+                queryset = CampaignRecipient.objects.filter(campaign=pk,sent=True) 
             elif request.GET['tofilter'] == 'has_opened':
-                queryset = Campaign_email.objects.filter(campaign=pk,opens=True) 
+                queryset = CampaignRecipient.objects.filter(campaign=pk,opens=True) 
             # elif request.GET['tofilter'] == 'has_clicked':
-            #     queryset = Campaign_email.objects.filter(campaign=pk,opens=True) 
+            #     queryset = CampaignRecipient.objects.filter(campaign=pk,opens=True) 
             elif request.GET['tofilter'] == 'has_replied':
-                queryset = Campaign_email.objects.filter(campaign=pk,replies=True)
+                queryset = CampaignRecipient.objects.filter(campaign=pk,replies=True)
             elif request.GET['tofilter'] == 'has_bounced':
-                queryset = Campaign_email.objects.filter(campaign=pk,bounces=True)
+                queryset = CampaignRecipient.objects.filter(campaign=pk,bounces=True)
             elif request.GET['tofilter'] == 'has_unsubscribed':
-                queryset = Campaign_email.objects.filter(campaign=pk,unsubscribe=True)
+                queryset = CampaignRecipient.objects.filter(campaign=pk,unsubscribe=True)
             elif request.GET['tofilter']  == 'was_not_sent_messagese':
-                queryset = Campaign_email.objects.filter(campaign=pk,sent=False) 
+                queryset = CampaignRecipient.objects.filter(campaign=pk,sent=False) 
             elif request.GET['tofilter'] == 'has_not_opened':
-                queryset = Campaign_email.objects.filter(campaign=pk,opens=False) 
+                queryset = CampaignRecipient.objects.filter(campaign=pk,opens=False) 
             # elif request.GET['tofilter'] == 'has_not_clicked':
-            #     queryset = Campaign_email.objects.filter(campaign=pk,opens=False) 
+            #     queryset = CampaignRecipient.objects.filter(campaign=pk,opens=False) 
             elif request.GET['tofilter'] == 'has_not_replied':
-                queryset = Campaign_email.objects.filter(campaign=pk,replies=False)    
+                queryset = CampaignRecipient.objects.filter(campaign=pk,replies=False)    
 
         elif 'search' in params:
             toSearch = request.GET['search']
-            queryset = Campaign_email.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk)
+            queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk)
 
         else:
-            queryset = Campaign_email.objects.filter(campaign=pk)
+            queryset = CampaignRecipient.objects.filter(campaign=pk)
         campEmailserializer = CampaignEmailSerializer(queryset, many = True)
         return Response(campEmailserializer.data)
     
@@ -1029,12 +1032,6 @@ class ProspectsCampaignView(generics.ListAPIView):
     def get(self, request, pk, *args, **kwargs):
         queryset = CampaignRecipient.objects.get(id=pk)
         
-        # resp = {
-        #         "recipientCount": queryset.count(),
-        #         "campaign":0,
-        #         "sent": 0,
-        #         }
-
         data = {
                 'campaign':queryset.campaign.title,
                 'email':queryset.email,

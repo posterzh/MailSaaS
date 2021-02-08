@@ -56,10 +56,9 @@ class Login extends React.Component {
       email: this.state.email,
       password: this.state.password
     }
-
     this.props.LoginAction(Loginuser)
-    console.log(Loginuser,'loginuser data')
-   
+    console.log(Loginuser, 'loginuser data')
+
   }
 
   render() {
