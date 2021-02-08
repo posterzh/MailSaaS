@@ -8,6 +8,7 @@ import pytz
 from django.http import JsonResponse
 from datetime import datetime,time, timedelta
 import time
+import random
 
 
 from apps.campaign.models import CampaignRecipient,Campaign
@@ -55,7 +56,7 @@ from apps.campaign.models import CampaignRecipient,Campaign
 
 @shared_task
 def send_email_task():
-    # print("schdule start")
+    print("schdule start")
     
     email_schedule_data = Email_schedule.objects.all()
 
@@ -65,8 +66,18 @@ def send_email_task():
         block_days_list = []
         max_email_to_send_today = schedule.max_email
         mail_sent_count = 0
+        min_mail_at_a_time = schedule.min_email_send
+        max_mail_at_a_time = schedule.max_email_send
+        
+        
+        print(min_mail_at_a_time)
+        print(max_mail_at_a_time)
+        print(random.randint(min_mail_at_a_time, max_mail_at_a_time))
+
+        random_no_of_mails_at_a_time = random.randint(min_mail_at_a_time, max_mail_at_a_time)
+
         for i in list(schedule.block_days.values()):
-            block_days_list.append(i["name"])
+            block_days_list.append(i["name"])  
         # print(today_day, block_days_list, datetime.now().time().strftime("%H:%M") == email_data.time.strftime("%H:%M"), today_day not in block_days_list)
         if (datetime.now().time().strftime("%H:%M") == email_data.time.strftime("%H:%M")) and (today_day not in block_days_list) and (mail_sent_count < max_email_to_send_today):
             print("Mail Gayo")
@@ -77,7 +88,7 @@ def send_email_task():
         else:
             print("Koni Gayo")
         # print("Mail Send to "+email_data.recipient_email+" from "+email_data.mail_account+" with subjects "+email_data.subject+" with Email "+email_data.email_body)
-    return "tasks"
+    return "Done"
     
     
     

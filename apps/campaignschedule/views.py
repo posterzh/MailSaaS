@@ -20,6 +20,7 @@ import pytz, datetime
 from apps.campaign.models import Campaign, CampaignRecipient
 from apps.campaignschedule.serializers import EmailScheduleSerializers
 from datetime import datetime,time, timedelta
+import random
 
 
 
@@ -149,12 +150,21 @@ class PostToSchedule(APIView):
         # print(schedule)
 
         next_email_send_at_time = schedule.start_time
+
+        if schedule.strategy == 'SPACE':
+            min_mail_at_a_time = schedule.min_email_send
+            max_mail_at_a_time = schedule.max_email_send
+            random_no_of_mails_at_a_time = random.randint(min_mail_at_a_time, max_mail_at_a_time)
+        
+        elif schedule.strategy == 'SEND':
+            random_no_of_mails_at_a_time = max_mail_at_a_time
+            
+        post_data = []
+        
         for camp_id in postData["campaign_ids"]:
             # camp = Campaign.objects.get(id = camp_id)
             camp_email = CampaignRecipient.objects.filter(campaign = camp_id)
-            print(camp_email)
             for recipient in camp_email:
-                print(next_email_send_at_time)
                 data = {
                     "time": next_email_send_at_time,
                     "date": schedule.date,
@@ -164,16 +174,31 @@ class PostToSchedule(APIView):
                     "subject": recipient.subject,
                     "email_body": recipient.email_body,
                 }
-                print(data)
+                post_data.append(data)
+        # print(len(post_data), post_data)
+        while len(post_data) != 0:
+            print(len(post_data), post_data)
+            mails_to_send_together = post_data[:random_no_of_mails_at_a_time]
+            print()
+            print(len(mails_to_send_together),mails_to_send_together)
+            print()
+
+
+            for data in mails_to_send_together:
+
+                data["time"] = next_email_send_at_time
                 email_schedule_serlzr = EmailScheduleSerializers(data = data)
                 if email_schedule_serlzr.is_valid():
                     print("validddddd")
                     email_schedule_serlzr.save()
+
+                    post_data.remove(data)                    
+
                     
-                    delta = timedelta(minutes = schedule.mint_between_sends)
-                    next_email_send_at_time_str=next_email_send_at_time.strftime('%H:%M:%S')
-                    next_email_send_at_time_datetime = datetime.strptime(schedule.date.strftime('%Y-%m-%d')+" "+next_email_send_at_time_str, '%Y-%m-%d %H:%M:%S')
-                    next_email_send_at_time = (next_email_send_at_time_datetime + delta).time()
+            delta = timedelta(minutes = schedule.mint_between_sends)
+            next_email_send_at_time_str=next_email_send_at_time.strftime('%H:%M:%S')
+            next_email_send_at_time_datetime = datetime.strptime(schedule.date.strftime('%Y-%m-%d')+" "+next_email_send_at_time_str, '%Y-%m-%d %H:%M:%S')
+            next_email_send_at_time = (next_email_send_at_time_datetime + delta).time()
 
         # all_campaigns = Campaign.objects.all(campaign_status = True)
 
