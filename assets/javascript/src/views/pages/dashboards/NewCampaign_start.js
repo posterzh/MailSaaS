@@ -1,45 +1,76 @@
-import React,{useState} from 'react'
-import { Container, Row, Col } from 'reactstrap'
-import NewCampaign_recipients from "../dashboards/NewCampaign_recipients"
+import React from 'react'
+import { connect } from "react-redux";
+import { Container, Row, Col, Form, Input } from 'reactstrap';
+import { StartCampaignAction } from "../../../redux/action/AuthourizationAction";
 
-export default function NewCampaign_start() {
-    // const [state1, setstate1] = useState(false)  
-    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    var d = new Date();
-    let m=d.getMonth();
-    let date= d.getDate();
-    let month = months[m];
-    console.log(date, month ,"hiii")
+class NewCampaign_start extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            title: '',
+            from_address: ''
+        }
+    }
+    handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+    handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(this.state)
 
-    return (
-        <div>
-                 <div style={{ height: '100%', width: '100%' }}>
-                    <Container fluid>
-                        <Row >
-                            <Col md='5' className='mx-auto mt-5'>
-                                <Row style={{ display: 'flex', justifyContent: 'center' }} >
-                                    <h1 style={{ fontSize: '30px', textAlign: 'center',color:"#333333" }}> Let's get started</h1>
-                                </Row>
-                                <Row className='mt-5'>
-                                    <div className="campaign-form" style={{ width: '100%' }}> <label>TItle (for your team's eyes only)</label><br></br>
-                                        <input defaultValue={month+" "+date + " " +"Outreach"} type='text' className='start_input'></input></div>
-                                </Row>
-                                <Row className='mt-5'>
-                                    <div style={{ width: '100%' }}> <label>From Address</label><br></br>
-                                        <select className='start_input'>
-                                            <option value='value'>Values</option>
-                                        </select></div>
-                                </Row>
-                                <Row className='mt-5'>
-                                    <Col style={{display:"flex",justifyContent:"center"}}>
-                                        <button className='btn startBtn'>Next <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                                        </button>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </Container>
+        const data = {
+            title: this.state.title,
+            from_address: this.state.from_address
+        }
+        this.props.StartCampaignAction(data)
+    }
+    render() {
+        return (
+            <div>
+                <div style={{ height: '100%', width: '100%' }}>
+                    <Form onSubmit={this.handleSubmit}>
+                        <Container fluid>
+                            <Row >
+                                <Col md='5' className='mx-auto mt-5'>
+                                    <Row style={{ display: 'flex', justifyContent: 'center' }} >
+                                        <h1 style={{ fontSize: '30px', textAlign: 'center', color: "#333333" }}> Let's get started</h1>
+                                    </Row>
+                                    <Row className='mt-5'>
+                                        <div style={{ width: '100%' }}> <label>Title (for your team's eyes only)</label><br></br>
+                                            <input type='text' name='title' value={this.state.title} onChange={this.handleChange} className='start_input' autoComplete="off"></input></div>
+                                    </Row>
+                                    <Row className='mt-5'>
+                                        <div style={{ width: '100%' }}><label >From Address</label><br></br>
+                                            <Input type="select" name="from_address" value={this.state.from_address} onChange={this.handleChange} id="exampleSelect">
+                                                <option value="(I'll decide later)">(I'll decide later)</option>
+                                                <option value='Option'>Option</option>
+                                            </Input></div>
+                                    </Row>
+                                    <Row className='mt-5'>
+                                        <Col style={{ display: "flex", justifyContent: "center" }}>
+                                            <button type='submit' className='btn startBtn'> Next <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                            </button>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </Form>
                 </div>
-        </div>
-    )
+            </div>
+        )
+    }
 }
+const mapStateToProps = (state) => {
+    return {
+        // token: state.token
+    };
+};
+const mapDispatchToProps = dispatch => ({
+    StartCampaignAction: data=> {
+        dispatch(StartCampaignAction(data));
+    },
+});
+export default connect(mapStateToProps, mapDispatchToProps)(NewCampaign_start)

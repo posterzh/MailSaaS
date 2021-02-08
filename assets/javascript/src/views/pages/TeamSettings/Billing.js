@@ -31,7 +31,7 @@ class Billing extends Component {
                                     </div>
                                 </Row>
                                 <Row className='mt-3 ml-1 mb-3'>
-                                    <button className='savebutton' style={{ width: "20%" }}>UPGRADE</button>
+                                    <button className='savebutton' style={{ width: "7em" }}>UPGRADE</button>
                                     <button className='deleteteambutton mr-3'>CHANGE</button>
                                 </Row>
                             </div>

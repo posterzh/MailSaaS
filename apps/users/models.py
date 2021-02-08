@@ -22,3 +22,6 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['full_name']
 
+    # class Meta:
+    #     ordering = ['-date_joined']
+

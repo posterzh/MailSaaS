@@ -12,7 +12,6 @@ class CustomUserAccountAdapter(DefaultAccountAdapter):
 
         user = super().save_user(request, user, form, False)
         user_field(user, 'email', request.data.get('email', ''))
-        # user_field(user, 'username', request.data.get('username', ''))
         user_field(user, 'full_name', request.data.get('full_name', ''))
         user_field(user, 'phone_number', request.data.get('phone_number', ''))
         user_field(user, 'company_name', request.data.get('company_name', ''))

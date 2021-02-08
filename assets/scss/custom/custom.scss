@@ -120,9 +120,6 @@ input:focus{
     margin-bottom: 10px;
 }
 
-
-
-
 // dropdown css
 .drop_span{
     border: none;
@@ -283,8 +280,8 @@ margin-top: 10px;
     height:30px;
     margin:auto;
     border-radius: 50%;
-    background-color: #ff4081;
-    border:8px solid #ff4081;
+    background-color: #55acee;
+    border:8px solid #55acee;
 }
 .leadwon_icon .fa{
     color:white;
@@ -521,7 +518,7 @@ button .import_button{
     background:transparent
 }
 .startBtn{
-    background-color: #ff4081;
+    background-color: #55acee;
     color:white;
 }
 .campaign-form .start_input:hover{
@@ -646,6 +643,13 @@ button .import_button{
     border: none;
     color: white;
 }
+.startcampaign_buttonicon{
+    background: #ff4081;
+    outline: none;
+    border: none;
+    color: white;
+
+}
 .dashboard_title{
     border-bottom: 1px solid #dedede;
     padding-bottom: 15px;
@@ -761,7 +765,7 @@ button .import_button{
     font-size:14px;
      }
 .next_button{
-    background-color:  #ff4081;
+    background-color:  #55acee;
     border:0px;
     color:white;
 }
@@ -1045,7 +1049,7 @@ button .import_button{
     }
     .sequence_btn{
         display: flex;
-        background-color:#ff4081;
+        background-color:#55acee;
         color: white;
         font-size: 15px;
     }
@@ -1131,7 +1135,7 @@ button .import_button{
     height: 40px;
     width: 100%;
     border: none;
-    background-color: #eee;
+    // background-color: #eee;
 }
 .in:focus{
     background-color:#eee !important ;
@@ -1384,7 +1388,7 @@ button .import_button{
 }
 .sequence_btn{
     display: flex;
-    background-color:#ff4081;
+    background-color:#55acee;
     color: white;
     font-size: 15px;
 }
@@ -1506,7 +1510,7 @@ input::-webkit-inner-spin-button {
     position: relative;
     max-width: 100%;
     height:100%;
-    background-color:#eee;
+    background-color:#f5f5f5;
     overflow-y: auto;
 }
 .Apps{
@@ -1534,7 +1538,7 @@ input::-webkit-inner-spin-button {
     height: 100%;
     line-height: 1.6;
     text-align: center;
-    border: 4px solid silver;
+    border: 2px solid #ccc;
 }
 .native_media_div > div >span{
     font-size: 1.2em;
@@ -1552,7 +1556,7 @@ input::-webkit-inner-spin-button {
 
 .native_media_div:hover{
     color: black;
-    border: 4px solid blue;
+    border: 2px solid blue;
 }
 .native_img{
     width: 43px;
@@ -1644,4 +1648,40 @@ color:#777
 .name-value,.Email-value,.IsAdmin-value{
     COLOR:BLACK
 }
-
+// unsubscribe page
+.unsubscribe-buttonsdiv{
+    display:flex;
+    margin-left: 10px;
+}
+.searchbox-unsubscribe{
+    border: none;
+    background-color: transparent;
+    border-bottom: 1px solid #ccc;
+}
+.searchbox-unsubscribe:focus{
+    background-color: transparent !important;
+    border-bottom-color:blue ;
+}
+.refresh-button,.Export-button{
+    border: none;
+   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    background: rgba(158,158,158, 0.20);
+    // box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+.Export-button{
+    margin-left: 10px;
+}
+.active1:hover{
+    outline:none;
+    border:none;
+}
+.active1:focus{
+    border-bottom-color: blue;
+}
+.active2:hover{
+    outline:none;
+    border:none;
+}
+.activeactivity:focus{
+  background-color: yellow !important;
+}

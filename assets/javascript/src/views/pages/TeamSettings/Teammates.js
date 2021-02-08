@@ -41,10 +41,10 @@ export class Teammates extends Component {
                                     <Row ><input className='fullname-input' type='text' placeholder='Their full name'></input></Row>
                                     <Row className="mt-3"><input className='email-input' type='text' placeholder='Their email address'></input></Row>
                                     <Row className='mt-3'>
-                                        <div style={{ border: "1px solid red", display: "flex", width: "100%" }}>
-                                            <input className='teamname-input' type='checkbox'></input>
-                                            <label>Make administrator</label>
-                                        </div>
+                                        {/* <div style={{ border: "1px solid red", width: "100%" }}> */}
+                                         <Col md='1'>  <input className='teamname-input' style={{width:"20px",height:"26px"}} type='checkbox'></input></Col> 
+                                         <Col md='11'><p>Make administrator</p></Col> 
+                                        {/* </div> */}
                                     </Row>
                                     <Row className='mt-3'>
                                         <button className='send-invite'>SEND INVITE</button>

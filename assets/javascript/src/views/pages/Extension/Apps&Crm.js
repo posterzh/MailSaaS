@@ -12,7 +12,7 @@ export class AppsandCrm extends Component {
                     <h1 className='N-I display-4'style={{borderBottom:"1px solid #ccc",paddingBottom:"10px"}} >NATIVE INTEGRATIONS</h1>
                     {/* <hr color='silver'></hr> */}
                     <div className='native_media'>
-                        <Container >
+                        <Container  fluid>
                             <Row className="mt-5">
                                 <Col md='3'>
                                     <a href="" className='native_link'>
@@ -56,7 +56,7 @@ export class AppsandCrm extends Component {
                                         </div>
                                     </a>
                                 </Col>
-                                <Col md='3'>
+                                {/* <Col md='3'>
                                     <a href="" className='native_link'>
                                         <div className='native_media_div'>
                                             <div>
@@ -69,16 +69,16 @@ export class AppsandCrm extends Component {
                                             </div>
                                         </div>
                                     </a>
-                                </Col>
+                                </Col> */}
                             </Row>
                         </Container>
                     </div>
-                    <div>
+                    {/* <div>
                         <h1 className='N-I display-4 mt-5' style={{borderBottom:"1px solid #ccc",paddingBottom:"10px"}}>OTHER APPS AND CRMS</h1>
-                        {/* <hr color='silver'></hr> */}
+                       
                         <p>Through the power of <a href=''><b>Zapier</b></a>, you can connect Mailshake to all sorts of apps:</p>
-                    </div>
-                    <div>
+                    </div> */}
+                    {/* <div>
                         <label className='filter_app'>Filter by app</label><br></br>
                         <select className='filter_select'>
                             <option value='one'>One</option>
@@ -86,8 +86,8 @@ export class AppsandCrm extends Component {
                             <option value='three'>three</option>
                             <option value='four'>Four</option>
                         </select>
-                    </div>
-                    <div>
+                    </div> */}
+                    {/* <div>
                         <Container>
                             <Row>
                                 <Col>
@@ -96,7 +96,7 @@ export class AppsandCrm extends Component {
                                 </Col>
                             </Row>
                         </Container>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         )

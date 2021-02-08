@@ -16,9 +16,9 @@ class RegisterSerializer(serializers.Serializer):
     phone_number = serializers.CharField(required=True, write_only=True)
     company_name = serializers.CharField(required=True, write_only=True)
     mailsaas_type = serializers.CharField(required=True, write_only=True)
-    password = serializers.CharField(required=True, write_only=True)
     avatar = serializers.ImageField(required=False, write_only=True)
-
+    password1 = serializers.CharField(required=True, write_only=True)
+    # password2 = serializers.CharField(required=True, write_only=True)
 
     def validate_email(self, email):
         email = get_adapter().clean_email(email)
@@ -31,45 +31,33 @@ class RegisterSerializer(serializers.Serializer):
     def validate_password1(self, password):
         return get_adapter().clean_password(password)
 
-    # def validate(self, data):
-    #     if data['password1'] != data['password2']:
-    #         raise serializers.ValidationError(
-    #             _("The two password fields didn't match."))
-    #     return data
+    def validate(self, data):
+        # if data['password1'] != data['password2']:
+        #     raise serializers.ValidationError(
+        #         _("The two password fields didn't match."))
+        return data
 
 
     def get_cleaned_data(self):
         return {
             'email': self.validated_data.get('email', ''),
-            'password': self.validated_data.get('password', ''),
             'avatar': self.validated_data.get('avatar', ''),
             'full_name': self.validated_data.get('full_name', ''),
             'phone_number': self.validated_data.get('phone_number', ''),
             'company_name': self.validated_data.get('company_name',''),
             'mailsaas_type': self.validated_data.get('mailsaas_type', ''),
+            'password1': self.validated_data.get('password1', ''),
         }
     
     def custom_signup(self, request, user):
-        user = CustomUser.objects.create_user(
-            email=self.get_cleaned_data().get('email'),
-            username=self.get_cleaned_data().get('username'),
-            password=self.get_cleaned_data().get('password'),
-            avatar=self.get_cleaned_data().get('avatar'),
-            full_name=self.get_cleaned_data().get('full_name'),
-            phone_number=self.get_cleaned_data().get('phone_number'),
-            company_name=self.get_cleaned_data().get('company_name'),
-            mailsaas_type=self.get_cleaned_data().get('mailsaas_type'),
-        )
-        return user
+        pass
 
     def save(self, request):
         adapter = get_adapter()
         user = adapter.new_user(request)
         self.cleaned_data = self.get_cleaned_data()
         adapter.save_user(request, user, self)
-        # self.custom_signup(request,user)
         setup_user_email(request, user, [])
-        # user.profile.save()
         user.save()
         return user
 

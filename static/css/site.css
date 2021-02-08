@@ -19847,8 +19847,8 @@ input:focus {
   height: 30px;
   margin: auto;
   border-radius: 50%;
-  background-color: #ff4081;
-  border: 8px solid #ff4081; }
+  background-color: #55acee;
+  border: 8px solid #55acee; }
 
 .leadwon_icon .fa {
   color: white;
@@ -20057,7 +20057,7 @@ button .import_button {
   background: transparent; }
 
 .startBtn {
-  background-color: #ff4081;
+  background-color: #55acee;
   color: white; }
 
 .campaign-form .start_input:hover {
@@ -20167,6 +20167,12 @@ button .import_button {
   background: transparent; }
 
 .newcampaign_button {
+  background: #ff4081;
+  outline: none;
+  border: none;
+  color: white; }
+
+.startcampaign_buttonicon {
   background: #ff4081;
   outline: none;
   border: none;
@@ -20284,7 +20290,7 @@ button .import_button {
   font-size: 14px; }
 
 .next_button {
-  background-color: #ff4081;
+  background-color: #55acee;
   border: 0px;
   color: white; }
 
@@ -20555,7 +20561,7 @@ input::-webkit-inner-spin-button {
 
 .sequence_btn {
   display: flex;
-  background-color: #ff4081;
+  background-color: #55acee;
   color: white;
   font-size: 15px; }
 
@@ -20636,8 +20642,7 @@ input::-webkit-inner-spin-button {
 .in {
   height: 40px;
   width: 100%;
-  border: none;
-  background-color: #eee; }
+  border: none; }
 
 .in:focus {
   background-color: #eee !important;
@@ -20869,7 +20874,7 @@ input::-webkit-inner-spin-button {
 
 .sequence_btn {
   display: flex;
-  background-color: #ff4081;
+  background-color: #55acee;
   color: white;
   font-size: 15px; }
 
@@ -20983,7 +20988,7 @@ input::-webkit-inner-spin-button {
   position: relative;
   max-width: 100%;
   height: 100%;
-  background-color: #eee;
+  background-color: #f5f5f5;
   overflow-y: auto; }
 
 .Apps {
@@ -21011,7 +21016,7 @@ input::-webkit-inner-spin-button {
   height: 100%;
   line-height: 1.6;
   text-align: center;
-  border: 4px solid silver; }
+  border: 2px solid #ccc; }
 
 .native_media_div > div > span {
   font-size: 1.2em;
@@ -21028,7 +21033,7 @@ input::-webkit-inner-spin-button {
 
 .native_media_div:hover {
   color: black;
-  border: 4px solid blue; }
+  border: 2px solid blue; }
 
 .native_img {
   width: 43px;
@@ -21116,4 +21121,39 @@ input::-webkit-inner-spin-button {
 
 .name-value, .Email-value, .IsAdmin-value {
   COLOR: BLACK; }
+
+.unsubscribe-buttonsdiv {
+  display: flex;
+  margin-left: 10px; }
+
+.searchbox-unsubscribe {
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid #ccc; }
+
+.searchbox-unsubscribe:focus {
+  background-color: transparent !important;
+  border-bottom-color: blue; }
+
+.refresh-button, .Export-button {
+  border: none;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  background: rgba(158, 158, 158, 0.2); }
+
+.Export-button {
+  margin-left: 10px; }
+
+.active1:hover {
+  outline: none;
+  border: none; }
+
+.active1:focus {
+  border-bottom-color: blue; }
+
+.active2:hover {
+  outline: none;
+  border: none; }
+
+.activeactivity:focus {
+  background-color: yellow !important; }
 

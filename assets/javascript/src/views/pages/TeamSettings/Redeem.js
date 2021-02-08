@@ -24,7 +24,7 @@ export class Redeem extends Component {
                                 <Row className='ml-2 mt-4' ><input className='teamname-input' type='text' placeholder="Promo code"></input></Row>
                                 <div>
                                     <Row className='mt-3 ml-2 mb-3'>
-                                        <button className='savebutton' style={{ width: "25%" }}>APPLYPROMO</button>
+                                        <button className='savebutton' style={{ width: "8em" }}>APPLYPROMO</button>
                                     </Row>
                                 </div>
                             </div>
