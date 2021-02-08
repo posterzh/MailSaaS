@@ -47,6 +47,7 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
     
     'django.forms',
+  
     'celery_progress',
     "django_celery_results",
     'django_crontab',
@@ -111,7 +112,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-   
 ]
 
 ROOT_URLCONF = 'mail.urls'
@@ -238,7 +238,9 @@ SOCIALACCOUNT_PROVIDERS = {
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+
+TIME_ZONE = 'Asia/Calcutta'
+
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -286,10 +288,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,
     
-    'DEFAULT_FILTER_BACKENDS': (
-        'django_filters.rest_framework.DjangoFilterBackend',
+    # 'DEFAULT_FILTER_BACKENDS': (
+    #     'django_filters.rest_framework.DjangoFilterBackend',
         
-    ),
+    # ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
@@ -300,16 +302,14 @@ REST_FRAMEWORK = {
 
 # Celery setup (using redis)
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-CELERY_ACCEPT_CONTENT=['json']
-CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_BACKEND = 'django-db'
-# CELERY_RESULT_BACKEND = 'django-cache'
-CELERY_TASK_TRACK_STARTED = True
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TIMEZONE = 'Asia/Kolkata'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_IMPORTS = ('apps.campaignschedule.tasks',)
+CELERY_CACHE_BACKEND = 'django-cache'
 
-CELERY_IMPORTS = (
-    'apps.campaignschedule.tasks'
-)
 
 
 

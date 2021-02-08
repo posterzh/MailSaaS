@@ -5,7 +5,7 @@ from .models import Campaign, CampaignRecipient, FollowUpEmail, DripEmailModel, 
 
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
-    list_display = ('title', 'from_address','assigned', 'csvfile_op1', 'created_date_time', 'track_opens', 'track_linkclick', 'schedule_send', 'schedule_date', 'schedule_time','terms_and_laws', 'campaign_status')
+    list_display = ('assigned','title', 'from_address', 'csvfile_op1', 'created_date_time', 'track_opens', 'track_linkclick', 'schedule_send', 'schedule_date', 'schedule_time','terms_and_laws', 'campaign_status')
 
 
 # admin.site.register(LeadType)

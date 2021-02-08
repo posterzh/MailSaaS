@@ -64,6 +64,7 @@ class CreateCampaignRecipientsView(APIView):
 
     def post(self, request, format=None):
         postdata = request.data
+        
         if 'campaign.add_campaign' in request.user.get_group_permissions():
             if int(postdata["option"]) == 1:
                 try:
@@ -231,7 +232,9 @@ class CreateCampaignOptionView(APIView):
             request.data["created_date_time"] = queryset.created_date_time
             if request.data["schedule_send"] and not (request.data["schedule_date"] or request.data["schedule_time"]):
                 return Response({"message":"Please Enter Date Time", "success":"false"})
-            if not request.data["schedule_send"]:
+            if request.data["schedule_send"]:
+                print(request.data)
+            else:
                 request.data["schedule_date"] = None
                 request.data["schedule_time"] = None
             serilizer = CampaignSerializer(queryset, data=request.data)

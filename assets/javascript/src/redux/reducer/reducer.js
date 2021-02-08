@@ -1,12 +1,14 @@
-import { FAILURE_REGISTER, REQUEST_FOR_REGISTER, SUCCESS_REGISTER, FAILURE_LOGIN, REQUEST_FOR_LOGIN, SUCCESS_LOGIN } from "../actionType/actionType";
+import { FAILURE_REGISTER, REQUEST_FOR_REGISTER, SUCCESS_REGISTER,
+     FAILURE_LOGIN, REQUEST_FOR_LOGIN, SUCCESS_LOGIN 
+     ,FAILURE_START, REQUEST_FOR_START, SUCCESS_START 
+    } from "../actionType/actionType";
 
 const initialState = {
     Loginuser: '',
     user: '',
-    token: ''
+    data:''
 }
 const Reducer = (state = { initialState }, action) => {
-    console.log(action.data, 'action')
     switch (action.type) {
         case REQUEST_FOR_REGISTER:
             return {
@@ -29,6 +31,18 @@ const Reducer = (state = { initialState }, action) => {
                 Loginuser: action.data,
             }
         case FAILURE_LOGIN:
+            return {
+            }
+
+            case REQUEST_FOR_START:
+            return {
+            }
+        case SUCCESS_START:
+            return {
+                ...state,
+                data: action.data,
+            }
+        case FAILURE_START:
             return {
             }
         default: return state
