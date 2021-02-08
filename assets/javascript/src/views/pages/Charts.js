@@ -22,7 +22,7 @@ import { Line, Bar, Doughnut, Pie } from "react-chartjs-2";
 // reactstrap components
 import { Card, CardHeader, CardBody, Container, Row, Col } from "reactstrap";
 // core components
-import CardsHeader from "components/Headers/CardsHeader.js";
+import CardsHeader from "../../components/Headers/CardsHeader.js";
 
 import {
   chartOptions,
@@ -33,7 +33,7 @@ import {
   chartExample5,
   chartExample6,
   chartExample7
-} from "variables/charts.js";
+} from "../../variables/charts.js";
 
 class Charts extends React.Component {
   constructor(props) {

@@ -11,6 +11,7 @@ __pycache__/
 .Python
 env/
 build/
+__pycache__/
 develop-eggs/
 dist/
 downloads/
@@ -130,3 +131,6 @@ yarn-error.log*
 /.changelog
 .npm/
 yarn.lock
+
+static/js
+static/css//site.css

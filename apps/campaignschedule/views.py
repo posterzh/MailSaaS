@@ -55,8 +55,6 @@ class CampaignScheduleAdd(CreateAPIView):
         request.data['start_time'] = starting_time
         request.data['end_time'] = ending_time
         request.data._mutable = False
-
-        print(request.data)
         serializer = CampaignscheduleSerializers(data=request.data)
         if serializer.is_valid():
             serializer.save()

@@ -33,7 +33,7 @@ import {
   Col
 } from "reactstrap";
 // core components
-import AuthHeader from "components/Headers/AuthHeader.js";
+import AuthHeader from "../../../components/Headers/AuthHeader";
 
 class Lock extends React.Component {
   state = {};
@@ -51,7 +51,7 @@ class Lock extends React.Component {
                       <img
                         alt="..."
                         className="rounded-circle border-secondary"
-                        src={require("assets/img/theme/team-4.jpg")}
+                        src={STATIC_FILES.team_4}
                       />
                     </div>
                   </Col>

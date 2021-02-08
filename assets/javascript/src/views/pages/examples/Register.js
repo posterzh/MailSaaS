@@ -17,6 +17,7 @@
 import React from "react";
 // nodejs library that concatenates classes
 import classnames from "classnames";
+import axios from 'axios'
 // reactstrap components
 import {
   Button,
@@ -31,13 +32,50 @@ import {
   InputGroup,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 // core components
-import AuthHeader from "components/Headers/AuthHeader.js";
+import AuthHeader from "../../../components/Headers/AuthHeader"
+import { connect } from "react-redux";
+import { RegisterAction } from "../../../redux/action/AuthourizationAction";
 
 class Register extends React.Component {
-  state = {};
+  constructor(props) {
+    super(props)
+    this.state = {
+      FullName: '',
+      Email: '',
+      PhoneNumber: '',
+      CompanyName: '',
+      Password: '',
+      mailsaas_type: ''
+    }
+
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const user = {
+      full_name: this.state.FullName,
+      email: this.state.Email,
+      phone_number: this.state.PhoneNumber,
+      company_name: this.state.CompanyName,
+      password1: this.state.Password,
+      mailsaas_type: this.state.mailsaas_type
+
+    };
+    this.props.RegisterAction(user)
+    console.log(user)
+
+
+
+  }
+
   render() {
     return (
       <>
@@ -49,46 +87,11 @@ class Register extends React.Component {
           <Row className="justify-content-center">
             <Col lg="6" md="8">
               <Card className="bg-secondary border-0">
-                <CardHeader className="bg-transparent pb-5">
-                  <div className="text-muted text-center mt-2 mb-4">
-                    <small>Sign up with</small>
-                  </div>
-                  <div className="text-center">
-                    <Button
-                      className="btn-neutral btn-icon mr-4"
-                      color="default"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <span className="btn-inner--icon mr-1">
-                        <img
-                          alt="..."
-                          src={require("assets/img/icons/common/github.svg")}
-                        />
-                      </span>
-                      <span className="btn-inner--text">Github</span>
-                    </Button>
-                    <Button
-                      className="btn-neutral btn-icon"
-                      color="default"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <span className="btn-inner--icon mr-1">
-                        <img
-                          alt="..."
-                          src={require("assets/img/icons/common/google.svg")}
-                        />
-                      </span>
-                      <span className="btn-inner--text">Google</span>
-                    </Button>
-                  </div>
-                </CardHeader>
                 <CardBody className="px-lg-5 py-lg-5">
                   <div className="text-center text-muted mb-4">
                     <small>Or sign up with credentials</small>
                   </div>
-                  <Form role="form">
+                  <Form onSubmit={this.handleSubmit} >
                     <FormGroup
                       className={classnames({
                         focused: this.state.focusedName
@@ -103,6 +106,9 @@ class Register extends React.Component {
                         <Input
                           placeholder="Name"
                           type="text"
+                          name="FullName"
+                          value={this.state.FullName}
+                          onChange={this.handleChange}
                           onFocus={() => this.setState({ focusedName: true })}
                           onBlur={() => this.setState({ focusedName: false })}
                         />
@@ -122,11 +128,58 @@ class Register extends React.Component {
                         <Input
                           placeholder="Email"
                           type="email"
+                          name='Email'
+                          value={this.state.Email}
+                          onChange={this.handleChange}
                           onFocus={() => this.setState({ focusedEmail: true })}
                           onBlur={() => this.setState({ focusedEmail: false })}
                         />
                       </InputGroup>
                     </FormGroup>
+                    {/*  */}
+                    <FormGroup
+                      className={classnames({
+                        focused: this.state.focusedEmail
+                      })}
+                    >
+                      <InputGroup className="input-group-merge input-group-alternative mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="ni ni-email-83" />
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input
+                          placeholder="Phone Number"
+                          type="number"
+                          name='PhoneNumber'
+                          onChange={this.handleChange}
+                          onFocus={() => this.setState({ focusedEmail: true })}
+                          onBlur={() => this.setState({ focusedEmail: false })}
+                        />
+                      </InputGroup>
+                    </FormGroup>
+                    <FormGroup
+                      className={classnames({
+                        focused: this.state.focusedEmail
+                      })}
+                    >
+                      <InputGroup className="input-group-merge input-group-alternative mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="ni ni-email-83" />
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input
+                          placeholder="Comapany Name"
+                          type="text"
+                          name="CompanyName"
+                          onChange={this.handleChange}
+                          onFocus={() => this.setState({ focusedEmail: true })}
+                          onBlur={() => this.setState({ focusedEmail: false })}
+                        />
+                      </InputGroup>
+                    </FormGroup>
+                    {/*  */}
                     <FormGroup
                       className={classnames({
                         focused: this.state.focusedPassword
@@ -141,6 +194,8 @@ class Register extends React.Component {
                         <Input
                           placeholder="Password"
                           type="password"
+                          name="Password"
+                          onChange={this.handleChange}
                           onFocus={() =>
                             this.setState({ focusedPassword: true })
                           }
@@ -149,6 +204,14 @@ class Register extends React.Component {
                           }
                         />
                       </InputGroup>
+                      <FormGroup className='mt-4'>
+                        <Input type="select" name="mailsaas_type" value={this.state.mailsaas_type} onChange={this.handleChange} id="exampleSelect">
+                          <option value='Sales'>Sales</option>
+                          <option value='Marketing'>Marketing/PR</option>
+                          <option value='Recruiting'>Recruiting</option>
+                          <option value='other'>Other</option>
+                        </Input>
+                      </FormGroup>
                     </FormGroup>
                     <div className="text-muted font-italic">
                       <small>
@@ -161,7 +224,7 @@ class Register extends React.Component {
                     <Row className="my-4">
                       <Col xs="12">
                         <div className="custom-control custom-control-alternative custom-checkbox">
-                          <input
+                          {/* <input
                             className="custom-control-input"
                             id="customCheckRegister"
                             type="checkbox"
@@ -179,12 +242,12 @@ class Register extends React.Component {
                                 Privacy Policy
                               </a>
                             </span>
-                          </label>
+                          </label> */}
                         </div>
                       </Col>
                     </Row>
                     <div className="text-center">
-                      <Button className="mt-4" color="info" type="button">
+                      <Button className="mt-4" color="info" type="submit" >
                         Create account
                       </Button>
                     </div>
@@ -199,4 +262,14 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+const mapStateToProps = (state) => {
+  return {
+    // token: state.token
+  };
+};
+const mapDispatchToProps = dispatch => ({
+  RegisterAction: user => {
+    dispatch(RegisterAction(user));
+  },
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

@@ -31,15 +31,18 @@ urlpatterns = [
     path('campaignschedule/',include('apps.campaignschedule.urls')),
     path('campaign/', include('apps.campaign.urls')),
     path('teams/', include('apps.teams.urls')),
-
+    path('intigration/', include('apps.integration.urls')),
+    path('mail/', include('apps.mailaccounts.urls')),
     path('', include('apps.web.urls')),
-    path('pegasus/', include('apps.pegasus.urls')),
+    path('app/', include('apps.pegasus.urls')),
     path('celery-progress/', include('celery_progress.urls')),
     # API docs
     # these are needed for schema.js
     path('docs/', include_docs_urls(title='API Docs')),
     path('schemajs/', schemajs_view, name='api_schemajs'),
 
+    path('rest-auth/', include('rest_auth.urls')),
+    path('rest-auth/registration/', include('rest_auth.registration.urls')),
     # djstripe urls - for webhooks
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

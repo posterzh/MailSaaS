@@ -1,22 +1,27 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
+from .forms import CustomUserCreationForm,CustomUserChangeForm
 from .models import CustomUser
 
-admin.site.register(CustomUser)
-# admin.site.register(MailsaasType)
 
+class CustomUserAdmin(UserAdmin):
+    add_form = CustomUserCreationForm
+    form = CustomUserChangeForm
+    model = CustomUser
+    list_display = ['email',]
+    ordering = ('email',)
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Permissions', {'fields': ('full_name','company_name','mailsaas_type','phone_number','is_staff', 'is_active','avatar')}),
+    )
 
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2',)}
+        ),
+    )
 
-# @admin.register(CustomUser)
-# class CustomUserAdmin(UserAdmin):
-#     list_display = UserAdmin.list_display
-
-#     fieldsets = UserAdmin.fieldsets + (
-#         ('Custom Fields', {
-#             'fields': ('avatar','phone_number','company_name')
-#         }),
-#     )
-
-
+admin.site.register(CustomUser,CustomUserAdmin)
 

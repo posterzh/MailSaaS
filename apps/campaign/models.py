@@ -1,10 +1,11 @@
 from django.db import models
 from apps.users.models import CustomUser
-
+from datetime import date
+from apps.mailaccounts.models import SmtpMail
 class Campaign(models.Model):
     title = models.CharField(max_length=200)
-    from_address = models.CharField(max_length=200)
-    full_name = models.CharField(max_length=200)
+    from_address = models.ForeignKey(SmtpMail,on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=200,blank=True,null=True)
     csvfile_op1 = models.FileField(upload_to='csv_uploads/', blank=True, null=True)
     created_date_time = models.DateTimeField(auto_now=True)
     update_date_time = models.DateTimeField(auto_now=True)
@@ -23,6 +24,7 @@ class Campaign(models.Model):
 
     
 LEAD_TYPE =( 
+
     ("none", "None"), 
     ("openLead", "Open Lead"), 
     ("wonLead", "Won Lead"), 
@@ -46,6 +48,10 @@ class CampaignRecipient(models.Model):
     lead_status = models.CharField(max_length=32,choices=LEAD_TYPE,default='none',blank = True, null = True)
     reciepent_status = models.BooleanField(default=False)    #Start Campaign or Pause Reciepent
     unsubscribe = models.BooleanField(default=False)
+    is_delete = models.BooleanField(default=False)
+    created_date = models.DateTimeField(auto_now_add=True,blank=True,null=True)
+    update_date_time = models.DateTimeField(auto_now_add=True,blank=True,null=True)
+
 
 
     def __str__(self):
