@@ -59,50 +59,50 @@ class CreateCampaignStartView(APIView):
 
    
 class CreateCampaignRecipientsView(APIView):
-
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
         postdata = request.data
-        
-        if 'campaign.add_campaign' in request.user.get_group_permissions():
-            if int(postdata["option"]) == 1:
-                try:
-                    camp = Campaign.objects.get(id=postdata['campaign'])
-                except:
-                    return Response({"message":"No campiagn availabe for this id", "success":"false"})
-                camp.csvfile_op1 = postdata['csvfile_op1']
-                camp.save()
-                with open('media/'+str(camp.csvfile_op1)) as csv_file:
-                    csv_reader = csv.reader(csv_file, delimiter=',')
-                    line_count = 0
-                    resp = []
-                    for row in csv_reader:
-                        if line_count == 0:
+        res = json.loads(postdata["option"])
+        postdata["option"] = res
+        resp = []
+        # if 'campaign.add_campaign' in request.user.get_group_permissions():
+        if 1 in postdata["option"]:
+            try:
+                camp = Campaign.objects.get(id=postdata['campaign'])
+            except:
+                return Response({"message":"No campiagn availabe for this id", "success":"false"})
+            camp.csvfile_op1 = postdata['csvfile_op1']
+            camp.save()
+            with open('media/'+str(camp.csvfile_op1)) as csv_file:
+                csv_reader = csv.reader(csv_file, delimiter=',')
+                line_count = 0
+                for row in csv_reader:
+                    if line_count == 0:
+                        line_count += 1
+                        # return Response({"message":"No Rows in file", "success":False})
+                    else:
+                        data = {'email':row[0], 'full_name':row[1], 'company_name':row[2], 'role':row[3], 'campaign':postdata['campaign']}
+                        serializer = CampaignEmailSerializer(data = data)
+                        if serializer.is_valid():
                             line_count += 1
-                            # return Response({"message":"No Rows in file", "success":False})
-                        else:
-                            data = {'email':row[0], 'full_name':row[1], 'company_name':row[2], 'role':row[3], 'campaign':postdata['campaign']}
-                            serializer = CampaignEmailSerializer(data = data)
-                            if serializer.is_valid():
-                                line_count += 1
-                                serializer.save()
-                                resp.append(serializer.data)
-                    resp.append({"success":True})
-                    return Response(resp)
-
-            elif int(postdata["option"]) == 2:
-                serializer = CampaignEmailSerializer(data = postdata)
-                if serializer.is_valid():
-                    camp = Campaign.objects.get(id=postdata['campaign'])
-                    for email in postdata["email"]:
-                        CampaignEmail = CampaignRecipient(campaign=camp, email=email)
-                        CampaignEmail.save()
-                    return Response({"message":"Saved Successfully","success":True})
-                else:
-                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response({'message':"Has No Permissions",'status':401})
+                            serializer.save()
+                            resp.append(serializer.data)
+                resp.append({"success":True})
+                if 2 not in postdata["option"]:
+                    return Response({"resp":resp, "success":True})
+        if 2 in postdata["option"]:
+            serializer = CampaignEmailSerializer(data = postdata)
+            if serializer.is_valid():
+                camp = Campaign.objects.get(id=postdata['campaign'])
+                for email in postdata["email"]:
+                    CampaignEmail = CampaignRecipient(campaign=camp, email=email)
+                    CampaignEmail.save()
+                return Response({"resp":resp,"message":"Saved Successfully","success":True})
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # else:
+        #     return Response({'message':"Has No Permissions",'status':401})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
