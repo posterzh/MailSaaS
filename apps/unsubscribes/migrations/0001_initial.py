@@ -12,20 +12,21 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Contact',
+            name='UnsubcribeCsv',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('Parameter', models.CharField(max_length=50)),
+                ('unscribe_emails', models.FileField(blank=True, null=True, upload_to='unsubcribe_csv_uploads/')),
             ],
         ),
         migrations.CreateModel(
-            name='Team',
+            name='UnsubscribeEmail',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200)),
-                ('team_id', models.CharField(max_length=20)),
-                ('bot_user_id', models.CharField(max_length=20)),
-                ('bot_access_token', models.CharField(max_length=100)),
+                ('email', models.EmailField(max_length=254, verbose_name='Email Account')),
+                ('mail_account', models.CharField(blank=True, max_length=100)),
+                ('Name', models.CharField(blank=True, max_length=100)),
+                ('date', models.DateTimeField(auto_now=True)),
+                ('on_delete', models.BooleanField(default=False)),
             ],
         ),
     ]

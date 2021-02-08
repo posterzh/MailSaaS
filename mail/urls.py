@@ -27,6 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('users/', include('apps.users.urls')),
+    path('unsubscribes/', include('apps.unsubscribes.urls')),
     path('subscriptions/', include('apps.subscriptions.urls')),
     path('campaignschedule/',include('apps.campaignschedule.urls')),
     path('campaign/', include('apps.campaign.urls')),

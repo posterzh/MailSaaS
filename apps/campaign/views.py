@@ -1,6 +1,8 @@
 import csv
 import datetime
 from datetime import datetime
+from apps.unsubscribes.models import UnsubscribeEmail
+from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 import pytracking
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -26,6 +28,7 @@ from django.contrib.sites.models import Site
 from django.conf import settings
 import re
 from apps.integration.views import SendSlackMessage
+import json
 
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
@@ -42,17 +45,17 @@ class CreateCampaignStartView(APIView):
         
     def post(self, request, format=None):
         if request.user.is_active:
-            if 'campaign.add_campaign' in request.user.get_group_permissions():
-                postdata = request.data
-                postdata._mutable = True
-                postdata["assigned"] = request.user.id
-                postdata._mutable = False
-                serializer = CampaignSerializer(data = postdata)
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            return Response({'message':"Has No Permissions",'status':401})
+            # if 'campaign.add_campaign' in request.user.get_group_permissions():
+            postdata = request.data
+            postdata._mutable = True
+            postdata["assigned"] = request.user.id
+            postdata._mutable = False
+            serializer = CampaignSerializer(data = postdata)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            # return Response({'message':"Has No Permissions",'status':401})
         return Response({'message':"Your account is not active",'status':status.HTTP_200_OK})
 
    
@@ -62,45 +65,48 @@ class CreateCampaignRecipientsView(APIView):
 
     def post(self, request, format=None):
         postdata = request.data
-        
-        if 'campaign.add_campaign' in request.user.get_group_permissions():
-            if int(postdata["option"]) == 1:
-                try:
-                    camp = Campaign.objects.get(id=postdata['campaign'])
-                except:
-                    return Response({"message":"No campiagn availabe for this id", "success":"false"})
-                camp.csvfile_op1 = postdata['csvfile_op1']
-                camp.save()
-                with open('media/'+str(camp.csvfile_op1)) as csv_file:
-                    csv_reader = csv.reader(csv_file, delimiter=',')
-                    line_count = 0
-                    resp = []
-                    for row in csv_reader:
-                        if line_count == 0:
+        res = json.loads(postdata["option"])
+        postdata["option"] = res
+        resp = []
+        # if 'campaign.add_campaign' in request.user.get_group_permissions():
+        if 1 in postdata["option"]:
+            try:
+                camp = Campaign.objects.get(id=postdata['campaign'])
+            except:
+                return Response({"message":"No campiagn availabe for this id", "success":"false"})
+            camp.csvfile_op1 = postdata['csvfile_op1']
+            camp.save()
+            with open('media/'+str(camp.csvfile_op1)) as csv_file:
+                csv_reader = csv.reader(csv_file, delimiter=',')
+                line_count = 0
+                
+                for row in csv_reader:
+                    if line_count == 0:
+                        line_count += 1
+                        # return Response({"message":"No Rows in file", "success":False})
+                    else:
+                        data = {'email':row[0], 'full_name':row[1], 'company_name':row[2], 'role':row[3], 'campaign':postdata['campaign']}
+                        serializer = CampaignEmailSerializer(data = data)
+                        if serializer.is_valid():
                             line_count += 1
-                            # return Response({"message":"No Rows in file", "success":False})
-                        else:
-                            data = {'email':row[0], 'full_name':row[1], 'company_name':row[2], 'role':row[3], 'campaign':postdata['campaign']}
-                            serializer = CampaignEmailSerializer(data = data)
-                            if serializer.is_valid():
-                                line_count += 1
-                                serializer.save()
-                                resp.append(serializer.data)
-                    resp.append({"success":True})
-                    return Response(resp)
+                            serializer.save()
+                            resp.append(serializer.data)
+                resp.append({"success":True})
+                if 2 not in postdata["option"]:
+                    return Response({"resp":resp, "success":True})
 
-            elif int(postdata["option"]) == 2:
-                serializer = CampaignEmailSerializer(data = postdata)
-                if serializer.is_valid():
-                    camp = Campaign.objects.get(id=postdata['campaign'])
-                    for email in postdata["email"]:
-                        CampaignEmail = CampaignRecipient(campaign=camp, email=email)
-                        CampaignEmail.save()
-                    return Response({"message":"Saved Successfully","success":True})
-                else:
-                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response({'message':"Has No Permissions",'status':401})
+        if 2 in postdata["option"]:
+            serializer = CampaignEmailSerializer(data = postdata)
+            if serializer.is_valid():
+                camp = Campaign.objects.get(id=postdata['campaign'])
+                for email in postdata["email"]:
+                    CampaignEmail = CampaignRecipient(campaign=camp, email=email)
+                    CampaignEmail.save()
+                return Response({"resp":resp,"message":"Saved Successfully","success":True})
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # else:
+        #     return Response({'message':"Has No Permissions",'status':401})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -531,13 +537,14 @@ class TrackEmailClick(APIView):
         print("yoooooooooooooooooo ", request)
 
         print(settings.SITE_URL + "/campaign/email/click/")
-        
+        tracking_result = pytracking.get_open_tracking_result(
+            full_url, base_click_tracking_url="https://trackingdomain.com/path/")
         full_url = settings.SITE_URL + request.get_full_path()
 
         print("full_urlfull_urlfull_url",full_url)
         tracking_result = pytracking.get_open_tracking_result(
             full_url, base_click_tracking_url= settings.SITE_URL + "/campaign/email/click/")
-
+        print("Doneeee")
         print("tracking_resultttttt ",tracking_result)
         # full_url = settings.SITE_URL + request.get_full_path()
 
@@ -1049,3 +1056,27 @@ class ProspectsCampaignView(generics.ListAPIView):
         if queryset.replies:
             data['replies'] = data['replies']+1
         return Response(data)
+
+
+class RecipientUnsubcribe(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = UnsubscribeEmailSerializers      
+    def put(self, request, format=None):
+        recipient_id =request.data["recipient_id"]
+        for id in recipient_id:
+            recipient = CampaignRecipient.objects.get(id = id)
+            recipient.unsubscribe=True
+            recipient.save()
+            data = {
+                "email" : recipient.email,
+                "full_name" : recipient.full_name,
+                'user':request.user.id
+            }
+            serializer = UnsubscribeEmailSerializers(data=data)
+            if serializer.is_valid():
+                serializer.save()
+        return Response("Done")
+    
+
+
+       
