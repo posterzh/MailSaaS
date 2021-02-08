@@ -1,10 +1,12 @@
 from django.db import models
 from apps.users.models import CustomUser
 from datetime import date
-from apps.mailaccounts.models import SmtpMail
+from apps.mailaccounts.models import EmailAccount
+
+
 class Campaign(models.Model):
     title = models.CharField(max_length=200)
-    from_address = models.ForeignKey(SmtpMail,on_delete=models.CASCADE)
+    from_address = models.ForeignKey(EmailAccount,on_delete=models.CASCADE)
     full_name = models.CharField(max_length=200,blank=True,null=True)
     csvfile_op1 = models.FileField(upload_to='csv_uploads/', blank=True, null=True)
     created_date_time = models.DateTimeField(auto_now=True)

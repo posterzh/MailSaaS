@@ -11,16 +11,18 @@ from .serializers import ContactSerializer
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 
-
+import requests
 
 
 
 def login():
-  return Salesforce(
+    session = requests.Session()
+    return Salesforce(
       username='divyakhandelwal-mlsz@force.com',
       password='divya1234',
-    #   security_token='TJbGsbaRmxpKqwg2vIzjnVGl'
-      organizationId='00D5g000004Eewv'
+      security_token='TJbGsbaRmxpKqwg2vIzjnVGl',
+      organizationId='00D5g000004Eewv',
+      session=session
       )
 
 
@@ -48,6 +50,8 @@ class ContactViewSet(generics.CreateAPIView):
             data = sf.query("Select Id,Name from Contact")
             result = ContactSerializer(data['records'][0])
             return Response(result.data)
+
+
     def get(self, request, format=None):
         data = sf.query("Select Id,Name from Contact")
         result = ContactSerializer(data['records'][0])
@@ -126,5 +130,5 @@ def SendSlackMessage(data):
         return Response("Not Sent")
 
 
-# **************************************Hubspot**************************
+# **************************************Pipedrive**************************
 
