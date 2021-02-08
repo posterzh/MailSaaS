@@ -21,19 +21,27 @@ Provider = (
 )
 
 
-class SmtpMail(models.Model):
+class EmailAccount(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=200)
-    smtp_host = models.CharField(max_length=200)
-    smtp_username = models.CharField(max_length=200)
-    smtp_password = models.CharField(max_length=200)
-    smtp_port = models.CharField(max_length=20,choices=Smtp_Port,default='587')
-    imap_host = models.CharField(max_length=200)
-    imap_username = models.CharField(max_length=200)
-    imap_password = models.CharField(max_length=200)
-    imap_port = models.CharField(max_length=20,choices=Imap_Port,default='993')
+    smtp_host = models.CharField(max_length=200,blank=True,null = True)
+    smtp_username = models.CharField(max_length=200,blank=True,null = True)
+    smtp_password = models.CharField(max_length=200,blank=True,null = True)
+    smtp_port = models.CharField(max_length=20,choices=Smtp_Port,default='587',blank=True,null = True)
+    imap_host = models.CharField(max_length=200,blank=True,null = True)
+    imap_username = models.CharField(max_length=200,blank=True,null = True)
+    imap_password = models.CharField(max_length=200,blank=True,null = True)
+    imap_port = models.CharField(max_length=20,choices=Imap_Port,default='993',blank=True,null = True)
+    access_token = models.CharField(max_length=500,blank=True,null=True)
     provider = models.CharField(max_length=100,choices=Provider,default='Smtp',null=True,blank=True)
+
+    def __str__(self):
+        return self.email
+
+
+class MyMail(models.Model):
+    email = models.EmailField(unique=True)
 
     def __str__(self):
         return self.email

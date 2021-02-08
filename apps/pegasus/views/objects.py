@@ -11,7 +11,7 @@ from ..models import Employee
 from ..serializers import EmployeeSerializer
 
 
-# @method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class ObjectLifecycleView(TemplateView):
     def get_context_data(self, **kwargs):
         return {

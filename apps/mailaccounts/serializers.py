@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from .models import SmtpMail
+from .models import EmailAccount
 
 
 
-class SmtpMailSerilizer(serializers.ModelSerializer):
+class EmailAccountSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = SmtpMail
+        model = EmailAccount
         fields = '__all__'

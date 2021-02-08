@@ -1,26 +1,53 @@
+from django.core import mail
+from django.core.mail.backends.smtp import EmailBackend
 from django.shortcuts import render
 from django.conf import settings
 from apps.users.models import CustomUser
 from rest_framework import generics
 from rest_framework import permissions
-from .models import SmtpMail
-from .serializers import SmtpMailSerilizer
-from rest_framework.response import Response 
+from .models import EmailAccount
+from .serializers import EmailAccountSerializer
+from rest_framework.response import Response
+
+from rest_framework.views import APIView
 
 
 
-
-class SendSmtpMailView(generics.ListCreateAPIView):
-    # serializer_class = SmtpMailSerilizer
+class EmailAccountsView(generics.ListCreateAPIView):
+    # serializer_class = EmailAccountSerializer
     permission_classes = (permissions.IsAuthenticated,)
-    queryset = SmtpMail.objects.all()
+    queryset = EmailAccount.objects.all()
 
     def post(self,request,*args,**kwargs):
         request.data._mutable = True
         request.data["user"] = request.user.id
         request.data._mutable = False
+
+        # payload = {'access_token':request.data.get('access_token', )}
+        # google_url = request.get('https://www.googleapis.com/oauth2/v2/userinfo', params=payload)
+        # data = json.loads(google_url.text)
+        
+        # if request.data['provider'] == 'google':
+
+        #     # if 'error' in data:
+        #     #     content = {'message': 'wrong google token / this google token is already expired.'}
+        #     #     return Response(content)
+        #     # try:
+        #     #     mail = EmailAccount.objects.get(email=data['email'])
+        #     # except EmailAccount.DoesNotExist:
+        #     #     mail = EmailAccount()
+        #     mail.email = data['email']
+        #     mail.full_name = data['name']
+        #     mail.provider = data['idpId']
+        #     serializer = EmailAccountSerializer(data=request.data)
+        #     serializer.save()
+        #     serializer.is_valid()
+        #     return Response(serializer.data)
+
+        # elif request.data['provider'] == 'smtp':
+    
         if request.data['smtp_username'] == request.data['email'] and request.data['imap_username'] == request.data['email']:
-            serializer = SmtpMailSerilizer(data=request.data)
+            serializer = EmailAccountSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response({"message":serializer.data,"sucess":True})
@@ -28,27 +55,72 @@ class SendSmtpMailView(generics.ListCreateAPIView):
         return Response({"message":"Smtp username and Imap username does not match to email"})
     
     def get(self,request,*args,**kwargs):
-        queryset = SmtpMail.objects.get(user=request.user.id)
-        serializer = SmtpMailSerilizer(queryset)
+        queryset = EmailAccount.objects.get(user=request.user.id)
+        serializer = EmailAccountSerializer(queryset)
         return Response({"message":serializer.data,"sucess":True})
         
 
-class SendSmtpMailUpdate(generics.UpdateAPIView):
+class EmailAccountsUpdateView(generics.UpdateAPIView):
 
-    serializer_class = SmtpMailSerilizer
+    serializer_class = EmailAccountSerializer
     permission_classes = (permissions.IsAuthenticated,)
-    queryset = SmtpMail.objects.all()
+    queryset = EmailAccount.objects.all()
 
     def put(self,request,pk,format=None):
-        queryset = SmtpMail.objects.get(id=pk)
-        serializer = SmtpMailSerilizer(queryset, data=request.data)
+        queryset = EmailAccount.objects.get(id=pk)
+        serializer = EmailAccountSerializer(queryset, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({"message":"Connection Updated Sucessfully"})
         return Response({"error":serializer.errors})
         
     def delete(self,request,pk,format=None):
-        queryset = SmtpMail.objects.get(id=pk)
+        queryset = EmailAccount.objects.get(id=pk)
         queryset.delete()
         return Response({"message":"Connection Delete Sucessfully","Sucess":True})
+
+
+
+def send_mail_with_smtp():
+    try:
+        con = mail.get_connection()
+        con.open()
+        print('Django connected to the SMTP server')
+
+        mail_setting = EmailAccount.objects.last()
+        host = mail_setting.smtp_host
+        host_user = mail_setting.smtp_username
+        host_pass = mail_setting.smtp_password
+        host_port = mail_setting.smtp_port
+
+        mail_obj = EmailBackend(
+            host=host,
+            port=host_port,
+            password=host_pass,
+            username=host_user,
+            use_tls=False,
+            use_ssl = False,
+            timeout=10
+        )
+        print(mail_obj,'<<<<====================')
+        msg = mail.EmailMessage(
+            subject="this is subject",
+            body="Hi, This is for testing purpose",
+            from_email=host_user,
+            to=['divyakhandelwal@externlabs.com'],
+            connection=con,
+        )
+        mail_obj.send_messages([msg])
+        print('Message has been sent.')
+
+        mail_obj.close()
+        print('SMTP server closed')
+        return True
+
+    except Exception as _error:
+        print('Error in sending mail >> {}'.format(_error))
+        return False
+
+
+
 
