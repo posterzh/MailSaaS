@@ -57,7 +57,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     
     
-
+    # 'django_pipedrive',
     'corsheaders',
     # stripe integration
     'djstripe',

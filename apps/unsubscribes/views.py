@@ -15,6 +15,8 @@ import csv, io
 from django.contrib import messages
 from django.db.models import Q
 
+
+
 class UnsubscribeEmailAdd(CreateAPIView):
     serializer_class = UnsubscribeEmailSerializers
     permission_classes = (permissions.IsAuthenticated,)
@@ -33,7 +35,7 @@ class UnsubscribeEmailAdd(CreateAPIView):
             print("Valid")
             
             serializer.save()
-            return Response({"message":"Saved Successfully","success":True})
+            return Response({"message":"Unsubcribe Successfully done","success":True})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -91,5 +93,5 @@ class UnsubcribeEmailDelete(APIView):
             
             unsubcribe.on_delete=True
             unsubcribe.save()
-        return Response("Done")
+        return Response("Unsubcribe Recipient Successfully Done ")
        

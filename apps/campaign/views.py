@@ -1063,7 +1063,6 @@ class RecipientUnsubcribe(generics.CreateAPIView):
     def put(self, request, format=None):
         recipient_id =request.data["recipient_id"]
         for id in recipient_id:
-            print('id',id)
             recipient = CampaignRecipient.objects.get(id = id)
             recipient.unsubscribe=True
             recipient.save()
