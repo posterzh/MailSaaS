@@ -1,6 +1,19 @@
-import { FAILURE_REGISTER, REQUEST_FOR_REGISTER, SUCCESS_REGISTER, 
-    FAILURE_LOGIN, REQUEST_FOR_LOGIN, SUCCESS_LOGIN 
-    ,FAILURE_START, REQUEST_FOR_START, SUCCESS_START
+import {
+    FAILURE_REGISTER,
+    REQUEST_FOR_REGISTER,
+    SUCCESS_REGISTER,
+    FAILURE_LOGIN,
+    REQUEST_FOR_LOGIN,
+    SUCCESS_LOGIN,
+    FAILURE_START,
+    REQUEST_FOR_START,
+    SUCCESS_START,
+    FAILURE_RECIPIENT,
+    REQUEST_FOR_RECIPIENT,
+    SUCCESS_RECIPIENT,
+    FAILURE_VIEW,
+    REQUEST_FOR_VIEW,
+    SUCCESS_VIEW
 } from "../actionType/actionType"
 import Api from "../api/api"
 
@@ -61,6 +74,45 @@ export const StartFailure = () => {
     }
 }
 
+// RECIPIENTS
+export const requestForRecipient = () => {
+    return {
+        type: REQUEST_FOR_RECIPIENT,
+    }
+}
+export const RecipientSuccess = (recipientsData) => {
+    console.log(recipientsData, 'data')
+    return {
+        type: SUCCESS_RECIPIENT,
+        recipientsData
+    }
+}
+export const RecipientFailure = () => {
+    return {
+        type: FAILURE_RECIPIENT,
+    }
+}
+
+// VIEW
+export const requestForRecipient = () => {
+    return {
+        type: REQUEST_FOR_RECIPIENT,
+    }
+}
+export const RecipientSuccess = (recipientsData) => {
+    console.log(recipientsData, 'data')
+    return {
+        type: SUCCESS_RECIPIENT,
+        recipientsData
+    }
+}
+export const RecipientFailure = () => {
+    return {
+        type: FAILURE_RECIPIENT,
+    }
+}
+
+
 export const RegisterAction = (user) => {
     return function (dispatch) {
         dispatch(requestForRegister(user))
@@ -89,11 +141,24 @@ export const LoginAction = (Loginuser) => {
 }
 export const StartCampaignAction = (data) => {
     return function (dispatch) {
-      const token=localStorage.getItem('token')
-        console.log('this is a token',token)
-        dispatch(requestForStart(data,token))
-        Api.StartApi(data,token).then(result => {
+        const token = localStorage.getItem('token')
+        console.log('this is a token', token)
+        dispatch(requestForStart(data, token))
+        Api.StartApi(data, token).then(result => {
             dispatch(StartSuccess(result.data))
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+}
+
+export const RecipientAction = (recipientData) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('token')
+        console.log('this is a token', token)
+        dispatch(requestForRecipient(recipientData, token))
+        Api.RecipientApi(recipientData, token).then(result => {
+            dispatch(RecipientSuccess(result.data))
         }).catch(err => {
             console.log(err)
         })

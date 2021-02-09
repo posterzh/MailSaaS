@@ -129,9 +129,6 @@ class Campaign extends Component {
                   </Row>
                 </Card>
               </Container>
-              <div className='d-flex'>
-                <div className='new_add_button'><span style={{ fontSize: '1em', color: 'white' }}>+</span></div>
-              </div>
             </div>
           </div>
         </div>

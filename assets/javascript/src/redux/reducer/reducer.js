@@ -1,14 +1,25 @@
-import { FAILURE_REGISTER, REQUEST_FOR_REGISTER, SUCCESS_REGISTER,
-     FAILURE_LOGIN, REQUEST_FOR_LOGIN, SUCCESS_LOGIN 
-     ,FAILURE_START, REQUEST_FOR_START, SUCCESS_START 
-    } from "../actionType/actionType";
+import {
+    FAILURE_REGISTER,
+    REQUEST_FOR_REGISTER,
+    SUCCESS_REGISTER,
+    FAILURE_LOGIN,
+    REQUEST_FOR_LOGIN,
+    SUCCESS_LOGIN,
+    FAILURE_START,
+    REQUEST_FOR_START,
+    SUCCESS_START,
+    FAILURE_RECIPIENT,
+    REQUEST_FOR_RECIPIENT,
+    SUCCESS_RECIPIENT
+} from "../actionType/actionType";
 
 const initialState = {
     Loginuser: '',
     user: '',
-    data:''
+    data: '',
+    recipientsData: ''
 }
-const Reducer = (state = { initialState }, action) => {
+export const RegisterReducer = (state = { initialState }, action) => {
     switch (action.type) {
         case REQUEST_FOR_REGISTER:
             return {
@@ -21,7 +32,12 @@ const Reducer = (state = { initialState }, action) => {
         case FAILURE_REGISTER:
             return {
             }
-            
+        default: return state
+            break;
+    }
+}
+export const LoginReducer = (state = { initialState }, action) => {
+    switch (action.type) {
         case REQUEST_FOR_LOGIN:
             return {
             }
@@ -33,8 +49,13 @@ const Reducer = (state = { initialState }, action) => {
         case FAILURE_LOGIN:
             return {
             }
-
-            case REQUEST_FOR_START:
+        default: return state
+            break;
+    }
+}
+export const StartReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case REQUEST_FOR_START:
             return {
             }
         case SUCCESS_START:
@@ -49,4 +70,21 @@ const Reducer = (state = { initialState }, action) => {
             break;
     }
 }
-export default Reducer;
+export const RecipientReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case REQUEST_FOR_RECIPIENT:
+            return {
+            }
+        case SUCCESS_RECIPIENT:
+            return {
+                ...state,
+                recipientsData: action.data,
+            }
+        case FAILURE_RECIPIENT:
+            return {
+            }
+        default: return state
+            break;
+    }
+}
+
