@@ -1,3 +1,5 @@
+from django.core import mail
+from django.core.mail.backends.smtp import EmailBackend
 from django.shortcuts import render
 from django.conf import settings
 from apps.users.models import CustomUser
@@ -5,8 +7,9 @@ from rest_framework import generics
 from rest_framework import permissions
 from .models import EmailAccount
 from .serializers import EmailAccountSerializer
-from rest_framework.response import Response 
+from rest_framework.response import Response
 
+from rest_framework.views import APIView
 
 
 
@@ -50,7 +53,6 @@ class EmailAccountsView(generics.ListCreateAPIView):
                 return Response({"message":serializer.data,"sucess":True})
             return Response({'message':'Invalid Serializer'})
         return Response({"message":"Smtp username and Imap username does not match to email"})
-
     def get(self,request,*args,**kwargs):
         queryset = EmailAccount.objects.get(user=request.user.id)
         serializer = EmailAccountSerializer(queryset)
@@ -75,4 +77,49 @@ class EmailAccountsUpdateView(generics.UpdateAPIView):
         queryset = EmailAccount.objects.get(id=pk)
         queryset.delete()
         return Response({"message":"Connection Delete Sucessfully","Sucess":True})
+
+
+
+def send_mail_with_smtp():
+    try:
+        con = mail.get_connection()
+        con.open()
+        print('Django connected to the SMTP server')
+
+        mail_setting = EmailAccount.objects.last()
+        host = mail_setting.smtp_host
+        host_user = mail_setting.smtp_username
+        host_pass = mail_setting.smtp_password
+        host_port = mail_setting.smtp_port
+
+        mail_obj = EmailBackend(
+            host=host,
+            port=host_port,
+            password=host_pass,
+            username=host_user,
+            use_tls=False,
+            use_ssl = False,
+            timeout=10
+        )
+        print(mail_obj,'<<<<====================')
+        msg = mail.EmailMessage(
+            subject="this is subject",
+            body="Hi, This is for testing purpose",
+            from_email=host_user,
+            to=['divyakhandelwal@externlabs.com'],
+            connection=con,
+        )
+        mail_obj.send_messages([msg])
+        print('Message has been sent.')
+
+        mail_obj.close()
+        print('SMTP server closed')
+        return True
+
+    except Exception as _error:
+        print('Error in sending mail >> {}'.format(_error))
+        return False
+
+
+
 

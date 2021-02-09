@@ -1,6 +1,6 @@
 import csv
 import datetime
-from datetime import datetime
+from datetime import datetime, date, time
 from apps.unsubscribes.models import UnsubscribeEmail
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 import pytracking
@@ -102,6 +102,7 @@ class CreateCampaignRecipientsView(APIView):
                 for email in postdata["email"]:
                     CampaignEmail = CampaignRecipient(campaign=camp, email=email)
                     CampaignEmail.save()
+                    print(CampaignEmail, type(CampaignEmail))
                 return Response({"resp":resp,"message":"Saved Successfully","success":True})
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -226,21 +227,31 @@ class CreateCampaignOptionView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def put(self, request, format=None):
+        print(request.data)
+        print(request.data["schedule_date"])
+        
         if request.data['terms_and_laws'] == True:
             queryset = Campaign.objects.get(id = request.data['campaign'])
             request.data["title"] = queryset.title
-            request.data["from_address"] = queryset.from_address
+            request.data["from_address"] = queryset.from_address.id
+            request.data["full_name"] = queryset.full_name
             request.data["csvfile_op1"] = queryset.csvfile_op1
             request.data["assigned"] = request.user.id
             request.data["update_date_time"] = datetime.now()
             request.data["created_date_time"] = queryset.created_date_time
+            
             if request.data["schedule_send"] and not (request.data["schedule_date"] or request.data["schedule_time"]):
                 return Response({"message":"Please Enter Date Time", "success":"false"})
             if request.data["schedule_send"]:
-                print(request.data)
+                req_date_list = request.data["schedule_date"].split("-")
+                req_time_list = request.data["schedule_time"].split(":")
+                request.data["schedule_date"] = date(int(req_date_list[0]), int(req_date_list[1]), int(req_date_list[2]))
+                request.data["schedule_time"] = time(int(req_time_list[0]), int(req_time_list[1]), int(req_time_list[2]))
+
             else:
                 request.data["schedule_date"] = None
                 request.data["schedule_time"] = None
+            
             serilizer = CampaignSerializer(queryset, data=request.data)
             if serilizer.is_valid():
                 serilizer.save()
@@ -322,8 +333,7 @@ class CreateCampaignSendView(APIView):
                         )
                     
                     # print("oo = ",open_tracking_url)
-                    
-                    email_body_links = re.findall(r'(https?://\S+)', campemail.emailBody)
+                    email_body_links = re.findall(r'(https?://\S+)', campemail.email_body)
                     if email_body_links:
                         print("Hai Bhai hai")
                         # print("click_tracking_urllllllllll ",click_tracking_url)
@@ -339,7 +349,7 @@ class CreateCampaignSendView(APIView):
                             # +"/?redirect_uri="+ link
                     else:
                         print("nahi h bhai")
-                        emailData = campemail.emailBody + "<img width=0 height=0 src='"+open_tracking_url+"' />"
+                        emailData = campemail.email_body + "<img width=0 height=0 src='"+open_tracking_url+"' />"
                     # print("emailData\n\n\n",emailData)
                     subject = campemail.subject
                     text_content = 'plain text body message.'
