@@ -18,9 +18,21 @@ Api.StartApi=(data,token)=>{
         headers:{
             "Authorization":  `Bearer ${token}`,
         }
-
-    })
-    
+    })   
 }
+Api.OptionApi=(optionData,token)=>{
+    console.log('OptionAPI:',optionData);
+    return axios({
+        method:'PUT',
+        url:'http://127.0.0.1:8000/campaign/options/',
+        data:{
+               optionData
+        },
+        headers:{
+            "Authorization":  `Bearer ${token}`,
+        }
+    })
+}
+
 
 export default Api;

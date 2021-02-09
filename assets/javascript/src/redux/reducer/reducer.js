@@ -1,6 +1,7 @@
 import { FAILURE_REGISTER, REQUEST_FOR_REGISTER, SUCCESS_REGISTER,
      FAILURE_LOGIN, REQUEST_FOR_LOGIN, SUCCESS_LOGIN 
-     ,FAILURE_START, REQUEST_FOR_START, SUCCESS_START 
+     ,FAILURE_START, REQUEST_FOR_START, SUCCESS_START ,
+     REQUEST_FOR_OPTION,SUCCESS_OPTION,FAILURE_OPTION,
     } from "../actionType/actionType";
 
 const initialState = {
@@ -44,6 +45,18 @@ const Reducer = (state = { initialState }, action) => {
                 data: action.data,
             }
         case FAILURE_START:
+            return {
+            }
+            
+            case REQUEST_FOR_OPTION:
+            return {
+            }
+        case SUCCESS_OPTION:
+            return {
+                ...state,
+                data: action.optionData,
+            }
+        case FAILURE_OPTION:
             return {
             }
         default: return state

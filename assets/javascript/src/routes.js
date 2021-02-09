@@ -14,6 +14,7 @@
 // * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 // */
+import React from 'react';
 import Alternative from "./views/pages/dashboards/Alternative.js";
 import Api from "./views/pages/Extension/Api";
 import AppsandCrm from "./views/pages/Extension/Apps&Crm";
@@ -64,7 +65,7 @@ const routes = [
     icon: "ni ni-shop text-primary",
     state: "dashboardsCollapse",
     path: "/dashboard",
-   layout: "/app/admin",
+    layout: "/app/admin",
     component: Dashboard,
     // views: [
     //   {
@@ -94,7 +95,7 @@ const routes = [
         name: "Campaign",
         miniName: "CO",
         component: Campaign,
-       layout: "/app/admin"
+        layout: "/app/admin"
       },
       {
         path: "/campaign-detail",

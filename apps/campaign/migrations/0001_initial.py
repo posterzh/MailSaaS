@@ -32,20 +32,8 @@ class Migration(migrations.Migration):
                 ('schedule_time', models.TimeField(blank=True, null=True)),
                 ('terms_and_laws', models.BooleanField(default=False)),
                 ('campaign_status', models.BooleanField(default=False)),
-<<<<<<< HEAD
-            ],
-        ),
-        migrations.CreateModel(
-            name='CampaignLeadCatcher',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('leadcatcher_recipient', models.CharField(choices=[('replies', 'Replies'), ('open', 'Open'), ('click_any_link', 'Clicks any link'), ('clicks_specific_link', 'Clicks specific link')], default=0, max_length=32)),
-                ('specific_link', models.URLField(blank=True, max_length=500, null=True)),
-                ('of_times', models.PositiveIntegerField(blank=True, default=0, null=True)),
-=======
                 ('assigned', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
                 ('from_address', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='mailaccounts.emailaccount')),
->>>>>>> 51e2e492d4493ecc9742b0709c95fd0da34cdc18
             ],
         ),
         migrations.CreateModel(
