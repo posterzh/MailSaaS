@@ -46,7 +46,7 @@ class EmailAccountsView(generics.ListCreateAPIView):
         #     return Response(serializer.data)
 
         # elif request.data['provider'] == 'smtp':
-    
+        
         if request.data['smtp_username'] == request.data['email'] and request.data['imap_username'] == request.data['email']:
             serializer = EmailAccountSerializer(data=request.data)
             if serializer.is_valid():
@@ -55,7 +55,6 @@ class EmailAccountsView(generics.ListCreateAPIView):
                 return Response({"message":serializer.data,"sucess":True})
             return Response({'message':'Invalid Serializer'})
         return Response({"message":"Smtp username and Imap username does not match to email"})
-    
     def get(self,request,*args,**kwargs):
         queryset = EmailAccount.objects.get(user=request.user.id)
         serializer = EmailAccountSerializer(queryset)
