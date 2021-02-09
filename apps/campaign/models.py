@@ -1,7 +1,9 @@
-from django.db import models
-from apps.users.models import CustomUser
 from datetime import date
+
+from django.db import models
+
 from apps.mailaccounts.models import EmailAccount
+from apps.users.models import CustomUser
 
 
 class Campaign(models.Model):

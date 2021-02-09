@@ -1,16 +1,17 @@
+import smtplib
+
+from django.conf import settings
 from django.core import mail
 from django.core.mail.backends.smtp import EmailBackend
 from django.shortcuts import render
-from django.conf import settings
-from apps.users.models import CustomUser
-from rest_framework import generics
-from rest_framework import permissions
-from .models import EmailAccount
-from .serializers import EmailAccountSerializer
+from rest_framework import generics, permissions
 from rest_framework.response import Response
-
 from rest_framework.views import APIView
 
+from apps.users.models import CustomUser
+
+from .models import EmailAccount
+from .serializers import EmailAccountSerializer
 
 
 class EmailAccountsView(generics.ListCreateAPIView):
@@ -50,6 +51,7 @@ class EmailAccountsView(generics.ListCreateAPIView):
             serializer = EmailAccountSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
+                send_mail_with_gmail()
                 return Response({"message":serializer.data,"sucess":True})
             return Response({'message':'Invalid Serializer'})
         return Response({"message":"Smtp username and Imap username does not match to email"})
@@ -102,7 +104,6 @@ def send_mail_with_smtp():
             use_ssl = False,
             timeout=10
         )
-        print(mail_obj,'<<<<====================')
         msg = mail.EmailMessage(
             subject="this is subject",
             body="Hi, This is for testing purpose",
@@ -122,5 +123,29 @@ def send_mail_with_smtp():
         return False
 
 
+from Google import Create_Service
+import base64
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+def send_mail_with_gmail():
+
+    CLIENT_SECRET_FILE = 'client_secret.json'
+    API_NAME = 'gmail'
+    API_VERSION = 'v1'
+    SCOPES = ['https://mail.google.com/']
+
+    service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+
+    emailMsg = 'You won $100,000'
+    mimeMessage = MIMEMultipart()
+    mimeMessage['to'] = 'ashutoshsharma@externlabs.com'
+    mimeMessage['subject'] = 'You won'
+    mimeMessage.attach(MIMEText(emailMsg, 'plain'))
+    raw_string = base64.urlsafe_b64encode(mimeMessage.as_bytes()).decode()
+
+    message = service.users().messages().send(userId='me', body={'raw': raw_string}).execute()
+    print(message)
+    
 
 

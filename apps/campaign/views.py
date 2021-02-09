@@ -1,8 +1,8 @@
 import csv
 import datetime
+import re
 from datetime import datetime
-from apps.unsubscribes.models import UnsubscribeEmail
-from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
+
 import pytracking
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -16,19 +16,10 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import csv
-import datetime 
-from django.db.models import Q
-from datetime import datetime 
-from django.core.mail import send_mail
-import pytracking
-from django.core.mail import EmailMultiAlternatives
-from django.contrib.sites.shortcuts import get_current_site
-from django.contrib.sites.models import Site
-from django.conf import settings
-import re
-from apps.integration.views import SendSlackMessage
 
+from apps.integration.views import SendSlackMessage
+from apps.unsubscribes.models import UnsubscribeEmail
+from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
                      DripEmailModel, EmailOnLinkClick, FollowUpEmail)
@@ -500,7 +491,7 @@ class LeadsCatcherView(generics.ListAPIView):
 
 
 class TrackEmailOpen(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None, id=None):
         
         # print("settings.SITE_URL = ",settings.SITE_URL, request.get_full_path())
@@ -527,7 +518,7 @@ class TrackEmailOpen(APIView):
 
 
 class TrackEmailClick(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None, id=None):
         
         print("yoooooooooooooooooo ", request)

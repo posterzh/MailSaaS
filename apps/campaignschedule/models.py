@@ -1,11 +1,16 @@
+from datetime import date
+
+import pytz
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.db.models.enums import Choices
 from django.utils.translation import gettext as _
-import pytz
+
 from apps.users.models import CustomUser
-from django.contrib.postgres.fields import ArrayField
-from datetime import date
+
 # Create your models here.
+
+
 res = [] 
 for el in pytz.all_timezones: 
     sub = el.split(', ') 

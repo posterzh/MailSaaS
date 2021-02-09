@@ -1,5 +1,6 @@
-from rest_framework import  serializers
-from .models import Schedule, Email_schedule
+from rest_framework import serializers
+
+from .models import Email_schedule, Schedule
 
 
 class CampaignscheduleSerializers(serializers.ModelSerializer):
