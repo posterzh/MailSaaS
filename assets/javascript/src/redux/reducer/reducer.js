@@ -10,14 +10,18 @@ import {
     SUCCESS_START,
     FAILURE_RECIPIENT,
     REQUEST_FOR_RECIPIENT,
-    SUCCESS_RECIPIENT
+    SUCCESS_RECIPIENT,
+    FAILURE_VIEW,
+    REQUEST_FOR_VIEW,
+    SUCCESS_VIEW
 } from "../actionType/actionType";
 
 const initialState = {
     Loginuser: '',
     user: '',
     data: '',
-    recipientsData: ''
+    recipientData: '',
+    viewData:''
 }
 export const RegisterReducer = (state = { initialState }, action) => {
     switch (action.type) {
@@ -27,7 +31,7 @@ export const RegisterReducer = (state = { initialState }, action) => {
         case SUCCESS_REGISTER:
             return {
                 ...state,
-                user: action.data,
+                user: action.user,
             }
         case FAILURE_REGISTER:
             return {
@@ -44,7 +48,7 @@ export const LoginReducer = (state = { initialState }, action) => {
         case SUCCESS_LOGIN:
             return {
                 ...state,
-                Loginuser: action.data,
+                Loginuser: action.Loginuser,
             }
         case FAILURE_LOGIN:
             return {
@@ -78,9 +82,27 @@ export const RecipientReducer = (state = { initialState }, action) => {
         case SUCCESS_RECIPIENT:
             return {
                 ...state,
-                recipientsData: action.data,
+                recipientData: action.recipientData,
             }
         case FAILURE_RECIPIENT:
+            return {
+            }
+        default: return state
+            break;
+    }
+}
+
+export const ViewReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case REQUEST_FOR_VIEW:
+            return {
+            }
+        case SUCCESS_VIEW:
+            return {
+                ...state,
+                ViewData: action. viewData,
+            }
+        case FAILURE_VIEW:
             return {
             }
         default: return state

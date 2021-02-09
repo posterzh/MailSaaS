@@ -27,11 +27,22 @@ Api.RecipientApi = (recipientData, token) => {
         method: 'POST',
         url: 'http://127.0.0.1:8000/campaign/recipients/',
         data: {
-            csvFile: recipientData.csvFile,
+            csvfile_op1: recipientData.csvFile,
             email: `${recipientData.email}`,
             campaign: recipientData.campaign,
-            options: `${recipientData.options}`,
+            option: `${recipientData.options}`,
         },
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
+
+    })
+
+}
+Api.ViewApi = (token) => {
+    return axios({
+        method: 'GET',
+        url: 'http://127.0.0.1:8000/campaign/view/',
         headers: {
             "Authorization": `Bearer ${token}`,
         }

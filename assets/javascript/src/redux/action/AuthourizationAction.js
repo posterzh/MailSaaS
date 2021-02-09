@@ -23,11 +23,11 @@ export const requestForRegister = () => {
         type: REQUEST_FOR_REGISTER,
     }
 }
-export const registerSuccess = (data) => {
-    console.log(data, 'data')
+export const registerSuccess = (user) => {
+    console.log(user, 'data')
     return {
         type: SUCCESS_REGISTER,
-        data
+        user
     }
 }
 export const registerFailure = () => {
@@ -42,11 +42,11 @@ export const requestForLogin = () => {
         type: REQUEST_FOR_LOGIN,
     }
 }
-export const LoginSuccess = (data) => {
-    console.log(data, 'data')
+export const LoginSuccess = (Loginuser) => {
+    console.log(Loginuser, 'data')
     return {
         type: SUCCESS_LOGIN,
-        data
+        Loginuser
     }
 }
 export const loginFailure = () => {
@@ -80,11 +80,12 @@ export const requestForRecipient = () => {
         type: REQUEST_FOR_RECIPIENT,
     }
 }
-export const RecipientSuccess = (recipientsData) => {
-    console.log(recipientsData, 'data')
+export const RecipientSuccess = (recipientData,token) => {
+    console.log(recipientData, 'data')
     return {
         type: SUCCESS_RECIPIENT,
-        recipientsData
+        recipientData,
+        token
     }
 }
 export const RecipientFailure = () => {
@@ -94,21 +95,21 @@ export const RecipientFailure = () => {
 }
 
 // VIEW
-export const requestForRecipient = () => {
+export const requestForView = () => {
     return {
-        type: REQUEST_FOR_RECIPIENT,
+        type: REQUEST_FOR_VIEW,
     }
 }
-export const RecipientSuccess = (recipientsData) => {
-    console.log(recipientsData, 'data')
+export const ViewSuccess = (viewData) => {
+    console.log(viewData, 'data')
     return {
-        type: SUCCESS_RECIPIENT,
-        recipientsData
+        type: SUCCESS_VIEW,
+        viewData
     }
 }
-export const RecipientFailure = () => {
+export const ViewFailure = () => {
     return {
-        type: FAILURE_RECIPIENT,
+        type: FAILURE_VIEW,
     }
 }
 
@@ -159,6 +160,21 @@ export const RecipientAction = (recipientData) => {
         dispatch(requestForRecipient(recipientData, token))
         Api.RecipientApi(recipientData, token).then(result => {
             dispatch(RecipientSuccess(result.data))
+            console.log(result)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+}
+
+export const ViewAction = () => {
+    return function (dispatch) {
+        const token = localStorage.getItem('token')
+        console.log('this is a token', token)
+        dispatch(requestForView(token))
+        Api.ViewApi(token).then(result => {
+            dispatch(ViewSuccess(result.data))
+            console.log('result',result.data)
         }).catch(err => {
             console.log(err)
         })

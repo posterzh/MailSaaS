@@ -27,7 +27,6 @@ export default class Compose extends Component {
         this.setState({
             [e.target.name]: e.target.value
         })
-        console.log(this.state)
     }
     onAddBtnClickFollow = () => {
         const inputListFollow = this.state.inputListFollow;
@@ -51,10 +50,10 @@ export default class Compose extends Component {
         this.setState({ editorState })
     }
     handleSubmit = () => {
-        alert('msg')
+        console.log(this.state)
     }
-    onChange=(e)=>{
-        console.log(e.blocks[0].text)
+    onChange = (e) => {
+        this.setState({editorName:e.blocks[0].text})
     }
     render() {
         const { editorState } = this.state;
@@ -92,10 +91,12 @@ export default class Compose extends Component {
                                                 toolbarClassName="rdw-storybook-toolbar"
                                                 wrapperClassName="rdw-storybook-wrapper"
                                                 editorClassName="rdw-storybook-editor"
+                                                name='editorName'
+                                                value={e.blocks[0].text}
                                                 onChange={this.onChange}
                                                 onEditorStateChange={this.onEditorStateChange}
                                                 required
-                                              
+
                                             />
                                         </div>
                                     </Row>

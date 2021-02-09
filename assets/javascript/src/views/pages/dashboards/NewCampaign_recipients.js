@@ -51,7 +51,7 @@ class NewCampaign_recipients extends Component {
             options: `${this.state.options}`,
         }
         this.props.RecipientAction(recipientData)
-        console.log(recipientData)
+        console.log('r_data',recipientData)
     }
     render() {
         const { show } = this.state;
