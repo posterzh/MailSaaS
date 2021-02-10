@@ -19,18 +19,8 @@ from rest_framework.views import APIView
 
 from apps.campaign.models import Campaign, CampaignRecipient
 from apps.campaignschedule.serializers import EmailScheduleSerializers
-<<<<<<< HEAD
-=======
-from .models import Schedule, Email_schedule
-from datetime import datetime,time, timedelta
-import random
 
-
-
-
->>>>>>> ff91f013e2b42a9ae5600eab58e4d73bae07b3d1
-
-from .models import Schedule
+from .models import Email_schedule, Schedule
 from .serializers import CampaignscheduleSerializers, ScheduleUpdateSerializers
 
 
