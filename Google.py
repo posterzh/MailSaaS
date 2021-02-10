@@ -12,7 +12,7 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes):
     API_SERVICE_NAME = api_name
     API_VERSION = api_version
     SCOPES = [scope for scope in scopes[0]]
-    print(SCOPES)
+    print("scoppppppppp",SCOPES)
 
     cred = None
 
@@ -22,7 +22,7 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes):
     if os.path.exists(pickle_file):
         with open(pickle_file, 'rb') as token:
             cred = pickle.load(token)
-
+    print('cred', cred)
     if not cred or not cred.valid:
         if cred and cred.expired and cred.refresh_token:
             cred.refresh(Request())
@@ -32,7 +32,7 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes):
 
         with open(pickle_file, 'wb') as token:
             pickle.dump(cred, token)
-
+    print("credddddd === ", cred.token)
     try:
         service = build(API_SERVICE_NAME, API_VERSION, credentials=cred)
         print(API_SERVICE_NAME, 'service created successfully')
