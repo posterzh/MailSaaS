@@ -16,7 +16,8 @@ import {
     SUCCESS_MAIL_SENDER,
     FAILURE_MAIL_GET_DATA,
     REQUEST_FOR_MAIL_GET_DATA,
-    SUCCESS_MAIL_GET_DATA
+    SUCCESS_MAIL_GET_DATA,
+    SUCCESS_FETCH_UNSUBSCRIPTION
 } from "../actionType/actionType";
 
 const initialState = {
@@ -25,7 +26,10 @@ const initialState = {
     data: '',
     recipientData: '',
     mailGetData: [],
-    mailData: ''
+    mailData: '',
+    viewData: '',
+    mailData: '',
+    unsubscribeData: [],
 }
 export const RegisterReducer = (state = { initialState }, action) => {
     switch (action.type) {
@@ -79,54 +83,67 @@ export const StartCampaignReducer = (state = { initialState }, action) => {
             break;
     }
 }
-    export const RecipientReducer = (state = { initialState }, action) => {
-        switch (action.type) {
-            case REQUEST_FOR_RECIPIENT:
-                return {
-                }
-            case SUCCESS_RECIPIENT:
-                return {
-                    ...state,
-                    formData: action.formData,
-                }
-            case FAILURE_RECIPIENT:
-                return {
-                }
-            default: return state
-                break;
-        }
+export const RecipientReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case REQUEST_FOR_RECIPIENT:
+            return {
+            }
+        case SUCCESS_RECIPIENT:
+            return {
+                ...state,
+                formData: action.formData,
+            }
+        case FAILURE_RECIPIENT:
+            return {
+            }
+        default: return state
+            break;
     }
-    export const MailSenderReducer = (state = { initialState }, action) => {
-        switch (action.type) {
-            case REQUEST_FOR_MAIL_SENDER:
-                return {
-                }
-            case SUCCESS_MAIL_SENDER:
-                return {
-                    ...state,
-                    mailData: action.mailData,
-                }
-            case FAILURE_MAIL_SENDER:
-                return {
-                }
-            default: return state
-                break;
-        }
+}
+export const MailSenderReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case REQUEST_FOR_MAIL_SENDER:
+            return {
+            }
+        case SUCCESS_MAIL_SENDER:
+            return {
+                ...state,
+                mailData: action.mailData,
+            }
+        case FAILURE_MAIL_SENDER:
+            return {
+            }
+        default: return state
+            break;
     }
-    export const MailGetDataReducer = (state = { initialState }, action) => {
-        switch (action.type) {
-            case REQUEST_FOR_MAIL_GET_DATA:
-                return {
-                }
-            case SUCCESS_MAIL_GET_DATA:
-                return {
-                    ...state,
-                    mailGetData: action.mailGetData,
-                }
-            case FAILURE_MAIL_GET_DATA:
-                return {
-                }
-            default: return state
-                break;
-        }
+}
+export const MailGetDataReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case REQUEST_FOR_MAIL_GET_DATA:
+            return {
+            }
+        case SUCCESS_MAIL_GET_DATA:
+            return {
+                ...state,
+                mailGetData: action.mailGetData,
+            }
+        case FAILURE_MAIL_GET_DATA:
+            return {
+            }
+        default: return state
+            break;
     }
+}
+export const UnsubscribeReducer = (state = { initialState }, action) => {
+    console.log(action.payload, "action.payload", state.unsubscribeData)
+    switch (action.type) {
+        case SUCCESS_FETCH_UNSUBSCRIPTION:
+            return {
+                ...state,
+                unsubscribeData: action.payload
+            }
+        default: return state
+            break;
+    }
+
+}

@@ -38,7 +38,7 @@ class Campaign extends Component {
                       <div className='input_field'>
                         <Input type='email' className='in' placeholder='Search' />
                         <div className='child mt-2'>
-                          <a href='#'> <span className='font_icon'><i class="fa fa-search" aria-hidden="true"></i></span></a></div>
+                          <a href='#'> <span className='font_icon'><i className="fa fa-search" aria-hidden="true"></i></span></a></div>
                       </div>
                     </div>
                   </Col>
@@ -67,12 +67,12 @@ class Campaign extends Component {
                         <Input type='email' className='label_input w-100' placeholder='Create a campaign label' />
                         <div className='child mt-2'>
                           <a href='' onClick={(e) => { e.preventDefault(), this.setState({ show: true }) }}>
-                            <span className='font_icon'><i class="fa fa-check" aria-hidden="true"></i></span>
+                            <span className='font_icon'><i className="fa fa-check" aria-hidden="true"></i></span>
                           </a>
                         </div>
                         <div className='child mt-2'>
                           <a href='' onClick={(e) => { e.preventDefault(), this.setState({ show: true }) }}>
-                            <span className='font_icon'><i class="fa fa-check" aria-hidden="true"></i></span>
+                            <span className='font_icon'><i className="fa fa-check" aria-hidden="true"></i></span>
                           </a>
                         </div>
                       </div>
@@ -81,13 +81,13 @@ class Campaign extends Component {
                   <Col md='1'>
                     <div className='campaign_label'>
                       <div className='add_label'> <span>
-                        <i class="fa fa-ban" aria-hidden="true"></i>Unlabeled</span></div>
+                        <i className="fa fa-ban" aria-hidden="true"></i>Unlabeled</span></div>
                     </div>
                   </Col>
                   <Col md='1'>
                     <div className='campaign_label'>
                       <div className='add_label' onMouseOut={(e) => { e.preventDefault(), this.setState({ hide: hide }) }} onMouseMove={(e) => { e.preventDefault(), this.setState({ hide: !hide }) }}>
-                        <span><i class="fa fa-tags" aria-hidden="true"></i>testlabel<span>
+                        <span><i className="fa fa-tags" aria-hidden="true"></i>testlabel<span>
                         </span>
                         </span>
                       </div>

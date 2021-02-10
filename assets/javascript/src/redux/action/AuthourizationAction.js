@@ -17,6 +17,7 @@ export const requestForRegister = () => {
         type: REQUEST_FOR_REGISTER,
     }
 }
+
 export const registerSuccess = (user) => {
     console.log(user, 'data')
     return {
@@ -66,7 +67,7 @@ export const LoginAction = (Loginuser) => {
         dispatch(requestForLogin(Loginuser))
         Api.LoginApi(Loginuser).then(result => {
             const token = result.data.token;
-            localStorage.setItem('token', token)
+            localStorage.setItem('access_token', token)
             console.log(token)
             dispatch(LoginSuccess(result.data))
         }).catch(err => {
@@ -74,5 +75,3 @@ export const LoginAction = (Loginuser) => {
         })
     }
 }
-
-

@@ -94,8 +94,8 @@ class Option extends Component {
                                 <Row className="select_boxdiv">
                                     <div>
                                         <label className="selectbox_label">Who should leads be assigned to?</label><br />
-                                        <select className="select_box">
-                                            <option value="" selected>me</option>
+                                        <select className="select_box" defaultValue={'me'}>
+                                            <option value="me">me</option>
                                         </select>
                                     </div>
                                 </Row>
@@ -111,7 +111,7 @@ class Option extends Component {
                                                 <div style={{ display: "flex", flexDirection: "row" }}>
                                                     {/* <span className="replies_selectbox"> */}
                                                     <select>
-                                                        <option value="" selected>Replies</option>
+                                                        <option value="" >Replies</option>
                                                         <option value="" >Opens</option>
                                                         <option value="" >Click any link</option>
                                                         <option value="" >Click apecific link</option>
