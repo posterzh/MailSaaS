@@ -7,7 +7,7 @@ Api.RegisterApi = (user) => {
 Api.LoginApi = (loginuser) => {
     return axios.post(`http://127.0.0.1:8000/rest-auth/login/`, loginuser)
 }
-Api.StartApi = (data, token) => {
+Api.StartCampaignApi = (data, token) => {
     return axios({
         method: 'POST',
         url: 'http://127.0.0.1:8000/campaign/start/',
@@ -20,27 +20,7 @@ Api.StartApi = (data, token) => {
         }
     })   
 }
-Api.OptionApi=(optionData,token)=>{
-    console.log('OptionAPI------:',optionData);
-    return axios({
-        method:'PUT',
-        url:'http://127.0.0.1:8000/campaign/options/',
-        data:{
-            //    optionData
-               campaign: 1,
-               trackOpens: optionData.trackopen,
-               trackLinkClick: optionData.tracklinkclicks,
-               schedule_send: optionData.schedulesend,
-               schedule_date: optionData.date,
-               schedule_time: `${optionData.time}${':00'}`,
-               terms_and_laws: optionData.termsandlaws
-        },
-        headers:{
-            "Authorization":  `Bearer ${token}`,
-        }
-    })
 
-}
  Api.RecipientApi = (formData, token) => {
     return axios({
         method: 'POST',
@@ -52,7 +32,7 @@ Api.OptionApi=(optionData,token)=>{
     })
 
 }
-Api.ViewApi = (token) => {
+Api.CampaignTableDataApi = (token) => {
     return axios({
         method: 'GET',
         url: 'http://127.0.0.1:8000/campaign/view/',
@@ -64,28 +44,26 @@ Api.ViewApi = (token) => {
 
 }
 Api.MailSenderApi = (mailData, token) => {
-    console.log(mailData.smtpUser,'mailData.smtpUser',mailData.imapUser,":mailData.imapUser", mailData.email," mailData.emailAddress")
+    console.log(mailData, token,"data")
     return axios({
         method: 'POST',
         url: 'http://127.0.0.1:8000/mail/sender/',
-        data: {
-            email: mailData.emailAddress,
-            full_name: mailData.FullName,
-            smtp_port: mailData.smtpPort,
-            smtp_host: mailData.smtpHost,
-            smtp_password: mailData.smtpPassword,
-            smtp_username: mailData.smtpUser,
-            imap_port: mailData.imapPort,
-            imap_host: mailData.imapHost,
-            imap_password: mailData.imapPassword,
-            imap_username: mailData.imapUser,
-        },
+        data: mailData,
         headers: {
             "Authorization": `Bearer ${token}`,
         }
 
     })
 
+}
+Api.MailGetDataApi = (token) => {
+    return axios({
+        method: 'GET',
+        url: 'http://127.0.0.1:8000/mail/sender/',
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
+    })
 }
 
 

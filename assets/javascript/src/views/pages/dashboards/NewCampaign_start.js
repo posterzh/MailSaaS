@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from "react-redux";
 import { Container, Row, Col, Form, Input } from 'reactstrap';
-import { StartCampaignAction } from "../../../redux/action/AuthourizationAction";
+import { StartCampaignAction } from "../../../redux/action/CampaignAction";
 
 class NewCampaign_start extends React.Component {
     constructor() {
@@ -45,7 +45,9 @@ class NewCampaign_start extends React.Component {
                                         <div style={{ width: '100%' }}><label >From Address</label><br></br>
                                             <Input type="select" name="from_address" value={this.state.from_address} onChange={this.handleChange} id="exampleSelect">
                                                 <option value="(I'll decide later)">(I'll decide later)</option>
+                                                <option value='email'>Email</option>
                                                 <option value='Option'>Option</option>
+                                                <option></option>
                                             </Input></div>
                                     </Row>
                                     <Row className='mt-5'>
@@ -65,7 +67,7 @@ class NewCampaign_start extends React.Component {
 }
 const mapStateToProps = (state) => {
     return {
-        token: state.token
+        // token: state.token
     };
 };
 const mapDispatchToProps = dispatch => ({
