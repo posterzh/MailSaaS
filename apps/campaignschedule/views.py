@@ -15,7 +15,6 @@ from datetime import datetime, time
 from pytz import timezone
 from django.conf import settings
 from django.http import JsonResponse
-# from .tasks import send_email_task
 import pytz, datetime
 from apps.campaign.models import Campaign, CampaignRecipient
 from apps.campaignschedule.serializers import EmailScheduleSerializers
@@ -42,7 +41,7 @@ def change(times,timezones):
 class CampaignScheduleAdd(CreateAPIView):
 
     serializer_class = CampaignscheduleSerializers
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     
     def post(self,request):
         request.data._mutable = True
@@ -63,7 +62,7 @@ class CampaignScheduleAdd(CreateAPIView):
 
 class UpdateScheduleMail(APIView):
     serializer_class = CampaignscheduleSerializers
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     def get_objects(self,request):
         try:
             user = request.user.id
@@ -115,24 +114,6 @@ class UpdateScheduleMail(APIView):
     #     return Response({'status': 'mail done'})
 
 
-
-def tries(self):
-    FechaIn ="10:00:00"
-    FechaFin ="13:59:00"
-
-    meses = []
-
-    start = now = datetime.datetime.strptime(FechaIn, "%H:%M:%S")
-    end = datetime.datetime.strptime(FechaFin, "%H:%M:%S")
-
-    
-    while now != end:
-        meses.append(str(now.strftime("%H:%M:%S")))
-        now += datetime.timedelta(minutes=10)
-
-    meses.append(FechaFin)
-    print (meses)
-    return "taskss"
 
 
 

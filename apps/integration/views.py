@@ -10,56 +10,130 @@ from .models import Contact
 from .serializers import ContactSerializer
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-
+import base64
+import json
 import requests
-
+from apps.campaign.models import CampaignRecipient,Campaign
 
 
 def login():
-    session = requests.Session()
-    return Salesforce(
-      username='divyakhandelwal-mlsz@force.com',
-      password='divya1234',
-      security_token='TJbGsbaRmxpKqwg2vIzjnVGl',
-      organizationId='00D5g000004Eewv',
-      session=session
-      )
+    # session = requests.Session()
+    sf = Salesforce(username='divyakhandelwal@externlabs.com',password='divya1234',security_token='4J6lcgmeNfG4z7rVV2AZPfIgJ')
+    return sf
 
 
 
 class ContactViewSet(generics.CreateAPIView):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-      
+    permission_classes = (permissions.AllowAny,)
     def post(self, request, format=None):
-        print("reqqqqq ", request.data)
         sf = login()
-        print(sf)
-
-        if request.method == 'POST':
-            data = request.data.copy()
-            serializer = ContactSerializer(data=data)
-            if serializer.is_valid():
-                return_dict = serializer.validated_data
-                query = sf.Contact.create(return_dict)
-                return Response(query)
-            else:
-                return Response(serializer.errors)
-        else:
-            data = sf.query("Select Id,Name from Contact")
-            result = ContactSerializer(data['records'][0])
-            return Response(result.data)
-
-
-    def get(self, request, format=None):
-        data = sf.query("Select Id,Name from Contact")
-        result = ContactSerializer(data['records'][0])
-        return Response(result.data)
+        recipient=CampaignRecipient.objects.filter(campaign__assigned=request.user.id)
+        print('campaign ',recipient)
+        # sf.Lead.create({"Company":"ashu",'LastName':'Sharma','Email':'ashu@example.com'})
+        return Response({'response':'Sales_force'})
 
 
 
 
+
+
+
+
+# class ContactViewSet(generics.CreateAPIView):
+#     # queryset = Contact.objects.all()
+#     serializer_class = ContactSerializer
+#     permission_classes = (permissions.IsAuthenticated,)
+      
+#     def post(self, request, format=None):
+#         print("reqqqqq ", request.data)
+#         sf = login()
+#         print(sf)
+
+#         if request.method == 'POST':
+#             print("Post Request")
+#             data = request.data.copy()
+#             serializer = ContactSerializer(data=data)
+#             if serializer.is_valid():
+#                 return_dict = serializer.validated_data
+#                 query = sf.Contact.create(return_dict)
+#                 return Response(query)
+#             else:
+#                 return Response(serializer.errors)
+#         else:
+#             data = sf.query("Select Id,Name from Contact")
+#             result = ContactSerializer(data['records'][0])
+#             return Response(result.data)
+
+
+#     def get(self, request, format=None):
+#         sf = login()
+        
+#         data = sf.query("Select Id,Name from Contact")
+#         result = ContactSerializer(data['records'][0])
+#         return Response(result.data)
+
+
+
+# class ContactViewSet(generics.CreateAPIView):
+#     # queryset = Contact.objects.all()
+#     serializer_class = ContactSerializer
+#     permission_classes = (permissions.IsAuthenticated,)
+      
+#     def post(self, request, format=None):
+       
+#         params= {
+#             "grant_type":"password",
+#             "client_id":"3MVG9fe4g9fhX0E5PEEKfj0ukXTOV7tB._or1NjEQ_7jCfsValxDfaEu7xQlIWMXn5xU.14v9Qw.t5X6AatwE",
+#             "client_secret":"4B685BD53388F43E6FA1FBB9819BB7028C34091C8DA386A32CB0706323F266A3",
+#             "username":"divyakhandelwal-ahne@force.com",
+#             "password":'divya1234rkpyzmjBiubobe7taNQMQzIPo',
+#         }
+#         r = requests.post("https://login.salesforce.com/services/oauth2/token", params=params)
+#         access_token = r.json().get("access_token")
+#         instance_url = r.json().get("instance_url")
+#         print("Access Token:", access_token)
+#         print("Instance URL", instance_url)
+#         def sf_api_call(action, parameters = {}, method = 'get', data = {}):
+            
+#             headers = {
+#                 'Content-type': 'application/json',
+#                 'Accept-Encoding': 'gzip',
+#                 'Authorization': 'Bearer %s' % access_token
+#             }
+#             if method == 'get':
+#                 r = requests.request(method, instance_url+action, headers=headers, params=parameters, timeout=30)
+#             elif method in ['post', 'patch']:
+#                 r = requests.request(method, instance_url+action, headers=headers, json=data, params=parameters, timeout=60)
+#             else:
+#                 raise ValueError('Method should be get or post or patch.')
+#             print('Debug: API %s call: %s' % (method, r.url) )
+#             if r.status_code < 300:
+#                 if method=='patch':
+#                     return None
+#                 else:
+#                     return r.json()
+#             else:
+#                 raise Exception('API error when calling %s : %s' % (r.url, r.content))
+        
+
+
+#         # opportunityData =json.dumps(sf_api_call('/services/data/v39.0/query/', {
+#         #         'q': 'SELECT Account.Name, Name, CloseDate from Opportunity where IsClosed = False order by CloseDate ASC LIMIT 10'}), indent=2)
+#         # print("opportunityData ",opportunityData)  
+
+#         call = sf_api_call('/services/data/v40.0/sobjects/Opportunity/', method="post", data={
+#             'CloseDate': '2018-03-01',
+#             'Name': 'My big deal',
+#             'StageName': 'Sales Accepted Lead',
+#             'Type': 'Initial Subscription',
+#             'AccountId': '0019E000009WTBVQA4',
+#             })
+#         opportunity_id = call.get('id')
+
+#         print("opportunity_id ", opportunity_id)
+#         return Response({'response':'Sales_force'})
 
 
 #**************************slack***********************
