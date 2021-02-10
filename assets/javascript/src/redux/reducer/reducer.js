@@ -19,7 +19,8 @@ import {
     SUCCESS_MAIL_SENDER,
     REQUEST_FOR_OPTION,
     SUCCESS_OPTION,
-    FAILURE_OPTION
+    FAILURE_OPTION,
+    SUCCESS_FETCH_UNSUBSCRIPTION
 } from "../actionType/actionType";
 
 const initialState = {
@@ -28,7 +29,8 @@ const initialState = {
     data: '',
     recipientData: '',
     viewData:'',
-    mailData:''
+    mailData:'',
+    unsubscribeData:[],
 }
 export const RegisterReducer = (state = { initialState }, action) => {
     switch (action.type) {
@@ -146,4 +148,16 @@ export const MailSenderReducer = (state = { initialState }, action) => {
             break;
     }
 }
+export const UnsubscribeReducer=(state = { initialState}, action )=>{
+    console.log(action.payload,"action.payload",state.unsubscribeData)
+    switch(action.type){
+        case SUCCESS_FETCH_UNSUBSCRIPTION:
+            return {
+                ...state,
+                unsubscribeData: action.payload
+            }
+        default: return state
+            break;
+    }
 
+}

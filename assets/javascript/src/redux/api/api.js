@@ -1,6 +1,7 @@
 import axios from 'axios';
-
+import { API_BASE_URL } from '../../Constants'
 const Api = {}
+
 Api.RegisterApi = (user) => {
     return axios.post(`http://127.0.0.1:8000/rest-auth/registration/`, user)
 }
@@ -59,9 +60,7 @@ Api.ViewApi = (token) => {
         headers: {
             "Authorization": `Bearer ${token}`,
         }
-
     })
-
 }
 Api.MailSenderApi = (mailData, token) => {
     console.log(mailData.smtpUser,'mailData.smtpUser',mailData.imapUser,":mailData.imapUser", mailData.email," mailData.emailAddress")
@@ -85,8 +84,16 @@ Api.MailSenderApi = (mailData, token) => {
         }
 
     })
-
 }
-
+Api.fetchUnsbcribed = (token) => {
+    console.log("Api")
+    return axios({
+        method: 'GET',
+        url: `${API_BASE_URL}/unsubscribes/unsubcribeview/`,
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
+    })
+}
 
 export default Api;

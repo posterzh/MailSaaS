@@ -16,6 +16,10 @@ class NewCampaign_start extends React.Component {
             [e.target.name]: e.target.value
         })
     }
+
+    componentDidMount(){
+        this.props.fetchEmails();
+    }
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(this.state)
@@ -50,7 +54,7 @@ class NewCampaign_start extends React.Component {
                                     </Row>
                                     <Row className='mt-5'>
                                         <Col style={{ display: "flex", justifyContent: "center" }}>
-                                            <button type='submit' className='btn startBtn'> Next <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                            <button type='submit' className='btn startBtn'> Next <i className="fa fa-arrow-right" aria-hidden="true"></i>
                                             </button>
                                         </Col>
                                     </Row>

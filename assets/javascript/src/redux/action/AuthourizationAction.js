@@ -30,6 +30,7 @@ export const requestForRegister = () => {
         type: REQUEST_FOR_REGISTER,
     }
 }
+
 export const registerSuccess = (user) => {
     console.log(user, 'data')
     return {
@@ -163,7 +164,7 @@ export const LoginAction = (Loginuser) => {
         dispatch(requestForLogin(Loginuser))
         Api.LoginApi(Loginuser).then(result => {
             const token = result.data.token;
-            localStorage.setItem('token', token)
+            localStorage.setItem('access_token', token)
             console.log(token)
             dispatch(LoginSuccess(result.data))
         }).catch(err => {
@@ -173,7 +174,7 @@ export const LoginAction = (Loginuser) => {
 }
 export const StartCampaignAction = (data) => {
     return function (dispatch) {
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('access_token')
         console.log('this is a token', token)
         dispatch(requestForStart(data, token))
         Api.StartApi(data, token).then(result => {
@@ -184,24 +185,11 @@ export const StartCampaignAction = (data) => {
     }
 }
 
-export const RecipientAction = (formData,token) => {
-    console.log('this is a token',formData,token)
-    return function (dispatch) {
-        dispatch(requestForRecipient(formData, token))
-        Api.RecipientApi(formData, token).then(result => {
-            dispatch(RecipientSuccess(result.data))
-            console.log('rece:',result)
-        }).catch(err => {
-            console.log(err)
-        })
-    }
-}
-
 // export const ViewAction = () => {
 export const OptionAction =(optionData)=>
 { console.log('abcd:',optionData);
     return function (dispatch) {
-            const token=localStorage.getItem('token')
+            const token=localStorage.getItem('access_token')
           dispatch(requestForOption(optionData,token))
           Api.OptionApi(optionData,token).then(result => {
               dispatch(OptionSuccess(result.data))
@@ -213,7 +201,7 @@ export const OptionAction =(optionData)=>
       }}
 export const RecipientAction = (recipientData) => {
     return function (dispatch) {
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('access_token')
         console.log('this is a token', token)
         dispatch(requestForView(token))
         Api.ViewApi(token).then(result => {
@@ -227,7 +215,7 @@ export const RecipientAction = (recipientData) => {
 
 export const MailSenderAction = (mailData) => {
     return function (dispatch) {
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('access_token')
         // console.log('this is a token', mailData)
         dispatch(requestForMailSender(mailData, token))
         Api.MailSenderApi(mailData, token).then(result => {
