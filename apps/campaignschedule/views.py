@@ -19,6 +19,16 @@ from rest_framework.views import APIView
 
 from apps.campaign.models import Campaign, CampaignRecipient
 from apps.campaignschedule.serializers import EmailScheduleSerializers
+<<<<<<< HEAD
+=======
+from .models import Schedule, Email_schedule
+from datetime import datetime,time, timedelta
+import random
+
+
+
+
+>>>>>>> ff91f013e2b42a9ae5600eab58e4d73bae07b3d1
 
 from .models import Schedule
 from .serializers import CampaignscheduleSerializers, ScheduleUpdateSerializers
@@ -41,6 +51,7 @@ class CampaignScheduleAdd(CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     
     def post(self,request):
+        print("yoooooooo")
         request.data._mutable = True
         request.data['user'] = request.user.id
         start = request.data['start_time']
@@ -51,6 +62,7 @@ class CampaignScheduleAdd(CreateAPIView):
         request.data['start_time'] = starting_time
         request.data['end_time'] = ending_time
         request.data._mutable = False
+        print(request.data)
         serializer = CampaignscheduleSerializers(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -171,22 +183,40 @@ class PostToSchedule(APIView):
                 post_data.append(data)
         # print(len(post_data), post_data)
         while len(post_data) != 0:
-            print(len(post_data), post_data)
+            # print(len(post_data), post_data)
             mails_to_send_together = post_data[:random_no_of_mails_at_a_time]
-            print()
-            print(len(mails_to_send_together),mails_to_send_together)
-            print()
+            # print()
+            # print(len(mails_to_send_together),mails_to_send_together)
+            # print()
 
 
             for data in mails_to_send_together:
-
+                print("data ====== ",data)
+                # print(Email_schedule.objects.values('time','date','user_id','mail_account','recipient_email','subject','email_body'))
+                # print(Email_schedule.objects.filter(time=data["time"],date=data["date"],user_id=data["user_id"],mail_account=data["mail_account"],recipient_email=data["recipient_email"],subject=data["subject"],email_body=data["email_body"]))
+                # print()
+                # print()
+                # print()
+                print("counttt = ",Email_schedule.objects.filter(time=data["time"],date=data["date"],user_id=data["user_id"],mail_account=data["mail_account"],recipient_email=data["recipient_email"],subject=data["subject"],email_body=data["email_body"]).count())
+                
+                schedule_exist_count = Email_schedule.objects.filter(time=data["time"],date=data["date"],user_id=data["user_id"],mail_account=data["mail_account"],recipient_email=data["recipient_email"],subject=data["subject"],email_body=data["email_body"]).count()
+                schedule_exist_ob = Email_schedule.objects.filter(time=data["time"],date=data["date"],user_id=data["user_id"],mail_account=data["mail_account"],recipient_email=data["recipient_email"],subject=data["subject"],email_body=data["email_body"]).count()
+                # es = EmailScheduleSerializers(schedule_exist_count)
+                # print(es.data)
+                print()
+                print()
+                print() 
                 data["time"] = next_email_send_at_time
                 email_schedule_serlzr = EmailScheduleSerializers(data = data)
                 if email_schedule_serlzr.is_valid():
-                    print("validddddd")
-                    email_schedule_serlzr.save()
+                    if schedule_exist_count == 0:
+                        email_schedule_serlzr.save()
+                        print("validddddd", email_schedule_serlzr.data)
+                        print()
+                        print()
+                        print()
 
-                    post_data.remove(data)                    
+                    post_data.remove(data)
 
                     
             delta = timedelta(minutes = schedule.mint_between_sends)
