@@ -10,13 +10,13 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('unsubscribes', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('integration', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='unsubscribeemail',
+            model_name='salesforcedetails',
             name='user',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
