@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from .models import EmailAccount
 
+from .models import EmailAccount
 
 
 class EmailAccountSerializer(serializers.ModelSerializer):

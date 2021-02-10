@@ -49,11 +49,12 @@ export default class Compose extends Component {
     onEditorStateChange = (editorState) => {
         this.setState({ editorState })
     }
-    handleSubmit = () => {
+    handleSubmit = (e) => {
+        e.preventDefault()
         console.log(this.state)
     }
     onChange = (e) => {
-        this.setState({editorName:e.blocks[0].text})
+        this.setState({ editorName: e.blocks[0].text })
     }
     render() {
         const { editorState } = this.state;
@@ -92,7 +93,7 @@ export default class Compose extends Component {
                                                 wrapperClassName="rdw-storybook-wrapper"
                                                 editorClassName="rdw-storybook-editor"
                                                 name='editorName'
-                                                value={e.blocks[0].text}
+                                                value={this.state.editorName}
                                                 onChange={this.onChange}
                                                 onEditorStateChange={this.onEditorStateChange}
                                                 required

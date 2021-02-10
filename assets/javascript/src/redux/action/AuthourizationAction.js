@@ -13,7 +13,10 @@ import {
     SUCCESS_RECIPIENT,
     FAILURE_VIEW,
     REQUEST_FOR_VIEW,
-    SUCCESS_VIEW
+    SUCCESS_VIEW,
+    FAILURE_MAIL_SENDER,
+    REQUEST_FOR_MAIL_SENDER,
+    SUCCESS_MAIL_SENDER
 } from "../actionType/actionType"
 import Api from "../api/api"
 
@@ -80,12 +83,11 @@ export const requestForRecipient = () => {
         type: REQUEST_FOR_RECIPIENT,
     }
 }
-export const RecipientSuccess = (recipientData,token) => {
+export const RecipientSuccess = (recipientData) => {
     console.log(recipientData, 'data')
     return {
         type: SUCCESS_RECIPIENT,
         recipientData,
-        token
     }
 }
 export const RecipientFailure = () => {
@@ -113,6 +115,24 @@ export const ViewFailure = () => {
     }
 }
 
+// MAIL_SENDER
+export const requestForMailSender = () => {
+    return {
+        type: REQUEST_FOR_MAIL_SENDER,
+    }
+}
+export const MailSenderSuccess = (mailData) => {
+    console.log(viewData, 'data')
+    return {
+        type: SUCCESS_MAIL_SENDER,
+        mailData
+    }
+}
+export const MailSenderFailure = () => {
+    return {
+        type: FAILURE_MAIL_SENDER,
+    }
+}
 
 export const RegisterAction = (user) => {
     return function (dispatch) {
@@ -153,14 +173,13 @@ export const StartCampaignAction = (data) => {
     }
 }
 
-export const RecipientAction = (recipientData) => {
+export const RecipientAction = (formData,token) => {
+    console.log('this is a token',formData,token)
     return function (dispatch) {
-        const token = localStorage.getItem('token')
-        console.log('this is a token', token)
-        dispatch(requestForRecipient(recipientData, token))
-        Api.RecipientApi(recipientData, token).then(result => {
+        dispatch(requestForRecipient(formData, token))
+        Api.RecipientApi(formData, token).then(result => {
             dispatch(RecipientSuccess(result.data))
-            console.log(result)
+            console.log('rece:',result)
         }).catch(err => {
             console.log(err)
         })
@@ -181,3 +200,15 @@ export const ViewAction = () => {
     }
 }
 
+export const MailSenderAction = (mailData) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('token')
+        // console.log('this is a token', mailData)
+        dispatch(requestForMailSender(mailData, token))
+        Api.MailSenderApi(mailData, token).then(result => {
+            dispatch(MailSenderSuccess(result.data))
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+}

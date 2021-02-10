@@ -13,7 +13,10 @@ import {
     SUCCESS_RECIPIENT,
     FAILURE_VIEW,
     REQUEST_FOR_VIEW,
-    SUCCESS_VIEW
+    SUCCESS_VIEW,
+    FAILURE_MAIL_SENDER,
+    REQUEST_FOR_MAIL_SENDER,
+    SUCCESS_MAIL_SENDER
 } from "../actionType/actionType";
 
 const initialState = {
@@ -21,7 +24,8 @@ const initialState = {
     user: '',
     data: '',
     recipientData: '',
-    viewData:''
+    viewData:'',
+    mailData:''
 }
 export const RegisterReducer = (state = { initialState }, action) => {
     switch (action.type) {
@@ -82,7 +86,7 @@ export const RecipientReducer = (state = { initialState }, action) => {
         case SUCCESS_RECIPIENT:
             return {
                 ...state,
-                recipientData: action.recipientData,
+                formData: action.formData,
             }
         case FAILURE_RECIPIENT:
             return {
@@ -103,6 +107,23 @@ export const ViewReducer = (state = { initialState }, action) => {
                 ViewData: action. viewData,
             }
         case FAILURE_VIEW:
+            return {
+            }
+        default: return state
+            break;
+    }
+}
+export const MailSenderReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case REQUEST_FOR_MAIL_SENDER:
+            return {
+            }
+        case SUCCESS_MAIL_SENDER:
+            return {
+                ...state,
+                mailData: action.mailData,
+            }
+        case FAILURE_MAIL_SENDER:
             return {
             }
         default: return state

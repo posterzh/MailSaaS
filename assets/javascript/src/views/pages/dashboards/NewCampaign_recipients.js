@@ -23,7 +23,7 @@ class NewCampaign_recipients extends Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        this.state.options.length=0
+        this.state.options.length = 0
         if (!this.state.email && !this.state.csvFile) {
             alert('Fill option 1 or 2')
             return false;
@@ -44,14 +44,13 @@ class NewCampaign_recipients extends Component {
         else {
             return false
         }
-        const recipientData = {
-            csvFile: this.state.csvFile,
-            email: `${this.state.email}`,
-            campaign: this.state.campaign,
-            options: `${this.state.options}`,
-        }
-        this.props.RecipientAction(recipientData)
-        console.log('r_data',recipientData)
+        const formData = new FormData();
+        formData.append('csvfile_op1',this.state.csvFile);
+        formData.append('email', this.state.email);
+        formData.append('option',this.state.options);
+        console.log(formData,'form data')
+        this.props.RecipientAction(formData, localStorage.getItem('token'))
+        console.log('r_data', formData, localStorage.getItem('token'))
     }
     render() {
         const { show } = this.state;

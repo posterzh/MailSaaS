@@ -1,20 +1,20 @@
+import csv
+import io
+
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.http import Http404, HttpResponse, JsonResponse, request
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework import permissions, serializers, status
 from rest_framework.generics import CreateAPIView
-from rest_framework import permissions
-from .serializers import UnsubscribeEmailSerializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import serializers, status
-from django.http import request,Http404,HttpResponse
-from django.views.decorators.csrf import csrf_exempt 
-from .models import UnsubscribeEmail,UnsubcribeCsv
-from django.http import JsonResponse
-import csv, io
-from django.contrib import messages
-from django.db.models import Q
 
+from .models import UnsubcribeCsv, UnsubscribeEmail
+from .serializers import UnsubscribeEmailSerializers
 
 
 class UnsubscribeEmailAdd(CreateAPIView):
@@ -27,7 +27,7 @@ class UnsubscribeEmailAdd(CreateAPIView):
         for email in postdata["email"]:
             data = {
                 "email" : email,
-                "Name" : postdata["Name"],
+                "name" : postdata["name"],
                 'user':request.user.id
             }
             serializer = UnsubscribeEmailSerializers(data=data)
@@ -57,7 +57,7 @@ class UnsubcribeCsvEmailAdd(CreateAPIView):
                 if line_count == 0:
                     pass
                 else:
-                    data = {'email':row[0], 'Name':row[1],'user':request.user.id}
+                    data = {'email':row[0], 'name':row[1],'user':request.user.id}
                     serializer = UnsubscribeEmailSerializers(data = data)
                     if serializer.is_valid():
                         line_count += 1
@@ -74,7 +74,7 @@ class UnsubcribeEmailView(APIView):
         params = list(dict(request.GET).keys())
         if "search" in params:
             toSearch = request.GET['search']
-            unsubcribe = UnsubscribeEmail.objects.filter(Q(email__contains=toSearch)|Q(Name__contains=toSearch),user=request.user.id,on_delete=False)
+            unsubcribe = UnsubscribeEmail.objects.filter(Q(email__contains=toSearch)|Q(name__contains=toSearch),user=request.user.id,on_delete=False)
         else:
             unsubcribe = UnsubscribeEmail.objects.filter(user=request.user.id,on_delete=False)
         serializer=UnsubscribeEmailSerializers(unsubcribe, many=True)
@@ -85,7 +85,6 @@ class UnsubcribeEmailDelete(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UnsubscribeEmailSerializers      
     def put(self, request, format=None):
-        print(request.data)
         data =request.data["data"]
         for id in data:
             print('id',id)

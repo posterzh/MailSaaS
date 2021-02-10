@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext as _
-from apps.users.models import CustomUser
 
+from apps.users.models import CustomUser
 
 # Create your models here.
 
@@ -9,7 +9,7 @@ class UnsubscribeEmail(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     email = models.EmailField(_("Email Account"))
     mail_account = models.CharField(max_length=100,blank=True)
-    Name = models.CharField(max_length=100,blank=True)
+    name = models.CharField(max_length=100,blank=True)
     date= models.DateTimeField(auto_now=True,blank=True)
     on_delete = models.BooleanField(default=False)
 

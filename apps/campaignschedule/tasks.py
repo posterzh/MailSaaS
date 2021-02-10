@@ -1,18 +1,17 @@
+import random
+import time
+from datetime import datetime, time, timedelta
+
+import pytz
+import requests
 from celery import shared_task
 from django.core.mail import send_mail
-import pytz
-from .models import Schedule, Email_schedule
-from .serializers import EmailScheduleSerializers
-import requests
-import pytz
 from django.http import JsonResponse
-from datetime import datetime,time, timedelta
-import time
-import random
 
+from apps.campaign.models import Campaign, CampaignRecipient
 
-from apps.campaign.models import CampaignRecipient,Campaign
-
+from .models import Email_schedule, Schedule
+from .serializers import EmailScheduleSerializers
 
 # from django_celery_beat.models import PeriodicTask, IntervalSchedule
 

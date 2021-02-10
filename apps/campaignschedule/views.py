@@ -1,31 +1,27 @@
+import datetime
+import random
+from datetime import datetime, time, timedelta
+
+# from .tasks import send_email_task
+import pytz
+from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.http import Http404, HttpResponse, JsonResponse, request
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from pytz import timezone
+from rest_framework import permissions, serializers, status
 from rest_framework.generics import CreateAPIView
-from rest_framework import permissions
-from .serializers import CampaignscheduleSerializers,ScheduleUpdateSerializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import serializers, status
-from django.http import request,Http404,HttpResponse
-from django.views.decorators.csrf import csrf_exempt 
-from .models import Schedule
-from django.core.mail import send_mail
-from datetime import datetime, time
-from pytz import timezone
-from django.conf import settings
-from django.http import JsonResponse
-# from .tasks import send_email_task
-import pytz, datetime
+
 from apps.campaign.models import Campaign, CampaignRecipient
 from apps.campaignschedule.serializers import EmailScheduleSerializers
-from datetime import datetime,time, timedelta
-import random
 
-
-
-
-
+from .models import Schedule
+from .serializers import CampaignscheduleSerializers, ScheduleUpdateSerializers
 
 
 def change(times,timezones):
@@ -42,7 +38,7 @@ def change(times,timezones):
 class CampaignScheduleAdd(CreateAPIView):
 
     serializer_class = CampaignscheduleSerializers
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     
     def post(self,request):
         request.data._mutable = True
@@ -63,7 +59,7 @@ class CampaignScheduleAdd(CreateAPIView):
 
 class UpdateScheduleMail(APIView):
     serializer_class = CampaignscheduleSerializers
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     def get_objects(self,request):
         try:
             user = request.user.id
