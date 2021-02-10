@@ -10,24 +10,36 @@ import {
     SUCCESS_START,
     FAILURE_RECIPIENT,
     REQUEST_FOR_RECIPIENT,
-    SUCCESS_RECIPIENT
+    SUCCESS_RECIPIENT,
+    FAILURE_VIEW,
+    REQUEST_FOR_VIEW,
+    SUCCESS_VIEW,
+    FAILURE_MAIL_SENDER,
+    REQUEST_FOR_MAIL_SENDER,
+    SUCCESS_MAIL_SENDER,
+    REQUEST_FOR_OPTION,
+    SUCCESS_OPTION,
+    FAILURE_OPTION
 } from "../actionType/actionType";
 
 const initialState = {
     Loginuser: '',
     user: '',
     data: '',
-    recipientsData: ''
+    recipientData: '',
+    viewData:'',
+    mailData:''
 }
 export const RegisterReducer = (state = { initialState }, action) => {
     switch (action.type) {
+        // cases for signup
         case REQUEST_FOR_REGISTER:
             return {
             }
         case SUCCESS_REGISTER:
             return {
                 ...state,
-                user: action.data,
+                user: action.user,
             }
         case FAILURE_REGISTER:
             return {
@@ -44,7 +56,7 @@ export const LoginReducer = (state = { initialState }, action) => {
         case SUCCESS_LOGIN:
             return {
                 ...state,
-                Loginuser: action.data,
+                Loginuser: action.Loginuser,
             }
         case FAILURE_LOGIN:
             return {
@@ -66,6 +78,18 @@ export const StartReducer = (state = { initialState }, action) => {
         case FAILURE_START:
             return {
             }
+            
+            case REQUEST_FOR_OPTION:
+            return {
+            }
+        case SUCCESS_OPTION:
+            return {
+                ...state,
+                data: action.optionData,
+            }
+        case FAILURE_OPTION:
+            return {
+            }
         default: return state
             break;
     }
@@ -78,9 +102,44 @@ export const RecipientReducer = (state = { initialState }, action) => {
         case SUCCESS_RECIPIENT:
             return {
                 ...state,
-                recipientsData: action.data,
+                formData: action.formData,
             }
         case FAILURE_RECIPIENT:
+            return {
+            }
+        default: return state
+            break;
+    }
+}
+
+export const ViewReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case REQUEST_FOR_VIEW:
+            return {
+            }
+        case SUCCESS_VIEW:
+            return {
+                ...state,
+                ViewData: action. viewData,
+            }
+        case FAILURE_VIEW:
+            return {
+            }
+        default: return state
+            break;
+    }
+}
+export const MailSenderReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case REQUEST_FOR_MAIL_SENDER:
+            return {
+            }
+        case SUCCESS_MAIL_SENDER:
+            return {
+                ...state,
+                mailData: action.mailData,
+            }
+        case FAILURE_MAIL_SENDER:
             return {
             }
         default: return state

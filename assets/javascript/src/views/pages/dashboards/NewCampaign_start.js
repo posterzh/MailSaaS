@@ -65,11 +65,11 @@ class NewCampaign_start extends React.Component {
 }
 const mapStateToProps = (state) => {
     return {
-        // token: state.token
+        token: state.token
     };
 };
 const mapDispatchToProps = dispatch => ({
-    StartCampaignAction: data=> {
+    StartCampaignAction: data => {
         dispatch(StartCampaignAction(data));
     },
 });

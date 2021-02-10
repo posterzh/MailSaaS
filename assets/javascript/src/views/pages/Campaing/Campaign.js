@@ -7,16 +7,23 @@ import {
   Row,
   Col,
 } from "reactstrap";
-
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { connect } from "react-redux";
+import {ViewAction} from '../../../redux/action/AuthourizationAction'
 class Campaign extends Component {
   constructor() {
     super()
     this.state = {
       show: true,
-      hide: true
+      hide: true,
+      viewData:[]
     }
   }
+ 
+  componentDidMount(){
+    this.props.ViewAction();
+  }  
+  
   render() {
     const { show, hide } = this.state;
     return (
@@ -24,7 +31,8 @@ class Campaign extends Component {
         <div className='main-view'>
           <div >
             <div className='campaign_navbar' >
-              <h1 style={{ color: 'white', fontSize: '30px', marginLeft: '20px' }}>Campaigns</h1>
+              <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px',marginTop:"20px" }}>Campaigns</h1>
+              <p style={{color:"white",fontSize:"20px",marginTop:"20px",marginRight:"20px"}}><i class="fa fa-question-circle-o" aria-hidden="true"></i></p>
             </div>
             <div className=''>
               <Container fluid className=''>
@@ -112,7 +120,7 @@ class Campaign extends Component {
                         </thead>
                         <tbody>
                           <tr className='pointer' >
-                            <td><input type='checkbox' /></td>
+                            <td><input type='checkbox'/></td>
                             <Link to={'/app/admin/campaign-detail'}><td className="Campaign_title" onClick={() => { this.setState({}) }}>January 19 Outreach</td></Link>
                             <td className="Created">0</td>
                             <td className="Assigned">0</td>
@@ -129,6 +137,11 @@ class Campaign extends Component {
                   </Row>
                 </Card>
               </Container>
+              <div className='plus-button-div'>
+                <div className='new_add_button'>
+                 <span className="plusicon">+</span>
+                  </div>
+              </div>
             </div>
           </div>
         </div>
@@ -136,4 +149,14 @@ class Campaign extends Component {
     )
   }
 }
-export default Campaign
+const mapStateToProps = (state) => {
+  return {
+      // token: state.token
+  };
+};
+const mapDispatchToProps = dispatch => ({
+  ViewAction: viewData => {
+      dispatch(ViewAction(viewData));
+  },
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Campaign)

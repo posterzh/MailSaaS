@@ -11,18 +11,9 @@ export class Send extends Component {
                     <Row >
                         <Col md="6" className="mx-auto">
                             <Row className="ready_campaign">Are you ready to start your campaign?</Row>
-                            <Row className="startcampaign_button mt-5"><Button>START CAMPAIGN</Button></Row>
+                            <Row className="startcampaign_button mt-5"><Button className="startcampaign_buttonicon">START CAMPAIGN</Button></Row>
                             <Row className="pause_campaign mt-4"> Pause Campaign</Row>
                             <Row className="mt-5" style={{ borderBottom: "1px solid #ddd" }}></Row>
-                            {/* <div>
-                                <Row className="mt-5">
-                                <Row>From address</Row>
-                                <Row className="mt-5">seing account</Row>
-                                <Row>gauravsurolia@externlabs.com</Row>
-                                <Row className="mt-2">From Name</Row>
-                                <Row>Gaurav surolia</Row>
-                                </Row >
-                              </div> */}
                         </Col>
                     </Row>
                     <Row >

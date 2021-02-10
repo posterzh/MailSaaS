@@ -39,9 +39,9 @@ class CreateCampaignStartView(APIView):
         if request.user.is_active:
             # if 'campaign.add_campaign' in request.user.get_group_permissions():
             postdata = request.data
-            postdata._mutable = True
+            # postdata._mutable = True
             postdata["assigned"] = request.user.id
-            postdata._mutable = False
+            # postdata._mutable = False
             serializer = CampaignSerializer(data = postdata)
             if serializer.is_valid():
                 serializer.save()

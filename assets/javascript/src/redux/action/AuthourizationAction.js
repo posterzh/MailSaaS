@@ -13,8 +13,15 @@ import {
     SUCCESS_RECIPIENT,
     FAILURE_VIEW,
     REQUEST_FOR_VIEW,
-    SUCCESS_VIEW
+    SUCCESS_VIEW,
+    FAILURE_MAIL_SENDER,
+    REQUEST_FOR_MAIL_SENDER,
+    SUCCESS_MAIL_SENDER,
+    REQUEST_FOR_OPTION,
+     SUCCESS_OPTION,
+      FAILURE_OPTION
 } from "../actionType/actionType"
+
 import Api from "../api/api"
 
 
@@ -23,11 +30,11 @@ export const requestForRegister = () => {
         type: REQUEST_FOR_REGISTER,
     }
 }
-export const registerSuccess = (data) => {
-    console.log(data, 'data')
+export const registerSuccess = (user) => {
+    console.log(user, 'data')
     return {
         type: SUCCESS_REGISTER,
-        data
+        user
     }
 }
 export const registerFailure = () => {
@@ -42,11 +49,11 @@ export const requestForLogin = () => {
         type: REQUEST_FOR_LOGIN,
     }
 }
-export const LoginSuccess = (data) => {
-    console.log(data, 'data')
+export const LoginSuccess = (Loginuser) => {
+    console.log(Loginuser, 'data')
     return {
         type: SUCCESS_LOGIN,
-        data
+        Loginuser
     }
 }
 export const loginFailure = () => {
@@ -74,51 +81,76 @@ export const StartFailure = () => {
     }
 }
 
+// option
+export const requestForOption = () => {
+    return {
+        type: REQUEST_FOR_OPTION,
+    }
+}
+export const RecipientSuccess = (recipientData) => {
+    console.log(recipientData, 'data')
+    return {
+        type: SUCCESS_RECIPIENT,
+        recipientData,
+    }
+}
+export const OptionSuccess = (data) => {
+    console.log(data, 'data')
+    // alert("fghjk")
+    return {
+        type: SUCCESS_OPTION,
+        data
+    }
+}
+export const OptionFailure = () => {
+    return {
+        type: FAILURE_OPTION,
+    }
+}
+
 // RECIPIENTS
 export const requestForRecipient = () => {
     return {
-        type: REQUEST_FOR_RECIPIENT,
+        type: REQUEST_FOR_VIEW,
     }
 }
-export const RecipientSuccess = (recipientsData) => {
-    console.log(recipientsData, 'data')
+export const ViewSuccess = (viewData) => {
+    console.log(viewData, 'data')
     return {
-        type: SUCCESS_RECIPIENT,
-        recipientsData
+        type: SUCCESS_VIEW,
+        viewData
     }
 }
-export const RecipientFailure = () => {
+export const ViewFailure = () => {
     return {
-        type: FAILURE_RECIPIENT,
+        type: FAILURE_VIEW,
     }
 }
 
-// VIEW
-export const requestForRecipient = () => {
+// MAIL_SENDER
+export const requestForMailSender = () => {
     return {
-        type: REQUEST_FOR_RECIPIENT,
+        type: REQUEST_FOR_MAIL_SENDER,
     }
 }
-export const RecipientSuccess = (recipientsData) => {
-    console.log(recipientsData, 'data')
+export const MailSenderSuccess = (mailData) => {
+    console.log(viewData, 'data')
     return {
-        type: SUCCESS_RECIPIENT,
-        recipientsData
+        type: SUCCESS_MAIL_SENDER,
+        mailData
     }
 }
-export const RecipientFailure = () => {
+export const MailSenderFailure = () => {
     return {
-        type: FAILURE_RECIPIENT,
+        type: FAILURE_MAIL_SENDER,
     }
 }
-
 
 export const RegisterAction = (user) => {
     return function (dispatch) {
         dispatch(requestForRegister(user))
         Api.RegisterApi(user).then(result => {
             console.log(result.data, 'registerSuccess')
-
             dispatch(registerSuccess(result.data))
         }).catch(err => {
             console.log(err)
@@ -152,16 +184,56 @@ export const StartCampaignAction = (data) => {
     }
 }
 
-export const RecipientAction = (recipientData) => {
+export const RecipientAction = (formData,token) => {
+    console.log('this is a token',formData,token)
     return function (dispatch) {
-        const token = localStorage.getItem('token')
-        console.log('this is a token', token)
-        dispatch(requestForRecipient(recipientData, token))
-        Api.RecipientApi(recipientData, token).then(result => {
+        dispatch(requestForRecipient(formData, token))
+        Api.RecipientApi(formData, token).then(result => {
             dispatch(RecipientSuccess(result.data))
+            console.log('rece:',result)
         }).catch(err => {
             console.log(err)
         })
     }
 }
 
+// export const ViewAction = () => {
+export const OptionAction =(optionData)=>
+{ console.log('abcd:',optionData);
+    return function (dispatch) {
+            const token=localStorage.getItem('token')
+          dispatch(requestForOption(optionData,token))
+          Api.OptionApi(optionData,token).then(result => {
+              dispatch(OptionSuccess(result.data))
+              console.log("checking",token)
+              alert("keshav")
+          }).catch(err => {
+              console.log(err)
+          })
+      }}
+export const RecipientAction = (recipientData) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('token')
+        console.log('this is a token', token)
+        dispatch(requestForView(token))
+        Api.ViewApi(token).then(result => {
+            dispatch(ViewSuccess(result.data))
+            console.log('result',result.data)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+}
+
+export const MailSenderAction = (mailData) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('token')
+        // console.log('this is a token', mailData)
+        dispatch(requestForMailSender(mailData, token))
+        Api.MailSenderApi(mailData, token).then(result => {
+            dispatch(MailSenderSuccess(result.data))
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+}
