@@ -1,7 +1,7 @@
 // file for option pick in campaign
 import React, { Component } from 'react'
 import { Container, Row, Col, Form } from 'reactstrap'
-import { OptionAction } from '../../../redux/action/AuthourizationAction'
+import { CampaignOptionAction} from '../../../redux/action/CampaignAction'
 import { connect } from 'react-redux';
 class Option extends Component {
     constructor() {
@@ -44,7 +44,7 @@ class Option extends Component {
             schedule_time: `${this.state.time}${':00'}`,
             terms_and_laws: this.state.termsandlaws
         }
-        this.props.OptionAction(optionData)
+        this.props.CampaignOptionAction(optionData)
     }
     render() {
         // console.log("trackopen",this.state.trackopen)
@@ -167,8 +167,8 @@ const mapStateToProps = (state) => {
     };
 };
 const mapDispatchToProps = dispatch => ({
-    OptionAction: optionData => {
-        dispatch(OptionAction(optionData));
+    CampaignOptionAction: optionData => {
+        dispatch(CampaignOptionAction(optionData));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Option)

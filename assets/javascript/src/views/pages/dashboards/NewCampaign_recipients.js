@@ -2,7 +2,7 @@ import { options } from 'dropzone';
 import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { Container, Row, Col, Button, Input, Form } from 'reactstrap'
-import { RecipientAction } from "../../../redux/action/AuthourizationAction";
+import { RecipientAction } from "../../../redux/action/CampaignAction";
 import  Csvfile from './csvfile'
 
 class NewCampaign_recipients extends Component {

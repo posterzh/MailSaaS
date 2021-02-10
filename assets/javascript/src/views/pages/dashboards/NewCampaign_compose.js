@@ -50,9 +50,14 @@ export default class Compose extends Component {
     onEditorStateChange = (editorState) => {
         this.setState({ editorState })
     }
-    handleSubmit = () => {
+    // handleSubmit = () => {
+    //     alert('msg')
+    // }
+    handleSubmit = (event) => {
         alert('msg')
-    }
+        }
+        // this.props.CampaignComposeApi(composedata)
+    
     onChange=(e)=>{
         console.log(e.blocks[0].text)
     }

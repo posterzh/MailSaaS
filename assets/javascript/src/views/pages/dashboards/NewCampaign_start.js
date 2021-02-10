@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from "react-redux";
 import { Container, Row, Col, Form, Input } from 'reactstrap';
-import { StartCampaignAction } from "../../../redux/action/AuthourizationAction";
+import { StartCampaignAction } from "../../../redux/action/CampaignAction";
 
 class NewCampaign_start extends React.Component {
     constructor() {

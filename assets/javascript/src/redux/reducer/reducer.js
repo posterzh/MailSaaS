@@ -105,3 +105,22 @@ export const RecipientReducer = (state = { initialState }, action) => {
     }
 }
 
+// CAMPAIGN OPTION REDUCER
+export const CampaignOptionReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case  REQUEST_FOR_OPTION:
+            return {
+            }
+        case SUCCESS_OPTION:
+            return {
+                ...state,
+                optionData: action.data,
+            }
+        case FAILURE_OPTION:
+            return {
+            }
+        default: return state
+            break;
+    }
+}
+
