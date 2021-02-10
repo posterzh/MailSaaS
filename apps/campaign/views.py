@@ -97,7 +97,9 @@ class CreateCampaignRecipientsView(APIView):
                 for email in postdata["email"]:
                     CampaignEmail = CampaignRecipient(campaign=camp, email=email)
                     CampaignEmail.save()
-                    # print(CampaignEmail, type(CampaignEmail))
+                    campData = CampaignEmailSerializer(CampaignEmail)
+                    print(CampaignEmail, campData.data)
+                    resp.append(campData.data)
                 return Response({"resp":resp,"message":"Saved Successfully","success":True})
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -247,7 +249,7 @@ class CreateCampaignOptionView(APIView):
             else:
                 request.data["schedule_date"] = None
                 request.data["schedule_time"] = None
-            
+            print(request.data)
             serilizer = CampaignSerializer(queryset, data=request.data)
             if serilizer.is_valid():
                 serilizer.save()
@@ -266,9 +268,9 @@ class CreateCampaignSendView(APIView):
             camp = Campaign.objects.get(id = pk)
         except:
             return Response({"message":"No Campaign with this id", "success":False})
-        campSerializer = CampaignSerializer(camp)
-        resp["from_address"] = {campSerializer.data["from_address"]}
-        resp["full_name"] = {campSerializer.data["full_name"]}
+        # campSerializer = CampaignSerializer(camp)
+        resp["from_address"] = camp.from_address.email
+        resp["full_name"] = camp.from_address.full_name
         campEmailrecipientsList = []
         campEmail = CampaignRecipient.objects.filter(campaign = pk)
         for campemail in campEmail:
@@ -345,13 +347,13 @@ class CreateCampaignSendView(APIView):
                     email_body_links = re.findall(r'(https?://\S+)', campemail.email_body)
                     if email_body_links:
                         #URL is Present
-                        emailData = campemail.emailBody
+                        emailData = campemail.email_body
                         for link in email_body_links:
                             print("linkkkkk ", link)
                             new_link = pytracking.get_click_tracking_url(
                                 link, {"campEmailId": campemail.id, "campaign": campemail.campaign.id},
-                                base_click_tracking_url="http://localhost:8000/campaign/email/click/",
-                                webhook_url="http://localhost:8000/campaign/email/click/", include_webhook_url=True)
+                                base_click_tracking_url=campemail.email_body,
+                                webhook_url=campemail.email_body, include_webhook_url=True)
                             emailData = emailData.replace(link, new_link)
                     else:
                         #No URL Present
@@ -384,7 +386,7 @@ class CreateCampaignSendView(APIView):
                     email_body_links = re.findall(r'(https?://\S+)', campemail.email_body)
                     if email_body_links:
                         #URL is Present
-                        emailData = campemail.emailBody
+                        emailData = campemail.email_body
                         for link in email_body_links:
                             print("linkkkkk ", link)
                             new_link = pytracking.get_click_tracking_url(
@@ -739,19 +741,13 @@ class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
             queryset = CampaignRecipient.objects.filter(campaign=pk)
         campEmailserializer = CampaignEmailSerializer(queryset, many = True)
         return Response(campEmailserializer.data)
-    
-    def put(self, request,pk, formate = None):
-        for rec_id in request.data:
-            campEmail = CampaignRecipient.objects.get(id=rec_id)
-            campEmail.unsubscribe = True
-            campEmail.save()
-        return Response("DOne")
+
 
 
 class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     permission_classes = (permissions.IsAuthenticated,)
-    queryset = CampaignRecipient.objects.all()
+    queryset = ""
     serializer_class = CampaignEmailSerializer
 
     def get_object(self,request,pk):
