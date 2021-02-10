@@ -132,8 +132,7 @@ class Campaign extends Component {
               </Container>
               <div className='plus-button-div'>
                 <div className='new_add_button'>
-                 <span className="plusicon"> +</span>
-                  {/* <span style={{ fontSize: '1em', color: 'white' }}>+</span> */}
+                 <span className="plusicon">+</span>
                   </div>
               </div>
             </div>

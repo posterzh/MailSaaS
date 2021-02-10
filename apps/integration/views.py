@@ -1,18 +1,22 @@
+import json
+import os
 
+import requests
+import slack
+from django.conf import settings
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
-import json
-from django.http import HttpResponse
-import requests
-from simple_salesforce import Salesforce
-from .models import Contact
-from .serializers import ContactSerializer
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
+from simple_salesforce import Salesforce
+from slack import WebClient
+from slack.errors import SlackApiError
 
-import requests
+from apps.campaign.models import Campaign, CampaignRecipient
 
+from .models import Contact
+from .serializers import ContactSerializer
 
 
 def login():
@@ -65,9 +69,6 @@ class ContactViewSet(generics.CreateAPIView):
 #**************************slack***********************
 
 
-from django.http import HttpResponse, JsonResponse
-import slack
-from apps.campaign.models import Campaign, CampaignRecipient
 
 @csrf_exempt
 def event_hook(request):
@@ -100,11 +101,6 @@ def event_hook(request):
 
 
 
-import requests
-import json
-import os
-from slack import WebClient
-from slack.errors import SlackApiError
 
 # def post_message_to_slack(text, blocks = None):
 #     return requests.post('https://slack.com/api/chat.postMessage', {

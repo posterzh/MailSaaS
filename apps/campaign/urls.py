@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
 
+from . import views
 
 urlpatterns = [
     path('email/open/<slug:id>', views.TrackEmailOpen.as_view(), name='track_email_open'),

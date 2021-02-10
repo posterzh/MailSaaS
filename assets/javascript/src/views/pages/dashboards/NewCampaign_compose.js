@@ -1,18 +1,3 @@
-// import React, { Component } from 'react'
-
-// export class Compose extends Component {
-//     render() {
-//         return (
-//             <div>
-//                 <h2>compose page</h2>
-
-//             </div>
-//         )
-//     }
-// }
-
-// export default Compose
-
 import React, { Component } from 'react'
 import {
     Container,
@@ -26,23 +11,21 @@ import htmlToDraft from 'html-to-draftjs';
 import FollowUpPage from './FollowUpPage';
 import Drips from './Drips'
 import LinkClicksPage from './LinkClicksPage'
-// import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-// import Container from 'reactstrap/lib/Container';
 export default class Compose extends Component {
     constructor() {
         super();
         this.state = {
-            subject:'',
-          
+            subject: '',
+            editorName: '',
             editorState: EditorState.createEmpty(),
             inputListFollow: [],
             inputListDrips: [],
             inputListLinkClick: [],
         }
     }
-    handleChange=(e)=>{
+    handleChange = (e) => {
         this.setState({
-            [e.target.name]:e.target.value
+            [e.target.name]: e.target.value
         })
         console.log(this.state)
     }
@@ -65,11 +48,13 @@ export default class Compose extends Component {
         }, () => { });
     }
     onEditorStateChange = (editorState) => {
-
         this.setState({ editorState })
     }
     handleSubmit = () => {
         alert('msg')
+    }
+    onChange=(e)=>{
+        console.log(e.blocks[0].text)
     }
     render() {
         const { editorState } = this.state;
@@ -107,10 +92,10 @@ export default class Compose extends Component {
                                                 toolbarClassName="rdw-storybook-toolbar"
                                                 wrapperClassName="rdw-storybook-wrapper"
                                                 editorClassName="rdw-storybook-editor"
+                                                onChange={this.onChange}
                                                 onEditorStateChange={this.onEditorStateChange}
                                                 required
-                                                value={this.state.editor}
-                                                onChange={this.handleChange}
+                                              
                                             />
                                         </div>
                                     </Row>

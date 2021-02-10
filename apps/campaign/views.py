@@ -1,8 +1,9 @@
 import csv
 import datetime
-from datetime import datetime
-from apps.unsubscribes.models import UnsubscribeEmail
-from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
+import json
+import re
+from datetime import date, datetime, time
+
 import pytracking
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -16,19 +17,10 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import csv
-import datetime 
-from django.db.models import Q
-from datetime import datetime 
-from django.core.mail import send_mail
-import pytracking
-from django.core.mail import EmailMultiAlternatives
-from django.contrib.sites.shortcuts import get_current_site
-from django.contrib.sites.models import Site
-from django.conf import settings
-import re
-from apps.integration.views import SendSlackMessage
 
+from apps.integration.views import SendSlackMessage
+from apps.unsubscribes.models import UnsubscribeEmail
+from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
                      DripEmailModel, EmailOnLinkClick, FollowUpEmail)
@@ -44,27 +36,30 @@ class CreateCampaignStartView(APIView):
         
     def post(self, request, format=None):
         if request.user.is_active:
-            if 'campaign.add_campaign' in request.user.get_group_permissions():
-                postdata = request.data
-                postdata._mutable = True
-                postdata["assigned"] = request.user.id
-                postdata._mutable = False
-                serializer = CampaignSerializer(data = postdata)
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            return Response({'message':"Has No Permissions",'status':401})
+            # if 'campaign.add_campaign' in request.user.get_group_permissions():
+            postdata = request.data
+            # postdata._mutable = True
+            postdata["assigned"] = request.user.id
+            # postdata._mutable = False
+            serializer = CampaignSerializer(data = postdata)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            # return Response({'message':"Has No Permissions",'status':401})
         return Response({'message':"Your account is not active",'status':status.HTTP_200_OK})
 
    
 class CreateCampaignRecipientsView(APIView):
+
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
         postdata = request.data
         res = json.loads(postdata["option"])
+        request.data._mutable = True
         postdata["option"] = res
+        request.data._mutable = False
         resp = []
         # if 'campaign.add_campaign' in request.user.get_group_permissions():
         if 1 in postdata["option"]:
@@ -77,6 +72,7 @@ class CreateCampaignRecipientsView(APIView):
             with open('media/'+str(camp.csvfile_op1)) as csv_file:
                 csv_reader = csv.reader(csv_file, delimiter=',')
                 line_count = 0
+                
                 for row in csv_reader:
                     if line_count == 0:
                         line_count += 1
@@ -91,6 +87,7 @@ class CreateCampaignRecipientsView(APIView):
                 resp.append({"success":True})
                 if 2 not in postdata["option"]:
                     return Response({"resp":resp, "success":True})
+
         if 2 in postdata["option"]:
             serializer = CampaignEmailSerializer(data = postdata)
             if serializer.is_valid():
@@ -98,6 +95,7 @@ class CreateCampaignRecipientsView(APIView):
                 for email in postdata["email"]:
                     CampaignEmail = CampaignRecipient(campaign=camp, email=email)
                     CampaignEmail.save()
+                    print(CampaignEmail, type(CampaignEmail))
                 return Response({"resp":resp,"message":"Saved Successfully","success":True})
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -222,21 +220,31 @@ class CreateCampaignOptionView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def put(self, request, format=None):
+        print(request.data)
+        print(request.data["schedule_date"])
+        
         if request.data['terms_and_laws'] == True:
             queryset = Campaign.objects.get(id = request.data['campaign'])
             request.data["title"] = queryset.title
-            request.data["from_address"] = queryset.from_address
+            request.data["from_address"] = queryset.from_address.id
+            request.data["full_name"] = queryset.full_name
             request.data["csvfile_op1"] = queryset.csvfile_op1
             request.data["assigned"] = request.user.id
             request.data["update_date_time"] = datetime.now()
             request.data["created_date_time"] = queryset.created_date_time
+            
             if request.data["schedule_send"] and not (request.data["schedule_date"] or request.data["schedule_time"]):
                 return Response({"message":"Please Enter Date Time", "success":"false"})
             if request.data["schedule_send"]:
-                print(request.data)
+                req_date_list = request.data["schedule_date"].split("-")
+                req_time_list = request.data["schedule_time"].split(":")
+                request.data["schedule_date"] = date(int(req_date_list[0]), int(req_date_list[1]), int(req_date_list[2]))
+                request.data["schedule_time"] = time(int(req_time_list[0]), int(req_time_list[1]), int(req_time_list[2]))
+
             else:
                 request.data["schedule_date"] = None
                 request.data["schedule_time"] = None
+            
             serilizer = CampaignSerializer(queryset, data=request.data)
             if serilizer.is_valid():
                 serilizer.save()
@@ -318,8 +326,7 @@ class CreateCampaignSendView(APIView):
                         )
                     
                     # print("oo = ",open_tracking_url)
-                    
-                    email_body_links = re.findall(r'(https?://\S+)', campemail.emailBody)
+                    email_body_links = re.findall(r'(https?://\S+)', campemail.email_body)
                     if email_body_links:
                         print("Hai Bhai hai")
                         # print("click_tracking_urllllllllll ",click_tracking_url)
@@ -335,7 +342,7 @@ class CreateCampaignSendView(APIView):
                             # +"/?redirect_uri="+ link
                     else:
                         print("nahi h bhai")
-                        emailData = campemail.emailBody + "<img width=0 height=0 src='"+open_tracking_url+"' />"
+                        emailData = campemail.email_body + "<img width=0 height=0 src='"+open_tracking_url+"' />"
                     # print("emailData\n\n\n",emailData)
                     subject = campemail.subject
                     text_content = 'plain text body message.'
@@ -500,7 +507,7 @@ class LeadsCatcherView(generics.ListAPIView):
 
 
 class TrackEmailOpen(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None, id=None):
         
         # print("settings.SITE_URL = ",settings.SITE_URL, request.get_full_path())
@@ -527,7 +534,7 @@ class TrackEmailOpen(APIView):
 
 
 class TrackEmailClick(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None, id=None):
         
         print("yoooooooooooooooooo ", request)

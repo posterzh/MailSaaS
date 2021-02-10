@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Campaign, CampaignRecipient, FollowUpEmail, DripEmailModel, EmailOnLinkClick,CampaignLeadCatcher
+from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
+                     DripEmailModel, EmailOnLinkClick, FollowUpEmail)
 
 
 @admin.register(Campaign)

@@ -173,9 +173,10 @@ class Login extends React.Component {
   }
 }
 const mapStateToProps = (state) => {
-  return {
-    //  token: state.token
-  };
+  return 
+  {
+    
+  }
 };
 
 const mapDispatchToProps = dispatch => ({
