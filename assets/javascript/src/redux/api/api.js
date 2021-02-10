@@ -21,12 +21,19 @@ Api.StartApi = (data, token) => {
     })   
 }
 Api.OptionApi=(optionData,token)=>{
-    console.log('OptionAPI:',optionData);
+    console.log('OptionAPI------:',optionData);
     return axios({
         method:'PUT',
         url:'http://127.0.0.1:8000/campaign/options/',
         data:{
-               optionData
+            //    optionData
+               campaign: 1,
+               trackOpens: optionData.trackopen,
+               trackLinkClick: optionData.tracklinkclicks,
+               schedule_send: optionData.schedulesend,
+               schedule_date: optionData.date,
+               schedule_time: `${optionData.time}${':00'}`,
+               terms_and_laws: optionData.termsandlaws
         },
         headers:{
             "Authorization":  `Bearer ${token}`,

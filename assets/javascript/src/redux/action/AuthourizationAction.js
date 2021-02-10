@@ -176,7 +176,7 @@ export const StartCampaignAction = (data) => {
 }
 
 export const OptionAction =(optionData)=>
-{ console.log('geet',optionData);
+{ console.log('abcd:',optionData);
     return function (dispatch) {
             const token=localStorage.getItem('token')
           dispatch(requestForOption(optionData,token))

@@ -36,7 +36,7 @@ class Option extends Component {
         event.preventDefault();
         console.log(this.state)
         const optionData = {
-            campaign: '1',
+            campaign: 1,
             trackOpens: this.state.trackopen,
             trackLinkClick: this.state.tracklinkclicks,
             schedule_send: this.state.schedulesend,
