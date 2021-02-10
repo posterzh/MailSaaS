@@ -16,7 +16,10 @@ import {
     SUCCESS_VIEW,
     FAILURE_MAIL_SENDER,
     REQUEST_FOR_MAIL_SENDER,
-    SUCCESS_MAIL_SENDER
+    SUCCESS_MAIL_SENDER,
+    REQUEST_FOR_OPTION,
+    SUCCESS_OPTION,
+    FAILURE_OPTION
 } from "../actionType/actionType";
 
 const initialState = {
@@ -29,6 +32,7 @@ const initialState = {
 }
 export const RegisterReducer = (state = { initialState }, action) => {
     switch (action.type) {
+        // cases for signup
         case REQUEST_FOR_REGISTER:
             return {
             }
@@ -72,6 +76,18 @@ export const StartReducer = (state = { initialState }, action) => {
                 data: action.data,
             }
         case FAILURE_START:
+            return {
+            }
+            
+            case REQUEST_FOR_OPTION:
+            return {
+            }
+        case SUCCESS_OPTION:
+            return {
+                ...state,
+                data: action.optionData,
+            }
+        case FAILURE_OPTION:
             return {
             }
         default: return state

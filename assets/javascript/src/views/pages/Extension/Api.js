@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // import Row from 'reactstrap/lib/Row'
 
-import { Container, Row, Col, Label, Input, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Table, Button, Card, CardHeader,CardFooter, CardBody } from 'reactstrap'
+import { Container, Row, Col, Label, Input, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Table, Button, Card, CardHeader, CardFooter, CardBody } from 'reactstrap'
 // import CardFooter from 'reactstrap/lib/CardFooter'
 // import CardBody from 'reactstrap/lib/CardBody'
 // import CardHeader from 'reactstrap/lib/CardHeader'
@@ -9,11 +9,12 @@ import { Container, Row, Col, Label, Input, Dropdown, DropdownToggle, DropdownMe
 export class Api extends Component {
     render() {
         return (
-            // <div style={{ border: "1px solid red" }}>
             <div>
-                {/* <div style={{ border: "1px solid green" }}> */}
-                <div>
-                    <Container fluid>
+                <div className='campaign_navbar' >
+                    <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>API</h1>
+                    <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i class="fa fa-question-circle-o" aria-hidden="true"></i></p>
+                </div>
+                <Container fluid>
                     <Row>
                         <Col md="7">
                             <div>
@@ -37,42 +38,43 @@ export class Api extends Component {
                             </Button>
                         </Col>
                     </Row>
-                   </Container>
+                </Container>
+                {/* </div> */}
+                <div style={{ marginTop: "30px" }}>
+                    <Container fluid>
+                        <Row>
+                            <Col md="3">
+                                <Card >
+                                    <CardHeader style={{ color: "black", border: "none" }}>Api Access</CardHeader>
+                                    <CardBody>
+                                        <div style={{ display: "flex", flexDirection: "column" }}>
+                                            <span style={{ fontSize: "12px", color: "blue" }}>Api key</span>
+                                            <span style={{ fontSize: "14px", color: "rgba(0,0,0, 0.54)", marginBottom: "10px" }}>6d8ca340-a9fe-40a1-b5f7-4bc61e420240</span>
+                                        </div>
+                                        <div style={{ display: "flex", flexDirection: "column" }}>
+                                            <span style={{ fontSize: "12px", color: "blue" }}>Quota units per hour</span>
+                                            <span style={{ fontSize: "14px", color: "rgba(0,0,0, 0.54)", marginBottom: "10px" }}>2,000</span>
+                                        </div>
+                                        <div style={{ display: "flex", flexDirection: "column" }}>
+                                            <span style={{ fontSize: "12px", color: "blue" }}>Recepients you can add per month</span>
+                                            <span style={{ fontSize: "14px", color: "rgba(0,0,0, 0.54)", marginBottom: "10px" }}>span1</span>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                            <Col md="4">
+                                <Card >
+                                    <CardHeader style={{ color: "black", border: "none" }}>Need higher limits?</CardHeader>
+                                    <CardBody>Upgrading to Email Outreach increases your base limits. Upgrading the number of users on your account multiplies your base limits.</CardBody>
+                                    <CardFooter>
+                                        <Button>Upgrade</Button>
+                                    </CardFooter>
+                                </Card>
+
+                            </Col>
+                        </Row>
+                    </Container>
                 </div>
-               <div style={{marginTop:"30px"}}>
-                   <Container fluid>
-                   <Row>
-                       <Col md="3">
-                   <Card >
-                       <CardHeader style={{color:"black",border:"none"}}>Api Access</CardHeader>
-                       <CardBody>
-                           <div style={{display:"flex",flexDirection:"column"}}>
-                           <span style={{fontSize:"12px",color:"blue"}}>Api key</span>    
-                           <span style={{fontSize:"14px",color:"rgba(0,0,0, 0.54)",marginBottom:"10px"}}>6d8ca340-a9fe-40a1-b5f7-4bc61e420240</span>  
-                           </div>      
-                           <div style={{display:"flex",flexDirection:"column"}}>
-                           <span style={{fontSize:"12px",color:"blue"}}>Quota units per hour</span>    
-                           <span  style={{fontSize:"14px",color:"rgba(0,0,0, 0.54)",marginBottom:"10px"}}>2,000</span>  
-                           </div>
-                           <div style={{display:"flex",flexDirection:"column"}}>
-                           <span style={{fontSize:"12px",color:"blue"}}>Recepients you can add per month</span>    
-                           <span style={{fontSize:"14px",color:"rgba(0,0,0, 0.54)",marginBottom:"10px"}}>span1</span>  
-                           </div>           
-                               </CardBody>
-                       </Card> 
-                       </Col>  
-                       <Col md="4">
-                       <Card >
-                          <CardHeader  style={{color:"black",border:"none"}}>Need higher limits?</CardHeader>
-                          <CardBody>Upgrading to Email Outreach increases your base limits. Upgrading the number of users on your account multiplies your base limits.</CardBody>
-                          <CardFooter>
-                              <Button>Upgrade</Button>
-                              </CardFooter>                         
-                            </Card> 
-                           </Col>
-                           </Row>  
-                           </Container>             
-                       </div>
 
             </div>
         )

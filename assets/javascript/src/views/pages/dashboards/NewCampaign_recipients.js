@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { Container, Row, Col, Button, Input, Form } from 'reactstrap'
 import { RecipientAction } from "../../../redux/action/AuthourizationAction";
+import  Csvfile from './csvfile'
 
 class NewCampaign_recipients extends Component {
     constructor() {
@@ -74,6 +75,7 @@ class NewCampaign_recipients extends Component {
                                                             <Col md='9'><Row>
                                                                 <span className="csv_logo"><i class="fa fa-file" aria-hidden="true"></i></span>
                                                                 <span className="csv_logo_text">Drop a CSV file here</span>
+                                                                < Csvfile/>
                                                                 <span className="choose_option"><Input type='file' name='csvFile' value={this.state.csvFile} onChange={this.handleChange}>(or choose one)</Input></span></Row>
                                                                 <Row><span>Campaigns are limited to 5k recipients; uploads to 1MB.</span></Row></Col>
                                                         </Row>

@@ -16,8 +16,12 @@ import {
     SUCCESS_VIEW,
     FAILURE_MAIL_SENDER,
     REQUEST_FOR_MAIL_SENDER,
-    SUCCESS_MAIL_SENDER
+    SUCCESS_MAIL_SENDER,
+    REQUEST_FOR_OPTION,
+     SUCCESS_OPTION,
+      FAILURE_OPTION
 } from "../actionType/actionType"
+
 import Api from "../api/api"
 
 
@@ -77,10 +81,10 @@ export const StartFailure = () => {
     }
 }
 
-// RECIPIENTS
-export const requestForRecipient = () => {
+// option
+export const requestForOption = () => {
     return {
-        type: REQUEST_FOR_RECIPIENT,
+        type: REQUEST_FOR_OPTION,
     }
 }
 export const RecipientSuccess = (recipientData) => {
@@ -90,14 +94,22 @@ export const RecipientSuccess = (recipientData) => {
         recipientData,
     }
 }
-export const RecipientFailure = () => {
+export const OptionSuccess = (data) => {
+    console.log(data, 'data')
+    // alert("fghjk")
     return {
-        type: FAILURE_RECIPIENT,
+        type: SUCCESS_OPTION,
+        data
+    }
+}
+export const OptionFailure = () => {
+    return {
+        type: FAILURE_OPTION,
     }
 }
 
-// VIEW
-export const requestForView = () => {
+// RECIPIENTS
+export const requestForRecipient = () => {
     return {
         type: REQUEST_FOR_VIEW,
     }
@@ -139,7 +151,6 @@ export const RegisterAction = (user) => {
         dispatch(requestForRegister(user))
         Api.RegisterApi(user).then(result => {
             console.log(result.data, 'registerSuccess')
-
             dispatch(registerSuccess(result.data))
         }).catch(err => {
             console.log(err)
@@ -186,7 +197,21 @@ export const RecipientAction = (formData,token) => {
     }
 }
 
-export const ViewAction = () => {
+// export const ViewAction = () => {
+export const OptionAction =(optionData)=>
+{ console.log('abcd:',optionData);
+    return function (dispatch) {
+            const token=localStorage.getItem('token')
+          dispatch(requestForOption(optionData,token))
+          Api.OptionApi(optionData,token).then(result => {
+              dispatch(OptionSuccess(result.data))
+              console.log("checking",token)
+              alert("keshav")
+          }).catch(err => {
+              console.log(err)
+          })
+      }}
+export const RecipientAction = (recipientData) => {
     return function (dispatch) {
         const token = localStorage.getItem('token')
         console.log('this is a token', token)

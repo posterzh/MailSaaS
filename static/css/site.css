@@ -19676,8 +19676,8 @@ input:focus {
   height: 100px;
   background-color: #035aac;
   display: flex;
-  flex-direction: column;
-  align-items: center; }
+  align-items: center;
+  justify-content: space-between; }
 
 .header_sent, .Sent {
   background-color: rgba(0, 90, 172, 0.05); }
@@ -19691,13 +19691,24 @@ input:focus {
 .header_open, .Open {
   background: rgba(165, 31, 99, 0.05); }
 
-.new_add_button {
+.plus-button-div {
   display: flex;
+  justify-content: center;
+  float: right; }
+
+.plusicon {
+  display: flex;
+  justify-content: center;
+  font-size: 32px;
+  color: white; }
+
+.new_add_button {
   border-radius: 50%;
-  width: 5em;
-  height: 4em;
-  padding-top: 5  em;
-  background-color: #55acee; }
+  width: 3em;
+  height: 3em;
+  background-color: #FF4081;
+  margin-right: 10px;
+  margin-bottom: 10px; }
 
 .drop_span {
   border: none;
@@ -19808,7 +19819,8 @@ input:focus {
 .saparator .fa {
   color: #ccc;
   font-size: 6px;
-  position: relative; }
+  position: relative;
+  padding-left: 10px; }
 
 .leadinfo_icon {
   position: absolute;
@@ -19874,7 +19886,8 @@ input:focus {
   position: absolute; }
 
 .lower_headerdiv {
-  border-bottom: 1px solid #ddd; }
+  border-bottom: 1px solid #ddd;
+  margin-left: 25px; }
 
 .repliy_icon {
   position: absolute;
@@ -20037,7 +20050,8 @@ button .import_button {
   border: none;
   width: 100%;
   border-bottom: 1px solid silver;
-  background: transparent; }
+  background: transparent;
+  color: black; }
 
 .start_input:focus {
   background: transparent; }
@@ -20046,9 +20060,9 @@ button .import_button {
   background-color: #ff4081;
   color: white; }
 
-.start_input:hover {
+.campaign-form .start_input:hover {
   opacity: 0.6;
-  color: white; }
+  color: black !important; }
 
 .dashboard_title {
   display: flex;
@@ -20153,7 +20167,13 @@ button .import_button {
   background: transparent; }
 
 .newcampaign_button {
-  background: #55acee;
+  background: #ff4081;
+  outline: none;
+  border: none;
+  color: white; }
+
+.startcampaign_buttonicon {
+  background: #ff4081;
   outline: none;
   border: none;
   color: white; }
@@ -20622,8 +20642,7 @@ input::-webkit-inner-spin-button {
 .in {
   height: 40px;
   width: 100%;
-  border: none;
-  background-color: #eee; }
+  border: none; }
 
 .in:focus {
   background-color: #eee !important;
@@ -20997,7 +21016,7 @@ input::-webkit-inner-spin-button {
   height: 100%;
   line-height: 1.6;
   text-align: center;
-  border: 4px solid silver; }
+  border: 2px solid #ccc; }
 
 .native_media_div > div > span {
   font-size: 1.2em;
@@ -21014,7 +21033,7 @@ input::-webkit-inner-spin-button {
 
 .native_media_div:hover {
   color: black;
-  border: 4px solid blue; }
+  border: 2px solid blue; }
 
 .native_img {
   width: 43px;
@@ -21033,7 +21052,108 @@ input::-webkit-inner-spin-button {
   background-color: #eee;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12); }
 
-.navbar-vertical.navbar-expand-xs.fixed-left {
-  overflow-y: hidden;
-  overflow-x: hidden; }
+.teamname-input {
+  border: none;
+  border-bottom: 2px solid #eee;
+  width: 96%; }
+
+.teamname-input:focus {
+  background-color: white !important;
+  border-bottom-color: blue; }
+
+.dialer-input {
+  border: none;
+  border-bottom: 2px solid #eee;
+  width: 96%; }
+
+.dialer-input :focus {
+  background-color: white !important;
+  border-bottom-color: blue; }
+
+.savebutton {
+  background-color: #ff4081;
+  border: none;
+  color: white;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  width: 80px;
+  height: 35px; }
+
+.deleteteambutton {
+  border: none;
+  background-color: transparent; }
+
+.links > li {
+  color: #777;
+  list-style-type: none;
+  padding-bottom: 20px; }
+
+.send-invite {
+  background-color: #ff4081;
+  border: none;
+  color: white;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  height: 35px; }
+
+.fullname-input, .email-input {
+  border: none;
+  border-bottom: 2px solid #eee;
+  width: 96%; }
+
+.fullname-input:focus {
+  background-color: white !important;
+  border-bottom-color: blue; }
+
+.fullname-input:hover {
+  border-bottom-color: blue; }
+
+.email-input :focus {
+  background-color: white !important;
+  border-bottom-color: blue; }
+
+.email-input:hover {
+  border-bottom-color: blue; }
+
+.email-input::placeholder {
+  color: #777; }
+
+.name, .Email, .IsAdmin {
+  color: #777; }
+
+.name-value, .Email-value, .IsAdmin-value {
+  COLOR: BLACK; }
+
+.unsubscribe-buttonsdiv {
+  display: flex;
+  margin-left: 10px; }
+
+.searchbox-unsubscribe {
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid #ccc; }
+
+.searchbox-unsubscribe:focus {
+  background-color: transparent !important;
+  border-bottom-color: blue; }
+
+.refresh-button, .Export-button {
+  border: none;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  background: rgba(158, 158, 158, 0.2); }
+
+.Export-button {
+  margin-left: 10px; }
+
+.active1:hover {
+  outline: none;
+  border: none; }
+
+.active1:focus {
+  border-bottom-color: blue; }
+
+.active2:hover {
+  outline: none;
+  border: none; }
+
+.activeactivity:focus {
+  background-color: yellow !important; }
 

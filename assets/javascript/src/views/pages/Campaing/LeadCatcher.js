@@ -17,9 +17,13 @@ class LeadCatcher extends Component {
     const { modal } = this.state;
     return (
       <div >
+        <div className='campaign_navbar' >
+          <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Leads</h1>
+          <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i class="fa fa-question-circle-o" aria-hidden="true"></i></p>
+        </div>
         <div>
           <Modal className="Leadcatcher_modal" isOpen={modal} toggle={this.toggle} className={LeadCatcher}>
-            <ModalHeader className="Leadcatcher_modalheader" toggle={this.toggle}>Modal title</ModalHeader>
+            <ModalHeader className="Leadcatcher_modalheader" toggle={this.toggle}>email id</ModalHeader>
             <ModalBody className="Leadcatcher_modalbody" >
               <LeadCatchermodel />
             </ModalBody>

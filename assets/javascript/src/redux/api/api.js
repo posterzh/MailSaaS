@@ -4,8 +4,8 @@ const Api = {}
 Api.RegisterApi = (user) => {
     return axios.post(`http://127.0.0.1:8000/rest-auth/registration/`, user)
 }
-Api.LoginApi = (Loginuser) => {
-    return axios.post(`http://127.0.0.1:8000/rest-auth/login/`, Loginuser)
+Api.LoginApi = (loginuser) => {
+    return axios.post(`http://127.0.0.1:8000/rest-auth/login/`, loginuser)
 }
 Api.StartApi = (data, token) => {
     return axios({
@@ -18,7 +18,26 @@ Api.StartApi = (data, token) => {
         headers: {
             "Authorization": `Bearer ${token}`,
         }
-
+    })   
+}
+Api.OptionApi=(optionData,token)=>{
+    console.log('OptionAPI------:',optionData);
+    return axios({
+        method:'PUT',
+        url:'http://127.0.0.1:8000/campaign/options/',
+        data:{
+            //    optionData
+               campaign: 1,
+               trackOpens: optionData.trackopen,
+               trackLinkClick: optionData.tracklinkclicks,
+               schedule_send: optionData.schedulesend,
+               schedule_date: optionData.date,
+               schedule_time: `${optionData.time}${':00'}`,
+               terms_and_laws: optionData.termsandlaws
+        },
+        headers:{
+            "Authorization":  `Bearer ${token}`,
+        }
     })
 
 }
@@ -68,5 +87,6 @@ Api.MailSenderApi = (mailData, token) => {
     })
 
 }
+
 
 export default Api;

@@ -26,6 +26,10 @@ class Prospects extends Component {
 
         return (
             <div>
+                <div className='campaign_navbar' >
+                    <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Prospects</h1>
+                    <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i class="fa fa-question-circle-o" aria-hidden="true"></i></p>
+                </div>
                 <Container fluid className='mt-4' >
                     <Row>
                         <Col md='2'>

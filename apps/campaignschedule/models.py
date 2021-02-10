@@ -24,6 +24,8 @@ class WeekDays(models.Model):
 
     def __str__(self):
         return self.name
+
+
 class Schedule(models.Model):
     # DAY_CHOICES = (
     #     ('sunday', 'Sunday'),
@@ -56,7 +58,7 @@ class Schedule(models.Model):
 
 
     def __str__(self):
-        return self.user.username
+        return str(self.user.email)
 
 class Email_schedule(models.Model):
  
@@ -67,7 +69,7 @@ class Email_schedule(models.Model):
     recipient_email = models.CharField(max_length=50)
 
     subject = models.CharField(max_length=50)
-    email_body = models.CharField(max_length=50)
+    email_body = models.TextField(blank=True, null=True)
 
 
     def __str__(self):
