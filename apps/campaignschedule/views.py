@@ -27,7 +27,7 @@ import random
 
 
 
-from .models import Schedule
+from .models import Email_schedule, Schedule
 from .serializers import CampaignscheduleSerializers, ScheduleUpdateSerializers
 
 
