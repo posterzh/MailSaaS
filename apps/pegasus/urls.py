@@ -4,11 +4,10 @@ from rest_framework import routers
 
 from . import views
 
-
 app_name = 'pegasus'
 
 urlpatterns = [
-    path(r'', views.ReactObjectLifecycleView.as_view(), name='react_object_lifecycle'),
+    path(r'<path:path>', views.ReactObjectLifecycleView.as_view(), name='react_object_lifecycle'),
     path(r'payments', views.PaymentView.as_view(), name='payments'),
 #     path(r'payments/create_payment_intent/', views.create_payment_intent, name='create_payment_intent'),
 #     path(r'payments/create/', views.accept_payment, name='accept_payment'),

@@ -1,5 +1,6 @@
-from rest_framework import  serializers
-from .models import UnsubscribeEmail,UnsubcribeCsv
+from rest_framework import serializers
+
+from .models import UnsubcribeCsv, UnsubscribeEmail
 
 
 class UnsubscribeEmailSerializers(serializers.ModelSerializer):

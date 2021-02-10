@@ -1,5 +1,7 @@
 from django.db import models
+
 from apps.users.models import CustomUser
+
 # Create your models here.
 
 Smtp_Port = (
@@ -40,8 +42,3 @@ class EmailAccount(models.Model):
         return self.email
 
 
-class MyMail(models.Model):
-    email = models.EmailField(unique=True)
-
-    def __str__(self):
-        return self.email

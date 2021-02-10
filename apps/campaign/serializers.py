@@ -1,5 +1,7 @@
-from .models import Campaign, CampaignRecipient,FollowUpEmail,DripEmailModel,EmailOnLinkClick,CampaignLeadCatcher
 from rest_framework import serializers
+
+from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
+                     DripEmailModel, EmailOnLinkClick, FollowUpEmail)
 
 
 class CampaignSerializer(serializers.ModelSerializer):

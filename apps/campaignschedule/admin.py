@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Schedule, WeekDays, Email_schedule
+
+from .models import Email_schedule, Schedule, WeekDays
 
 # Register your models here.
 

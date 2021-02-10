@@ -58,7 +58,11 @@ class CreateCampaignRecipientsView(APIView):
     def post(self, request, format=None):
         postdata = request.data
         res = json.loads(postdata["option"])
+        print("yeyeyeyeyeyeyeyeyeyey")
+        postdata._mutable = True
         postdata["option"] = res
+        postdata._mutable = False
+
         resp = []
         # if 'campaign.add_campaign' in request.user.get_group_permissions():
         if 1 in postdata["option"]:
@@ -86,7 +90,6 @@ class CreateCampaignRecipientsView(APIView):
                 resp.append({"success":True})
                 if 2 not in postdata["option"]:
                     return Response({"resp":resp, "success":True})
-
         if 2 in postdata["option"]:
             serializer = CampaignEmailSerializer(data = postdata)
             if serializer.is_valid():
@@ -100,6 +103,7 @@ class CreateCampaignRecipientsView(APIView):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         # else:
         #     return Response({'message':"Has No Permissions",'status':401})
+        print("hi came in erros section ")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -549,7 +553,7 @@ class LeadsCatcherView(generics.ListAPIView):
 
 
 class TrackEmailOpen(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None, id=None):
         
         # print("settings.SITE_URL = ",settings.SITE_URL, request.get_full_path())
@@ -576,7 +580,7 @@ class TrackEmailOpen(APIView):
 
 
 class TrackEmailClick(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None, id=None):
         
         print("yoooooooooooooooooo ", request)
