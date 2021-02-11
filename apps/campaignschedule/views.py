@@ -41,7 +41,6 @@ class CampaignScheduleAdd(CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     
     def post(self,request):
-        print("yoooooooo")
         request.data._mutable = True
         request.data['user'] = request.user.id
         start = request.data['start_time']
@@ -112,25 +111,6 @@ class UpdateScheduleMail(APIView):
     #     print( ' mail send...........................')
     #     return Response({'status': 'mail done'})
 
-
-
-def tries(self):
-    FechaIn ="10:00:00"
-    FechaFin ="13:59:00"
-
-    meses = []
-
-    start = now = datetime.datetime.strptime(FechaIn, "%H:%M:%S")
-    end = datetime.datetime.strptime(FechaFin, "%H:%M:%S")
-
-    
-    while now != end:
-        meses.append(str(now.strftime("%H:%M:%S")))
-        now += datetime.timedelta(minutes=10)
-
-    meses.append(FechaFin)
-    print (meses)
-    return "taskss"
 
 
 

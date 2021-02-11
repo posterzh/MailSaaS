@@ -58,7 +58,6 @@ class CreateCampaignRecipientsView(APIView):
     def post(self, request, format=None):
         postdata = request.data
         res = json.loads(postdata["option"])
-        print("yeyeyeyeyeyeyeyeyeyey")
         postdata._mutable = True
         postdata["option"] = res
         postdata._mutable = False
