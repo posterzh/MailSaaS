@@ -11,15 +11,13 @@ import {
     FAILURE_RECIPIENT,
     REQUEST_FOR_RECIPIENT,
     SUCCESS_RECIPIENT,
-    FAILURE_VIEW,
-    REQUEST_FOR_VIEW,
-    SUCCESS_VIEW,
     FAILURE_MAIL_SENDER,
     REQUEST_FOR_MAIL_SENDER,
     SUCCESS_MAIL_SENDER,
-    REQUEST_FOR_OPTION,
-    SUCCESS_OPTION,
-    FAILURE_OPTION
+    FAILURE_MAIL_GET_DATA,
+    REQUEST_FOR_MAIL_GET_DATA,
+    SUCCESS_MAIL_GET_DATA,
+    SUCCESS_FETCH_UNSUBSCRIPTION
 } from "../actionType/actionType";
 
 const initialState = {
@@ -27,8 +25,11 @@ const initialState = {
     user: '',
     data: '',
     recipientData: '',
-    viewData:'',
-    mailData:''
+    mailGetData: [],
+    mailData: '',
+    viewData: '',
+    mailData: '',
+    unsubscribeData: [],
 }
 export const RegisterReducer = (state = { initialState }, action) => {
     switch (action.type) {
@@ -65,7 +66,7 @@ export const LoginReducer = (state = { initialState }, action) => {
             break;
     }
 }
-export const StartReducer = (state = { initialState }, action) => {
+export const StartCampaignReducer = (state = { initialState }, action) => {
     switch (action.type) {
         case REQUEST_FOR_START:
             return {
@@ -76,18 +77,6 @@ export const StartReducer = (state = { initialState }, action) => {
                 data: action.data,
             }
         case FAILURE_START:
-            return {
-            }
-            
-            case REQUEST_FOR_OPTION:
-            return {
-            }
-        case SUCCESS_OPTION:
-            return {
-                ...state,
-                data: action.optionData,
-            }
-        case FAILURE_OPTION:
             return {
             }
         default: return state
@@ -111,24 +100,6 @@ export const RecipientReducer = (state = { initialState }, action) => {
             break;
     }
 }
-
-export const ViewReducer = (state = { initialState }, action) => {
-    switch (action.type) {
-        case REQUEST_FOR_VIEW:
-            return {
-            }
-        case SUCCESS_VIEW:
-            return {
-                ...state,
-                ViewData: action. viewData,
-            }
-        case FAILURE_VIEW:
-            return {
-            }
-        default: return state
-            break;
-    }
-}
 export const MailSenderReducer = (state = { initialState }, action) => {
     switch (action.type) {
         case REQUEST_FOR_MAIL_SENDER:
@@ -146,4 +117,33 @@ export const MailSenderReducer = (state = { initialState }, action) => {
             break;
     }
 }
+export const MailGetDataReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case REQUEST_FOR_MAIL_GET_DATA:
+            return {
+            }
+        case SUCCESS_MAIL_GET_DATA:
+            return {
+                ...state,
+                mailGetData: action.mailGetData,
+            }
+        case FAILURE_MAIL_GET_DATA:
+            return {
+            }
+        default: return state
+            break;
+    }
+}
+export const UnsubscribeReducer = (state = { initialState }, action) => {
+    console.log(action.payload, "action.payload", state.unsubscribeData)
+    switch (action.type) {
+        case SUCCESS_FETCH_UNSUBSCRIPTION:
+            return {
+                ...state,
+                unsubscribeData: action.payload
+            }
+        default: return state
+            break;
+    }
 
+}

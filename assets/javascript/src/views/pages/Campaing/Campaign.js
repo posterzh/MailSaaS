@@ -9,21 +9,17 @@ import {
 } from "reactstrap";
 import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
-import {ViewAction} from '../../../redux/action/AuthourizationAction'
+import { CampaignTableAction } from '../../../redux/action/CampaignAction'
 class Campaign extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       show: true,
       hide: true,
-      viewData:[]
+      data: []
     }
   }
- 
-  componentDidMount(){
-    this.props.ViewAction();
-  }  
-  
+
   render() {
     const { show, hide } = this.state;
     return (
@@ -31,8 +27,8 @@ class Campaign extends Component {
         <div className='main-view'>
           <div >
             <div className='campaign_navbar' >
-              <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px',marginTop:"20px" }}>Campaigns</h1>
-              <p style={{color:"white",fontSize:"20px",marginTop:"20px",marginRight:"20px"}}><i class="fa fa-question-circle-o" aria-hidden="true"></i></p>
+              <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Campaigns</h1>
+              <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i class="fa fa-question-circle-o" aria-hidden="true"></i></p>
             </div>
             <div className=''>
               <Container fluid className=''>
@@ -42,7 +38,7 @@ class Campaign extends Component {
                       <div className='input_field'>
                         <Input type='email' className='in' placeholder='Search' />
                         <div className='child mt-2'>
-                          <a href='#'> <span className='font_icon'><i class="fa fa-search" aria-hidden="true"></i></span></a></div>
+                          <a href='#'> <span className='font_icon'><i className="fa fa-search" aria-hidden="true"></i></span></a></div>
                       </div>
                     </div>
                   </Col>
@@ -71,12 +67,12 @@ class Campaign extends Component {
                         <Input type='email' className='label_input w-100' placeholder='Create a campaign label' />
                         <div className='child mt-2'>
                           <a href='' onClick={(e) => { e.preventDefault(), this.setState({ show: true }) }}>
-                            <span className='font_icon'><i class="fa fa-check" aria-hidden="true"></i></span>
+                            <span className='font_icon'><i className="fa fa-check" aria-hidden="true"></i></span>
                           </a>
                         </div>
                         <div className='child mt-2'>
                           <a href='' onClick={(e) => { e.preventDefault(), this.setState({ show: true }) }}>
-                            <span className='font_icon'><i class="fa fa-check" aria-hidden="true"></i></span>
+                            <span className='font_icon'><i className="fa fa-check" aria-hidden="true"></i></span>
                           </a>
                         </div>
                       </div>
@@ -85,13 +81,13 @@ class Campaign extends Component {
                   <Col md='1'>
                     <div className='campaign_label'>
                       <div className='add_label'> <span>
-                        <i class="fa fa-ban" aria-hidden="true"></i>Unlabeled</span></div>
+                        <i className="fa fa-ban" aria-hidden="true"></i>Unlabeled</span></div>
                     </div>
                   </Col>
                   <Col md='1'>
                     <div className='campaign_label'>
                       <div className='add_label' onMouseOut={(e) => { e.preventDefault(), this.setState({ hide: hide }) }} onMouseMove={(e) => { e.preventDefault(), this.setState({ hide: !hide }) }}>
-                        <span><i class="fa fa-tags" aria-hidden="true"></i>testlabel<span>
+                        <span><i className="fa fa-tags" aria-hidden="true"></i>testlabel<span>
                         </span>
                         </span>
                       </div>
@@ -120,7 +116,7 @@ class Campaign extends Component {
                         </thead>
                         <tbody>
                           <tr className='pointer' >
-                            <td><input type='checkbox'/></td>
+                            <td><input type='checkbox' /></td>
                             <Link to={'/app/admin/campaign-detail'}><td className="Campaign_title" onClick={() => { this.setState({}) }}>January 19 Outreach</td></Link>
                             <td className="Created">0</td>
                             <td className="Assigned">0</td>
@@ -139,8 +135,8 @@ class Campaign extends Component {
               </Container>
               <div className='plus-button-div'>
                 <div className='new_add_button'>
-                 <span className="plusicon">+</span>
-                  </div>
+                  <span className="plusicon">+</span>
+                </div>
               </div>
             </div>
           </div>
@@ -151,12 +147,12 @@ class Campaign extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-      // token: state.token
+    // token: state.token
   };
 };
 const mapDispatchToProps = dispatch => ({
-  ViewAction: viewData => {
-      dispatch(ViewAction(viewData));
+  CampaignTableAction: CampaignTableData => {
+    dispatch(CampaignTableAction(CampaignTableData));
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Campaign)

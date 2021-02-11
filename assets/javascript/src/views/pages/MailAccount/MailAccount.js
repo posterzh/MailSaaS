@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col, Input, Form } from 'reactstrap';
 import SMTP from './SMTP'
 import { connect } from "react-redux";
-import { MailSenderAction } from '../../../redux/action/AuthourizationAction'
+import { MailSenderAction,MailGetDataAction } from '../../../redux/action/MailSenderAction'
 
 export class MailAccount extends Component {
     constructor() {
@@ -11,13 +11,17 @@ export class MailAccount extends Component {
             modal: true,
             emailAddress: '',
             FullName: '',
-            smtpPort: '',
+            smtpPort: '587',
             smtpHost: '',
             smtpPassword: '',
             imapHost: '',
             imapPassword: '',
-            imapPort: ''
+            imapPort: '993'
         }
+    }
+
+    componentDidMount(){
+        this.props.MailGetDataAction()
     }
     toggle = () => {
         this.setState({ modal: !this.state.modal })
@@ -29,14 +33,11 @@ export class MailAccount extends Component {
         e.preventDefault()
         console.log(this.state)
 
-        const mailData={
+        const mailData = {
             email: this.state.emailAddress,
             full_name: this.state.FullName,
             smtp_port: this.state.smtpPort,
-            smtp_host: this.state.smtpHost,
-            smtp_password: this.state.smtpPassword,
-            smtp_username: this.state.emailAddress,
-            imap_port: this.state.imapPort,
+            smtp_host: thMailGetDataActionis.state.imapPort,
             imap_host: this.state.imapHost,
             imap_password: this.state.imapPassword,
             imap_username: this.state.emailAddress,
@@ -44,10 +45,11 @@ export class MailAccount extends Component {
         this.props.MailSenderAction(mailData)
         console.log(mailData)
     }
+    
     render() {
         return (
             <div>
-                <h1>Mail Account</h1>
+                <h1>Mail Account</h1> 
                 <Button className='btn btn-light' onClick={(e) => { e.preventDefault(), this.setState({ modal: true }) }}>+</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} >
                     <Form onSubmit={this.handleSubmit}>
@@ -69,13 +71,13 @@ export class MailAccount extends Component {
                                         <Row>SMTP connection</Row>
                                         <Row><p style={{ fontSize: '0.7em' }}>This information comes from your email provider and is how we‘ll send your emails.</p></Row>
                                         <Row>
-                                            <Col md='8'><Input style={{ width: '100%' }} name='smtpHost' value={this.state.smtpHost} onChange={this.handleChange} className='mt-4' type='text' placeholder='Host(e.g.mail.server.com)'></Input></Col>
+                                            <Col md='8'><Input name='smtpHost' value={this.state.smtpHost} onChange={this.handleChange} className='mt-4' type='text' placeholder='Host(e.g.mail.server.com)'></Input></Col>
                                             <Col md='4'><label className='selectbox_label' >Port Number</label>
-                                                <Input name='smtpPort' onChange={this.handleChange} value={this.state.smtpPort} type='select' style={{ width: '100%' }}>
-                                                    <option>25</option>
-                                                    <option>587</option>
-                                                    <option>465</option>
-                                                    <option>2525</option>
+                                                <Input name='smtpPort' type='select' onChange={this.handleChange} defaultValue='587'>
+                                                    <option value='25'>25</option>
+                                                    <option value='465'>465</option>
+                                                    <option value='587'>587</option>
+                                                    <option value='2525'>2525</option>
                                                 </Input>
                                             </Col>
                                         </Row><br></br>
@@ -89,17 +91,17 @@ export class MailAccount extends Component {
                                         <Row>IMAP connection</Row>
                                         <Row><p style={{ fontSize: '0.7em' }}>This information comes from your email provider and is how we‘ll check your inbox for replies.</p></Row>
                                         <Row>
-                                            <Col md='8'><Input style={{ width: '100%' }} onChange={this.handleChange} name='imapHost' value={this.state.imapHost} className='mt-4' type='text' placeholder='Host(e.g.mail.server.com)'></Input></Col>
+                                            <Col md='8'><Input onChange={this.handleChange} name='imapHost' value={this.state.imapHost} className='mt-4' type='text' placeholder='Host(e.g.mail.server.com)'></Input></Col>
                                             <Col md='4'><label className='selectbox_label' >Port Number</label>
-                                                <Input type='select' name='imapPort' onChange={this.handleChange} value={this.state.imapPort}>
-                                                    <option>143</option>
-                                                    <option>993</option>
-                                                    <option>995</option>
+                                                <Input type='select' name='imapPort' onChange={this.handleChange} defaultValue='993'>
+                                                    <option value='143' >143</option>
+                                                    <option value='993'>993</option>
+                                                    <option value='995'>995</option>
 
                                                 </Input>
                                             </Col>
                                         </Row><br></br>
-                                        <Row><Input type='email' name='emailAddress' onChange={this.handleChange} value={this.state.emailAddress}  placeholder='Username(usually your email address)'></Input></Row><br></br>
+                                        <Row><Input type='email' name='emailAddress' onChange={this.handleChange} value={this.state.emailAddress} placeholder='Username(usually your email address)'></Input></Row><br></br>
                                         <Row><Input type='password' name='imapPassword' onChange={this.handleChange} value={this.state.imapPassword} placeholder='Password'></Input></Row>
                                     </Col>
                                 </Row>
@@ -114,7 +116,7 @@ export class MailAccount extends Component {
                             </Container>
                         </ModalBody>
                         <ModalFooter>
-                            <Button type='submit'>NEXT <i className='fa fa-right-arrow '></i></Button>
+                            <Button type='submit'>NEXT<i className='fa fa-right-arrow '></i></Button>
                             <Button>Cancle</Button>
                         </ModalFooter>
                     </Form>
@@ -130,9 +132,8 @@ const mapStateToProps = (state) => {
     };
 };
 const mapDispatchToProps = dispatch => ({
-    MailSenderAction: mailData => {
-        dispatch(MailSenderAction(mailData));
-    },
+    MailSenderAction: mailData => {dispatch(MailSenderAction(mailData))},
+    MailGetDataAction: mailData => {dispatch(MailGetDataAction(mailData))},
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MailAccount)
 
