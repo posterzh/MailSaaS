@@ -3,7 +3,6 @@ import datetime
 import json
 import re
 from datetime import date, datetime, time
-
 import pytracking
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -58,7 +57,6 @@ class CreateCampaignRecipientsView(APIView):
     def post(self, request, format=None):
         postdata = request.data
         res = json.loads(postdata["option"])
-        print("yeyeyeyeyeyeyeyeyeyey")
         postdata._mutable = True
         postdata["option"] = res
         postdata._mutable = False
@@ -789,26 +787,21 @@ class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
         try:        
             return CampaignRecipient.objects.get(id = pk)
         except CampaignRecipient.DoesNotExist:
-                raise Http404
+
+            return Response({'message':'Reciepent does not exist',"success":False})
 
     def put(self, request, pk, format=None):
-        queryset = self.get_object(request,pk)
-        request.data._mutable = True
-        request.data['leads'] = True
-        request.data._mutable = False
-        
-        serializer = CampaignEmailSerializer(queryset, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            SendSlackMessage(serializer.data)
 
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        queryset = self.get_object(request,pk)
+        queryset.leads = True
+        queryset.save()
+        return Response({"message":"Lead Updated sucessfully","Sucess":True})
+
 
     def delete(self, request, pk, format=None):
         queryset = self.get_object(request, pk)
         queryset.delete()
-        return Response('Deleted',status=status.HTTP_200_OK)
+        return Response({'Sucess':True,"status":status.HTTP_200_OK})
 
 class CampaignleadCatcherView(generics.CreateAPIView):
 
@@ -816,40 +809,46 @@ class CampaignleadCatcherView(generics.CreateAPIView):
     serializer_class = CampaignLeadCatcherSerializer
 
     def post(self, request, format=None):
-        request.data._mutable = True
-        request.data['assigned'] = request.user.id
-        request.data._mutable = False
+        
+        for i in request.data:
+            i['assigned'] = request.user.id
+            serializer = CampaignLeadCatcherSerializer(data = i)
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response({"sucess":False, "status":serializer.errors})
+        return Response({"sucess":True,"message":"leadcatcher settings created"})
 
-        serializer = CampaignLeadCatcherSerializer(data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, format=None):
+        try :
+            queryset = CampaignLeadCatcher.objects.get(campaign = request.data['campaign'])
+            serializer = CampaignLeadCatcherSerializer(queryset)
+            return Response(serializer.data)
+        except :
+            return Response({"message":"lead catcher not available "})
+            
+
+
 
 class LeadCatcherUpdateView(generics.RetrieveUpdateDestroyAPIView):
     
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = CampaignLeadCatcherSerializer
         
-    def get(self, request, format=None):
-
-        queryset = CampaignLeadCatcher.objects.all()
-        serializer = CampaignLeadCatcherSerializer(queryset, many = True)
-        return Response(serializer.data)
     
-    def put(self, request,format=None):
-        queryset = CampaignLeadCatcher.objects.get(campaign=request.data['campaign'])
+    def put(self, request,pk,format=None):
+        queryset = CampaignLeadCatcher.objects.get(id=pk)
         request.data['assigned'] = request.user.id
         serializer = CampaignLeadCatcherSerializer(queryset, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response({"message":"Data Updated Sucessful","Sucess":True})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request,format=None):
-        queryset = CampaignLeadCatcher.objects.get(id=request.data['id'])
+    def delete(self, request,pk,format=None):
+        queryset = CampaignLeadCatcher.objects.get(id=pk)
         queryset.delete()
-        return Response('Deleted',status=status.HTTP_200_OK)
+        return Response({"Sucess":True,"status":status.HTTP_200_OK})
         
 
 class CampaignMessages(generics.RetrieveUpdateAPIView):
@@ -950,8 +949,8 @@ class ProspectsView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, *args,**kwargs):
-        params = list(dict(request.GET).keys())
 
+        params = list(dict(request.GET).keys())
         if ("search" in params) and ("filter" in params):
             toSearch = request.GET['search']
             tofilter = request.GET['filter']
@@ -1083,7 +1082,7 @@ class ProspectsCampaignView(generics.ListAPIView):
 
     def get(self, request, pk, *args, **kwargs):
         queryset = CampaignRecipient.objects.get(id=pk)
-        
+
         data = {
                 'campaign':queryset.campaign.title,
                 'email':queryset.email,
@@ -1094,7 +1093,8 @@ class ProspectsCampaignView(generics.ListAPIView):
                 'has_link_clicked':0,
                 'replies':0,
                 'created_date':queryset.created_date,
-            }
+        }
+
         if queryset.sent:
             data['sent'] = data['sent']+1
         if queryset.opens:
@@ -1108,7 +1108,8 @@ class ProspectsCampaignView(generics.ListAPIView):
 
 class RecipientUnsubcribe(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = UnsubscribeEmailSerializers      
+    serializer_class = UnsubscribeEmailSerializers     
+
     def put(self, request, format=None):
         recipient_id =request.data["recipient_id"]
         for id in recipient_id:
