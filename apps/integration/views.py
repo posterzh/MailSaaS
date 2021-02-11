@@ -24,7 +24,6 @@ def login():
     return sf
 
 
-# # https://externlabs2-dev-ed.lightning.force.com/lightning/o/Lead/
 
 class ContactViewSet(generics.CreateAPIView):
     permission_classes = (permissions.AllowAny,)

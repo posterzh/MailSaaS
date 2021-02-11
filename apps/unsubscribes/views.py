@@ -27,7 +27,6 @@ class UnsubscribeEmailAdd(CreateAPIView):
         for email in postdata["email"]:
             data = {
                 "email" : email,
-                "name" : postdata["name"],
                 'user':request.user.id
             }
             serializer = UnsubscribeEmailSerializers(data=data)
