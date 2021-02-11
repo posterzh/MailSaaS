@@ -12,10 +12,10 @@ from rest_framework import permissions, serializers, status
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from .models import UnsubcribeCsv, UnsubscribeEmail
 from .serializers import UnsubscribeEmailSerializers
-
+from apps.campaign.models import CampaignRecipient
+# from apps.campaign.serializers CampaignRecipient
 
 class UnsubscribeEmailAdd(CreateAPIView):
     serializer_class = UnsubscribeEmailSerializers
@@ -25,6 +25,13 @@ class UnsubscribeEmailAdd(CreateAPIView):
         postdata = request.data
         print("request.data", postdata)
         for email in postdata["email"]:
+            recipients = CampaignRecipient.objects.filter(email=email,campaign__assigned=request.user.id).exists()
+            if recipients:
+                campaign_recipient = CampaignRecipient.objects.filter(email=email,campaign__assigned=request.user.id)
+                for recipient in campaign_recipient:
+                    recipient.unsubscribe=True
+                    recipient.save()
+
             data = {
                 "email" : email,
                 'user':request.user.id
@@ -95,6 +102,13 @@ class UnsubcribeEmailDelete(APIView):
                 if unsubcribe.on_delete:
                     return Response("Does Not exist ")
                 else:
+                    recipients = CampaignRecipient.objects.filter(email=unsubcribe.email,campaign__assigned=request.user.id).exists()
+                    if recipients:
+                        campaign_recipient = CampaignRecipient.objects.filter(email=unsubcribe.email,campaign__assigned=request.user.id)
+                        for recipient in campaign_recipient:
+                            recipient.unsubscribe=False
+                            recipient.save()
+
                     unsubcribe.on_delete=True
                     unsubcribe.save()
                 return Response("Unsubcribe Recipient Successfully Done ")

@@ -28,8 +28,8 @@ class EmailAccountsView(generics.ListCreateAPIView):
         if request.data['smtp_username'] == request.data['email'] and request.data['imap_username'] == request.data['email']:
             serializer = EmailAccountSerializer(data=request.data)
             if serializer.is_valid():
-                imap()
-                # serializer.save()
+                # imap()
+                serializer.save()
                 return Response({"message":serializer.data,"sucess":True})
             return Response({'message':'Invalid Serializer',"error":serializer.errors})
         return Response({"message":"Smtp username and Imap username does not match to email"})
@@ -188,32 +188,32 @@ def sendmail():
 
 
 
-import imaplib
+# import imaplib
 
-def imap():
-    mail_setting = EmailAccount.objects.last()
-    print(mail_setting, "HI This is mail setting ")
+# def imap():
+#     mail_setting = EmailAccount.objects.last()
+#     print(mail_setting, "HI This is mail setting ")
 
-    imap_host = mail_setting.imap_host
+#     imap_host = mail_setting.imap_host
 
-    imap_user = mail_setting.imap_username
-    imap_pass = mail_setting.imap_password
+#     imap_user = mail_setting.imap_username
+#     imap_pass = mail_setting.imap_password
 
-    # connect to host using SSL
-    imap = imaplib.IMAP4_SSL(imap_host)
-    print(imap,  "<<<<-- i am in imap")
-    ## login to server
-    imap.login(imap_user, imap_pass)
+#     # connect to host using SSL
+#     imap = imaplib.IMAP4_SSL(imap_host)
+#     print(imap,  "<<<<-- i am in imap")
+#     ## login to server
+#     imap.login(imap_user, imap_pass)
 
-    print("Bhai ye login ho gya")
+#     print("Bhai ye login ho gya")
 
-    imap.select('Inbox')
+#     imap.select('Inbox')
 
-    tmp, data = imap.search(None, 'ALL')
-    # print(data[0]. , " <<<<<<<<<<<<    i am in data ")
+#     tmp, data = imap.search(None, 'ALL')
+#     # print(data[0]. , " <<<<<<<<<<<<    i am in data ")
 
-    for num in data[0].split():
-        tmp, data = imap.fetch(num, '(RFC822)')
-        print('Message: {0}\n'.format(num))
-        break
-    imap.close()
+#     for num in data[0].split():
+#         tmp, data = imap.fetch(num, '(RFC822)')
+#         print('Message: {0}\n'.format(num))
+#         break
+#     imap.close()
