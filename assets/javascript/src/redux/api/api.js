@@ -3,15 +3,15 @@ import { API_BASE_URL } from '../../Constants'
 const Api = {}
 
 Api.RegisterApi = (user) => {
-  return axios.post(`http://127.0.0.1:8000/rest-auth/registration/`, user)
+  return axios.post(`${API_BASE_URL}/rest-auth/registration/`, user)
 }
 Api.LoginApi = (loginuser) => {
-  return axios.post(`http://127.0.0.1:8000/rest-auth/login/`, loginuser)
+  return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser)
 }
 Api.StartCampaignApi = (data, token) => {
   return axios({
     method: 'POST',
-    url: 'http://127.0.0.1:8000/campaign/start/',
+    url: `${API_BASE_URL}/campaign/start/`,
     data: {
       title: data.title,
       from_address: data.from_address
@@ -25,7 +25,7 @@ Api.StartCampaignApi = (data, token) => {
 Api.RecipientApi = (formData, token) => {
   return axios({
     method: 'POST',
-    url: 'http://127.0.0.1:8000/campaign/recipients/',
+    url: `${API_BASE_URL}/campaign/recipients/`,
     data: { formData },
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -36,7 +36,7 @@ Api.RecipientApi = (formData, token) => {
 Api.CampaignTableDataApi = (token) => {
   return axios({
     method: 'GET',
-    url: 'http://127.0.0.1:8000/campaign/view/',
+    url: `${API_BASE_URL}/campaign/view/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -46,7 +46,7 @@ Api.MailSenderApi = (mailData, token) => {
   console.log(mailData, token, "data")
   return axios({
     method: 'POST',
-    url: 'http://127.0.0.1:8000/mail/sender/',
+    url: `${API_BASE_URL}mail/sender/`,
     data: mailData,
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -57,7 +57,7 @@ Api.MailSenderApi = (mailData, token) => {
 Api.MailGetDataApi = (token) => {
   return axios({
     method: 'GET',
-    url: 'http://127.0.0.1:8000/mail/sender/',
+    url: `${API_BASE_URL}/mail/sender/`,
   })
 }
 
