@@ -787,12 +787,8 @@ class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
         try:        
             return CampaignRecipient.objects.get(id = pk)
         except CampaignRecipient.DoesNotExist:
-<<<<<<< HEAD
-                return Response({'message':'Reciepent does not exist',"success":False})
-=======
 
             return Response({'message':'Reciepent does not exist',"success":False})
->>>>>>> cd0208c285dcad56f6fc595ed1cc4dcd60974df3
 
     def put(self, request, pk, format=None):
 
