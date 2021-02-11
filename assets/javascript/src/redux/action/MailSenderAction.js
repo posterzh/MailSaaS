@@ -13,7 +13,6 @@ export const requestForMailSender = () => {
     }
 }
 export const MailSenderSuccess = (mailData) => {
-    console.log(mailData, 'data')
     return {
         type: SUCCESS_MAIL_SENDER,
         mailData
@@ -30,11 +29,11 @@ export const requestForMailGetData = () => {
         type: REQUEST_FOR_MAIL_GET_DATA,
     }
 }
-export const MailGetDataSuccess = (mailGetData) => {
-    console.log(mailGetData, 'data')
+export const MailGetDataSuccess = (payload) => {
+    console.log(payload, 'data')
     return {
         type: SUCCESS_MAIL_GET_DATA,
-        payload: { mailGetData }
+        payload
     }
 }
 export const MailGetDataFailure = () => {
@@ -45,11 +44,10 @@ export const MailGetDataFailure = () => {
 
 export const MailSenderAction = (mailData) => {
     return function (dispatch) {
-        const token = localStorage.getItem('token')
-        console.log(token,'data')
+        const token = localStorage.getItem('access_token')
         dispatch(requestForMailSender(mailData, token))
         Api.MailSenderApi(mailData, token).then(result => {
-            dispatch(MailSenderSuccess(result.data))
+            dispatch(MailSenderSuccess('result', result.data))
         }).catch(err => {
             console.log(err)
         })
@@ -58,12 +56,11 @@ export const MailSenderAction = (mailData) => {
 
 export const MailGetDataAction = () => {
     return function (dispatch) {
-        const token = localStorage.getItem('token')
-        dispatch(requestForMailSender(token))
-        console.log('tokenfsdfs', token)
+        const token = localStorage.getItem('access_token')
+        dispatch(requestForMailGetData(token))
         Api.MailGetDataApi(token).then(result => {
-            dispatch(MailGetDataSuccess(result.data))
-            console.log(result)
+            dispatch(MailGetDataSuccess(result.data.message))
+            console.log("result.data.message",result.data.message[0].id)
         }).catch(err => {
             console.log(err)
         })

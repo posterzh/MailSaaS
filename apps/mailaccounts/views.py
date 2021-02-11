@@ -24,46 +24,26 @@ class EmailAccountsView(generics.ListCreateAPIView):
     queryset = EmailAccount.objects.all()
 
     def post(self,request,*args,**kwargs):
-        # request.data._mutable = True
         request.data["user"] = request.user.id
-        # request.data._mutable = False
-
-        # payload = {'access_token':request.data.get('access_token', )}
-        # google_url = request.get('https://www.googleapis.com/oauth2/v2/userinfo', params=payload)
-        # data = json.loads(google_url.text)
-        
-        # if request.data['provider'] == 'google':
-
-        #     # if 'error' in data:
-        #     #     content = {'message': 'wrong google token / this google token is already expired.'}
-        #     #     return Response(content)
-        #     # try:
-        #     #     mail = EmailAccount.objects.get(email=data['email'])
-        #     # except EmailAccount.DoesNotExist:
-        #     #     mail = EmailAccount()
-        #     mail.email = data['email']
-        #     mail.full_name = data['name']
-        #     mail.provider = data['idpId']
-        #     serializer = EmailAccountSerializer(data=request.data)
-        #     serializer.save()
-        #     serializer.is_valid()
-        #     return Response(serializer.data)
-
-        # elif request.data['provider'] == 'smtp':
-        
         if request.data['smtp_username'] == request.data['email'] and request.data['imap_username'] == request.data['email']:
             serializer = EmailAccountSerializer(data=request.data)
-            print(serializer,"<<<<<<<<<")
             if serializer.is_valid():
-                serializer.save()
+                imap()
+                # serializer.save()
                 return Response({"message":serializer.data,"sucess":True})
             return Response({'message':'Invalid Serializer',"error":serializer.errors})
         return Response({"message":"Smtp username and Imap username does not match to email"})
+
     def get(self,request,*args,**kwargs):
-        queryset = EmailAccount.objects.get(user=request.user.id)
-        serializer = EmailAccountSerializer(queryset)
-        return Response({"message":serializer.data,"sucess":True})
-        
+
+        try:
+            queryset = EmailAccount.objects.filter(user=request.user.id)
+            serializer = EmailAccountSerializer(queryset,many = True)
+            return Response({"message":serializer.data,"sucess":True})
+
+        except:
+            return Response ({"message":"mail accounts not available"})
+
 
 class EmailAccountsUpdateView(generics.UpdateAPIView):
 
@@ -108,7 +88,6 @@ def send_mail_with_smtp():
             use_ssl = False,
             timeout=10
         )
-        # print(mail_obj, "<<<<<====================")
         msg = mail.EmailMessage(
             subject="this is subject",
             body="Hi, This is for testing purpose",
@@ -117,8 +96,9 @@ def send_mail_with_smtp():
             to=['divyakhandelwal@externlabs.com','ashutoshsharma@externlabs.com'],
             connection=con,
         )
-        print(msg.values,">>>>>>>>>>>>>>>>>")
-        mail_obj.send_messages([msg])
+        print("mail_obj.ssl_keyfile >>>>>>", mail_obj.close(), "mail_obj.ssl_certfile"  )
+        # mail_obj.send_messages([msg])
+
         print('Message has been sent.')
 
         mail_obj.close()
@@ -148,7 +128,7 @@ def send_mail_with_gmail():
     mimeMessage['subject'] = 'You won'
     mimeMessage.attach(MIMEText(emailMsg, 'plain'))
     raw_string = base64.urlsafe_b64encode(mimeMessage.as_bytes()).decode()
-    print(raw_string,"<<<<<<<<<<<<<raw_string")
+    # print(raw_string,"<<<<<<<<<<<<<raw_string")
     # raw_string2 = base64.urlsafe_b64encode(mimeMessage.as_bytes())
     print(mimeMessage,"raw_string2>>>>>>>>>>>>>")
     # message = service.users().messages().send(userId='me', body={'raw': raw_string}).execute()
@@ -159,5 +139,80 @@ def send_mail_with_gmail():
 
 
 
-def send_mail_with_microsoft():
-    pass
+from email import encoders
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
+import imaplib
+
+def sendmail():
+    ok = True
+    mail_setting = EmailAccount.objects.last()
+    # print(EmailAccount.objects.all() , "This is all wali ")
+
+    print(mail_setting , "This is last wali ")
+    gmail_user = mail_setting.smtp_username
+    gmail_pwd  = mail_setting.smtp_password
+    host = mail_setting.smtp_host
+    host_port = mail_setting.smtp_port
+
+    msg = MIMEMultipart('alternative')
+    # print(dir(msg),"<<<<<<<<<<<<<<<")
+    msg['From']    = gmail_user
+    msg['To']      = 'ashutoshsharma@externlabs.com'
+    msg['Cc']      = 'you@gmail.com'
+    msg['Subject'] = "this is the subject"
+    message = "This is Message for testing"
+    msg.attach(MIMEText(message))
+
+    try:
+        mailServer = smtplib.SMTP(host, host_port)
+        print(dir(smtplib.SMTP),"\n")
+
+        print(smtplib.SMTP.connect , "\n")
+        mailServer.ehlo()
+        mailServer.starttls()
+
+        mailServer.ehlo()
+        mailServer.login(gmail_user, gmail_pwd)
+        # mailServer.sendmail(gmail_user,[msg['To'],msg['Cc']],msg.as_string())
+        print("Message send sucessfully")
+        mailServer.close()
+    except:
+        ok = False
+    return ok
+
+
+
+
+
+import imaplib
+
+def imap():
+    mail_setting = EmailAccount.objects.last()
+    print(mail_setting, "HI This is mail setting ")
+
+    imap_host = mail_setting.imap_host
+
+    imap_user = mail_setting.imap_username
+    imap_pass = mail_setting.imap_password
+
+    # connect to host using SSL
+    imap = imaplib.IMAP4_SSL(imap_host)
+    print(imap,  "<<<<-- i am in imap")
+    ## login to server
+    imap.login(imap_user, imap_pass)
+
+    print("Bhai ye login ho gya")
+
+    imap.select('Inbox')
+
+    tmp, data = imap.search(None, 'ALL')
+    # print(data[0]. , " <<<<<<<<<<<<    i am in data ")
+
+    for num in data[0].split():
+        tmp, data = imap.fetch(num, '(RFC822)')
+        print('Message: {0}\n'.format(num))
+        break
+    imap.close()

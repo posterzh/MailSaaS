@@ -36,9 +36,11 @@ const initialState = {
     mailData: '',
     unsubscribeData: [],
     optionData:'',
-    prospectData:[]
+    prospectData:[],
+    mailAccountId:''
 }
 export const RegisterReducer = (state = { initialState }, action) => {
+    console.log(action.payload&&action.payload[0],'payloaddata')
     switch (action.type) {
         // cases for signup
         case REQUEST_FOR_REGISTER:
@@ -132,7 +134,8 @@ export const MailGetDataReducer = (state = { initialState }, action) => {
         case SUCCESS_MAIL_GET_DATA:
             return {
                 ...state,
-                mailGetData: action.mailGetData,
+                mailGetData: action.payload,
+                // mailAccountId: action.payload[].id
             }
         case FAILURE_MAIL_GET_DATA:
             return {
@@ -142,7 +145,7 @@ export const MailGetDataReducer = (state = { initialState }, action) => {
     }
 }
 export const UnsubscribeReducer = (state = { initialState }, action) => {
-    console.log(action.payload, "action.payload", state.unsubscribeData)
+    // console.log(action.payload, "action.payload", state.unsubscribeData)
     switch (action.type) {
         case SUCCESS_FETCH_UNSUBSCRIPTION:
             return {

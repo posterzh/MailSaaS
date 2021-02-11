@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from "react-redux";
 import { Container, Row, Col, Form, Input } from 'reactstrap';
 import { StartCampaignAction } from "../../../redux/action/CampaignAction";
+import { MailSenderAction, MailGetDataAction } from '../../../redux/action/MailSenderAction'
 
 class NewCampaign_start extends React.Component {
     constructor() {
@@ -16,10 +17,10 @@ class NewCampaign_start extends React.Component {
             [e.target.name]: e.target.value
         })
     }
-
-    componentDidMount(){
-        // this.props.fetchEmails();
+    componentDidMount() {
+        this.props.MailGetDataAction();
     }
+
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(this.state)
@@ -31,6 +32,8 @@ class NewCampaign_start extends React.Component {
         this.props.StartCampaignAction(data)
     }
     render() {
+        const { mailGetData } = this.props;
+        console.log(mailGetData, 'mailgetdata')
         return (
             <div>
                 <div style={{ height: '100%', width: '100%' }}>
@@ -45,13 +48,15 @@ class NewCampaign_start extends React.Component {
                                         <div style={{ width: '100%' }}> <label>Title (for your team's eyes only)</label><br></br>
                                             <input type='text' name='title' value={this.state.title} onChange={this.handleChange} className='start_input' autoComplete="off"></input></div>
                                     </Row>
-                                    <Row className='mt-5'>
+                                    <Row className='mt-5'>  
                                         <div style={{ width: '100%' }}><label >From Address</label><br></br>
-                                            <Input type="select" name="from_address" value={this.state.from_address} onChange={this.handleChange} id="exampleSelect">
-                                                <option value="(I'll decide later)">(I'll decide later)</option>
-                                                <option value='email'>Email</option>
-                                                <option value='Option'>Option</option>
-                                                <option></option>
+                                            <Input type="select" onChange={this.handleChange} id="exampleSelect">
+                                                {
+                                                    mailGetData && mailGetData.map((item, index) => {
+                                                        console.log('item',item.id,item.email);
+                                                        return <option value={item.id}>{item.email}</option>
+                                                    })
+                                                }
                                             </Input></div>
                                     </Row>
                                     <Row className='mt-5'>
@@ -70,13 +75,13 @@ class NewCampaign_start extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
+
     return {
-        // token: state.token
+        mailGetData: state.MailGetDataReducer.mailGetData
     };
 };
 const mapDispatchToProps = dispatch => ({
-    StartCampaignAction: data => {
-        dispatch(StartCampaignAction(data));
-    },
+    StartCampaignAction: data => { dispatch(StartCampaignAction(data)) },
+    MailGetDataAction: mailGetData => { dispatch(MailGetDataAction(mailGetData)) },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(NewCampaign_start)

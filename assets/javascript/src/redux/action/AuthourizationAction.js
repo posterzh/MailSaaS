@@ -69,7 +69,8 @@ export const LoginAction = (Loginuser) => {
         Api.LoginApi(Loginuser).then(result => {
             const token = result.data.token;
             localStorage.setItem('access_token', token)
-            console.log(token)
+            console.log('access_token',token)
+            console.log(pk)
             dispatch(LoginSuccess(result.data))
         }).catch(err => {
             console.log(err)
