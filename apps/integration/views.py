@@ -1,7 +1,3 @@
-import base64
-import json
-import os
-
 import requests
 import slack
 from django.conf import settings
@@ -15,11 +11,9 @@ from slack import WebClient
 from slack.errors import SlackApiError
 from django.http import request,Http404
 from apps.campaign.models import Campaign, CampaignRecipient
-
 from .models import SalesForceDetails
 from .serializers import SalesForceDetailSerializer
-
-from simple_salesforce import Salesforce, SalesforceLogin,SFType
+from simple_salesforce import Salesforce
 
 
 

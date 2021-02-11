@@ -173,7 +173,7 @@ const NewCampaign = (props) => {
                             <Col md='2' style={{display:"flex",flexDirection:"row-reverse"}}>
                                 <div className='mt-3'>
                                     <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                        <span><i class="fa fa-question-circle-o fa-lg" aria-hidden="true"></i></span>
+                                        <span><i className="fa fa-question-circle-o fa-lg" aria-hidden="true"></i></span>
                                     </a>
                                 </div>
                             </Col>

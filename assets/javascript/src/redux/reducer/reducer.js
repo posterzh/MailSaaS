@@ -10,24 +10,37 @@ import {
     SUCCESS_START,
     FAILURE_RECIPIENT,
     REQUEST_FOR_RECIPIENT,
-    SUCCESS_RECIPIENT
+    SUCCESS_RECIPIENT,
+    FAILURE_MAIL_SENDER,
+    REQUEST_FOR_MAIL_SENDER,
+    SUCCESS_MAIL_SENDER,
+    FAILURE_MAIL_GET_DATA,
+    REQUEST_FOR_MAIL_GET_DATA,
+    SUCCESS_MAIL_GET_DATA,
+    SUCCESS_FETCH_UNSUBSCRIPTION
 } from "../actionType/actionType";
 
 const initialState = {
     Loginuser: '',
     user: '',
     data: '',
-    recipientsData: ''
+    recipientData: '',
+    mailGetData: [],
+    mailData: '',
+    viewData: '',
+    mailData: '',
+    unsubscribeData: [],
 }
 export const RegisterReducer = (state = { initialState }, action) => {
     switch (action.type) {
+        // cases for signup
         case REQUEST_FOR_REGISTER:
             return {
             }
         case SUCCESS_REGISTER:
             return {
                 ...state,
-                user: action.data,
+                user: action.user,
             }
         case FAILURE_REGISTER:
             return {
@@ -44,7 +57,7 @@ export const LoginReducer = (state = { initialState }, action) => {
         case SUCCESS_LOGIN:
             return {
                 ...state,
-                Loginuser: action.data,
+                Loginuser: action.Loginuser,
             }
         case FAILURE_LOGIN:
             return {
@@ -53,7 +66,7 @@ export const LoginReducer = (state = { initialState }, action) => {
             break;
     }
 }
-export const StartReducer = (state = { initialState }, action) => {
+export const StartCampaignReducer = (state = { initialState }, action) => {
     switch (action.type) {
         case REQUEST_FOR_START:
             return {
@@ -78,7 +91,7 @@ export const RecipientReducer = (state = { initialState }, action) => {
         case SUCCESS_RECIPIENT:
             return {
                 ...state,
-                recipientsData: action.data,
+                formData: action.formData,
             }
         case FAILURE_RECIPIENT:
             return {
@@ -87,4 +100,50 @@ export const RecipientReducer = (state = { initialState }, action) => {
             break;
     }
 }
+export const MailSenderReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case REQUEST_FOR_MAIL_SENDER:
+            return {
+            }
+        case SUCCESS_MAIL_SENDER:
+            return {
+                ...state,
+                mailData: action.mailData,
+            }
+        case FAILURE_MAIL_SENDER:
+            return {
+            }
+        default: return state
+            break;
+    }
+}
+export const MailGetDataReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case REQUEST_FOR_MAIL_GET_DATA:
+            return {
+            }
+        case SUCCESS_MAIL_GET_DATA:
+            return {
+                ...state,
+                mailGetData: action.mailGetData,
+            }
+        case FAILURE_MAIL_GET_DATA:
+            return {
+            }
+        default: return state
+            break;
+    }
+}
+export const UnsubscribeReducer = (state = { initialState }, action) => {
+    console.log(action.payload, "action.payload", state.unsubscribeData)
+    switch (action.type) {
+        case SUCCESS_FETCH_UNSUBSCRIPTION:
+            return {
+                ...state,
+                unsubscribeData: action.payload
+            }
+        default: return state
+            break;
+    }
 
+}

@@ -26,9 +26,9 @@ const Campaign_data = (props) => {
                                 <option value='Date'>Date</option>
                             </select>
                         </Col>
-                        <Col md='3'><NavItem><NavLink className={classnames({ active: activeTab === '1' })}  onClick={() => { toggle('1'); }}>SUMMARY</NavLink></NavItem></Col>
-                        <Col md='3'><NavItem><NavLink className={classnames({ active: activeTab === '2' })}  onClick={() => { toggle('2'); }}>ACTIVITY</NavLink></NavItem></Col>
-                        <Col md='2'><NavItem><NavLink className={classnames({ active: activeTab === '3' })} onClick={() => { toggle('3'); }}>TIMELINE</NavLink></NavItem></Col>
+                        <Col md='3'><NavItem><NavLink className={classnames({ activesummary: activeTab === '1' })} onClick={() => { toggle('1'); }}>SUMMARY</NavLink></NavItem></Col>
+                        <Col md='3'><NavItem><NavLink className={classnames({ activeactivity: activeTab === '2' })} onClick={() => { toggle('2'); }}>ACTIVITY</NavLink></NavItem></Col>
+                        <Col md='2'><NavItem><NavLink className={classnames({ activetimeline: activeTab === '3' })} onClick={() => { toggle('3'); }}>TIMELINE</NavLink></NavItem></Col>
 
                         <Col md='1'><div className='child ml-3'>
                             <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
@@ -37,26 +37,40 @@ const Campaign_data = (props) => {
                         </Col>
                     </Nav>
 
-                      <div className='mt-5' >
-                      <TabContent activeTab={activeTab}>
-                            <TabPane tabId="1">
-                                <Overview_Summery />
+                        <div className='mt-5' >
+                            <TabContent activeTab={activeTab}>
+                                <TabPane tabId="1">
+                                    <Overview_Summery />
+                                </TabPane>
+                                <TabPane tabId="2">
+                                    <Overview_Activity />
+                                </TabPane>
+                                <TabPane tabId="3">
+                                    <Row>
+                                        <Table responsive hover>
+                                            <thead>
+                                                <tr>
+                                                    <th className="Email">LIST</th>
+                                                    <th className="name">ADDED DATE</th>
+                                                    <th className="IsAdmin">SCHEDULED DATE</th>
+                                                    <th className="IsAdmin">RECIPIE</th>		
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr className='' >
+                                                    <td className="name-value">Omaid Faizyar</td>
+                                                    <td className="Email-value">omaid@faizyar.com</td>
+                                                    <td className="IsAdmin-value">Yes</td>
+                                                    <td className="IsAdmin-value">Yes</td>
+                                                </tr>
+                                            </tbody>
+                                        </Table>
+                                    </Row>
+                                </TabPane>
 
-                            </TabPane>
-                            <TabPane tabId="2">
-                               <Overview_Activity />
-                            </TabPane>
-                            <TabPane tabId="3">
-                                <Row>
-                                    <Col sm="4" className='mx-auto' style={{ border: '2px solid' }}>
-                                        <h4>Tab 3 Contents</h4>
-                                    </Col>
-                                </Row>
-                            </TabPane>
-                           
 
-                        </TabContent>
-                      </div>
+                            </TabContent>
+                        </div>
                     </Col>
                 </Row>
 
