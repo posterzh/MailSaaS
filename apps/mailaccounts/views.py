@@ -24,9 +24,9 @@ class EmailAccountsView(generics.ListCreateAPIView):
     queryset = EmailAccount.objects.all()
 
     def post(self,request,*args,**kwargs):
-        request.data._mutable = True
+        # request.data._mutable = True
         request.data["user"] = request.user.id
-        request.data._mutable = False
+        # request.data._mutable = False
 
         # payload = {'access_token':request.data.get('access_token', )}
         # google_url = request.get('https://www.googleapis.com/oauth2/v2/userinfo', params=payload)
@@ -53,13 +53,12 @@ class EmailAccountsView(generics.ListCreateAPIView):
         
         if request.data['smtp_username'] == request.data['email'] and request.data['imap_username'] == request.data['email']:
             serializer = EmailAccountSerializer(data=request.data)
+            print(serializer,"<<<<<<<<<")
             if serializer.is_valid():
-                # serializer.save()
-                send_mail_with_smtp()
+                serializer.save()
                 return Response({"message":serializer.data,"sucess":True})
-            return Response({'message':'Invalid Serializer'})
+            return Response({'message':'Invalid Serializer',"error":serializer.errors})
         return Response({"message":"Smtp username and Imap username does not match to email"})
-
     def get(self,request,*args,**kwargs):
         queryset = EmailAccount.objects.get(user=request.user.id)
         serializer = EmailAccountSerializer(queryset)

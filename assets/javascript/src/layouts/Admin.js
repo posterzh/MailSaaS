@@ -30,9 +30,9 @@ class Admin extends React.Component {
     sidenavOpen: true
   };
   componentDidMount(event) {
-    var token = localStorage.getItem('token')
+    var token = localStorage.getItem('access_token')
     // Api.CampaignComposeApi(token, {})
-    // Api.CampaignPreviewApi(token)
+    // Api.CampaignPreviewApi(token,{})
     // Api.CampaignSaveApi(token, {})
     // Api.CampaignLeadcatcher(token, {})
     // Api.CampaignSavegetApi(token)
@@ -52,7 +52,9 @@ class Admin extends React.Component {
     // Api.MailSenderDelete(token)                      not working         
    
     // Api.UnsubscribeDelete(token,{})
-
+       
+    // Api.demostart(token,{})
+    // Api.demorecipient(token,{})
 
 
 

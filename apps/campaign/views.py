@@ -789,7 +789,7 @@ class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
         try:        
             return CampaignRecipient.objects.get(id = pk)
         except CampaignRecipient.DoesNotExist:
-                raise Http404
+                return Response({'message':'Reciepent does not exist',"success":False})
 
     def put(self, request, pk, format=None):
         queryset = self.get_object(request,pk)

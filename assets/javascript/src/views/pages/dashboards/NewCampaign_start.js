@@ -16,6 +16,10 @@ class NewCampaign_start extends React.Component {
             [e.target.name]: e.target.value
         })
     }
+
+    componentDidMount(){
+        // this.props.fetchEmails();
+    }
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(this.state)
@@ -45,12 +49,14 @@ class NewCampaign_start extends React.Component {
                                         <div style={{ width: '100%' }}><label >From Address</label><br></br>
                                             <Input type="select" name="from_address" value={this.state.from_address} onChange={this.handleChange} id="exampleSelect">
                                                 <option value="(I'll decide later)">(I'll decide later)</option>
+                                                <option value='email'>Email</option>
                                                 <option value='Option'>Option</option>
+                                                <option></option>
                                             </Input></div>
                                     </Row>
                                     <Row className='mt-5'>
                                         <Col style={{ display: "flex", justifyContent: "center" }}>
-                                            <button type='submit' className='btn startBtn'> Next <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                            <button type='submit' className='btn startBtn'> Next <i className="fa fa-arrow-right" aria-hidden="true"></i>
                                             </button>
                                         </Col>
                                     </Row>
@@ -69,7 +75,7 @@ const mapStateToProps = (state) => {
     };
 };
 const mapDispatchToProps = dispatch => ({
-    StartCampaignAction: data=> {
+    StartCampaignAction: data => {
         dispatch(StartCampaignAction(data));
     },
 });

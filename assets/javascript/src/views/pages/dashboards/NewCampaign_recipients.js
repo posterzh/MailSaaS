@@ -24,7 +24,7 @@ class NewCampaign_recipients extends Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        this.state.options.length=0
+        this.state.options.length = 0
         if (!this.state.email && !this.state.csvFile) {
             alert('Fill option 1 or 2')
             return false;
@@ -45,14 +45,13 @@ class NewCampaign_recipients extends Component {
         else {
             return false
         }
-        const recipientData = {
-            csvFile: this.state.csvFile,
-            email: `${this.state.email}`,
-            campaign: this.state.campaign,
-            options: `${this.state.options}`,
-        }
-        this.props.RecipientAction(recipientData)
-        console.log(recipientData)
+        const formData = new FormData();
+        formData.append('csvfile_op1',this.state.csvFile);
+        formData.append('email', this.state.email);
+        formData.append('option',this.state.options);
+        console.log(formData,'form data')
+        this.props.RecipientAction(formData, localStorage.getItem('access_token'))
+        console.log('r_data', formData, localStorage.getItem('access_token'))
     }
     render() {
         const { show } = this.state;
@@ -77,7 +76,7 @@ class NewCampaign_recipients extends Component {
                                                                 <span className="csv_logo"><i class="fa fa-file" aria-hidden="true"></i></span>
                                                                 <span className="csv_logo_text">Drop a CSV file here</span>
                                                                 < Csvfile/>
-                                                                <span className="choose_option"><Input type='file' name='csvFile' value={this.state.csvFile} onChange={this.handleChange}>(or choose one)</Input></span></Row>
+                                                                <span className="choose_option"><Input type='file' name='csvFile' onChange={this.handleChange}>(or choose one)</Input></span></Row>
                                                                 <Row><span>Campaigns are limited to 5k recipients; uploads to 1MB.</span></Row></Col>
                                                         </Row>
                                                         <Row className='mt-5'>

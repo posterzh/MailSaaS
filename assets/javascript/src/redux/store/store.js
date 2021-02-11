@@ -1,11 +1,33 @@
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk';
-import { RegisterReducer, LoginReducer, StartReducer, RecipientReducer,CampaignOptionReducer } from '../reducer/reducer';
+import { 
+  RegisterReducer, 
+  LoginReducer, 
+  StartCampaignReducer, 
+  RecipientReducer, 
+  MailGetDataReducer, 
+  MailSenderReducer, 
+  UnsubscribeReducer ,
+  CampaignOptionReducer,
+  ProspectsGetReducer
+} from '../reducer/reducer';
+
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
-const rootReducer = combineReducers({ RegisterReducer, LoginReducer, StartReducer, RecipientReducer,CampaignOptionReducer })
+const rootReducer = combineReducers({ 
+  RegisterReducer, 
+  LoginReducer, 
+  StartCampaignReducer, 
+  RecipientReducer, 
+  MailGetDataReducer, 
+  MailSenderReducer, 
+  UnsubscribeReducer ,
+  CampaignOptionReducer,
+  ProspectsGetReducer
+})
 
 const store = createStore(
   rootReducer, composeEnhancers(applyMiddleware(thunk))
 );
+
 export default store;
