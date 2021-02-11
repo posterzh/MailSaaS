@@ -1,5 +1,5 @@
 from django.db import models
-
+from apps.users.models import CustomUser
 
 
 
@@ -13,8 +13,50 @@ class Team(models.Model):
         return self.name
 
 
-class Contact(models.Model):
-   Parameter = models.CharField(max_length=50, blank=False, null=False)
-     
-   def __str__(self):
-        return self.Parameter
+
+
+
+
+
+class SalesForceDetails(models.Model):
+    TYPE_PEOPLE =( 
+        ("Leads", "Lead"), 
+        ("Contacts", "Contact")
+    )
+    MISSING_OPTION =( 
+        ("Create them", "Create them"), 
+        ("Do nothing", "Do nothing")
+    ) 
+    TRACK_EVENT_OPTION = ( 
+        ("All Mailsaas Prospects", "All Mailsaas Prospects"), 
+        ("Only Mailsaas Leads", "Only Mailsaas Leads")
+    ) 
+    LEAD_OPTION = ( 
+        ('none',"None"),
+        ("Open-Not Contacted", "Open-Not Contacted"), 
+        ("Working-Contacted", "Working-Contacted"),
+        ("Closed-Converted", "Closed-Converted"),
+        ("Closed-Not Converted", "Closed-Not Converted")
+    )
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    display_name = models.CharField(max_length=200,blank=True)
+    object_type_people = models.CharField(max_length=12,choices=TYPE_PEOPLE,default='Contacts',blank = True, null = True)
+    missing = models.CharField(max_length=20,choices=MISSING_OPTION,default='Contacts',blank = True, null = True)
+    track_event = models.CharField(max_length=50,choices=TRACK_EVENT_OPTION,default='Contacts',blank = True, null = True)
+    sends=models.BooleanField(default=True)
+    opens=models.BooleanField(default=True)
+    clicks=models.BooleanField(default=True)
+    replies=models.BooleanField(default=True)
+    unsubscribed=models.BooleanField(default=True)
+    leads=models.BooleanField(default=True)
+    tasks=models.BooleanField(default=True)
+    phone_calls=models.BooleanField(default=False)
+
+    # On Mailshake actions, set these lead statuses in Salesforce
+    lead_opened=models.CharField(max_length=90,choices=LEAD_OPTION,default='Contacts',blank = True, null = True)
+    lead_ignored=models.CharField(max_length=90,choices=LEAD_OPTION,default='Contacts',blank = True, null = True)
+    lead_won=models.CharField(max_length=90,choices=LEAD_OPTION,default='Contacts',blank = True, null = True)
+    lead_lost=models.CharField(max_length=90,choices=LEAD_OPTION,default='Contacts',blank = True, null = True)
+    lead_unsubcribed=models.CharField(max_length=90,choices=LEAD_OPTION,default='Contacts',blank = True, null = True)
+    lead_resubscribed=models.CharField(max_length=90,choices=LEAD_OPTION,default='Contacts',blank = True, null = True)
+    email_bounced=models.CharField(max_length=90,choices=LEAD_OPTION,default='Contacts',blank = True, null = True)

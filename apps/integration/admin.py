@@ -1,9 +1,9 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Team,Contact
+from .models import Team
 
 
 
 admin.site.register(Team)
-admin.site.register(Contact)
+# admin.site.register(Contact)
