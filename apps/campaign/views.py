@@ -95,7 +95,9 @@ class CreateCampaignRecipientsView(APIView):
                 for email in postdata["email"]:
                     CampaignEmail = CampaignRecipient(campaign=camp, email=email)
                     CampaignEmail.save()
-                    # print(CampaignEmail, type(CampaignEmail))
+                    campData = CampaignEmailSerializer(CampaignEmail)
+                    print(CampaignEmail, campData.data)
+                    resp.append(campData.data)
                 return Response({"resp":resp,"message":"Saved Successfully","success":True})
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -245,7 +247,7 @@ class CreateCampaignOptionView(APIView):
             else:
                 request.data["schedule_date"] = None
                 request.data["schedule_time"] = None
-            
+            print(request.data)
             serilizer = CampaignSerializer(queryset, data=request.data)
             if serilizer.is_valid():
                 serilizer.save()
@@ -264,9 +266,9 @@ class CreateCampaignSendView(APIView):
             camp = Campaign.objects.get(id = pk)
         except:
             return Response({"message":"No Campaign with this id", "success":False})
-        campSerializer = CampaignSerializer(camp)
-        resp["from_address"] = {campSerializer.data["from_address"]}
-        resp["full_name"] = {campSerializer.data["full_name"]}
+        # campSerializer = CampaignSerializer(camp)
+        resp["from_address"] = camp.from_address.email
+        resp["full_name"] = camp.from_address.full_name
         campEmailrecipientsList = []
         campEmail = CampaignRecipient.objects.filter(campaign = pk)
         for campemail in campEmail:
@@ -327,11 +329,9 @@ class CreateCampaignSendView(APIView):
 
         camp.save()
         if CampSerializer.is_valid():
-            print("validdddd")
             CampSerializer.save()
             if (not camp.schedule_send) and camp.campaign_status:
                 campEmail = CampaignRecipient.objects.filter(campaign=pk)
-                print("(not camp.schedule_send) and camp.campaign_status")
                 for campemail in campEmail:
                     
                     
@@ -344,42 +344,34 @@ class CreateCampaignSendView(APIView):
                     
                     email_body_links = re.findall(r'(https?://\S+)', campemail.email_body)
                     if email_body_links:
-                        print("Hai Bhai hai")
-                        emailData = campemail.emailBody
+                        #URL is Present
+                        emailData = campemail.email_body
                         for link in email_body_links:
                             print("linkkkkk ", link)
                             new_link = pytracking.get_click_tracking_url(
                                 link, {"campEmailId": campemail.id, "campaign": campemail.campaign.id},
-                                base_click_tracking_url="http://localhost:8000/campaign/email/click/",
-                                webhook_url="http://localhost:8000/campaign/email/click/", include_webhook_url=True)
+                                base_click_tracking_url=campemail.email_body,
+                                webhook_url=campemail.email_body, include_webhook_url=True)
                             emailData = emailData.replace(link, new_link)
                     else:
-                        print("nahi h bhai")
+                        #No URL Present
                         emailData = campemail.email_body + "<img width=0 height=0 src='"+open_tracking_url+"' />"
-                    # print("emailData\n\n\n",emailData)
                     subject = campemail.subject
                     text_content = 'plain text body message.'
-                    # print("\n\n",emailData,"\n\n")
                     html_content = emailData
-                    msg = EmailMultiAlternatives(subject, text_content, 'developer@externlabs.com', ['gauravsurolia@externlabs.com'])
+                    msg = EmailMultiAlternatives(subject, text_content, campemail.campaign.from_address.email, [campemail.email])
 
                     msg.attach_alternative(html_content, "text/html")
                     msg.send()
 
+                    
+
                     campemail.sent = True
                     campemail.reciepent_status = True
                     campemail.save()
-                    
-                    # send_mail(
-                    #     campemail.subject,
-                    #     campemail.email_body,
-                    #     'developer@externlabs.com',
-                    #     [campemail.email],
-                    #     fail_silently=False,
-                    # )
+                   
             elif camp.schedule_send and camp.campaign_status:
                 campEmail = CampaignRecipient.objects.filter(campaign=pk)
-                print("(camp.schedule_send) and camp.campaign_status")
                 for campemail in campEmail:
 
                     open_tracking_url = pytracking.get_open_tracking_url(
@@ -391,8 +383,8 @@ class CreateCampaignSendView(APIView):
                     
                     email_body_links = re.findall(r'(https?://\S+)', campemail.email_body)
                     if email_body_links:
-                        print("URL, Hai Bhai hai")
-                        emailData = campemail.emailBody
+                        #URL is Present
+                        emailData = campemail.email_body
                         for link in email_body_links:
                             print("linkkkkk ", link)
                             new_link = pytracking.get_click_tracking_url(
@@ -401,7 +393,7 @@ class CreateCampaignSendView(APIView):
                                 webhook_url="http://localhost:8000/campaign/email/click/", include_webhook_url=True)
                             emailData = emailData.replace(link, new_link)
                     else:
-                        print("URL, nahi h bhai")
+                        #No URL Present
                         emailData = campemail.email_body + "<img width=0 height=0 src='"+open_tracking_url+"' />"
 
 
@@ -455,14 +447,10 @@ class CampaignView(generics.ListAPIView):
                     if campData["lead_status"]=="ignoredLead":
                         resp["ignoredLeadCount"] = resp["ignoredLeadCount"] + 1
                     
-                    # resp["openLeadPer"] = (resp["openLeadCount"]*100)/resp["leadCount"]
-                    # resp["wonLeadPer"] = (resp["wonLeadCount"]*100)/resp["leadCount"]
-                    # resp["lostLeadPer"] = (resp["lostLeadCount"]*100)/resp["leadCount"]
-                    # resp["ignoredLeadPer"] = (resp["ignoredLeadCount"]*100)/resp["leadCount"]
+                   
             allData.append(resp)
 
         return Response(allData)
-        # return Response(serializer.data)
         
 
 
@@ -487,7 +475,6 @@ class LeadsCatcherView(generics.ListAPIView):
 
             queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__title__contains=title, leadStatus=leadstatus, campaign__assigned=request.user.id, leads=True)
         elif len(params) == 2:
-            print("LEN = 2",params, ['search', 'title'] in params)
             if 'search' and 'title' in params:
                 toSearch = request.GET['search']
                 title = request.GET['title']
@@ -554,18 +541,12 @@ class TrackEmailOpen(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None, id=None):
         
-        # print("settings.SITE_URL = ",settings.SITE_URL, request.get_full_path())
 
         full_url = settings.SITE_URL + request.get_full_path()
 
-        # print("fulllll urllll ",full_url)
 
         tracking_result = pytracking.get_open_tracking_result(
             full_url, base_open_tracking_url = settings.SITE_URL + "/campaign/email/open/")
-
-        # print("tracking_resultttttttttt ",tracking_result)
-        # print("tracking_resultttttttttt tracking_result.metadata ",tracking_result.metadata)
-        # print("tracking_resultttttttttt webhook_url ",tracking_result.webhook_url)
 
         trackData = tracking_result.metadata
 
@@ -581,7 +562,6 @@ class TrackEmailClick(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None, id=None):
         
-        print("yoooooooooooooooooo ", request)
 
         print(settings.SITE_URL + "/campaign/email/click/")
         tracking_result = pytracking.get_open_tracking_result(
@@ -715,7 +695,6 @@ class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
                 queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,replies=False)
         elif 'tofilter' in params:
             tofilter=request.GET['tofilter']
-            print('tofilter ', tofilter)
             if request.GET['tofilter'] == 'paused_reciepent':
                 queryset = CampaignRecipient.objects.filter(campaign=pk,reciepent_status=False)    
             elif request.GET['tofilter'] == 'leads':
@@ -760,26 +739,13 @@ class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
             queryset = CampaignRecipient.objects.filter(campaign=pk)
         campEmailserializer = CampaignEmailSerializer(queryset, many = True)
         return Response(campEmailserializer.data)
-    
-    def put(self, request,pk, formate = None):
-        for rec_id in request.data:
-            campEmail = CampaignRecipient.objects.get(id=rec_id)
-            campEmail.unsubscribe = True
-            campEmail.save()
-        return Response("DOne")
-
-
-
-
-
-
 
 
 
 class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     permission_classes = (permissions.IsAuthenticated,)
-    queryset = CampaignRecipient.objects.all()
+    queryset = ""
     serializer_class = CampaignEmailSerializer
 
     def get_object(self,request,pk):
@@ -787,7 +753,6 @@ class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
         try:        
             return CampaignRecipient.objects.get(id = pk)
         except CampaignRecipient.DoesNotExist:
-
             return Response({'message':'Reciepent does not exist',"success":False})
 
     def put(self, request, pk, format=None):
@@ -795,6 +760,8 @@ class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
         queryset = self.get_object(request,pk)
         queryset.leads = True
         queryset.save()
+        data_serializer = CampaignEmailSerializer(queryset)
+        SendSlackMessage(data_serializer.data)
         return Response({"message":"Lead Updated sucessfully","Sucess":True})
 
 
@@ -803,6 +770,7 @@ class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
         queryset.delete()
         return Response({'Sucess':True,"status":status.HTTP_200_OK})
 
+
 class CampaignleadCatcherView(generics.CreateAPIView):
 
     permission_classes = (permissions.IsAuthenticated,)
@@ -810,9 +778,9 @@ class CampaignleadCatcherView(generics.CreateAPIView):
 
     def post(self, request, format=None):
         
-        for i in request.data:
-            i['assigned'] = request.user.id
-            serializer = CampaignLeadCatcherSerializer(data = i)
+        for data in request.data:
+            data['assigned'] = request.user.id
+            serializer = CampaignLeadCatcherSerializer(data = data)
             if serializer.is_valid():
                 serializer.save()
             else:
@@ -827,6 +795,7 @@ class CampaignleadCatcherView(generics.CreateAPIView):
         except :
             return Response({"message":"lead catcher not available "})
             
+
 
 
 
