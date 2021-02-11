@@ -755,15 +755,18 @@ class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
         try:        
             return CampaignRecipient.objects.get(id = pk)
         except CampaignRecipient.DoesNotExist:
-                raise Http404
+            return Response({'message':'Reciepent does not exist',"success":False})
 
     def put(self, request, pk, format=None):
         queryset = self.get_object(request,pk)
-        request.data._mutable = True
-        request.data['leads'] = True
-        request.data._mutable = False
+        print(queryset)
+        recp_data = CampaignEmailSerializer(queryset)
+        print(recp_data.data)
+        # request.data._mutable = True
+        recp_data.data['leads'] = True
+        # request.data._mutable = False
         
-        serializer = CampaignEmailSerializer(queryset, data=request.data)
+        serializer = CampaignEmailSerializer(queryset, data=recp_data.data)
         if serializer.is_valid():
             serializer.save()
             SendSlackMessage(serializer.data)
