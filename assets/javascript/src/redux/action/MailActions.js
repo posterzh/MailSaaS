@@ -6,7 +6,7 @@ import Api from "../api/api";
 
 export const fetchMailAccounts = () => {
     return {
-        type: REQUEST_FOR_REGISTER,
+        type:  FETCH_MAIL_ACCOUNTS,
     }
 }
 

@@ -34,7 +34,6 @@ class EmailAccountsView(generics.ListCreateAPIView):
             return Response({'message':'Invalid Serializer',"error":serializer.errors})
         return Response({"message":"Smtp username and Imap username does not match to email"})
 
-
     def get(self,request,*args,**kwargs):
 
         try:

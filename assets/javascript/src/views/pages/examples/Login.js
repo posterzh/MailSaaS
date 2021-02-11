@@ -34,32 +34,30 @@ import {
   Col
 } from "reactstrap";
 import AuthHeader from "../../../components/Headers/AuthHeader.js";
-import {LoginAction} from "../../../redux/action/AuthourizationAction"
-import {connect} from "react-redux"
+import { LoginAction } from "../../../redux/action/AuthourizationAction"
+import { connect } from "react-redux"
 
 class Login extends React.Component {
-  constructor(props)
-  {
+  constructor(props) {
     super(props)
-    this.state={
-      email:'',
-      password:''
+    this.state = {
+      email: '',
+      password: ''
     }
   }
-  handleChange = (event)=>{
+  handleChange = (event) => {
     this.setState({
-      [event.target.name]:event.target.value
+      [event.target.name]: event.target.value
     });
-    
+
   }
-  handleSubmit = (event)=>
-  {
+  handleSubmit = (event) => {
     event.preventDefault();
-    const loginuser={
-      email:this.state.email,
-      password:this.state.password
+    const loginuser = {
+      email: this.state.email,
+      password: this.state.password
     };
-  
+
     this.props.LoginAction(loginuser)
     console.log(loginuser)
   }
@@ -173,16 +171,16 @@ class Login extends React.Component {
   }
 }
 const mapStateToProps = (state) => {
-  return 
+  return
   {
-    
+    loginuser:state.loginuser
   }
 };
 
 const mapDispatchToProps = dispatch => ({
   LoginAction: loginuser => {
-  dispatch(LoginAction(loginuser));
+    dispatch(LoginAction(loginuser));
   },
- });
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
