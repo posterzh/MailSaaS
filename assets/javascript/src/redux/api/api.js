@@ -43,10 +43,9 @@ Api.CampaignTableDataApi = (token) => {
   })
 }
 Api.MailSenderApi = (mailData, token) => {
-  console.log(mailData, token, "data")
   return axios({
     method: 'POST',
-    url: `${API_BASE_URL}mail/sender/`,
+    url: `${API_BASE_URL}/mail/sender/`,
     data: mailData,
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -58,7 +57,11 @@ Api.MailGetDataApi = (token) => {
   return axios({
     method: 'GET',
     url: `${API_BASE_URL}/mail/sender/`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
   })
+ 
 }
 
 Api.fetchUnsbcribed = (token) => {

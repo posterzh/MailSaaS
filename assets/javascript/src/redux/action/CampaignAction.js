@@ -71,7 +71,7 @@ export const CampaignTableDataFailure = () => {
 
 export const StartCampaignAction = (data) => {
     return function (dispatch) {
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('access_token')
         console.log('this is a token', token)
         dispatch(requestForStartCampaign(data, token))
         Api.StartCampaignApi(data, token).then(result => {
