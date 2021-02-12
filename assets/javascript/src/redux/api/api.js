@@ -8,14 +8,14 @@ Api.RegisterApi = (user) => {
 
 // for login
 Api.LoginApi = (loginuser) => {
-    return axios.post(`http://127.0.0.1:8000/rest-auth/login/`, loginuser)
+    return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuse)
 }
 
 // for campaign_start api
 Api.StartApi = (data, token) => {
     return axios({
         method: 'POST',
-        url: 'http://127.0.0.1:8000/campaign/start/',
+        url: `${API_BASE_URL}/campaign/start/`,
         data: {
             title: data.title,
             from_address: data.from_address
@@ -31,7 +31,7 @@ Api.StartApi = (data, token) => {
 Api.RecipientApi = (recipientData, token) => {
     return axios({
         method: 'POST',
-        url: 'http://127.0.0.1:8000/campaign/recipients/',
+        url: `${API_BASE_URL}/campaign/recipients/`,
         data: {
             csvFile: recipientData.csvFile,
             email: `${recipientData.email}`,
@@ -50,7 +50,7 @@ Api.OptionApi = (optionData, token) => {
     console.log('OptionAPI------:', optionData);
     return axios({
         method: 'PUT',
-        url: 'http://127.0.0.1:8000/campaign/options/',
+        url: `${API_BASE_URL}/campaign/options/`,
         data: {
 
             ...optionData
@@ -65,7 +65,7 @@ Api.OptionApi = (optionData, token) => {
 Api.CampaignComposeApi = (token, data) => {
     return axios({
         method: 'POST',
-        url: 'http://127.0.0.1:8000/campaign/message/',
+        url: `${API_BASE_URL}/campaign/message/`,
         data: {
             "normal":
             {
@@ -126,7 +126,7 @@ Api.CampaignComposeApi = (token, data) => {
 Api.CampaignPreviewApi = (token, key) => {
     return axios({
         method: 'GET',
-        url: 'http://127.0.0.1:8000/campaign/personalize/1/',
+        url: `${API_BASE_URL}/campaign/personalize/1/`,
 
         headers: {
             "Authorization": `Bearer ${token}`,
@@ -140,7 +140,7 @@ Api.CampaignPreviewApi = (token, key) => {
 Api.CampaignSaveApi = (token, data) => {
     return axios({
         method: 'PUT',
-        url: 'http://127.0.0.1:8000/campaign/savecamp/1/',
+        url: `${API_BASE_URL}/campaign/savecamp/1/`,
         data: {
             "startCampaign": false
         },
@@ -156,7 +156,7 @@ Api.CampaignSaveApi = (token, data) => {
 Api.CampaignSavegetApi = (token) => {
     return axios({
         method: 'GET',
-        url: 'http://127.0.0.1:8000/campaign/savecamp/1/',
+        url: `${API_BASE_URL}/campaign/savecamp/1/`,
         headers: {
             "Authorization": `Bearer ${token}`,
         }
@@ -167,7 +167,7 @@ Api.CampaignSavegetApi = (token) => {
 Api.CampaignLeadcatcher = (token, data) => {
     return axios({
         method: "GET",
-        url: 'http://127.0.0.1:8000/campaign/leadscatcher/',
+        url: `${API_BASE_URL}/campaign/leadscatcher/`,
         data: {
             'campaign': 1
         },
@@ -181,7 +181,7 @@ Api.CampaignLeadcatcher = (token, data) => {
 Api.CampaignGetOverview = (token) => {
     return axios({
         method: 'GET',
-        url: 'http://127.0.0.1:8000/campaign/get-overview/1/',
+        url: `${API_BASE_URL}/campaign/get-overview/1/`,
         headers: {
             "Authorization": `Bearer ${token}`,
         }
@@ -191,7 +191,7 @@ Api.CampaignGetOverview = (token) => {
 Api.CampaignRecipientPeople = (token) => {
     return axios({
         method: 'GET',
-        url: 'http://127.0.0.1:8000/campaign/recipients/people/1/',
+        url: `${API_BASE_URL}/campaign/recipients/people/1/`,
         headers: {
             "Authorization": `Bearer ${token}`,
         }
@@ -202,7 +202,7 @@ Api.CampaignRecipientPeople = (token) => {
 Api.CampaignRecipienputPeople = (token) => {
     return axios({
         method: 'Put',
-        url: 'http://127.0.0.1:8000/campaign/recipients/people/1/',
+        url: `${API_BASE_URL}/campaign/recipients/people/1/`,
         headers: {
             "Authorization": `Bearer ${token}`,
         }
@@ -214,7 +214,7 @@ Api.CampaignRecipienputPeople = (token) => {
 Api.CampaignUpdateRecipient = (token, data) => {
     return axios({
         method: 'PUT',
-        url: 'http://127.0.0.1:8000/campaign/recipients/1/',
+        url: `${API_BASE_URL}/campaign/recipients/1/`,
         data: {
             'campaign': 1,
             'email': 'developer@externlabs.com',
@@ -231,7 +231,7 @@ Api.CampaignUpdateRecipient = (token, data) => {
 Api.CampaignMessage = (token) => {
     return axios({
         method: 'GET',
-        url: 'http://127.0.0.1:8000/campaign/campaign-message/1/',
+        url: `${API_BASE_URL}/campaign/campaign-message/1/`,
         data: {
 
         },
@@ -245,7 +245,7 @@ Api.CampaignMessage = (token) => {
 Api.CampaignProspects = (token) => {
     return axios({
         method: 'GET',
-        url: 'http://127.0.0.1:8000/campaign/prospects/',
+        url: `${API_BASE_URL}/campaign/prospects/`,
         headers: {
             "Authorization": `Bearer ${token}`,
         }
@@ -256,7 +256,7 @@ Api.CampaignProspects = (token) => {
 Api.CampaignViewProspects = (token, key) => {
     return axios({
         method: 'GET',
-        url: 'http://127.0.0.1:8000/campaign/prospects/10/',
+        url: `${API_BASE_URL}/campaign/prospects/10/`,
         data: {},
         headers: {
             "Authorization": `Bearer ${token}`,
@@ -268,7 +268,7 @@ Api.CampaignViewProspects = (token, key) => {
 Api.UserSetting = (token) => {
     return axios({
         method: 'GET',
-        url: 'http://127.0.0.1:8000/users/user-setting/',
+        url: `${API_BASE_URL}/users/user-setting/`,
         headers: {
             "Authorization": `Bearer ${token}`,
         }
@@ -279,7 +279,7 @@ Api.UserSetting = (token) => {
 Api.UserUpdateSetting = (token, data) => {
     return axios({
         method: 'PUT',
-        url: 'http://127.0.0.1:8000/users/user-setting/',
+        url: `${API_BASE_URL}/users/user-setting/`,
         data: {
             'full_name': 'omaidf',
             'email': 'omaid123@gmail.com'
@@ -295,7 +295,7 @@ Api.UserUpdateSetting = (token, data) => {
 Api.ChangePassword = (token, data) => {
     return axios({
         method: 'PUT',
-        url: 'http://127.0.0.1:8000/users/change-password/',
+        url: `${API_BASE_URL}/users/change-password/`,
         data: {
             'old_password': 'keshav@9784',
             'new_password': 'keshav@7014',
@@ -311,7 +311,7 @@ Api.ChangePassword = (token, data) => {
 Api.MailSenderDelete = (token) => {
     return axios({
         method: 'DELETE',
-        url: 'http://127.0.0.1:8000/mail/sender/1/',
+        url: `${API_BASE_URL}/mail/sender/1/`,
         headers: {
             "Authorization": `Bearer ${token}`,
         }
@@ -323,7 +323,7 @@ Api.MailSenderDelete = (token) => {
 Api.UnsubscribeDelete = (token, data) => {
     return axios({
         method: 'PUT',
-        url: 'http://127.0.0.1:8000/unsubscribes/unsubcribedelete/',
+        url: `${API_BASE_URL}/unsubscribes/unsubcribedelete/`,
         data: {
             "data": [3]
         },
@@ -370,7 +370,7 @@ Api.CampaignTableDataApi = (token) => {
 Api.MailSenderApi = (mailData, token) => {
   return axios({
     method: 'POST',
-    url: `${API_BASE_URL}/mail/sender/`,
+    url: `${API_BASE_URL}/mail/addmailaccount/`,
     data: mailData,
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -381,7 +381,7 @@ Api.MailSenderApi = (mailData, token) => {
 Api.MailGetDataApi = (token) => {
   return axios({
     method: 'GET',
-    url: `${API_BASE_URL}/mail/sender/`,
+    url: `${API_BASE_URL}/mail/addmailaccount/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }

@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from "react-redux";
 import { Container, Row, Col, Form, Input } from 'reactstrap';
 import { StartCampaignAction } from "../../../redux/action/CampaignAction";
-import { MailSenderAction, MailGetDataAction } from '../../../redux/action/MailSenderAction'
+import { MailGetDataAction } from '../../../redux/action/MailSenderAction'
 
 class NewCampaign_start extends React.Component {
     constructor() {
@@ -50,7 +50,7 @@ class NewCampaign_start extends React.Component {
                                     </Row>
                                     <Row className='mt-5'>  
                                         <div style={{ width: '100%' }}><label >From Address</label><br></br>
-                                            <Input type="select" onChange={this.handleChange} id="exampleSelect">
+                                            <Input type="select" name='from_address' onChange={this.handleChange}  id="exampleSelect">
                                                 {
                                                     mailGetData && mailGetData.map((item, index) => {
                                                         console.log('item',item.id,item.email);
