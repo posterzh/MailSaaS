@@ -111,7 +111,6 @@ class ChangePasswordView(generics.RetrieveUpdateAPIView):
 
     def put(self,request, *args, **kwargs):
         queryset = self.get_object()
-        print(queryset,"queryset")
         serializer = ChangePasswordSerializer(data=request.data)
         if serializer.is_valid():
             old_password = serializer.data.get("old_password")

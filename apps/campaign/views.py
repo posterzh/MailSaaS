@@ -95,13 +95,11 @@ class CreateCampaignRecipientsView(APIView):
                 for email in postdata["email"]:
                     CampaignEmail = CampaignRecipient(campaign=camp, email=email)
                     CampaignEmail.save()
-                    # print(CampaignEmail, type(CampaignEmail))
                 return Response({"resp":resp,"message":"Saved Successfully","success":True})
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         # else:
         #     return Response({'message':"Has No Permissions",'status':401})
-        print("hi came in erros section ")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -221,9 +219,7 @@ class CreateCampaignOptionView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def put(self, request, format=None):
-        print(request.data)
-        print(request.data["schedule_date"])
-        
+
         if request.data['terms_and_laws'] == True:
             queryset = Campaign.objects.get(id = request.data['campaign'])
             request.data["title"] = queryset.title
@@ -327,11 +323,9 @@ class CreateCampaignSendView(APIView):
 
         camp.save()
         if CampSerializer.is_valid():
-            print("validdddd")
             CampSerializer.save()
             if (not camp.schedule_send) and camp.campaign_status:
                 campEmail = CampaignRecipient.objects.filter(campaign=pk)
-                print("(not camp.schedule_send) and camp.campaign_status")
                 for campemail in campEmail:
                     
                     
@@ -344,22 +338,17 @@ class CreateCampaignSendView(APIView):
                     
                     email_body_links = re.findall(r'(https?://\S+)', campemail.email_body)
                     if email_body_links:
-                        print("Hai Bhai hai")
                         emailData = campemail.emailBody
                         for link in email_body_links:
-                            print("linkkkkk ", link)
                             new_link = pytracking.get_click_tracking_url(
                                 link, {"campEmailId": campemail.id, "campaign": campemail.campaign.id},
                                 base_click_tracking_url="http://localhost:8000/campaign/email/click/",
                                 webhook_url="http://localhost:8000/campaign/email/click/", include_webhook_url=True)
                             emailData = emailData.replace(link, new_link)
                     else:
-                        print("nahi h bhai")
                         emailData = campemail.email_body + "<img width=0 height=0 src='"+open_tracking_url+"' />"
-                    # print("emailData\n\n\n",emailData)
                     subject = campemail.subject
                     text_content = 'plain text body message.'
-                    # print("\n\n",emailData,"\n\n")
                     html_content = emailData
                     msg = EmailMultiAlternatives(subject, text_content, 'developer@externlabs.com', ['gauravsurolia@externlabs.com'])
 
@@ -379,7 +368,6 @@ class CreateCampaignSendView(APIView):
                     # )
             elif camp.schedule_send and camp.campaign_status:
                 campEmail = CampaignRecipient.objects.filter(campaign=pk)
-                print("(camp.schedule_send) and camp.campaign_status")
                 for campemail in campEmail:
 
                     open_tracking_url = pytracking.get_open_tracking_url(
@@ -391,17 +379,14 @@ class CreateCampaignSendView(APIView):
                     
                     email_body_links = re.findall(r'(https?://\S+)', campemail.email_body)
                     if email_body_links:
-                        print("URL, Hai Bhai hai")
                         emailData = campemail.emailBody
                         for link in email_body_links:
-                            print("linkkkkk ", link)
                             new_link = pytracking.get_click_tracking_url(
                                 link, {"campEmailId": campemail.id, "campaign": campemail.campaign.id},
                                 base_click_tracking_url="http://localhost:8000/campaign/email/click/",
                                 webhook_url="http://localhost:8000/campaign/email/click/", include_webhook_url=True)
                             emailData = emailData.replace(link, new_link)
                     else:
-                        print("URL, nahi h bhai")
                         emailData = campemail.email_body + "<img width=0 height=0 src='"+open_tracking_url+"' />"
 
 
@@ -455,14 +440,9 @@ class CampaignView(generics.ListAPIView):
                     if campData["lead_status"]=="ignoredLead":
                         resp["ignoredLeadCount"] = resp["ignoredLeadCount"] + 1
                     
-                    # resp["openLeadPer"] = (resp["openLeadCount"]*100)/resp["leadCount"]
-                    # resp["wonLeadPer"] = (resp["wonLeadCount"]*100)/resp["leadCount"]
-                    # resp["lostLeadPer"] = (resp["lostLeadCount"]*100)/resp["leadCount"]
-                    # resp["ignoredLeadPer"] = (resp["ignoredLeadCount"]*100)/resp["leadCount"]
             allData.append(resp)
 
         return Response(allData)
-        # return Response(serializer.data)
         
 
 
@@ -487,7 +467,6 @@ class LeadsCatcherView(generics.ListAPIView):
 
             queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__title__contains=title, leadStatus=leadstatus, campaign__assigned=request.user.id, leads=True)
         elif len(params) == 2:
-            print("LEN = 2",params, ['search', 'title'] in params)
             if 'search' and 'title' in params:
                 toSearch = request.GET['search']
                 title = request.GET['title']
@@ -553,19 +532,9 @@ class LeadsCatcherView(generics.ListAPIView):
 class TrackEmailOpen(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None, id=None):
-        
-        # print("settings.SITE_URL = ",settings.SITE_URL, request.get_full_path())
-
         full_url = settings.SITE_URL + request.get_full_path()
-
-        # print("fulllll urllll ",full_url)
-
         tracking_result = pytracking.get_open_tracking_result(
             full_url, base_open_tracking_url = settings.SITE_URL + "/campaign/email/open/")
-
-        # print("tracking_resultttttttttt ",tracking_result)
-        # print("tracking_resultttttttttt tracking_result.metadata ",tracking_result.metadata)
-        # print("tracking_resultttttttttt webhook_url ",tracking_result.webhook_url)
 
         trackData = tracking_result.metadata
 
@@ -581,28 +550,19 @@ class TrackEmailClick(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None, id=None):
         
-        print("yoooooooooooooooooo ", request)
-
-        print(settings.SITE_URL + "/campaign/email/click/")
         tracking_result = pytracking.get_open_tracking_result(
             full_url, base_click_tracking_url="https://trackingdomain.com/path/")
         full_url = settings.SITE_URL + request.get_full_path()
 
-        print("full_urlfull_urlfull_url",full_url)
         tracking_result = pytracking.get_open_tracking_result(
             full_url, base_click_tracking_url= settings.SITE_URL + "/campaign/email/click/")
-        print("Doneeee")
-        print("tracking_resultttttt ",tracking_result)
+
         # full_url = settings.SITE_URL + request.get_full_path()
 
         # # print("fulllll urllll ",full_url)
 
         # tracking_result = pytracking.get_open_tracking_result(
         #     full_url, base_open_tracking_url = settings.SITE_URL + "campaign/email/open/")
-
-        print("tracking_resultttttttttt ",tracking_result)
-        print("tracking_resultttttttttt tracking_result.metadata ",tracking_result.metadata)
-        print("tracking_resultttttttttt webhook_url ",tracking_result.webhook_url)
 
         # trackData = tracking_result.metadata
         # print(trackData)
@@ -715,7 +675,6 @@ class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
                 queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,replies=False)
         elif 'tofilter' in params:
             tofilter=request.GET['tofilter']
-            print('tofilter ', tofilter)
             if request.GET['tofilter'] == 'paused_reciepent':
                 queryset = CampaignRecipient.objects.filter(campaign=pk,reciepent_status=False)    
             elif request.GET['tofilter'] == 'leads':

@@ -119,7 +119,6 @@ def send_mail_with_gmail():
     print(SCOPES,">>>>>>>>>>>>>>>")
 
     service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
-    # print(service, '<<==================')
     emailMsg = 'You won $100,000'
     mimeMessage = MIMEMultipart()
     print(mimeMessage,"<<<<>>>>><<>>>")
@@ -138,12 +137,12 @@ def send_mail_with_gmail():
 
 
 
-from email import encoders
+import imaplib
+from email import encoders, message_from_string
+from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders, message_from_string
-import imaplib
+
 
 def sendmail():
     ok = True
@@ -187,10 +186,12 @@ def sendmail():
 
 
 import imaplib
-import pprint
-import progressbar 
-import time
 import os
+import pprint
+import time
+
+import progressbar
+
 
 def imap():
     mail_setting = EmailAccount.objects.last()

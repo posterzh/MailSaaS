@@ -34,7 +34,6 @@ class ContactViewSet(generics.CreateAPIView):
     def post(self, request, format=None):
         sf = login()
         recipient=CampaignRecipient.objects.filter(campaign__assigned=request.user.id)
-        print('campaign ',recipient)
         # sf.Lead.create({"Company":"ashu",'LastName':'Sharma','Email':'ashu@example.com'})
         return Response({'response':'Sales_force'})
 
