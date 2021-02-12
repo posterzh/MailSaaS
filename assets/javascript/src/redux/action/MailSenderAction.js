@@ -30,7 +30,6 @@ export const requestForMailGetData = () => {
     }
 }
 export const MailGetDataSuccess = (payload) => {
-    console.log(payload, 'data')
     return {
         type: SUCCESS_MAIL_GET_DATA,
         payload
@@ -60,7 +59,6 @@ export const MailGetDataAction = () => {
         dispatch(requestForMailGetData(token))
         Api.MailGetDataApi(token).then(result => {
             dispatch(MailGetDataSuccess(result.data.message))
-            console.log("result.data.message",result.data.message[0].id)
         }).catch(err => {
             console.log(err)
         })

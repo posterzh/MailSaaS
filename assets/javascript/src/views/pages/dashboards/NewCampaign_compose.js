@@ -69,7 +69,7 @@ export default class Compose extends Component {
                                         Compose the emails in this campaign
                                 </Row>
                                     <Row className="mt-5">
-                                        <div><button className='EditTest'><i class="fa fa-plus-circle" aria-hidden="true"></i> A/B TEST</button>
+                                        <div><button className='EditTest'><i className="fa fa-plus-circle" aria-hidden="true"></i> A/B TEST</button>
                                         </div>
                                     </Row>
                                     <Row>
@@ -78,7 +78,7 @@ export default class Compose extends Component {
                                                 <Input type='email' className='in' name='subject' value={this.state.subject} onChange={this.handleChange} placeholder='Subject' required />
                                                 <div className='mt-3'>
                                                     <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                                        <span><i class="fa fa-question-circle-o" aria-hidden="true"></i></span>
+                                                        <span><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
                                                     </a>
                                                 </div>
                                             </div>
@@ -108,7 +108,7 @@ export default class Compose extends Component {
                                     <Row>
                                         <Col className='mt-3'>
                                             <div className='Add_follow_up' onClick={this.onAddBtnClickFollow}>
-                                                <i class='fa fa-plus'></i> &nbsp;ADD FOLLOW-UP<br />
+                                                <i className='fa fa-plus'></i> &nbsp;ADD FOLLOW-UP<br />
                                             </div>
                                         </Col>
                                     </Row>
@@ -118,7 +118,7 @@ export default class Compose extends Component {
                                     <Row>
                                         <Col className='mt-3'>
                                             <div className='Add_follow_up' onClick={this.onAddBtnClickDrips}>
-                                                <i class='fa fa-plus'></i> &nbsp;ADD DRIP<br />
+                                                <i className='fa fa-plus'></i> &nbsp;ADD DRIP<br />
                                             </div>
                                         </Col>
                                     </Row>
@@ -128,7 +128,7 @@ export default class Compose extends Component {
                                     <Row>
                                         <Col className='mt-3 mb-5'>
                                             <div className='Add_follow_up' onClick={this.onAddBtnClickLinkClick}>
-                                                <i class='fa fa-plus'></i> &nbsp;ADD ON CLICK<br />
+                                                <i className='fa fa-plus'></i> &nbsp;ADD ON CLICK<br />
                                             </div>
                                         </Col>
                                     </Row>
