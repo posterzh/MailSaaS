@@ -19,6 +19,13 @@ from rest_framework.views import APIView
 
 from apps.campaign.models import Campaign, CampaignRecipient
 from apps.campaignschedule.serializers import EmailScheduleSerializers
+from .models import Schedule, Email_schedule
+from datetime import datetime,time, timedelta
+import random
+
+
+
+
 
 from .models import Email_schedule, Schedule
 from .serializers import CampaignscheduleSerializers, ScheduleUpdateSerializers
@@ -26,7 +33,7 @@ from .serializers import CampaignscheduleSerializers, ScheduleUpdateSerializers
 
 def change(times,timezones):
     local = pytz.timezone (timezones)
-    naive = datetime.datetime.strptime (times,"%H:%M:%S")
+    naive = datetime.strptime (times,"%H:%M:%S")
     local_dt = local.localize(naive, is_dst=None)
     utc_dt = local_dt.astimezone(pytz.utc)
     convert_time = datetime.datetime.strftime(utc_dt, "%H:%M:%S")
@@ -40,7 +47,7 @@ class CampaignScheduleAdd(CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     
     def post(self,request):
-        request.data._mutable = True
+        # request.data._mutable = True
         request.data['user'] = request.user.id
         start = request.data['start_time']
         timeset = request.data['time_zone']
@@ -49,7 +56,13 @@ class CampaignScheduleAdd(CreateAPIView):
         ending_time = change(end,timeset)
         request.data['start_time'] = starting_time
         request.data['end_time'] = ending_time
-        request.data._mutable = False
+        if request.data["strategy"] == 'SPACE':
+            try:
+                if request.data["min_email_send"] == None:
+                    pass                
+            except:
+                return Response({"message":"Please enter min_email_send","success":False})
+        # request.data._mutable = False
         serializer = CampaignscheduleSerializers(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -142,7 +155,7 @@ class PostToSchedule(APIView):
             random_no_of_mails_at_a_time = random.randint(min_mail_at_a_time, max_mail_at_a_time)
         
         elif schedule.strategy == 'SEND':
-            random_no_of_mails_at_a_time = max_mail_at_a_time
+            random_no_of_mails_at_a_time = schedule.max_email_send
             
         post_data = []
         
@@ -154,7 +167,7 @@ class PostToSchedule(APIView):
                     "time": next_email_send_at_time,
                     "date": schedule.date,
                     "user_id": schedule.user.id,
-                    "mail_account": schedule.mail_account,
+                    "mail_account": schedule.mail_account.id,
                     "recipient_email": recipient.email,
                     "subject": recipient.subject,
                     "email_body": recipient.email_body,
@@ -163,20 +176,22 @@ class PostToSchedule(APIView):
                 
         while len(post_data) != 0:
             mails_to_send_together = post_data[:random_no_of_mails_at_a_time]
-
-
-
             for data in mails_to_send_together:
                 schedule_exist_count = Email_schedule.objects.filter(time=data["time"],date=data["date"],user_id=data["user_id"],mail_account=data["mail_account"],recipient_email=data["recipient_email"],subject=data["subject"],email_body=data["email_body"]).count()
                 schedule_exist_ob = Email_schedule.objects.filter(time=data["time"],date=data["date"],user_id=data["user_id"],mail_account=data["mail_account"],recipient_email=data["recipient_email"],subject=data["subject"],email_body=data["email_body"]).count()
                 # es = EmailScheduleSerializers(schedule_exist_count)
                 data["time"] = next_email_send_at_time
                 email_schedule_serlzr = EmailScheduleSerializers(data = data)
+                print(email_schedule_serlzr)
                 if email_schedule_serlzr.is_valid():
+                    print()
+                    print()
+                    print()
+                    print("vallid")
                     if schedule_exist_count == 0:
                         email_schedule_serlzr.save()
 
-                    post_data.remove(data)
+                post_data.remove(data)
 
                     
             delta = timedelta(minutes = schedule.mint_between_sends)

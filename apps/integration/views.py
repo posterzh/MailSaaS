@@ -16,20 +16,24 @@ from slack.errors import SlackApiError
 
 from apps.campaign.models import Campaign, CampaignRecipient
 
-from .models import Contact
-from .serializers import ContactSerializer
+from .models import SalesForceDetails
+from .serializers import SalesForceDetailSerializer
+
+
+
 
 
 def login():
     # session = requests.Session()
     sf = Salesforce(username='divyakhandelwal@externlabs.com',password='divya1234',security_token='4J6lcgmeNfG4z7rVV2AZPfIgJ')
+    # print('response1 ',session)
+    # sf = Salesforce(instance='https://externlabs2-dev-ed.my.salesforce.com/', session_id=session)
+    
     return sf
 
 
 
 class ContactViewSet(generics.CreateAPIView):
-    queryset = Contact.objects.all()
-    serializer_class = ContactSerializer
     permission_classes = (permissions.AllowAny,)
     def post(self, request, format=None):
         sf = login()
@@ -37,7 +41,26 @@ class ContactViewSet(generics.CreateAPIView):
         # sf.Lead.create({"Company":"ashu",'LastName':'Sharma','Email':'ashu@example.com'})
         return Response({'response':'Sales_force'})
 
+    def get(self, request, format=None):
+        sf = login()
+        print("sf",sf)
+        data = sf.query("Select Id,Name, from Lead")
+        # result =data
+        # print(data)
+        # return Response(result.data)
+        return Response({'response':'Sales_force'})
 
+
+class SalesForceDetailStore(generics.CreateAPIView):
+    serializer_class = SalesForceDetailSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    def post(self,request):
+        request.data['user'] = request.user.id
+        serializer = SalesForceDetailSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -137,7 +160,6 @@ class ContactViewSet(generics.CreateAPIView):
 
 #         print("opportunity_id ", opportunity_id)
 #         return Response({'response':'Sales_force'})
-
 
 #**************************slack***********************
 

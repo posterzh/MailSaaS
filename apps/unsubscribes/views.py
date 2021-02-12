@@ -31,9 +31,7 @@ class UnsubscribeEmailAdd(CreateAPIView):
                 'user':request.user.id
             }
             serializer = UnsubscribeEmailSerializers(data=data)
-        if serializer.is_valid():
-            print("Valid")
-            
+        if serializer.is_valid():            
             serializer.save()
             return Response({"message":"Unsubcribe Successfully done","success":True})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -50,14 +48,16 @@ class UnsubcribeCsvEmailAdd(CreateAPIView):
         csv_obj = UnsubcribeCsv(unscribe_emails=csv_file)
         csv_obj.save()
         with open('media/'+str(csv_obj.unscribe_emails)) as csv_file:
+            
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
             resp = []
             for row in csv_reader:
                 if line_count == 0:
-                    pass
+                    line_count += 1
                 else:
                     data = {'email':row[0], 'name':row[1],'user':request.user.id}
+                    print(data)
                     serializer = UnsubscribeEmailSerializers(data = data)
                     if serializer.is_valid():
                         line_count += 1
@@ -83,14 +83,25 @@ class UnsubcribeEmailView(APIView):
 
 class UnsubcribeEmailDelete(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = UnsubscribeEmailSerializers      
+    serializer_class = UnsubscribeEmailSerializers 
+    def get_object(self, pk):
+        return UnsubscribeEmail.objects.get(pk=pk)
+        
     def put(self, request, format=None):
         data =request.data["data"]
-        for id in data:
-            print('id',id)
-            unsubcribe = UnsubscribeEmail.objects.get(id = id)
-            
-            unsubcribe.on_delete=True
-            unsubcribe.save()
-        return Response("Unsubcribe Recipient Successfully Done ")
+        
+        for pk in data:
+            try:
+                unsubcribe = self.get_object(pk)
+                if unsubcribe.on_delete:
+                    return Response("Does Not exist ")
+                else:
+                    unsubcribe.on_delete=True
+                    unsubcribe.save()
+                return Response("Unsubcribe Recipient Successfully Done ")
+            except UnsubscribeEmail.DoesNotExist:
+                return Response("Does Not exist ")
        
+
+ 
+  

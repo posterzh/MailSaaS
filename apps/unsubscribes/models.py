@@ -19,5 +19,7 @@ class UnsubscribeEmail(models.Model):
 
 class UnsubcribeCsv(models.Model):
     unscribe_emails= models.FileField(upload_to='unsubcribe_csv_uploads/', blank=True, null=True)
+
+    
     def __str__(self):
-        return self.unscribe_emails
+        return str(self.unscribe_emails)
