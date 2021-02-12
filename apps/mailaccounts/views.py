@@ -223,28 +223,28 @@ def imap():
         # print('Message: {0}\n'.format(num))
         emal = data[0][1].decode('utf-8')
         msg = message_from_string(emal)
-        print(msg, "this is message")
+        # print(msg, "this is message")
 
         # emailData = str(email_message)
 
-    for response_part in data:
+    # for response_part in data:
 
-        print(response_part, " <<----------response part")
+    #     print(response_part, " <<----------response part")
 
-        if isinstance(response_part, tuple):
+    # if isinstance(response_part, tuple):
 
-            msges = message_from_string(response_part[1].decode('utf-8'))
+    msges = message_from_string(data[1].decode('utf-8'))
 
-            subject = str(msg).split("Subject: ", 1)[1].split("\nTo:", 1)[0]
-            print(msges , "<------------")
+    subject = str(msg).split("Subject: ", 1)[1].split("\nTo:", 1)[0]
+    print(msges , "<------------")
 
-            email_subject = msg['subject']
+    email_subject = msg['subject']
 
-            print(email_subject, "<-------------emailsubject")
+    print(email_subject, "<-------------emailsubject")
 
-            email_from = msg['from']
+    email_from = msg['from']
 
-            print(email_from, "<--------------email_from")
+    print(email_from, "<--------------email_from")
 
 
 

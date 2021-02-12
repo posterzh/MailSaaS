@@ -159,7 +159,7 @@ class CampaignGetAllEmailsPreview(generics.ListAPIView):
         for campemail in campEmail:
             serializercampEmail = CampaignEmailSerializer(campemail)
             campEmaildatalist.append(serializercampEmail.data)
-        resp["campEamil"] = campEmaildatalist
+        resp["campEmail"] = campEmaildatalist
 
         followupdatalist = []
         follow_up = FollowUpEmail.objects.filter(campaign=pk)
@@ -185,7 +185,7 @@ class CampaignGetAllEmailsPreview(generics.ListAPIView):
         return Response(resp)
         
     def put(self, request, pk, *args,**kwargs):
-        for campemail in request.data["campEamil"]:
+        for campemail in request.data["campEmail"]:
             campEmalOb = CampaignRecipient.objects.get(id=campemail["id"])
             campEmailSave = CampaignEmailSerializer(campEmalOb, data=campemail)
             if campEmailSave.is_valid():
