@@ -45,7 +45,7 @@ class Schedule(models.Model):
     TIMEZONE_CHOICES = res
     
     user = models.OneToOneField(CustomUser,  on_delete=models.CASCADE)
-    mail_account = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
+    mail_account = models.ForeignKey(EmailAccount, on_delete=models.SET_NULL, null=True)
     block_days = models.ManyToManyField(WeekDays)
     date = models.DateField(default=date.today)
     start_time =models.TimeField(auto_now=False)
