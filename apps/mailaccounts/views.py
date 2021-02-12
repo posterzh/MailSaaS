@@ -28,8 +28,8 @@ class EmailAccountsView(generics.ListCreateAPIView):
         if request.data['smtp_username'] == request.data['email'] and request.data['imap_username'] == request.data['email']:
             serializer = EmailAccountSerializer(data=request.data)
             if serializer.is_valid():
-                # imap()
-                serializer.save()
+                imap()
+                # serializer.save()
                 return Response({"message":serializer.data,"sucess":True})
             return Response({'message':'Invalid Serializer',"error":serializer.errors})
         return Response({"message":"Smtp username and Imap username does not match to email"})
@@ -186,58 +186,58 @@ def sendmail():
 
 
 
-# import imaplib
-# import pprint
-# import progressbar 
-# import time
-# import os
+import imaplib
+import pprint
+import progressbar
+import time
+import os
 
-# def imap():
-#     mail_setting = EmailAccount.objects.last()
-#     # print(mail_setting, "HI This is mail setting ")
+def imap():
+    mail_setting = EmailAccount.objects.last()
+    # print(mail_setting, "HI This is mail setting ")
 
-#     imap_host = mail_setting.imap_host
+    imap_host = mail_setting.imap_host
         
-#     for i in range(10): 
-#         time.sleep(0.1) 
-#         bar.update(i)
-#     ## login to server
-#     imap.login(imap_user, imap_pass)
+    for i in range(10): 
+        time.sleep(0.1) 
+        bar.update(i)
+    ## login to server
+    imap.login(imap_user, imap_pass)
 
-#     print("Bhai ye login ho gya")
+    print("Bhai ye login ho gya")
 
-#     imap.select('Inbox')
+    imap.select('Inbox')
 
-#     tmp, data = imap.search(None, 'ALL')
+    tmp, data = imap.search(None, 'ALL')
 
-#     for num in data[0].split():
-#         animated_marker()
-#         tmpo, data = imap.fetch(num, '(RFC822)')
-#         # print('Message: {0}\n'.format(num))
-#         emal = data[0][1].decode('utf-8')
-#         msg = message_from_string(emal)
-#         print(msg, "this is message")
+    for num in data[0].split():
+        animated_marker()
+        tmpo, data = imap.fetch(num, '(RFC822)')
+        # print('Message: {0}\n'.format(num))
+        emal = data[0][1].decode('utf-8')
+        msg = message_from_string(emal)
+        print(msg, "this is message")
 
-#         # emailData = str(email_message)
+        # emailData = str(email_message)
 
-#     for response_part in data:
+    for response_part in data:
 
-#         print(response_part, " <<----------response part")
+        print(response_part, " <<----------response part")
 
-#         if isinstance(response_part, tuple):
+        if isinstance(response_part, tuple):
 
-#             msges = message_from_string(response_part[1].decode('utf-8'))
+            msges = message_from_string(response_part[1].decode('utf-8'))
 
-#             subject = str(msg).split("Subject: ", 1)[1].split("\nTo:", 1)[0]
-#             print(msges , "<------------")
+            subject = str(msg).split("Subject: ", 1)[1].split("\nTo:", 1)[0]
+            print(msges , "<------------")
 
-#             email_subject = msg['subject']
+            email_subject = msg['subject']
 
-#             print(email_subject, "<-------------emailsubject")
+            print(email_subject, "<-------------emailsubject")
 
-#             email_from = msg['from']
+            email_from = msg['from']
 
-#             print(email_from, "<--------------email_from")
+            print(email_from, "<--------------email_from")
 
 
 
