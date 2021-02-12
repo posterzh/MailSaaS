@@ -2,7 +2,7 @@ import { options } from 'dropzone';
 import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { Container, Row, Col, Button, Input, Form } from 'reactstrap'
-import { RecipientAction } from "../../../redux/action/AuthourizationAction";
+import { RecipientAction } from "../../../redux/action/CampaignAction";
 import Csvfile from './csvfile'
 
 class NewCampaign_recipients extends Component {
@@ -12,7 +12,7 @@ class NewCampaign_recipients extends Component {
             show: false,
             csvFile: '',
             email: [],
-            campaign: '',
+            campaign: '2',
             options: []
         }
         console.log(this.state)
@@ -42,22 +42,22 @@ class NewCampaign_recipients extends Component {
             let temp2 = 2;
             this.state.options.push(temp1, temp2)
         }
-        else {
-            return false
+        else { return false }
+        const recipientData={
+            csvfile_op1:this.state.csvFile,
+            option:this.state.options,
+            email:this.state.email,
+            campaign:this.state.campaign
         }
-        const formData = new FormData();
-        formData.append('csvfile_op1', this.state.csvFile);
-        formData.append('email', this.state.email);
-        formData.append('option', this.state.options);
-        console.log(formData, 'form data')
-        this.props.RecipientAction(formData, localStorage.getItem('access_token'))
-        console.log('r_data', formData, localStorage.getItem('access_token'))
+        console.log('reci',recipientData)
+        const token=localStorage.getItem('access_token')
+        this.props.RecipientAction(recipientData, token)
     }
     render() {
         const { show } = this.state;
         return (
             <div>
-                <div style={{ height: '100%', width: '100%', backgroundColor: "#eee" }}>
+                <div style={{ height: 800, width: '100%', backgroundColor: "#eee" }}>
                     <Container fluid>
                         <Row>
                             <Col md='12' style={{ backgroundColor: "#eee" }}>
@@ -73,10 +73,10 @@ class NewCampaign_recipients extends Component {
                                                         <Row className='mt-3'>
                                                             <Col md='3'><span className="option1">OPTION #1</span></Col>
                                                             <Col md='9'><Row>
-                                                                <span className="csv_logo"><i class="fa fa-file" aria-hidden="true"></i></span>
+                                                                <span className="csv_logo"><i className="fa fa-file" aria-hidden="true"></i></span>
                                                                 <span className="csv_logo_text">Drop a CSV file here</span>
                                                                 < Csvfile />
-                                                                <span className="choose_option"><Input type='file' name='csvFile' onChange={this.handleChange}>(or choose one)</Input></span></Row>
+                                                            </Row>
                                                                 <Row><span>Campaigns are limited to 5k recipients; uploads to 1MB.</span></Row></Col>
                                                         </Row>
                                                         <Row className='mt-5'>
@@ -107,9 +107,7 @@ const mapStateToProps = (state) => {
     };
 };
 const mapDispatchToProps = dispatch => ({
-    RecipientAction: recipientData => {
-        dispatch(RecipientAction(recipientData));
-    },
+    RecipientAction: (recipientData,token) => { dispatch(RecipientAction(recipientData,token)) },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewCampaign_recipients)

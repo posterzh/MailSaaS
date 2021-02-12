@@ -2,14 +2,16 @@ import React from 'react'
 import { connect } from "react-redux";
 import { Container, Row, Col, Form, Input } from 'reactstrap';
 import { StartCampaignAction } from "../../../redux/action/CampaignAction";
-import { MailGetDataAction } from '../../../redux/action/MailSenderAction'
+import { MailGetDataAction } from '../../../redux/action/MailSenderAction';
+import { MailAccount } from '../../../views/pages/MailAccount/MailAccount'
+import SMTP from '../../../views/pages/MailAccount/SMTP'
 
 class NewCampaign_start extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             title: '',
-            from_address: ''
+            from_address: '',
         }
     }
     handleChange = (e) => {
@@ -19,12 +21,11 @@ class NewCampaign_start extends React.Component {
     }
     componentDidMount() {
         this.props.MailGetDataAction();
+        
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log(this.state)
-
         const data = {
             title: this.state.title,
             from_address: this.state.from_address
@@ -33,7 +34,7 @@ class NewCampaign_start extends React.Component {
     }
     render() {
         const { mailGetData } = this.props;
-        console.log(mailGetData, 'mailgetdata')
+     console.log('PROPS', this.props.mailGetData && mailGetData[1].id)
         return (
             <div>
                 <div style={{ height: '100%', width: '100%' }}>
@@ -46,18 +47,20 @@ class NewCampaign_start extends React.Component {
                                     </Row>
                                     <Row className='mt-5'>
                                         <div style={{ width: '100%' }}> <label>Title (for your team's eyes only)</label><br></br>
-                                            <input type='text' name='title' value={this.state.title} onChange={this.handleChange} className='start_input' autoComplete="off"></input></div>
+                                            <input type='text' name='title' value={this.state.title} onChange={this.handleChange} className='start_input' autoComplete="off" required></input></div>
                                     </Row>
-                                    <Row className='mt-5'>  
+                                    <Row className='mt-5'>
                                         <div style={{ width: '100%' }}><label >From Address</label><br></br>
-                                            <Input type="select" name='from_address' onChange={this.handleChange}  id="exampleSelect">
+                                            <Input type="select" name='from_address' onChange={this.handleChange} id="exampleSelect" >
                                                 {
                                                     mailGetData && mailGetData.map((item, index) => {
-                                                        console.log('item',item.id,item.email);
-                                                        return <option value={item.id}>{item.email}</option>
+                                                        return (<>
+                                                            <option key={index} value={item.id}>{item.email}</option>
+                                                        </>)
                                                     })
                                                 }
-                                            </Input></div>
+                                            </Input>
+                                        </div>
                                     </Row>
                                     <Row className='mt-5'>
                                         <Col style={{ display: "flex", justifyContent: "center" }}>

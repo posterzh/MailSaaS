@@ -8,7 +8,6 @@ import {
     FAILURE_START,
     REQUEST_FOR_START,
     SUCCESS_START,
-    FAILURE_RECIPIENT,
     REQUEST_FOR_RECIPIENT,
     SUCCESS_RECIPIENT,
     FAILURE_MAIL_SENDER,
@@ -40,7 +39,6 @@ const initialState = {
     mailAccountId:''
 }
 export const RegisterReducer = (state = { initialState }, action) => {
-    console.log(action.payload&&action.payload[0],'payloaddata')
     switch (action.type) {
         // cases for signup
         case REQUEST_FOR_REGISTER:
@@ -102,9 +100,6 @@ export const RecipientReducer = (state = { initialState }, action) => {
                 ...state,
                 formData: action.formData,
             }
-        case FAILURE_RECIPIENT:
-            return {
-            }
         default: return state
             break;
     }
@@ -135,7 +130,6 @@ export const MailGetDataReducer = (state = { initialState }, action) => {
             return {
                 ...state,
                 mailGetData: action.payload,
-                // mailAccountId: action.payload[].id
             }
         case FAILURE_MAIL_GET_DATA:
             return {
