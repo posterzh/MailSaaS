@@ -17,7 +17,12 @@ import {
     FAILURE_MAIL_GET_DATA,
     REQUEST_FOR_MAIL_GET_DATA,
     SUCCESS_MAIL_GET_DATA,
-    SUCCESS_FETCH_UNSUBSCRIPTION
+    SUCCESS_FETCH_UNSUBSCRIPTION,
+    REQUEST_FOR_OPTION,
+    SUCCESS_OPTION,
+    FAILURE_OPTION,
+    FETCH_PROSPECTS,
+    SUCCESS_FETCH_PROSPECTS
 } from "../actionType/actionType";
 
 const initialState = {
@@ -30,8 +35,12 @@ const initialState = {
     viewData: '',
     mailData: '',
     unsubscribeData: [],
+    optionData:'',
+    prospectData:[],
+    mailAccountId:''
 }
 export const RegisterReducer = (state = { initialState }, action) => {
+    console.log(action.payload&&action.payload[0],'payloaddata')
     switch (action.type) {
         // cases for signup
         case REQUEST_FOR_REGISTER:
@@ -125,7 +134,8 @@ export const MailGetDataReducer = (state = { initialState }, action) => {
         case SUCCESS_MAIL_GET_DATA:
             return {
                 ...state,
-                mailGetData: action.mailGetData,
+                mailGetData: action.payload,
+                // mailAccountId: action.payload[].id
             }
         case FAILURE_MAIL_GET_DATA:
             return {
@@ -135,7 +145,7 @@ export const MailGetDataReducer = (state = { initialState }, action) => {
     }
 }
 export const UnsubscribeReducer = (state = { initialState }, action) => {
-    console.log(action.payload, "action.payload", state.unsubscribeData)
+    // console.log(action.payload, "action.payload", state.unsubscribeData)
     switch (action.type) {
         case SUCCESS_FETCH_UNSUBSCRIPTION:
             return {
@@ -145,5 +155,38 @@ export const UnsubscribeReducer = (state = { initialState }, action) => {
         default: return state
             break;
     }
+}
 
+// CAMPAIGN OPTION REDUCER
+export const CampaignOptionReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case  REQUEST_FOR_OPTION:
+            return {
+            }
+        case SUCCESS_OPTION:
+            return {
+                ...state,
+                optionData: action.data,
+            }
+        case FAILURE_OPTION:
+            return {
+            }
+        default: return state
+            break;
+    }
+}
+
+export const ProspectsGetReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case FETCH_PROSPECTS:
+            return {
+            }
+        case SUCCESS_FETCH_PROSPECTS:
+            return {
+                ...state,
+                prospectData: action.prospectData,
+            }
+        default: return state
+            break;
+    }
 }

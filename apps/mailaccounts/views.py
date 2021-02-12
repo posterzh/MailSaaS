@@ -28,12 +28,11 @@ class EmailAccountsView(generics.ListCreateAPIView):
         if request.data['smtp_username'] == request.data['email'] and request.data['imap_username'] == request.data['email']:
             serializer = EmailAccountSerializer(data=request.data)
             if serializer.is_valid():
-                imap()
-                # serializer.save()
+                # imap()
+                serializer.save()
                 return Response({"message":serializer.data,"sucess":True})
             return Response({'message':'Invalid Serializer',"error":serializer.errors})
         return Response({"message":"Smtp username and Imap username does not match to email"})
-
 
     def get(self,request,*args,**kwargs):
 
@@ -70,7 +69,6 @@ class EmailAccountsUpdateView(generics.UpdateAPIView):
 def send_mail_with_smtp():
     try:
         con = mail.get_connection()
-        print(con,"22222")
         con.open()
         print('Django connected to the SMTP server')
 
@@ -144,7 +142,7 @@ from email import encoders
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
-from email import encoders
+from email import encoders, message_from_string
 import imaplib
 
 def sendmail():
@@ -188,32 +186,126 @@ def sendmail():
 
 
 
-import imaplib
+# import imaplib
+# import pprint
+# import progressbar 
+# import time
+# import os
 
-def imap():
-    mail_setting = EmailAccount.objects.last()
-    print(mail_setting, "HI This is mail setting ")
+# def imap():
+#     mail_setting = EmailAccount.objects.last()
+#     # print(mail_setting, "HI This is mail setting ")
 
-    imap_host = mail_setting.imap_host
+#     imap_host = mail_setting.imap_host
+        
+#     for i in range(10): 
+#         time.sleep(0.1) 
+#         bar.update(i)
+#     ## login to server
+#     imap.login(imap_user, imap_pass)
 
-    imap_user = mail_setting.imap_username
-    imap_pass = mail_setting.imap_password
+#     print("Bhai ye login ho gya")
 
-    # connect to host using SSL
-    imap = imaplib.IMAP4_SSL(imap_host)
-    print(imap,  "<<<<-- i am in imap")
-    ## login to server
-    imap.login(imap_user, imap_pass)
+#     imap.select('Inbox')
 
-    print("Bhai ye login ho gya")
+#     tmp, data = imap.search(None, 'ALL')
 
-    imap.select('Inbox')
+#     for num in data[0].split():
+#         animated_marker()
+#         tmpo, data = imap.fetch(num, '(RFC822)')
+#         # print('Message: {0}\n'.format(num))
+#         emal = data[0][1].decode('utf-8')
+#         msg = message_from_string(emal)
+#         print(msg, "this is message")
 
-    tmp, data = imap.search(None, 'ALL')
-    # print(data[0]. , " <<<<<<<<<<<<    i am in data ")
+#         # emailData = str(email_message)
 
-    for num in data[0].split():
-        tmp, data = imap.fetch(num, '(RFC822)')
-        print('Message: {0}\n'.format(num))
-        break
+#     for response_part in data:
+
+#         print(response_part, " <<----------response part")
+
+#         if isinstance(response_part, tuple):
+
+#             msges = message_from_string(response_part[1].decode('utf-8'))
+
+#             subject = str(msg).split("Subject: ", 1)[1].split("\nTo:", 1)[0]
+#             print(msges , "<------------")
+
+#             email_subject = msg['subject']
+
+#             print(email_subject, "<-------------emailsubject")
+
+#             email_from = msg['from']
+
+#             print(email_from, "<--------------email_from")
+
+
+
+
+
+        # dirName = 'attachments/'
+        # if not os.path.exists(dirName):
+        #     # print("Creating folder ", dirName)
+        #     os.mkdir(dirName)
+        
+        # for part in msg.walk():
+        #     # print(part ,"i am in parttttttttttt")
+
+       
+        #     if part.get_content_maintype() == 'multipart':
+        #         continue
+        #     if part.get('Content-Disposition') is None:
+        #         continue
+        #     fileName = part.get_filename()
+
+        #     if bool(fileName):
+
+        #         filePath = os.path.join(dirName, fileName)
+        #         if not os.path.isfile(filePath) :
+        #             fp = open(filePath, 'wb')
+        #             fp.write(part.get_payload(decode=True))
+        #             fp.close()
+        #         emailData = str(msg)
+        #         # print(emailData , "hi this is email data\n")
+
+        #         subject = str(msg).split("Subject: ", 1)[1].split("\nTo:", 1)[0]
+        #         # print(subject , "hi this is subject\n")
+
+        #         emailDate = str(msg).split("Date: ", 1)[1].split("\nFrom:", 1)[0]
+        #         # print(emailDate , "hi this is emailDate\n")
+
+        #         DeliveredTo = str(msg).split("Delivered-To: ", 1)[1].split("\nReceived:", 1)[0]
+        #         # print(DeliveredTo , "hi this is DeliveredTo\n")
+
+        #         sentBy = str(msg).split("From: ", 1)[1].split(">\n", 1)[0]
+        #         # print(sentBy , "hi this is sentBy\n")
+
+                # Content-Disposition
+                # with open("test.txt",'a',encoding = 'utf-8') as f:
+                #     f.write('emailData : ' + emailData + ' EMAILlllllDataaaaEND '+ '\n')
+                #     f.write("\n************************************************************************\n")
+                #     f.write('subject11 : ' + subject + ' SUBJECTEND '+ '\n')
+                #     f.write("\n************************************************************************\n")
+                #     f.write('Date11 : ' + emailDate + ' DATEEND '+'\n')
+                #     f.write("\n************************************************************************\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     imap.close()

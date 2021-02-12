@@ -106,7 +106,7 @@ class CampaignLeadCatcher(models.Model):
     leadcatcher_recipient = models.CharField(max_length=32,choices=RECIPIENT,default=0)
     specific_link = models.URLField(max_length=500, null=True,blank=True)
     of_times = models.PositiveIntegerField(null = True,blank=True,default = 0)
-
+    
     def __str__(self):
 
         return str(self.campaign)

@@ -22,25 +22,23 @@ export class LeadCatchermodel extends Component {
                             <span className="reply">REPLY</span  >
                         </Col>
                         <Col  >
-                            <select className="selectbox_1" >
+                            <select className="selectbox_1" defaultValue=''>
                                 <option value="" selected disabled hidden className="status">Status</option>
                                 <option value="ignore" className="ignore">ignore</option>
                                 <option value='won' className="won">won3</option>
                                 <option value='lost' className="lost">lost</option>
                             </select></Col >
                         <Col  >
-                            <select className="selectbox_2">
+                            <select className="selectbox_2" defaultValue=''>
                                 <option value="" selected disabled hidden className="Assign">Assign</option>
-                                <option value="" className="UnAssign">Unassigned</option>
-                                <option value="" className="me">Me</option>
+                                <option value="unassigned" className="UnAssign">Unassigned</option>
+                                <option value="me" className="me">Me</option>
                             </select>
                         </Col>
                         <Col  >
-                        {/* <Button> */}
                             <span className="next">
                                 Next
                         </span>
-                        {/* </Button> */}
                         </Col>
                     </Row>
                 </div>

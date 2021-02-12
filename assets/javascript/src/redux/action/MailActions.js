@@ -1,12 +1,12 @@
 import {
     FETCH_MAIL_ACCOUNTS,
-    SUCCESS_FETCH_MAIL_ACCOUNTS
+    SUCCESS_FETCH_MAIL_ACCOUNTS,
 } from "../actionType/actionType"
 import Api from "../api/api";
 
 export const fetchMailAccounts = () => {
     return {
-        type: REQUEST_FOR_REGISTER,
+        type:  FETCH_MAIL_ACCOUNTS,
     }
 }
 

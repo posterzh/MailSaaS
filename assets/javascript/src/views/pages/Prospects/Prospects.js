@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 import { Container, Row, Col, Label, Input, Table, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
-
+// import {Prospects} from "../../../redux/action/"
+import {ProspectActionData} from '../../../redux/action/ProspectsAction'
 class Prospects extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             dd1: false,
             value: 'Any'
@@ -21,9 +23,14 @@ class Prospects extends Component {
             value: e.target.innerText
         });
     }
+    componentDidMount() {
+        this.props.ProspectActionData();
+        console.log("asdfghjkldfghjkldtfyghj",this.props)
+      }
+      
 
     render() {
-
+const {prospectData}=this.props;
         return (
             <div>
                 <div className='campaign_navbar' >
@@ -113,7 +120,23 @@ class Prospects extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                {
+                                    prospectData&& prospectData.map((item,index)=>{
+                                        console.log("item",item);
+                                       return <tr>
+                                           <td key={index}><input type='checkbox'></input></td>
+                                            <td value={index}>{item.email}</td>
+                                            <td value={index}>{item.name}</td>
+                                            <td value={index}>{item.created}</td>
+                                            <td value={index}>{item.status}</td>
+                                            <td value={index}>{item.campaign}</td>
+                                            <td value={index}>{item.sent}</td>
+                                            <td value={index}>{item.id}</td>
+                                            <td value={index}>{item.name}</td>
+                                        </tr>
+                                    })
+                                }
+                                {/* <tr>
                                     <td><input type='checkbox' /></td>
                                     <td>EMAIL</td>
                                     <td>NAME</td>
@@ -123,7 +146,7 @@ class Prospects extends Component {
                                     <td>SENT</td>
                                     <td>ENGAGED</td>
                                     <td>TASKS</td>
-                                </tr>
+                                </tr> */}
                             </tbody>
                         </Table>
                     </Row>
@@ -132,9 +155,22 @@ class Prospects extends Component {
         )
     }
 }
-export default Prospects
+// export default Prospects
 
+const mapStateToProps=(state)=>
+{
+    console.log("cheking state",typeof state.ProspectsGetReducer.prospectData)
+    return{
+        prospectData:state.ProspectsGetReducer.prospectData
+    }
+}
 
+const mapDispatchToProps=dispatch=>({
+    ProspectActionData:prospectData=>{
+        dispatch(ProspectActionData(prospectData))
+    }
+})
+export default connect(mapStateToProps,mapDispatchToProps)(Prospects)
 // Message Deepika Maheshwari
 
 

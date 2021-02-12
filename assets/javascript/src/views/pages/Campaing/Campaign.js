@@ -19,7 +19,7 @@ class Campaign extends Component {
       data: []
     }
   }
-
+  
   render() {
     const { show, hide } = this.state;
     return (
