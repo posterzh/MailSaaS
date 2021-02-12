@@ -188,7 +188,7 @@ def sendmail():
 
 import imaplib
 import pprint
-import progressbar
+import progressbar 
 import time
 import os
 
@@ -197,14 +197,21 @@ def imap():
     # print(mail_setting, "HI This is mail setting ")
 
     imap_host = mail_setting.imap_host
+    imap_user = mail_setting.imap_username
+    imap_pass = mail_setting.imap_password
+    imap_port = mail_setting.imap_port
+    # connect to host using SSL
+    imap = imaplib.IMAP4_SSL(imap_host,imap_port)
+    def animated_marker(): 
+        widgets = ['Loading: ', progressbar.AnimatedMarker()] 
+        bar = progressbar.ProgressBar(widgets=widgets).start() 
         
-    for i in range(10): 
-        time.sleep(0.1) 
-        bar.update(i)
+        for i in range(10): 
+            time.sleep(0.1) 
+            bar.update(i)
     ## login to server
     imap.login(imap_user, imap_pass)
 
-    print("Bhai ye login ho gya")
 
     imap.select('Inbox')
 
@@ -220,24 +227,24 @@ def imap():
 
         # emailData = str(email_message)
 
-    for response_part in data:
+    # for response_part in data:
 
-        print(response_part, " <<----------response part")
+    #     print(response_part, " <<----------response part")
 
-        if isinstance(response_part, tuple):
+    #     if isinstance(response_part, tuple):
 
-            msges = message_from_string(response_part[1].decode('utf-8'))
+    msges = message_from_string(data[0].decode('utf-8'))
 
-            subject = str(msg).split("Subject: ", 1)[1].split("\nTo:", 1)[0]
-            print(msges , "<------------")
+    subject = str(msg).split("Subject: ", 1)[1].split("\nTo:", 1)[0]
+    print(msges , "<------------")
 
-            email_subject = msg['subject']
+    email_subject = msg['subject']
 
-            print(email_subject, "<-------------emailsubject")
+    print(email_subject, "<-------------emailsubject")
 
-            email_from = msg['from']
+    email_from = msg['from']
 
-            print(email_from, "<--------------email_from")
+    print(email_from, "<--------------email_from")
 
 
 

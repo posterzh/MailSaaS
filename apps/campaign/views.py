@@ -2,6 +2,7 @@ import csv
 import datetime
 import json
 import re
+import ast 
 from datetime import date, datetime, time
 import pytracking
 from django.conf import settings
@@ -56,14 +57,19 @@ class CreateCampaignRecipientsView(APIView):
 
     def post(self, request, format=None):
         postdata = request.data
-        res = json.loads(postdata["option"])
+        # option_list = json.loads(postdata["option"])
+        # email_list = json.loads(postdata["email"])
         postdata._mutable = True
-        postdata["option"] = res
+        # postdata["option"] = option_list
+        # postdata["email"] = email_list
+        postdata["option"] = ast.literal_eval(postdata["option"])
+        postdata["email"] = ast.literal_eval(postdata["email"])
         postdata._mutable = False
 
         resp = []
         # if 'campaign.add_campaign' in request.user.get_group_permissions():
         if 1 in postdata["option"]:
+            
             try:
                 camp = Campaign.objects.get(id=postdata['campaign'])
             except:
@@ -89,21 +95,36 @@ class CreateCampaignRecipientsView(APIView):
                 if 2 not in postdata["option"]:
                     return Response({"resp":resp, "success":True})
         if 2 in postdata["option"]:
-            serializer = CampaignEmailSerializer(data = postdata)
-            if serializer.is_valid():
+            
+            postdata._mutable = True
+            
+            print(postdata["email"])
+            postdata._mutable = False
+            for email in postdata["email"]:
+                print("email = ",email)
                 camp = Campaign.objects.get(id=postdata['campaign'])
-                for email in postdata["email"]:
-                    CampaignEmail = CampaignRecipient(campaign=camp, email=email)
-                    CampaignEmail.save()
-                    campData = CampaignEmailSerializer(CampaignEmail)
-                    print(CampaignEmail, campData.data)
-                    resp.append(campData.data)
-                return Response({"resp":resp,"message":"Saved Successfully","success":True})
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                CampaignEmail = CampaignRecipient(campaign=camp, email=email)
+                CampaignEmail.save()
+                campData = CampaignEmailSerializer(CampaignEmail)
+                resp.append(campData.data)
+            return Response({"resp":resp,"message":"Saved Successfully","success":True})
+
+                # serializer = CampaignEmailSerializer(data = postdata)
+                # print(serializer,"<------------")
+                # if serializer.is_valid():
+                #     print(camp)
+                #     print(email)
+                #     CampaignEmail = CampaignRecipient(campaign=camp, email=email)
+                #     CampaignEmail.save()
+                #     campData = CampaignEmailSerializer(CampaignEmail)
+                #     print(CampaignEmail, campData.data)
+                #     resp.append(campData.data)
+                #     return Response({"resp":resp,"message":"Saved Successfully","success":True})
+                # else:
+                #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         # else:
         #     return Response({'message':"Has No Permissions",'status':401})
-        print("hi came in erros section ")
+        # print("hi came in erros section ")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
