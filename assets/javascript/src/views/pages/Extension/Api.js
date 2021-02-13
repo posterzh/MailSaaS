@@ -12,7 +12,7 @@ export class Api extends Component {
             <div>
                 <div className='campaign_navbar' >
                     <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>API</h1>
-                    <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i class="fa fa-question-circle-o" aria-hidden="true"></i></p>
+                    <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
                 </div>
                 <Container fluid>
                     <Row>
@@ -32,7 +32,7 @@ export class Api extends Component {
                         <Col md="4">
                             <Button style={{ background: "#ffff" }}>
                                 <a href="">
-                                    <span style={{ fontSize: "15px" }}><i class="fa fa-external-link"></i> </span>
+                                    <span style={{ fontSize: "15px" }}><i className="fa fa-external-link"></i> </span>
                                     <span style={{ fontSize: "15px" }}>  view documemt</span>
                                 </a>
                             </Button>

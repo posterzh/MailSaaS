@@ -32,7 +32,7 @@ const Campaign_data = (props) => {
 
                         <Col md='1'><div className='child ml-3'>
                             <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                <span className='font_icon'><i class="fa fa-undo" aria-hidden="true"></i></span>
+                                <span className='font_icon'><i className="fa fa-undo" aria-hidden="true"></i></span>
                             </a></div>
                         </Col>
                     </Nav>

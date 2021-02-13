@@ -162,21 +162,21 @@ export default class EditCampaign extends Component {
                                 <Row>
                                     <Col className='mt-3'>
                                         <div className='Add_follow_up'>
-                                            <i class='fa fa-plus'></i> &nbsp;ADD FOLLOW-UP<br />
+                                            <i className='fa fa-plus'></i> &nbsp;ADD FOLLOW-UP<br />
                                         </div>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col className='mt-3'>
                                         <div className='Add_follow_up'>
-                                            <i class='fa fa-plus'></i> &nbsp;ADD DRIP<br />
+                                            <i className='fa fa-plus'></i> &nbsp;ADD DRIP<br />
                                         </div>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col className='mt-3'>
                                         <div className='Add_follow_up'>
-                                            <i class='fa fa-plus'></i> &nbsp;ADD ON CLICK<br />
+                                            <i className='fa fa-plus'></i> &nbsp;ADD ON CLICK<br />
                                         </div>
                                     </Col>
                                 </Row>
