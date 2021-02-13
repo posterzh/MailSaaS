@@ -34,7 +34,6 @@ class NewCampaign_start extends React.Component {
     }
     render() {
         const { mailGetData } = this.props;
-     console.log('PROPS', this.props.mailGetData && mailGetData[1].id)
         return (
             <div>
                 <div style={{ height: '100%', width: '100%' }}>

@@ -139,7 +139,6 @@ export const MailGetDataReducer = (state = { initialState }, action) => {
     }
 }
 export const UnsubscribeReducer = (state = { initialState }, action) => {
-    // console.log(action.payload, "action.payload", state.unsubscribeData)
     switch (action.type) {
         case SUCCESS_FETCH_UNSUBSCRIPTION:
             return {

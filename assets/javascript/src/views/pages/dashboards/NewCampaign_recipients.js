@@ -12,10 +12,9 @@ class NewCampaign_recipients extends Component {
             show: false,
             csvFile: '',
             email: [],
-            campaign: '2',
+            campaign: '12',
             options: []
         }
-        console.log(this.state)
     }
     handleChange = (e) => {
         this.setState({
@@ -24,6 +23,7 @@ class NewCampaign_recipients extends Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
+        console.log("this is state",this.state)
         this.state.options.length = 0
         if (!this.state.email && !this.state.csvFile) {
             alert('Fill option 1 or 2')
@@ -45,11 +45,10 @@ class NewCampaign_recipients extends Component {
         else { return false }
         const recipientData={
             csvfile_op1:this.state.csvFile,
-            option:this.state.options,
+            option:`${this.state.options}`,
             email:this.state.email,
             campaign:this.state.campaign
         }
-        console.log('reci',recipientData)
         const token=localStorage.getItem('access_token')
         this.props.RecipientAction(recipientData, token)
     }
@@ -75,13 +74,13 @@ class NewCampaign_recipients extends Component {
                                                             <Col md='9'><Row>
                                                                 <span className="csv_logo"><i className="fa fa-file" aria-hidden="true"></i></span>
                                                                 <span className="csv_logo_text">Drop a CSV file here</span>
-                                                                < Csvfile />
+                                                               <input type='file' name='csvFile' value={this.state.csvFile} onChange={this.handleChange}></input>
                                                             </Row>
                                                                 <Row><span>Campaigns are limited to 5k recipients; uploads to 1MB.</span></Row></Col>
                                                         </Row>
                                                         <Row className='mt-5'>
                                                             <Col md='3' className="option1"><span>OPTION #2</span></Col>
-                                                            <Col md='9'><span className="textarea"><textarea name='email' value={this.state.email} onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>{show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
+                                                            <Col md='9'><span className="textarea"><textarea type='email' name='email' value={this.state.email} onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>{show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
                                                         </Row>
                                                         <Row className='mt-5'>
                                                             <Col md='3'> <span className="option1">OPTION #3</span></Col>

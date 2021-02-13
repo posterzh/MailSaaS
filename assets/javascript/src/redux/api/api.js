@@ -33,17 +33,12 @@ Api.RecipientApi = (recipientData, token) => {
   formData.append('csvfile_op1', recipientData.csvFile);
   formData.append('email', recipientData.email);
   formData.append('option', recipientData.option);
-  console.log( recipientData.option, ' recipientData.options')
+  formData.append('campaign',recipientData.campaign)
+
   return axios({
     method: 'POST',
     url: `${API_BASE_URL}/campaign/recipients/`,
-    data: {
-      csvfile_op1: recipientData.csvFile,
-      email: `${recipientData.email}`,
-      campaign: recipientData.campaign,
-      option: `${recipientData.option}`,
-
-    },
+    data:formData,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
