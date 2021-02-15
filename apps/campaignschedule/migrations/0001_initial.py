@@ -11,10 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-<<<<<<< HEAD
-=======
         ('mailaccounts', '0001_initial'),
->>>>>>> c783f0ba9bc6cd4c074f4609565972abbf25595e
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('mailaccounts', '0001_initial'),
     ]

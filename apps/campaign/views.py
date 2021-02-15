@@ -227,9 +227,12 @@ class CreateCampaignOptionView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def put(self, request, format=None):
-
+    
         if request.data['terms_and_laws'] == True:
-            queryset = Campaign.objects.get(id = request.data['campaign'])
+            try:
+                queryset = Campaign.objects.get(id = request.data['campaign'])
+            except:
+                return Response({"message":"No campiagn availabe for this id", "success":"false"})
             request.data["title"] = queryset.title
             request.data["from_address"] = queryset.from_address.id
             request.data["full_name"] = queryset.full_name
@@ -249,7 +252,6 @@ class CreateCampaignOptionView(APIView):
             else:
                 request.data["schedule_date"] = None
                 request.data["schedule_time"] = None
-            print(request.data)
             serilizer = CampaignSerializer(queryset, data=request.data)
             if serilizer.is_valid():
                 serilizer.save()
