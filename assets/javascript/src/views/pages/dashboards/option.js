@@ -83,12 +83,12 @@ class Option extends Component {
                                     </div>
                                 </Row>
                                 <Row className="Leadcatcher_settingdiv">
-                                    <span className="leadcatchersetting_icon"><i class="fa fa-caret-down"></i></span>
+                                    <span className="leadcatchersetting_icon"><i className="fa fa-caret-down"></i></span>
                                     <span className="leadcatchersetting">Lead Catcher setting</span>
                                 </Row>
                                 <Row>
                                     <span className="about_leadcatcher">ABOUT LEAD CATCHER</span>
-                                    <span className="about_leadcatchericon"><i class="fa fa-question-circle-o" aria-hidden="true"></i></span><br />
+                                    <span className="about_leadcatchericon"><i className="fa fa-question-circle-o" aria-hidden="true"></i></span><br />
                                     <span className="leadcatcher_note">Follow-up emails stop when a recipient becomes a lead, and leads are collected in one place so you can efficiently respond or take action.</span>
                                 </Row>
                                 <Row className="select_boxdiv">
@@ -121,7 +121,7 @@ class Option extends Component {
                                                     {/* <span className="numberof_repliesinput"> */}
                                                     <input type="text" />
                                                     {/* </span> */}
-                                                    <span className="delete_icon"><i class="fa fa-trash"></i></span>
+                                                    <span className="delete_icon"><i className="fa fa-trash"></i></span>
                                                 </div>
                                             </div>
 
@@ -129,7 +129,7 @@ class Option extends Component {
                                     </div>
                                 </Row>
                                 <Row>
-                                    <span><i class="fa fa-caret-down"></i></span>
+                                    <span><i className="fa fa-caret-down"></i></span>
                                     <span>CRM sync</span>
                                 </Row>
                                 <Row>
@@ -140,7 +140,7 @@ class Option extends Component {
                                 </Row>
                                 <Row>
                                     <span><input type="checkbox" /></span>
-                                    <span><i class="fa fa-slack"></i></span>
+                                    <span><i className="fa fa-slack"></i></span>
                                     <span>Extern Labs</span>
                                 </Row>
                                 <Row>

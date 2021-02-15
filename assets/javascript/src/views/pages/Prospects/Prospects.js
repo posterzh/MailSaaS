@@ -35,7 +35,7 @@ const {prospectData}=this.props;
             <div>
                 <div className='campaign_navbar' >
                     <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Prospects</h1>
-                    <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i class="fa fa-question-circle-o" aria-hidden="true"></i></p>
+                    <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
                 </div>
                 <Container fluid className='mt-4' >
                     <Row>
@@ -67,7 +67,7 @@ const {prospectData}=this.props;
                                     <Input type='email' className='in' placeholder='Search' />
                                     <div className='child mt-2'>
                                         <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                            <span className='font_icon'><i class="fa fa-search" aria-hidden="true"></i></span>
+                                            <span className='font_icon'><i className="fa fa-search" aria-hidden="true"></i></span>
                                         </a>
                                     </div>
                                 </div>
@@ -98,7 +98,7 @@ const {prospectData}=this.props;
                                 </div>
                                 <div className='child ml-3'>
                                     <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                        <span className='font_icon'><i class="fa fa-undo" aria-hidden="true"></i></span>
+                                        <span className='font_icon'><i className="fa fa-undo" aria-hidden="true"></i></span>
                                     </a>
                                 </div>
                             </div>

@@ -7,7 +7,7 @@ export default function Overview_Summery() {
             <Container fluid>
                 <Row className='mt-5'>
                     {/* <label className='filter_app'><a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                        <i class="fa fa-calendar" aria-hidden="true"></i> Hide sending calender
+                        <i className="fa fa-calendar" aria-hidden="true"></i> Hide sending calender
                 </a></label> */}
                 </Row>
                 <Row>
@@ -49,7 +49,7 @@ export default function Overview_Summery() {
                 <Row>
                     <label>
                         <h1 className='display-4'>FUNNEL</h1>
-                        <span><a href='#' className='explain_number' ><i class="fa fa-question-circle-o" aria-hidden="true"></i> Explain these numbers</a></span>
+                        <span><a href='#' className='explain_number' ><i className="fa fa-question-circle-o" aria-hidden="true"></i> Explain these numbers</a></span>
                     </label>
                 </Row>
                 <Row>

@@ -3,9 +3,7 @@ import {
     FAILURE_LOGIN,
     REQUEST_FOR_LOGIN,
     SUCCESS_LOGIN,
-    FAILURE_START,
-    REQUEST_FOR_START,
-    SUCCESS_START,
+    SUCCESS_START_CAMPAIGN,
     SUCCESS_RECIPIENT,
     SUCCESS_MAIL_SENDER,
     SUCCESS_MAIL_GET_DATA,
@@ -14,22 +12,23 @@ import {
     SUCCESS_FETCH_PROSPECTS,
     SUCCESS_MAIL_ACCOUNT_DELETE,
     SUCCESS_MAIL_ACCOUNT_UPDATE,
-    FAILURE_MAIL_ACCOUNT_UPDATE
+    FAILURE_MAIL_ACCOUNT_UPDATE,
+    SUCCESS_SEND_CAMPAIGN
 } from "../actionType/actionType";
 
 const initialState = {
     Loginuser: '',
     user: '',
-    data: '',
+    startCampaignData: '',
     recipientData: '',
     mailGetData: [],
     mailData: '',
+    sendData:'',
     viewData: '',
-    mailData: '',
     unsubscribeData: [],
     optionData:'',
     prospectData:[],
-    mailAccountId:''
+    mailAccountId:'',
 }
 export const RegisterReducer = (state = { initialState }, action) => {
     switch (action.type) {
@@ -62,16 +61,10 @@ export const LoginReducer = (state = { initialState }, action) => {
 }
 export const StartCampaignReducer = (state = { initialState }, action) => {
     switch (action.type) {
-        case REQUEST_FOR_START:
-            return {
-            }
-        case SUCCESS_START:
+        case SUCCESS_START_CAMPAIGN:
             return {
                 ...state,
-                data: action.data,
-            }
-        case FAILURE_START:
-            return {
+                startCampaignData: action.data,
             }
         default: return state
             break;
@@ -86,6 +79,17 @@ export const RecipientReducer = (state = { initialState }, action) => {
             }
         default: return state
             break;
+    }
+}
+export const CamapignSendReducer=(state = { initialState }, action)=>{
+    switch (action.type) {
+    case SUCCESS_SEND_CAMPAIGN:
+        return {
+            ...state,
+            sendData: action.sendData,
+        }
+    default: return state
+        break;
     }
 }
 export const MailSenderReducer = (state = { initialState }, action) => {

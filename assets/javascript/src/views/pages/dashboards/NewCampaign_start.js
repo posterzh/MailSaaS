@@ -3,15 +3,12 @@ import { connect } from "react-redux";
 import { Container, Row, Col, Form, Input } from 'reactstrap';
 import { StartCampaignAction } from "../../../redux/action/CampaignAction";
 import { MailGetDataAction } from '../../../redux/action/MailSenderAction';
-import { MailAccount } from '../../../views/pages/MailAccount/MailAccount'
-import SMTP from '../../../views/pages/MailAccount/SMTP'
-
 class NewCampaign_start extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             title: '',
-            from_address: '',
+            from_address: 12,
         }
     }
     handleChange = (e) => {
@@ -20,10 +17,8 @@ class NewCampaign_start extends React.Component {
         })
     }
     componentDidMount() {
-        this.props.MailGetDataAction();
-        
+        this.props.MailGetDataAction();        
     }
-
     handleSubmit = (e) => {
         e.preventDefault();
         const data = {
@@ -61,7 +56,7 @@ class NewCampaign_start extends React.Component {
                                     </Row>
                                     <Row className='mt-5'>
                                         <Col style={{ display: "flex", justifyContent: "center" }}>
-                                            <button type='submit' className='btn startBtn'> Next <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                                            <button type='submit' className='btn startBtn'> Next <i className="fas fa-angle-right"></i>
                                             </button>
                                         </Col>
                                     </Row>
@@ -75,7 +70,6 @@ class NewCampaign_start extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-
     return {
         mailGetData: state.MailGetDataReducer.mailGetData
     };
