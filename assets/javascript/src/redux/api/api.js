@@ -11,8 +11,7 @@ Api.LoginApi = (loginuser) => {
   return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser)
 }
 
-// for campaign_start api
-Api.StartApi = (data, token) => {
+Api.StartCampaignApi = (data, token) => {
   return axios({
     method: 'POST',
     url: `${API_BASE_URL}/campaign/start/`,
@@ -26,24 +25,18 @@ Api.StartApi = (data, token) => {
   })
 }
 
-
 // for campaign_recipient 
 Api.RecipientApi = (recipientData, token) => {
   const formData = new FormData();
-  formData.append('csvfile_op1', recipientData.csvFile);
+  // formData.append('csvfile_op1', recipientData.csvFile);
   formData.append('email', recipientData.email);
   formData.append('option', recipientData.option);
-  console.log( recipientData.option, ' recipientData.options')
+  formData.append('campaign', recipientData.campaign)
+
   return axios({
     method: 'POST',
     url: `${API_BASE_URL}/campaign/recipients/`,
-    data: {
-      csvfile_op1: recipientData.csvFile,
-      email: `${recipientData.email}`,
-      campaign: recipientData.campaign,
-      option: `${recipientData.option}`,
-
-    },
+    data: formData,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -131,7 +124,7 @@ Api.CampaignComposeApi = (token, data) => {
 Api.CampaignPreviewApi = (token, key) => {
   return axios({
     method: 'GET',
-    url: `${API_BASE_URL}/campaign/personalize/1/`,
+    url: `${API_BASE_URL}/campaign/personalize/${id}/`,
 
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -158,10 +151,10 @@ Api.CampaignSaveApi = (token, data) => {
 }
 
 // Campaign save (get)
-Api.CampaignSavegetApi = (token) => {
+Api.CampaignSendGetApi = (token) => {
   return axios({
     method: 'GET',
-    url: `${API_BASE_URL}/campaign/savecamp/1/`,
+    url: `${API_BASE_URL}/campaign/savecamp/26/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -169,7 +162,7 @@ Api.CampaignSavegetApi = (token) => {
 }
 
 // campaign leadcatcher
-Api.CampaignLeadcatcher = (token, data) => {
+Api.CampaignLeadCatcher = (token, data) => {
   return axios({
     method: "GET",
     url: `${API_BASE_URL}/campaign/leadscatcher/`,
@@ -336,20 +329,7 @@ Api.UnsubscribeDelete = (token, data) => {
       "Authorization": `Bearer ${token}`,
     }
   })
-  return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser)
-}
-Api.StartCampaignApi = (data, token) => {
-  return axios({
-    method: 'POST',
-    url: `${API_BASE_URL}/campaign/start/`,
-    data: {
-      title: data.title,
-      from_address: data.from_address
-    },
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-  })
+  // return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser)
 }
 Api.CampaignTableDataApi = (token) => {
   return axios({

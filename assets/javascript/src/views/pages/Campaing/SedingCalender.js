@@ -10,7 +10,7 @@ export class SendindCalender extends Component {
       <div>
         <div className='campaign_navbar' >
           <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>SendingCalendar</h1>
-          <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i class="fa fa-question-circle-o" aria-hidden="true"></i></p>
+          <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
         </div>
         <div>
           <Container style={{ marginLeft: "0px" }}>
@@ -49,7 +49,7 @@ export class SendindCalender extends Component {
 
                     </div>
                     <div>
-                      <span style={{ fontSize: "10px" }}><i class="fa fa-question-circle-o" aria-hidden="true"></i></span>
+                      <span style={{ fontSize: "10px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
                       <span style={{ fontSize: "10px" }}>about these settings</span>
                     </div>
                   </CardBody>

@@ -2,20 +2,19 @@ import { options } from 'dropzone';
 import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { Container, Row, Col, Button, Input, Form } from 'reactstrap'
-import { RecipientAction } from "../../../redux/action/CampaignAction";
+import { RecipientAction, StartCampaignAction } from "../../../redux/action/CampaignAction";
 import Csvfile from './csvfile'
 
 class NewCampaign_recipients extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             show: false,
             csvFile: '',
             email: [],
-            campaign: '2',
+            campaign: 26,
             options: []
         }
-        console.log(this.state)
     }
     handleChange = (e) => {
         this.setState({
@@ -43,14 +42,13 @@ class NewCampaign_recipients extends Component {
             this.state.options.push(temp1, temp2)
         }
         else { return false }
-        const recipientData={
-            csvfile_op1:this.state.csvFile,
-            option:this.state.options,
-            email:this.state.email,
-            campaign:this.state.campaign
+        const recipientData = {
+            // csvfile_op1:this.state.csvFile,
+            option: `[${this.state.options}]`,
+            email: `["${this.state.email}"]`,
+            campaign: this.state.campaign
         }
-        console.log('reci',recipientData)
-        const token=localStorage.getItem('access_token')
+        const token = localStorage.getItem('access_token')
         this.props.RecipientAction(recipientData, token)
     }
     render() {
@@ -72,20 +70,22 @@ class NewCampaign_recipients extends Component {
                                                     <div className="option1_container">
                                                         <Row className='mt-3'>
                                                             <Col md='3'><span className="option1">OPTION #1</span></Col>
-                                                            <Col md='9'><Row>
-                                                                <span className="csv_logo"><i className="fa fa-file" aria-hidden="true"></i></span>
-                                                                <span className="csv_logo_text">Drop a CSV file here</span>
-                                                                < Csvfile />
-                                                            </Row>
-                                                                <Row><span>Campaigns are limited to 5k recipients; uploads to 1MB.</span></Row></Col>
+                                                            <Col md='9'>
+                                                                <Row>
+                                                                    <span className="csv_logo"><i className="fa fa-file" aria-hidden="true"></i></span>
+                                                                    <span className="csv_logo_text">Drop a CSV file here</span>
+                                                                    <input type='file' name='csvFile' value={this.state.csvFile} onChange={this.handleChange}></input>
+                                                                </Row>
+                                                                <Row><span>Campaigns are limited to 5k recipients; uploads to 1MB.</span></Row>
+                                                            </Col>
                                                         </Row>
                                                         <Row className='mt-5'>
                                                             <Col md='3' className="option1"><span>OPTION #2</span></Col>
-                                                            <Col md='9'><span className="textarea"><textarea name='email' value={this.state.email} onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>{show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
+                                                            <Col md='9'><span className="textarea"><textarea type='email' name='email' value={this.state.email} onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>{show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
                                                         </Row>
                                                         <Row className='mt-5'>
-                                                            <Col md='3'> <span className="option1">OPTION #3</span></Col>
-                                                            <Col md='9'><span className="input_box_csv"><input name='campaign' value={this.state.campaign} onChange={this.handleChange} placeholder='Select an existing list'></input></span></Col>
+                                                            {/* <Col md='3'> <span className="option1">OPTION #3</span></Col> */}
+                                                            {/* <Col md='9'><span className="input_box_csv"><input name='campaign' value={this.state.campaign} onChange={this.handleChange} placeholder='Select an existing list'></input></span></Col> */}
                                                         </Row>
                                                     </div>
                                                 </div>
@@ -102,12 +102,10 @@ class NewCampaign_recipients extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    return {
-        // token: state.token
-    };
+    return { startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id };
 };
 const mapDispatchToProps = dispatch => ({
-    RecipientAction: (recipientData,token) => { dispatch(RecipientAction(recipientData,token)) },
+    RecipientAction: (recipientData, token) => { dispatch(RecipientAction(recipientData, token)) },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewCampaign_recipients)

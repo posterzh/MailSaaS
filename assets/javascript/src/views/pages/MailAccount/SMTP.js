@@ -60,7 +60,7 @@ export class SmtpModal extends Component {
                                             </Col>
                                         </Row><br></br>
                                         <Row><Input type='email' name='emailAddress' onChange={this.props.handleChange} value={this.props.emailAddress} placeholder='Username(usually your email address)'></Input></Row><br></br>
-                                        <Row><Input type='password' name='imapPassword' onChange={this.handleChange} value={this.props.imapPassword} placeholder='Password'></Input></Row>
+                                        <Row><Input type='password' name='imapPassword' onChange={this.props.handleChange} value={this.props.imapPassword} placeholder='Password'></Input></Row>
                                     </Col>
                                 </Row>
                                 <Row><br></br>

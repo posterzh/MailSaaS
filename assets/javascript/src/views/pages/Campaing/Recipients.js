@@ -12,12 +12,12 @@ export default function Recipients() {
                             <button className='btn sequence_btn btn-md'>ADD RECIPIENTS</button>
                             <div className='child ml-3'>
                                 <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                    <span className='font_icon'><i class="fa fa-arrow-down" style={{ borderBottom: '2px solid silver' }}></i></span>
+                                    <span className='font_icon'><i className="fa fa-arrow-down" style={{ borderBottom: '2px solid silver' }}></i></span>
                                 </a>
                             </div>
                             <div className='child ml-3'>
                                 <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                    <span className='font_icon'><i class="fa fa-undo" aria-hidden="true"></i></span>
+                                    <span className='font_icon'><i className="fa fa-undo" aria-hidden="true"></i></span>
                                 </a>
                             </div>
                         </div>
@@ -30,7 +30,7 @@ export default function Recipients() {
                                 <Input type='email' className='in' placeholder='Search' />
                                 <div className='child mt-2'>
                                     <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                        <span className='font_icon'><i class="fa fa-search" aria-hidden="true"></i></span>
+                                        <span className='font_icon'><i className="fa fa-search" aria-hidden="true"></i></span>
                                     </a>
                                 </div>
                             </div>
@@ -60,7 +60,7 @@ export default function Recipients() {
                             </div>
                             <div className='child ml-3'>
                                 <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                    <span className='font_icon'><i class="fa fa-undo" aria-hidden="true"></i></span>
+                                    <span className='font_icon'><i className="fa fa-undo" aria-hidden="true"></i></span>
                                 </a>
                             </div>
                         </div>
