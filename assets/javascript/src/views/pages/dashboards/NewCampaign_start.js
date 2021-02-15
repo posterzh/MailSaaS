@@ -48,9 +48,7 @@ class NewCampaign_start extends React.Component {
                                             <Input type="select" name='from_address' onChange={this.handleChange} id="exampleSelect" >
                                                 {
                                                     mailGetData && mailGetData.map((item, index) => {
-                                                        return (<>
-                                                            <option key={index} value={item.id}>{item.email}</option>
-                                                        </>)
+                                                        return <option value={item.id}>{item.email}</option>
                                                     })
                                                 }
                                             </Input>

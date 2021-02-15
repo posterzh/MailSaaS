@@ -1,6 +1,4 @@
 import {
-    FAILURE_REGISTER,
-    REQUEST_FOR_REGISTER,
     SUCCESS_REGISTER,
     FAILURE_LOGIN,
     REQUEST_FOR_LOGIN,
@@ -12,7 +10,7 @@ import {
     SUCCESS_FETCH_UNSUBSCRIPTION,
     SUCCESS_OPTION,
     // SUCCESS_FETCH_PROSPECTS,
-    SUCCESS_SEND_CAMPAIGN,
+    // SUCCESS_SEND_CAMPAIGN,
     REQUEST_FOR_OPTION,
     FAILURE_OPTION,
     FETCH_PROSPECTS,
@@ -22,7 +20,11 @@ import {
     FAILURE_FETCH_CAMPAIGN_CREATE_PREVIEW,
     REQUEST_FOR_CAMPAIGN_OVERVIEW,
     SUCCESS_CAMPAIGN_OVERVIEW,
-    FAILURE_CAMPAIGN_OVERVIEW
+    FAILURE_CAMPAIGN_OVERVIEW,
+    SUCCESS_MAIL_ACCOUNT_DELETE,
+    SUCCESS_MAIL_ACCOUNT_UPDATE,
+    FAILURE_MAIL_ACCOUNT_UPDATE,
+    SUCCESS_SEND_CAMPAIGN
 } from "../actionType/actionType";
 
 const initialState = {
@@ -45,16 +47,10 @@ export const RegisterReducer = (state = { initialState }, action) => {
     console.log(action.payload && action.payload[0], 'payloaddata')
     switch (action.type) {
         // cases for signup
-        case REQUEST_FOR_REGISTER:
-            return {
-            }
         case SUCCESS_REGISTER:
             return {
                 ...state,
                 user: action.user,
-            }
-        case FAILURE_REGISTER:
-            return {
             }
         default: return state
             break;
@@ -117,6 +113,14 @@ export const MailSenderReducer = (state = { initialState }, action) => {
                 ...state,
                 mailData: action.mailData,
             }
+        case SUCCESS_MAIL_ACCOUNT_UPDATE:
+            return{
+                ...state
+            } 
+        case FAILURE_MAIL_ACCOUNT_UPDATE:
+            return{
+                ...state
+            }  
         default: return state
             break;
     }
@@ -128,6 +132,10 @@ export const MailGetDataReducer = (state = { initialState }, action) => {
                 ...state,
                 mailGetData: action.payload,
             }
+            case SUCCESS_MAIL_ACCOUNT_DELETE:
+                return {
+                    ...state
+                }
         default: return state
             break;
     }
