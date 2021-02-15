@@ -49,6 +49,7 @@ Api.OptionApi = (optionData, token) => {
   return axios({
     method: 'PUT',
     url: `${API_BASE_URL}/campaign/options/`,
+    // http://127.0.0.1:8000/campaign/options/
     data: {
 
       ...optionData
@@ -124,7 +125,7 @@ Api.CampaignComposeApi = (token, data) => {
 Api.CampaignPreviewApi = (token, key) => {
   return axios({
     method: 'GET',
-    url: `${API_BASE_URL}/campaign/personalize/${id}/`,
+    url: `${API_BASE_URL}/campaign/personalize/152/`,
 
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -176,14 +177,14 @@ Api.CampaignLeadCatcher = (token, data) => {
 }
 
 // campaign get-overview
-Api.CampaignGetOverview = (token) => {
-  return axios({
-    method: 'GET',
-    url: `${API_BASE_URL}/campaign/get-overview/1/`,
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-  })
+Api.CampaignOverview = (token,id) => {
+    return axios({
+        method: 'GET',
+        url: `${API_BASE_URL}/campaign/overview/${id}/`,
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
+    })
 }
 // campaign recipient people (get)
 Api.CampaignRecipientPeople = (token) => {
@@ -341,24 +342,24 @@ Api.CampaignTableDataApi = (token) => {
   })
 }
 Api.MailSenderApi = (mailData, token) => {
-  return axios({
-    method: 'POST',
-    url: `${API_BASE_URL}/mail/addmailaccount/`,
-    data: mailData,
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
+    return axios({
+        method: 'POST',
+        url: `${API_BASE_URL}/mail/addmailaccount/`,
+        data: mailData,
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
 
   })
 }
 Api.MailGetDataApi = (token) => {
-  return axios({
-    method: 'GET',
-    url: `${API_BASE_URL}/mail/addmailaccount/`,
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-  })
+    return axios({
+        method: 'GET',
+        url: `${API_BASE_URL}/mail/addmailaccount/`,
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
+    })
 
 }
 
@@ -390,31 +391,31 @@ Api.demostart = (token, data) => {
   })
 }
 Api.demorecipient = (token, data) => {
-  let formdata = new FormData();
-  formdata.append("option", "[2]"),
-    formdata.append("campaign", "3"),
-    formdata.append("email", "keshav@gmail.com")
-  return axios({
-    method: 'POST',
-    url: `${API_BASE_URL}/campaign/recipients/`,
+    let formdata = new FormData();
+    formdata.append("option", "[2]"),
+        formdata.append("campaign", "3"),
+        formdata.append("email", ["keshav@gmail.com"])
+    return axios({
+        method: 'POST',
+        url: `${API_BASE_URL}/campaign/recipients/`,
 
-    data: formdata,
+        data: formdata,
 
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
 
-  })
+    })
 }
 
 Api.GetAllCampaigns = (token) => {
-  return axios({
-    url: `${API_BASE_URL}/campaign/view/`,
-    data: {},
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-  })
+    return axios({
+        url: `${API_BASE_URL}/campaign/view/`,
+        data: {},
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        }
+    })
 }
 
 export default Api;

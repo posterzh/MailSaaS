@@ -1,6 +1,8 @@
 import {
     FETCH_PROSPECTS,
-    SUCCESS_FETCH_PROSPECTS
+    SUCCESS_FETCH_PROSPECTS,
+    FAILURE_FETCH_PROSPECTS   
+
 }from "../../redux/actionType/actionType"
 
 import Api from "../api/api"
@@ -16,6 +18,12 @@ export const FetchProspectsSuccess=(prospectData)=>{
         prospectData
     }
 }
+export const FailureProspects=()=>{
+    return {
+        type:FAILURE_FETCH_PROSPECTS
+    }
+}
+
 
 export const ProspectActionData=()=>
 {

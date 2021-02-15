@@ -1,4 +1,4 @@
-import { options } from 'dropzone';
+// import { options } from 'dropzone';
 import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { Container, Row, Col, Button, Input, Form } from 'reactstrap'
@@ -70,14 +70,12 @@ class NewCampaign_recipients extends Component {
                                                     <div className="option1_container">
                                                         <Row className='mt-3'>
                                                             <Col md='3'><span className="option1">OPTION #1</span></Col>
-                                                            <Col md='9'>
-                                                                <Row>
-                                                                    <span className="csv_logo"><i className="fa fa-file" aria-hidden="true"></i></span>
-                                                                    <span className="csv_logo_text">Drop a CSV file here</span>
-                                                                    <input type='file' name='csvFile' value={this.state.csvFile} onChange={this.handleChange}></input>
-                                                                </Row>
-                                                                <Row><span>Campaigns are limited to 5k recipients; uploads to 1MB.</span></Row>
-                                                            </Col>
+                                                            <Col md='9'><Row>
+                                                                <span className="csv_logo"><i class="fa fa-file" aria-hidden="true"></i></span>
+                                                                <span className="csv_logo_text">Drop a CSV file here</span>
+                                                                {/* < Csvfile /> */}
+                                                                <span className="choose_option"><Input type='file' name='csvFile' onChange={this.handleChange}>(or choose one)</Input></span></Row>
+                                                                <Row><span>Campaigns are limited to 5k recipients; uploads to 1MB.</span></Row></Col>
                                                         </Row>
                                                         <Row className='mt-5'>
                                                             <Col md='3' className="option1"><span>OPTION #2</span></Col>
