@@ -5,8 +5,11 @@ export class SmtpModal extends Component {
     constructor(props) {
         super(props)
     }
-
+componentWillUnmount(){
+    console.group('unmount in model')
+}
     render() {
+        console.log(this.props.imapPassword,"props")
         return (
             <div>
                 <Modal isOpen={this.props.isOpen} toggle={this.props.toggle} >
@@ -60,7 +63,7 @@ export class SmtpModal extends Component {
                                             </Col>
                                         </Row><br></br>
                                         <Row><Input type='email' name='emailAddress' onChange={this.props.handleChange} value={this.props.emailAddress} placeholder='Username(usually your email address)'></Input></Row><br></br>
-                                        <Row><Input type='password' name='imapPassword' onChange={this.handleChange} value={this.props.imapPassword} placeholder='Password'></Input></Row>
+                                        <Row><Input type='password' name='imapPassword' onChange={this.props.handleChange} value={this.props.imapPassword} placeholder='Password'></Input></Row>
                                     </Col>
                                 </Row>
                                 <Row><br></br>

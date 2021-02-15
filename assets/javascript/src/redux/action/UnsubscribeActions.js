@@ -1,14 +1,13 @@
 import {
-    FETCH_UNSUBSCRIPTION,
     SUCCESS_FETCH_UNSUBSCRIPTION
 } from "../actionType/actionType"
 import Api from "../api/api";
 
-export const fetchUnsubscribe = () => {
-    return {
-        type: FETCH_UNSUBSCRIPTION,
-    }
-}
+// export const fetchUnsubscribe = () => {
+//     return {
+//         type: FETCH_UNSUBSCRIPTION,
+//     }
+// }
 
 export const successFetchUnsubscribe = (payload) => {
     console.log(payload,'payload')

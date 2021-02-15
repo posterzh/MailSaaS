@@ -1,6 +1,4 @@
 import {
-    FAILURE_REGISTER,
-    REQUEST_FOR_REGISTER,
     SUCCESS_REGISTER,
     FAILURE_LOGIN,
     REQUEST_FOR_LOGIN,
@@ -8,20 +6,15 @@ import {
     FAILURE_START,
     REQUEST_FOR_START,
     SUCCESS_START,
-    REQUEST_FOR_RECIPIENT,
     SUCCESS_RECIPIENT,
-    FAILURE_MAIL_SENDER,
-    REQUEST_FOR_MAIL_SENDER,
     SUCCESS_MAIL_SENDER,
-    FAILURE_MAIL_GET_DATA,
-    REQUEST_FOR_MAIL_GET_DATA,
     SUCCESS_MAIL_GET_DATA,
     SUCCESS_FETCH_UNSUBSCRIPTION,
-    REQUEST_FOR_OPTION,
     SUCCESS_OPTION,
-    FAILURE_OPTION,
-    FETCH_PROSPECTS,
-    SUCCESS_FETCH_PROSPECTS
+    SUCCESS_FETCH_PROSPECTS,
+    SUCCESS_MAIL_ACCOUNT_DELETE,
+    SUCCESS_MAIL_ACCOUNT_UPDATE,
+    FAILURE_MAIL_ACCOUNT_UPDATE
 } from "../actionType/actionType";
 
 const initialState = {
@@ -41,16 +34,10 @@ const initialState = {
 export const RegisterReducer = (state = { initialState }, action) => {
     switch (action.type) {
         // cases for signup
-        case REQUEST_FOR_REGISTER:
-            return {
-            }
         case SUCCESS_REGISTER:
             return {
                 ...state,
                 user: action.user,
-            }
-        case FAILURE_REGISTER:
-            return {
             }
         default: return state
             break;
@@ -92,9 +79,6 @@ export const StartCampaignReducer = (state = { initialState }, action) => {
 }
 export const RecipientReducer = (state = { initialState }, action) => {
     switch (action.type) {
-        case REQUEST_FOR_RECIPIENT:
-            return {
-            }
         case SUCCESS_RECIPIENT:
             return {
                 ...state,
@@ -106,34 +90,34 @@ export const RecipientReducer = (state = { initialState }, action) => {
 }
 export const MailSenderReducer = (state = { initialState }, action) => {
     switch (action.type) {
-        case REQUEST_FOR_MAIL_SENDER:
-            return {
-            }
         case SUCCESS_MAIL_SENDER:
             return {
                 ...state,
                 mailData: action.mailData,
             }
-        case FAILURE_MAIL_SENDER:
-            return {
-            }
+        case SUCCESS_MAIL_ACCOUNT_UPDATE:
+            return{
+                ...state
+            } 
+        case FAILURE_MAIL_ACCOUNT_UPDATE:
+            return{
+                ...state
+            }  
         default: return state
             break;
     }
 }
 export const MailGetDataReducer = (state = { initialState }, action) => {
     switch (action.type) {
-        case REQUEST_FOR_MAIL_GET_DATA:
-            return {
-            }
         case SUCCESS_MAIL_GET_DATA:
             return {
                 ...state,
                 mailGetData: action.payload,
             }
-        case FAILURE_MAIL_GET_DATA:
-            return {
-            }
+            case SUCCESS_MAIL_ACCOUNT_DELETE:
+                return {
+                    ...state
+                }
         default: return state
             break;
     }
@@ -153,16 +137,10 @@ export const UnsubscribeReducer = (state = { initialState }, action) => {
 // CAMPAIGN OPTION REDUCER
 export const CampaignOptionReducer = (state = { initialState }, action) => {
     switch (action.type) {
-        case  REQUEST_FOR_OPTION:
-            return {
-            }
         case SUCCESS_OPTION:
             return {
                 ...state,
                 optionData: action.data,
-            }
-        case FAILURE_OPTION:
-            return {
             }
         default: return state
             break;
@@ -171,9 +149,6 @@ export const CampaignOptionReducer = (state = { initialState }, action) => {
 
 export const ProspectsGetReducer = (state = { initialState }, action) => {
     switch (action.type) {
-        case FETCH_PROSPECTS:
-            return {
-            }
         case SUCCESS_FETCH_PROSPECTS:
             return {
                 ...state,
