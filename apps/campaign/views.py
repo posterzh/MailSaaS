@@ -420,6 +420,7 @@ class CampaignView(generics.ListAPIView):
             campEmail = CampaignRecipient.objects.filter(campaign=camp.id)
             campEmailserializer = CampaignEmailSerializer(campEmail, many = True)
             resp = {
+                "id":camp.pk,
                 "camp_title": camp.title,
                 "camp_created_date_time": camp.created_date_time,
                 "assigned": camp.assigned.full_name,
@@ -1098,7 +1099,4 @@ class RecipientUnsubcribe(generics.CreateAPIView):
             if serializer.is_valid():
                 serializer.save()
         return Response("Done")
-    
-
-
-       
+     
