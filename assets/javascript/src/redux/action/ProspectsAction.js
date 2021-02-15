@@ -1,15 +1,8 @@
 import {
-    FETCH_PROSPECTS,
     SUCCESS_FETCH_PROSPECTS
 }from "../../redux/actionType/actionType"
 
 import Api from "../api/api"
-
-export const FetchProspects=()=>{
-    return {
-        type:FETCH_PROSPECTS
-    }
-}
 export const FetchProspectsSuccess=(prospectData)=>{
     return {
         type:SUCCESS_FETCH_PROSPECTS,
