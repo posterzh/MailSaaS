@@ -233,10 +233,16 @@ class CreateCampaignOptionView(APIView):
                 queryset = Campaign.objects.get(id = request.data['campaign'])
             except:
                 return Response({"message":"No campiagn availabe for this id", "success":"false"})
+            
+            if queryset.csvfile_op1 == "":
+                csvfile_op1 = None
+            else:
+                csvfile_op1 = queryset.csvfile_op1
+            
             request.data["title"] = queryset.title
             request.data["from_address"] = queryset.from_address.id
             request.data["full_name"] = queryset.full_name
-            request.data["csvfile_op1"] = queryset.csvfile_op1
+            request.data["csvfile_op1"] = csvfile_op1
             request.data["assigned"] = request.user.id
             request.data["update_date_time"] = datetime.now()
             request.data["created_date_time"] = queryset.created_date_time
