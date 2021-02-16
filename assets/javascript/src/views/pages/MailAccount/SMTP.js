@@ -5,8 +5,11 @@ export class SmtpModal extends Component {
     constructor(props) {
         super(props)
     }
-
+componentWillUnmount(){
+    console.group('unmount in model')
+}
     render() {
+        console.log(this.props.imapPassword,"props")
         return (
             <div>
                 <Modal isOpen={this.props.isOpen} toggle={this.props.toggle} >
