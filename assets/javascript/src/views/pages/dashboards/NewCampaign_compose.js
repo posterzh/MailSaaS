@@ -21,18 +21,31 @@ export default class Compose extends Component {
             inputListFollow: [],
             inputListDrips: [],
             inputListLinkClick: [],
+            followUpPageObject: {},
+            arra:[]
         }
+        console.log('followUpPageObject:',this.state.followUpPageObject);
     }
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
+    
+    handleFolloUpPage = () =>{
+        this.setState({
+            inputListFollow: this.state.inputListFollow.push(followUpPageObject)
+            },()=>{console.log('Follow:',this.state.inputListFollow)})
+            arra.push(followUpPageObject);
+            console.log('geet',this.state.arra);
+    }
+            
+            
     onAddBtnClickFollow = () => {
         const inputListFollow = this.state.inputListFollow;
         this.setState({
-            inputListFollow: inputListFollow.concat(<FollowUpPage key={inputListFollow.length} />)
-        }, () => { });
+            inputListFollow: inputListFollow.concat(<FollowUpPage followUpPageObject={this.state.followUpPageObject} normalSubject={this.state.subject} key={inputListFollow.length} />)
+        }, () => {});
     }
     onAddBtnClickDrips = () => {
         const inputListDrips = this.state.inputListDrips;
