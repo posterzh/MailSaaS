@@ -11,34 +11,48 @@ export default class FollowUpPage extends React.Component {
         this.state = {
             editorState: EditorState.createEmpty(),
             Waitdays: 0,
-            replyChain:'',
+            replyChain:this.props.normalSubject,
             body:'',
             subjectOfFollowUp:'',
+            newSubject:''
             // arra:[],
         }
         // console.log('FollowUpPage',this.state.arra.push(props.followUpPageObject));
     }
-    // onDeleteList=()=>{
-    // }
+   componentDidMount(){
+    Object.assign(this.props.followUpPageObject,{'subject':this.state.replyChain})
+
+   }
     handleChangeWaitDays = (event) =>{
         this.setState({
             Waitdays: event.target.value
         },()=>{console.log('wait',this.state.Waitdays)})
-        Object.assign(this.props.followUpPageObject,{"waitDays":this.state.Waitdays});
+        Object.assign(this.props.followUpPageObject,{"waitDays": event.target.value});
         // console.log('geet:',this.state.arra.push(this.props.followUpPageObject));
     }
 
     handleChangeReplyChain = (event) => {
-        this.setState({
-            replyChain: event.target.value
-        },()=>{console.log('reply-chain',this.state.subjectOfFollowUp)})
+        console.log(event.target.value,"mydata")
+        if (this.props.normalSubject===event.target.value) {
+            this.setState({
+                subjectOfFollowUp:'',
+                replyChain: event.target.value
+            })
+        Object.assign(this.props.followUpPageObject,{'subject':event.target.value})
+        } else {
+            this.setState({
+                replyChain: event.target.value
+            })  
+        }
+        
     }
     
     handleFollowSubject =(event) =>{
+        console.log("hiii")
         this.setState({
             subjectOfFollowUp: event.target.value
         })
-        Object.assign(this.props.followUpPageObject,{'subject':this.state.replyChain==='new-email'?this.state.subjectOfFollowUp: this.props.normalSubject})
+        Object.assign(this.props.followUpPageObject,{'subject':event.target.value})
     }
 
     handleChangeBody = (event) => {
@@ -56,6 +70,7 @@ export default class FollowUpPage extends React.Component {
 
     render() {
         const { editorState } = this.state;
+        console.log(this.props.followUpPageObject,"dsd")
         return (
             <div>
                 <Container fluid>
@@ -78,10 +93,9 @@ export default class FollowUpPage extends React.Component {
                             <Row className='mt-3'>
                                 <label className='filter_app_new'>Reply Chain</label><br></br>
                                 <div className='select_div'>
-                                    <select value={this.state.replyChain} onChange={this.handleChangeReplyChain} className='filter_select_prospect'>
-                                        <option value='Select the Email'>Select the Email</option>
-                                        <option value='new-email'>New Email</option>
-                                        <option value='re-email'>Re:hello all</option>
+                                    <select  defaultValue={this.props.normalSubject}  name="subject"  value={this.state.replyChain} onChange={this.handleChangeReplyChain} className='filter_select_prospect'>
+                                        <option value={this.props.normalSubject}>{this.props.normalSubject}</option>
+                                        <option placeholder="---New Email---" value="new-email">---New Email---</option>
                                     </select>
                                     {
                                         this.state.replyChain==='new-email' &&
@@ -104,6 +118,7 @@ export default class FollowUpPage extends React.Component {
                                         toolbar={{
                                             link: {
                                                 defaultTargetOption: '_blank',
+                                                name:"niu"
                                             },
                                         }}
                                     />

@@ -16,15 +16,15 @@ export default class Compose extends Component {
         super();
         this.state = {
             subject: '',
-            editorName: '',
+            msgBody: '',
             editorState: EditorState.createEmpty(),
             inputListFollow: [],
             inputListDrips: [],
             inputListLinkClick: [],
             followUpPageObject: {},
-            arra:[]
+            arra:[],
+
         }
-        console.log('followUpPageObject:',this.state.followUpPageObject);
     }
     handleChange = (e) => {
         this.setState({
@@ -35,17 +35,16 @@ export default class Compose extends Component {
     handleFolloUpPage = () =>{
         this.setState({
             inputListFollow: this.state.inputListFollow.push(followUpPageObject)
-            },()=>{console.log('Follow:',this.state.inputListFollow)})
+            })
             arra.push(followUpPageObject);
-            console.log('geet',this.state.arra);
     }
             
             
     onAddBtnClickFollow = () => {
         const inputListFollow = this.state.inputListFollow;
         this.setState({
-            inputListFollow: inputListFollow.concat(<FollowUpPage followUpPageObject={this.state.followUpPageObject} normalSubject={this.state.subject} key={inputListFollow.length} />)
-        }, () => {});
+            inputListFollow: inputListFollow.concat(<FollowUpPage msgBody={this.state.msgBody}  followUpPageObject={this.state.followUpPageObject} normalSubject={this.state.subject} key={inputListFollow.length} />)
+        });
     }
     onAddBtnClickDrips = () => {
         const inputListDrips = this.state.inputListDrips;
@@ -67,10 +66,11 @@ export default class Compose extends Component {
         console.log(this.state)
     }
     onChange = (e) => {
-        this.setState({ editorName: e.blocks[0].text })
+        this.setState({ msgBody: e.blocks[0].text })
     }
     render() {
         const { editorState } = this.state;
+        console.log(this.state.followUpPageObject,"this.state.followUpPageObject")
         return (
             <div>
                 <div className='main-view'>
@@ -88,7 +88,7 @@ export default class Compose extends Component {
                                     <Row>
                                         <div className='grand_parent'>
                                             <div className='input_field'>
-                                                <Input type='email' className='in' name='subject' value={this.state.subject} onChange={this.handleChange} placeholder='Subject' required />
+                                                <Input type='text' className='in' name='subject' value={this.state.subject} onChange={this.handleChange} placeholder='Subject' required />
                                                 <div className='mt-3'>
                                                     <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                                         <span><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -105,8 +105,8 @@ export default class Compose extends Component {
                                                 toolbarClassName="rdw-storybook-toolbar"
                                                 wrapperClassName="rdw-storybook-wrapper"
                                                 editorClassName="rdw-storybook-editor"
-                                                name='editorName'
-                                                value={this.state.editorName}
+                                                name='msgBody'
+                                                value={this.state.msgBody}
                                                 onChange={this.onChange}
                                                 onEditorStateChange={this.onEditorStateChange}
                                                 required
