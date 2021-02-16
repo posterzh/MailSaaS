@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from "react-redux";
-import { Container, Row, Col, Form, Input } from 'reactstrap';
+import { Container, Row, Col, Form, Input, Nav } from 'reactstrap';
+import { Link, Route } from 'react-router-dom';
+
 import { StartCampaignAction } from "../../../redux/action/CampaignAction";
 import { MailGetDataAction } from '../../../redux/action/MailSenderAction';
 class NewCampaign_start extends React.Component {
@@ -17,7 +19,7 @@ class NewCampaign_start extends React.Component {
         })
     }
     componentDidMount() {
-        this.props.MailGetDataAction();        
+        this.props.MailGetDataAction();
     }
     handleSubmit = (e) => {
         e.preventDefault();
@@ -30,12 +32,44 @@ class NewCampaign_start extends React.Component {
     render() {
         const { mailGetData } = this.props;
         return (
-            <div>
-                <div style={{ height: '100%', width: '100%' }}>
-                    <Form onSubmit={this.handleSubmit}>
-                        <Container fluid>
+            <div className='main-view'>
+                    <Container fluid>
+                        <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
+                            <Col style={{ display: 'flex', alignItems: 'center' }}>
+                                <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
+                                    <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
+                                        <span style={{ color: 'black', fontSize: '20px' }}>MailSaaaS</span></div>
+                                </div>
+                            </Col>
+                            <Col >
+                                <h1 style={{ textAlign: 'center', fontSize: '60px', color: "#333333" }}>New Campaign</h1>
+                            </Col>
+                            <Col style={{ display: "flex", flexDirection: "row-reverse" }}>
+                                <div className='mt-3'>
+                                    <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
+                                        <span><i className="fa fa-question-circle-o fa-lg" aria-hidden="true"></i></span>
+                                    </a>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
+                            <Col style={{ display: "flex" }}><Nav className='mx-auto' navbar>
+                                <Row className='mx-auto' style={{ width: '100%' }}>
+                                    <ul style={{ listStyleType: 'none', display: 'flex' }}>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignRecipient">RECIPICIENT</Link></li>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignCompose">COMPOSE</Link></li>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignPreview">PREVIEW</Link></li>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignOptions">OPTIONS</Link></li>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignSend">SEND</Link></li>
+                                    </ul>
+                                </Row>
+                            </Nav>
+                            </Col>
+                        </Row>
                             <Row >
-                                <Col md='5' className='mx-auto mt-5'>
+                                <Col md='6'  className='mx-auto mt-5'>
+                                <Form onSubmit={this.handleSubmit}>
                                     <Row style={{ display: 'flex', justifyContent: 'center' }} >
                                         <h1 style={{ fontSize: '30px', textAlign: 'center', color: "#333333" }}> Let's get started</h1>
                                     </Row>
@@ -62,11 +96,11 @@ class NewCampaign_start extends React.Component {
                                             </button>
                                         </Col>
                                     </Row>
+                                    </Form>
                                 </Col>
                             </Row>
-                        </Container>
-                    </Form>
-                </div>
+                    </Container>
+                {/* </div> */}
             </div>
         )
     }

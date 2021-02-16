@@ -35,6 +35,12 @@ import Unsubscribes from "./views/pages/Unsubscribes/Unsubscribes";
 import ConversionTracking from "./views/pages/Extension/ConversionTracking";
 import SendingCalender from "./views/pages/Campaing/SedingCalender";
 import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
+import NewCampaign_start from "./views/pages/dashboards/NewCampaign_start";
+import NewCampaign_recipients from "./views/pages/dashboards/NewCampaign_recipients";
+import CampaignCompose from "./views/pages/dashboards/NewCampaign_compose"
+import CampaignPreview from "./views/pages/dashboards/NewCampaign_preview"
+import CampaignOption from "./views/pages/dashboards/NewCampaign_options"
+import CampaignSend from "./views/pages/dashboards/NewCampaign_send"
 import Campaign_Details from './views/pages/Campaing/Campaign_details.js'
 
 const routes = [
@@ -69,6 +75,55 @@ const routes = [
         component: Campaign,
         layout: "/app/admin"
       },
+
+
+      {
+        path: "/CampaignStart",
+        name: "CampaignStart",
+        miniName: "CO",
+        component: NewCampaign_start,
+        layout: "/app/admin"
+      },
+      {
+        path: "/CampaignRecipient",
+        name: "CampaignRecipients",
+        miniName: "CO",
+        component: NewCampaign_recipients,
+        layout: "/app/admin"
+      },
+      {
+        path: "/CampaignCompose",
+        name: "CampaignCompose",
+        miniName: "CO",
+        component: CampaignCompose,
+        layout: "/app/admin"
+      },
+      {
+        path: "/CampaignPreview",
+        name: "CampaignPreview",
+        miniName: "CO",
+        component: CampaignPreview,
+        layout: "/app/admin"
+      },
+      {
+        path: "/CampaignOptions",
+        name: "CampaignOption",
+        miniName: "CO",
+        component: CampaignOption,
+        layout: "/app/admin"
+      },
+      {
+        path: "/CampaignSend",
+        name: "CampaignSend",
+        miniName: "CO",
+        component: CampaignSend,
+        layout: "/app/admin"
+      },
+
+
+
+
+
       {
         path: "/campaign-detail",
         name: "Campaign Details",

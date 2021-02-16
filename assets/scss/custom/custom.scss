@@ -107,14 +107,9 @@ input:focus{
     color: white;
 }
 .new_add_button{
-    // display: flex;
-    // position: fixed;
-    // top:55em;
-    // left: 110em;
     border-radius: 50%;
     width: 3em;
     height: 3em;
-    // padding-top: 5em;
     background-color: #FF4081;
     margin-right: 10px;
     margin-bottom: 10px;
@@ -521,6 +516,11 @@ button .import_button{
     background-color: #ff4081;
     color:white;
 }
+.startBtn:hover{
+    opacity: 0.7;
+    color:white;
+    background: #ff4081;
+}
 .campaign-form .start_input:hover{
     opacity: 0.6;
     color:black !important;
@@ -637,18 +637,11 @@ button .import_button{
     background: transparent;
 }
 // 31/jan/2021
-.newcampaign_button{
+.newcampaign_button,.startcampaign_buttonicon{
     background: #ff4081;
     outline: none;
     border: none;
     color: white;
-}
-.startcampaign_buttonicon{
-    background: #ff4081;
-    outline: none;
-    border: none;
-    color: white;
-
 }
 .dashboard_title{
     border-bottom: 1px solid #dedede;
@@ -1685,3 +1678,4 @@ color:#777
 .activeactivity:focus{
   background-color: yellow !important;
 }
+

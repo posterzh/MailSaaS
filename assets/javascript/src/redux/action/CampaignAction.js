@@ -3,7 +3,9 @@ import {
     SUCCESS_RECIPIENT,
     SUCCESS_OPTION,
     SUCCESS_CAMPAIGN_TABLE_DATA,
-    SUCCESS_SEND_CAMPAIGN
+    SUCCESS_SEND_CAMPAIGN,
+    SUCCESS_SAVE_CAMPAIGN
+
 } from "../actionType/actionType"
 
 import Api from "../api/api"
@@ -25,17 +27,24 @@ export const OptionSuccess = (data) => {
     }
 }
 // Campaign RECIPIENTS
-export const RecipientSuccess = (formData) => {
+export const RecipientSuccess = (recipientData) => {
     return {
         type: SUCCESS_RECIPIENT,
-        formData
+        recipientData
     }
 }
 // Campaign_send
-export const CampaignSendSuccess=(sendData)=>{
+export const CampaignSendSuccess = (sendData) => {
     return {
-        type:SUCCESS_SEND_CAMPAIGN,
-        sendData
+        type: SUCCESS_SEND_CAMPAIGN,
+        sendData,
+    }
+}
+// CAMPAIGN_SAVE
+export const CampaignSaveSuccess = (saveData) => {
+    return {
+        type: SUCCESS_SAVE_CAMPAIGN,
+        saveData,
     }
 }
 // CampaignTableData 
@@ -50,21 +59,42 @@ export const StartCampaignAction = (data) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.StartCampaignApi(data, token).then(result => {
-            console.log('reult',result)
             dispatch(StartCampaignSuccess(result.data))
         }).catch(err => {
             console.log(err)
         })
     }
 }
-export const RecipientAction = (recipientData,token) => {
+export const RecipientAction = (recipientData, token) => {
     return function (dispatch) {
         Api.RecipientApi(recipientData, token).then(result => {
-            dispatch(RecipientSuccess(result.data))
-            console.log(result)
-        }).catch(err => { console.log(err) })
+            console.log('RecipientApiData:',result.data.resp[0]);
+            dispatch(RecipientSuccess(result.data.resp[0]))
+        }).catch(err => { console.log('Error:',err) })
     }
 }
+
+
+// .then((Api.CampaignSendGetApi(result.data.resp[0].id,token)).then(result2=>{
+//     console.log('CampaignSendGetApi:',result2);
+//     dispatch(CampaignSendSuccess(result2))
+// }))
+
+
+
+// console.log(result.data, 'result')
+//             console.log('res',result.data.resp[0].id)
+// .then(function(result) { // (***)
+
+//     alert(result); // 2
+//     return result * 2;
+  
+//   }).then(function(result) {
+  
+//     alert(result); // 4
+//     return result * 2;
+  
+//   });
 export const CampaignOptionAction = (optionData) => {
     console.log('abcd:', optionData);
     return function (dispatch) {
@@ -88,18 +118,27 @@ export const CampaignTableAction = () => {
         })
     }
 }
-export const CampaignSendAction = () => {
+export const CampaignSendAction = (id) => {
+    return function (dispatch) {
+        console.log("id-----",id)
+        const token = localStorage.getItem('token')
+        Api.CampaignSendGetApi(id, token).then(result => {
+            dispatch(CampaignSendSuccess(result.data))
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+}
+export const CampaignSaveAction = (saveData) => {
     return function (dispatch) {
         const token = localStorage.getItem('token')
-        console.log('this is a token', token)
-        Api.CampaignSendGetApi(token).then(result => {
-            dispatch(CampaignSendSuccess(result.data))
-            console.log('result', result.data)
+        Api.CampaignSaveApi(saveData, token).then(result => {
+            console.log()
+            dispatch(CampaignSaveSuccess(result.data))
+            console.log("result.data", result.data)
         }).catch(err => {
             console.log(err)
         })
     }
 }
 
-
-//view_ALL_CAMPAIGN
