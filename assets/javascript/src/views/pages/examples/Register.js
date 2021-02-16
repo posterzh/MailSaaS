@@ -277,8 +277,6 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = dispatch => ({
-  RegisterAction: user => {
-    dispatch(RegisterAction(user));
-  },
+  RegisterAction: user => {dispatch(RegisterAction(user));},
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

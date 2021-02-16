@@ -38,6 +38,7 @@ const initialState = {
     mailGetData: [],
     mailData: '',
     sendData:'',
+    saveData:'',
     viewData: '',
     unsubscribeData: [],
     optionData: '',
@@ -95,11 +96,13 @@ export const StartCampaignReducer = (state = { initialState }, action) => {
     }
 }
 export const RecipientReducer = (state = { initialState }, action) => {
+    console.log('action',action.recipientData)
+
     switch (action.type) {
         case SUCCESS_RECIPIENT:
             return {
                 ...state,
-                formData: action.formData,
+                recipientData: action.recipientData,
             }
         default: return state
             break;
@@ -111,6 +114,17 @@ export const CamapignSendReducer=(state = { initialState }, action)=>{
         return {
             ...state,
             sendData: action.sendData,
+        }
+    default: return state
+        break;
+    }
+}
+export const CamapignSaveReducer=(state = { initialState }, action)=>{
+    switch (action.type) {
+    case SUCCESS_SAVE_CAMPAIGN:
+        return {
+            ...state,
+            saveData: action.saveData,
         }
     default: return state
         break;

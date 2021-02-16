@@ -32,7 +32,7 @@ Api.RecipientApi = (recipientData, token) => {
   formData.append('email', recipientData.email);
   formData.append('option', recipientData.option);
   formData.append('campaign', recipientData.campaign)
-
+  console.log('rec api',formData);
   return axios({
     method: 'POST',
     url: `${API_BASE_URL}/campaign/recipients/`,
@@ -49,9 +49,7 @@ Api.OptionApi = (optionData, token) => {
   return axios({
     method: 'PUT',
     url: `${API_BASE_URL}/campaign/options/`,
-    // http://127.0.0.1:8000/campaign/options/
     data: {
-
       ...optionData
     },
     headers: {
@@ -125,7 +123,7 @@ Api.CampaignComposeApi = (token, data) => {
 Api.CampaignPreviewApi = (token, key) => {
   return axios({
     method: 'GET',
-    url: `${API_BASE_URL}/campaign/personalize/2/`,
+    url: `${API_BASE_URL}/campaign/personalize/${key}/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -143,30 +141,29 @@ Api.CampaignUpdatePreviewApi = (token, id) => {
   })
 }
 
-// campaign_savecampaign (put)
-Api.CampaignSaveApi = (token, data) => {
+// Campaign save (get)
+Api.CampaignSendGetApi = (id,token) => {
+  console.log('send',id);
   return axios({
-    method: 'PUT',
-    url: `${API_BASE_URL}/campaign/savecamp/1/`,
-    data: {
-      "startCampaign": false
-    },
+    method: 'GET',
+    url: `${API_BASE_URL}/campaign/savecamp/${id}/`,
     headers: {
       "Authorization": `Bearer ${token}`,
-
     }
-
   })
 }
 
-// Campaign save (get)
-Api.CampaignSendGetApi = (token) => {
+// campaign_savecampaign (put)
+Api.CampaignSaveApi = (saveData,token) => {
   return axios({
-    method: 'GET',
+    method: 'PUT',
     url: `${API_BASE_URL}/campaign/savecamp/26/`,
+    data:saveData,
     headers: {
       "Authorization": `Bearer ${token}`,
+
     }
+
   })
 }
 

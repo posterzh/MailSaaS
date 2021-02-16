@@ -20060,6 +20060,11 @@ button .import_button {
   background-color: #ff4081;
   color: white; }
 
+.startBtn:hover {
+  opacity: 0.7;
+  color: white;
+  background: #ff4081; }
+
 .campaign-form .start_input:hover {
   opacity: 0.6;
   color: black !important; }
@@ -20166,13 +20171,7 @@ button .import_button {
   border-bottom: 1px solid #ccc;
   background: transparent; }
 
-.newcampaign_button {
-  background: #ff4081;
-  outline: none;
-  border: none;
-  color: white; }
-
-.startcampaign_buttonicon {
+.newcampaign_button, .startcampaign_buttonicon {
   background: #ff4081;
   outline: none;
   border: none;

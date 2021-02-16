@@ -5,62 +5,36 @@ import OverView from './OverView';
 import Sequence from './Sequence';
 import Recipients from './Recipients';
 import Setting from './Setting';
-
-class Campaign_details extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      activeTab: '1',
-    }
+const Campaign_Details = (props) => {
+  const [activeTab, setActiveTab] = useState('1');
+  const toggle = tab => {
+    if (activeTab !== tab) setActiveTab(tab);
   }
-    //  Campaign_Details = (props) => {
-    //   const [activeTab, setActiveTab] = useState('1');
-
-      toggle = tab => {
-        if (this.state.activeTab !== tab) {
-          this.setState(tab)
-        }
-      }   
-  
-  render() {
-    const { activeTab } = this.state;
-    return (
-      <>
-        <div className='campaign_navbar' >
-          <h1 style={{ color: 'white', fontSize: '30px', textAlign: 'left' }}>Date Outreach</h1>
+  return (
+    <>
+      <div className='campaign_navbar' >
+        <h1 style={{ color: 'white', fontSize: '30px', textAlign: 'left' }}>Date Outreach</h1>
+      </div>
+      <div className='main-view'>
+        <div style={{ background: '#035AAC' }}>
+          <Nav tabs>
+            <NavItem style={{ background: '#035AAC' }}><NavLink><span style={{ color: 'white' }}><i className="fa fa-chevron-left" aria-hidden="true"></i></span></NavLink></NavItem>
+            <NavItem style={{ background: '#035AAC' }}><NavLink onClick={() => { toggle('1'); }}><span style={{ color: 'white' }}>OVERVIEW</span></NavLink></NavItem>
+            <NavItem style={{ background: '#035AAC' }}><NavLink onClick={() => { toggle('2'); }}><span style={{ color: 'white' }}>SEQUENCE</span></NavLink></NavItem>
+            <NavItem style={{ background: '#035AAC' }}><NavLink onClick={() => { toggle('3'); }}><span style={{ color: 'white' }}>RECIPIENTS</span></NavLink></NavItem>
+            <NavItem style={{ background: '#035AAC' }}><NavLink onClick={() => { toggle('4'); }}><span style={{ color: 'white' }}>SETTINGS</span></NavLink></NavItem>
+          </Nav>
         </div>
-        <div className='main-view'>
-
-          <div>
-            <Nav tabs>
-              <NavItem><NavLink><span style={{ color: 'black' }}><i className="fa fa-chevron-left" aria-hidden="true"></i></span></NavLink></NavItem>
-              <NavItem><NavLink className={classnames({ active: activeTab === '1' })} onClick={() => { this.toggle('1'); }}><span style={{ color: 'Black' }}>OVERVIEW</span></NavLink></NavItem>
-              <NavItem><NavLink className={classnames({ active: activeTab === '2' })} onClick={() => { this.toggle('2'); }}><span style={{ color: 'Black' }}>SEQUENCE</span></NavLink></NavItem>
-              <NavItem><NavLink className={classnames({ active: activeTab === '3' })} onClick={() => { this.toggle('3'); }}><span style={{ color: 'Black' }}>RECIPIENTS</span></NavLink></NavItem>
-              <NavItem><NavLink className={classnames({ active: activeTab === '4' })} onClick={() => { this.toggle('4'); }}><span style={{ color: 'Black' }}>SETTINGS</span></NavLink></NavItem>
-            </Nav>
-          </div>
-          {/* </div> */}
-          <div>
-            <TabContent activeTab={this.state.activeTab}>
-              <TabPane tabId="1" className='mt-5'>
-                <OverView />
-              </TabPane>
-              <TabPane tabId="2">
-                <Sequence />
-              </TabPane>
-              <TabPane tabId="3">
-                <Recipients />
-              </TabPane>
-              <TabPane tabId="4">
-                <Setting />
-              </TabPane>
-            </TabContent>
-          </div>
+        <div>
+          <TabContent activeTab={activeTab}>
+            <TabPane tabId="1" className='mt-5'><OverView /></TabPane>
+            <TabPane tabId="2"><Sequence /></TabPane>
+            <TabPane tabId="3"><Recipients /></TabPane>
+            <TabPane tabId="4"><Setting /></TabPane>
+          </TabContent>
         </div>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
 }
-
-export default Campaign_details
+export default Campaign_Details;
