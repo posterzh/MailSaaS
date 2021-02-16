@@ -18,14 +18,14 @@ export const successFetchMailAccounts = (payload) => {
 }
 
 export const fetchEmailsAction = (Loginuser) => {
-    return function (dispatch) {
-        Api.LoginApi(Loginuser).then(result => {
-            const token = result.data.token;
-            localStorage.setItem('access_token', token)
-            console.log(token)
-            dispatch(successFetchMailAccounts(result.data))
-        }).catch(err => {
-            console.log(err)
-        })
-    }
+    // return function (dispatch) {
+    //     Api.LoginApi(Loginuser).then(result => {
+    //         const token = result.data.token;
+    //         localStorage.setItem('access_token', token)
+    //         console.log(token)
+    //         dispatch(successFetchMailAccounts(result.data))
+    //     }).catch(err => {
+    //         console.log(err)
+    //     })
+    // }
 }

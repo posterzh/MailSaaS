@@ -8,7 +8,7 @@ Api.RegisterApi = (user) => {
 
 // for login
 Api.LoginApi = (loginuser) => {
-  return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser)
+    return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser)
 }
 
 Api.StartCampaignApi = (data, token) => {
@@ -361,7 +361,26 @@ Api.MailGetDataApi = (token) => {
   })
 
 }
+Api.MailAccountDelete=(token,id)=>{
+    return axios({
+        url:`${API_BASE_URL}/mail/updatedeletemailaccount/${id}/`,
+        method:'DELETE',
+        headers:{
+            "Authorization": `Bearer ${token}`
+        }
+    })
+}
 
+Api.MailAccountUpdateApi=(token,data,id)=>{
+  return axios({
+      url:`${API_BASE_URL}/mail/updatedeletemailaccount/${id}/`,
+      method:"PUT",
+      headers:{
+          "Authorization": `Bearer ${token}`
+      },
+      data:data
+  })
+}
 Api.fetchUnsbcribed = (token) => {
   return axios({
     method: 'GET',

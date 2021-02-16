@@ -227,13 +227,21 @@ class CreateCampaignOptionView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def put(self, request, format=None):
-
+    
         if request.data['terms_and_laws'] == True:
-            queryset = Campaign.objects.get(id = request.data['campaign'])
+            try:
+                queryset = Campaign.objects.get(id = request.data['campaign'])
+            except:
+                return Response({"message":"No campiagn availabe for this id", "success":"false"})
+                
+            if queryset.csvfile_op1 == "":
+                csvfile_op1 = None
+            else:
+                csvfile_op1 = queryset.csvfile_op1
             request.data["title"] = queryset.title
             request.data["from_address"] = queryset.from_address.id
             request.data["full_name"] = queryset.full_name
-            request.data["csvfile_op1"] = queryset.csvfile_op1
+            request.data["csvfile_op1"] = csvfile_op1
             request.data["assigned"] = request.user.id
             request.data["update_date_time"] = datetime.now()
             request.data["created_date_time"] = queryset.created_date_time
@@ -249,7 +257,6 @@ class CreateCampaignOptionView(APIView):
             else:
                 request.data["schedule_date"] = None
                 request.data["schedule_time"] = None
-            print(request.data)
             serilizer = CampaignSerializer(queryset, data=request.data)
             if serilizer.is_valid():
                 serilizer.save()
@@ -420,6 +427,7 @@ class CampaignView(generics.ListAPIView):
             campEmail = CampaignRecipient.objects.filter(campaign=camp.id)
             campEmailserializer = CampaignEmailSerializer(campEmail, many = True)
             resp = {
+                "id":camp.pk,
                 "camp_title": camp.title,
                 "camp_created_date_time": camp.created_date_time,
                 "assigned": camp.assigned.full_name,
@@ -1098,7 +1106,4 @@ class RecipientUnsubcribe(generics.CreateAPIView):
             if serializer.is_valid():
                 serializer.save()
         return Response("Done")
-    
-
-
-       
+     

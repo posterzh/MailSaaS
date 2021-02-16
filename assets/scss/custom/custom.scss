@@ -1685,3 +1685,36 @@ color:#777
 .activeactivity:focus{
   background-color: yellow !important;
 }
+.main-content .mt-6{
+margin-top: 0px !important;
+}
+.mail-account-container{
+    height: 100vh;
+    .mt-6{
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+    }
+    .fa-ellipsis-v{
+        margin-top: 0px !important;
+    }
+}
+.list-wrapper .mail-account-edit-list{
+    background: white;
+    font-size: 16px;
+    margin: 10px 0px 0px 5px;
+    padding: 5px;
+    position: absolute;
+    top: 0px;
+    left: 10px;
+    z-index: 1;
+    width: max-content;
+    box-shadow: 0px 2px 2px #aaaaaa;
+        li{
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+     li:focus,:hover{
+        background: #e4e4e4;
+    }
+}
