@@ -24,7 +24,10 @@ import {
     SUCCESS_MAIL_ACCOUNT_DELETE,
     SUCCESS_MAIL_ACCOUNT_UPDATE,
     FAILURE_MAIL_ACCOUNT_UPDATE,
-    SUCCESS_SEND_CAMPAIGN
+    SUCCESS_SEND_CAMPAIGN,
+    REQUEST_FOR_CAMPAIGN_UPDATE_PREVIEW,
+    SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
+    FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW
 } from "../actionType/actionType";
 
 const initialState = {
@@ -40,8 +43,10 @@ const initialState = {
     optionData: '',
     prospectData: [],
     mailAccountId: '',
+    CampaignOverviewData:[],
+    isLogin:false,
     CampaignPreviewData: [],
-    CampaignOverviewData:[]
+    campaignPreviewUpdateData:[]
 }
 export const RegisterReducer = (state = { initialState }, action) => {
     console.log(action.payload && action.payload[0], 'payloaddata')
@@ -60,14 +65,19 @@ export const LoginReducer = (state = { initialState }, action) => {
     switch (action.type) {
         case REQUEST_FOR_LOGIN:
             return {
+                ...state,
+                isLogin: false
             }
         case SUCCESS_LOGIN:
             return {
                 ...state,
                 Loginuser: action.Loginuser,
+                isLogin: true, 
             }
         case FAILURE_LOGIN:
             return {
+                ...state,
+                isLogin:false,
             }
         default: return state
             break;
@@ -205,6 +215,26 @@ export const CampaignPreviewGetReducer = (state = { initialState }, action) => {
     }
 }
 
+
+// CAMPAIGN_PREVIEW_UPDATE_DATA 
+export const CampaignPreviewUpdateReducer = (state = { initialState }, action) => {
+    // console.log(action.CampaignPreviewData && action.CampaignPreviewData.campaign,' action.CampaignPreviewData')
+    switch (action.type) {
+        case SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW:
+            return {
+                ...state,
+                campaignPreviewUpdateData: action.campaignPreviewUpdateData,
+            }
+        case FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW:
+            return {
+                
+            }
+        default: return state
+            break;
+    }
+}
+
+
 // CAMPAIGN_OVERVIEW_DATA
 export const CampaignOverviewReducer = (state = { initialState }, action) => {
     // console.log(action.CampaignPreviewData && action.CampaignPreviewData.campaign,' action.CampaignPreviewData')
@@ -215,7 +245,7 @@ export const CampaignOverviewReducer = (state = { initialState }, action) => {
         case SUCCESS_CAMPAIGN_OVERVIEW:
             return {
                 ...state,
-                CampaignPreviewData: action.CampaignPreviewData,
+                CampaignOverviewData: action.CampaignOverviewData,
             }
         case  FAILURE_CAMPAIGN_OVERVIEW:
             return {

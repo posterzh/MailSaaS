@@ -14,11 +14,9 @@ import { connect } from 'react-redux';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import {PreviewCampaignAction } from '../../../redux/action/CampaignAction'
-// import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-// import Container from 'reactstrap/lib/Container';
 class Preview extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             editorState: EditorState.createEmpty(),
         }
@@ -30,11 +28,13 @@ class Preview extends Component {
     componentDidMount() {
         this.props.PreviewCampaignAction();
         console.log("in js file  PreviewCampaignAction", this.props)
+       
+        this.props.PreviewUpdateCampaignAction()
     }
-
-
     render() {
         const { editorState } = this.state;
+        console.log('Preview mera data ya ajaj::',this.props.CampaignPreviewData);
+        // const {CampaignPreviewData} = this.props;
         return (
             <div>
 
@@ -92,10 +92,19 @@ class Preview extends Component {
                                     <div style={{ backgroundColor: "#005aac", color: "white" }}>
                                         {  
                                          console.log(this.props.CampaignPreviewData,'CampaignPreviewData'),
-                                            <p style={{color: 'white'}}>{this.props.CampaignPreviewData && this.props.CampaignPreviewData.campaign.id}</p>
-                                            // console.log("cvbnhjmkl;jhgjkl;kljhgfhjkl;lkjhgfhjkljhgfhjklj",this.props.CampaignPreviewData && this.props.CampaignPreviewData.campEamil),
+                                            <p style={{color: 'white'}}>{this.props.CampaignPreviewData && this.props.CampaignPreviewData.campaign.assigned }</p>
+                                            // CampaignPreviewData&& CampaignPreviewData.map((item,index)=>{
+                                            //     console.log("email bodyyyyyyyyyyyyyyyyyyyyy")
+                                            //     return <div><p key={index}>{item.campEmail}</p></div>
+                                            // })
+                                            // <p style={{color: 'white'}}>{this.props.CampaignPreviewData && this.props.CampaignPreviewData.drip.email_body}</p>
                                             // <p style={{color: 'white'}}>{this.props.CampaignPreviewData && this.props.CampaignPreviewData.campEamil}</p>
                                         }
+                                        {/* {CampaignPreviewData.map((pdata)=>{
+                                                console.log("ccccccccccccccccc",pdata.campaign.assigned)
+
+                                        
+                                        })} */}
                                     </div>
                                     <div>
                                         {
@@ -182,8 +191,7 @@ const mapStateToProps = (state) => {
     }
 }
 const mapDispatchToProps = dispatch => ({
-    PreviewCampaignAction: CampaignPreviewData => {
-        dispatch(PreviewCampaignAction(CampaignPreviewData))
-    }
+    PreviewCampaignAction: CampaignPreviewData => {dispatch(PreviewCampaignAction(CampaignPreviewData))},
+    PreviewUpdateCampaignAction:campaignPreviewUpdateData=>{dispatch(PreviewUpdateCampaignAction(campaignPreviewUpdateData))}
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Preview)

@@ -8,7 +8,7 @@ Api.RegisterApi = (user) => {
 
 // for login
 Api.LoginApi = (loginuser) => {
-    return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser)
+  return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser)
 }
 
 Api.StartCampaignApi = (data, token) => {
@@ -121,18 +121,26 @@ Api.CampaignComposeApi = (token, data) => {
   })
 }
 
-// campaign preview
+// campaign GET preview
 Api.CampaignPreviewApi = (token, key) => {
   return axios({
     method: 'GET',
-    url: `${API_BASE_URL}/campaign/personalize/152/`,
-
+    url: `${API_BASE_URL}/campaign/personalize/2/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
   })
+}
 
-
+// CAMPAIGN UPDATE PREVIEW
+Api.CampaignUpdatePreviewApi = (token, id) => {
+  return axios({
+    method: 'PUT',
+    url: `${API_BASE_URL}/campaign/personalize/2/`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
 }
 
 // campaign_savecampaign (put)
@@ -177,14 +185,14 @@ Api.CampaignLeadCatcher = (token, data) => {
 }
 
 // campaign get-overview
-Api.CampaignOverview = (token,id) => {
-    return axios({
-        method: 'GET',
-        url: `${API_BASE_URL}/campaign/overview/${id}/`,
-        headers: {
-            "Authorization": `Bearer ${token}`,
-        }
-    })
+Api.CampaignOverview = (token, id) => {
+  return axios({
+    method: 'GET',
+    url: `${API_BASE_URL}/campaign/overview/${id}/`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
 }
 // campaign recipient people (get)
 Api.CampaignRecipientPeople = (token) => {
@@ -342,44 +350,44 @@ Api.CampaignTableDataApi = (token) => {
   })
 }
 Api.MailSenderApi = (mailData, token) => {
-    return axios({
-        method: 'POST',
-        url: `${API_BASE_URL}/mail/addmailaccount/`,
-        data: mailData,
-        headers: {
-            "Authorization": `Bearer ${token}`,
-        }
+  return axios({
+    method: 'POST',
+    url: `${API_BASE_URL}/mail/addmailaccount/`,
+    data: mailData,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
 
   })
 }
 Api.MailGetDataApi = (token) => {
-    return axios({
-        method: 'GET',
-        url: `${API_BASE_URL}/mail/addmailaccount/`,
-        headers: {
-            "Authorization": `Bearer ${token}`,
-        }
-    })
-
-}
-Api.MailAccountDelete=(token,id)=>{
-    return axios({
-        url:`${API_BASE_URL}/mail/updatedeletemailaccount/${id}/`,
-        method:'DELETE',
-        headers:{
-            "Authorization": `Bearer ${token}`
-        }
-    })
-}
-
-Api.MailAccountUpdateApi=(token,data,id)=>{
   return axios({
-      url:`${API_BASE_URL}/mail/updatedeletemailaccount/${id}/`,
-      method:"PUT",
-      headers:{
-          "Authorization": `Bearer ${token}`
-      },
-      data:data
+    method: 'GET',
+    url: `${API_BASE_URL}/mail/addmailaccount/`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+
+}
+Api.MailAccountDelete = (token, id) => {
+  return axios({
+    url: `${API_BASE_URL}/mail/updatedeletemailaccount/${id}/`,
+    method: 'DELETE',
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+}
+
+Api.MailAccountUpdateApi = (token, data, id) => {
+  return axios({
+    url: `${API_BASE_URL}/mail/updatedeletemailaccount/${id}/`,
+    method: "PUT",
+    headers: {
+      "Authorization": `Bearer ${token}`
+    },
+    data: data
   })
 }
 Api.fetchUnsbcribed = (token) => {
@@ -410,31 +418,31 @@ Api.demostart = (token, data) => {
   })
 }
 Api.demorecipient = (token, data) => {
-    let formdata = new FormData();
-    formdata.append("option", "[2]"),
-        formdata.append("campaign", "3"),
-        formdata.append("email", ["keshav@gmail.com"])
-    return axios({
-        method: 'POST',
-        url: `${API_BASE_URL}/campaign/recipients/`,
+  let formdata = new FormData();
+  formdata.append("option", "[2]"),
+    formdata.append("campaign", "3"),
+    formdata.append("email", ["keshav@gmail.com"])
+  return axios({
+    method: 'POST',
+    url: `${API_BASE_URL}/campaign/recipients/`,
 
-        data: formdata,
+    data: formdata,
 
-        headers: {
-            "Authorization": `Bearer ${token}`,
-        }
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
 
-    })
+  })
 }
 
 Api.GetAllCampaigns = (token) => {
-    return axios({
-        url: `${API_BASE_URL}/campaign/view/`,
-        data: {},
-        headers: {
-            "Authorization": `Bearer ${token}`,
-        }
-    })
+  return axios({
+    url: `${API_BASE_URL}/campaign/view/`,
+    data: {},
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
 }
 
 export default Api;

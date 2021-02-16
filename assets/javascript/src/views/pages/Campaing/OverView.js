@@ -3,34 +3,27 @@ import React, { Component } from 'react'
 import { Container, Row, Col, Table, Nav, NavItem, NavLink, TabContent, TabPane, } from 'reactstrap'
 import classnames from 'classnames';
 import Overview_Summery from './Overview_Summery';
-import Overview_Activity from './Overview_Activity'
-// import { connect } from 'react-redux';
-
-
-
-// const Campaign_data = (props) => {
-//     const [activeTab, setActiveTab] = useState('1');
-//     const toggle = tab => {
-//         if (activeTab !== tab) setActiveTab(tab);
-//     }
+import Overview_Activity from './Overview_Activity';
 class Campaign_data extends Component {
     constructor() {
         super()
         this.state = {
-            activeTab: 1,
+            activeTab: '1',
         }
 
     }
-    setActiveTab = () => {
-        this.setState({ activeTab: this.state.activeTab })
-    }
+    // setActiveTab = (tab) => {
+    //     this.setState({ activeTab: tab })
+    // }
     toggle = (tab) => {
-        if (activeTab !== tab) {
-            this.setActiveTab(tab)
+        if (this.state.activeTab !== tab) {
+            this.setState(tab)
         }
     }
     render() {
+        const {activeTab} = this.state;
         return (
+        
             <div>
                 <Container fluid>
                     <Row>
@@ -41,9 +34,9 @@ class Campaign_data extends Component {
                                     <option value='Date'>Date</option>
                                 </select>
                             </Col>
-                            <Col md='3'><NavItem><NavLink className={classnames({ activesummary: this.state.activeTab === '1' })} onClick={() => { toggle('1'); }}>SUMMARY</NavLink></NavItem></Col>
-                            <Col md='3'><NavItem><NavLink className={classnames({ activeactivity: this.state.activeTab === '2' })} onClick={() => { toggle('2'); }}>ACTIVITY</NavLink></NavItem></Col>
-                            <Col md='2'><NavItem><NavLink className={classnames({ activetimeline: this.state.activeTab === '3' })} onClick={() => { toggle('3'); }}>TIMELINE</NavLink></NavItem></Col>
+                            <Col md='3'><NavItem><NavLink className={classnames({ activesummary: this.state.activeTab === '1' })} onClick={() => {this.toggle('1'); }}>SUMMARY</NavLink></NavItem></Col>
+                            <Col md='3'><NavItem><NavLink className={classnames({ activeactivity: this.state.activeTab === '2' })} onClick={() => {this.toggle('2'); }}>ACTIVITY</NavLink></NavItem></Col>
+                            <Col md='2'><NavItem><NavLink className={classnames({ activetimeline: this.state.activeTab === '3' })} onClick={() => {this.toggle('3'); }}>TIMELINE</NavLink></NavItem></Col>
 
                             <Col md='1'><div className='child ml-3'>
                                 <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
@@ -59,8 +52,8 @@ class Campaign_data extends Component {
                             </a></div>
                         </Col>
                     </Nav>
-                            {/* <div className='mt-5' >
-                                <TabContent activeTab={activeTab}>
+                            <div className='mt-5' >
+                                <TabContent activeTab={this.state.activeTab}>
                                     <TabPane tabId="1">
                                         <Overview_Summery />
                                     </TabPane>
@@ -92,7 +85,7 @@ class Campaign_data extends Component {
 
 
                                 </TabContent>
-                            </div> */}
+                            </div>
                         </Col>
                     </Row>
 
