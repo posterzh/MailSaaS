@@ -233,7 +233,6 @@ class CreateCampaignOptionView(APIView):
                 queryset = Campaign.objects.get(id = request.data['campaign'])
             except:
                 return Response({"message":"No campiagn availabe for this id", "success":"false"})
-                
             if queryset.csvfile_op1 == "":
                 csvfile_op1 = None
             else:
@@ -614,13 +613,21 @@ class GetCampaignOverview(APIView):
             "lostLeadPer": 0,
             "ignoredLeadCount": 0,
             "ignoredLeadPer": 0,
+            "sentCount": 0,
+            "sentPer": 0,
+            "openCount": 0,
+            "openPer": 0,
+            "replyCount": 0,
+            "replyPer": 0,
+            "unsubscribeCount": 0,
+            "unsubscribePer": 0,
             }
         for campData in campEmailserializer.data:
             if campData["leads"]:
                 resp["leadCount"] = resp["leadCount"] + 1
 
                 if campData["lead_status"]=="openLead":
-                    resp["openLeadCount"] = resp["openLeadCount"] + 1                    
+                    resp["openLeadCount"] = resp["openLeadCount"] + 1                 
                 if campData["lead_status"]=="wonLead":
                     resp["wonLeadCount"] = resp["wonLeadCount"] + 1
                 if campData["lead_status"]=="lostLead":
@@ -628,11 +635,22 @@ class GetCampaignOverview(APIView):
                 if campData["lead_status"]=="ignoredLead":
                     resp["ignoredLeadCount"] = resp["ignoredLeadCount"] + 1
                 
-                resp["openLeadPer"] = (resp["openLeadCount"]*100)/resp["leadCount"]
-                resp["wonLeadPer"] = (resp["wonLeadCount"]*100)/resp["leadCount"]
-                resp["lostLeadPer"] = (resp["lostLeadCount"]*100)/resp["leadCount"]
-                resp["ignoredLeadPer"] = (resp["ignoredLeadCount"]*100)/resp["leadCount"]
-
+                resp["openLeadPer"] = round((resp["openLeadCount"]*100)/resp["leadCount"], 2)
+                resp["wonLeadPer"] = round((resp["wonLeadCount"]*100)/resp["leadCount"], 2)
+                resp["lostLeadPer"] = round((resp["lostLeadCount"]*100)/resp["leadCount"], 2)
+                resp["ignoredLeadPer"] = round((resp["ignoredLeadCount"]*100)/resp["leadCount"], 2)
+            if campData["sent"]:
+                resp["sentCount"] += 1
+            resp["sentPer"] = round((resp["sentCount"]*100)/resp["recipientCount"], 2)
+            if campData["opens"]:
+                resp["openCount"] += 1
+            resp["openPer"] = round((resp["openCount"]*100)/resp["recipientCount"], 2)
+            if campData["replies"]:
+                resp["replyCount"] += 1
+            resp["replyPer"] = round((resp["replyCount"]*100)/resp["recipientCount"], 2)
+            if campData["unsubscribe"]:
+                resp["unsubscribeCount"] += 1
+            resp["unsubscribePer"] = round((resp["unsubscribeCount"]*100)/resp["recipientCount"], 2)
         return Response(resp)
     
 
