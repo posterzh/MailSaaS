@@ -5,7 +5,6 @@ const Api = {}
 Api.RegisterApi = (user) => {
   return axios.post(`${API_BASE_URL}/rest-auth/registration/`, user)
 }
-
 // for login
 Api.LoginApi = (loginuser) => {
   return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser)
@@ -24,7 +23,6 @@ Api.StartCampaignApi = (data, token) => {
     }
   })
 }
-
 // for campaign_recipient 
 Api.RecipientApi = (recipientData, token) => {
   console.log("recipientData",recipientData)
@@ -121,10 +119,11 @@ Api.CampaignComposeApi = (token, data) => {
 }
 
 // campaign GET preview
-Api.CampaignPreviewApi = (token, key) => {
+Api.CampaignPreviewApi = (token,id) => {
+  console.log("ID--------------",id)
   return axios({
     method: 'GET',
-    url: `${API_BASE_URL}/campaign/personalize/${key}/`,
+    url: `${API_BASE_URL}/campaign/personalize/${id}/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }

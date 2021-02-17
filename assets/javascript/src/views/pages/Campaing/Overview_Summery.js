@@ -7,7 +7,6 @@ class Overview_Summery extends Component {
     componentDidMount()
     {
         this.props.CampaignOverviewAction();
-        alert("fghjklkjhghjklkjhghjkl")
     }
     render() {
         return (
@@ -89,7 +88,12 @@ class Overview_Summery extends Component {
                             <div className='line_div_second'></div>
                         </div>
                         <div className='draw_div'>
-                            <div className='circle'></div>
+                            <div className='circle'>
+                                {/* <div className="recipientcount-circle">
+                                <p>{this.props.CampaignOverviewData && this.props.CampaignOverviewData.recipientCount}</p>
+                                <p>RECIPIENTS</p>
+                                </div> */}
+                            </div>
                         </div>
                         <div className='draw_div'>
                             <div className='line_div_second'></div>
@@ -102,15 +106,15 @@ class Overview_Summery extends Component {
                         </Row>
                         <Row>
                             <Col md='12'><div className='good_test_div'>
-                                <div className=' text_purple'><span className='btn_heading'>0</span><br></br><span className='good_btn_span'>0%<br></br>OPENED</span></div>
-                                <div className='text_leaf'><span className='btn_heading'>0</span><br></br><span className='good_btn_span'>0%<br></br>OPENED</span></div>
-                                <div className='text_green'><span className='btn_heading'>0</span><br></br><span className='good_btn_span' >0%<br></br>OPENED</span></div>
-                                <div className='text_lime'><span className='btn_heading'>0</span><br></br><span className='good_btn_span' >0%<br></br>OPENED</span></div>
-                                <div className='text_warning'><span className='btn_heading'>0</span><br></br><span className='good_btn_span'>0%<br></br>OPENED</span></div>
+                                <div className=' text_purple'><span className='btn_heading'>{this.props.CampaignOverviewData && this.props.CampaignOverviewData.openCount}</span><br></br><span className='good_btn_span'>{this.props.CampaignOverviewData && this.props.CampaignOverviewData.openPer}%<br></br>OPENED</span></div>
+                                <div className='text_leaf'><span className='btn_heading'>0</span><br></br><span className='good_btn_span'>0%<br></br>CLICKED</span></div>
+                                <div className='text_green'><span className='btn_heading'>{this.props.CampaignOverviewData && this.props.CampaignOverviewData.replyCount}</span><br></br><span className='good_btn_span' >{this.props.CampaignOverviewData && this.props.CampaignOverviewData.replyPer}%<br></br>REPLIED</span></div>
+                                <div className='text_lime'><span className='btn_heading'>0</span><br></br><span className='good_btn_span' >0%<br></br>BOUNCED</span></div>
+                                <div className='text_warning'><span className='btn_heading'>{this.props.CampaignOverviewData && this.props.CampaignOverviewData.unsubscribeCount}</span><br></br><span className='good_btn_span'>{this.props.CampaignOverviewData && this.props.CampaignOverviewData.unsubscribePer}%<br></br>UNSUBSCRIBED</span></div>
                             </div></Col>
                         </Row>
                         <Row><div className='pending_div'>
-                            5 pending
+                            {/* 5 pending */}
                 </div></Row>
                     </Col>
                     </Row>
@@ -133,7 +137,6 @@ class Overview_Summery extends Component {
                             <Table className='table' hover responsive>
                                 <thead> <tr><th colSpan='2'>SUMMARY</th></tr></thead>
                                 <tbody> <tr><td>8</td><td>Recipients</td></tr></tbody>
-                                <tbody><tr><td>{this.props.CampaignOverviewData && this.props.CampaignOverviewData.ignoredLeadCount}</td><td>chekinggggggg</td></tr></tbody>
                             </Table>
                         </Col>
                         <Col md='4'>

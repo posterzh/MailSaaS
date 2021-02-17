@@ -29,7 +29,6 @@ class Admin extends React.Component {
   state = {
     sidenavOpen: true
   };
-  
   componentDidUpdate(e) {
     if (e.history.pathname !== e.location.pathname) {
       document.documentElement.scrollTop = 0;
