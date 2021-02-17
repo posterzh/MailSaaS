@@ -97,6 +97,7 @@ class CampaignCompose extends Component {
         })
         Object.assign(this.state.normalData, { 'email_body': e.blocks[0].text })
     }
+    
     render() {
         const { editorState } = this.state;
         return (
