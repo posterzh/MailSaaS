@@ -244,10 +244,10 @@ export const PreviewCampaignAction = () => {
         })
     }
 }
-export const CampaignSaveAction = (saveData) => {
+export const CampaignSaveAction = (id) => {
     return function (dispatch) {
         const token = localStorage.getItem('token')
-        Api.CampaignSaveApi(saveData, token).then(result => {
+        Api.CampaignSaveApi(id, token).then(result => {
             console.log()
             dispatch(CampaignSaveSuccess(result.data))
             console.log("result.data", result.data)

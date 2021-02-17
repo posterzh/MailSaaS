@@ -105,10 +105,10 @@ Api.CampaignSendGetApi = (token,id) => {
 }
 
 // campaign_savecampaign (put)
-Api.CampaignSaveApi = (saveData,token) => {
+Api.CampaignSaveApi = (id,token) => {
   return axios({
     method: 'PUT',
-    url: `${API_BASE_URL}/campaign/savecamp/26/`,
+    url: `${API_BASE_URL}/campaign/savecamp/${id}/`,
     data:saveData,
     headers: {
       "Authorization": `Bearer ${token}`,
