@@ -10,7 +10,7 @@ class NewCampaign_start extends React.Component {
         super(props);
         this.state = {
             title: '',
-            from_address: 12,
+            from_address: this.props.mailGetData&&this.props.mailGetData[0].id
         }
     }
     handleChange = (e) => {
@@ -25,7 +25,7 @@ class NewCampaign_start extends React.Component {
         e.preventDefault();
         const data = {
             title: this.state.title,
-            from_address: this.state.from_address
+            from_address: this.props.mailGetData&&this.props.mailGetData[0].id
         }
         this.props.StartCampaignAction(data)
     }
@@ -104,8 +104,9 @@ class NewCampaign_start extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
+     // console.log("------------------------->",state.MailGetDataReducer.mailGetData&&state.MailGetDataReducer.mailGetData.map((e,i)=> e.email[0].id))
     return {
-        mailGetData: state.MailGetDataReducer.mailGetData
+        mailGetData: state.MailGetDataReducer.mailGetData 
     };
 };
 const mapDispatchToProps = dispatch => ({

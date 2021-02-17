@@ -131,7 +131,7 @@ class NewCampaign_recipients extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id,
+        startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id
     };
 };
 const mapDispatchToProps = dispatch => ({

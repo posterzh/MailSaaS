@@ -39,7 +39,7 @@ import NewCampaign_start from "./views/pages/dashboards/NewCampaign_start";
 import NewCampaign_recipients from "./views/pages/dashboards/NewCampaign_recipients";
 import CampaignCompose from "./views/pages/dashboards/NewCampaign_compose"
 import CampaignPreview from "./views/pages/dashboards/NewCampaign_preview"
-import CampaignOption from "./views/pages/dashboards/NewCampaign_options"
+import NewCampaign_options from "./views/pages/dashboards/NewCampaign_options"
 import CampaignSend from "./views/pages/dashboards/NewCampaign_send"
 import Campaign_Details from './views/pages/Campaing/Campaign_details.js'
 
@@ -62,10 +62,10 @@ const routes = [
     state: "campaign",
     views: [
       {
-        path: "/new-campaign",
+        path: "/CampaignStart",
         name: "Create Campaign",
         miniName: "CC",
-        component: NewCampaign,
+        component: NewCampaign_start,
         layout: "/app/admin"
       },
       {
@@ -109,7 +109,7 @@ const routes = [
         path: "/CampaignOptions",
         name: "CampaignOption",
         miniName: "CO",
-        component: CampaignOption,
+        component: NewCampaign_options,
         layout: "/app/admin"
       },
       {
