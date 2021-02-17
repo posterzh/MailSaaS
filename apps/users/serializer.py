@@ -1,13 +1,13 @@
-from rest_framework import serializers
-from .models import CustomUser 
-from rest_framework.validators import UniqueValidator
 from allauth.account import app_settings as allauth_settings
-from allauth.utils import email_address_exists
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
+from allauth.utils import email_address_exists
 from django.utils.translation import gettext as _
+from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from .models import CustomUser
+
 
 class RegisterSerializer(serializers.Serializer):
     username = None

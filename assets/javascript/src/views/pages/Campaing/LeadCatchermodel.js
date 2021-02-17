@@ -10,10 +10,10 @@ export class LeadCatchermodel extends Component {
                 <div className="lower_headerdiv">
                 <div>
                     <span className="lead_Action">Lead actions</span>
-                    <span className="info_icon"><i class="fa fa-question-circle-o" aria-hidden="true"></i></span>
+                    <span className="info_icon"><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
                 </div>
                 <div>
-                    <span className="link_icon"><i class="fa fa-link" aria-hidden="true"></i></span>
+                    <span className="link_icon"><i className="fa fa-link" aria-hidden="true"></i></span>
                     <span className="user_name"> Ashu JANUARY 18 OUTREACH</span>
                 </div>
                 <div style={{ display: "flex", flexDirection: "row" }}>
@@ -22,25 +22,23 @@ export class LeadCatchermodel extends Component {
                             <span className="reply">REPLY</span  >
                         </Col>
                         <Col  >
-                            <select className="selectbox_1" >
+                            <select className="selectbox_1" defaultValue=''>
                                 <option value="" selected disabled hidden className="status">Status</option>
                                 <option value="ignore" className="ignore">ignore</option>
                                 <option value='won' className="won">won3</option>
                                 <option value='lost' className="lost">lost</option>
                             </select></Col >
                         <Col  >
-                            <select className="selectbox_2">
+                            <select className="selectbox_2" defaultValue=''>
                                 <option value="" selected disabled hidden className="Assign">Assign</option>
-                                <option value="" className="UnAssign">Unassigned</option>
-                                <option value="" className="me">Me</option>
+                                <option value="unassigned" className="UnAssign">Unassigned</option>
+                                <option value="me" className="me">Me</option>
                             </select>
                         </Col>
                         <Col  >
-                        {/* <Button> */}
                             <span className="next">
                                 Next
                         </span>
-                        {/* </Button> */}
                         </Col>
                     </Row>
                 </div>
@@ -48,44 +46,44 @@ export class LeadCatchermodel extends Component {
                 <div>
                     <Row style={{ display: "flex" }}>
                         <div>
-                            <span className="leadinfo_icon"><i class="fa fa-info-circle"></i></span>
+                            <span className="leadinfo_icon"><i className="fa fa-info-circle"></i></span>
                             <span className="leadstatus_opened">Lead opened</span>
                             <span className="leadopened_date"> Jan 24,2020</span>
-                            <span className="saparator"><i class="fa fa-circle"></i></span>
+                            <span className="saparator"><i className="fa fa-circle"></i></span>
                             <span className="leadopened_time">12:09 pm</span>
                         </div>
                     </Row>
                     <Row className="saparator_row" >
-                        <i class="fa fa-circle"></i>
+                        <i className="fa fa-circle"></i>
                     </Row>
                 </div>
                 <div>
                     <Row style={{ display: "flex", marginTop: "5px" }}>
                         <div>
-                            <span className="leadwon_icon"><i class="fa fa-thumbs-up"></i></span>
+                            <span className="leadwon_icon"><i className="fa fa-thumbs-up"></i></span>
                             <span className="leadstatus_won"> Lead won</span>
 
                             <span className="leadwon_date">jan 24,2020</span>
-                            <span className="saparator"><i class="fa fa-circle"></i></span>
+                            <span className="saparator"><i className="fa fa-circle"></i></span>
                             <span className="leadwon_time">12:19pm</span>
                         </div>
                     </Row>
                     <Row className="saparator_row" >
-                        <i class="fa fa-circle"></i>
+                        <i className="fa fa-circle"></i>
                     </Row>
                 </div>
 
                 <div>
                 <Row style={{ display: "flex" ,marginTop: "5px" }}>
                         <div>
-                        <span className="repliy_icon"><i class="fa fa-reply"></i></span>
+                        <span className="repliy_icon"><i className="fa fa-reply"></i></span>
                         <span className="repliy_status"> replied</span>
                         <span className="repliy_date"> jan 24,2020</span>
                         <span className="repliy_time">12:19pm</span>
                         </div>
                     </Row>
                     <Row className="saparator_row" >
-                            <i class="fa fa-circle"></i>
+                            <i className="fa fa-circle"></i>
                             <div className="verticle_line"></div>
                             {/* <Row  >   */}
                             <div className="replied_mail_box" style={{ borderBottom: "1px solid #ddd" }}> 
@@ -107,53 +105,53 @@ export class LeadCatchermodel extends Component {
                 <div>
                     <Row style={{ display: "flex", marginTop: "5px" }}>
                         <div>
-                            <span className="leadwon_icon">  <i class="fa fa-thumbs-up"></i></span>
+                            <span className="leadwon_icon">  <i className="fa fa-thumbs-up"></i></span>
                             <span className="leadstatus_rewon"> Lead won</span>
                             <span className="leadwon_redate">jan 24,2020</span>
-                            {/* <span className="saparator"><i class="fa fa-circle"></i></span> */}
+                            {/* <span className="saparator"><i className="fa fa-circle"></i></span> */}
                             <span className="leadwon_retime">12:19pm</span>
                         </div>
                     </Row>
                     <Row className="saparator_row" >
-                        <i class="fa fa-circle"></i>
+                        <i className="fa fa-circle"></i>
                     </Row>
                 </div>
                 <div>
                     <Row style={{ display: "flex", marginTop: "5px" }}>
                         <div>
-                            <span className="leadinfo_icon"><i class="fa fa-info-circle"></i></span>
+                            <span className="leadinfo_icon"><i className="fa fa-info-circle"></i></span>
                             <span className="leadstatus_opened"> Lead opened</span>
                             <span className="leadopened_date">jan 24,2020</span>
-                            <span className="saparator"><i class="fa fa-circle"></i></span>
+                            <span className="saparator"><i className="fa fa-circle"></i></span>
                             <span className="leadopened_time"> 3:28pm</span>
                         </div>
                     </Row>
                     <Row className="saparator_row" >
-                        <i class="fa fa-circle"></i>
+                        <i className="fa fa-circle"></i>
                     </Row>
                 </div>
                 <div>
                     <Row style={{ display: "flex", marginTop: "5px" }}>
                         <div>
-                            <span className="leadopened_icon"> <i class="fa fa-eye"></i></span>
+                            <span className="leadopened_icon"> <i className="fa fa-eye"></i></span>
                             <span className="leadstatus_opened"> opened</span>
                             <span className="initial_email">installemail</span>
                             <span className="leadopened_date"> jan 24,2020</span>
-                            <span className="saparator"><i class="fa fa-circle"></i></span>
+                            <span className="saparator"><i className="fa fa-circle"></i></span>
                             <span className="leadopened_time">3:28pm</span>
                         </div>
                     </Row>
                     <Row className="saparator_row" >
-                        <i class="fa fa-circle"></i>
+                        <i className="fa fa-circle"></i>
                     </Row>
                 </div>
                 <div>
                     <Row style={{ display: "flex", marginTop: "5px" }}>
                         <div>
-                            <span className="sent_icon">  <i class="fa fa-paper-plane"></i></span>
+                            <span className="sent_icon">  <i className="fa fa-paper-plane"></i></span>
                             <span className="sent_status"> sent</span>
                             <span className="sent_date"> jan 18,2020</span>
-                            <span className="saparator"><i class="fa fa-circle"></i></span>
+                            <span className="saparator"><i className="fa fa-circle"></i></span>
                             <span className="sent_time">7:43pm</span>
                         </div>
                     </Row>
@@ -174,10 +172,7 @@ export class LeadCatchermodel extends Component {
                             </div>
                               </div>
                     </Row>
-                    
-
                 </div>
-
             </div>
         )
     }

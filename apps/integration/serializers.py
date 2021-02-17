@@ -1,9 +1,9 @@
-from .models import Contact
 from rest_framework import serializers
 
+from .models import SalesForceDetails
 
 
-class ContactSerializer(serializers.ModelSerializer):
+class SalesForceDetailSerializer(serializers.ModelSerializer):
    class Meta:
-      model = Contact
+      model = SalesForceDetails
       fields = '__all__'

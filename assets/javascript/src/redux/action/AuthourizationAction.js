@@ -1,17 +1,28 @@
-import { FAILURE_REGISTER, REQUEST_FOR_REGISTER, SUCCESS_REGISTER, FAILURE_LOGIN, REQUEST_FOR_LOGIN, SUCCESS_LOGIN } from "../actionType/actionType"
+import {
+
+    FAILURE_REGISTER,
+    REQUEST_FOR_REGISTER,
+    SUCCESS_REGISTER,
+    FAILURE_LOGIN,
+    REQUEST_FOR_LOGIN,
+    SUCCESS_LOGIN,  
+} from "../actionType/actionType"
+
 import Api from "../api/api"
 
-
+// Register
 export const requestForRegister = () => {
     return {
         type: REQUEST_FOR_REGISTER,
     }
 }
-export const registerSuccess = (data) => {
-    console.log(data, 'data')
+
+export const registerSuccess = (user) => {
+    console.log(user, 'data')
     return {
         type: SUCCESS_REGISTER,
-        data
+        user
+        
     }
 }
 export const registerFailure = () => {
@@ -26,11 +37,11 @@ export const requestForLogin = () => {
         type: REQUEST_FOR_LOGIN,
     }
 }
-export const LoginSuccess = (data) => {
-    console.log(data, 'data')
+export const LoginSuccess = (Loginuser) => {
+    console.log(Loginuser, 'data')
     return {
         type: SUCCESS_LOGIN,
-        data
+        Loginuser
     }
 }
 export const loginFailure = () => {
@@ -39,11 +50,12 @@ export const loginFailure = () => {
     }
 }
 
+// register action
 export const RegisterAction = (user) => {
     return function (dispatch) {
         dispatch(requestForRegister(user))
         Api.RegisterApi(user).then(result => {
-            console.log(result.data, 'registerSuccess')
+            console.log( 'registerSuccess',result.data)
             dispatch(registerSuccess(result.data))
         }).catch(err => {
             console.log(err)
@@ -51,14 +63,18 @@ export const RegisterAction = (user) => {
     }
 }
 
+// login action
 export const LoginAction = (Loginuser) => {
     return function (dispatch) {
         dispatch(requestForLogin(Loginuser))
         Api.LoginApi(Loginuser).then(result => {
-            console.log(result.data, 'LoginSuccess')
+            console.log(".....................>>>",result)
+            const token = result.data.token;
+            localStorage.setItem('access_token', token)
             dispatch(LoginSuccess(result.data))
         }).catch(err => {
-            console.log(err)
+            console.log(".....................>>>",err)
+            dispatch(loginFailure(result.data))
         })
     }
 }

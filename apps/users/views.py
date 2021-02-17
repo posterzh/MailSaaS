@@ -1,20 +1,21 @@
 from allauth.account.utils import send_email_confirmation
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.shortcuts import render
-from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-from .forms import CustomUserChangeForm, UploadAvatarForm
-from .helpers import require_email_confirmation, user_has_confirmed_email_address
-from .models import CustomUser
-from rest_framework import generics
-from rest_framework import permissions
-from apps.users.serializer import TokenSerializer,UserSettingSerilizer,ChangePasswordSerializer
-from django.contrib.auth import authenticate,login
+from django.views.decorators.http import require_POST
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework_jwt.settings import api_settings
-from django.http import Http404
-from rest_framework import status
+
+from apps.users.serializer import (ChangePasswordSerializer, TokenSerializer,
+                                   UserSettingSerilizer)
+
+from .forms import CustomUserChangeForm, UploadAvatarForm
+from .helpers import (require_email_confirmation,
+                      user_has_confirmed_email_address)
+from .models import CustomUser
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
@@ -110,7 +111,6 @@ class ChangePasswordView(generics.RetrieveUpdateAPIView):
 
     def put(self,request, *args, **kwargs):
         queryset = self.get_object()
-        print(queryset,"queryset")
         serializer = ChangePasswordSerializer(data=request.data)
         if serializer.is_valid():
             old_password = serializer.data.get("old_password")

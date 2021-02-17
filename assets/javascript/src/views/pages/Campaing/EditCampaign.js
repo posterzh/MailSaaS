@@ -50,7 +50,7 @@ export default class EditCampaign extends Component {
                         <Row>
                             <Col md='10' className='mx-auto'>
                                 <Row>
-                                    <div><button className='EditTest'><i class="fa fa-plus-circle" aria-hidden="true"></i> A/B TEST</button>
+                                    <div><button className='EditTest'><i className="fa fa-plus-circle" aria-hidden="true"></i> A/B TEST</button>
                                     </div>
                                 </Row>
                                 <Row><label className='filter_app'>From address</label></Row>
@@ -60,7 +60,7 @@ export default class EditCampaign extends Component {
                                             <Input type='email' className='in' placeholder='Search' />
                                             <div className='mt-3'>
                                                 <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                                    <span><i class="fa fa-question-circle-o" aria-hidden="true"></i></span>
+                                                    <span><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
                                                 </a>
                                             </div>
                                         </div>
@@ -162,21 +162,21 @@ export default class EditCampaign extends Component {
                                 <Row>
                                     <Col className='mt-3'>
                                         <div className='Add_follow_up'>
-                                            <i class='fa fa-plus'></i> &nbsp;ADD FOLLOW-UP<br />
+                                            <i className='fa fa-plus'></i> &nbsp;ADD FOLLOW-UP<br />
                                         </div>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col className='mt-3'>
                                         <div className='Add_follow_up'>
-                                            <i class='fa fa-plus'></i> &nbsp;ADD DRIP<br />
+                                            <i className='fa fa-plus'></i> &nbsp;ADD DRIP<br />
                                         </div>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col className='mt-3'>
                                         <div className='Add_follow_up'>
-                                            <i class='fa fa-plus'></i> &nbsp;ADD ON CLICK<br />
+                                            <i className='fa fa-plus'></i> &nbsp;ADD ON CLICK<br />
                                         </div>
                                     </Col>
                                 </Row>

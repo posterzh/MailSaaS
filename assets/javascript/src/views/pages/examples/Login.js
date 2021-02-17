@@ -34,35 +34,40 @@ import {
   Col
 } from "reactstrap";
 import AuthHeader from "../../../components/Headers/AuthHeader.js";
-import { connect } from "react-redux";
-import { LoginAction } from "../../../redux/action/action";
+import { LoginAction } from "../../../redux/action/AuthourizationAction"
+import { connect } from "react-redux"
 
 class Login extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       email: '',
       password: ''
     }
   }
-  handleChange = (e) => {
+  handleChange = (event) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     });
+
   }
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const Loginuser = {
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const loginuser = {
       email: this.state.email,
       password: this.state.password
-    }
+    };
 
-    this.props.LoginAction(Loginuser)
-    console.log(Loginuser,'loginuser data')
-   
+    this.props.LoginAction(loginuser)
+    console.log(loginuser)
+    // const token =localStorage.("access_token")
+    // if(token)
+    // {
+    //   alert("bjnm")
+    // }
   }
-
   render() {
+    const { Loginuser, isLogin } = this.props
     return (
       <>
         <AuthHeader
@@ -73,45 +78,7 @@ class Login extends React.Component {
           <Row className="justify-content-center">
             <Col lg="5" md="7">
               <Card className="bg-secondary border-0 mb-0">
-                <CardHeader className="bg-transparent pb-5">
-                  <div className="text-muted text-center mt-2 mb-3">
-                    <small>Sign in with</small>
-                  </div>
-                  <div className="btn-wrapper text-center">
-                    <Button
-                      className="btn-neutral btn-icon"
-                      color="default"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <span className="btn-inner--icon mr-1">
-                        <img
-                          alt="..."
-                          src={STATIC_FILES.github}
-                        />
-                      </span>
-                      <span className="btn-inner--text">Github</span>
-                    </Button>
-                    <Button
-                      className="btn-neutral btn-icon"
-                      color="default"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <span className="btn-inner--icon mr-1">
-                        <img
-                          alt="..."
-                          src={STATIC_FILES.google}
-                        />
-                      </span>
-                      <span className="btn-inner--text">Google</span>
-                    </Button>
-                  </div>
-                </CardHeader>
                 <CardBody className="px-lg-5 py-lg-5">
-                  <div className="text-center text-muted mb-4">
-                    <small>Or sign in with credentials</small>
-                  </div>
                   <Form onSubmit={this.handleSubmit} role="form">
                     <FormGroup
                       className={classnames("mb-3", {
@@ -127,9 +94,9 @@ class Login extends React.Component {
                         <Input
                           placeholder="Email"
                           type="email"
-                          name='email'
-                          value={this.state.email}
+                          name="email"
                           onChange={this.handleChange}
+                          value={this.state.email}
                           onFocus={() => this.setState({ focusedEmail: true })}
                           onBlur={() => this.setState({ focusedEmail: false })}
                         />
@@ -149,9 +116,9 @@ class Login extends React.Component {
                         <Input
                           placeholder="Password"
                           type="password"
-                          name='password'
-                          value={this.state.password}
+                          name="password"
                           onChange={this.handleChange}
+                          value={this.state.password}
                           onFocus={() =>
                             this.setState({ focusedPassword: true })
                           }
@@ -180,20 +147,22 @@ class Login extends React.Component {
                       </Button>
                     </div>
                   </Form>
+                  <Row style={{ backgroundColor: "" }}>
+                    <div style={{}}>
+                      {
+                        isLogin ? <p style={{ color: 'green' }}>Sucessufully Login</p> : <p style={{ color: 'red' }}>Unable to log in with provided credentials.</p>
+                      }
+
+                    </div>
+
+                  </Row>
                 </CardBody>
               </Card>
               <Row className="mt-3">
                 <Col xs="6">
-                  <a
-                    className="text-light"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                  >
-                    <small>Forgot password?</small>
-                  </a>
+                  <a className="text-light" href="#pablo" onClick={e => e.preventDefault()}><small>Forgot password?</small></a>
                 </Col>
-                <Col className="text-right" xs="6">
-                  <a
+                <Col className="text-right" xs="6"><a
                     className="text-light"
                     href="#pablo"
                     onClick={e => e.preventDefault()}
@@ -204,20 +173,22 @@ class Login extends React.Component {
               </Row>
             </Col>
           </Row>
+
         </Container>
       </>
     );
   }
 }
 const mapStateToProps = (state) => {
+  console.log("cheking login details======>", state.LoginReducer.Loginuser, state.LoginReducer.isLogin)
   return {
-    // token: state.token
-  };
+    Loginuser: state.LoginReducer.Loginuser,
+    isLogin: state.LoginReducer.isLogin,
+  }
 };
-const mapDispatchToProps = dispatch => ({
-  LoginAction: Loginuser => {
-    dispatch(LoginAction(Loginuser));
-  },
-});
 
+const mapDispatchToProps = dispatch => ({
+  LoginAction: Loginuser => { dispatch(LoginAction(Loginuser)); },
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
+

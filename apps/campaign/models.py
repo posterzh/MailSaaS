@@ -1,10 +1,14 @@
-from django.db import models
-from apps.users.models import CustomUser
 from datetime import date
-from apps.mailaccounts.models import SmtpMail
+
+from django.db import models
+
+from apps.mailaccounts.models import EmailAccount
+from apps.users.models import CustomUser
+
+
 class Campaign(models.Model):
     title = models.CharField(max_length=200)
-    from_address = models.ForeignKey(SmtpMail,on_delete=models.CASCADE)
+    from_address = models.ForeignKey(EmailAccount,on_delete=models.SET_NULL, null=True)
     full_name = models.CharField(max_length=200,blank=True,null=True)
     csvfile_op1 = models.FileField(upload_to='csv_uploads/', blank=True, null=True)
     created_date_time = models.DateTimeField(auto_now=True)
@@ -49,8 +53,8 @@ class CampaignRecipient(models.Model):
     reciepent_status = models.BooleanField(default=False)    #Start Campaign or Pause Reciepent
     unsubscribe = models.BooleanField(default=False)
     is_delete = models.BooleanField(default=False)
-    created_date = models.DateTimeField(auto_now_add=True,blank=True,null=True)
-    update_date_time = models.DateTimeField(auto_now_add=True,blank=True,null=True)
+    created_date = models.DateTimeField(auto_now=True,blank=True,null=True)
+    update_date_time = models.DateTimeField(auto_now=True,blank=True,null=True)
 
 
 
@@ -102,7 +106,7 @@ class CampaignLeadCatcher(models.Model):
     leadcatcher_recipient = models.CharField(max_length=32,choices=RECIPIENT,default=0)
     specific_link = models.URLField(max_length=500, null=True,blank=True)
     of_times = models.PositiveIntegerField(null = True,blank=True,default = 0)
-
+    
     def __str__(self):
 
         return str(self.campaign)

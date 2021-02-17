@@ -4,12 +4,16 @@ export class AppsandCrm extends Component {
     render() {
         return (
             <div className='main-view'>
+                <div className='campaign_navbar' >
+                    <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Apps & CRMs</h1>
+                    <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
+                </div>
                 <div className='Apps'>
-                    <h1 className='N-I display-4'>NATIVE INTEGRATIONS</h1>
-                    <hr color='silver'></hr>
+                    <h1 className='N-I display-4'style={{borderBottom:"1px solid #ccc",paddingBottom:"10px"}} >NATIVE INTEGRATIONS</h1>
+                    {/* <hr color='silver'></hr> */}
                     <div className='native_media'>
-                        <Container >
-                            <Row>
+                        <Container  fluid>
+                            <Row className="mt-5">
                                 <Col md='3'>
                                     <a href="" className='native_link'>
                                         <div className='native_media_div'>
@@ -52,7 +56,7 @@ export class AppsandCrm extends Component {
                                         </div>
                                     </a>
                                 </Col>
-                                <Col md='3'>
+                                {/* <Col md='3'>
                                     <a href="" className='native_link'>
                                         <div className='native_media_div'>
                                             <div>
@@ -65,16 +69,16 @@ export class AppsandCrm extends Component {
                                             </div>
                                         </div>
                                     </a>
-                                </Col>
+                                </Col> */}
                             </Row>
                         </Container>
                     </div>
-                    <div>
-                        <h1 className='N-I display-4 mt-5'>OTHER APPS AND CRMS</h1>
-                        <hr color='silver'></hr>
+                    {/* <div>
+                        <h1 className='N-I display-4 mt-5' style={{borderBottom:"1px solid #ccc",paddingBottom:"10px"}}>OTHER APPS AND CRMS</h1>
+                       
                         <p>Through the power of <a href=''><b>Zapier</b></a>, you can connect Mailshake to all sorts of apps:</p>
-                    </div>
-                    <div>
+                    </div> */}
+                    {/* <div>
                         <label className='filter_app'>Filter by app</label><br></br>
                         <select className='filter_select'>
                             <option value='one'>One</option>
@@ -82,8 +86,8 @@ export class AppsandCrm extends Component {
                             <option value='three'>three</option>
                             <option value='four'>Four</option>
                         </select>
-                    </div>
-                    <div>
+                    </div> */}
+                    {/* <div>
                         <Container>
                             <Row>
                                 <Col>
@@ -92,7 +96,7 @@ export class AppsandCrm extends Component {
                                 </Col>
                             </Row>
                         </Container>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         )

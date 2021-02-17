@@ -6,3 +6,4 @@ from .models import Team
 
 
 admin.site.register(Team)
+# admin.site.register(Contact)

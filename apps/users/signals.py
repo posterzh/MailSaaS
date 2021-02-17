@@ -1,4 +1,4 @@
-from allauth.account.signals import user_signed_up, email_confirmed
+from allauth.account.signals import email_confirmed, user_signed_up
 from django.conf import settings
 from django.core.mail import mail_admins
 from django.dispatch import receiver

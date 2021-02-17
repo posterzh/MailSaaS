@@ -1,11 +1,12 @@
 from django.contrib import admin
 
-from .models import Campaign, CampaignRecipient, FollowUpEmail, DripEmailModel, EmailOnLinkClick,CampaignLeadCatcher
+from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
+                     DripEmailModel, EmailOnLinkClick, FollowUpEmail)
 
 
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
-    list_display = ('title', 'from_address','assigned', 'csvfile_op1', 'created_date_time', 'track_opens', 'track_linkclick', 'schedule_send', 'schedule_date', 'schedule_time','terms_and_laws', 'campaign_status')
+    list_display = ('assigned','title', 'from_address', 'csvfile_op1', 'created_date_time', 'track_opens', 'track_linkclick', 'schedule_send', 'schedule_date', 'schedule_time','terms_and_laws', 'campaign_status')
 
 
 # admin.site.register(LeadType)

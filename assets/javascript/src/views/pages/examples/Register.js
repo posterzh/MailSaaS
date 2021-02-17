@@ -37,8 +37,7 @@ import {
 // core components
 import AuthHeader from "../../../components/Headers/AuthHeader"
 import { connect } from "react-redux";
-import { REQUEST_FOR_REGISTER } from "../../../redux/actionType/actionType";
-import { RegisterAction } from "../../../redux/action/action";
+import { RegisterAction } from "../../../redux/action/AuthourizationAction";
 
 class Register extends React.Component {
   constructor(props) {
@@ -49,7 +48,7 @@ class Register extends React.Component {
       PhoneNumber: '',
       CompanyName: '',
       Password: '',
-      mailsaas_type:''
+      mailsaas_type: ''
     }
 
   }
@@ -58,7 +57,6 @@ class Register extends React.Component {
     this.setState({
       [e.target.name]: e.target.value
     });
-    // console.log(this.state)
   }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -67,20 +65,20 @@ class Register extends React.Component {
       email: this.state.Email,
       phone_number: this.state.PhoneNumber,
       company_name: this.state.CompanyName,
-      password: this.state.Password,
-      mailsaas_type:this.state.mailsaas_type
+      password1: this.state.Password,
+      mailsaas_type: this.state.mailsaas_type
 
     };
-    // console.log(user, "user data")
     this.props.RegisterAction(user)
     console.log(user)
 
-
-   
+    // const token=localStorage.getItem("access_token")
+    // if(token){
+    //   alert('Successful')
+    // }
   }
 
   render() {
-    // console.log(this.props.token,'redux')
     return (
       <>
         <AuthHeader
@@ -91,41 +89,6 @@ class Register extends React.Component {
           <Row className="justify-content-center">
             <Col lg="6" md="8">
               <Card className="bg-secondary border-0">
-                <CardHeader className="bg-transparent pb-5">
-                  <div className="text-muted text-center mt-2 mb-4">
-                    <small>Sign up with</small>
-                  </div>
-                  <div className="text-center">
-                    <Button
-                      className="btn-neutral btn-icon mr-4"
-                      color="default"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <span className="btn-inner--icon mr-1">
-                        <img
-                          alt="..."
-                          src={STATIC_FILES.github}
-                        />
-                      </span>
-                      <span className="btn-inner--text">Github</span>
-                    </Button>
-                    <Button
-                      className="btn-neutral btn-icon"
-                      color="default"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <span className="btn-inner--icon mr-1">
-                        <img
-                          alt="..."
-                          src={STATIC_FILES.google}
-                        />
-                      </span>
-                      <span className="btn-inner--text">Google</span>
-                    </Button>
-                  </div>
-                </CardHeader>
                 <CardBody className="px-lg-5 py-lg-5">
                   <div className="text-center text-muted mb-4">
                     <small>Or sign up with credentials</small>
@@ -243,7 +206,7 @@ class Register extends React.Component {
                           }
                         />
                       </InputGroup>
-                      <FormGroup className='mt-4'>      
+                      <FormGroup className='mt-4'>
                         <Input type="select" name="mailsaas_type" value={this.state.mailsaas_type} onChange={this.handleChange} id="exampleSelect">
                           <option value='Sales'>Sales</option>
                           <option value='Marketing'>Marketing/PR</option>
@@ -291,6 +254,11 @@ class Register extends React.Component {
                       </Button>
                     </div>
                   </Form>
+                  <Row>
+                    <div>
+                      <p>{this.token}</p>
+                      </div>
+                    </Row>
                 </CardBody>
               </Card>
             </Col>
@@ -302,13 +270,13 @@ class Register extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  // console.log("i am checking",state.RegisterReducer.user)
   return {
     // token: state.token
+    // user:state.RegisterReducer.user
   };
 };
 const mapDispatchToProps = dispatch => ({
-  RegisterAction: user => {
-  dispatch(RegisterAction(user));
-  },
- });
+  RegisterAction: user => {dispatch(RegisterAction(user));},
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Register);
