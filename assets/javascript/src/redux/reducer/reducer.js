@@ -51,7 +51,7 @@ const initialState = {
     campaignPreviewUpdateData:[]
 }
 export const RegisterReducer = (state = { initialState }, action) => {
-    console.log(action.payload && action.payload[0], 'payloaddata')
+    // console.log(action.payload && action.payload[0], 'payloaddata')
     switch (action.type) {
         
         case SUCCESS_REGISTER:
@@ -97,8 +97,6 @@ export const StartCampaignReducer = (state = { initialState }, action) => {
     }
 }
 export const RecipientReducer = (state = { initialState }, action) => {
-    console.log('action',action.recipientData)
-
     switch (action.type) {
         case SUCCESS_RECIPIENT:
             return {

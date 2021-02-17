@@ -179,10 +179,10 @@ export const CampaignOptionAction = (optionData) => {
 export const RecipientAction = (recipientData) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        console.log('this is a token', token)
         Api.RecipientApi(recipientData, token).then(result => {
+            console.log('result========>',result.data)
             dispatch(RecipientSuccess(result.data))
-            console.log(result)
+            // history.push("/Camapin");
         }).catch(err => { console.log(err) })
     }
 }
@@ -210,11 +210,10 @@ export const CampaignTableAction = () => {
 //     }
 // }
 
-export const CampaignSendAction = () => {
+export const CampaignSendAction = (id) => {
     return function (dispatch) {
-        // console.log("id-----",id)
         const token = localStorage.getItem('access_token')
-        Api.CampaignSendGetApi(token,58).then(result => {
+        Api.CampaignSendGetApi(token,id).then(result => {
             dispatch(CampaignSendSuccess(result.data))
             console.log('result', result.data)
         })
@@ -235,11 +234,10 @@ export const PreviewCampaignAction = () => {
         })
     }
 }
-export const CampaignSaveAction = (saveData) => {
+export const CampaignSaveAction = (id) => {
     return function (dispatch) {
-        const token = localStorage.getItem('token')
-        Api.CampaignSaveApi(saveData, token).then(result => {
-            console.log()
+        const token = localStorage.getItem('access_token')
+        Api.CampaignSaveApi(token,id).then(result => {
             dispatch(CampaignSaveSuccess(result.data))
             console.log("result.data", result.data)
         }).catch(err => {

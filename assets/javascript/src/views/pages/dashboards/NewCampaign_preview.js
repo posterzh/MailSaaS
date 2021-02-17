@@ -35,6 +35,7 @@ class CampaignPreview extends Component {
     }
     render() {
         const { editorState } = this.state;
+        const { CampaignEmail } = this.props;
         return (
             <div>
                 <div className='main-view'>
@@ -122,25 +123,27 @@ class CampaignPreview extends Component {
                     </Container>
                     <Container>
                         <Row className="mt-3">
-                                <Col md='12' className='mx-auto'>
-                                    <div style={{ backgroundColor: "#005aac", color: "white" }}>
-                                        {
-                                            <ul >
-                                               {this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((e,i)=> <li style={{ color: 'white' }}>{e.email}</li>)}
-                                                </ul>
-                                        }
-                                    </div>
-
-                                    <div style={{ backgroundColor: "#005aac", color: "white" }}>
-                                        <ul>
-                                        {
-                                            console.log(this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((e,i)=>e.email)),
-                                            console.log(this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((e,i)=>e.email_body))
-                                        }
+                            <Col md='12' className='mx-auto'>
+                                <div style={{ backgroundColor: "#005aac", color: "white" }}>
+                                    {
+                                        <ul >
+                                            {CampaignEmail}
+                                            {/* {CampaignData && CampaignData.map((item, index) =>
+                                                <li key={index} style={{ color: 'white' }}>{item.email}</li>)} */}
                                         </ul>
-                                    </div>
-                                </Col>
-                            </Row>
+                                    }
+                                </div>
+
+                                <div style={{ backgroundColor: "#005aac", color: "white" }}>
+                                    <ul>
+                                        {
+                                            // console.log(this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((e, i) => e.email)),
+                                            // console.log(this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((e, i) => e.email_body))
+                                        }
+                                    </ul>
+                                </div>
+                            </Col>
+                        </Row>
 
 
                     </Container>
@@ -201,9 +204,10 @@ class CampaignPreview extends Component {
 }
 // export default CampaignPreview
 const mapStateToProps = (state) => {
-    // .CampaignPreviewGetReducer.CampaignPreviewData
-    console.log("cheking state for previewwwwwwwwwwwwwwwwwwwwwwwww", state.CampaignPreviewGetReducer.CampaignPreviewData);
+    // console.log("state", state.RecipientReducer.recipientData && state.RecipientReducer.recipientData)
+    // console.log("cheking state for previewwwwwwwwwwwwwwwwwwwwwwwww", state.CampaignPreviewGetReducer.CampaignPreviewData);
     return {
+        CampaignEmail: state.RecipientReducer.recipientData && state.RecipientReducer.recipientData.email,
         CampaignPreviewData: state.CampaignPreviewGetReducer.CampaignPreviewData,
         CampaignPreviewEmails: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail,
         CampaignPreviewBody: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail
