@@ -56,10 +56,10 @@ export class CampaignSend extends Component {
                     </Row>
                     <Row className="ready_campaign mx-auto mt-4">Are you ready to start your campaign?</Row>
                     <Row className='mt-3'><Button className="startBtn mx-auto"
-                    // onClick={(e) => { this.setState({ save: true }); this.props.CampaignSaveAction(this.state.save); console.log(this.state) }}
+                    onClick={(e) => { this.setState({ save: true }); this.props.CampaignSaveAction(this.state.save); console.log(this.state) }}
                     >START CAMPAIGN</Button></Row>
                     <Row className='mt-3'><Button className='btn mx-auto'
-                    // onClick={(e) => { this.setState({ save: false }); this.props.CampaignSaveAction(this.state.save); console.log(this.state) }}
+                    onClick={(e) => { this.setState({ save: false }); this.props.CampaignSaveAction(this.state.save); console.log(this.state) }}
                     >Pause Campaign</Button></Row>
                     <Row className="mt-5 mb-4 w-50 mx-auto" style={{ borderBottom: "1px solid #ddd" }}></Row>
                     <Row>

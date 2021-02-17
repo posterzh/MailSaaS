@@ -67,7 +67,7 @@ class Login extends React.Component {
     // }
   }
   render() {
-   const {Loginuser,isLogin}=this.props
+    const { Loginuser, isLogin } = this.props
     return (
       <>
         <AuthHeader
@@ -147,29 +147,22 @@ class Login extends React.Component {
                       </Button>
                     </div>
                   </Form>
-                  <Row style={{backgroundColor:""}}>
-            <div style={{}}>
-              {
-               isLogin? <p style={{color:'green'}}>Sucessufully Login</p> : <p style={{color: 'red'}}>Unable to log in with provided credentials.</p>
-              }
-              
-              </div>
+                  <Row style={{ backgroundColor: "" }}>
+                    <div style={{}}>
+                      {
+                        isLogin ? <p style={{ color: 'green' }}>Sucessufully Login</p> : <p style={{ color: 'red' }}>Unable to log in with provided credentials.</p>
+                      }
 
-            </Row>
+                    </div>
+
+                  </Row>
                 </CardBody>
               </Card>
               <Row className="mt-3">
                 <Col xs="6">
-                  <a
-                    className="text-light"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                  >
-                    <small>Forgot password?</small>
-                  </a>
+                  <a className="text-light" href="#pablo" onClick={e => e.preventDefault()}><small>Forgot password?</small></a>
                 </Col>
-                <Col className="text-right" xs="6">
-                  <a
+                <Col className="text-right" xs="6"><a
                     className="text-light"
                     href="#pablo"
                     onClick={e => e.preventDefault()}
@@ -180,24 +173,22 @@ class Login extends React.Component {
               </Row>
             </Col>
           </Row>
-          
+
         </Container>
       </>
     );
   }
 }
 const mapStateToProps = (state) => {
-  console.log("cheking login details======>",state.LoginReducer.Loginuser,state.LoginReducer.isLogin)
-  return{
-    Loginuser:state.LoginReducer.Loginuser,
-    isLogin : state.LoginReducer.isLogin,
+  console.log("cheking login details======>", state.LoginReducer.Loginuser, state.LoginReducer.isLogin)
+  return {
+    Loginuser: state.LoginReducer.Loginuser,
+    isLogin: state.LoginReducer.isLogin,
   }
 };
 
 const mapDispatchToProps = dispatch => ({
-  LoginAction: Loginuser => {
-    dispatch(LoginAction(Loginuser));
-  },
+  LoginAction: Loginuser => { dispatch(LoginAction(Loginuser)); },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
 

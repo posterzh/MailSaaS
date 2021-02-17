@@ -18,10 +18,10 @@ class MailAccount extends Component {
             imapHost: '',
             imapPassword: '',
             imapPort: '993',
-            user:null,
-            accountId:null,
-            flag:false
-            
+            user: null,
+            accountId: null,
+            flag: false
+
         }
     }
 
@@ -36,10 +36,10 @@ class MailAccount extends Component {
     }
     handleSubmit = (e) => {
         this.setState({
-             modal: !this.state.modal,
-             hide:false,
-             flag:false
-             })
+            modal: !this.state.modal,
+            hide: false,
+            flag: false
+        })
         const mailData = {
             email: this.state.emailAddress,
             full_name: this.state.FullName,
@@ -52,37 +52,37 @@ class MailAccount extends Component {
             imap_password: this.state.imapPassword,
             imap_username: this.state.emailAddress,
         }
-        if( this.state.flag ){
-            mailData.user=this.state.user
-            this.props.MailAccountUpdate(mailData,this.state.accountId)
+        if (this.state.flag) {
+            mailData.user = this.state.user
+            this.props.MailAccountUpdate(mailData, this.state.accountId)
         }
-         else{
+        else {
             this.props.MailSenderAction(mailData)
-         }
+        }
     }
-    deleteMailAccount=(id)=>{
+    deleteMailAccount = (id) => {
         this.props.MailAccountDelete(id);
     }
-    handleToggle=(index)=>{
-            this.setState({hide:index})
+    handleToggle = (index) => {
+        this.setState({ hide: index })
     }
-    editDataModel=(data,e)=>{
-        this.setState({modal:true})
+    editDataModel = (data, e) => {
+        this.setState({ modal: true })
         this.setState({
-                emailAddress: data.email,
-                FullName: data.full_name,
-                smtpPort: data.smtp_port,
-                smtpHost: data.smtp_host,
-                smtpPassword: data.smtp_password,
-                imapHost: data.imap_port,
-                imapPassword: data.imap_password,
-                imapPort: data.imap_port,
-                accountId:data.id,
-                user:data.user,
-                flag:true
+            emailAddress: data.email,
+            FullName: data.full_name,
+            smtpPort: data.smtp_port,
+            smtpHost: data.smtp_host,
+            smtpPassword: data.smtp_password,
+            imapHost: data.imap_port,
+            imapPassword: data.imap_password,
+            imapPort: data.imap_port,
+            accountId: data.id,
+            user: data.user,
+            flag: true
         })
     }
-    
+
     render() {
         const { mailGetData } = this.props;
         const { hide } = this.state;
@@ -90,8 +90,8 @@ class MailAccount extends Component {
         return (
             <div className="mail-account-container">
                 <div>
-                <h1 style={{borderBottom:'1px solid #172b4d29',paddingBottom:'10px'}}>Mail Account</h1>
-               
+                    <h1 style={{ borderBottom: '1px solid #172b4d29', paddingBottom: '10px' }}>Mail Account</h1>
+
                     <div style={{ display: 'flex' }}>
                         <div>
                             {
@@ -99,16 +99,16 @@ class MailAccount extends Component {
                                     return (
                                         <div key={index}>
                                             <div style={{ display: 'flex', color: 'black' }}>
-                                                <h1 style={{ fontSize: '20px',paddingLeft:'20px' }}>{item.email}</h1>&nbsp;&nbsp;
-                                                <div className="list-wrapper" style={{position:'relative'}}>
-                                                <div onClick={()=>{this.handleToggle(index)} }><i className="fas fa-ellipsis-v mt-2" style={{ fontSize: '20px',cursor:'pointer',marginTop:'0px' }}></i></div>
-                                                {
+                                                <h1 style={{ fontSize: '20px', paddingLeft: '20px' }}>{item.email}</h1>&nbsp;&nbsp;
+                                                <div className="list-wrapper" style={{ position: 'relative' }}>
+                                                    <div onClick={() => { this.handleToggle(index) }}><i className="fas fa-ellipsis-v mt-2" style={{ fontSize: '20px', cursor: 'pointer', marginTop: '0px' }}></i></div>
+                                                    {
                                                         hide === index && <ul className="mail-account-edit-list" style={{ listStyleType: 'none' }}>
-                                                            <li onClick={(e)=>{this.editDataModel(item,e)}}>Edit Connection </li>
+                                                            <li onClick={(e) => { this.editDataModel(item, e) }}>Edit Connection </li>
                                                             <li onClick={() => this.deleteMailAccount(item.id)}>Delete</li>
                                                         </ul>
-                                                }
-                                            </div>
+                                                    }
+                                                </div>
                                             </div>
                                             <div key={index} style={{ boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)', width: 400, height: 300, margin: 20, padding: 10 }}>
                                                 <div>{item.full_name}</div>
@@ -121,7 +121,7 @@ class MailAccount extends Component {
                     </div>
                 </div>
                 <Button className='btn btn-light mt-5 mt-6' onClick={(e) => { e.preventDefault(), this.setState({ modal: !this.state.modal }) }}>+</Button>
-               <SMTP
+                <SMTP
                     isOpen={this.state.modal}
                     handleChange={this.handleChange}
                     handleSubmit={this.handleSubmit}
@@ -149,8 +149,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     MailSenderAction: mailData => { dispatch(MailSenderAction(mailData)) },
     MailGetDataAction: mailGetData => { dispatch(MailGetDataAction(mailGetData)) },
-    MailAccountDelete:id =>{ dispatch(MailAccountDeleteAction(id))},
-    MailAccountUpdate:(data,id )=>{ dispatch(MailAccountUpdate(data,id))}
+    MailAccountDelete: id => { dispatch(MailAccountDeleteAction(id)) },
+    MailAccountUpdate: (data, id) => { dispatch(MailAccountUpdate(data, id)) }
 
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MailAccount)
