@@ -34,7 +34,7 @@ import {
 const initialState = {
     Loginuser: '',
     user: '',
-    startCampaignData: '',
+    startCampaignData: [],
     recipientData: '',
     mailGetData: [],
     mailData: '',
@@ -51,6 +51,7 @@ const initialState = {
     campaignPreviewUpdateData:[]
 }
 export const RegisterReducer = (state = { initialState }, action) => {
+    // console.log(action.payload && action.payload[0], 'payloaddata')
     switch (action.type) {
         case SUCCESS_REGISTER:
             return {
@@ -95,7 +96,6 @@ export const StartCampaignReducer = (state = { initialState }, action) => {
     }
 }
 export const RecipientReducer = (state = { initialState }, action) => {
-
     switch (action.type) {
         case SUCCESS_RECIPIENT:
             return {

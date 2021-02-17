@@ -7,14 +7,19 @@ The most amazing SaaS application the world has ever seen!
 Setup a virtualenv and install requirements:
 
 ```bash
-mkvirtualenv --no-site-packages mail -p python3
+python3 -m venv env
 pip install -r requirements.txt
+python manage.py makemigrations
+python manage.py migrate
 ```
 
 ## Running server
 
 ```bash
-./manage.py runserver
+python manage.py runserver
+```
+```bash
+yarn run dev-watch
 ```
 
 ## Building front-end
@@ -39,7 +44,7 @@ Celery can be used to run background tasks. To run it you can use:
 celery -A mail worker -l INFO
 ```
 
-## Google Authentication Setup
+<!-- ## Google Authentication Setup
 
 To setup Google Authentication, follow the [instructions here](https://django-allauth.readthedocs.io/en/latest/providers.html#google).
 
@@ -63,4 +68,4 @@ On Linux-based systems you can watch for changes using the following:
 
 ```bash
 ack --python | entr python ./manage.py test
-```
+``` -->

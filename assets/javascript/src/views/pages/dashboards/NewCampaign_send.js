@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { Row, Col, Container, Button, Nav } from "reactstrap"
 import { connect } from "react-redux";
-import { Link, Route } from 'react-router-dom';
-import { CampaignSendAction, CampaignSaveAction, RecipientAction } from "../../../redux/action/CampaignAction"
+import { Link} from 'react-router-dom';
+import { CampaignSendAction, CampaignSaveAction} from "../../../redux/action/CampaignAction"
 
 export class CampaignSend extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            save: false
+            save: true
         }
     }
     componentDidMount() {
@@ -17,7 +17,6 @@ export class CampaignSend extends Component {
     }
     render() {
         const { sendData,startCampaignId} = this.props;
-        console.log("dipika", startCampaignId && startCampaignId)
         return (
             <div>
                 <Container fluid>
@@ -56,10 +55,10 @@ export class CampaignSend extends Component {
                     </Row>
                     <Row className="ready_campaign mx-auto mt-4">Are you ready to start your campaign?</Row>
                     <Row className='mt-3'><Button className="startBtn mx-auto"
-                    onClick={(e) => { this.setState({ save: true }); this.props.CampaignSaveAction(); console.log(this.state) }}
+                    onClick={(e) => { this.setState({ save: true }); this.props.CampaignSaveAction(startCampaignId); console.log(startCampaignId) }}
                     >START CAMPAIGN</Button></Row>
                     <Row className='mt-3'><Button className='btn mx-auto'
-                    onClick={(e) => { this.setState({ save: false }); this.props.CampaignSaveAction(); console.log(this.state) }}
+                    onClick={(e) => { this.setState({ save: false }); this.props.CampaignSaveAction(startCampaignId); console.log(startCampaignId) }}
                     >Pause Campaign</Button></Row>
                     <Row className="mt-5 mb-4 w-50 mx-auto" style={{ borderBottom: "1px solid #ddd" }}></Row>
                     <Row>
@@ -162,7 +161,7 @@ const mapStateToProps = (state) => {
     };
 };
 const mapDispatchToProps = dispatch => ({
-    CampaignSendAction: (recipientId) => { dispatch(CampaignSendAction(recipientId)); },
+    CampaignSendAction: (startCampaignId) => { dispatch(CampaignSendAction(startCampaignId)); },
     CampaignSaveAction: (startCampaignId) => { dispatch(CampaignSaveAction(startCampaignId)); },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignSend)

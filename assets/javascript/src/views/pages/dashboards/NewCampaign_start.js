@@ -8,6 +8,10 @@ import { MailGetDataAction } from '../../../redux/action/MailSenderAction';
 class NewCampaign_start extends React.Component {
     constructor(props) {
         super(props);
+        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var now = new Date();
+        var thisMonth = months[now.getMonth()];
+        const date = thisMonth + ' ' + now.getDate() + " Outreach";
         this.state = {
             title: '',
             from_address: this.props.mailGetData && this.props.mailGetData[0].id,
@@ -25,9 +29,10 @@ class NewCampaign_start extends React.Component {
         e.preventDefault();
         const data = {
             title: this.state.title,
-            from_address: this.state.from_address
+            from_address: this.props.mailGetData&&this.props.mailGetData[0].id
         }
         this.props.StartCampaignAction(data)
+        console.log("data--------->",data)
     }
     render() {
         const { mailGetData } = this.props;
@@ -80,7 +85,7 @@ class NewCampaign_start extends React.Component {
                                 </Row>
                                 <Row className='mt-5'>
                                     <div style={{ width: '100%' }}> <label>Title (for your team's eyes only)</label><br></br>
-                                        <input type='text' name='title' value={this.state.title} onChange={this.handleChange} className='start_input' autoComplete="off" required></input></div>
+                                        <input type='text' name='title' value={this.state.title} onChange={this.handleChange} className='start_input' autoComplete="off" placeholder={this.state.date} required></input></div>
                                 </Row>
                                 <Row className='mt-5'>
                                     <div style={{ width: '100%' }}><label >From Address</label><br></br>
@@ -95,7 +100,7 @@ class NewCampaign_start extends React.Component {
                                 </Row>
                                 <Row className='mt-5'>
                                     <Col style={{ display: "flex", justifyContent: "center" }}>
-                                        <button type='submit' className='btn startBtn'> Next <i className="fas fa-angle-right"></i>
+                                        <button type='submit' className='btn startBtn'>Next <i className="fas fa-angle-right"></i>
                                         </button>
                                     </Col>
                                 </Row>
@@ -109,6 +114,7 @@ class NewCampaign_start extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
+     // console.log("------------------------->",state.MailGetDataReducer.mailGetData&&state.MailGetDataReducer.mailGetData.map((e,i)=> e.email[0].id))
     return {
         mailGetData: state.MailGetDataReducer.mailGetData,
     };
