@@ -23,6 +23,7 @@ class CampaignPreview extends Component {
     }
     render() {
         const { editorState } = this.state;
+        const { CampaignEmail } = this.props;
         return (
             <div>
                 <div className='main-view'>
@@ -171,9 +172,10 @@ class CampaignPreview extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    console.log("cheking state for preview", state.CampaignPreviewGetReducer.CampaignPreviewData);
-    console.log("cheking now for start data in preview :id", state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id);
+    // console.log("state", state.RecipientReducer.recipientData && state.RecipientReducer.recipientData)
+    // console.log("cheking state for previewwwwwwwwwwwwwwwwwwwwwwwww", state.CampaignPreviewGetReducer.CampaignPreviewData);
     return {
+        CampaignEmail: state.RecipientReducer.recipientData && state.RecipientReducer.recipientData.email,
         CampaignPreviewData: state.CampaignPreviewGetReducer.CampaignPreviewData,
         CampaignPreviewEmails: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail,
         CampaignPreviewBody: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail,

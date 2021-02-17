@@ -1,7 +1,6 @@
-// import { options } from 'dropzone';
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { Container, Row, Col, Button, Input, Nav, Form } from 'reactstrap';
+import { Container, Row, Col, Button, Input,Nav, Form } from 'reactstrap';
 import { Link, Route } from 'react-router-dom';
 
 import { RecipientAction, StartCampaignAction } from "../../../redux/action/CampaignAction";
@@ -44,7 +43,7 @@ class NewCampaign_recipients extends Component {
         }
         else { return false }
         const recipientData = {
-            csvfile_op1: this.state.csvFile,
+            csvfile_op1:this.state.csvFile,
             option: `[${this.state.options}]`,
             email: `["${this.state.email}"]`,
             campaign: this.props.startCampaignId
@@ -56,9 +55,9 @@ class NewCampaign_recipients extends Component {
         const { show } = this.state;
         return (
             <div className='main-view'>
-                <div style={{ height: 800, width: '100%', backgroundColor: "#eee" }}>
+                <div style={{ height:980, width: '100%', backgroundColor: "#eee" }}>
                     <Container fluid>
-                        <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
+                    <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
                             <Col style={{ display: 'flex', alignItems: 'center' }}>
                                 <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
                                     <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
@@ -107,13 +106,12 @@ class NewCampaign_recipients extends Component {
                                                             <Col md='9'><Row>
                                                                 <span className="csv_logo"><i class="fa fa-file" aria-hidden="true"></i></span>
                                                                 <span className="csv_logo_text">Drop a CSV file here</span>
-                                                                {/* < Csvfile /> */}
-                                                                <span className="choose_option"><Input type='file' name='csvFile' onChange={this.handleChange}>(or choose one)</Input></span></Row>
+                                                                <span className="choose_option"><Input type='file' name='csvFile' value={this.state.value} onChange={this.handleChange}></Input></span></Row>
                                                                 <Row><span>Campaigns are limited to 5k recipients; uploads to 1MB.</span></Row></Col>
                                                         </Row>
                                                         <Row className='mt-5'>
                                                             <Col md='3' className="option1"><span>OPTION #2</span></Col>
-                                                            <Col md='9'><span className="textarea"><textarea type='email' name='email' value={this.state.email} onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>{show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
+                                                            <Col md='9'><span className="textarea"><textarea name='email' value={this.state.email} onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>{show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
                                                         </Row>
                                                     </div>
                                                 </div>
