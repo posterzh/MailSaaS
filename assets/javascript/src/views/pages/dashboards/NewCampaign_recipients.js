@@ -1,21 +1,21 @@
-import { options } from 'dropzone';
+// import { options } from 'dropzone';
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { Container, Row, Col, Button, Input, Form } from 'reactstrap'
-import { RecipientAction } from "../../../redux/action/AuthourizationAction";
-import  Csvfile from './csvfile'
+import { Container, Row, Col, Button, Input, Nav, Form } from 'reactstrap';
+import { Link, Route } from 'react-router-dom';
+
+import { RecipientAction, StartCampaignAction } from "../../../redux/action/CampaignAction";
+import Csvfile from './csvfile'
 
 class NewCampaign_recipients extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             show: false,
             csvFile: '',
             email: [],
-            campaign: '',
             options: []
         }
-        console.log(this.state)
     }
     handleChange = (e) => {
         this.setState({
@@ -42,23 +42,55 @@ class NewCampaign_recipients extends Component {
             let temp2 = 2;
             this.state.options.push(temp1, temp2)
         }
-        else {
-            return false
+        else { return false }
+        const recipientData = {
+            csvfile_op1: this.state.csvFile,
+            option: `[${this.state.options}]`,
+            email: `["${this.state.email}"]`,
+            campaign: this.props.startCampaignId
         }
-        const formData = new FormData();
-        formData.append('csvfile_op1',this.state.csvFile);
-        formData.append('email', this.state.email);
-        formData.append('option',this.state.options);
-        console.log(formData,'form data')
-        this.props.RecipientAction(formData, localStorage.getItem('access_token'))
-        console.log('r_data', formData, localStorage.getItem('access_token'))
+        const token = localStorage.getItem('access_token')
+        this.props.RecipientAction(recipientData, token)
     }
     render() {
         const { show } = this.state;
         return (
-            <div>
-                <div style={{ height: '100%', width: '100%', backgroundColor: "#eee" }}>
+            <div className='main-view'>
+                <div style={{ height: 800, width: '100%', backgroundColor: "#eee" }}>
                     <Container fluid>
+                        <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
+                            <Col style={{ display: 'flex', alignItems: 'center' }}>
+                                <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
+                                    <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
+                                        <span style={{ color: 'black', fontSize: '20px' }}>MailSaaaS</span></div>
+                                </div>
+                            </Col>
+                            <Col >
+                                <h1 style={{ textAlign: 'center', fontSize: '60px', color: "#333333" }}>New Campaign</h1>
+                            </Col>
+                            <Col style={{ display: "flex", flexDirection: "row-reverse" }}>
+                                <div className='mt-3'>
+                                    <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
+                                        <span><i className="fa fa-question-circle-o fa-lg" aria-hidden="true"></i></span>
+                                    </a>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
+                            <Col style={{ display: "flex" }}><Nav className='mx-auto' navbar>
+                                <Row className='mx-auto' style={{ width: '100%' }}>
+                                    <ul style={{ listStyleType: 'none', display: 'flex' }}>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignRecipient">RECIPICIENT</Link></li>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignCompose">COMPOSE</Link></li>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignPreview">PREVIEW</Link></li>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignOptions">OPTIONS</Link></li>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignSend">SEND</Link></li>
+                                    </ul>
+                                </Row>
+                            </Nav>
+                            </Col>
+                        </Row>
                         <Row>
                             <Col md='12' style={{ backgroundColor: "#eee" }}>
                                 <Form onSubmit={this.handleSubmit}>
@@ -75,17 +107,13 @@ class NewCampaign_recipients extends Component {
                                                             <Col md='9'><Row>
                                                                 <span className="csv_logo"><i class="fa fa-file" aria-hidden="true"></i></span>
                                                                 <span className="csv_logo_text">Drop a CSV file here</span>
-                                                                < Csvfile/>
+                                                                {/* < Csvfile /> */}
                                                                 <span className="choose_option"><Input type='file' name='csvFile' onChange={this.handleChange}>(or choose one)</Input></span></Row>
                                                                 <Row><span>Campaigns are limited to 5k recipients; uploads to 1MB.</span></Row></Col>
                                                         </Row>
                                                         <Row className='mt-5'>
                                                             <Col md='3' className="option1"><span>OPTION #2</span></Col>
-                                                            <Col md='9'><span className="textarea"><textarea name='email' value={this.state.email} onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>{show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
-                                                        </Row>
-                                                        <Row className='mt-5'>
-                                                            <Col md='3'> <span className="option1">OPTION #3</span></Col>
-                                                            <Col md='9'><span className="input_box_csv"><input name='campaign' value={this.state.campaign} onChange={this.handleChange} placeholder='Select an existing list'></input></span></Col>
+                                                            <Col md='9'><span className="textarea"><textarea type='email' name='email' value={this.state.email} onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>{show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
                                                         </Row>
                                                     </div>
                                                 </div>
@@ -103,13 +131,11 @@ class NewCampaign_recipients extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        // token: state.token
+        startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id,
     };
 };
 const mapDispatchToProps = dispatch => ({
-    RecipientAction: recipientData => {
-        dispatch(RecipientAction(recipientData));
-    },
+    RecipientAction: (recipientData, token) => { dispatch(RecipientAction(recipientData, token)) },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewCampaign_recipients)

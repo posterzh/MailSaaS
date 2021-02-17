@@ -20060,6 +20060,11 @@ button .import_button {
   background-color: #ff4081;
   color: white; }
 
+.startBtn:hover {
+  opacity: 0.7;
+  color: white;
+  background: #ff4081; }
+
 .campaign-form .start_input:hover {
   opacity: 0.6;
   color: black !important; }
@@ -20166,13 +20171,7 @@ button .import_button {
   border-bottom: 1px solid #ccc;
   background: transparent; }
 
-.newcampaign_button {
-  background: #ff4081;
-  outline: none;
-  border: none;
-  color: white; }
-
-.startcampaign_buttonicon {
+.newcampaign_button, .startcampaign_buttonicon {
   background: #ff4081;
   outline: none;
   border: none;
@@ -21156,4 +21155,33 @@ input::-webkit-inner-spin-button {
 
 .activeactivity:focus {
   background-color: yellow !important; }
+
+.main-content .mt-6 {
+  margin-top: 0px !important; }
+
+.mail-account-container {
+  height: 100vh; }
+  .mail-account-container .mt-6 {
+    position: fixed;
+    bottom: 10px;
+    right: 10px; }
+  .mail-account-container .fa-ellipsis-v {
+    margin-top: 0px !important; }
+
+.list-wrapper .mail-account-edit-list {
+  background: white;
+  font-size: 16px;
+  margin: 10px 0px 0px 5px;
+  padding: 5px;
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  z-index: 1;
+  width: max-content;
+  box-shadow: 0px 2px 2px #aaaaaa; }
+  .list-wrapper .mail-account-edit-list li {
+    padding: 5px 10px;
+    cursor: pointer; }
+  .list-wrapper .mail-account-edit-list li:focus, .list-wrapper .mail-account-edit-list :hover {
+    background: #e4e4e4; }
 

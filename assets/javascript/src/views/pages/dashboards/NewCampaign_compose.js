@@ -1,17 +1,14 @@
 import React, { Component } from 'react'
-import {
-    Container,
-    Row,
-    Button, Input, Col, Form
-} from 'reactstrap';
+import { Container, Row, Button, Input, Col, Form,Nav } from 'reactstrap';
 import { Editor } from 'react-draft-wysiwyg';
+import { Link, Route } from 'react-router-dom';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import FollowUpPage from './FollowUpPage';
 import Drips from './Drips'
 import LinkClicksPage from './LinkClicksPage'
-export default class Compose extends Component {
+export default class CampaignCompose extends Component {
     constructor() {
         super();
         this.state = {
@@ -62,14 +59,47 @@ export default class Compose extends Component {
             <div>
                 <div className='main-view'>
                     <Form onSubmit={this.handleSubmit}>
-                        <Container>
+                        <Container fluid>
+                            <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
+                                <Col style={{ display: 'flex', alignItems: 'center' }}>
+                                    <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
+                                        <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
+                                            <span style={{ color: 'black', fontSize: '20px' }}>MailSaaaS</span></div>
+                                    </div>
+                                </Col>
+                                <Col >
+                                    <h1 style={{ textAlign: 'center', fontSize: '60px', color: "#333333" }}>New Campaign</h1>
+                                </Col>
+                                <Col style={{ display: "flex", flexDirection: "row-reverse" }}>
+                                    <div className='mt-3'>
+                                        <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
+                                            <span><i className="fa fa-question-circle-o fa-lg" aria-hidden="true"></i></span>
+                                        </a>
+                                    </div>
+                                </Col>
+                            </Row>
+                            <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
+                                <Col style={{ display: "flex" }}><Nav className='mx-auto' navbar>
+                                    <Row className='mx-auto' style={{ width: '100%' }}>
+                                        <ul style={{ listStyleType: 'none', display: 'flex' }}>
+                                            <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
+                                            <li className='mr-3 ml-3'><Link to="/app/admin/CampaignRecipient">RECIPICIENT</Link></li>
+                                            <li className='mr-3 ml-3'><Link to="/app/admin/CampaignCompose">COMPOSE</Link></li>
+                                            <li className='mr-3 ml-3'><Link to="/app/admin/CampaignPreview">PREVIEW</Link></li>
+                                            <li className='mr-3 ml-3'><Link to="/app/admin/CampaignOptions">OPTIONS</Link></li>
+                                            <li className='mr-3 ml-3'><Link to="/app/admin/CampaignSend">SEND</Link></li>
+                                        </ul>
+                                    </Row>
+                                </Nav>
+                                </Col>
+                            </Row>
                             <Row>
                                 <Col md='10' className='mx-auto'>
                                     <Row className="composeemail_heading">
                                         Compose the emails in this campaign
                                 </Row>
                                     <Row className="mt-5">
-                                        <div><button className='EditTest'><i class="fa fa-plus-circle" aria-hidden="true"></i> A/B TEST</button>
+                                        <div><button className='EditTest'><i className="fa fa-plus-circle" aria-hidden="true"></i> A/B TEST</button>
                                         </div>
                                     </Row>
                                     <Row>
@@ -78,7 +108,7 @@ export default class Compose extends Component {
                                                 <Input type='email' className='in' name='subject' value={this.state.subject} onChange={this.handleChange} placeholder='Subject' required />
                                                 <div className='mt-3'>
                                                     <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                                        <span><i class="fa fa-question-circle-o" aria-hidden="true"></i></span>
+                                                        <span><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
                                                     </a>
                                                 </div>
                                             </div>
@@ -108,7 +138,7 @@ export default class Compose extends Component {
                                     <Row>
                                         <Col className='mt-3'>
                                             <div className='Add_follow_up' onClick={this.onAddBtnClickFollow}>
-                                                <i class='fa fa-plus'></i> &nbsp;ADD FOLLOW-UP<br />
+                                                <i className='fa fa-plus'></i> &nbsp;ADD FOLLOW-UP<br />
                                             </div>
                                         </Col>
                                     </Row>
@@ -118,7 +148,7 @@ export default class Compose extends Component {
                                     <Row>
                                         <Col className='mt-3'>
                                             <div className='Add_follow_up' onClick={this.onAddBtnClickDrips}>
-                                                <i class='fa fa-plus'></i> &nbsp;ADD DRIP<br />
+                                                <i className='fa fa-plus'></i> &nbsp;ADD DRIP<br />
                                             </div>
                                         </Col>
                                     </Row>
@@ -128,7 +158,7 @@ export default class Compose extends Component {
                                     <Row>
                                         <Col className='mt-3 mb-5'>
                                             <div className='Add_follow_up' onClick={this.onAddBtnClickLinkClick}>
-                                                <i class='fa fa-plus'></i> &nbsp;ADD ON CLICK<br />
+                                                <i className='fa fa-plus'></i> &nbsp;ADD ON CLICK<br />
                                             </div>
                                         </Col>
                                     </Row>

@@ -49,7 +49,7 @@ class Dashboard extends React.Component {
             <Row className="main_title"><h1 className="Main-title">Welcome to MailSaaS</h1></Row>
             <Row className="sub_title"><h3>A simple solution for email outreach.</h3></Row>
             <Row className="New_campaign_button">
-              <Link to="/app/admin/new-campaign">
+              <Link to="/app/admin/CampaignStart">
                 <Button className="newcampaign_button">+ NEW CAMPAIGN</Button>
               </Link>
             </Row>

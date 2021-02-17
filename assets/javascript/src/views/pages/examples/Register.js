@@ -72,8 +72,10 @@ class Register extends React.Component {
     this.props.RegisterAction(user)
     console.log(user)
 
-
-
+    // const token=localStorage.getItem("access_token")
+    // if(token){
+    //   alert('Successful')
+    // }
   }
 
   render() {
@@ -252,6 +254,11 @@ class Register extends React.Component {
                       </Button>
                     </div>
                   </Form>
+                  <Row>
+                    <div>
+                      <p>{this.token}</p>
+                      </div>
+                    </Row>
                 </CardBody>
               </Card>
             </Col>
@@ -263,13 +270,13 @@ class Register extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  // console.log("i am checking",state.RegisterReducer.user)
   return {
     // token: state.token
+    // user:state.RegisterReducer.user
   };
 };
 const mapDispatchToProps = dispatch => ({
-  RegisterAction: user => {
-    dispatch(RegisterAction(user));
-  },
+  RegisterAction: user => {dispatch(RegisterAction(user));},
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

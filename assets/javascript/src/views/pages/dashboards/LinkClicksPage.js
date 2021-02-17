@@ -47,7 +47,7 @@ export default class FollowUpPage extends React.Component {
                                         <Input type='email' className='in' placeholder='Subject' required />
                                         <div className='mt-3'>
                                             <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                                <span><i class="fa fa-question-circle-o" aria-hidden="true"></i></span>
+                                                <span><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
                                             </a>
                                         </div>
                                     </div>

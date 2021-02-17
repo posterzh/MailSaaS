@@ -17,9 +17,9 @@ Imap_Port = (
 )
 
 Provider = (
-    ("smtp","Smtp"),
-    ("google","Google"),
-    ("microsoft","Microsoft"),
+    ("SMTP","Smtp"),
+    ("GOOGLE","Google"),
+    ("MICROSOFT","Microsoft"),
 )
 
 

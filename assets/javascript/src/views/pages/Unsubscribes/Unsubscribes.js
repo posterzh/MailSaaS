@@ -4,8 +4,8 @@ import { Container, Row } from 'reactstrap'
 import Domainpage from './Domainpage'
 import Addresstable from "./Addresstable"
 import classnames from 'classnames';
-import {  fetchUnsubscribeAction } from '../../../redux/action/UnsubscribeActions'
-import { useSelector,useDispatch } from 'react-redux'
+import { fetchUnsubscribeAction } from '../../../redux/action/UnsubscribeActions'
+import { useSelector, useDispatch } from 'react-redux'
 const Unsubscribes = (props) => {
   const [activeTab, setActiveTab] = useState('1');
   const dispatch = useDispatch()
@@ -20,7 +20,7 @@ const Unsubscribes = (props) => {
     // fetchUnsbcribed()
     dispatch(fetchUnsubscribeAction())
 
-  },[])
+  }, [])
   console.log(unsubscribeData, 'unsubscribeData')
 
   return (
@@ -28,7 +28,7 @@ const Unsubscribes = (props) => {
       <div>
         <div className='campaign_navbar' >
           <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Unsubscribes</h1>
-          <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i class="fa fa-question-circle-o" aria-hidden="true"></i></p>
+          <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
         </div>
       </div>
       <Container fluid>
@@ -60,6 +60,11 @@ const Unsubscribes = (props) => {
           </TabContent>
         </Row>
       </Container>
+      <div className='plus-button-div'>
+        <div className='new_add_button'>
+          <span className="plusicon">+</span>
+        </div>
+      </div>
     </div>
   );
 }

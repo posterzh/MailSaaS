@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col, Input, Form } from 'reactstrap';
 import SMTP from './SMTP'
 import { connect } from "react-redux";
-import { MailSenderAction,MailGetDataAction } from '../../../redux/action/MailSenderAction'
+import { MailSenderAction, MailGetDataAction, MailAccountDeleteAction, MailAccountUpdate } from '../../../redux/action/MailSenderAction'
 
-export class MailAccount extends Component {
-    constructor() {
-        super()
+class MailAccount extends Component {
+    constructor(props) {
+        super(props)
         this.state = {
-            modal: true,
+            hide: false,
+            modal: false,
             emailAddress: '',
             FullName: '',
             smtpPort: '587',
@@ -16,12 +17,16 @@ export class MailAccount extends Component {
             smtpPassword: '',
             imapHost: '',
             imapPassword: '',
-            imapPort: '993'
+            imapPort: '993',
+            user: null,
+            accountId: null,
+            flag: false
+
         }
     }
 
-    componentDidMount(){
-        this.props.MailGetDataAction()
+    componentDidMount() {
+        this.props.MailGetDataAction();
     }
     toggle = () => {
         this.setState({ modal: !this.state.modal })
@@ -30,110 +35,123 @@ export class MailAccount extends Component {
         this.setState({ [e.target.name]: e.target.value })
     }
     handleSubmit = (e) => {
-        e.preventDefault()
-        console.log(this.state)
-
+        this.setState({
+            modal: !this.state.modal,
+            hide: false,
+            flag: false
+        })
         const mailData = {
             email: this.state.emailAddress,
             full_name: this.state.FullName,
             smtp_port: this.state.smtpPort,
-            smtp_host: thMailGetDataActionis.state.imapPort,
+            smtp_host: this.state.smtpHost,
+            smtp_password: this.state.smtpPassword,
+            smtp_username: this.state.emailAddress,
+            imap_port: this.state.imapPort,
             imap_host: this.state.imapHost,
             imap_password: this.state.imapPassword,
             imap_username: this.state.emailAddress,
         }
-        this.props.MailSenderAction(mailData)
-        console.log(mailData)
+        if (this.state.flag) {
+            mailData.user = this.state.user
+            this.props.MailAccountUpdate(mailData, this.state.accountId)
+        }
+        else {
+            this.props.MailSenderAction(mailData)
+        }
     }
-    
-    render() {
-        return (
-            <div>
-                <h1>Mail Account</h1> 
-                <Button className='btn btn-light' onClick={(e) => { e.preventDefault(), this.setState({ modal: true }) }}>+</Button>
-                <Modal isOpen={this.state.modal} toggle={this.toggle} >
-                    <Form onSubmit={this.handleSubmit}>
-                        <ModalHeader toggle={this.toggle}><h1>Connect a mail account</h1><p>How will you be sending emails?</p></ModalHeader>
-                        <ModalBody >
-                            <Container>
-                                <Row>
-                                    <Col md='2'>logo</Col>
-                                    <Col md='10'>
-                                        <Row>Sending address</Row>
-                                        <Row><p style={{ fontSize: '0.7em' }}>This will be the “from” name and address on your emails and must be an address allowed by your email provider.</p></Row>
-                                        <Row><Input type='email' name='emailAddress' value={this.state.emailAddress} autoComplete='off' onChange={this.handleChange} placeholder='Email Address'></Input></Row><br></br>
-                                        <Row><Input type='text' name='FullName' value={this.state.FullName} onChange={this.handleChange} placeholder='Full Name'></Input></Row>
-                                    </Col>
-                                </Row><br></br>
-                                <Row>
-                                    <Col md='2'>logo</Col>
-                                    <Col md='10'>
-                                        <Row>SMTP connection</Row>
-                                        <Row><p style={{ fontSize: '0.7em' }}>This information comes from your email provider and is how we‘ll send your emails.</p></Row>
-                                        <Row>
-                                            <Col md='8'><Input name='smtpHost' value={this.state.smtpHost} onChange={this.handleChange} className='mt-4' type='text' placeholder='Host(e.g.mail.server.com)'></Input></Col>
-                                            <Col md='4'><label className='selectbox_label' >Port Number</label>
-                                                <Input name='smtpPort' type='select' onChange={this.handleChange} defaultValue='587'>
-                                                    <option value='25'>25</option>
-                                                    <option value='465'>465</option>
-                                                    <option value='587'>587</option>
-                                                    <option value='2525'>2525</option>
-                                                </Input>
-                                            </Col>
-                                        </Row><br></br>
-                                        <Row><Input type='email' name='emailAddress' onChange={this.handleChange} value={this.state.emailAddress} placeholder='Username(usually your email address)'></Input></Row><br></br>
-                                        <Row><Input type='password' name='smtpPassword' onChange={this.handleChange} value={this.state.smtpPassword} placeholder='Password'></Input></Row>
-                                    </Col>
-                                </Row><br></br>
-                                <Row>
-                                    <Col md='2'>logo</Col>
-                                    <Col md='10'>
-                                        <Row>IMAP connection</Row>
-                                        <Row><p style={{ fontSize: '0.7em' }}>This information comes from your email provider and is how we‘ll check your inbox for replies.</p></Row>
-                                        <Row>
-                                            <Col md='8'><Input onChange={this.handleChange} name='imapHost' value={this.state.imapHost} className='mt-4' type='text' placeholder='Host(e.g.mail.server.com)'></Input></Col>
-                                            <Col md='4'><label className='selectbox_label' >Port Number</label>
-                                                <Input type='select' name='imapPort' onChange={this.handleChange} defaultValue='993'>
-                                                    <option value='143' >143</option>
-                                                    <option value='993'>993</option>
-                                                    <option value='995'>995</option>
+    deleteMailAccount = (id) => {
+        this.props.MailAccountDelete(id);
+    }
+    handleToggle = (index) => {
+        this.setState({ hide: index })
+    }
+    editDataModel = (data, e) => {
+        this.setState({ modal: true })
+        this.setState({
+            emailAddress: data.email,
+            FullName: data.full_name,
+            smtpPort: data.smtp_port,
+            smtpHost: data.smtp_host,
+            smtpPassword: data.smtp_password,
+            imapHost: data.imap_port,
+            imapPassword: data.imap_password,
+            imapPort: data.imap_port,
+            accountId: data.id,
+            user: data.user,
+            flag: true
+        })
+    }
 
-                                                </Input>
-                                            </Col>
-                                        </Row><br></br>
-                                        <Row><Input type='email' name='emailAddress' onChange={this.handleChange} value={this.state.emailAddress} placeholder='Username(usually your email address)'></Input></Row><br></br>
-                                        <Row><Input type='password' name='imapPassword' onChange={this.handleChange} value={this.state.imapPassword} placeholder='Password'></Input></Row>
-                                    </Col>
-                                </Row>
-                                <Row><br></br>
-                                    <Col md='2'>logo</Col>
-                                    <Col md='10'>
-                                        <Row>Help</Row>
-                                        <Row><p style={{ fontSize: '0.7em' }}>In most cases you‘ll need to contact your email provider or administrator to get help connecting your mail account. We‘re here to help as best we can.</p></Row>
-                                        <Row><p style={{ fontSize: '0.7em' }}>Not having luck? Let Mailshake try auto-configuration.</p></Row><br></br>
-                                    </Col>
-                                </Row>
-                            </Container>
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button type='submit'>NEXT<i className='fa fa-right-arrow '></i></Button>
-                            <Button>Cancle</Button>
-                        </ModalFooter>
-                    </Form>
-                </Modal>
+    render() {
+        const { mailGetData } = this.props;
+        const { hide } = this.state;
+
+        return (
+            <div className="mail-account-container">
+                <div>
+                    <h1 style={{ borderBottom: '1px solid #172b4d29', paddingBottom: '10px' }}>Mail Account</h1>
+
+                    <div style={{ display: 'flex' }}>
+                        <div>
+                            {
+                                mailGetData && mailGetData != 'mail accounts not available' && mailGetData.map((item, index) => {
+                                    return (
+                                        <div key={index}>
+                                            <div style={{ display: 'flex', color: 'black' }}>
+                                                <h1 style={{ fontSize: '20px', paddingLeft: '20px' }}>{item.email}</h1>&nbsp;&nbsp;
+                                                <div className="list-wrapper" style={{ position: 'relative' }}>
+                                                    <div onClick={() => { this.handleToggle(index) }}><i className="fas fa-ellipsis-v mt-2" style={{ fontSize: '20px', cursor: 'pointer', marginTop: '0px' }}></i></div>
+                                                    {
+                                                        hide === index && <ul className="mail-account-edit-list" style={{ listStyleType: 'none' }}>
+                                                            <li onClick={(e) => { this.editDataModel(item, e) }}>Edit Connection </li>
+                                                            <li onClick={() => this.deleteMailAccount(item.id)}>Delete</li>
+                                                        </ul>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div key={index} style={{ boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)', width: 400, height: 300, margin: 20, padding: 10 }}>
+                                                <div>{item.full_name}</div>
+                                                <div>{item.email}</div>
+                                            </div>
+                                        </div>)
+                                })
+                            }
+                        </div>
+                    </div>
+                </div>
+                <Button className='btn btn-light mt-5 mt-6' onClick={(e) => { e.preventDefault(), this.setState({ modal: !this.state.modal }) }}>+</Button>
+                <SMTP
+                    isOpen={this.state.modal}
+                    handleChange={this.handleChange}
+                    handleSubmit={this.handleSubmit}
+                    toggle={this.toggle}
+                    emailAddress={this.state.emailAddress}
+                    FullName={this.state.FullName}
+                    smtpPort={this.state.smtpPort}
+                    smtpHost={this.state.smtpHost}
+                    smtpPassword={this.state.smtpPassword}
+                    imapHost={this.state.imapHost}
+                    imapPassword={this.state.imapPassword}
+                    imapPort={this.state.imapPort}
+                    key={this.state.accountId}
+                />
             </div>
         )
     }
 }
-
 const mapStateToProps = (state) => {
     return {
-        // token: state.token
+        mailGetData: state.MailGetDataReducer.mailGetData,
+        mailAccountId: state.MailGetDataReducer.mailAccountId
     };
 };
-const mapDispatchToProps = dispatch => ({
-    MailSenderAction: mailData => {dispatch(MailSenderAction(mailData))},
-    MailGetDataAction: mailData => {dispatch(MailGetDataAction(mailData))},
+const mapDispatchToProps = (dispatch) => ({
+    MailSenderAction: mailData => { dispatch(MailSenderAction(mailData)) },
+    MailGetDataAction: mailGetData => { dispatch(MailGetDataAction(mailGetData)) },
+    MailAccountDelete: id => { dispatch(MailAccountDeleteAction(id)) },
+    MailAccountUpdate: (data, id) => { dispatch(MailAccountUpdate(data, id)) }
+
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MailAccount)
 

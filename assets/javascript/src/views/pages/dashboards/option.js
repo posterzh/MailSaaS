@@ -1,7 +1,7 @@
 // file for option pick in campaign
 import React, { Component } from 'react'
 import { Container, Row, Col, Form } from 'reactstrap'
-import { OptionAction } from '../../../redux/action/AuthourizationAction'
+import { CampaignOptionAction} from '../../../redux/action/CampaignAction'
 import { connect } from 'react-redux';
 class Option extends Component {
     constructor() {
@@ -36,15 +36,15 @@ class Option extends Component {
         event.preventDefault();
         console.log(this.state)
         const optionData = {
-            campaign: 1,
-            trackOpens: this.state.trackopen,
-            trackLinkClick: this.state.tracklinkclicks,
+            campaign: 2,
+            track_Opens: this.state.trackopen,
+            track_LinkClick: this.state.tracklinkclicks,
             schedule_send: this.state.schedulesend,
             schedule_date: this.state.date,
             schedule_time: `${this.state.time}${':00'}`,
             terms_and_laws: this.state.termsandlaws
         }
-        this.props.OptionAction(optionData)
+        this.props.CampaignOptionAction(optionData)
     }
     render() {
         // console.log("trackopen",this.state.trackopen)
@@ -83,12 +83,12 @@ class Option extends Component {
                                     </div>
                                 </Row>
                                 <Row className="Leadcatcher_settingdiv">
-                                    <span className="leadcatchersetting_icon"><i class="fa fa-caret-down"></i></span>
+                                    <span className="leadcatchersetting_icon"><i className="fa fa-caret-down"></i></span>
                                     <span className="leadcatchersetting">Lead Catcher setting</span>
                                 </Row>
                                 <Row>
                                     <span className="about_leadcatcher">ABOUT LEAD CATCHER</span>
-                                    <span className="about_leadcatchericon"><i class="fa fa-question-circle-o" aria-hidden="true"></i></span><br />
+                                    <span className="about_leadcatchericon"><i className="fa fa-question-circle-o" aria-hidden="true"></i></span><br />
                                     <span className="leadcatcher_note">Follow-up emails stop when a recipient becomes a lead, and leads are collected in one place so you can efficiently respond or take action.</span>
                                 </Row>
                                 <Row className="select_boxdiv">
@@ -121,7 +121,7 @@ class Option extends Component {
                                                     {/* <span className="numberof_repliesinput"> */}
                                                     <input type="text" />
                                                     {/* </span> */}
-                                                    <span className="delete_icon"><i class="fa fa-trash"></i></span>
+                                                    <span className="delete_icon"><i className="fa fa-trash"></i></span>
                                                 </div>
                                             </div>
 
@@ -129,7 +129,7 @@ class Option extends Component {
                                     </div>
                                 </Row>
                                 <Row>
-                                    <span><i class="fa fa-caret-down"></i></span>
+                                    <span><i className="fa fa-caret-down"></i></span>
                                     <span>CRM sync</span>
                                 </Row>
                                 <Row>
@@ -140,12 +140,12 @@ class Option extends Component {
                                 </Row>
                                 <Row>
                                     <span><input type="checkbox" /></span>
-                                    <span><i class="fa fa-slack"></i></span>
+                                    <span><i className="fa fa-slack"></i></span>
                                     <span>Extern Labs</span>
                                 </Row>
                                 <Row>
                                     <div>
-                                        <input type="checkbox" name='termsandlaws' defaultChecked={this.state.termsandlaws} onClick={this.handleChange} />
+                                        <input type="checkbox" name='termsandlaws' defaultChecked={this.state.termsandlaws} onClick={this.handleChange} required/>
                                         <span>I'll obey pertinent laws and I've read these< a href="www.google.com"> important notes.</a>
                                         </span>
                                     </div>
@@ -167,8 +167,8 @@ const mapStateToProps = (state) => {
     };
 };
 const mapDispatchToProps = dispatch => ({
-    OptionAction: optionData => {
-        dispatch(OptionAction(optionData));
+    CampaignOptionAction: optionData => {
+        dispatch(CampaignOptionAction(optionData));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Option)

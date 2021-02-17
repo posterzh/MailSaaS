@@ -5,12 +5,11 @@ import {
     SUCCESS_REGISTER,
     FAILURE_LOGIN,
     REQUEST_FOR_LOGIN,
-    SUCCESS_LOGIN,
-    
-    
+    SUCCESS_LOGIN,  
 } from "../actionType/actionType"
 
 import Api from "../api/api"
+
 // Register
 export const requestForRegister = () => {
     return {
@@ -23,6 +22,7 @@ export const registerSuccess = (user) => {
     return {
         type: SUCCESS_REGISTER,
         user
+        
     }
 }
 export const registerFailure = () => {
@@ -50,11 +50,12 @@ export const loginFailure = () => {
     }
 }
 
+// register action
 export const RegisterAction = (user) => {
     return function (dispatch) {
         dispatch(requestForRegister(user))
         Api.RegisterApi(user).then(result => {
-            console.log(result.data, 'registerSuccess')
+            console.log( 'registerSuccess',result.data)
             dispatch(registerSuccess(result.data))
         }).catch(err => {
             console.log(err)
@@ -62,16 +63,18 @@ export const RegisterAction = (user) => {
     }
 }
 
+// login action
 export const LoginAction = (Loginuser) => {
     return function (dispatch) {
         dispatch(requestForLogin(Loginuser))
         Api.LoginApi(Loginuser).then(result => {
+            console.log(".....................>>>",result)
             const token = result.data.token;
             localStorage.setItem('access_token', token)
-            console.log(token)
             dispatch(LoginSuccess(result.data))
         }).catch(err => {
-            console.log(err)
+            console.log(".....................>>>",err)
+            dispatch(loginFailure(result.data))
         })
     }
 }

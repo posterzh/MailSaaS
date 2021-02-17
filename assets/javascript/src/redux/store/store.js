@@ -7,7 +7,14 @@ import {
   RecipientReducer, 
   MailGetDataReducer, 
   MailSenderReducer, 
-  UnsubscribeReducer 
+  UnsubscribeReducer ,
+  CampaignOptionReducer,
+  ProspectsGetReducer,
+  CamapignSendReducer,
+  CampaignPreviewGetReducer,
+  CampaignOverviewReducer,
+  CampaignPreviewUpdateReducer,
+  CamapignSaveReducer
 } from '../reducer/reducer';
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
@@ -19,7 +26,14 @@ const rootReducer = combineReducers({
   RecipientReducer, 
   MailGetDataReducer, 
   MailSenderReducer, 
-  UnsubscribeReducer 
+  UnsubscribeReducer ,
+  CampaignOptionReducer,
+  ProspectsGetReducer,
+  CamapignSendReducer,
+  CampaignPreviewGetReducer,
+  CampaignOverviewReducer,
+  CampaignPreviewUpdateReducer,
+  CamapignSaveReducer
 })
 
 const store = createStore(

@@ -34,36 +34,40 @@ import {
   Col
 } from "reactstrap";
 import AuthHeader from "../../../components/Headers/AuthHeader.js";
-import {LoginAction} from "../../../redux/action/AuthourizationAction"
-import {connect} from "react-redux"
+import { LoginAction } from "../../../redux/action/AuthourizationAction"
+import { connect } from "react-redux"
 
 class Login extends React.Component {
-  constructor(props)
-  {
+  constructor(props) {
     super(props)
-    this.state={
-      email:'',
-      password:''
+    this.state = {
+      email: '',
+      password: ''
     }
   }
-  handleChange = (event)=>{
+  handleChange = (event) => {
     this.setState({
-      [event.target.name]:event.target.value
+      [event.target.name]: event.target.value
     });
-    
+
   }
-  handleSubmit = (event)=>
-  {
+  handleSubmit = (event) => {
     event.preventDefault();
-    const loginuser={
-      email:this.state.email,
-      password:this.state.password
+    const loginuser = {
+      email: this.state.email,
+      password: this.state.password
     };
-  
+
     this.props.LoginAction(loginuser)
     console.log(loginuser)
+    // const token =localStorage.("access_token")
+    // if(token)
+    // {
+    //   alert("bjnm")
+    // }
   }
   render() {
+    const { Loginuser, isLogin } = this.props
     return (
       <>
         <AuthHeader
@@ -143,20 +147,22 @@ class Login extends React.Component {
                       </Button>
                     </div>
                   </Form>
+                  <Row style={{ backgroundColor: "" }}>
+                    <div style={{}}>
+                      {
+                        isLogin ? <p style={{ color: 'green' }}>Sucessufully Login</p> : <p style={{ color: 'red' }}>Unable to log in with provided credentials.</p>
+                      }
+
+                    </div>
+
+                  </Row>
                 </CardBody>
               </Card>
               <Row className="mt-3">
                 <Col xs="6">
-                  <a
-                    className="text-light"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                  >
-                    <small>Forgot password?</small>
-                  </a>
+                  <a className="text-light" href="#pablo" onClick={e => e.preventDefault()}><small>Forgot password?</small></a>
                 </Col>
-                <Col className="text-right" xs="6">
-                  <a
+                <Col className="text-right" xs="6"><a
                     className="text-light"
                     href="#pablo"
                     onClick={e => e.preventDefault()}
@@ -167,22 +173,22 @@ class Login extends React.Component {
               </Row>
             </Col>
           </Row>
+
         </Container>
       </>
     );
   }
 }
 const mapStateToProps = (state) => {
-  return 
-  {
-    
+  console.log("cheking login details======>", state.LoginReducer.Loginuser, state.LoginReducer.isLogin)
+  return {
+    Loginuser: state.LoginReducer.Loginuser,
+    isLogin: state.LoginReducer.isLogin,
   }
 };
 
 const mapDispatchToProps = dispatch => ({
-  LoginAction: loginuser => {
-  dispatch(LoginAction(loginuser));
-  },
- });
+  LoginAction: Loginuser => { dispatch(LoginAction(Loginuser)); },
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
 

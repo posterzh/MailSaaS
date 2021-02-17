@@ -1,49 +1,63 @@
 import {
-    FAILURE_REGISTER,
-    REQUEST_FOR_REGISTER,
     SUCCESS_REGISTER,
     FAILURE_LOGIN,
     REQUEST_FOR_LOGIN,
     SUCCESS_LOGIN,
-    FAILURE_START,
-    REQUEST_FOR_START,
-    SUCCESS_START,
-    FAILURE_RECIPIENT,
-    REQUEST_FOR_RECIPIENT,
+    SUCCESS_START_CAMPAIGN,
     SUCCESS_RECIPIENT,
-    FAILURE_MAIL_SENDER,
-    REQUEST_FOR_MAIL_SENDER,
     SUCCESS_MAIL_SENDER,
-    FAILURE_MAIL_GET_DATA,
-    REQUEST_FOR_MAIL_GET_DATA,
     SUCCESS_MAIL_GET_DATA,
-    SUCCESS_FETCH_UNSUBSCRIPTION
+    SUCCESS_FETCH_UNSUBSCRIPTION,
+    SUCCESS_OPTION,
+    // SUCCESS_FETCH_PROSPECTS,
+    // SUCCESS_SEND_CAMPAIGN,
+    REQUEST_FOR_OPTION,
+    FAILURE_OPTION,
+    FETCH_PROSPECTS,
+    SUCCESS_FETCH_PROSPECTS,
+    REQUEST_FOR_CAMPAIGN_CREATE_PREVIEW,
+    SUCCESS_FETCH_CAMPAIGN_CREATE_PREVIEW,
+    FAILURE_FETCH_CAMPAIGN_CREATE_PREVIEW,
+    REQUEST_FOR_CAMPAIGN_OVERVIEW,
+    SUCCESS_CAMPAIGN_OVERVIEW,
+    FAILURE_CAMPAIGN_OVERVIEW,
+    SUCCESS_MAIL_ACCOUNT_DELETE,
+    SUCCESS_MAIL_ACCOUNT_UPDATE,
+    FAILURE_MAIL_ACCOUNT_UPDATE,
+    SUCCESS_SEND_CAMPAIGN,
+    REQUEST_FOR_CAMPAIGN_UPDATE_PREVIEW,
+    SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
+    FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW,
+    SUCCESS_SAVE_CAMPAIGN
 } from "../actionType/actionType";
 
 const initialState = {
     Loginuser: '',
     user: '',
-    data: '',
+    startCampaignData: '',
     recipientData: '',
     mailGetData: [],
     mailData: '',
+    sendData:'',
+    saveData:'',
     viewData: '',
-    mailData: '',
     unsubscribeData: [],
+    optionData: '',
+    prospectData: [],
+    mailAccountId: '',
+    CampaignOverviewData:[],
+    isLogin:false,
+    CampaignPreviewData: [],
+    campaignPreviewUpdateData:[]
 }
 export const RegisterReducer = (state = { initialState }, action) => {
+    console.log(action.payload && action.payload[0], 'payloaddata')
     switch (action.type) {
-        // cases for signup
-        case REQUEST_FOR_REGISTER:
-            return {
-            }
+        
         case SUCCESS_REGISTER:
             return {
                 ...state,
                 user: action.user,
-            }
-        case FAILURE_REGISTER:
-            return {
             }
         default: return state
             break;
@@ -53,14 +67,19 @@ export const LoginReducer = (state = { initialState }, action) => {
     switch (action.type) {
         case REQUEST_FOR_LOGIN:
             return {
+                ...state,
+                isLogin: false
             }
         case SUCCESS_LOGIN:
             return {
                 ...state,
                 Loginuser: action.Loginuser,
+                isLogin: true, 
             }
         case FAILURE_LOGIN:
             return {
+                ...state,
+                isLogin:false,
             }
         default: return state
             break;
@@ -68,74 +87,85 @@ export const LoginReducer = (state = { initialState }, action) => {
 }
 export const StartCampaignReducer = (state = { initialState }, action) => {
     switch (action.type) {
-        case REQUEST_FOR_START:
-            return {
-            }
-        case SUCCESS_START:
+        case SUCCESS_START_CAMPAIGN:
             return {
                 ...state,
-                data: action.data,
-            }
-        case FAILURE_START:
-            return {
+                startCampaignData: action.data,
             }
         default: return state
             break;
     }
 }
 export const RecipientReducer = (state = { initialState }, action) => {
+    console.log('action',action.recipientData)
+
     switch (action.type) {
-        case REQUEST_FOR_RECIPIENT:
-            return {
-            }
         case SUCCESS_RECIPIENT:
             return {
                 ...state,
-                formData: action.formData,
-            }
-        case FAILURE_RECIPIENT:
-            return {
+                recipientData: action.recipientData,
             }
         default: return state
             break;
     }
 }
+export const CamapignSendReducer=(state = { initialState }, action)=>{
+    switch (action.type) {
+    case SUCCESS_SEND_CAMPAIGN:
+        return {
+            ...state,
+            sendData: action.sendData,
+        }
+    default: return state
+        break;
+    }
+}
+export const CamapignSaveReducer=(state = { initialState }, action)=>{
+    switch (action.type) {
+    case SUCCESS_SAVE_CAMPAIGN:
+        return {
+            ...state,
+            saveData: action.saveData,
+        }
+    default: return state
+        break;
+    }
+}
 export const MailSenderReducer = (state = { initialState }, action) => {
     switch (action.type) {
-        case REQUEST_FOR_MAIL_SENDER:
-            return {
-            }
         case SUCCESS_MAIL_SENDER:
             return {
                 ...state,
                 mailData: action.mailData,
             }
-        case FAILURE_MAIL_SENDER:
-            return {
-            }
+        case SUCCESS_MAIL_ACCOUNT_UPDATE:
+            return{
+                ...state
+            } 
+        case FAILURE_MAIL_ACCOUNT_UPDATE:
+            return{
+                ...state
+            }  
         default: return state
             break;
     }
 }
 export const MailGetDataReducer = (state = { initialState }, action) => {
     switch (action.type) {
-        case REQUEST_FOR_MAIL_GET_DATA:
-            return {
-            }
         case SUCCESS_MAIL_GET_DATA:
             return {
                 ...state,
-                mailGetData: action.mailGetData,
+                mailGetData: action.payload,
             }
-        case FAILURE_MAIL_GET_DATA:
-            return {
-            }
+            case SUCCESS_MAIL_ACCOUNT_DELETE:
+                return {
+                    ...state
+                }
         default: return state
             break;
     }
 }
 export const UnsubscribeReducer = (state = { initialState }, action) => {
-    console.log(action.payload, "action.payload", state.unsubscribeData)
     switch (action.type) {
         case SUCCESS_FETCH_UNSUBSCRIPTION:
             return {
@@ -145,5 +175,98 @@ export const UnsubscribeReducer = (state = { initialState }, action) => {
         default: return state
             break;
     }
+}
 
+// CAMPAIGN OPTION REDUCER
+export const CampaignOptionReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case REQUEST_FOR_OPTION:
+            return {
+            }
+        case SUCCESS_OPTION:
+            return {
+                ...state,
+                optionData: action.data,
+            }
+        default: return state
+            break;
+    }
+}
+
+// PROSPECT_TABLE_DATA
+export const ProspectsGetReducer = (state = { initialState }, action) => {
+    switch (action.type) {
+        case  FETCH_PROSPECTS:{
+            
+        }
+        case SUCCESS_FETCH_PROSPECTS:
+            return {
+                ...state,
+                prospectData: action.prospectData,
+            }
+        default: return state
+            break;
+    }
+}
+
+// CAMPAIGN_PREVIEW_DATA
+export const CampaignPreviewGetReducer = (state = { initialState }, action) => {
+    console.log(action.CampaignPreviewData && action.CampaignPreviewData.campaign,' action.CampaignPreviewData')
+    switch (action.type) {
+        case REQUEST_FOR_CAMPAIGN_CREATE_PREVIEW:
+            return {
+            }
+        case SUCCESS_FETCH_CAMPAIGN_CREATE_PREVIEW:
+            return {
+                ...state,
+                CampaignPreviewData: action.CampaignPreviewData,
+            }
+        case FAILURE_FETCH_CAMPAIGN_CREATE_PREVIEW:
+            return {
+                
+            }
+        default: return state
+            break;
+    }
+}
+
+
+// CAMPAIGN_PREVIEW_UPDATE_DATA 
+export const CampaignPreviewUpdateReducer = (state = { initialState }, action) => {
+    // console.log(action.CampaignPreviewData && action.CampaignPreviewData.campaign,' action.CampaignPreviewData')
+    switch (action.type) {
+        case SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW:
+            return {
+                ...state,
+                campaignPreviewUpdateData: action.campaignPreviewUpdateData,
+            }
+        case FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW:
+            return {
+                
+            }
+        default: return state
+            break;
+    }
+}
+
+
+// CAMPAIGN_OVERVIEW_DATA
+export const CampaignOverviewReducer = (state = { initialState }, action) => {
+    // console.log(action.CampaignPreviewData && action.CampaignPreviewData.campaign,' action.CampaignPreviewData')
+    switch (action.type) {
+        case REQUEST_FOR_CAMPAIGN_OVERVIEW:
+            return {
+            }
+        case SUCCESS_CAMPAIGN_OVERVIEW:
+            return {
+                ...state,
+                CampaignOverviewData: action.CampaignOverviewData,
+            }
+        case  FAILURE_CAMPAIGN_OVERVIEW:
+            return {
+                
+            }
+        default: return state
+            break;
+    }
 }
