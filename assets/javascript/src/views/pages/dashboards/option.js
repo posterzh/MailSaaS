@@ -36,7 +36,7 @@ class Option extends Component {
         event.preventDefault();
         console.log(this.state)
         const optionData = {
-            campaign: 2,
+            campaign:2,
             track_Opens: this.state.trackopen,
             track_LinkClick: this.state.tracklinkclicks,
             schedule_send: this.state.schedulesend,
@@ -45,6 +45,7 @@ class Option extends Component {
             terms_and_laws: this.state.termsandlaws
         }
         this.props.CampaignOptionAction(optionData)
+        // console.log("checking id for option of start",this.optionData.campaign)
     }
     render() {
         // console.log("trackopen",this.state.trackopen)
@@ -101,7 +102,7 @@ class Option extends Component {
                                 </Row>
                                 <Row >
                                     <div>
-                                        <span className="recipient_condition">When does a recipient become a lead?</span>
+                                        <span className="recipient_condition">When does a recipient become a lead>>>>>>>>>>>>>>>>>>>>>>>>>?</span>
                                         <div>
                                             <div className="recipient_replies">
                                                 <span style={{ display: "flex" }}>
@@ -109,18 +110,13 @@ class Option extends Component {
                                                     <span className="numberof_replieslabel" ># of times</span>
                                                 </span>
                                                 <div style={{ display: "flex", flexDirection: "row" }}>
-                                                    {/* <span className="replies_selectbox"> */}
                                                     <select>
                                                         <option value="" >Replies</option>
                                                         <option value="" >Opens</option>
                                                         <option value="" >Click any link</option>
                                                         <option value="" >Click apecific link</option>
                                                     </select>
-                                                    {/* </span> */}
-                                                    {/* <span className="numberof_replieslabel"># of times</span> */}
-                                                    {/* <span className="numberof_repliesinput"> */}
                                                     <input type="text" />
-                                                    {/* </span> */}
                                                     <span className="delete_icon"><i className="fa fa-trash"></i></span>
                                                 </div>
                                             </div>
@@ -146,7 +142,7 @@ class Option extends Component {
                                 <Row>
                                     <div>
                                         <input type="checkbox" name='termsandlaws' defaultChecked={this.state.termsandlaws} onClick={this.handleChange} required/>
-                                        <span>I'll obey pertinent laws and I've read these< a href="www.google.com"> important notes.</a>
+                                        <span>I'll obey pertinent laws and I've read theshsdasdsade< a href="www.google.com"> important notes.</a>
                                         </span>
                                     </div>
                                 </Row>
@@ -162,13 +158,12 @@ class Option extends Component {
     }
 }
 const mapStateToProps = (state) => {
+    console.log("===================>",state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id)
     return {
-        
+        startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id        
     };
 };
 const mapDispatchToProps = dispatch => ({
-    CampaignOptionAction: optionData => {
-        dispatch(CampaignOptionAction(optionData));
-    },
+    CampaignOptionAction: (optionData) => { dispatch(CampaignOptionAction(optionData));},
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Option)

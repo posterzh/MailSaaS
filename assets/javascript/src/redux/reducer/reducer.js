@@ -34,7 +34,7 @@ import {
 const initialState = {
     Loginuser: '',
     user: '',
-    startCampaignData: '',
+    startCampaignData: [],
     recipientData: '',
     mailGetData: [],
     mailData: '',
