@@ -35,6 +35,12 @@ import Unsubscribes from "./views/pages/Unsubscribes/Unsubscribes";
 import ConversionTracking from "./views/pages/Extension/ConversionTracking";
 import SendingCalender from "./views/pages/Campaing/SedingCalender";
 import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
+import NewCampaign_start from "./views/pages/dashboards/NewCampaign_start";
+import NewCampaign_recipients from "./views/pages/dashboards/NewCampaign_recipients";
+import CampaignCompose from "./views/pages/dashboards/NewCampaign_compose"
+import CampaignPreview from "./views/pages/dashboards/NewCampaign_preview"
+import CampaignOption from "./views/pages/dashboards/NewCampaign_options"
+import CampaignSend from "./views/pages/dashboards/NewCampaign_send"
 import Campaign_Details from './views/pages/Campaing/Campaign_details.js'
 
 const routes = [
@@ -46,21 +52,21 @@ const routes = [
     path: "/dashboard",
     layout: "/app/admin",
     component: Dashboard,
-    
+
   },
-// for campaign
+  // for campaign
   {
-    collapse:true,
-    name:"Campaign",
+    collapse: true,
+    name: "Campaign",
     icon: "fa fa-paper-plane text-dark",
     state: "campaign",
-    views:[
+    views: [
       {
         path: "/new-campaign",
         name: "Create Campaign",
         miniName: "CC",
         component: NewCampaign,
-       layout: "/app/admin"
+        layout: "/app/admin"
       },
       {
         path: "/campaign",
@@ -69,148 +75,182 @@ const routes = [
         component: Campaign,
         layout: "/app/admin"
       },
+
+
+      {
+        path: "/CampaignStart",
+        name: "CampaignStart",
+        miniName: "CO",
+        component: NewCampaign_start,
+        layout: "/app/admin"
+      },
+      {
+        path: "/CampaignRecipient",
+        name: "CampaignRecipients",
+        miniName: "CO",
+        component: NewCampaign_recipients,
+        layout: "/app/admin"
+      },
+      {
+        path: "/CampaignCompose",
+        name: "CampaignCompose",
+        miniName: "CO",
+        component: CampaignCompose,
+        layout: "/app/admin"
+      },
+      {
+        path: "/CampaignPreview",
+        name: "CampaignPreview",
+        miniName: "CO",
+        component: CampaignPreview,
+        layout: "/app/admin"
+      },
+      {
+        path: "/CampaignOptions",
+        name: "CampaignOption",
+        miniName: "CO",
+        component: CampaignOption,
+        layout: "/app/admin"
+      },
+      {
+        path: "/CampaignSend",
+        name: "CampaignSend",
+        miniName: "CO",
+        component: CampaignSend,
+        layout: "/app/admin"
+      },
+
+
+
+
+
       {
         path: "/campaign-detail",
         name: "Campaign Details",
         miniName: "CD",
         component: Campaign_Details,
-       layout: "/app/admin"
+        layout: "/app/admin"
       },
       {
         path: "/lead-catcher",
         name: "Lead Catcher",
         miniName: "LC",
         component: LeadCatcher,
-       layout: "/app/admin"
+        layout: "/app/admin"
       },
       {
         path: "/sending-calender",
         name: "Sending Calender",
         miniName: "SC",
         component: SendingCalender,
-       layout: "/app/admin"
-      } ,  
-        
+        layout: "/app/admin"
+      },
+
     ]
   },
 
   // for Prospects
   {
-    collapse:true,
-    name:"Prospects",
+    collapse: false,
+    name: "Prospects",
     icon: "fa fa-users text-dark",
     state: "prospects",
-    views:[
-      {
-        path: "/prospects",
-        name: "Prospects",
-        miniName: "pro",
-        component: Prospects,
-        layout: "/app/admin"
-      }
-    ]
+    path: "/prospects",
+    component: Prospects,
+    layout: "/app/admin"
   },
 
   // for MailAccount
   {
-    collapse:true,
-    name:"Mail Accounts",
+    collapse: false,
+    name: "Mail Accounts",
     icon: "fa fa-envelope text-dark",
     state: "mailAccount",
-    views:[
-      {
-        path: "/mail-account",
-        name: "MailAccount",
-        miniName: "Ma",
-        component: MailAccount,
-       layout: "/app/admin"
-      },
-    ]
+    path: "/mail-account",
+    name: "MailAccount",
+    miniName: "Ma",
+    component: MailAccount,
+    layout: "/app/admin"
   },
   // for TeamSetting
   {
-    collapse:true,
-    name:"Team Settings",
+    collapse: true,
+    name: "Team Settings",
     icon: "fa fa-cogs text-dark",
     state: "teamSetting",
-    views:[
+    views: [
       {
         path: "/setting",
         name: "Setting",
         miniName: "S",
         component: Setting,
-       layout: "/app/admin"
+        layout: "/app/admin"
       },
       {
-      path: "/teammates",
-      name: "Teammates",
-      miniName: "Tm",
-      component: Teammates,
-     layout: "/app/admin"
-    },
-    {
-      path: "/billing",
-      name: "Billing",
-      miniName: "B",
-      component: Billing,
-     layout: "/app/admin"
-    },
-    {
-      path: "/redeem",
-      name: "Redeem",
-      miniName: "R",
-      component: Redeem,
-     layout: "/app/admin"
-    },
+        path: "/teammates",
+        name: "Teammates",
+        miniName: "Tm",
+        component: Teammates,
+        layout: "/app/admin"
+      },
+      {
+        path: "/billing",
+        name: "Billing",
+        miniName: "B",
+        component: Billing,
+        layout: "/app/admin"
+      },
+      {
+        path: "/redeem",
+        name: "Redeem",
+        miniName: "R",
+        component: Redeem,
+        layout: "/app/admin"
+      },
     ]
   },
 
   // for Extension
   {
-      collapse:true,
-      name:"Extension",
-      icon: "fa fa-puzzle-piece text-dark",
-      state: "extensions",
-      views:[
-        {
-          path: "/integrations",
-          name: "Apps & CRMs",
-          miniName: "A&C",
-          component: AppsandCrm,
-         layout: "/app/admin"
-         },
-        {
-          path: "/api",
-          name: "API",
-          miniName: "API",
-          component: Api,
-         layout: "/app/admin"
-        },
-        {
-          path: "/conversionTracking",
-          name: "ConversionTracking",
-          miniName: "CT",
-          component: ConversionTracking,
-         layout: "/app/admin"
-        }
-      ]
+    collapse: true,
+    name: "Extension",
+    icon: "fa fa-puzzle-piece text-dark",
+    state: "extensions",
+    views: [
+      {
+        path: "/integrations",
+        name: "Apps & CRMs",
+        miniName: "A&C",
+        component: AppsandCrm,
+        layout: "/app/admin"
+      },
+      {
+        path: "/api",
+        name: "API",
+        miniName: "API",
+        component: Api,
+        layout: "/app/admin"
+      },
+      {
+        path: "/conversionTracking",
+        name: "ConversionTracking",
+        miniName: "CT",
+        component: ConversionTracking,
+        layout: "/app/admin"
+      }
+    ]
   },
 
   // for Unsubscribes
   {
-    collapse:true,
-    name:" Unsubscribes",
+    collapse: false,
+    name: " Unsubscribes",
     icon: "fa fa-user-alt-slash text-orange",
     state: "unsubscribe",
-    views:[
-      {
-        path: "/unsubscribes",
-        name: "Unsubscribes",
-        miniName: "Us",
-        component:Unsubscribes,
-       layout: "/app/admin"
-      },
-    ]
+    path: "/unsubscribes",
+    miniName: "Us",
+    component: Unsubscribes,
+    layout: "/app/admin"
   },
 
   {
@@ -252,19 +292,19 @@ const routes = [
         name: "Timeline",
         miniName: "T",
         component: Timeline,
-       layout: "/app/admin"
+        layout: "/app/admin"
       },
       {
         path: "/profile",
         name: "Profile",
         miniName: "P",
         component: Profile,
-       layout: "/app/admin"
+        layout: "/app/admin"
       },
-      
+
     ]
   },
- 
+
 ];
 
 export default routes;

@@ -1,7 +1,9 @@
-import { options } from 'dropzone';
+// import { options } from 'dropzone';
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { Container, Row, Col, Button, Input, Form } from 'reactstrap'
+import { Container, Row, Col, Button, Input,Nav, Form } from 'reactstrap';
+import { Link, Route } from 'react-router-dom';
+
 import { RecipientAction, StartCampaignAction } from "../../../redux/action/CampaignAction";
 import Csvfile from './csvfile'
 
@@ -12,7 +14,6 @@ class NewCampaign_recipients extends Component {
             show: false,
             csvFile: '',
             email: [],
-            campaign: 26,
             options: []
         }
     }
@@ -46,7 +47,7 @@ class NewCampaign_recipients extends Component {
             // csvfile_op1:this.state.csvFile,
             option: `[${this.state.options}]`,
             email: `["${this.state.email}"]`,
-            campaign: this.state.campaign
+            campaign: this.props.startCampaignId
         }
         const token = localStorage.getItem('access_token')
         this.props.RecipientAction(recipientData, token)
@@ -54,9 +55,42 @@ class NewCampaign_recipients extends Component {
     render() {
         const { show } = this.state;
         return (
-            <div>
+            <div className='main-view'>
                 <div style={{ height: 800, width: '100%', backgroundColor: "#eee" }}>
                     <Container fluid>
+                    <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
+                            <Col style={{ display: 'flex', alignItems: 'center' }}>
+                                <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
+                                    <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
+                                        <span style={{ color: 'black', fontSize: '20px' }}>MailSaaaS</span></div>
+                                </div>
+                            </Col>
+                            <Col >
+                                <h1 style={{ textAlign: 'center', fontSize: '60px', color: "#333333" }}>New Campaign</h1>
+                            </Col>
+                            <Col style={{ display: "flex", flexDirection: "row-reverse" }}>
+                                <div className='mt-3'>
+                                    <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
+                                        <span><i className="fa fa-question-circle-o fa-lg" aria-hidden="true"></i></span>
+                                    </a>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
+                            <Col style={{ display: "flex" }}><Nav className='mx-auto' navbar>
+                                <Row className='mx-auto' style={{ width: '100%' }}>
+                                    <ul style={{ listStyleType: 'none', display: 'flex' }}>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignRecipient">RECIPICIENT</Link></li>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignCompose">COMPOSE</Link></li>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignPreview">PREVIEW</Link></li>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignOptions">OPTIONS</Link></li>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignSend">SEND</Link></li>
+                                    </ul>
+                                </Row>
+                            </Nav>
+                            </Col>
+                        </Row>
                         <Row>
                             <Col md='12' style={{ backgroundColor: "#eee" }}>
                                 <Form onSubmit={this.handleSubmit}>
@@ -70,14 +104,12 @@ class NewCampaign_recipients extends Component {
                                                     <div className="option1_container">
                                                         <Row className='mt-3'>
                                                             <Col md='3'><span className="option1">OPTION #1</span></Col>
-                                                            <Col md='9'>
-                                                                <Row>
-                                                                    <span className="csv_logo"><i className="fa fa-file" aria-hidden="true"></i></span>
-                                                                    <span className="csv_logo_text">Drop a CSV file here</span>
-                                                                    <input type='file' name='csvFile' value={this.state.csvFile} onChange={this.handleChange}></input>
-                                                                </Row>
-                                                                <Row><span>Campaigns are limited to 5k recipients; uploads to 1MB.</span></Row>
-                                                            </Col>
+                                                            <Col md='9'><Row>
+                                                                <span className="csv_logo"><i class="fa fa-file" aria-hidden="true"></i></span>
+                                                                <span className="csv_logo_text">Drop a CSV file here</span>
+                                                                {/* < Csvfile /> */}
+                                                                <span className="choose_option"><Input type='file' name='csvFile' onChange={this.handleChange}>(or choose one)</Input></span></Row>
+                                                                <Row><span>Campaigns are limited to 5k recipients; uploads to 1MB.</span></Row></Col>
                                                         </Row>
                                                         <Row className='mt-5'>
                                                             <Col md='3' className="option1"><span>OPTION #2</span></Col>
@@ -102,7 +134,9 @@ class NewCampaign_recipients extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    return { startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id };
+    return {
+        startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id,
+    };
 };
 const mapDispatchToProps = dispatch => ({
     RecipientAction: (recipientData, token) => { dispatch(RecipientAction(recipientData, token)) },

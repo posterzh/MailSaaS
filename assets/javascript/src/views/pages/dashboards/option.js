@@ -36,9 +36,9 @@ class Option extends Component {
         event.preventDefault();
         console.log(this.state)
         const optionData = {
-            campaign: 1,
-            trackOpens: this.state.trackopen,
-            trackLinkClick: this.state.tracklinkclicks,
+            campaign: 2,
+            track_Opens: this.state.trackopen,
+            track_LinkClick: this.state.tracklinkclicks,
             schedule_send: this.state.schedulesend,
             schedule_date: this.state.date,
             schedule_time: `${this.state.time}${':00'}`,
@@ -145,7 +145,7 @@ class Option extends Component {
                                 </Row>
                                 <Row>
                                     <div>
-                                        <input type="checkbox" name='termsandlaws' defaultChecked={this.state.termsandlaws} onClick={this.handleChange} />
+                                        <input type="checkbox" name='termsandlaws' defaultChecked={this.state.termsandlaws} onClick={this.handleChange} required/>
                                         <span>I'll obey pertinent laws and I've read these< a href="www.google.com"> important notes.</a>
                                         </span>
                                     </div>

@@ -31,7 +31,7 @@ class Admin extends React.Component {
   };
   componentDidMount(event) {
     var token = localStorage.getItem('access_token')
-    // Api.CampaignComposeApi(token, {})
+    Api.CampaignComposeApi(token, {})
     // Api.CampaignPreviewApi(token,{})
     // Api.CampaignSaveApi(token, {})
     // Api.CampaignLeadcatcher(token, {})
@@ -53,8 +53,8 @@ class Admin extends React.Component {
    
     // Api.UnsubscribeDelete(token,{})
        
-    // Api.demostart(token,{})
-    // Api.demorecipient(token,{})
+    Api.demostart(token,{})
+    Api.demorecipient(token,{})
 
 
 
