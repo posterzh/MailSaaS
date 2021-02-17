@@ -1,86 +1,108 @@
 import React, { Component } from 'react'
-import { Container, Row, Button, Input, Col, Form,Nav } from 'reactstrap';
+import { Container, Row, Button, Input, Col, Form, Nav } from 'reactstrap';
 import { Editor } from 'react-draft-wysiwyg';
-import { Link, Route } from 'react-router-dom';
-import { EditorState, convertToRaw } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
+import { Link } from 'react-router-dom';
+import { EditorState } from 'draft-js';
 import FollowUpPage from './FollowUpPage';
 import Drips from './Drips'
 import LinkClicksPage from './LinkClicksPage'
-export default class CampaignCompose extends Component {
+import { connect } from 'react-redux';
+import { CampaignComposeAction } from '../../../redux/action/CampaignAction';
+import { Alert } from 'reactstrap';
+class CampaignCompose extends Component {
     constructor() {
         super();
         this.state = {
             subject: '',
-            msgBody: '',
+            email_body: '',
             editorState: EditorState.createEmpty(),
             inputListFollow: [],
             inputListDrips: [],
             inputListLinkClick: [],
-            followUpPageObject: {},
-            arra:[],
-            array:[]
-
+            dataObj: {},
+            arra: [],
+            followUpData: [],
+            dripData: [],
+            onClickData: [],
+            dripPageObject: {},
+            normalData: {},
+            isOpen:false
         }
-        this.counter=0
+        this.counter = 0
     }
-    componentDidMount(){
-        console.log("compose")
-    }
-    handleChange = (e) => {
+
+    handleSubject = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         })
+        Object.assign(this.state.normalData, { 'subject': e.target.value })
     }
-    
-    handleFolloUpPage = () =>{
-        this.setState({
-            inputListFollow: this.state.inputListFollow.push(followUpPageObject)
-            })
-            arra.push(followUpPageObject);
-    }
-            
-            
     onAddBtnClickFollow = () => {
         const inputListFollow = this.state.inputListFollow;
-        this.counter=this.counter+1
-
+        this.counter = this.counter + 1
+        this.state.counter === 0 ? null : this.state.followUpData.push(this.state.dataObj)
         this.setState({
-            inputListFollow: inputListFollow.concat(<FollowUpPage msgBody={this.state.msgBody}  followUpPageObject={this.state.followUpPageObject} normalSubject={this.state.subject} key={inputListFollow.length} />),
+            dataObj: {},
+            inputListFollow: inputListFollow.concat(<FollowUpPage msgBody={this.state.msgBody} followUpPageObject={this.state.dataObj} normalSubject={this.state.subject} key={inputListFollow.length} />),
         });
-        this.state.counter===0? null:this.state.array.push( this.state.followUpPageObject)
-        
     }
     onAddBtnClickDrips = () => {
         const inputListDrips = this.state.inputListDrips;
+        this.counter = this.counter + 1
+        this.state.counter === 0 ? null : this.state.dripData.push(this.state.dataObj)
         this.setState({
-            inputListDrips: inputListDrips.concat(<Drips key={inputListDrips.length} />)
-        }, () => { });
+            dataObj: {},
+            inputListDrips: inputListDrips.concat(<Drips dripPageObject={this.state.dataObj} key={inputListDrips.length} />)
+        });
     }
     onAddBtnClickLinkClick = () => {
         const inputListLinkClick = this.state.inputListLinkClick;
+        const inputListDrips = this.state.inputListDrips;
+        this.counter = this.counter + 1
+        this.state.counter === 0 ? null : this.state.onClickData.push(this.state.dataObj)
         this.setState({
-            inputListLinkClick: inputListLinkClick.concat(<LinkClicksPage key={inputListLinkClick.length} />)
-        }, () => { });
+            dataObj: {},
+            inputListLinkClick: inputListLinkClick.concat(<LinkClicksPage onClickPageObject={this.state.dataObj} key={inputListLinkClick.length} />)
+        });
     }
     onEditorStateChange = (editorState) => {
         this.setState({ editorState })
     }
     handleSubmit = (e) => {
         e.preventDefault()
-        console.log(this.state)
+        if(this.state.email_body===''){
+         this.setState({
+             isOpen:true
+         })   
+        }
+        else{
+        Object.assign(this.state.normalData, { 'campaign': this.props.history.location.state.mailGetData && this.props.history.location.state.mailGetData[0].id })
+        let data = {
+            normal: this.state.normalData,
+            follow_up: this.state.followUpData,
+            drips: this.state.dripData,
+            onLinkClick: this.state.onClickData
+        }
+        this.props.CampaignComposeAction(data,this.props)
+    }
+
     }
     onChange = (e) => {
         this.setState({ msgBody: e.blocks[0].text })
     }
+    handleMsgBody = (e) => {
+        this.setState({
+            email_body: e.blocks[0].text,
+            isOpen:false
+        })
+        Object.assign(this.state.normalData, { 'email_body': e.blocks[0].text })
+    }
     render() {
         const { editorState } = this.state;
-        console.log(this.state.array,"this.state.array")
         return (
             <div>
                 <div className='main-view'>
-                    <Form onSubmit={this.handleSubmit}>
+                    <Form onSubmit={this.handleSubmit} >
                         <Container fluid>
                             <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
                                 <Col style={{ display: 'flex', alignItems: 'center' }}>
@@ -127,7 +149,7 @@ export default class CampaignCompose extends Component {
                                     <Row>
                                         <div className='grand_parent'>
                                             <div className='input_field'>
-                                                <Input type='text' className='in' name='subject' value={this.state.subject} onChange={this.handleChange} placeholder='Subject' required />
+                                                <Input type='text' className='in' name='subject' value={this.state.subject} onChange={this.handleSubject} placeholder='Subject' required />
                                                 <div className='mt-3'>
                                                     <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                                         <span><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -144,12 +166,11 @@ export default class CampaignCompose extends Component {
                                                 toolbarClassName="rdw-storybook-toolbar"
                                                 wrapperClassName="rdw-storybook-wrapper"
                                                 editorClassName="rdw-storybook-editor"
-                                                name='msgBody'
-                                                value={this.state.msgBody}
-                                                onChange={this.onChange}
+                                                name='email_body'
+                                                value={this.state.email_body}
+                                                onChange={this.handleMsgBody}
                                                 onEditorStateChange={this.onEditorStateChange}
                                                 required
-
                                             />
                                         </div>
                                     </Row>
@@ -192,8 +213,20 @@ export default class CampaignCompose extends Component {
                             </Row>
                         </Container>
                     </Form>
+                    <div style={{display:'flex',justifyContent:'center',position:'absolute',bottom:0,right:10}}>
+                        <Alert className="alert_" toggle={()=>{this.setState({isOpen:false})}}  isOpen={this.state.isOpen} color="warning">Initial message must have a body</Alert>
+                    </div>
                 </div>
             </div>
         )
     }
 }
+const mapStateToProps = (state) => {
+    return {
+        campaign: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id
+    }
+}
+const mapDispatchToProps = (dispatch) => ({
+    CampaignComposeAction: (data,props) => dispatch(CampaignComposeAction(data,props))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(CampaignCompose);

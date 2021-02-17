@@ -10,11 +10,44 @@ export default class FollowUpPage extends React.Component {
         super();
         this.state = {
             editorState: EditorState.createEmpty(),
+            subject: '',
+            waitDays: 0,
+            body: '',
+            url:''
         }
     }
     onEditorStateChange = (editorState) => {
-        console.log('editorState', editorState.getCurrentContent())
         this.setState({ editorState })
+    }
+    handleChangeBody = (event) => {
+        this.setState({
+            body: event.blocks[0].text
+        })
+        console.log( event.blocks[0].text)
+        Object.assign(this.props.onClickPageObject, { 'email_body': event.blocks[0].text })
+    }
+    handleSubject = (event) => {
+        this.setState({
+            subject: event.target.value
+        })
+        console.log(  event.target.value )
+
+        Object.assign(this.props.onClickPageObject, { 'subject': event.target.value })
+    }
+
+    handleWaitDays = (event) => {
+        this.setState({
+            waitDays: event.target.value
+        })
+        console.log(  event.target.value )
+        Object.assign(this.props.onClickPageObject, { 'waitDays': event.target.value })
+    }
+    onUrlChange=(event)=>{
+        this.setState({
+            url: event.target.value
+        })
+        console.log(  event.target.value )
+        Object.assign(this.props.onClickPageObject, { 'url': event.target.value })
     }
     render() {
         const { editorState } = this.state;
@@ -34,17 +67,17 @@ export default class FollowUpPage extends React.Component {
                             <Row>
                                 <Col md='4'>
                                     <label className='filter_app_new'>Wait X days</label><br></br>
-                                    <input type='text'></input>
+                                    <input value={this.state.waitDays} onChange={this.handleWaitDays} type='number'></input>
                                 </Col>
                                 <Col md='8'>
-                                    <Input type='email' className='in mt-3' style={{ borderBottom: '1px solid' }} placeholder='Clicked link url must exactly match:' required />
+                                    <Input type='text' onChange={this.onUrlChange} value={this.state.url} className='in mt-3' style={{ borderBottom: '1px solid' }} placeholder='Clicked link url must exactly match:' required />
                                 </Col>
                             </Row>
                             <Row></Row>
                             <Row className='mt-3'>
                                 <div className='grand_parent'>
                                     <div className='input_field'>
-                                        <Input type='email' className='in' placeholder='Subject' required />
+                                        <Input type='text' onChange={this.handleSubject} value={this.state.subject} className='in' placeholder='Subject' required />
                                         <div className='mt-3'>
                                             <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                                 <span><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -56,6 +89,8 @@ export default class FollowUpPage extends React.Component {
                             <Row className='mt-3'>
                                 <div className='Editor_div'>
                                     <Editor
+                                        value={this.state.body}
+                                        onChange={this.handleChangeBody}
                                         className='editorDiv'
                                         editorState={editorState}
                                         toolbarClassName="rdw-storybook-toolbar"

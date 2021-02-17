@@ -10,7 +10,7 @@ class NewCampaign_start extends React.Component {
         super(props);
         this.state = {
             title: '',
-            from_address: 12,
+            from_address: this.props.mailGetData&&this.props.mailGetData[0].id,
         }
     }
     handleChange = (e) => {
@@ -20,7 +20,6 @@ class NewCampaign_start extends React.Component {
     }
     componentDidMount() {
         this.props.MailGetDataAction();
-        console.log("starr")
     }
     handleSubmit = (e) => {
         e.preventDefault();
@@ -59,7 +58,12 @@ class NewCampaign_start extends React.Component {
                                     <ul style={{ listStyleType: 'none', display: 'flex' }}>
                                         <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
                                         <li className='mr-3 ml-3'><Link to="/app/admin/CampaignRecipient">RECIPICIENT</Link></li>
-                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignCompose">COMPOSE</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname:"/app/admin/CampaignCompose",
+                                            state:{
+                                                mailGetData:this.props.mailGetData
+                                            }
+                                        }}>COMPOSE</Link></li>
                                         <li className='mr-3 ml-3'><Link to="/app/admin/CampaignPreview">PREVIEW</Link></li>
                                         <li className='mr-3 ml-3'><Link to="/app/admin/CampaignOptions">OPTIONS</Link></li>
                                         <li className='mr-3 ml-3'><Link to="/app/admin/CampaignSend">SEND</Link></li>
@@ -106,7 +110,7 @@ class NewCampaign_start extends React.Component {
 }
 const mapStateToProps = (state) => {
     return {
-        mailGetData: state.MailGetDataReducer.mailGetData
+        mailGetData: state.MailGetDataReducer.mailGetData,
     };
 };
 const mapDispatchToProps = dispatch => ({
