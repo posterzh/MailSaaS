@@ -20,6 +20,7 @@ class NewCampaign_start extends React.Component {
     }
     componentDidMount() {
         this.props.MailGetDataAction();
+        console.log("starr")
     }
     handleSubmit = (e) => {
         e.preventDefault();

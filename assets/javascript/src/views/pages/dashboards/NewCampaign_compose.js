@@ -20,8 +20,13 @@ export default class CampaignCompose extends Component {
             inputListLinkClick: [],
             followUpPageObject: {},
             arra:[],
+            array:[]
 
         }
+        this.counter=0
+    }
+    componentDidMount(){
+        console.log("compose")
     }
     handleChange = (e) => {
         this.setState({
@@ -39,9 +44,13 @@ export default class CampaignCompose extends Component {
             
     onAddBtnClickFollow = () => {
         const inputListFollow = this.state.inputListFollow;
+        this.counter=this.counter+1
+
         this.setState({
-            inputListFollow: inputListFollow.concat(<FollowUpPage msgBody={this.state.msgBody}  followUpPageObject={this.state.followUpPageObject} normalSubject={this.state.subject} key={inputListFollow.length} />)
+            inputListFollow: inputListFollow.concat(<FollowUpPage msgBody={this.state.msgBody}  followUpPageObject={this.state.followUpPageObject} normalSubject={this.state.subject} key={inputListFollow.length} />),
         });
+        this.state.counter===0? null:this.state.array.push( this.state.followUpPageObject)
+        
     }
     onAddBtnClickDrips = () => {
         const inputListDrips = this.state.inputListDrips;
@@ -67,7 +76,7 @@ export default class CampaignCompose extends Component {
     }
     render() {
         const { editorState } = this.state;
-        console.log(this.state.followUpPageObject,"this.state.followUpPageObject")
+        console.log(this.state.array,"this.state.array")
         return (
             <div>
                 <div className='main-view'>
