@@ -9,7 +9,7 @@ class UnsubscribeEmail(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     email = models.EmailField(_("Email Account"))
     mail_account = models.CharField(max_length=100,blank=True)
-    name = models.CharField(max_length=100,blank=True)
+    name = models.CharField(max_length=100,blank=True,default='')
     date= models.DateTimeField(auto_now=True,blank=True)
     on_delete = models.BooleanField(default=False)
 
