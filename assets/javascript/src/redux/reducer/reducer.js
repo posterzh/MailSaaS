@@ -27,7 +27,8 @@ import {
     SUCCESS_SEND_CAMPAIGN,
     REQUEST_FOR_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
-    FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW
+    FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW,
+    SUCCESS_SAVE_CAMPAIGN
 } from "../actionType/actionType";
 
 const initialState = {
@@ -52,7 +53,7 @@ const initialState = {
 export const RegisterReducer = (state = { initialState }, action) => {
     console.log(action.payload && action.payload[0], 'payloaddata')
     switch (action.type) {
-        // cases for signup
+        
         case SUCCESS_REGISTER:
             return {
                 ...state,

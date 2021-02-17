@@ -142,8 +142,8 @@ Api.CampaignUpdatePreviewApi = (token, id) => {
 }
 
 // Campaign save (get)
-Api.CampaignSendGetApi = (id,token) => {
-  console.log('send',id);
+Api.CampaignSendGetApi = (token,id) => {
+  // console.log('send',id);
   return axios({
     method: 'GET',
     url: `${API_BASE_URL}/campaign/savecamp/${id}/`,
@@ -443,15 +443,3 @@ Api.GetAllCampaigns = (token) => {
 }
 
 export default Api;
-
-
-
-
-
-
-
-
-
-
-
-

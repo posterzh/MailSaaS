@@ -1,7 +1,7 @@
 // import { options } from 'dropzone';
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { Container, Row, Col, Button, Input,Nav, Form } from 'reactstrap';
+import { Container, Row, Col, Button, Input, Nav, Form } from 'reactstrap';
 import { Link, Route } from 'react-router-dom';
 
 import { RecipientAction, StartCampaignAction } from "../../../redux/action/CampaignAction";
@@ -44,7 +44,7 @@ class NewCampaign_recipients extends Component {
         }
         else { return false }
         const recipientData = {
-            // csvfile_op1:this.state.csvFile,
+            csvfile_op1: this.state.csvFile,
             option: `[${this.state.options}]`,
             email: `["${this.state.email}"]`,
             campaign: this.props.startCampaignId
@@ -58,7 +58,7 @@ class NewCampaign_recipients extends Component {
             <div className='main-view'>
                 <div style={{ height: 800, width: '100%', backgroundColor: "#eee" }}>
                     <Container fluid>
-                    <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
+                        <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
                             <Col style={{ display: 'flex', alignItems: 'center' }}>
                                 <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
                                     <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
@@ -114,10 +114,6 @@ class NewCampaign_recipients extends Component {
                                                         <Row className='mt-5'>
                                                             <Col md='3' className="option1"><span>OPTION #2</span></Col>
                                                             <Col md='9'><span className="textarea"><textarea type='email' name='email' value={this.state.email} onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>{show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
-                                                        </Row>
-                                                        <Row className='mt-5'>
-                                                            {/* <Col md='3'> <span className="option1">OPTION #3</span></Col> */}
-                                                            {/* <Col md='9'><span className="input_box_csv"><input name='campaign' value={this.state.campaign} onChange={this.handleChange} placeholder='Select an existing list'></input></span></Col> */}
                                                         </Row>
                                                     </div>
                                                 </div>
