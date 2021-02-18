@@ -17,6 +17,34 @@ from apps.users.models import CustomUser
 from .models import EmailAccount
 from .serializers import EmailAccountSerializer
 
+def check_smtp_email(server, port, email, password):
+    import smtplib, ssl
+
+    smtp_server = server
+    port = port  # For starttls
+    sender_email = email
+    password = password
+
+    # Create a secure SSL context
+    context = ssl.create_default_context()
+
+    # Try to log in to server and send email
+    try:
+        server = smtplib.SMTP(smtp_server,port)
+        server.ehlo() # Can be omitted
+        server.starttls(context=context) # Secure the connection
+        server.ehlo() # Can be omitted
+        # server.login(sender_email, password)
+        login_status = server.login(sender_email, password)
+        return login_status
+        # TODO: Send email here
+    except Exception as e:
+        # Print any error messages to stdout
+        print("error = ",e)
+        return str(e)
+    finally:
+        server.quit() 
+
 
 class EmailAccountsView(generics.ListCreateAPIView):
     # serializer_class = EmailAccountSerializer
@@ -26,12 +54,20 @@ class EmailAccountsView(generics.ListCreateAPIView):
     def post(self,request,*args,**kwargs):
         request.data["user"] = request.user.id
         if request.data['smtp_username'] == request.data['email'] and request.data['imap_username'] == request.data['email']:
+            # print(request.data)
             serializer = EmailAccountSerializer(data=request.data)
             if serializer.is_valid():
+                # login_status = check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[1].decode("utf-8")
                 # imap()
-                serializer.save()
+                # print("login_statussssssss",login_status)
+                # print(str(login_status))
+                try:
+                   if check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[1].decode("utf-8") == "Authentication succeeded":
+                        serializer.save()
+                except:
+                    return Response({"message":"Wrong Credentials","sucess":False})
                 return Response({"message":serializer.data,"sucess":True})
-            return Response({'message':'Invalid Serializer',"error":serializer.errors})
+            return Response({'message':serializer.errors,"success":False})
         return Response({"message":"Smtp username and Imap username does not match to email"})
 
     def get(self,request,*args,**kwargs):
@@ -60,7 +96,10 @@ class EmailAccountsUpdateView(generics.UpdateAPIView):
         return Response({"error":serializer.errors})
         
     def delete(self,request,pk,format=None):
-        queryset = EmailAccount.objects.get(id=pk)
+        try:
+            queryset = EmailAccount.objects.get(id=pk)
+        except:
+            return Response({"message":"No Mail Account For this Id"})
         queryset.delete()
         return Response({"message":"Connection Delete Sucessfully","Sucess":True})
 
@@ -214,7 +253,7 @@ def imap():
     imap.login(imap_user, imap_pass)
 
 
-    imap.select('Inbox')
+#     imap.select('Inbox')
 
     tmp, data = imap.search(None, 'ALL')
 

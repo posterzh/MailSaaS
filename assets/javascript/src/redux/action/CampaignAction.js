@@ -47,13 +47,14 @@ export const RecipientSuccess = (recipientData) => {
         type: SUCCESS_RECIPIENT,
         recipientData
     }
-    
+
 }
 // CAMPAIGN_CREATE_PREVIEW
 export const requestForCampaignPreview = () => {
     return {
         type: REQUEST_FOR_CAMPAIGN_CREATE_PREVIEW
-    }}
+    }
+}
 export const CampaignPreviewSuccess = (CampaignPreviewData) => {
     return {
         type: SUCCESS_FETCH_CAMPAIGN_CREATE_PREVIEW,
@@ -74,7 +75,7 @@ export const requestForCampaignPreviewUpdate = () => {
 export const CampaignPreviewUpdateSuccess = (CampaignPreviewData) => {
     return {
         type: SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
-        campaignPreviewUpdateData:  campaignPreviewUpdateData
+        campaignPreviewUpdateData: campaignPreviewUpdateData
     }
 }
 export const CampaignPreviewUpdateFailure = () => {
@@ -184,10 +185,10 @@ export const CampaignOptionAction = (optionData) => {
 export const RecipientAction = (recipientData) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        console.log('this is a token', token)
         Api.RecipientApi(recipientData, token).then(result => {
+            console.log('result========>', result.data)
             dispatch(RecipientSuccess(result.data))
-            console.log(result)
+            // history.push("/Camapin");
         }).catch(err => { console.log(err) })
     }
 }
@@ -204,10 +205,10 @@ export const CampaignTableAction = () => {
         })
     }
 }
-export const CampaignSendAction = () => {
+export const CampaignSendAction = (id) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        Api.CampaignSendGetApi(token,58).then(result => {
+        Api.CampaignSendGetApi(token, id).then(result => {
             dispatch(CampaignSendSuccess(result.data))
             console.log('result', result.data)
         })
@@ -216,14 +217,26 @@ export const CampaignSendAction = () => {
 
 // CAMPAIGN_CREATE_PREVIEW MIDDLEWARE
 export const PreviewCampaignAction = (id) => {
-    console.log(id,'tyertyerId')
+    console.log(id, 'tyertyerId')
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         console.log('this is a token', token)
-        Api.CampaignPreviewApi(token,id).then(result => {
+        Api.CampaignPreviewApi(token, id).then(result => {
             dispatch(CampaignPreviewSuccess(result.data))
         }).catch(err => {
             console.log(err)
+        })
+    }
+}
+export const CampaignSaveAction = (id) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('access_token')
+        Api.CampaignSaveApi(token, id).then(result => {
+            dispatch(CampaignSaveSuccess(result.data))
+            console.log("result.data", result.data)
+        }).catch(err => {
+            console.log(err)
+
         })
     }
 }
@@ -232,23 +245,8 @@ export const PreviewUpdateCampaignAction = () => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         console.log('token:', token)
-        Api.CampaignUpdatePreviewApi(token,2).then(result => {
+        Api.CampaignUpdatePreviewApi(token, 2).then(result => {
             dispatch(CampaignPreviewUpdateSuccess(result.data))
-        }).catch(err => {
-            console.log(err)
-            dispatch(CampaignPreviewUpdateFailure(err))
-        })
-    }
-}
-
-// CAMPIGN_SAVE_ACTION
-export const CampaignSaveAction = (saveData) => {
-    return function (dispatch) {
-        const token = localStorage.getItem('access_token')
-        Api.CampaignSaveApi(saveData, token).then(result => {
-            console.log()
-            dispatch(CampaignSaveSuccess(result.data))
-            console.log("result.data", result.data)
         }).catch(err => {
             console.log(err)
         })

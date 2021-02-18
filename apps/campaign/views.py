@@ -1060,17 +1060,17 @@ class ProspectsView(generics.ListAPIView):
         for serializer_data in serializer.data:
             serializer_data["sent_count"] = 0
 
-        print(serializer.data)
+        # print(serializer.data)
         
         for serializer_data in serializer.data:
             resp = dict(serializer_data)
-            print(resp["sent_count"])
+            # print(resp["sent_count"])
             
             # print(type(resp), resp)
             # print(serializer_data["sent"])
             if not serializer_data["sent"]:
                 resp["sent_count"] += 1
-                print(resp["sent_count"])
+                # print(resp["sent_count"])
                 
         return Response(serializer.data)
 
