@@ -28,7 +28,8 @@ import {
     REQUEST_FOR_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW,
-    SUCCESS_SAVE_CAMPAIGN
+    SUCCESS_SAVE_CAMPAIGN,
+    SUCCESS_FETCH_ONCLICK_PROSPECTS
 } from "../actionType/actionType";
 
 const initialState = {
@@ -44,6 +45,7 @@ const initialState = {
     unsubscribeData: [],
     optionData: '',
     prospectData: [],
+    prospectOnclickData:[],
     mailAccountId: '',
     CampaignOverviewData:[],
     isLogin:false,
@@ -205,6 +207,21 @@ export const ProspectsGetReducer = (state =  initialState , action) => {
             break;
     }
 }
+
+// ONCLICK PROSPECT TABLE DATA
+export const OnclickProspectsReducer = (state =  initialState , action) => {
+    console.log("action======>",action)
+    switch (action.type) {
+        case SUCCESS_FETCH_ONCLICK_PROSPECTS:
+            return {
+                ...state,
+                prospectOnclickData: action.prospectOnclickData,
+            }
+        default: return state
+            break;
+    }
+}
+
 
 // CAMPAIGN_PREVIEW_DATA
 export const CampaignPreviewGetReducer = (state =  initialState , action) => {

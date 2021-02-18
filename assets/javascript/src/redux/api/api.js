@@ -205,12 +205,11 @@ Api.CampaignProspects = (token) => {
   })
 }
 
-// campaign view prospects
-Api.CampaignViewProspects = (token, key) => {
+// ONCLICK PRSPECT
+Api.CampaignOnclickProspects = (id,token) => {
   return axios({
     method: 'GET',
-    url: `${API_BASE_URL}/campaign/prospects/10/`,
-    data: {},
+    url: `${API_BASE_URL}/campaign/prospects/${id}/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }

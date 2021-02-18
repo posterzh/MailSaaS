@@ -1,13 +1,5 @@
 // import React, { Component } from 'react'
-// import {
-//     Container,
-//     Row,
-//     Navbar,
-//     Nav,
-//     NavItem,
-//     NavLink,
-//     NavbarText, Input, Col
-// } from 'reactstrap';
+// import { Container, Row, Nav, Input, Col } from 'reactstrap';
 // import { Editor } from 'react-draft-wysiwyg';
 // import { Link, Route } from 'react-router-dom';
 // import { EditorState, convertToRaw } from 'draft-js';
@@ -15,9 +7,6 @@
 // import htmlToDraft from 'html-to-draftjs';
 // import { PreviewCampaignAction } from "../../../redux/action/CampaignAction"
 // import { connect } from 'react-redux'
-// // import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-// // import Container from 'reactstrap/lib/Container';
-
 // class CampaignPreview extends Component {
 //     constructor() {
 //         super();
@@ -30,8 +19,7 @@
 //         this.setState({ editorState })
 //     }
 //     componentDidMount() {
-//         this.props.PreviewCampaignAction();
-//         console.log("in js file  PreviewCampaignAction", this.props)
+//         this.props.PreviewCampaignAction(this.props.startCampaignId);
 //     }
 //     render() {
 //         const { editorState } = this.state;
@@ -111,38 +99,24 @@
 //                                         </Row>
 //                                     </Row><Col>
 //                                     </Col>
-//                                     {/* </Col> */}
 //                                 </Row>
 //                                 <Row className='mt-5'>
 //                                     <Col style={{ display: "flex", justifyContent: "center" }}><button className='btn startBtn'>Next <i class="fa fa-arrow-right" aria-hidden="true"></i></button></Col>
 //                                 </Row>
-//                                 {/* <Row style={{ display: "flex", justifyContent: "center" }}>Edits are saved as you switch recipents or hit "Next".</Row> */}
 //                             </Col>
 //                         </Row>
 //                     </Container>
 //                     <Container>
 //                         <Row className="mt-3">
-//                                 <Col md='12' className='mx-auto'>
-//                                     <div style={{ backgroundColor: "#005aac", color: "white" }}>
-//                                         {
-//                                             <ul >
-//                                                {this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((e,i)=> <li style={{ color: 'white' }}>{e.email}</li>)}
-//                                                 </ul>
-//                                         }
-//                                     </div>
-
-//                                     <div style={{ backgroundColor: "#005aac", color: "white" }}>
-//                                         <ul>
-//                                         {
-//                                             console.log(this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((e,i)=>e.email)),
-//                                             console.log(this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((e,i)=>e.email_body))
-//                                         }
-//                                         </ul>
-//                                     </div>
-//                                 </Col>
-//                             </Row>
-
-
+//                             <Col md='12' className='mx-auto'>
+//                                 <div style={{ backgroundColor: "#005aac" }}>
+//                                     {<ul>{this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index) => <li key='index' style={{ color: 'white' }}>{item.email}</li>)}</ul>}
+//                                 </div>
+//                                 {/* <div style={{ backgroundColor: "#005aac" }}>
+//                                     {<ul>{this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index) => <li key='index' style={{ color: 'white' }}>{item.subject}</li>)}</ul>}
+//                                 </div> */}
+//                             </Col>
+//                         </Row>
 //                     </Container>
 //                     <Container>
 //                         <Row>
@@ -151,7 +125,11 @@
 //                                     <div><i className="fa fa-envelope-o" aria-hidden="true"></i><label style={{ marginLeft: "5px" }}>Initial campaign email</label></div>
 //                                     <div className='grand_parent'>
 //                                         <div className='input_field'>
-//                                             <Input type='email' className='in' placeholder='Subject' />
+//                                             {/* <Input type='email' className='in' placeholder='Subject'value={this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index)=><p>{item.email}</p>)}  /> */}
+//                                             <Input type='email' className='in' placeholder='Subject'value={this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index) => <p key='index' style={{ color: 'white' }}>{item.subject}</p>)}  />
+//                                             {/* value={this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index)=><p>{item.}</p>} */}
+//                                             {/* this.props.mailGetData&&this.props.mailGetData[0].id */}
+//                                             {/* <div style={{color:'red'}}>{this.props.CampaignPreviewEmails&&this.props.CampaignPreviewEmails.subject}</div> */}
 //                                             <div className='mt-3'>
 //                                                 <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
 //                                                     <span><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -183,12 +161,13 @@
 //                                             wrapperClassName="rdw-storybook-wrapper"
 //                                             editorClassName="rdw-storybook-editor"
 //                                             onEditorStateChange={this.onEditorStateChange}
+//                                             // value={}
 //                                             toolbar={{
 //                                                 link: {
 //                                                     defaultTargetOption: '_blank',
 //                                                 },
 //                                             }}
-//                                         />
+//                                         ></Editor>
 //                                     </div>
 //                                 </Row>
 //                             </Col>
@@ -199,22 +178,23 @@
 //         )
 //     }
 // }
-// // export default CampaignPreview
 // const mapStateToProps = (state) => {
-//     // .CampaignPreviewGetReducer.CampaignPreviewData
-//     console.log("cheking state for previewwwwwwwwwwwwwwwwwwwwwwwww", state.CampaignPreviewGetReducer.CampaignPreviewData);
+//     console.log("cheking state for preview", state.CampaignPreviewGetReducer.CampaignPreviewData);
+//     console.log("cheking now for start data in preview data", state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.campEmail);
+//     console.log("dfgtyhujikrftgyhujirftgyhj============?", state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id)
 //     return {
 //         CampaignPreviewData: state.CampaignPreviewGetReducer.CampaignPreviewData,
 //         CampaignPreviewEmails: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail,
-//         CampaignPreviewBody: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail
+//         // CampaignPeviewSubject:state.CampaignPreviewGetReducer.CampaignPreviewData &&state.CampaignPreviewGetReducer.CampaignPreviewData
+//         CampaignPreviewBody: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail,
+//         startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id,
 //     }
 // }
 // const mapDispatchToProps = dispatch => ({
-//     PreviewCampaignAction: CampaignPreviewData => { dispatch(PreviewCampaignAction(CampaignPreviewData)) },
-//     PreviewUpdateCampaignAction: campaignPreviewUpdateData => { dispatch(PreviewUpdateCampaignAction(campaignPreviewUpdateData)) }
+//     PreviewCampaignAction: (startCampaignId) => { dispatch(PreviewCampaignAction(startCampaignId)) },
+//     PreviewUpdateCampaignAction: campaignPreviewUpdateData => { dispatch(PreviewUpdateCampaignAction(campaignPreviewUpdateData)) },
 // })
 // export default connect(mapStateToProps, mapDispatchToProps)(CampaignPreview)
-
 import React, { Component } from 'react'
 import { Container, Row, Nav, Input, Col } from 'reactstrap';
 import { Editor } from 'react-draft-wysiwyg';
@@ -236,12 +216,10 @@ class CampaignPreview extends Component {
         this.setState({ editorState })
     }
     componentDidMount() {
-        this.props.PreviewCampaignAction(this.props);
+        this.props.PreviewCampaignAction(this.props.startCampaignId);
     }
     render() {
         const { editorState } = this.state;
-        const { CampaignEmail } = this.props;
-        console.log()
         return (
             <div>
                 <div className='main-view'>
@@ -331,6 +309,9 @@ class CampaignPreview extends Component {
                                 <div style={{ backgroundColor: "#005aac" }}>
                                     {<ul>{this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index) => <li key='index' style={{ color: 'white' }}>{item.email}</li>)}</ul>}
                                 </div>
+                                <div style={{ backgroundColor: "#005aac" }}>
+                                    {<ul>{this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index) => <li key='index' style={{ color: 'white' }}>{item.subject}</li>)}</ul>}
+                                </div>
                             </Col>
                         </Row>
                     </Container>
@@ -342,7 +323,7 @@ class CampaignPreview extends Component {
                                     <div className='grand_parent'>
                                         <div className='input_field'>
                                             {/* <Input type='email' className='in' placeholder='Subject'value={this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index)=><p>{item.email}</p>)}  /> */}
-                                            <Input type='email' className='in' placeholder='Subject' value={this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index) => <p key='index' style={{ color: 'white' }}>{item.subject}</p>)} />
+                                            <Input type='email' className='in' placeholder='Subject'value={this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index) => <p key='index' style={{ color: 'white' }}>{item.subject}</p>)}  />
                                             {/* value={this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index)=><p>{item.}</p>} */}
                                             {/* this.props.mailGetData&&this.props.mailGetData[0].id */}
                                             {/* <div style={{color:'red'}}>{this.props.CampaignPreviewEmails&&this.props.CampaignPreviewEmails.subject}</div> */}
@@ -395,18 +376,19 @@ class CampaignPreview extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    console.log("satet----->",state.RecipientReducer.recipientData)
-    
+    console.log("cheking state for preview", state.CampaignPreviewGetReducer.CampaignPreviewData);
+    console.log("cheking now for start data in preview data", state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.campEmail);
+    console.log("dfghjiujhgfhjklkhgf", state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id)
     return {
-        CampaignEmail: state.RecipientReducer.recipientData && state.RecipientReducer.recipientData.email,
         CampaignPreviewData: state.CampaignPreviewGetReducer.CampaignPreviewData,
         CampaignPreviewEmails: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail,
+        // CampaignPeviewSubject:state.CampaignPreviewGetReducer.CampaignPreviewData &&state.CampaignPreviewGetReducer.CampaignPreviewData
         CampaignPreviewBody: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail,
-        recipientId: state.RecipientReducer.recipientData.id,
+        startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id,
     }
 }
 const mapDispatchToProps = dispatch => ({
-    PreviewCampaignAction: (recipientId,props) => { dispatch(PreviewCampaignAction(recipientId,props)) },
+    PreviewCampaignAction: (startCampaignId) => { dispatch(PreviewCampaignAction(startCampaignId)) },
     PreviewUpdateCampaignAction: campaignPreviewUpdateData => { dispatch(PreviewUpdateCampaignAction(campaignPreviewUpdateData)) },
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignPreview)
