@@ -157,7 +157,7 @@ export const CampaignOverviewAction = () => {
 export const StartCampaignAction = (data) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        console.log('this is a token', token)
+        console.log('this is a token', history)
         Api.StartCampaignApi(data, token).then(result => {
             dispatch(StartCampaignSuccess(result.data))
             setTimeout(() => {
