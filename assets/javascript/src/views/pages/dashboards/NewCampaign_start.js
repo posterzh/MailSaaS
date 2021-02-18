@@ -31,7 +31,7 @@ class NewCampaign_start extends React.Component {
             title: this.state.title,
             from_address: this.props.mailGetData && this.props.mailGetData[0].id
         }
-        this.props.StartCampaignAction(data, this.props)
+        this.props.StartCampaignAction(data)
     }
     render() {
         const { mailGetData } = this.props;
@@ -61,16 +61,36 @@ class NewCampaign_start extends React.Component {
                             <Row className='mx-auto' style={{ width: '100%' }}>
                                 <ul style={{ listStyleType: 'none', display: 'flex' }}>
                                     <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignRecipient">RECIPICIENT</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignRecipient",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>RECIPICIENT</Link></li>
                                     <li className='mr-3 ml-3'><Link to={{
                                         pathname: "/app/admin/CampaignCompose",
                                         state: {
                                             mailGetData: this.props.mailGetData
                                         }
                                     }}>COMPOSE</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignPreview">PREVIEW</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignOptions">OPTIONS</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignSend">SEND</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignPreview",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>PREVIEW</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignOptions",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>OPTIONS</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignSend",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>SEND</Link></li>
                                 </ul>
                             </Row>
                         </Nav>
@@ -119,7 +139,7 @@ const mapStateToProps = (state) => {
     };
 };
 const mapDispatchToProps = dispatch => ({
-    StartCampaignAction: (data, props) => { dispatch(StartCampaignAction(data)) },
+    StartCampaignAction: (data) => { dispatch(StartCampaignAction(data)) },
     MailGetDataAction: mailGetData => { dispatch(MailGetDataAction(mailGetData)) },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(NewCampaign_start)
