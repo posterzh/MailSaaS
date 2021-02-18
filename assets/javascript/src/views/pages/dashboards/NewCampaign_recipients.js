@@ -1,4 +1,3 @@
-// import { options } from 'dropzone';
 import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { Container, Row, Col, Button, Input, Nav, Form } from 'reactstrap';
@@ -14,12 +13,13 @@ class NewCampaign_recipients extends Component {
             show: false,
             csvFile: '',
             email: [],
-            options: []
+            options: [],
+            campaign: this.props.history.location.state && this.props.history.location.state.id
         }
     }
     handleChange = (e) => {
         this.setState({
-            [e.target.name]: e.target.value
+            csvFile: e.target.files[0]
         });
     }
     handleSubmit = (e) => {
@@ -47,16 +47,18 @@ class NewCampaign_recipients extends Component {
             csvfile_op1: this.state.csvFile,
             option: `[${this.state.options}]`,
             email: `["${this.state.email}"]`,
-            campaign: this.props.startCampaignId
+            campaign: this.state.campaign
         }
-        const token = localStorage.getItem('access_token')
-        this.props.RecipientAction(recipientData, token)
+        console.log(this.state.csvFile,'file')
+        this.props.RecipientAction(recipientData)
     }
+   
     render() {
         const { show } = this.state;
+        console.log(this.props.location, this.props.campaignDetails, "recipient")
         return (
             <div className='main-view'>
-                <div style={{ height: 800, width: '100%', backgroundColor: "#eee" }}>
+                <div style={{ height: 980, width: '100%', backgroundColor: "#eee" }}>
                     <Container fluid>
                         <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
                             <Col style={{ display: 'flex', alignItems: 'center' }}>
@@ -80,12 +82,38 @@ class NewCampaign_recipients extends Component {
                             <Col style={{ display: "flex" }}><Nav className='mx-auto' navbar>
                                 <Row className='mx-auto' style={{ width: '100%' }}>
                                     <ul style={{ listStyleType: 'none', display: 'flex' }}>
-                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname: "/app/admin/CampaignStart",
+                                            state: {
+                                                id: this.props.history.location.state && this.props.history.location.state.id
+                                            }
+                                        }}>START</Link></li>
                                         <li className='mr-3 ml-3'><Link to="/app/admin/CampaignRecipient">RECIPICIENT</Link></li>
-                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignCompose">COMPOSE</Link></li>
-                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignPreview">PREVIEW</Link></li>
-                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignOptions">OPTIONS</Link></li>
-                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignSend">SEND</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname:
+                                                "/app/admin/CampaignCompose",
+                                            state: {
+                                                id: this.props.history.location.state && this.props.history.location.state.id
+                                            }
+                                        }}>COMPOSE</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname: "/app/admin/CampaignPreview",
+                                            state: {
+                                                id: this.props.history.location.state && this.props.history.location.state.id
+                                            }
+                                        }}>PREVIEW</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname: "/app/admin/CampaignOptions",
+                                            state: {
+                                                id: this.props.history.location.state && this.props.history.location.state.id
+                                            }
+                                        }}>OPTIONS</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname: "/app/admin/CampaignSend",
+                                            state: {
+                                                id: this.props.history.location.state && this.props.history.location.state.id
+                                            }
+                                        }}>SEND</Link></li>
                                     </ul>
                                 </Row>
                             </Nav>
@@ -105,15 +133,14 @@ class NewCampaign_recipients extends Component {
                                                         <Row className='mt-3'>
                                                             <Col md='3'><span className="option1">OPTION #1</span></Col>
                                                             <Col md='9'><Row>
-                                                                <span className="csv_logo"><i class="fa fa-file" aria-hidden="true"></i></span>
+                                                                <span className="csv_logo"><i className="fa fa-file" aria-hidden="true"></i></span>
                                                                 <span className="csv_logo_text">Drop a CSV file here</span>
-                                                                {/* < Csvfile /> */}
-                                                                <span className="choose_option"><Input type='file' name='csvFile' onChange={this.handleChange}>(or choose one)</Input></span></Row>
+                                                                <span className="choose_option"><Input type='file' name='csvFile' value={this.state.value} onChange={this.handleChange}></Input></span></Row>
                                                                 <Row><span>Campaigns are limited to 5k recipients; uploads to 1MB.</span></Row></Col>
                                                         </Row>
                                                         <Row className='mt-5'>
                                                             <Col md='3' className="option1"><span>OPTION #2</span></Col>
-                                                            <Col md='9'><span className="textarea"><textarea type='email' name='email' value={this.state.email} onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>{show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
+                                                            <Col md='9'><span className="textarea"><textarea name='email' value={this.state.email} onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>{show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
                                                         </Row>
                                                     </div>
                                                 </div>
@@ -131,11 +158,12 @@ class NewCampaign_recipients extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id,
+        campaignDetails: state.StartCampaignReducer.startCampaignData.id,
+        mailGetData: state.MailGetDataReducer.mailGetData
     };
 };
 const mapDispatchToProps = dispatch => ({
-    RecipientAction: (recipientData, token) => { dispatch(RecipientAction(recipientData, token)) },
+    RecipientAction: (recipientData) => { dispatch(RecipientAction(recipientData)) },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewCampaign_recipients)

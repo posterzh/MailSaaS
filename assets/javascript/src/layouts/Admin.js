@@ -29,37 +29,6 @@ class Admin extends React.Component {
   state = {
     sidenavOpen: true
   };
-  componentDidMount(event) {
-    var token = localStorage.getItem('access_token')
-    Api.CampaignComposeApi(token, {})
-    // Api.CampaignPreviewApi(token,{})
-    // Api.CampaignSaveApi(token, {})
-    // Api.CampaignLeadcatcher(token, {})
-    // Api.CampaignSavegetApi(token)
-    // Api.CampaignGetOverview(token)                    
-    // Api.CampaignRecipientPeople(token)
-    // Api.CampaignRecipienputPeople(token)
-
-    // Api.CampaignUpdateRecipient(token,{})           not working                                     
-    
-    //  Api.CampaignMessage(token) 
-    // Api.CampaignProspects(token)
-    // Api.CampaignViewProspects(token,{})
-    // Api.UserSetting(token)
-    // Api.UserUpdateSetting(token,{})
-    // Api.ChangePassword(token,{}) 
-   
-    // Api.MailSenderDelete(token)                      not working         
-   
-    // Api.UnsubscribeDelete(token,{})
-       
-    Api.demostart(token,{})
-    Api.demorecipient(token,{})
-
-
-
-  }
-
   componentDidUpdate(e) {
     if (e.history.pathname !== e.location.pathname) {
       document.documentElement.scrollTop = 0;

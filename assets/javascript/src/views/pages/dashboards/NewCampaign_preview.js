@@ -11,8 +11,6 @@ import {
 import { Editor } from 'react-draft-wysiwyg';
 import { Link, Route } from 'react-router-dom';
 import { EditorState, convertToRaw } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
 import { PreviewCampaignAction } from "../../../redux/action/CampaignAction"
 import { connect } from 'react-redux'
 // import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -22,19 +20,22 @@ class CampaignPreview extends Component {
     constructor() {
         super();
         this.state = {
-            editorState: EditorState.createEmpty(),
+            editorState: EditorState.createEmpty()
         }
     }
     onEditorStateChange = (editorState) => {
-        console.log('editorState', editorState.getCurrentContent())
         this.setState({ editorState })
     }
     componentDidMount() {
-        this.props.PreviewCampaignAction();
-        console.log("in js file  PreviewCampaignAction", this.props)
+        console.log(this.props.history.location.state && this.props.history.location.state.id, "preview")
+        let id = this.props.history.location.state && this.props.history.location.state.id
+        this.props.PreviewCampaignAction(id);
     }
     render() {
         const { editorState } = this.state;
+        const { CampaignEmail } = this.props;
+        console.log(this.props.history.location.state && this.props.history.location.state.id, "preview")
+        console.log()
         return (
             <div>
                 <div className='main-view'>
@@ -61,12 +62,37 @@ class CampaignPreview extends Component {
                             <Col style={{ display: "flex" }}><Nav className='mx-auto' navbar>
                                 <Row className='mx-auto' style={{ width: '100%' }}>
                                     <ul style={{ listStyleType: 'none', display: 'flex' }}>
-                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
-                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignRecipient">RECIPICIENT</Link></li>
-                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignCompose">COMPOSE</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname: "/app/admin/CampaignStart",
+                                            state: {
+                                                id: this.props.history.location.state && this.props.history.location.state.id
+                                            }
+                                        }}>START</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname: "/app/admin/CampaignRecipient",
+                                            state: {
+                                                id: this.props.history.location.state && this.props.history.location.state.id
+                                            }
+                                        }}>RECIPICIENT</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname: "/app/admin/CampaignCompose",
+                                            state: {
+                                                id: this.props.history.location.state && this.props.history.location.state.id
+                                            }
+                                        }}>COMPOSE</Link></li>
                                         <li className='mr-3 ml-3'><Link to="/app/admin/CampaignPreview">PREVIEW</Link></li>
-                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignOptions">OPTIONS</Link></li>
-                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignSend">SEND</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname: "/app/admin/CampaignOptions",
+                                            state: {
+                                                id: this.props.history.location.state && this.props.history.location.state.id
+                                            }
+                                        }}>OPTIONS</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname: "/app/admin/CampaignSend",
+                                            state: {
+                                                id: this.props.history.location.state && this.props.history.location.state.id
+                                            }
+                                        }}>SEND</Link></li>
                                     </ul>
                                 </Row>
                             </Nav>
@@ -114,7 +140,12 @@ class CampaignPreview extends Component {
                                     {/* </Col> */}
                                 </Row>
                                 <Row className='mt-5'>
-                                    <Col style={{ display: "flex", justifyContent: "center" }}><button className='btn startBtn'>Next <i class="fa fa-arrow-right" aria-hidden="true"></i></button></Col>
+                                    <Col style={{ display: "flex", justifyContent: "center" }}><Link to={{
+                                        pathname: '/app/admin/CampaignOptions',
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }} className='btn startBtn'>Next <i className="fa fa-arrow-right" aria-hidden="true"></i></Link></Col>
                                 </Row>
                                 {/* <Row style={{ display: "flex", justifyContent: "center" }}>Edits are saved as you switch recipents or hit "Next".</Row> */}
                             </Col>
@@ -151,7 +182,7 @@ class CampaignPreview extends Component {
                                     <div><i className="fa fa-envelope-o" aria-hidden="true"></i><label style={{ marginLeft: "5px" }}>Initial campaign email</label></div>
                                     <div className='grand_parent'>
                                         <div className='input_field'>
-                                            <Input type='email' className='in' placeholder='Subject' />
+                                            <Input type='email' className='in' placeholder='Subject' value={this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index) => <p key='index' style={{ color: 'white' }}>{item.subject}</p>)} />
                                             <div className='mt-3'>
                                                 <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                                     <span><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -201,16 +232,16 @@ class CampaignPreview extends Component {
 }
 // export default CampaignPreview
 const mapStateToProps = (state) => {
-    // .CampaignPreviewGetReducer.CampaignPreviewData
-    console.log("cheking state for previewwwwwwwwwwwwwwwwwwwwwwwww", state.CampaignPreviewGetReducer.CampaignPreviewData);
     return {
+        campaignId:state.StartCampaignReducer.startCampaignData.id,
         CampaignPreviewData: state.CampaignPreviewGetReducer.CampaignPreviewData,
         CampaignPreviewEmails: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail,
         CampaignPreviewBody: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail
     }
 }
 const mapDispatchToProps = dispatch => ({
-    PreviewCampaignAction: CampaignPreviewData => { dispatch(PreviewCampaignAction(CampaignPreviewData)) },
-    PreviewUpdateCampaignAction: campaignPreviewUpdateData => { dispatch(PreviewUpdateCampaignAction(campaignPreviewUpdateData)) }
+    PreviewCampaignAction: (recipientId) => { dispatch(PreviewCampaignAction(recipientId)) },
+    PreviewUpdateCampaignAction: campaignPreviewUpdateData => { dispatch(PreviewUpdateCampaignAction(campaignPreviewUpdateData)) },
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignPreview)
+

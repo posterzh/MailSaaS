@@ -5,7 +5,6 @@ const Api = {}
 Api.RegisterApi = (user) => {
   return axios.post(`${API_BASE_URL}/rest-auth/registration/`, user)
 }
-
 // for login
 Api.LoginApi = (loginuser) => {
   return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser)
@@ -24,11 +23,10 @@ Api.StartCampaignApi = (data, token) => {
     }
   })
 }
-
 // for campaign_recipient 
 Api.RecipientApi = (recipientData, token) => {
   const formData = new FormData();
-  // formData.append('csvfile_op1', recipientData.csvFile);
+  formData.append('csvfile_op1', recipientData.csvfile_op1);
   formData.append('email', recipientData.email);
   formData.append('option', recipientData.option);
   formData.append('campaign', recipientData.campaign)
@@ -63,56 +61,7 @@ Api.CampaignComposeApi = (token, data) => {
   return axios({
     method: 'POST',
     url: `${API_BASE_URL}/campaign/message/`,
-    data: {
-      "normal":
-      {
-        "campaign": 1,
-        "subject": "Sub 1",
-        "email_body": "This is first email body"
-      },
-      "follow_up":
-        [
-          {
-            "waitDays": 5,
-            "subject": "sub F 1",
-            "email_body": "FU email body 1"
-          },
-          {
-            "waitDays": 4,
-            "subject": "sub F 2",
-            "email_body": "FU email body 2"
-          }
-        ],
-      "drips":
-        [
-          {
-            "waitDays": 5,
-            "subject": "sub D 1",
-            "email_body": "Drip email body 1"
-          },
-          {
-            "waitDays": 4,
-            "subject": "sub D 2",
-            "email_body": "Drip email body 2"
-          }
-        ],
-      "onLinkClick":
-        [
-          {
-            "waitDays": 5,
-            "url": "www.google.com",
-            "subject": "sub onLinkClick 1",
-            "email_body": "onLinkClick email body 1"
-          },
-          {
-            "waitDays": 4,
-            "url": "www.google.com",
-            "subject": "sub onLinkClick 2",
-            "email_body": "onLinkClick email body 2"
-          }
-        ]
-
-    },
+    data:data,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -120,10 +69,10 @@ Api.CampaignComposeApi = (token, data) => {
 }
 
 // campaign GET preview
-Api.CampaignPreviewApi = (token, key) => {
+Api.CampaignPreviewApi = (token,id) => {
   return axios({
     method: 'GET',
-    url: `${API_BASE_URL}/campaign/personalize/${key}/`,
+    url: `${API_BASE_URL}/campaign/personalize/${id}/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -143,7 +92,6 @@ Api.CampaignUpdatePreviewApi = (token, id) => {
 
 // Campaign save (get)
 Api.CampaignSendGetApi = (token,id) => {
-  // console.log('send',id);
   return axios({
     method: 'GET',
     url: `${API_BASE_URL}/campaign/savecamp/${id}/`,
@@ -154,11 +102,10 @@ Api.CampaignSendGetApi = (token,id) => {
 }
 
 // campaign_savecampaign (put)
-Api.CampaignSaveApi = (saveData,token) => {
+Api.CampaignSaveApi = (token,id) => {
   return axios({
     method: 'PUT',
-    url: `${API_BASE_URL}/campaign/savecamp/26/`,
-    data:saveData,
+    url: `${API_BASE_URL}/campaign/savecamp/${id}/`,
     headers: {
       "Authorization": `Bearer ${token}`,
 
@@ -203,7 +150,7 @@ Api.CampaignRecipientPeople = (token) => {
 }
 
 // campaign recipient peoples (put)
-Api.CampaignRecipienputPeople = (token) => {
+Api.CampaignRecipienPutPeople = (token) => {
   return axios({
     method: 'Put',
     url: `${API_BASE_URL}/campaign/recipients/people/1/`,
@@ -335,7 +282,6 @@ Api.UnsubscribeDelete = (token, data) => {
       "Authorization": `Bearer ${token}`,
     }
   })
-  // return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser)
 }
 Api.CampaignTableDataApi = (token) => {
   return axios({
@@ -396,42 +342,6 @@ Api.fetchUnsbcribed = (token) => {
     }
   })
 }
-
-
-
-Api.demostart = (token, data) => {
-  return axios({
-    method: 'POST',
-    url: `${API_BASE_URL}/campaign/start/`,
-    data: {
-
-      "title": "campaign",
-      "from_address": 2
-    },
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-
-  })
-}
-Api.demorecipient = (token, data) => {
-  let formdata = new FormData();
-  formdata.append("option", "[2]"),
-    formdata.append("campaign", "3"),
-    formdata.append("email", ["keshav@gmail.com"])
-  return axios({
-    method: 'POST',
-    url: `${API_BASE_URL}/campaign/recipients/`,
-
-    data: formdata,
-
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-
-  })
-}
-
 Api.GetAllCampaigns = (token) => {
   return axios({
     url: `${API_BASE_URL}/campaign/view/`,

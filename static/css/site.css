@@ -19673,7 +19673,8 @@ input:focus {
   font-weight: 400; }
 
 .campaign_navbar {
-  height: 100px;
+  height: auto;
+  width: 100%;
   background-color: #035aac;
   display: flex;
   align-items: center;

@@ -19,7 +19,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createStore } from 'redux'
 // react library for routing
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
 
 // bootstrap rtl for rtl support page
 // // import "assets/vendor/bootstrap-rtl/bootstrap-rtl.scss";
@@ -42,9 +42,10 @@ import AdminLayout from "./layouts/Admin"
 import AuthLayout from "./layouts/Auth"
 import IndexView from "./views/Index.js";
 import store from './redux/store/store'
-
+import { createBrowserHistory } from 'history'
+export const history = createBrowserHistory()
 ReactDOM.render(
-  <BrowserRouter>
+  <Router history={history}>
     <Provider store={store}>
       <Switch>
         <Route path="/app/admin" render={props => <AdminLayout {...props} />} />
@@ -52,7 +53,7 @@ ReactDOM.render(
         <Route path="/app" render={props => <IndexView {...props} />} />
       </Switch>
     </Provider>
-  </BrowserRouter>,
+  </Router>,
   document.getElementById("object-lifecycle-home")
   
 

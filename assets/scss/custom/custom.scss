@@ -72,7 +72,8 @@ input:focus{
     font-weight: 400;
 }
 .campaign_navbar{
-    height: 100px;
+    height: auto;
+    width: 100%;
     background-color: #035aac;
     display: flex;
     // flex-direction: column;
@@ -1709,5 +1710,5 @@ margin-top: 0px !important;
         }
      li:focus,:hover{
         background: #e4e4e4;
-    }
+   }
 }

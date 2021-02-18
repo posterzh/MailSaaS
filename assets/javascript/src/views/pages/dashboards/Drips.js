@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col,Input } from 'reactstrap';
+import { Container, Row, Col, Input } from 'reactstrap';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
@@ -10,11 +10,32 @@ export default class FollowUpPage extends React.Component {
         super();
         this.state = {
             editorState: EditorState.createEmpty(),
+            subject: '',
+            waitDays: 0,
+            body: '',
         }
     }
     onEditorStateChange = (editorState) => {
-        console.log('editorState', editorState.getCurrentContent())
         this.setState({ editorState })
+    }
+    handleChangeBody = (event) => {
+        this.setState({
+            body: event.blocks[0].text
+        })
+        Object.assign(this.props.dripPageObject, { 'email_body': event.blocks[0].text })
+    }
+    handleSubject = (event) => {
+        this.setState({
+            subject: event.target.value
+        })
+        Object.assign(this.props.dripPageObject, { 'subject': event.target.value })
+    }
+
+    handleWaitDays = (event) => {
+        this.setState({
+            waitDays: event.target.value
+        })
+        Object.assign(this.props.dripPageObject, { 'waitDays': event.target.value })
     }
     render() {
         const { editorState } = this.state;
@@ -34,14 +55,14 @@ export default class FollowUpPage extends React.Component {
                             <Row>
                                 <Col md='2' className='WaitDiv'>
                                     <label className='filter_app_new'>Wait X days</label><br></br>
-                                    <input type='number' className='WaitInput'></input>
+                                    <input value={this.state.waitDays} onChange={this.handleWaitDays}  type='number' className='WaitInput'></input>
                                 </Col>
                             </Row>
                             <Row> <p style={{ fontSize: '14px' }}> Drips don't wait on follow-ups. This counts days from your initial message.</p></Row>
                             <Row>
                                 <div className='grand_parent'>
                                     <div className='input_field'>
-                                        <Input type='email' className='in' placeholder='Subject' required />
+                                        <Input type='text' onChange={this.handleSubject} value={this.state.subject} className='in' placeholder='Subject' required />
                                         <div className='mt-3'>
                                             <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                                 <span><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -52,7 +73,10 @@ export default class FollowUpPage extends React.Component {
                             </Row>
                             <Row className='mt-3'>
                                 <div className='Editor_div'>
+                                <div style={{padding:0}} className="btn" onClick={this.onDeleteList}><i style={{padding:5}} className="fa">&#xf014;</i>DELETE</div>
                                     <Editor
+                                        value={this.state.body}
+                                        onChange={this.handleChangeBody}
                                         className='editorDiv'
                                         editorState={editorState}
                                         toolbarClassName="rdw-storybook-toolbar"

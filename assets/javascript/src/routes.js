@@ -39,9 +39,13 @@ import NewCampaign_start from "./views/pages/dashboards/NewCampaign_start";
 import NewCampaign_recipients from "./views/pages/dashboards/NewCampaign_recipients";
 import CampaignCompose from "./views/pages/dashboards/NewCampaign_compose"
 import CampaignPreview from "./views/pages/dashboards/NewCampaign_preview"
-import CampaignOption from "./views/pages/dashboards/NewCampaign_options"
+import NewCampaign_options from "./views/pages/dashboards/NewCampaign_options"
 import CampaignSend from "./views/pages/dashboards/NewCampaign_send"
-import Campaign_Details from './views/pages/Campaing/Campaign_details.js'
+import CampaignDetails from './views/pages/Campaing/Campaign_details.js'
+import OverView from './views/pages/Campaing/OverView'
+import Sequence from './views/pages/Campaing/Sequence'
+import Recipients from './views/pages/Campaing/Recipients'
+import CampSetting from './views/pages/Campaing/Setting'
 
 const routes = [
   {
@@ -62,10 +66,10 @@ const routes = [
     state: "campaign",
     views: [
       {
-        path: "/new-campaign",
+        path: "/CampaignStart",
         name: "Create Campaign",
         miniName: "CC",
-        component: NewCampaign,
+        component: NewCampaign_start,
         layout: "/app/admin"
       },
       {
@@ -109,7 +113,7 @@ const routes = [
         path: "/CampaignOptions",
         name: "CampaignOption",
         miniName: "CO",
-        component: CampaignOption,
+        component: NewCampaign_options,
         layout: "/app/admin"
       },
       {
@@ -125,12 +129,47 @@ const routes = [
 
 
       {
-        path: "/campaign-detail",
+        path: "/CampaignDetails",
         name: "Campaign Details",
         miniName: "CD",
-        component: Campaign_Details,
+        component: CampaignDetails,
         layout: "/app/admin"
       },
+      {
+        path: "/OverView",
+        name: "CampaignOverView",
+        miniName: "CD",
+        component: OverView,
+        layout: "/app/admin"
+      },
+      {
+        path: "/Message",
+        name: "CampaignMessage",
+        miniName: "CD",
+        component: Sequence,
+        layout: "/app/admin"
+      },
+      {
+        path: "/Recipient/people",
+        name: "CampaignPeople",
+        miniName: "CD",
+        component: Recipients,
+        layout: "/app/admin"
+      },
+      {
+        path: "/settings",
+        name: "CampaignSetting",
+        miniName: "CD",
+        component: CampSetting,
+        layout: "/app/admin"
+      },
+
+
+
+
+
+
+
       {
         path: "/lead-catcher",
         name: "Lead Catcher",

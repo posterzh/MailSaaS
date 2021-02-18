@@ -1,9 +1,11 @@
+
+// file for option pick in campaign
 import React, { Component } from 'react'
-import { Container, Row, Col, Form ,Nav} from 'reactstrap'
-import { Link, Route } from 'react-router-dom';
+import { Container, Row, Col, Form, Nav } from 'reactstrap'
 import { CampaignOptionAction } from '../../../redux/action/CampaignAction'
+import { Link, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-class CampaignOption extends Component {
+class NewCampaign_options extends Component {
     constructor() {
         super()
         this.state = {
@@ -36,21 +38,23 @@ class CampaignOption extends Component {
         event.preventDefault();
         console.log(this.state)
         const optionData = {
-            campaign: 1,
-            trackOpens: this.state.trackopen,
-            trackLinkClick: this.state.tracklinkclicks,
+            campaign: this.props.startCampaignId,
+            track_Opens: this.state.trackopen,
+            track_LinkClick: this.state.tracklinkclicks,
             schedule_send: this.state.schedulesend,
             schedule_date: this.state.date,
             schedule_time: `${this.state.time}${':00'}`,
             terms_and_laws: this.state.termsandlaws
         }
         this.props.CampaignOptionAction(optionData)
+        // console.log("checking id for option of start",this.optionData.campaign)
     }
     render() {
+        console.log("trackopen", this.props.location.state)
         return (
             <div>
                 <Container fluid>
-                    <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
+                    <Row style={{ width: '100%', borderBottom: "1px solid #DEDEDE" }}>
                         <Col style={{ display: 'flex', alignItems: 'center' }}>
                             <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
                                 <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
@@ -68,16 +72,41 @@ class CampaignOption extends Component {
                             </div>
                         </Col>
                     </Row>
-                    <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
+                    <Row style={{ width: '100%', borderBottom: "1px solid #DEDEDE" }}>
                         <Col style={{ display: "flex" }}><Nav className='mx-auto' navbar>
                             <Row className='mx-auto' style={{ width: '100%' }}>
                                 <ul style={{ listStyleType: 'none', display: 'flex' }}>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignRecipient">RECIPICIENT</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignCompose">COMPOSE</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignPreview">PREVIEW</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignStart",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>START</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignRecipient",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>RECIPICIENT</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignCompose",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>COMPOSE</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignPreview",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>PREVIEW</Link></li>
                                     <li className='mr-3 ml-3'><Link to="/app/admin/CampaignOptions">OPTIONS</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignSend">SEND</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname:"/app/admin/CampaignSend",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>SEND</Link></li>
                                 </ul>
                             </Row>
                         </Nav>
@@ -86,7 +115,7 @@ class CampaignOption extends Component {
                     <Row className="option_note">Tweak how your campaign will be sent</Row>
                     <Row>
                         <Form onSubmit={this.handleSubmit}>
-                            <Col md="6" className="mx-auto">
+                            <Col md="8" className="mx-auto">
                                 <Row>
                                     <div >
                                         <input id="1" type="checkbox" value={this.state.trackopen} name='trackopen' defaultChecked={this.state.trackopen} onChange={this.handleChange}></input>&nbsp;
@@ -131,7 +160,7 @@ class CampaignOption extends Component {
                                 </Row>
                                 <Row >
                                     <div>
-                                        <span className="recipient_condition">When does a recipient become a lead?</span>
+                                        <span className="recipient_condition">When does a recipient become a lead ?</span>
                                         <div>
                                             <div className="recipient_replies">
                                                 <span style={{ display: "flex" }}>
@@ -139,18 +168,13 @@ class CampaignOption extends Component {
                                                     <span className="numberof_replieslabel" ># of times</span>
                                                 </span>
                                                 <div style={{ display: "flex", flexDirection: "row" }}>
-                                                    {/* <span className="replies_selectbox"> */}
                                                     <select>
                                                         <option value="" >Replies</option>
                                                         <option value="" >Opens</option>
                                                         <option value="" >Click any link</option>
                                                         <option value="" >Click apecific link</option>
                                                     </select>
-                                                    {/* </span> */}
-                                                    {/* <span className="numberof_replieslabel"># of times</span> */}
-                                                    {/* <span className="numberof_repliesinput"> */}
                                                     <input type="text" />
-                                                    {/* </span> */}
                                                     <span className="delete_icon"><i className="fa fa-trash"></i></span>
                                                 </div>
                                             </div>
@@ -175,8 +199,8 @@ class CampaignOption extends Component {
                                 </Row>
                                 <Row>
                                     <div>
-                                        <input type="checkbox" name='termsandlaws' defaultChecked={this.state.termsandlaws} onClick={this.handleChange} />
-                                        <span>I'll obey pertinent laws and I've read these< a href="www.google.com"> important notes.</a>
+                                        <input type="checkbox" name='termsandlaws' defaultChecked={this.state.termsandlaws} onClick={this.handleChange} required />
+                                        <span>I'll obey pertinent laws and I've read theshsdasdsade< a href="www.google.com"> important notes.</a>
                                         </span>
                                     </div>
                                 </Row>
@@ -188,18 +212,15 @@ class CampaignOption extends Component {
                     </Row>
                 </Container>
             </div>
-        )
+        );
     }
 }
-
 const mapStateToProps = (state) => {
     return {
-
+        startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id
     };
 };
 const mapDispatchToProps = dispatch => ({
-    CampaignOptionAction: optionData => {
-        dispatch(CampaignOptionAction(optionData));
-    },
+    CampaignOptionAction: (optionData) => { dispatch(CampaignOptionAction(optionData)); },
 });
-export default connect(mapStateToProps, mapDispatchToProps)(CampaignOption)
+export default connect(mapStateToProps, mapDispatchToProps)(NewCampaign_options)

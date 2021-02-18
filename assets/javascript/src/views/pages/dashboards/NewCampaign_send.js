@@ -1,23 +1,24 @@
 import React, { Component } from 'react'
 import { Row, Col, Container, Button, Nav } from "reactstrap"
 import { connect } from "react-redux";
-import { Link, Route } from 'react-router-dom';
-import { CampaignSendAction, CampaignSaveAction, RecipientAction } from "../../../redux/action/CampaignAction"
+import { Link} from 'react-router-dom';
+import { CampaignSendAction, CampaignSaveAction} from "../../../redux/action/CampaignAction"
 
 export class CampaignSend extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            save: false
+            save: true
         }
     }
     componentDidMount() {
-        console.log("mounting in Send")
-        this.props.CampaignSendAction(this.props.startCampaignId);
+        this.props.CampaignSendAction();
+        console.log('senddata',this.props.sendData)
+        console.log("mounting in Send",this.props.startCampaignId)
     }
     render() {
-        const { sendData,startCampaignId} = this.props;
-        console.log("dipika", startCampaignId && startCampaignId)
+        const { sendData} = this.props;
+        console.log('senddata',sendData)
         return (
             <div>
                 <Container fluid>
@@ -56,10 +57,10 @@ export class CampaignSend extends Component {
                     </Row>
                     <Row className="ready_campaign mx-auto mt-4">Are you ready to start your campaign?</Row>
                     <Row className='mt-3'><Button className="startBtn mx-auto"
-                    onClick={(e) => { this.setState({ save: true }); this.props.CampaignSaveAction(this.state.save); console.log(this.state) }}
+                    onClick={(e) => { this.setState({ save: true }); this.props.CampaignSaveAction(startCampaignId); console.log(this.state) }}
                     >START CAMPAIGN</Button></Row>
                     <Row className='mt-3'><Button className='btn mx-auto'
-                    onClick={(e) => { this.setState({ save: false }); this.props.CampaignSaveAction(this.state.save); console.log(this.state) }}
+                    onClick={(e) => { this.setState({ save: false }); this.props.CampaignSaveAction(startCampaignId); console.log(this.state) }}
                     >Pause Campaign</Button></Row>
                     <Row className="mt-5 mb-4 w-50 mx-auto" style={{ borderBottom: "1px solid #ddd" }}></Row>
                     <Row>
@@ -155,14 +156,15 @@ export class CampaignSend extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    // console.log('recipientData-----: ', state.RecipientReducer.recipientData && state.RecipientReducer.recipientData)
+    console.log('recipientData-----: ',  state.StartCampaignReducer.startCampaignData.id)
+    console.log('recipientData===================>-----: ',  state.CamapignSendReducer && state.CamapignSendReducer)
     return {
         sendData: state.CamapignSendReducer && state.CamapignSendReducer.sendData,
-        startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id,
+        startCampaignId: state.StartCampaignReducer.startCampaignData.id
     };
 };
 const mapDispatchToProps = dispatch => ({
-    CampaignSendAction: (recipientId) => { dispatch(CampaignSendAction(recipientId)); },
-    CampaignSaveAction: (saveData) => { dispatch(CampaignSaveAction(saveData)); },
+    CampaignSendAction: (startCampaignId) => { dispatch(CampaignSendAction(startCampaignId));},
+    CampaignSaveAction: (startCampaignId) => { dispatch(CampaignSaveAction(startCampaignId));},
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignSend)
