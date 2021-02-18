@@ -12,11 +12,13 @@ export class CampaignSend extends Component {
         }
     }
     componentDidMount() {
-        console.log("mounting in Send")
-        this.props.CampaignSendAction(this.props.startCampaignId);
+        this.props.CampaignSendAction();
+        console.log('senddata',this.props.sendData)
+        console.log("mounting in Send",this.props.startCampaignId)
     }
     render() {
-        const { sendData,startCampaignId} = this.props;
+        const { sendData} = this.props;
+        console.log('senddata',sendData)
         return (
             <div>
                 <Container fluid>
@@ -154,10 +156,11 @@ export class CampaignSend extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    console.log('recipientData-----: ', state.startCampaignReducer&&state.startCampaignReducer)
+    console.log('recipientData-----: ',  state.StartCampaignReducer.startCampaignData.id)
+    console.log('recipientData===================>-----: ',  state.CamapignSendReducer && state.CamapignSendReducer)
     return {
         sendData: state.CamapignSendReducer && state.CamapignSendReducer.sendData,
-        startCampaignId:  state.startCampaignReducer&&state.startCampaignReducer
+        startCampaignId: state.StartCampaignReducer.startCampaignData.id
     };
 };
 const mapDispatchToProps = dispatch => ({

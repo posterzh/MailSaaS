@@ -100,6 +100,7 @@ class CampaignCompose extends Component {
     
     render() {
         const { editorState } = this.state;
+        console.log(this.props,"maill")
         return (
             <div>
                 <div className='main-view'>
@@ -224,9 +225,7 @@ class CampaignCompose extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        campaign: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id,
         mailGetData: state.MailGetDataReducer.mailGetData
-
     }
 }
 const mapDispatchToProps = (dispatch) => ({

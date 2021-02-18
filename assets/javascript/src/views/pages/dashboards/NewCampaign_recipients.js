@@ -19,7 +19,7 @@ class NewCampaign_recipients extends Component {
     }
     handleChange = (e) => {
         this.setState({
-            [e.target.name]: e.target.value
+            csvFile: e.target.files[0]
         });
     }
     handleSubmit = (e) => {
@@ -49,10 +49,12 @@ class NewCampaign_recipients extends Component {
             email: `["${this.state.email}"]`,
             campaign: this.state.campaign
         }
+        console.log(this.state.csvFile,'file')
         this.props.RecipientAction(recipientData, this.props)
     }
     render() {
         const { show } = this.state;
+        // console.log(this.state.csvFile,'file')
         return (
             <div className='main-view'>
                 <div style={{ height: 980, width: '100%', backgroundColor: "#eee" }}>
@@ -140,7 +142,7 @@ const mapStateToProps = (state) => {
     };
 };
 const mapDispatchToProps = dispatch => ({
-    RecipientAction: (recipientData, props) => { dispatch(RecipientAction(recipientData, props)) },
+    RecipientAction: (recipientData, props) => { dispatch(RecipientAction(recipientData)) },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewCampaign_recipients)

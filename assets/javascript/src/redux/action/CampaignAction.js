@@ -192,6 +192,7 @@ export const RecipientAction = (recipientData, props) => {
                 dispatch(StartCampaignSuccess(result.data))
                 console.log(result.data)
                 props.history.push('/app/admin/CampaignCompose')
+                
             }, 2000);
         }).catch(err => { console.log(err) })
     }
@@ -216,19 +217,20 @@ export const PreviewCampaignAction = (id,props) => {
 export const CampaignTableAction = () => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        dispatch(requestForCampaignTableData(token))
         Api.CampaignTableDataApi(token).then(result => {
             dispatch(CampaignTableDataSuccess(result.data))
-            console.log('result', result.data)
+            console.log('resultkddsfsdlf', result.data)
         }).catch(err => {
             console.log(err)
         })
     }
 }
 export const CampaignSendAction = (id) => {
+    console.log("id",id)
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.CampaignSendGetApi(token, id).then(result => {
+            console.log("result send=====>",result)
             dispatch(CampaignSendSuccess(result.data))
             console.log('result', result.data)
         })

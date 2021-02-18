@@ -119,7 +119,7 @@ const mapStateToProps = (state) => {
     };
 };
 const mapDispatchToProps = dispatch => ({
-    StartCampaignAction: (data, props) => { dispatch(StartCampaignAction(data, props)) },
+    StartCampaignAction: (data, props) => { dispatch(StartCampaignAction(data)) },
     MailGetDataAction: mailGetData => { dispatch(MailGetDataAction(mailGetData)) },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(NewCampaign_start)

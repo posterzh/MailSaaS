@@ -28,6 +28,7 @@ import {
     REQUEST_FOR_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW,
+    SUCCESS_CAMPAIGN_TABLE_DATA,
     SUCCESS_SAVE_CAMPAIGN
 } from "../actionType/actionType";
 
@@ -48,7 +49,8 @@ const initialState = {
     CampaignOverviewData:[],
     isLogin:false,
     CampaignPreviewData: [],
-    campaignPreviewUpdateData:[]
+    campaignPreviewUpdateData:[],
+    CampaignTableData:[]
 }
 export const RegisterReducer = (state =  initialState , action) => {
     // console.log(action.payload && action.payload[0], 'payloaddata')
@@ -259,6 +261,21 @@ export const CampaignOverviewReducer = (state =  initialState , action) => {
         case  FAILURE_CAMPAIGN_OVERVIEW:
             return {
                 
+            }
+        default: return state
+            break;
+    }
+}
+
+// CAMPAIGN TABLE DATA
+
+export const CampaignTableReducer = (state =  initialState , action) => {
+    console.log("Action ----------->",action.CampaignTableData)
+    switch (action.type) {
+        case SUCCESS_CAMPAIGN_TABLE_DATA:
+            return {
+                ...state,
+                CampaignTableData: action.CampaignTableData,
             }
         default: return state
             break;
