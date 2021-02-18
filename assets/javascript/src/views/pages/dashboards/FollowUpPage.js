@@ -1,25 +1,67 @@
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, Input} from 'reactstrap';
 import { Editor } from 'react-draft-wysiwyg';
-import { EditorState, convertToRaw } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
+import { EditorState } from 'draft-js';
+
 
 export default class FollowUpPage extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             editorState: EditorState.createEmpty(),
-
+            waitDays: 0,
+            replyChain:this.props.normalSubject,
+            body:'',
+            subjectOfFollowUp:'',
+            newSubject:''
         }
     }
-    // onDeleteList=()=>{
-    // }
+   componentDidMount(){
+    Object.assign(this.props.followUpPageObject,{'subject':this.state.replyChain})
+    Object.assign(this.props.followUpPageObject,{'waitDays':this.state.waitDays})
+    Object.assign(this.props.followUpPageObject,{'email_body':this.state.body})
+
+   }
+    handleChangewaitDays = (event) =>{
+        this.setState({
+            waitDays: event.target.value
+        })
+        Object.assign(this.props.followUpPageObject,{"waitDays": event.target.value});
+    }
+
+    handleChangeReplyChain = (event) => {
+        if (this.props.normalSubject===event.target.value) {
+            this.setState({
+                subjectOfFollowUp:'',
+                replyChain: event.target.value
+            })
+        Object.assign(this.props.followUpPageObject,{'subject':event.target.value})
+        } else {
+            this.setState({
+                replyChain: event.target.value
+            })  
+        }
+        
+    }
+    
+    handleFollowSubject =(event) =>{
+        this.setState({
+            subjectOfFollowUp: event.target.value
+        })
+        Object.assign(this.props.followUpPageObject,{'subject':event.target.value})
+    }
+
+    handleChangeBody = (event) => {
+        this.setState({
+            body: event.blocks[0].text
+        })
+        Object.assign(this.props.followUpPageObject,{'email_body':this.state.body})
+    }
 
     onEditorStateChange = (editorState) => {
-        console.log('editorState', editorState.getCurrentContent())
         this.setState({ editorState })
     }
+
     render() {
         const { editorState } = this.state;
         return (
@@ -29,7 +71,7 @@ export default class FollowUpPage extends React.Component {
                         <Col md='11' className='alignRight'>
                             <Row>
                                 <h1 className='display-6'>Follow-ups &nbsp;<a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                    <span><i className='QuestionCircle' class="fa fa-question-circle-o" aria-hidden="true"></i></span>
+                                    <span><i className='QuestionCircle' className="fa fa-question-circle-o" aria-hidden="true"></i></span>
                                 </a></h1>
                             </Row>
                             <Row>
@@ -38,16 +80,20 @@ export default class FollowUpPage extends React.Component {
                             <Row>
                                 <Col md='2' className='WaitDiv'>
                                     <label className='filter_app_new'>Wait X days</label><br></br>
-                                    <input type='number' className='WaitInput'></input>
+                                    <input value={this.state.waitDays} onChange={this.handleChangewaitDays} type='number' className='WaitInput'></input>
                                 </Col>
                             </Row>
                             <Row className='mt-3'>
                                 <label className='filter_app_new'>Reply Chain</label><br></br>
                                 <div className='select_div'>
-                                    <select className='filter_select_prospect'>
-                                        <option value='one'>--New Email--</option>
-                                        <option>Re:hello all</option>
+                                    <select  name="subject"  value={this.state.replyChain} onChange={this.handleChangeReplyChain} className='filter_select_prospect'>
+                                        <option value={this.props.normalSubject}>{this.props.normalSubject}</option>
+                                        <option placeholder="---New Email---" value="new-email">---New Email---</option>
                                     </select>
+                                    {
+                                        this.state.replyChain==='new-email' &&
+                                        <Input onChange={this.handleFollowSubject} type='text' className='in' name='subject' value={this.state.SubjectOfFollowUp} placeholder='Subject' />
+                                    }
                                 </div>
                             </Row>
                             <Row className='mt-3'>
@@ -55,6 +101,8 @@ export default class FollowUpPage extends React.Component {
                                     <div className='btn' onClick={this.onDeleteList}>Delete</div>
                                     <Editor
                                         className='editorDiv'
+                                        onChange={this.handleChangeBody}
+                                        value={this.state.body}
                                         editorState={editorState}
                                         toolbarClassName="rdw-storybook-toolbar"
                                         wrapperClassName="rdw-storybook-wrapper"

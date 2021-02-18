@@ -58,7 +58,12 @@ class NewCampaign_start extends React.Component {
                                     <ul style={{ listStyleType: 'none', display: 'flex' }}>
                                         <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
                                         <li className='mr-3 ml-3'><Link to="/app/admin/CampaignRecipient">RECIPICIENT</Link></li>
-                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignCompose">COMPOSE</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname:"/app/admin/CampaignCompose",
+                                            state:{
+                                                mailGetData:this.props.mailGetData
+                                            }
+                                        }}>COMPOSE</Link></li>
                                         <li className='mr-3 ml-3'><Link to="/app/admin/CampaignPreview">PREVIEW</Link></li>
                                         <li className='mr-3 ml-3'><Link to="/app/admin/CampaignOptions">OPTIONS</Link></li>
                                         <li className='mr-3 ml-3'><Link to="/app/admin/CampaignSend">SEND</Link></li>

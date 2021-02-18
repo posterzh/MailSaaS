@@ -15,9 +15,11 @@ import {
     REQUEST_FOR_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW,
-    SUCCESS_SAVE_CAMPAIGN
+    SUCCESS_SAVE_CAMPAIGN,
+    REQUEST_FOR_COMPOSE_DATA
 
 } from "../actionType/actionType"
+import { browserHistory } from 'react-router'
 
 import Api from "../api/api"
 
@@ -132,6 +134,12 @@ export const CampaignOverviewFailure = () => {
         type: FAILURE_CAMPAIGN_OVERVIEW,
     }
 }
+// campaighn compose
+export const requestForCampaignCompose=()=>{
+    return{
+        type:REQUEST_FOR_COMPOSE_DATA
+    }
+}
 
 // CAMPAIGN_OVERVIEW_MIDDLEWARE
 export const CampaignOverviewAction = () => {
@@ -152,6 +160,7 @@ export const StartCampaignAction = (data) => {
         const token = localStorage.getItem('access_token')
         console.log('this is a token', token)
         Api.StartCampaignApi(data, token).then(result => {
+            console.log(result.data,"StartCampaignAction")
             dispatch(StartCampaignSuccess(result.data))
         }).catch(err => {
             console.log(err)
@@ -245,4 +254,17 @@ export const CampaignSaveAction = (saveData) => {
         })
     }
 }
-
+export const CampaignComposeAction = (data,props) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('access_token')
+        dispatch(requestForCampaignCompose())
+        Api.CampaignComposeApi(token,data).then(result => {
+            setTimeout(() => {
+                console.log(result)
+            props.history.push('/app/admin/CampaignPreview')
+            }, 2000);
+        }).catch(err => {
+            console.log(err,'error-')
+        })
+    }
+}

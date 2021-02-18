@@ -112,6 +112,9 @@ class CampaignPreview extends Component {
                                 <div style={{ backgroundColor: "#005aac" }}>
                                     {<ul>{this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index) => <li key='index' style={{ color: 'white' }}>{item.email}</li>)}</ul>}
                                 </div>
+                                {/* <div style={{ backgroundColor: "#005aac" }}>
+                                    {<ul>{this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index) => <li key='index' style={{ color: 'white' }}>{item.subject}</li>)}</ul>}
+                                </div> */}
                             </Col>
                         </Row>
                     </Container>
@@ -122,7 +125,11 @@ class CampaignPreview extends Component {
                                     <div><i className="fa fa-envelope-o" aria-hidden="true"></i><label style={{ marginLeft: "5px" }}>Initial campaign email</label></div>
                                     <div className='grand_parent'>
                                         <div className='input_field'>
-                                            <Input type='email' className='in' placeholder='Subject' />
+                                            {/* <Input type='email' className='in' placeholder='Subject'value={this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index)=><p>{item.email}</p>)}  /> */}
+                                            <Input type='email' className='in' placeholder='Subject'value={this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index) => <p key='index' style={{ color: 'white' }}>{item.subject}</p>)}  />
+                                            {/* value={this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index)=><p>{item.}</p>} */}
+                                            {/* this.props.mailGetData&&this.props.mailGetData[0].id */}
+                                            {/* <div style={{color:'red'}}>{this.props.CampaignPreviewEmails&&this.props.CampaignPreviewEmails.subject}</div> */}
                                             <div className='mt-3'>
                                                 <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                                     <span><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -154,12 +161,13 @@ class CampaignPreview extends Component {
                                             wrapperClassName="rdw-storybook-wrapper"
                                             editorClassName="rdw-storybook-editor"
                                             onEditorStateChange={this.onEditorStateChange}
+                                            // value={}
                                             toolbar={{
                                                 link: {
                                                     defaultTargetOption: '_blank',
                                                 },
                                             }}
-                                        />
+                                        ></Editor>
                                     </div>
                                 </Row>
                             </Col>
@@ -172,10 +180,11 @@ class CampaignPreview extends Component {
 }
 const mapStateToProps = (state) => {
     console.log("cheking state for preview", state.CampaignPreviewGetReducer.CampaignPreviewData);
-    console.log("cheking now for start data in preview :id", state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id);
+    console.log("cheking now for start data in preview data", state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.campEmail);
     return {
         CampaignPreviewData: state.CampaignPreviewGetReducer.CampaignPreviewData,
         CampaignPreviewEmails: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail,
+        // CampaignPeviewSubject:state.CampaignPreviewGetReducer.CampaignPreviewData &&state.CampaignPreviewGetReducer.CampaignPreviewData
         CampaignPreviewBody: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail,
         startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id,
     }

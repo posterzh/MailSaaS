@@ -61,56 +61,7 @@ Api.CampaignComposeApi = (token, data) => {
   return axios({
     method: 'POST',
     url: `${API_BASE_URL}/campaign/message/`,
-    data: {
-      "normal":
-      {
-        "campaign": 1,
-        "subject": "Sub 1",
-        "email_body": "This is first email body"
-      },
-      "follow_up":
-        [
-          {
-            "waitDays": 5,
-            "subject": "sub F 1",
-            "email_body": "FU email body 1"
-          },
-          {
-            "waitDays": 4,
-            "subject": "sub F 2",
-            "email_body": "FU email body 2"
-          }
-        ],
-      "drips":
-        [
-          {
-            "waitDays": 5,
-            "subject": "sub D 1",
-            "email_body": "Drip email body 1"
-          },
-          {
-            "waitDays": 4,
-            "subject": "sub D 2",
-            "email_body": "Drip email body 2"
-          }
-        ],
-      "onLinkClick":
-        [
-          {
-            "waitDays": 5,
-            "url": "www.google.com",
-            "subject": "sub onLinkClick 1",
-            "email_body": "onLinkClick email body 1"
-          },
-          {
-            "waitDays": 4,
-            "url": "www.google.com",
-            "subject": "sub onLinkClick 2",
-            "email_body": "onLinkClick email body 2"
-          }
-        ]
-
-    },
+    data:data,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -395,40 +346,6 @@ Api.fetchUnsbcribed = (token) => {
     }
   })
 }
-
-
-
-Api.demostart = (token, data) => {
-  return axios({
-    method: 'POST',
-    url: `${API_BASE_URL}/campaign/start/`,
-    data: {
-
-      "title": "campaign",
-      "from_address": 2
-    },
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-
-  })
-}
-Api.demorecipient = (token, data) => {
-  let formdata = new FormData();
-  formdata.append("option", "[2]"),
-    formdata.append("campaign", "3"),
-    formdata.append("email", ["keshav@gmail.com"])
-  return axios({
-    method: 'POST',
-    url: `${API_BASE_URL}/campaign/recipients/`,
-    data: formdata,
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-
-  })
-}
-
 Api.GetAllCampaigns = (token) => {
   return axios({
     url: `${API_BASE_URL}/campaign/view/`,
