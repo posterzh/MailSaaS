@@ -206,7 +206,7 @@ export const PreviewCampaignAction = (id,props) => {
                 dispatch(CampaignPreviewSuccess(result.data))
                 console.log(result.data)
                 props.history.push('/app/admin/CampaignOptions')
-            }, 2000);
+            }, 1000);
         }).catch(err => {
             console.log(err)
         })

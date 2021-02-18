@@ -161,7 +161,7 @@ const mapStateToProps = (state) => {
     };
 };
 const mapDispatchToProps = dispatch => ({
-    CampaignSendAction: (startCampaignId) => { dispatch(CampaignSendAction(startCampaignId)); },
-    CampaignSaveAction: (startCampaignId) => { dispatch(CampaignSaveAction(startCampaignId)); },
+    CampaignSendAction: (startCampaignId) => { dispatch(CampaignSendAction(startCampaignId));},
+    CampaignSaveAction: (startCampaignId) => { dispatch(CampaignSaveAction(startCampaignId));},
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignSend)
