@@ -64,8 +64,10 @@ export default class FollowUpPage extends React.Component {
 
     render() {
         const { editorState } = this.state;
+        const { id } = this.props;
+
         return (
-            <div>
+            <div key={id}>
                 <Container fluid>
                     <Row>
                         <Col md='11' className='alignRight'>
@@ -98,7 +100,7 @@ export default class FollowUpPage extends React.Component {
                             </Row>
                             <Row className='mt-3'>
                                 <div className='Editor_div'>
-                                    <div className='btn' onClick={this.onDeleteList}>Delete</div>
+                                    <div style={{padding:0}} className="btn" onClick={this.props.onDeleteList}><i style={{padding:5}} className="fa">&#xf014;</i>DELETE {id}</div>
                                     <Editor
                                         className='editorDiv'
                                         onChange={this.handleChangeBody}

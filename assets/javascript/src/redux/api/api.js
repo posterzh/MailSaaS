@@ -70,7 +70,6 @@ Api.CampaignComposeApi = (token, data) => {
 
 // campaign GET preview
 Api.CampaignPreviewApi = (token,id) => {
-  console.log("ID--------------",id)
   return axios({
     method: 'GET',
     url: `${API_BASE_URL}/campaign/personalize/${id}/`,
