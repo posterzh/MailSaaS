@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { Container, Row, Col, Button, Input,Nav, Form } from 'reactstrap';
+import { Container, Row, Col, Button, Input, Nav, Form } from 'reactstrap';
 import { Link, Route } from 'react-router-dom';
 
 import { RecipientAction, StartCampaignAction } from "../../../redux/action/CampaignAction";
@@ -13,7 +13,8 @@ class NewCampaign_recipients extends Component {
             show: false,
             csvFile: '',
             email: [],
-            options: []
+            options: [],
+            campaign: this.props.campaignDetails
         }
     }
     handleChange = (e) => {
@@ -43,21 +44,20 @@ class NewCampaign_recipients extends Component {
         }
         else { return false }
         const recipientData = {
-            csvfile_op1:this.state.csvFile,
+            csvfile_op1: this.state.csvFile,
             option: `[${this.state.options}]`,
             email: `["${this.state.email}"]`,
-            campaign: this.props.startCampaignId
+            campaign: this.state.campaign
         }
-        const token = localStorage.getItem('access_token')
-        this.props.RecipientAction(recipientData, token)
+        this.props.RecipientAction(recipientData, this.props)
     }
     render() {
         const { show } = this.state;
         return (
             <div className='main-view'>
-                <div style={{ height:980, width: '100%', backgroundColor: "#eee" }}>
+                <div style={{ height: 980, width: '100%', backgroundColor: "#eee" }}>
                     <Container fluid>
-                    <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
+                        <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
                             <Col style={{ display: 'flex', alignItems: 'center' }}>
                                 <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
                                     <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
@@ -82,9 +82,10 @@ class NewCampaign_recipients extends Component {
                                         <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
                                         <li className='mr-3 ml-3'><Link to="/app/admin/CampaignRecipient">RECIPICIENT</Link></li>
                                         <li className='mr-3 ml-3'><Link to={{
-                                            pathname:"/app/admin/CampaignCompose",
-                                            state:{
-                                                mailGetData:this.props.mailGetData
+                                            pathname: 
+                                            "/app/admin/CampaignCompose",
+                                            state: {
+                                                mailGetData: this.props.mailGetData
                                             }
                                         }}>COMPOSE</Link></li>
                                         <li className='mr-3 ml-3'><Link to="/app/admin/CampaignPreview">PREVIEW</Link></li>
@@ -134,12 +135,12 @@ class NewCampaign_recipients extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id,
+        campaignDetails: state.StartCampaignReducer.startCampaignData.id,
         mailGetData: state.MailGetDataReducer.mailGetData
     };
 };
 const mapDispatchToProps = dispatch => ({
-    RecipientAction: (recipientData, token) => { dispatch(RecipientAction(recipientData, token)) },
+    RecipientAction: (recipientData, props) => { dispatch(RecipientAction(recipientData, props)) },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewCampaign_recipients)

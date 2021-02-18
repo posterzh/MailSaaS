@@ -236,11 +236,12 @@ class CampaignPreview extends Component {
         this.setState({ editorState })
     }
     componentDidMount() {
-        this.props.PreviewCampaignAction(this.props.startCampaignId);
+        this.props.PreviewCampaignAction(this.props);
     }
     render() {
         const { editorState } = this.state;
         const { CampaignEmail } = this.props;
+        console.log()
         return (
             <div>
                 <div className='main-view'>
@@ -341,7 +342,7 @@ class CampaignPreview extends Component {
                                     <div className='grand_parent'>
                                         <div className='input_field'>
                                             {/* <Input type='email' className='in' placeholder='Subject'value={this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index)=><p>{item.email}</p>)}  /> */}
-                                            <Input type='email' className='in' placeholder='Subject'value={this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index) => <p key='index' style={{ color: 'white' }}>{item.subject}</p>)}  />
+                                            <Input type='email' className='in' placeholder='Subject' value={this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index) => <p key='index' style={{ color: 'white' }}>{item.subject}</p>)} />
                                             {/* value={this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index)=><p>{item.}</p>} */}
                                             {/* this.props.mailGetData&&this.props.mailGetData[0].id */}
                                             {/* <div style={{color:'red'}}>{this.props.CampaignPreviewEmails&&this.props.CampaignPreviewEmails.subject}</div> */}
@@ -394,18 +395,18 @@ class CampaignPreview extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    // console.log("state", state.RecipientReducer.recipientData && state.RecipientReducer.recipientData)
-    // console.log("cheking state for previewwwwwwwwwwwwwwwwwwwwwwwww", state.CampaignPreviewGetReducer.CampaignPreviewData);
+    console.log("satet----->",state.RecipientReducer.recipientData)
+    
     return {
         CampaignEmail: state.RecipientReducer.recipientData && state.RecipientReducer.recipientData.email,
         CampaignPreviewData: state.CampaignPreviewGetReducer.CampaignPreviewData,
         CampaignPreviewEmails: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail,
         CampaignPreviewBody: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail,
-        startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id,
+        recipientId: state.RecipientReducer.recipientData.id,
     }
 }
 const mapDispatchToProps = dispatch => ({
-    PreviewCampaignAction: (startCampaignId) => { dispatch(PreviewCampaignAction(startCampaignId)) },
+    PreviewCampaignAction: (recipientId,props) => { dispatch(PreviewCampaignAction(recipientId,props)) },
     PreviewUpdateCampaignAction: campaignPreviewUpdateData => { dispatch(PreviewUpdateCampaignAction(campaignPreviewUpdateData)) },
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignPreview)

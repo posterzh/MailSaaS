@@ -90,7 +90,7 @@ class NewCampaign_options extends Component {
                         <Row className="option_note">Tweak how your campaign will be sent</Row>
                     <Row>
                         <Form onSubmit={this.handleSubmit}>
-                            <Col md="6" className="mx-auto">
+                            <Col md="8" className="mx-auto">
                                 <Row>
                                     <div >
                                         <input id="1" type="checkbox" value={this.state.trackopen} name='trackopen' defaultChecked={this.state.trackopen} onChange={this.handleChange}></input>&nbsp;
@@ -135,7 +135,7 @@ class NewCampaign_options extends Component {
                                 </Row>
                                 <Row >
                                     <div>
-                                        <span className="recipient_condition">When does a recipient become a lead>>>>>>>>>>>>>>>>>>>>>>>>>?</span>
+                                        <span className="recipient_condition">When does a recipient become a lead ?</span>
                                         <div>
                                             <div className="recipient_replies">
                                                 <span style={{ display: "flex" }}>

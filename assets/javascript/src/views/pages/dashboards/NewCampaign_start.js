@@ -13,8 +13,8 @@ class NewCampaign_start extends React.Component {
         var thisMonth = months[now.getMonth()];
         const date = thisMonth + ' ' + now.getDate() + " Outreach";
         this.state = {
-            title: '',
-            from_address: this.props.mailGetData && this.props.mailGetData[0].id,
+            title: date,
+            from_address: this.props.mailGetData[0] && this.props.mailGetData[0].id,
         }
     }
     handleChange = (e) => {
@@ -29,10 +29,9 @@ class NewCampaign_start extends React.Component {
         e.preventDefault();
         const data = {
             title: this.state.title,
-            from_address: this.props.mailGetData&&this.props.mailGetData[0].id
+            from_address: this.props.mailGetData && this.props.mailGetData[0].id
         }
-        this.props.StartCampaignAction(data)
-        console.log("data--------->",data)
+        this.props.StartCampaignAction(data, this.props)
     }
     render() {
         const { mailGetData } = this.props;
@@ -114,13 +113,13 @@ class NewCampaign_start extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-     // console.log("------------------------->",state.MailGetDataReducer.mailGetData&&state.MailGetDataReducer.mailGetData.map((e,i)=> e.email[0].id))
+    // console.log("------------------------->",state.MailGetDataReducer.mailGetData&&state.MailGetDataReducer.mailGetData.map((e,i)=> e.email[0].id))
     return {
-        mailGetData: state.MailGetDataReducer.mailGetData,
+        mailGetData: state.MailGetDataReducer.mailGetData
     };
 };
 const mapDispatchToProps = dispatch => ({
-    StartCampaignAction: data => { dispatch(StartCampaignAction(data)) },
+    StartCampaignAction: (data, props) => { dispatch(StartCampaignAction(data, props)) },
     MailGetDataAction: mailGetData => { dispatch(MailGetDataAction(mailGetData)) },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(NewCampaign_start)

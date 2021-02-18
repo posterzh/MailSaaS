@@ -50,7 +50,7 @@ const initialState = {
     CampaignPreviewData: [],
     campaignPreviewUpdateData:[]
 }
-export const RegisterReducer = (state = { initialState }, action) => {
+export const RegisterReducer = (state =  initialState , action) => {
     // console.log(action.payload && action.payload[0], 'payloaddata')
     switch (action.type) {
         case SUCCESS_REGISTER:
@@ -62,7 +62,7 @@ export const RegisterReducer = (state = { initialState }, action) => {
             break;
     }
 }
-export const LoginReducer = (state = { initialState }, action) => {
+export const LoginReducer = (state =  initialState , action) => {
     switch (action.type) {
         case REQUEST_FOR_LOGIN:
             return {
@@ -84,7 +84,7 @@ export const LoginReducer = (state = { initialState }, action) => {
             break;
     }
 }
-export const StartCampaignReducer = (state = { initialState }, action) => {
+export const StartCampaignReducer = (state =  initialState , action) => {
     switch (action.type) {
         case SUCCESS_START_CAMPAIGN:
             return {
@@ -95,7 +95,7 @@ export const StartCampaignReducer = (state = { initialState }, action) => {
             break;
     }
 }
-export const RecipientReducer = (state = { initialState }, action) => {
+export const RecipientReducer = (state =  initialState , action) => {
     switch (action.type) {
         case SUCCESS_RECIPIENT:
             return {
@@ -106,7 +106,7 @@ export const RecipientReducer = (state = { initialState }, action) => {
             break;
     }
 }
-export const CamapignSendReducer=(state = { initialState }, action)=>{
+export const CamapignSendReducer=(state =  initialState , action)=>{
     switch (action.type) {
     case SUCCESS_SEND_CAMPAIGN:
         return {
@@ -117,7 +117,7 @@ export const CamapignSendReducer=(state = { initialState }, action)=>{
         break;
     }
 }
-export const CamapignSaveReducer=(state = { initialState }, action)=>{
+export const CamapignSaveReducer=(state =  initialState , action)=>{
     switch (action.type) {
     case SUCCESS_SAVE_CAMPAIGN:
         return {
@@ -128,7 +128,7 @@ export const CamapignSaveReducer=(state = { initialState }, action)=>{
         break;
     }
 }
-export const MailSenderReducer = (state = { initialState }, action) => {
+export const MailSenderReducer = (state =  initialState , action) => {
     switch (action.type) {
         case SUCCESS_MAIL_SENDER:
             return {
@@ -147,7 +147,7 @@ export const MailSenderReducer = (state = { initialState }, action) => {
             break;
     }
 }
-export const MailGetDataReducer = (state = { initialState }, action) => {
+export const MailGetDataReducer = (state =  initialState , action) => {
     switch (action.type) {
         case SUCCESS_MAIL_GET_DATA:
             return {
@@ -162,7 +162,7 @@ export const MailGetDataReducer = (state = { initialState }, action) => {
             break;
     }
 }
-export const UnsubscribeReducer = (state = { initialState }, action) => {
+export const UnsubscribeReducer = (state =  initialState , action) => {
     switch (action.type) {
         case SUCCESS_FETCH_UNSUBSCRIPTION:
             return {
@@ -175,7 +175,7 @@ export const UnsubscribeReducer = (state = { initialState }, action) => {
 }
 
 // CAMPAIGN OPTION REDUCER
-export const CampaignOptionReducer = (state = { initialState }, action) => {
+export const CampaignOptionReducer = (state =  initialState , action) => {
     switch (action.type) {
         case REQUEST_FOR_OPTION:
             return {
@@ -191,7 +191,7 @@ export const CampaignOptionReducer = (state = { initialState }, action) => {
 }
 
 // PROSPECT_TABLE_DATA
-export const ProspectsGetReducer = (state = { initialState }, action) => {
+export const ProspectsGetReducer = (state =  initialState , action) => {
     switch (action.type) {
         case  FETCH_PROSPECTS:{
             
@@ -207,7 +207,7 @@ export const ProspectsGetReducer = (state = { initialState }, action) => {
 }
 
 // CAMPAIGN_PREVIEW_DATA
-export const CampaignPreviewGetReducer = (state = { initialState }, action) => {
+export const CampaignPreviewGetReducer = (state =  initialState , action) => {
     switch (action.type) {
         case REQUEST_FOR_CAMPAIGN_CREATE_PREVIEW:
             return {
@@ -228,7 +228,7 @@ export const CampaignPreviewGetReducer = (state = { initialState }, action) => {
 
 
 // CAMPAIGN_PREVIEW_UPDATE_DATA 
-export const CampaignPreviewUpdateReducer = (state = { initialState }, action) => {
+export const CampaignPreviewUpdateReducer = (state =  initialState , action) => {
     switch (action.type) {
         case SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW:
             return {
@@ -246,7 +246,7 @@ export const CampaignPreviewUpdateReducer = (state = { initialState }, action) =
 
 
 // CAMPAIGN_OVERVIEW_DATA
-export const CampaignOverviewReducer = (state = { initialState }, action) => {
+export const CampaignOverviewReducer = (state =  initialState , action) => {
     switch (action.type) {
         case REQUEST_FOR_CAMPAIGN_OVERVIEW:
             return {

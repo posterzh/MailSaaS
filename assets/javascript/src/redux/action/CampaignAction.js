@@ -58,7 +58,7 @@ export const requestForCampaignPreview = () => {
 export const CampaignPreviewSuccess = (CampaignPreviewData) => {
     return {
         type: SUCCESS_FETCH_CAMPAIGN_CREATE_PREVIEW,
-        CampaignPreviewData: CampaignPreviewData
+        CampaignPreviewData
     }
 }
 export const CampaignPreviewFailure = () => {
@@ -136,9 +136,9 @@ export const CampaignOverviewFailure = () => {
     }
 }
 // campaighn compose
-export const requestForCampaignCompose=()=>{
-    return{
-        type:REQUEST_FOR_COMPOSE_DATA
+export const requestForCampaignCompose = () => {
+    return {
+        type: REQUEST_FOR_COMPOSE_DATA
     }
 }
 
@@ -156,13 +156,15 @@ export const CampaignOverviewAction = () => {
     }
 }
 
-export const StartCampaignAction = (data) => {
+export const StartCampaignAction = (data, props) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         console.log('this is a token', token)
         Api.StartCampaignApi(data, token).then(result => {
-            console.log(result.data,"StartCampaignAction")
-            dispatch(StartCampaignSuccess(result.data))
+            setTimeout(() => {
+                dispatch(StartCampaignSuccess(result.data))
+                props.history.push('/app/admin/CampaignRecipient')
+            }, 2000);
         }).catch(err => {
             console.log(err)
         })
@@ -182,20 +184,38 @@ export const CampaignOptionAction = (optionData) => {
         })
     }
 }
-export const RecipientAction = (recipientData) => {
+export const RecipientAction = (recipientData, props) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.RecipientApi(recipientData, token).then(result => {
-            console.log('result========>', result.data)
-            dispatch(RecipientSuccess(result.data))
-            // history.push("/Camapin");
+            setTimeout(() => {
+                dispatch(StartCampaignSuccess(result.data))
+                console.log(result.data)
+                props.history.push('/app/admin/CampaignCompose')
+            }, 2000);
         }).catch(err => { console.log(err) })
     }
 }
+// CAMPAIGN_CREATE_PREVIEW MIDDLEWARE
+export const PreviewCampaignAction = (id,props) => {
+    console.log(id, 'tyertyerId')
+    return function (dispatch) {
+        const token = localStorage.getItem('access_token')
+        Api.CampaignPreviewApi(token, id).then(result => {
+            setTimeout(() => {
+                dispatch(CampaignPreviewSuccess(result.data))
+                console.log(result.data)
+                props.history.push('/app/admin/CampaignOptions')
+            }, 2000);
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+}
+
 export const CampaignTableAction = () => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        console.log('this is a token', token)
         dispatch(requestForCampaignTableData(token))
         Api.CampaignTableDataApi(token).then(result => {
             dispatch(CampaignTableDataSuccess(result.data))
@@ -215,19 +235,6 @@ export const CampaignSendAction = (id) => {
     }
 }
 
-// CAMPAIGN_CREATE_PREVIEW MIDDLEWARE
-export const PreviewCampaignAction = (id) => {
-    console.log(id, 'tyertyerId')
-    return function (dispatch) {
-        const token = localStorage.getItem('access_token')
-        console.log('this is a token', token)
-        Api.CampaignPreviewApi(token, id).then(result => {
-            dispatch(CampaignPreviewSuccess(result.data))
-        }).catch(err => {
-            console.log(err)
-        })
-    }
-}
 export const CampaignSaveAction = (id) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
@@ -252,17 +259,17 @@ export const PreviewUpdateCampaignAction = () => {
         })
     }
 }
-export const CampaignComposeAction = (data,props) => {
+export const CampaignComposeAction = (data, props) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         dispatch(requestForCampaignCompose())
-        Api.CampaignComposeApi(token,data).then(result => {
+        Api.CampaignComposeApi(token, data).then(result => {
             setTimeout(() => {
                 console.log(result)
-            props.history.push('/app/admin/CampaignPreview')
+                props.history.push('/app/admin/CampaignPreview')
             }, 2000);
         }).catch(err => {
-            console.log(err,'error-')
+            console.log(err, 'error-')
         })
     }
 }

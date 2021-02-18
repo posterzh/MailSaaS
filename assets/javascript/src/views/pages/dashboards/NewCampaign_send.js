@@ -55,10 +55,10 @@ export class CampaignSend extends Component {
                     </Row>
                     <Row className="ready_campaign mx-auto mt-4">Are you ready to start your campaign?</Row>
                     <Row className='mt-3'><Button className="startBtn mx-auto"
-                    onClick={(e) => { this.setState({ save: true }); this.props.CampaignSaveAction(startCampaignId); console.log(startCampaignId) }}
+                    onClick={(e) => { this.setState({ save: true }); this.props.CampaignSaveAction(startCampaignId); console.log(this.state) }}
                     >START CAMPAIGN</Button></Row>
                     <Row className='mt-3'><Button className='btn mx-auto'
-                    onClick={(e) => { this.setState({ save: false }); this.props.CampaignSaveAction(startCampaignId); console.log(startCampaignId) }}
+                    onClick={(e) => { this.setState({ save: false }); this.props.CampaignSaveAction(startCampaignId); console.log(this.state) }}
                     >Pause Campaign</Button></Row>
                     <Row className="mt-5 mb-4 w-50 mx-auto" style={{ borderBottom: "1px solid #ddd" }}></Row>
                     <Row>
@@ -154,10 +154,10 @@ export class CampaignSend extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    // console.log('recipientData-----: ', state.RecipientReducer.recipientData && state.RecipientReducer.recipientData)
+    console.log('recipientData-----: ', state.startCampaignReducer&&state.startCampaignReducer)
     return {
         sendData: state.CamapignSendReducer && state.CamapignSendReducer.sendData,
-        startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id,
+        startCampaignId:  state.startCampaignReducer&&state.startCampaignReducer
     };
 };
 const mapDispatchToProps = dispatch => ({

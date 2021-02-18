@@ -25,7 +25,6 @@ Api.StartCampaignApi = (data, token) => {
 }
 // for campaign_recipient 
 Api.RecipientApi = (recipientData, token) => {
-  console.log("recipientData",recipientData)
   const formData = new FormData();
   formData.append('csvfile_op1', recipientData.csvfile_op1);
   formData.append('email', recipientData.email);
