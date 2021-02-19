@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Row, Col, Container, Button, Nav } from "reactstrap"
 import { connect } from "react-redux";
 import { Link} from 'react-router-dom';
-import { CampaignSendAction, CampaignSaveAction} from "../../../redux/action/CampaignAction"
+import { CampaignCreateAction} from "../../../redux/action/CampaignAction"
 
 export class CampaignSend extends Component {
     constructor(props) {
@@ -12,11 +12,13 @@ export class CampaignSend extends Component {
         }
     }
     componentDidMount() {
-        console.log("mounting in Send")
-        this.props.CampaignSendAction(this.props.startCampaignId);
+        this.props.CampaignCreateAction(this.props.startCampaignId);
+        // console.log('senddata',this.props.sendData)
+        console.log("mounting in Send",this.props.startCampaignId)
     }
     render() {
-        const { sendData,startCampaignId} = this.props;
+        const { sendData} = this.props;
+        console.log('startCampaignId00000000000000000000',this.props.startCampaignId)
         return (
             <div>
                 <Container fluid>
@@ -42,12 +44,37 @@ export class CampaignSend extends Component {
                         <Col style={{ display: "flex" }}><Nav className='mx-auto' navbar>
                             <Row className='mx-auto' style={{ width: '100%' }}>
                                 <ul style={{ listStyleType: 'none', display: 'flex' }}>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignRecipient">RECIPICIENT</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignCompose">COMPOSE</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignPreview">PREVIEW</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignOptions">OPTIONS</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignSend">SEND</Link></li>
+                                <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignRecipient",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>RECIPICIENT</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignCompose",
+                                        state: {
+                                            mailGetData: this.props.mailGetData
+                                        }
+                                    }}>COMPOSE</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignPreview",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>PREVIEW</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignOptions",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>OPTIONS</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignSend",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>SEND</Link></li>
                                 </ul>
                             </Row>
                         </Nav>
@@ -55,10 +82,10 @@ export class CampaignSend extends Component {
                     </Row>
                     <Row className="ready_campaign mx-auto mt-4">Are you ready to start your campaign?</Row>
                     <Row className='mt-3'><Button className="startBtn mx-auto"
-                    onClick={(e) => { this.setState({ save: true }); this.props.CampaignSaveAction(startCampaignId); console.log(this.state) }}
+                    onClick={(e) => { this.setState({ save: true }); this.props.CampaignCreateAction(this.props.history.location.state && this.props.history.location.state.id); console.log(this.state) }}
                     >START CAMPAIGN</Button></Row>
                     <Row className='mt-3'><Button className='btn mx-auto'
-                    onClick={(e) => { this.setState({ save: false }); this.props.CampaignSaveAction(startCampaignId); console.log(this.state) }}
+                    onClick={(e) => { this.setState({ save: false }); this.props.CampaignCreateAction(this.props.history.location.state && this.props.history.location.state.id); console.log(this.state) }}
                     >Pause Campaign</Button></Row>
                     <Row className="mt-5 mb-4 w-50 mx-auto" style={{ borderBottom: "1px solid #ddd" }}></Row>
                     <Row>
@@ -86,11 +113,11 @@ export class CampaignSend extends Component {
                                     <Row className="mt-5" style={{ fontSize: 12 }}>1 recipient will be sent this campaign immediately</Row>
                                     <Row style={{ fontSize: 14 }}>
                                         <ul>
-                                            {
+                                            {/* {
                                                 sendData && sendData.recipients.map((item, index) => {
                                                     return <li key={index}>{item}</li>
                                                 })
-                                            }
+                                            } */}
                                         </ul>
                                     </Row>
                                 </div>
@@ -107,41 +134,41 @@ export class CampaignSend extends Component {
                                     <Row className="mt-3" style={{ fontSize: "12px" }}>Initial campaign email</Row>
                                     <Row style={{ fontSize: 14 }}>
                                         <ul>
-                                            {
+                                            {/* {
                                                 sendData && sendData.campEamil.map((item, index) => {
                                                     return <li key={index}>{item}</li>
                                                 })
-                                            }
+                                            } */}
                                         </ul>
                                     </Row>
                                     <Row className="mt-3" style={{ fontSize: "12px" }}>Follow-up campaign email</Row>
                                     <Row style={{ fontSize: 14 }}>
                                         <ul>
-                                            {
+                                            {/* {
                                                 sendData && sendData.follow_up.map((item, index) => {
                                                     return <li key={index}>{item}</li>
                                                 })
-                                            }
+                                            } */}
                                         </ul>
                                     </Row>
                                     <Row className="mt-3" style={{ fontSize: "12px" }}>Drip campaign email</Row>
                                     <Row style={{ fontSize: 14 }}>
                                         <ul>
-                                            {
+                                            {/* {
                                                 sendData && sendData.drip.map((item, index) => {
                                                     return <li key={index}>{item}</li>
                                                 })
-                                            }
+                                            } */}
                                         </ul>
                                     </Row>
                                     <Row className="mt-3" style={{ fontSize: "12px" }}>OnLinkClick campaign email</Row>
                                     <Row style={{ fontSize: 14 }}>
                                         <ul>
-                                            {
+                                            {/* {
                                                 sendData && sendData.onLinkClick.map((item, index) => {
                                                     return <li key={index}>{item}</li>
                                                 })
-                                            }
+                                            } */}
                                         </ul>
                                     </Row>
                                 </div>
@@ -154,14 +181,14 @@ export class CampaignSend extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    console.log('recipientData-----: ', state.startCampaignReducer&&state.startCampaignReducer)
+    console.log("sendData",state.CampaignCreateReducer&&state.CampaignCreateReducer)
     return {
-        sendData: state.CamapignSendReducer && state.CamapignSendReducer.sendData,
-        startCampaignId:  state.startCampaignReducer&&state.startCampaignReducer
+        sendData: state.CampaignCreateReducer,
+        startCampaignId: state.StartCampaignReducer.startCampaignData.id,
     };
 };
 const mapDispatchToProps = dispatch => ({
-    CampaignSendAction: (startCampaignId) => { dispatch(CampaignSendAction(startCampaignId));},
-    CampaignSaveAction: (startCampaignId) => { dispatch(CampaignSaveAction(startCampaignId));},
+    CampaignCreateAction: (startCampaignId) => {dispatch(CampaignCreateAction(startCampaignId));},
+    // CampaignSaveAction: (startCampaignId) => { dispatch(CampaignSaveAction(startCampaignId));},
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignSend)

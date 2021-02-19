@@ -92,7 +92,6 @@ Api.CampaignUpdatePreviewApi = (token, id) => {
 
 // Campaign save (get)
 Api.CampaignSendGetApi = (token,id) => {
-  // console.log('send',id);
   return axios({
     method: 'GET',
     url: `${API_BASE_URL}/campaign/savecamp/${id}/`,

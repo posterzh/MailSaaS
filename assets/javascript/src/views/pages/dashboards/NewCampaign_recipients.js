@@ -19,7 +19,7 @@ class NewCampaign_recipients extends Component {
     }
     handleChange = (e) => {
         this.setState({
-            [e.target.name]: e.target.value
+            csvFile: e.target.files[0]
         });
     }
     handleSubmit = (e) => {
@@ -49,9 +49,10 @@ class NewCampaign_recipients extends Component {
             email: `["${this.state.email}"]`,
             campaign: this.state.campaign
         }
-        console.log(recipientData, "data")
+        console.log(this.state.csvFile,'file')
         this.props.RecipientAction(recipientData)
     }
+   
     render() {
         const { show } = this.state;
         console.log(this.props.location, this.props.campaignDetails, "recipient")

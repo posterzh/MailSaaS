@@ -16,7 +16,7 @@ import {
     REQUEST_FOR_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW,
-    SUCCESS_SAVE_CAMPAIGN,
+    SUCCESS_CREATE_CAMPAIGN,
     REQUEST_FOR_COMPOSE_DATA
 
 } from "../actionType/actionType"
@@ -83,9 +83,9 @@ export const CampaignPreviewUpdateFailure = () => {
 }
 
 // Campaign_send
-export const CampaignSendSuccess = (sendData) => {
+export const CampaignCreateSuccess = (sendData) => {
     return {
-        type: SUCCESS_SEND_CAMPAIGN,
+        type: SUCCESS_CREATE_CAMPAIGN,
         sendData,
     }
 }
@@ -155,9 +155,10 @@ export const CampaignOverviewAction = () => {
 }
 
 export const StartCampaignAction = (data) => {
+    console.log("data ka data",data)
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        console.log('this is a token', token)
+        console.log('this is a token', history)
         Api.StartCampaignApi(data, token).then(result => {
             dispatch(StartCampaignSuccess(result.data))
             setTimeout(() => {
@@ -174,7 +175,9 @@ export const CampaignOptionAction = (optionData) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.OptionApi(optionData, token).then(result => {
-            dispatch(OptionSuccess(result.data))
+            setTimeout(() => {
+                // history.push('/app/admin/CampaignSend',{id:data.from_address})
+            }, 2000);
         }).catch(err => {
             console.log(err)
         })
@@ -206,19 +209,23 @@ export const PreviewCampaignAction = (id) => {
 export const CampaignTableAction = () => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        dispatch(requestForCampaignTableData(token))
         Api.CampaignTableDataApi(token).then(result => {
             dispatch(CampaignTableDataSuccess(result.data))
+            console.log('resultkddsfsdlf', result.data)
         }).catch(err => {
             console.log(err)
         })
     }
 }
-export const CampaignSendAction = (id) => {
+export const CampaignCreateAction = (id) => {
+    console.log("id------------------->",id)
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        Api.CampaignSendGetApi(token, id).then(result => {
-            dispatch(CampaignSendSuccess(result.data))
+        Api.CampaignCreateGetApi(token, id).then(result => {
+            setTimeout(() => {
+                dispatch(CampaignCreateSuccess(result.data))
+                // history.push('/app/admin/campaign',{id:data.id})
+            }, 2000);
         })
     }
 }

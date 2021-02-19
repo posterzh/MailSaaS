@@ -1,10 +1,21 @@
 import React, { Component } from 'react'
-import { Container, Row, Nav, Input, Col } from 'reactstrap';
+import {
+    Container,
+    Row,
+    Navbar,
+    Nav,
+    NavItem,
+    NavLink,
+    NavbarText, Input, Col
+} from 'reactstrap';
 import { Editor } from 'react-draft-wysiwyg';
 import { Link, Route } from 'react-router-dom';
 import { EditorState, convertToRaw } from 'draft-js';
 import { PreviewCampaignAction } from "../../../redux/action/CampaignAction"
 import { connect } from 'react-redux'
+// import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+// import Container from 'reactstrap/lib/Container';
+
 class CampaignPreview extends Component {
     constructor() {
         super();
@@ -126,6 +137,7 @@ class CampaignPreview extends Component {
                                         </Row>
                                     </Row><Col>
                                     </Col>
+                                    {/* </Col> */}
                                 </Row>
                                 <Row className='mt-5'>
                                     <Col style={{ display: "flex", justifyContent: "center" }}><Link to={{
@@ -135,17 +147,33 @@ class CampaignPreview extends Component {
                                         }
                                     }} className='btn startBtn'>Next <i className="fa fa-arrow-right" aria-hidden="true"></i></Link></Col>
                                 </Row>
+                                {/* <Row style={{ display: "flex", justifyContent: "center" }}>Edits are saved as you switch recipents or hit "Next".</Row> */}
                             </Col>
                         </Row>
                     </Container>
                     <Container>
                         <Row className="mt-3">
-                            <Col md='12' className='mx-auto'>
-                                <div style={{ backgroundColor: "#005aac" }}>
-                                    {<ul>{this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index) => <li key='index' style={{ color: 'white' }}>{item.email}</li>)}</ul>}
-                                </div>
-                            </Col>
-                        </Row>
+                                <Col md='12' className='mx-auto'>
+                                    <div style={{ backgroundColor: "#005aac", color: "white" }}>
+                                        {
+                                            <ul >
+                                               {this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((e,i)=> <li style={{ color: 'white' }}>{e.email}</li>)}
+                                                </ul>
+                                        }
+                                    </div>
+
+                                    <div style={{ backgroundColor: "#005aac", color: "white" }}>
+                                        <ul>
+                                        {
+                                            // console.log(this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((e,i)=>e.email)),
+                                            console.log(this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((e,i)=>e.email_body))
+                                        }
+                                        </ul>
+                                    </div>
+                                </Col>
+                            </Row>
+
+
                     </Container>
                     <Container>
                         <Row>
@@ -186,13 +214,12 @@ class CampaignPreview extends Component {
                                             wrapperClassName="rdw-storybook-wrapper"
                                             editorClassName="rdw-storybook-editor"
                                             onEditorStateChange={this.onEditorStateChange}
-                                            // value={}
                                             toolbar={{
                                                 link: {
                                                     defaultTargetOption: '_blank',
                                                 },
                                             }}
-                                        ></Editor>
+                                        />
                                     </div>
                                 </Row>
                             </Col>
@@ -203,13 +230,13 @@ class CampaignPreview extends Component {
         )
     }
 }
+// export default CampaignPreview
 const mapStateToProps = (state) => {
     return {
-        CampaignEmail: state.RecipientReducer.recipientData && state.RecipientReducer.recipientData.email,
+        campaignId:state.StartCampaignReducer.startCampaignData.id,
         CampaignPreviewData: state.CampaignPreviewGetReducer.CampaignPreviewData,
         CampaignPreviewEmails: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail,
-        CampaignPreviewBody: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail,
-        recipientId: state.RecipientReducer.recipientData.id,
+        CampaignPreviewBody: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.campEmail
     }
 }
 const mapDispatchToProps = dispatch => ({
@@ -217,3 +244,4 @@ const mapDispatchToProps = dispatch => ({
     PreviewUpdateCampaignAction: campaignPreviewUpdateData => { dispatch(PreviewUpdateCampaignAction(campaignPreviewUpdateData)) },
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignPreview)
+
