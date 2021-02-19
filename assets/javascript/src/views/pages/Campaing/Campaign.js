@@ -19,9 +19,15 @@ class Campaign extends Component {
       data: []
     }
   }
-  
+  componentDidMount() {
+    this.props.CampaignTableAction()
+
+    // console.log("state.CampaignTableReducer.CampaignTableData",this.props.CampaignTableReducer.CampaignTableData)
+  }
+
   render() {
     const { show, hide } = this.state;
+    const { Tables } = this.props;
     return (
       <>
         <div className='main-view'>
@@ -30,6 +36,13 @@ class Campaign extends Component {
               <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Campaigns</h1>
               <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
             </div>
+            {/* <div className='bg-dark' style={{ height: 70 }} >
+             <ul>
+               <li> <i className="fa fa-times" aria-hidden="true"></i></li>
+               <li>Selected items</li>
+             </ul>
+
+            </div> */}
             <div className=''>
               <Container fluid className=''>
                 <Row>
@@ -46,10 +59,9 @@ class Campaign extends Component {
                     <div>
                       <label className='filter_app'>Teammate</label><br></br>
                       <select className='filter_select'>
-                        <option value='one'>One</option>
-                        <option value='two'>two</option>
-                        <option value='three'>three</option>
-                        <option value='four'>Four</option>
+                        <option value='Any'>Any</option>
+                        <option value='Unassigned'>Unassigned</option>
+                        <option value='name'>NAme</option>
                       </select>
                     </div>
                   </Col>
@@ -99,7 +111,13 @@ class Campaign extends Component {
                 <Card>
                   <Row>
                     <Col md='12'>
-                      <Table responsive hover >
+                      <Table responsive hover ><div className='bg-dark' style={{ height: 70 }} >
+             <ul>
+               <li> <i className="fa fa-times" aria-hidden="true"></i></li>
+               <li>Selected items</li>
+             </ul>
+
+            </div>
                         <thead>
                           <tr>
                             <th scope="col" className="tableheader1" ><input type="checkbox" /></th>
@@ -115,18 +133,23 @@ class Campaign extends Component {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className='pointer' >
-                            <td><input type='checkbox' /></td>
-                            <Link to={'/app/admin/campaign-detail'}><td className="Campaign_title" onClick={() => { this.setState({}) }}>January 19 Outreach</td></Link>
-                            <td className="Created">0</td>
-                            <td className="Assigned">0</td>
-                            <td className="Recipient">0</td>
-                            <td className="Sent">0</td>
-                            <td className="Leads" >0</td>
-                            <td className="Replies">0</td>
-                            <td className="Open">0</td>
-                            <td className="Bounces">0</td>
-                          </tr>
+                          {Tables && Tables.CampaignTableData.map((item, index) => {
+                            return (<>
+                              <tr key={index} className='pointer' >
+                                <td><input type='checkbox' /></td>
+                                <td className="Campaign_title"><Link to='/app/admin/OverView'>{item.camp_title}</Link></td>
+                                <td className='Created'>{item.camp_created_date_time.substring(5, 10)}</td>
+                                <td className='Assigned'>{item.assigned}</td>
+                                <td className='Recipient'>{item.recipientCount}</td>
+                                <td className='Sent'>{item.sentCount}</td>
+                                <td className='Leads'>{item.leadCount}</td>
+                                <td className='Replies'>-</td>
+                                <td className='Open'>{item.openLeadCount}</td>
+                                <td key={index} className='Bounces'>-</td>
+                              </tr>
+                            </>
+                            )
+                          })}
                         </tbody>
                       </Table>
                     </Col>
@@ -146,13 +169,12 @@ class Campaign extends Component {
   }
 }
 const mapStateToProps = (state) => {
+  console.log('statedjshadjsahdjh', state.CampaignTableReducer.CampaignTableData && state.CampaignTableReducer.CampaignTableData)
   return {
-    // token: state.token
+    Tables: state.CampaignTableReducer.CampaignTableData && state.CampaignTableReducer
   };
 };
 const mapDispatchToProps = dispatch => ({
-  CampaignTableAction: CampaignTableData => {
-    dispatch(CampaignTableAction(CampaignTableData));
-  },
+  CampaignTableAction: mailGetData => { dispatch(CampaignTableAction(mailGetData)); },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Campaign)

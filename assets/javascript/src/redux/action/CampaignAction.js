@@ -1,4 +1,5 @@
 // imports
+import { history } from "../.."
 import {
     SUCCESS_START_CAMPAIGN,
     REQUEST_FOR_RECIPIENT,
@@ -15,14 +16,11 @@ import {
     REQUEST_FOR_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW,
-    SUCCESS_SAVE_CAMPAIGN,
+    SUCCESS_CREATE_CAMPAIGN,
     REQUEST_FOR_COMPOSE_DATA
 
 } from "../actionType/actionType"
-import { browserHistory } from 'react-router'
-
 import Api from "../api/api"
-
 // START_CAMPAIGN
 export const StartCampaignSuccess = (data) => {
     console.log(data, 'data')
@@ -85,9 +83,9 @@ export const CampaignPreviewUpdateFailure = () => {
 }
 
 // Campaign_send
-export const CampaignSendSuccess = (sendData) => {
+export const CampaignCreateSuccess = (sendData) => {
     return {
-        type: SUCCESS_SEND_CAMPAIGN,
+        type: SUCCESS_CREATE_CAMPAIGN,
         sendData,
     }
 }
@@ -156,15 +154,17 @@ export const CampaignOverviewAction = () => {
     }
 }
 
-export const StartCampaignAction = (data, props) => {
+export const StartCampaignAction = (data) => {
+    console.log("data ka data",data)
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        console.log('this is a token', token)
+        console.log('this is a token', history)
         Api.StartCampaignApi(data, token).then(result => {
+            dispatch(StartCampaignSuccess(result.data))
             setTimeout(() => {
-                dispatch(StartCampaignSuccess(result.data))
-                props.history.push('/app/admin/CampaignRecipient')
+                history.push('/app/admin/CampaignRecipient',{id:result.data.id})
             }, 2000);
+          
         }).catch(err => {
             console.log(err)
         })
@@ -172,41 +172,34 @@ export const StartCampaignAction = (data, props) => {
 }
 
 export const CampaignOptionAction = (optionData) => {
-    console.log('abcd:', optionData);
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.OptionApi(optionData, token).then(result => {
-            dispatch(OptionSuccess(result.data))
-            // console.log("checking", result.data)
-            // alert("option api")
+            setTimeout(() => {
+                history.push('/app/admin/CampaignSend',{id:result.data.id})
+            }, 2000);
         }).catch(err => {
             console.log(err)
         })
     }
 }
-export const RecipientAction = (recipientData, props) => {
+export const RecipientAction = (recipientData) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.RecipientApi(recipientData, token).then(result => {
             setTimeout(() => {
                 dispatch(StartCampaignSuccess(result.data))
-                console.log(result.data)
-                props.history.push('/app/admin/CampaignCompose')
+                history.push('/app/admin/CampaignCompose',{id:recipientData.campaign})
             }, 2000);
         }).catch(err => { console.log(err) })
     }
 }
 // CAMPAIGN_CREATE_PREVIEW MIDDLEWARE
-export const PreviewCampaignAction = (id,props) => {
-    console.log(id, 'tyertyerId')
+export const PreviewCampaignAction = (id) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.CampaignPreviewApi(token, id).then(result => {
-            setTimeout(() => {
                 dispatch(CampaignPreviewSuccess(result.data))
-                console.log(result.data)
-                props.history.push('/app/admin/CampaignOptions')
-            }, 1000);
         }).catch(err => {
             console.log(err)
         })
@@ -216,21 +209,23 @@ export const PreviewCampaignAction = (id,props) => {
 export const CampaignTableAction = () => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        dispatch(requestForCampaignTableData(token))
         Api.CampaignTableDataApi(token).then(result => {
             dispatch(CampaignTableDataSuccess(result.data))
-            console.log('result', result.data)
+            console.log('resultkddsfsdlf', result.data)
         }).catch(err => {
             console.log(err)
         })
     }
 }
-export const CampaignSendAction = (id) => {
+export const CampaignCreateAction = (id) => {
+    console.log("id------------------->",id)
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        Api.CampaignSendGetApi(token, id).then(result => {
-            dispatch(CampaignSendSuccess(result.data))
-            console.log('result', result.data)
+        Api.CampaignCreateGetApi(token, id).then(result => {
+            setTimeout(() => {
+                dispatch(CampaignCreateSuccess(result.data))
+                // history.push('/app/admin/campaign',{id:data.id})
+            }, 2000);
         })
     }
 }
@@ -240,7 +235,6 @@ export const CampaignSaveAction = (id) => {
         const token = localStorage.getItem('access_token')
         Api.CampaignSaveApi(token, id).then(result => {
             dispatch(CampaignSaveSuccess(result.data))
-            console.log("result.data", result.data)
         }).catch(err => {
             console.log(err)
 
@@ -259,14 +253,14 @@ export const PreviewUpdateCampaignAction = () => {
         })
     }
 }
-export const CampaignComposeAction = (data, props) => {
+export const CampaignComposeAction = (data) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         dispatch(requestForCampaignCompose())
         Api.CampaignComposeApi(token, data).then(result => {
             setTimeout(() => {
                 console.log(result)
-                props.history.push('/app/admin/CampaignPreview')
+                 history.push('/app/admin/CampaignPreview',{id:data.normal.campaign})
             }, 2000);
         }).catch(err => {
             console.log(err, 'error-')

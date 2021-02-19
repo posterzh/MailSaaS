@@ -19673,7 +19673,8 @@ input:focus {
   font-weight: 400; }
 
 .campaign_navbar {
-  height: 100px;
+  height: auto;
+  width: 100%;
   background-color: #035aac;
   display: flex;
   align-items: center;
@@ -21184,15 +21185,4 @@ input::-webkit-inner-spin-button {
     cursor: pointer; }
   .list-wrapper .mail-account-edit-list li:focus, .list-wrapper .mail-account-edit-list :hover {
     background: #e4e4e4; }
-
-.main-view .compose-alert {
-  display: flex !important;
-  position: fixed;
-  bottom: 0px;
-  justify-content: center; }
-  .main-view .compose-alert .alert {
-    width: max-content !important; }
-
-.alert_ {
-  margin-bottom: 0px !important; }
 

@@ -26,7 +26,7 @@ class CampaignCompose extends Component {
             onClickData: [],
             dripPageObject: {},
             normalData: {},
-            isOpen:false
+            isOpen: false
         }
         this.counter = 0
     }
@@ -43,7 +43,7 @@ class CampaignCompose extends Component {
         this.state.counter === 0 ? null : this.state.followUpData.push(this.state.dataObj)
         this.setState({
             dataObj: {},
-            inputListFollow: inputListFollow.concat(<FollowUpPage msgBody={this.state.msgBody} followUpPageObject={this.state.dataObj} normalSubject={this.state.subject} key={inputListFollow.length} />),
+            inputListFollow: inputListFollow.concat(<FollowUpPage onDeleteList={this.onDeleteList} msgBody={this.state.msgBody} followUpPageObject={this.state.dataObj} normalSubject={this.state.subject} id={this.counter} />),
         });
     }
     onAddBtnClickDrips = () => {
@@ -52,7 +52,7 @@ class CampaignCompose extends Component {
         this.state.counter === 0 ? null : this.state.dripData.push(this.state.dataObj)
         this.setState({
             dataObj: {},
-            inputListDrips: inputListDrips.concat(<Drips dripPageObject={this.state.dataObj} key={inputListDrips.length} />)
+            inputListDrips: inputListDrips.concat(<Drips dripPageObject={this.state.dataObj} key={this.counter} onDeleteList={this.onDeleteList} />)
         });
     }
     onAddBtnClickLinkClick = () => {
@@ -62,7 +62,7 @@ class CampaignCompose extends Component {
         this.state.counter === 0 ? null : this.state.onClickData.push(this.state.dataObj)
         this.setState({
             dataObj: {},
-            inputListLinkClick: inputListLinkClick.concat(<LinkClicksPage onClickPageObject={this.state.dataObj} key={inputListLinkClick.length} />)
+            inputListLinkClick: inputListLinkClick.concat(<LinkClicksPage onClickPageObject={this.state.dataObj} onDeleteList={this.onDeleteList} key={this.counter} />)
         });
     }
     onEditorStateChange = (editorState) => {
@@ -70,21 +70,21 @@ class CampaignCompose extends Component {
     }
     handleSubmit = (e) => {
         e.preventDefault()
-        if(this.state.email_body===''){
-         this.setState({
-             isOpen:true
-         })   
+        if (this.state.email_body === '') {
+            this.setState({
+                isOpen: true
+            })
         }
-        else{
-        Object.assign(this.state.normalData, { 'campaign': this.props.history.location.state.mailGetData && this.props.history.location.state.mailGetData[0].id })
-        let data = {
-            normal: this.state.normalData,
-            follow_up: this.state.followUpData,
-            drips: this.state.dripData,
-            onLinkClick: this.state.onClickData
+        else {
+            Object.assign(this.state.normalData, { 'campaign': this.props.history.location.state.id })
+            let data = {
+                normal: this.state.normalData,
+                follow_up: this.state.followUpData,
+                drips: this.state.dripData,
+                onLinkClick: this.state.onClickData
+            }
+            this.props.CampaignComposeAction(data)
         }
-        this.props.CampaignComposeAction(data,this.props)
-    }
 
     }
     onChange = (e) => {
@@ -93,13 +93,34 @@ class CampaignCompose extends Component {
     handleMsgBody = (e) => {
         this.setState({
             email_body: e.blocks[0].text,
-            isOpen:false
+            isOpen: false
         })
         Object.assign(this.state.normalData, { 'email_body': e.blocks[0].text })
     }
-    
+
+    onDeleteList = (e) => {
+        var array = [...this.state.inputListFollow];
+        let index = e - 1
+        console.log(index, "index")
+
+        if (index !== -1) {
+            array.splice(index, 1);
+            this.setState({
+                inputListFollow: array,
+            })
+        }
+        if(array.length-1===index)
+        console.log(array.length-1,'array.length-1')
+       this.counter=0
+        // var array = this.state.inputListFollow;
+        // var index = array.indexOf(e); // Let's say it's Bob.
+        // console.log(e,"index")
+        // delete array[index];
+    }
     render() {
-        const { editorState } = this.state;
+        const { editorState, inputListLinkClick, inputListFollow } = this.state;
+
+        console.log(inputListFollow, "compose")
         return (
             <div>
                 <div className='main-view'>
@@ -127,12 +148,37 @@ class CampaignCompose extends Component {
                                 <Col style={{ display: "flex" }}><Nav className='mx-auto' navbar>
                                     <Row className='mx-auto' style={{ width: '100%' }}>
                                         <ul style={{ listStyleType: 'none', display: 'flex' }}>
-                                            <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
-                                            <li className='mr-3 ml-3'><Link to="/app/admin/CampaignRecipient">RECIPICIENT</Link></li>
+                                            <li className='mr-3 ml-3'><Link to={{
+                                                pathname: "/app/admin/CampaignStart",
+                                                state: {
+                                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                                }
+                                            }}>START</Link></li>
+                                            <li className='mr-3 ml-3'><Link to={{
+                                                pathname: "/app/admin/CampaignRecipient",
+                                                state: {
+                                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                                }
+                                            }}>RECIPICIENT</Link></li>
                                             <li className='mr-3 ml-3'><Link to="/app/admin/CampaignCompose">COMPOSE</Link></li>
-                                            <li className='mr-3 ml-3'><Link to="/app/admin/CampaignPreview">PREVIEW</Link></li>
-                                            <li className='mr-3 ml-3'><Link to="/app/admin/CampaignOptions">OPTIONS</Link></li>
-                                            <li className='mr-3 ml-3'><Link to="/app/admin/CampaignSend">SEND</Link></li>
+                                            <li className='mr-3 ml-3'><Link to={{
+                                                pathname: "/app/admin/CampaignPreview",
+                                                state: {
+                                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                                }
+                                            }}>PREVIEW</Link></li>
+                                            <li className='mr-3 ml-3'><Link to={{
+                                                pathname: "/app/admin/CampaignOptions",
+                                                state: {
+                                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                                }
+                                            }}>OPTIONS</Link></li>
+                                            <li className='mr-3 ml-3'><Link to={{
+                                                pathname: "/app/admin/CampaignSend",
+                                                state: {
+                                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                                }
+                                            }}>SEND</Link></li>
                                         </ul>
                                     </Row>
                                 </Nav>
@@ -214,8 +260,8 @@ class CampaignCompose extends Component {
                             </Row>
                         </Container>
                     </Form>
-                    <div style={{display:'flex',justifyContent:'center',position:'absolute',bottom:0,right:10}}>
-                        <Alert className="alert_" toggle={()=>{this.setState({isOpen:false})}}  isOpen={this.state.isOpen} color="warning">Initial message must have a body</Alert>
+                    <div style={{ display: 'flex', justifyContent: 'center', position: 'absolute', bottom: 0, right: 10 }}>
+                        <Alert className="alert_" toggle={() => { this.setState({ isOpen: false }) }} isOpen={this.state.isOpen} color="warning">Initial message must have a body</Alert>
                     </div>
                 </div>
             </div>
@@ -224,12 +270,11 @@ class CampaignCompose extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        campaign: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id,
-        mailGetData: state.MailGetDataReducer.mailGetData
-
+        // campaign: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id,
+        // mailGetData: state.MailGetDataReducer.mailGetData
     }
 }
 const mapDispatchToProps = (dispatch) => ({
-    CampaignComposeAction: (data,props) => dispatch(CampaignComposeAction(data,props))
+    CampaignComposeAction: (data) => dispatch(CampaignComposeAction(data))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignCompose);

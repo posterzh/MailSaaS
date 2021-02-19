@@ -24,12 +24,14 @@ import {
     SUCCESS_MAIL_ACCOUNT_DELETE,
     SUCCESS_MAIL_ACCOUNT_UPDATE,
     FAILURE_MAIL_ACCOUNT_UPDATE,
-    SUCCESS_SEND_CAMPAIGN,
+    SUCCESS_CREATE_CAMPAIGN,
     REQUEST_FOR_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_SAVE_CAMPAIGN,
-    SUCCESS_FETCH_ONCLICK_PROSPECTS
+    SUCCESS_FETCH_ONCLICK_PROSPECTS,
+    SUCCESS_CAMPAIGN_TABLE_DATA,
+    
 } from "../actionType/actionType";
 
 const initialState = {
@@ -50,7 +52,8 @@ const initialState = {
     CampaignOverviewData:[],
     isLogin:false,
     CampaignPreviewData: [],
-    campaignPreviewUpdateData:[]
+    campaignPreviewUpdateData:[],
+    CampaignTableData:[]
 }
 export const RegisterReducer = (state =  initialState , action) => {
     // console.log(action.payload && action.payload[0], 'payloaddata')
@@ -108,9 +111,9 @@ export const RecipientReducer = (state =  initialState , action) => {
             break;
     }
 }
-export const CamapignSendReducer=(state =  initialState , action)=>{
+export const CampaignCreateReducer=(state =  initialState , action)=>{
     switch (action.type) {
-    case SUCCESS_SEND_CAMPAIGN:
+    case SUCCESS_CREATE_CAMPAIGN:
         return {
             ...state,
             sendData: action.sendData,
@@ -276,6 +279,21 @@ export const CampaignOverviewReducer = (state =  initialState , action) => {
         case  FAILURE_CAMPAIGN_OVERVIEW:
             return {
                 
+            }
+        default: return state
+            break;
+    }
+}
+
+// CAMPAIGN TABLE DATA
+
+export const CampaignTableReducer = (state =  initialState , action) => {
+    console.log("Action ----------->",action.CampaignTableData)
+    switch (action.type) {
+        case SUCCESS_CAMPAIGN_TABLE_DATA:
+            return {
+                ...state,
+                CampaignTableData: action.CampaignTableData,
             }
         default: return state
             break;

@@ -73,6 +73,7 @@ export default class FollowUpPage extends React.Component {
                             </Row>
                             <Row className='mt-3'>
                                 <div className='Editor_div'>
+                                <div style={{padding:0}} className="btn" onClick={this.onDeleteList}><i style={{padding:5}} className="fa">&#xf014;</i>DELETE</div>
                                     <Editor
                                         value={this.state.body}
                                         onChange={this.handleChangeBody}
