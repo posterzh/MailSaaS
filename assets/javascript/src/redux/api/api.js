@@ -334,6 +334,7 @@ Api.MailAccountUpdateApi = (token, data, id) => {
   })
 }
 Api.fetchUnsbcribed = (token) => {
+  console.log("hii 2")
   return axios({
     method: 'GET',
     url: `${API_BASE_URL}/unsubscribes/unsubcribeview/`,

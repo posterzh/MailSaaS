@@ -21,10 +21,8 @@ class MailAccount extends Component {
             user: null,
             accountId: null,
             flag: false
-
         }
     }
-
     componentDidMount() {
         this.props.MailGetDataAction();
     }

@@ -10,7 +10,7 @@ import {
 } from 'reactstrap';
 import { Editor } from 'react-draft-wysiwyg';
 import { Link, Route } from 'react-router-dom';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw ,ContentState} from 'draft-js';
 import { PreviewCampaignAction } from "../../../redux/action/CampaignAction"
 import { connect } from 'react-redux'
 // import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -20,7 +20,7 @@ class CampaignPreview extends Component {
     constructor() {
         super();
         this.state = {
-            editorState: EditorState.createEmpty()
+            editorState: EditorState.createWithContent(ContentState.createFromText('Hello'))
         }
     }
     onEditorStateChange = (editorState) => {
@@ -34,8 +34,7 @@ class CampaignPreview extends Component {
     render() {
         const { editorState } = this.state;
         const { CampaignEmail } = this.props;
-        console.log(this.props.history.location.state && this.props.history.location.state.id, "preview")
-        console.log()
+        console.log(editorState, "preview")
         return (
             <div>
                 <div className='main-view'>
@@ -209,7 +208,10 @@ class CampaignPreview extends Component {
                                                     { text: 'HONEYDEW', value: 'honeydew', url: 'honeydew' },
                                                 ],
                                             }}
+                                            defaultEditorState={editorState}
+                                            initialContentState={editorState}
                                             editorState={editorState}
+                                            // contentState={EditorState.createWithContent(ContentState.createFromText('Hello'))}
                                             toolbarClassName="rdw-storybook-toolbar"
                                             wrapperClassName="rdw-storybook-wrapper"
                                             editorClassName="rdw-storybook-editor"
