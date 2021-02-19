@@ -102,7 +102,7 @@ class Option extends Component {
                                 </Row>
                                 <Row >
                                     <div>
-                                        <span className="recipient_condition">When does a recipient become a lead>>>>>>>>>>>>>>>>>>>>>>>>>?</span>
+                                        <span className="recipient_condition">When does a recipient become a lead?</span>
                                         <div>
                                             <div className="recipient_replies">
                                                 <span style={{ display: "flex" }}>
