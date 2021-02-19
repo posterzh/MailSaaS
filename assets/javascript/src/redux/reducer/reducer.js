@@ -53,7 +53,6 @@ const initialState = {
 export const RegisterReducer = (state = { initialState }, action) => {
     // console.log(action.payload && action.payload[0], 'payloaddata')
     switch (action.type) {
-        
         case SUCCESS_REGISTER:
             return {
                 ...state,
@@ -209,7 +208,6 @@ export const ProspectsGetReducer = (state = { initialState }, action) => {
 
 // CAMPAIGN_PREVIEW_DATA
 export const CampaignPreviewGetReducer = (state = { initialState }, action) => {
-    console.log(action.CampaignPreviewData && action.CampaignPreviewData.campaign,' action.CampaignPreviewData')
     switch (action.type) {
         case REQUEST_FOR_CAMPAIGN_CREATE_PREVIEW:
             return {
@@ -231,7 +229,6 @@ export const CampaignPreviewGetReducer = (state = { initialState }, action) => {
 
 // CAMPAIGN_PREVIEW_UPDATE_DATA 
 export const CampaignPreviewUpdateReducer = (state = { initialState }, action) => {
-    // console.log(action.CampaignPreviewData && action.CampaignPreviewData.campaign,' action.CampaignPreviewData')
     switch (action.type) {
         case SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW:
             return {
@@ -250,7 +247,6 @@ export const CampaignPreviewUpdateReducer = (state = { initialState }, action) =
 
 // CAMPAIGN_OVERVIEW_DATA
 export const CampaignOverviewReducer = (state = { initialState }, action) => {
-    // console.log(action.CampaignPreviewData && action.CampaignPreviewData.campaign,' action.CampaignPreviewData')
     switch (action.type) {
         case REQUEST_FOR_CAMPAIGN_OVERVIEW:
             return {
