@@ -350,5 +350,14 @@ Api.GetAllCampaigns = (token) => {
     }
   })
 }
+Api.CampaignCreateGetApi = (token, id) => {
+  return axios({
+    method: 'GET',
+    url: `${API_BASE_URL}/campaign/savecamp/${id}/`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
 
 export default Api;

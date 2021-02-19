@@ -135,7 +135,7 @@ class NewCampaign_start extends React.Component {
 const mapStateToProps = (state) => {
     // console.log("------------------------->",state.MailGetDataReducer.mailGetData&&state.MailGetDataReducer.mailGetData.map((e,i)=> e.email[0].id))
     return {
-        mailGetData: state.MailGetDataReducer.mailGetData
+        mailGetData: state.MailGetDataReducer.mailGetData && state.MailGetDataReducer.mailGetData
     };
 };
 const mapDispatchToProps = dispatch => ({

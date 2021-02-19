@@ -931,6 +931,13 @@ class ProspectsView(generics.ListAPIView):
 
     def get(self, request, *args,**kwargs):
 
+        counts_data = {
+            "total_count": 0,
+            "in_campaign_count": 0,
+            "leads_count": 0,
+            "unsubscribe": 0
+        }
+
         params = list(dict(request.GET).keys())
         if ("search" in params) and ("filter" in params):
             toSearch = request.GET['search']
@@ -1054,25 +1061,63 @@ class ProspectsView(generics.ListAPIView):
         else:
             queryset = CampaignRecipient.objects.filter(campaign__assigned=request.user.id)
         
-        serializer = CampaignEmailSerializer(queryset,many=True)
-        serializer_data = serializer.data
-        # print(type(serializer_data), serializer_data)
-        for serializer_data in serializer.data:
-            serializer_data["sent_count"] = 0
+        resp = []
 
-        # print(serializer.data)
-        
-        for serializer_data in serializer.data:
-            resp = dict(serializer_data)
-            # print(resp["sent_count"])
+        for recep in queryset:
+            data = {
+                "id": recep.id,
+                "email": recep.email,
+                "name": recep.full_name,
+                "created": recep.created_date_time.strftime("%B %d, %Y"),
+                "status": recep.lead_status,
+                "campaign_count": CampaignRecipient.objects.filter(email=recep.email).distinct('campaign').count(),
+                "sent": CampaignRecipient.objects.filter(campaign__in = Campaign.objects.filter(id__in = CampaignRecipient.objects.filter(email=recep.email).values_list('campaign').distinct('campaign')), sent=True).count()
+            }
             
-            # print(type(resp), resp)
-            # print(serializer_data["sent"])
-            if not serializer_data["sent"]:
-                resp["sent_count"] += 1
-                # print(resp["sent_count"])
-                
-        return Response(serializer.data)
+
+            resp.append(data)
+
+        return Response(resp)
+        # # print("qqqqqqqqq ",queryset)
+        # serializer = CampaignEmailSerializer(queryset,many=True)
+        # # serializer_data = serializer.data
+        # # print(type(serializer_data), serializer_data)
+        # for serializer_data in serializer.data:
+        #     print(serializer_data)
+
+        #     serializer_data["campaign_count"] = 0
+        #     serializer_data["sent_count"] = 0
+
+        #     counts_data["total_count"] += 1
+        #     counts_data["in_campaign_count"] += 1
+
+        #     if serializer_data["leads"]:
+        #         counts_data["leads_count"] += 1
+
+        #     if serializer_data["unsubscribe"]:
+        #         counts_data["unsubscribe"] += 1
+
+        # # print(serializer.data)
+        # response_data = {"counts_data": counts_data,
+        #     "data": []
+        # }
+        
+        # for serializer_data in serializer.data:
+        #     resp = dict(serializer_data)
+        #     # print(resp["sent_count"])
+            
+        #     # print(type(resp), resp)
+        #     # print(serializer_data["sent"])
+        #     if not serializer_data["sent"]:
+        #         resp["sent_count"] += 1
+
+        #     count_email_in_campaigns = CampaignRecipient.objects.filter(email=serializer_data["email"]).count()
+        #     resp["campaign_count"] = count_email_in_campaigns
+
+        #     response_data["data"].append(resp)
+        #         # print(resp["sent_count"])
+        # # response_data = [counts_data, serializer.data] 
+        # return Response(response_data)
 
 
 class ProspectsCampaignView(generics.ListAPIView):
@@ -1080,29 +1125,26 @@ class ProspectsCampaignView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, pk, *args, **kwargs):
-        queryset = CampaignRecipient.objects.get(id=pk)
+        email_for_campaigns = CampaignRecipient.objects.get(id=pk)
 
-        data = {
-                'campaign':queryset.campaign.title,
-                'email':queryset.email,
-                'full_name':queryset.full_name,
-                'sent':0,
+        queryset = CampaignRecipient.objects.filter(email=email_for_campaigns.email)
+        resp = []
+        
+        for queryset in queryset:
+            data = {
+                'campaign_id': queryset.campaign.id,
+                'campaign_title':queryset.campaign.title,
+                'added': Campaign.objects.filter(id=queryset.campaign.id).values_list("created_date_time")[0][0].strftime("%B %d, %Y"),
+                'sent_in_a_camp': CampaignRecipient.objects.filter(campaign=queryset.campaign.id, sent=True).count(),
                 'lead_status':queryset.lead_status,
-                'opens':0,
-                'has_link_clicked':0,
-                'replies':0,
-                'created_date':queryset.created_date,
-        }
+                'opens':CampaignRecipient.objects.filter(campaign=queryset.campaign.id, opens=True).count(),
+                'replies':CampaignRecipient.objects.filter(campaign=queryset.campaign.id, replies=True).count(),
+            }
+       
+            print(data)
+            resp.append(data)
 
-        if queryset.sent:
-            data['sent'] = data['sent']+1
-        if queryset.opens:
-            data['opens'] = data['opens']+1
-        if queryset.has_link_clicked:
-            data['has_link_clicked'] = data['has_link_clicked']+1
-        if queryset.replies:
-            data['replies'] = data['replies']+1
-        return Response(data)
+        return Response(resp)
 
 
 class RecipientUnsubcribe(generics.CreateAPIView):

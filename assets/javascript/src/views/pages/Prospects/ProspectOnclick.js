@@ -15,25 +15,26 @@ export class ProspectOnclick extends Component {
                         <Table responsive hover className='prospect_table'>
                             <thead >
                                 <tr>
-                                    <th><input type='checkbox' /></th>
-                                    <th >EMAIL</th>
-                                    <th>NAME</th>
-                                    <th>CREATED</th>
+                                    {/* <th><input type='checkbox' /></th> */}
+                                    <th >campaign</th>
+                                    <th>ADDED</th>
                                     <th>STATUS</th>
-                                    <th>CAMPAGINS</th>
-                                    <th>SENT</th>
-                                    <th>TASKS</th>
+                                    <th>SENT</th>                                   
+                                    <th>REPLIES</th>
+                                    <th>OPEN</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type='checkbox'></input></td>
-                                    <td> {propData && propData.prospectOnclickData.email}</td>
-                                    <td> {propData && propData.prospectOnclickData.full_name}</td>
-                                    <td> {propData && propData.prospectOnclickData.created_date}</td>
-                                    <td> {propData && propData.prospectOnclickData.status}</td>
-                                    <td> {propData && propData.prospectOnclickData.campaign}</td>
-                                    <td> {propData && propData.prospectOnclickData.sent}</td>
+                                    {/* <td ><input type='checkbox' /></td> */}
+                                    <td>{propData && propData.campaign_title}</td> 
+                                    <td>{propData && propData.added}</td>
+                                    <td>{propData && propData.lead_status}</td>
+                                    <td>{propData && propData.sent_in_a_camp}</td>
+                                    <td>{propData && propData.replies}</td>    
+                                    <td>{propData && propData.opens}</td>                                   {
+                                    }
+                                    
                                 </tr>
                             </tbody>
 
@@ -48,9 +49,9 @@ export class ProspectOnclick extends Component {
 
 // export default ProspectOnclick
 const mapStateToProps = (state) => {
-    console.log("cheking state for onclick", state.OnclickProspectsReducer)
+    console.log("cheking state for onclick",state.OnclickProspectsReducer.prospectOnclickData &&state.OnclickProspectsReducer.prospectOnclickData.campaign_title)
     return {
-        propData: state.OnclickProspectsReducer,
+        propData: state.OnclickProspectsReducer.prospectOnclickData &&state.OnclickProspectsReducer.prospectOnclickData
         // id:state.ProspectsGetReducer
         // id:state.OnclickProspectsReducer.prospectOnclickData && state.OnclickProspectsReducer.prospectOnclickData.id
     }

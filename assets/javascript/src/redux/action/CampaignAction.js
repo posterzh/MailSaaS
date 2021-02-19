@@ -176,7 +176,7 @@ export const CampaignOptionAction = (optionData) => {
         const token = localStorage.getItem('access_token')
         Api.OptionApi(optionData, token).then(result => {
             setTimeout(() => {
-                history.push('/app/admin/CampaignSend',{id:result.data.id})
+                history.push('/app/admin/CampaignSend',{id:result.data.from_address})
             }, 2000);
         }).catch(err => {
             console.log(err)

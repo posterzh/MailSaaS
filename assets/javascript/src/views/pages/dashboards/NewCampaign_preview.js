@@ -34,8 +34,7 @@ class CampaignPreview extends Component {
     render() {
         const { editorState } = this.state;
         const { CampaignEmail, CampaignFollowUp } = this.props;
-        console.log(this.props.history.location.state && this.props.history.location.state.id, "preview")
-        console.log()
+        console.log(editorState, "preview")
         return (
             <div>
                 <div className='main-view'>
@@ -181,7 +180,7 @@ class CampaignPreview extends Component {
                                                 <div><i className="fa fa-envelope-o" aria-hidden="true"></i><label style={{ marginLeft: "5px" }}>Initial campaign email</label></div>
                                                 <div className='grand_parent'>
                                                     <div className='input_field'>
-                                                        <Input type='email' className='in' placeholder='Subject' key={index} value={item.subject} />
+                                                        <Input type='email' className='in' placeholder='Subject' key={index} value={item.subject}  />
                                                         <div className='mt-3'>
                                                             <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                                                 <span><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -194,25 +193,30 @@ class CampaignPreview extends Component {
                                                 <div className='Editor_div'>
                                                     <Editor
                                                         className='editorDiv'
-                                                        mention={{
-                                                            separator: ' ',
-                                                            trigger: '@',
-                                                            suggestions: [
-                                                                { text: 'APPLE', value: 'apple', url: 'apple' },
-                                                                { text: 'BANANA', value: 'banana', url: 'banana' },
-                                                                { text: 'CHERRY', value: 'cherry', url: 'cherry' },
-                                                                { text: 'DURIAN', value: 'durian', url: 'durian' },
-                                                                { text: 'EGGFRUIT', value: 'eggfruit', url: 'eggfruit' },
-                                                                { text: 'FIG', value: 'fig', url: 'fig' },
-                                                                { text: 'GRAPEFRUIT', value: 'grapefruit', url: 'grapefruit' },
-                                                                { text: 'HONEYDEW', value: 'honeydew', url: 'honeydew' },
-                                                            ],
-                                                        }}
+                                                        // mention={{
+                                                        //     separator: ' ',
+                                                        //     trigger: '@',
+                                                        //     suggestions: [
+                                                        //         { text: 'APPLE', value: 'apple', url: 'apple' },
+                                                        //         { text: 'BANANA', value: 'banana', url: 'banana' },
+                                                        //         { text: 'CHERRY', value: 'cherry', url: 'cherry' },
+                                                        //         { text: 'DURIAN', value: 'durian', url: 'durian' },
+                                                        //         { text: 'EGGFRUIT', value: 'eggfruit', url: 'eggfruit' },
+                                                        //         { text: 'FIG', value: 'fig', url: 'fig' },
+                                                        //         { text: 'GRAPEFRUIT', value: 'grapefruit', url: 'grapefruit' },
+                                                        //         { text: 'HONEYDEW', value: 'honeydew', url: 'honeydew' },
+                                                        //     ],
+                                                           
+                                                        // }}
+                                                        defaultEditorState={'rgerrrytreyeryerrtyre'}
                                                         editorState={editorState}
-                                                        value={item.email_body}
+                                                        value={"item.email_body"}
+                                                        defaultContentState={"etertretertert"}
+                                                        currentState={item.email_body}
                                                         toolbarClassName="rdw-storybook-toolbar"
                                                         wrapperClassName="rdw-storybook-wrapper"
                                                         editorClassName="rdw-storybook-editor"
+                                                        initialEditorState={editorState}
                                                         onEditorStateChange={this.onEditorStateChange}
                                                         toolbar={{
                                                             link: {
@@ -253,7 +257,6 @@ class CampaignPreview extends Component {
                                                                         <Editor
                                                                             className='editorDiv'
                                                                             onChange={this.handleChangeBody}
-                                                                            value={this.state.body}
                                                                             editorState={editorState}
                                                                             toolbarClassName="rdw-storybook-toolbar"
                                                                             wrapperClassName="rdw-storybook-wrapper"
@@ -312,7 +315,6 @@ class CampaignPreview extends Component {
                                                                     <div className='Editor_div'>
                                                                         <div style={{ padding: 0 }} className="btn" onClick={this.onDeleteList}><i style={{ padding: 5 }} className="fa">&#xf014;</i>DELETE</div>
                                                                         <Editor
-                                                                            value={this.state.body}
                                                                             onChange={this.handleChangeBody}
                                                                             className='editorDiv'
                                                                             editorState={editorState}
@@ -382,7 +384,7 @@ class CampaignPreview extends Component {
                                                                             toolbarClassName="rdw-storybook-toolbar"
                                                                             wrapperClassName="rdw-storybook-wrapper"
                                                                             editorClassName="rdw-storybook-editor"
-                                                                            value={item.email_body}
+                                                                            toolbar={item.email_body}
                                                                             onEditorStateChange={this.onEditorStateChange}
                                                                             toolbar={{
                                                                                 link: {

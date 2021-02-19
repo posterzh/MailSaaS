@@ -53,9 +53,8 @@ export const OnclickProspectActionData = (id) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.CampaignOnclickProspects(id,token).then(result => {
-            console.log(result.data)
-            dispatch(FetchOnclickProspectsSuccess(result.data))
-            // console.log("checking onclick prospect data:", result.data)
+            dispatch(FetchOnclickProspectsSuccess(result.data[0]))
+            console.log("checking onclick prospect data:", result.data[0])
         }).catch(err => {
             console.log(err)
         })
