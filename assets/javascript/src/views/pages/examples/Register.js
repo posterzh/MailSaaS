@@ -38,7 +38,7 @@ import {
 import AuthHeader from "../../../components/Headers/AuthHeader"
 import { connect } from "react-redux";
 import { RegisterAction } from "../../../redux/action/AuthourizationAction";
-
+import { Alert } from 'reactstrap';
 class Register extends React.Component {
   constructor(props) {
     super(props)
@@ -48,7 +48,8 @@ class Register extends React.Component {
       PhoneNumber: '',
       CompanyName: '',
       Password: '',
-      mailsaas_type: ''
+      mailsaas_type: 0,
+      isOpen: false
     }
 
   }
@@ -60,6 +61,7 @@ class Register extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault();
+    this.setState({isOpen:false})
     const user = {
       full_name: this.state.FullName,
       email: this.state.Email,
@@ -71,14 +73,26 @@ class Register extends React.Component {
     };
     this.props.RegisterAction(user)
     console.log(user)
-
+   
     // const token=localStorage.getItem("access_token")
     // if(token){
     //   alert('Successful')
     // }
   }
+  static getDerivedStateFromProps(props, state){
+    return
+  }
+  componentDidUpdate(prevProps){
+    if(prevProps!==this.props.registerResponse)
+    console.log("true")
+    else{
+      console.log("false")
 
+    }
+
+  }
   render() {
+    const { registerResponse,isRegisterSuccess } = this.props
     return (
       <>
         <AuthHeader
@@ -89,9 +103,9 @@ class Register extends React.Component {
           <Row className="justify-content-center">
             <Col lg="6" md="8">
               <Card className="bg-secondary border-0">
-                <CardBody className="px-lg-5 py-lg-5">
-                  <div className="text-center text-muted mb-4">
-                    <small>Or sign up with credentials</small>
+                <CardBody className="px-lg-5 py-lg-2">
+                  <div className="text-center text-muted mt-1 mb-4">
+                    <small style={{ fontSize: 30, color: '#525f7f', fontWeight: 'bold' }}>Register</small>
                   </div>
                   <Form onSubmit={this.handleSubmit} >
                     <FormGroup
@@ -113,6 +127,7 @@ class Register extends React.Component {
                           onChange={this.handleChange}
                           onFocus={() => this.setState({ focusedName: true })}
                           onBlur={() => this.setState({ focusedName: false })}
+                          required
                         />
                       </InputGroup>
                     </FormGroup>
@@ -135,6 +150,7 @@ class Register extends React.Component {
                           onChange={this.handleChange}
                           onFocus={() => this.setState({ focusedEmail: true })}
                           onBlur={() => this.setState({ focusedEmail: false })}
+                          required
                         />
                       </InputGroup>
                     </FormGroup>
@@ -157,6 +173,7 @@ class Register extends React.Component {
                           onChange={this.handleChange}
                           onFocus={() => this.setState({ focusedEmail: true })}
                           onBlur={() => this.setState({ focusedEmail: false })}
+                          required
                         />
                       </InputGroup>
                     </FormGroup>
@@ -178,6 +195,7 @@ class Register extends React.Component {
                           onChange={this.handleChange}
                           onFocus={() => this.setState({ focusedEmail: true })}
                           onBlur={() => this.setState({ focusedEmail: false })}
+                          required
                         />
                       </InputGroup>
                     </FormGroup>
@@ -204,6 +222,7 @@ class Register extends React.Component {
                           onBlur={() =>
                             this.setState({ focusedPassword: false })
                           }
+                          required
                         />
                       </InputGroup>
                       <FormGroup className='mt-4'>
@@ -211,17 +230,17 @@ class Register extends React.Component {
                           <option value='Sales'>Sales</option>
                           <option value='Marketing'>Marketing/PR</option>
                           <option value='Recruiting'>Recruiting</option>
-                          <option value='other'>Other</option>
+                          {/* <option value='other'>Other</option> */}
                         </Input>
                       </FormGroup>
                     </FormGroup>
                     <div className="text-muted font-italic">
-                      <small>
+                      {/* <small>
                         password strength:{" "}
                         <span className="text-success font-weight-700">
                           strong
                         </span>
-                      </small>
+                      </small> */}
                     </div>
                     <Row className="my-4">
                       <Col xs="12">
@@ -255,28 +274,33 @@ class Register extends React.Component {
                     </div>
                   </Form>
                   <Row>
-                    <div>
+
+                    {/* <div>
                       <p>{this.token}</p>
-                      </div>
-                    </Row>
+                    </div> */}
+                  </Row>
                 </CardBody>
               </Card>
             </Col>
           </Row>
         </Container>
+        <div style={{ display:'flex', justifyContent: 'center', position: 'fixed', bottom: 0, right: 0,left:0 }}>
+          <Alert className="alert_" toggle={()=>{
+            this.setState({isOpen:true})
+          }}  isOpen={!this.state.isOpen&&isRegisterSuccess} color="warning">{registerResponse}</Alert>
+        </div>
       </>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  // console.log("i am checking",state.RegisterReducer.user)
   return {
-    // token: state.token
-    // user:state.RegisterReducer.user
+    registerResponse: state.RegisterReducer.registerResponse,
+    isRegisterSuccess:state.RegisterReducer.isRegisterSuccess
   };
 };
 const mapDispatchToProps = dispatch => ({
-  RegisterAction: user => {dispatch(RegisterAction(user));},
+  RegisterAction: user => { dispatch(RegisterAction(user)); },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

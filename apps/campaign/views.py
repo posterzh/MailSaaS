@@ -326,10 +326,14 @@ class CreateCampaignSendView(APIView):
                 pass
         except:
             return Response({"message":"please provide startCampaign", "success":False})
+
+        
         getCampData = CampaignSerializer(camp)
         campData = dict(getCampData.data)
         campData["campaign_status"] = request.data["startCampaign"]
-        campData["csvfile_op1"] = camp.csvfile_op1
+        if camp.csvfile_op1 != "":
+            campData["csvfile_op1"] = camp.csvfile_op1
+        
         CampSerializer = CampaignSerializer(camp, data=campData)
         if request.data["startCampaign"]:
             camp.campaign_status = True
@@ -950,7 +954,7 @@ class ProspectsView(generics.ListAPIView):
                     choice = True
                 else:
                     choice = False
-                queryset = CampaignRecipient.objects.filter(reciepent_status=choice,campaign__assigned=request.user.id)
+                queryset = CampaignRecipient.objects.filter(reciepent_status=choice,campaign__assigned=request.user.id, is_delete=False)
 
             elif tofilter == "do_not_contact":
                 if choice == 'yes':
@@ -959,7 +963,7 @@ class ProspectsView(generics.ListAPIView):
                     choice = False
                 else:
                     choice = True
-                queryset = CampaignRecipient.objects.filter(unsubscribe=choice, campaign__assigned=request.user.id)
+                queryset = CampaignRecipient.objects.filter(unsubscribe=choice, campaign__assigned=request.user.id, is_delete=False)
             
             elif tofilter == "has_opened":
                 if choice == 'yes':
@@ -968,7 +972,7 @@ class ProspectsView(generics.ListAPIView):
                     choice = False
                 else:
                     choice = True
-                queryset = CampaignRecipient.objects.filter(opens=choice, campaign__assigned=request.user.id)
+                queryset = CampaignRecipient.objects.filter(opens=choice, campaign__assigned=request.user.id, is_delete=False)
 
             elif tofilter == "has_clicked":
                 if choice == 'yes':
@@ -977,7 +981,7 @@ class ProspectsView(generics.ListAPIView):
                     choice = False
                 else:
                     choice = True
-                queryset = CampaignRecipient.objects.filter(has_link_clicked=choice, campaign__assigned=request.user.id)
+                queryset = CampaignRecipient.objects.filter(has_link_clicked=choice, campaign__assigned=request.user.id, is_delete=False)
 
             elif tofilter == "has_replied":
                 if choice == 'yes':
@@ -986,20 +990,20 @@ class ProspectsView(generics.ListAPIView):
                     choice = False
                 else:
                     choice = True
-                queryset = CampaignRecipient.objects.filter(replies=choice, campaign__assigned=request.user.id)
+                queryset = CampaignRecipient.objects.filter(replies=choice, campaign__assigned=request.user.id, is_delete=False)
 
             elif tofilter == "status":
                 if choice == "lead":
-                    queryset = CampaignRecipient.objects.filter(leads = True, campaign__assigned=request.user.id)
+                    queryset = CampaignRecipient.objects.filter(leads = True, campaign__assigned=request.user.id, is_delete=False)
                 elif choice == "openlead" or choice == "wonlead" or choice == "lostlead" or choice == "ignoredlead":
-                    queryset = CampaignRecipient.objects.filter(leads = True, campaign__assigned=request.user.id)
+                    queryset = CampaignRecipient.objects.filter(leads = True, campaign__assigned=request.user.id, is_delete=False)
             
             else:
-                queryset = CampaignRecipient.objects.filter(campaign__assigned=request.user.id)
+                queryset = CampaignRecipient.objects.filter(campaign__assigned=request.user.id, is_delete=False)
     
         elif "search" in params:
             toSearch = request.GET['search']
-            queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__assigned=request.user.id)
+            queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__assigned=request.user.id, is_delete=False)
 
         elif ("filter" in params) and ("choice" in params):
             tofilter = request.GET['filter']
@@ -1012,7 +1016,7 @@ class ProspectsView(generics.ListAPIView):
                     choice = True
                 else:
                     choice = False
-                queryset = CampaignRecipient.objects.filter(reciepent_status=choice,campaign__assigned=request.user.id)
+                queryset = CampaignRecipient.objects.filter(reciepent_status=choice,campaign__assigned=request.user.id, is_delete=False)
 
             elif tofilter == "do_not_contact":
                 if choice == 'yes':
@@ -1021,7 +1025,7 @@ class ProspectsView(generics.ListAPIView):
                     choice = False
                 else:
                     choice = True
-                queryset = CampaignRecipient.objects.filter(unsubscribe=choice, campaign__assigned=request.user.id)
+                queryset = CampaignRecipient.objects.filter(unsubscribe=choice, campaign__assigned=request.user.id, is_delete=False)
             
             elif tofilter == "has_opened":
                 if choice == 'yes':
@@ -1030,7 +1034,7 @@ class ProspectsView(generics.ListAPIView):
                     choice = False
                 else:
                     choice = True
-                queryset = CampaignRecipient.objects.filter(opens=choice, campaign__assigned=request.user.id)
+                queryset = CampaignRecipient.objects.filter(opens=choice, campaign__assigned=request.user.id, is_delete=False)
 
             elif tofilter == "has_clicked":
                 if choice == 'yes':
@@ -1039,7 +1043,7 @@ class ProspectsView(generics.ListAPIView):
                     choice = False
                 else:
                     choice = True
-                queryset = CampaignRecipient.objects.filter(has_link_clicked=choice, campaign__assigned=request.user.id)
+                queryset = CampaignRecipient.objects.filter(has_link_clicked=choice, campaign__assigned=request.user.id, is_delete=False)
 
             elif tofilter == "has_replied":
                 if choice == 'yes':
@@ -1048,18 +1052,18 @@ class ProspectsView(generics.ListAPIView):
                     choice = False
                 else:
                     choice = True
-                queryset = CampaignRecipient.objects.filter(replies=choice, campaign__assigned=request.user.id)
+                queryset = CampaignRecipient.objects.filter(replies=choice, campaign__assigned=request.user.id, is_delete=False)
 
             elif tofilter == "status":
                 if choice == "lead":
-                    queryset = CampaignRecipient.objects.filter(leads = True, campaign__assigned=request.user.id)
+                    queryset = CampaignRecipient.objects.filter(leads = True, campaign__assigned=request.user.id, is_delete=False)
 
                 elif choice == "openlead" or choice == "wonlead" or choice == "lostlead" or choice == "ignoredlead":
-                    queryset = CampaignRecipient.objects.filter(leads = True, campaign__assigned=request.user.id)
+                    queryset = CampaignRecipient.objects.filter(leads = True, campaign__assigned=request.user.id, is_delete=False)
             else:
-                queryset = CampaignRecipient.objects.filter(campaign__assigned=request.user.id)
+                queryset = CampaignRecipient.objects.filter(campaign__assigned=request.user.id, is_delete=False)
         else:
-            queryset = CampaignRecipient.objects.filter(campaign__assigned=request.user.id)
+            queryset = CampaignRecipient.objects.filter(campaign__assigned=request.user.id, is_delete=False)
         
         resp = []
 
@@ -1078,46 +1082,7 @@ class ProspectsView(generics.ListAPIView):
             resp.append(data)
 
         return Response(resp)
-        # # print("qqqqqqqqq ",queryset)
-        # serializer = CampaignEmailSerializer(queryset,many=True)
-        # # serializer_data = serializer.data
-        # # print(type(serializer_data), serializer_data)
-        # for serializer_data in serializer.data:
-        #     print(serializer_data)
-
-        #     serializer_data["campaign_count"] = 0
-        #     serializer_data["sent_count"] = 0
-
-        #     counts_data["total_count"] += 1
-        #     counts_data["in_campaign_count"] += 1
-
-        #     if serializer_data["leads"]:
-        #         counts_data["leads_count"] += 1
-
-        #     if serializer_data["unsubscribe"]:
-        #         counts_data["unsubscribe"] += 1
-
-        # # print(serializer.data)
-        # response_data = {"counts_data": counts_data,
-        #     "data": []
-        # }
         
-        # for serializer_data in serializer.data:
-        #     resp = dict(serializer_data)
-        #     # print(resp["sent_count"])
-            
-        #     # print(type(resp), resp)
-        #     # print(serializer_data["sent"])
-        #     if not serializer_data["sent"]:
-        #         resp["sent_count"] += 1
-
-        #     count_email_in_campaigns = CampaignRecipient.objects.filter(email=serializer_data["email"]).count()
-        #     resp["campaign_count"] = count_email_in_campaigns
-
-        #     response_data["data"].append(resp)
-        #         # print(resp["sent_count"])
-        # # response_data = [counts_data, serializer.data] 
-        # return Response(response_data)
 
 
 class ProspectsCampaignView(generics.ListAPIView):
@@ -1127,7 +1092,7 @@ class ProspectsCampaignView(generics.ListAPIView):
     def get(self, request, pk, *args, **kwargs):
         email_for_campaigns = CampaignRecipient.objects.get(id=pk)
 
-        queryset = CampaignRecipient.objects.filter(email=email_for_campaigns.email)
+        queryset = CampaignRecipient.objects.filter(email=email_for_campaigns.email, is_delete=False)
         resp = []
         
         for queryset in queryset:
@@ -1141,10 +1106,13 @@ class ProspectsCampaignView(generics.ListAPIView):
                 'replies':CampaignRecipient.objects.filter(campaign=queryset.campaign.id, replies=True).count(),
             }
        
-            print(data)
             resp.append(data)
 
         return Response(resp)
+
+    def delete(self, request, pk, format=None):
+        recp_to_delete = CampaignRecipient.objects.filter(id__in=request.data["recp_ids"]).update(is_delete=True)
+        return Response({"message":"Successfully Deleted","success":True})
 
 
 class RecipientUnsubcribe(generics.CreateAPIView):

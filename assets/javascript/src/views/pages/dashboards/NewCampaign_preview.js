@@ -10,7 +10,7 @@ import {
 } from 'reactstrap';
 import { Editor } from 'react-draft-wysiwyg';
 import { Link, Route } from 'react-router-dom';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw ,ContentState} from 'draft-js';
 import { PreviewCampaignAction } from "../../../redux/action/CampaignAction"
 import { connect } from 'react-redux'
 // import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -20,7 +20,7 @@ class CampaignPreview extends Component {
     constructor() {
         super();
         this.state = {
-            editorState: EditorState.createEmpty()
+            editorState: EditorState.createWithContent(ContentState.createFromText('Hello'))
         }
     }
     onEditorStateChange = (editorState) => {
@@ -425,7 +425,7 @@ const mapStateToProps = (state) => {
     }
 }
 const mapDispatchToProps = dispatch => ({
-    PreviewCampaignAction: (recipientId) => { dispatch(PreviewCampaignAction(recipientId)) },
+    PreviewCampaignAction: (recipientId)=> { dispatch(PreviewCampaignAction(recipientId)) },
     PreviewUpdateCampaignAction: campaignPreviewUpdateData => { dispatch(PreviewUpdateCampaignAction(campaignPreviewUpdateData)) },
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignPreview)

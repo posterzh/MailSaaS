@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Row, Col, Table } from 'reactstrap'
 
-function Addresstable() {
+function Addresstable(props) {
     return (
         <div>
             <Container fluid >
@@ -15,11 +15,15 @@ function Addresstable() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr className='' >
-                                <td className="name-value">Omaid Faizyar</td>
-                                <td className="Email-value">omaid@faizyar.com</td>
-                                <td className="IsAdmin-value">Yes</td>
-                            </tr>
+                            {
+                                props.data.map((e,i)=><tr className='' >
+                                    <td className="name-value">{e.email}</td>
+                                    <td className="Email-value">{e.name}</td>
+                                    <td className="IsAdmin-value">{e.date.substring(0,10)}</td>
+                                </tr>
+                                )
+                            }
+                           
                         </tbody>
                     </Table>
                 </Row>

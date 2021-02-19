@@ -19,7 +19,8 @@ class NewCampaign_recipients extends Component {
     }
     handleChange = (e) => {
         this.setState({
-            csvFile: e.target.files[0]
+            csvFile: e.target.files[0],
+            show: true
         });
     }
     handleSubmit = (e) => {
@@ -140,7 +141,7 @@ class NewCampaign_recipients extends Component {
                                                         </Row>
                                                         <Row className='mt-5'>
                                                             <Col md='3' className="option1"><span>OPTION #2</span></Col>
-                                                            <Col md='9'><span className="textarea"><textarea name='email' value={this.state.email} onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>{show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
+                                                            <Col md='9'><span className="textarea"><textarea type="email" name='email' value={this.state.email} onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>{show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
                                                         </Row>
                                                     </div>
                                                 </div>
