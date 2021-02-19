@@ -14,7 +14,7 @@ class CampaignAdmin(admin.ModelAdmin):
 
 @admin.register(CampaignRecipient)
 class CampaignRecipientAdmin(admin.ModelAdmin):
-    list_display = ('campaign', 'email', 'subject', 'email_body','sent', 'leads','replies', 'opens', 'bounces', 'lead_status','reciepent_status','unsubscribe')
+    list_display = ('campaign', 'email', 'subject', 'email_body','sent', 'leads','replies', 'opens', 'bounces', 'lead_status','reciepent_status','unsubscribe','is_delete')
 
 
 @admin.register(FollowUpEmail)
