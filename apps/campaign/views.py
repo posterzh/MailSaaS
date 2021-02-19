@@ -326,10 +326,14 @@ class CreateCampaignSendView(APIView):
                 pass
         except:
             return Response({"message":"please provide startCampaign", "success":False})
+
+        
         getCampData = CampaignSerializer(camp)
         campData = dict(getCampData.data)
         campData["campaign_status"] = request.data["startCampaign"]
-        campData["csvfile_op1"] = camp.csvfile_op1
+        if camp.csvfile_op1 != "":
+            campData["csvfile_op1"] = camp.csvfile_op1
+        
         CampSerializer = CampaignSerializer(camp, data=campData)
         if request.data["startCampaign"]:
             camp.campaign_status = True
