@@ -1,5 +1,6 @@
 import {
     SUCCESS_REGISTER,
+    FAILURE_REGISTER,
     FAILURE_LOGIN,
     REQUEST_FOR_LOGIN,
     SUCCESS_LOGIN,
@@ -50,7 +51,10 @@ const initialState = {
     isLogin:false,
     CampaignPreviewData: [],
     campaignPreviewUpdateData:[],
-    CampaignTableData:[]
+    CampaignTableData:[],
+    registerResponse:null,
+    loginResponse:null,
+    isRegisterSuccess:null
 }
 export const RegisterReducer = (state =  initialState , action) => {
     // console.log(action.payload && action.payload[0], 'payloaddata')
@@ -59,6 +63,14 @@ export const RegisterReducer = (state =  initialState , action) => {
             return {
                 ...state,
                 user: action.user,
+                isRegisterSuccess:true,
+                registerResponse:'Register Successfully!'
+            }
+        case FAILURE_REGISTER:
+            return{
+                ...state,
+                registerResponse:action.payload,
+                isRegisterSuccess:true
             }
         default: return state
             break;
@@ -81,6 +93,8 @@ export const LoginReducer = (state =  initialState , action) => {
             return {
                 ...state,
                 isLogin:false,
+                loginResponse:action.payload
+
             }
         default: return state
             break;

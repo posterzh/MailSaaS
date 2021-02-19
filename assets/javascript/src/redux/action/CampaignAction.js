@@ -162,7 +162,7 @@ export const StartCampaignAction = (data) => {
         Api.StartCampaignApi(data, token).then(result => {
             dispatch(StartCampaignSuccess(result.data))
             setTimeout(() => {
-                history.push('/app/admin/CampaignRecipient',{id:data.from_address})
+                history.push('/app/admin/CampaignRecipient',{id:result.data.id})
             }, 2000);
           
         }).catch(err => {

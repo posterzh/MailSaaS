@@ -100,25 +100,17 @@ class CampaignCompose extends Component {
 
     onDeleteList = (e) => {
         var array = [...this.state.inputListFollow];
-        let index = e - 1
-        console.log(index, "index")
-
-        if (index !== -1) {
-            array.splice(index, 1);
-            this.setState({
-                inputListFollow: array,
-            })
-        }
-        if(array.length-1===index)
-        console.log(array.length-1,'array.length-1')
-       this.counter=0
-        // var array = this.state.inputListFollow;
-        // var index = array.indexOf(e); // Let's say it's Bob.
-        // console.log(e,"index")
-        // delete array[index];
+        let index = e - 1;
+     let a = this.state.inputListFollow.keys()
+     console.log(e,"sgsd")
+    //     const newList = array.filter((item,i) => i !== index);
+    //     this.setState({
+    //         inputListFollow:newList
+    //     })
+    //    this.counter=0
     }
     render() {
-        const { editorState, inputListLinkClick, inputListFollow } = this.state;
+        const { editorState, inputListFollow } = this.state;
 
         console.log(inputListFollow, "compose")
         return (

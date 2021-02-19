@@ -67,7 +67,7 @@ class Login extends React.Component {
     // }
   }
   render() {
-    const { Loginuser, isLogin } = this.props
+    const { Loginuser, isLogin,loginResponse } = this.props
     return (
       <>
         <AuthHeader
@@ -147,10 +147,10 @@ class Login extends React.Component {
                       </Button>
                     </div>
                   </Form>
-                  <Row style={{ backgroundColor: "" }}>
-                    <div style={{}}>
+                  <Row>
+                    <div style={{margin:'auto'}}  className="text-center">
                       {
-                        isLogin ? <p style={{ color: 'green' }}>Sucessufully Login</p> : <p style={{ color: 'red' }}>Unable to log in with provided credentials.</p>
+                        isLogin==false ?   <p style={{ color: 'red' }}> {loginResponse}</p>:<p style={{ color: 'green',margin:'auto' }}>Sucessufully Login</p>
                       }
 
                     </div>
@@ -184,6 +184,7 @@ const mapStateToProps = (state) => {
   return {
     Loginuser: state.LoginReducer.Loginuser,
     isLogin: state.LoginReducer.isLogin,
+    loginResponse:state.LoginReducer.loginResponse
   }
 };
 
