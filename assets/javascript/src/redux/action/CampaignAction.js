@@ -7,7 +7,6 @@ import {
     SUCCESS_RECIPIENT,
     SUCCESS_OPTION,
     SUCCESS_CAMPAIGN_TABLE_DATA,
-    SUCCESS_SEND_CAMPAIGN,
     SUCCESS_FETCH_CAMPAIGN_CREATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_CREATE_PREVIEW,
     REQUEST_FOR_CAMPAIGN_OVERVIEW,
@@ -17,7 +16,8 @@ import {
     SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_CREATE_CAMPAIGN,
-    REQUEST_FOR_COMPOSE_DATA
+    REQUEST_FOR_COMPOSE_DATA,
+    SUCCESS_SAVE_CAMPAIGN
 
 } from "../actionType/actionType"
 import Api from "../api/api"
@@ -155,16 +155,16 @@ export const CampaignOverviewAction = () => {
 }
 
 export const StartCampaignAction = (data) => {
-    console.log("data ka data",data)
+    console.log("data ka data", data)
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        console.log('this is a token', history)
+        console.log('this is a token', token)
         Api.StartCampaignApi(data, token).then(result => {
             dispatch(StartCampaignSuccess(result.data))
             setTimeout(() => {
-                history.push('/app/admin/CampaignRecipient',{id:result.data.id})
+                history.push('/app/admin/CampaignRecipient', { id: result.data.id })
             }, 2000);
-          
+
         }).catch(err => {
             console.log(err)
         })
@@ -175,8 +175,10 @@ export const CampaignOptionAction = (optionData) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.OptionApi(optionData, token).then(result => {
+            console.log("you=======>",result.data)
             setTimeout(() => {
-                // history.push('/app/admin/CampaignSend',{id:data.from_address})
+                dispatch(OptionSuccess(result.data))
+                history.push('/app/admin/CampaignSend', { id: result.data.id})
             }, 2000);
         }).catch(err => {
             console.log(err)
@@ -189,7 +191,7 @@ export const RecipientAction = (recipientData) => {
         Api.RecipientApi(recipientData, token).then(result => {
             setTimeout(() => {
                 dispatch(StartCampaignSuccess(result.data))
-                history.push('/app/admin/CampaignCompose',{id:recipientData.campaign})
+                history.push('/app/admin/CampaignCompose', { id: recipientData.campaign })
             }, 2000);
         }).catch(err => { console.log(err) })
     }
@@ -199,7 +201,7 @@ export const PreviewCampaignAction = (id) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.CampaignPreviewApi(token, id).then(result => {
-                dispatch(CampaignPreviewSuccess(result.data))
+            dispatch(CampaignPreviewSuccess(result.data))
         }).catch(err => {
             console.log(err)
         })
@@ -218,23 +220,25 @@ export const CampaignTableAction = () => {
     }
 }
 export const CampaignCreateAction = (id) => {
-    console.log("id------------------->",id)
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.CampaignCreateGetApi(token, id).then(result => {
             setTimeout(() => {
                 dispatch(CampaignCreateSuccess(result.data))
-                // history.push('/app/admin/campaign',{id:data.id})
-            }, 2000);
+            }, 3000);
         })
     }
 }
 
-export const CampaignSaveAction = (id) => {
+export const CampaignSaveAction = (saveData,id ) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        Api.CampaignSaveApi(token, id).then(result => {
-            dispatch(CampaignSaveSuccess(result.data))
+        Api.CampaignSaveApi(token, id, saveData).then(result => {
+            setTimeout(() => {
+                dispatch(CampaignSaveSuccess(result.data))
+                console.log("type======>", result.data)
+                history.push( "/app/admin/campaign",{id: result.data.id })
+            }, 3000);
         }).catch(err => {
             console.log(err)
 
@@ -256,11 +260,11 @@ export const PreviewUpdateCampaignAction = () => {
 export const CampaignComposeAction = (data) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        dispatch(requestForCampaignCompose())
+        // dispatch(requestForCampaignCompose())
         Api.CampaignComposeApi(token, data).then(result => {
             setTimeout(() => {
-                console.log(result)
-                 history.push('/app/admin/CampaignPreview',{id:data.normal.campaign})
+                dispatch(requestForCampaignCompose(result.data))
+                history.push('/app/admin/CampaignPreview', { id: data.normal.campaign })
             }, 2000);
         }).catch(err => {
             console.log(err, 'error-')

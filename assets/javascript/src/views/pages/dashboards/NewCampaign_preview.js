@@ -216,12 +216,13 @@ class CampaignPreview extends Component {
                                             wrapperClassName="rdw-storybook-wrapper"
                                             editorClassName="rdw-storybook-editor"
                                             onEditorStateChange={this.onEditorStateChange}
+                                            // value={}
                                             toolbar={{
                                                 link: {
                                                     defaultTargetOption: '_blank',
                                                 },
                                             }}
-                                        />
+                                        ></Editor>
                                     </div>
                                 </Row>
                             </Col>
@@ -242,7 +243,7 @@ const mapStateToProps = (state) => {
     }
 }
 const mapDispatchToProps = dispatch => ({
-    PreviewCampaignAction: (recipientId) => { dispatch(PreviewCampaignAction(recipientId)) },
+    PreviewCampaignAction: (recipientId)=> { dispatch(PreviewCampaignAction(recipientId)) },
     PreviewUpdateCampaignAction: campaignPreviewUpdateData => { dispatch(PreviewUpdateCampaignAction(campaignPreviewUpdateData)) },
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignPreview)

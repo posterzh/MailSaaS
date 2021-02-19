@@ -76,7 +76,7 @@ class CampaignCompose extends Component {
             })
         }
         else {
-            Object.assign(this.state.normalData, { 'campaign': this.props.history.location.state.id })
+            Object.assign(this.state.normalData, { 'campaign': this.props.history.location.state &&this.props.history.location.state.id })
             let data = {
                 normal: this.state.normalData,
                 follow_up: this.state.followUpData,

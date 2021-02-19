@@ -134,6 +134,7 @@ export const CampaignCreateReducer=(state =  initialState , action)=>{
     }
 }
 export const CamapignSaveReducer=(state =  initialState , action)=>{
+    // console.log("actionNew++=====>",action.payload)
     switch (action.type) {
     case SUCCESS_SAVE_CAMPAIGN:
         return {

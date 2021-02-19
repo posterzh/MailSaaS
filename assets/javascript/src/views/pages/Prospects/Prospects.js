@@ -25,10 +25,7 @@ class Prospects extends Component {
     }
     componentDidMount() {
         this.props.ProspectActionData();
-        console.log("asdfghjkldfghjkldtfyghj",this.props)
       }
-      
-
     render() {
 const {prospectData}=this.props;
         return (

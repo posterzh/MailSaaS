@@ -38,7 +38,7 @@ class NewCampaign_options extends Component {
         event.preventDefault();
         console.log(this.state)
         const optionData = {
-            campaign: this.props.startCampaignId,
+            campaign: this.props.history.location.state&&this.props.history.location.state.id,
             track_Opens: this.state.trackopen,
             track_LinkClick: this.state.tracklinkclicks,
             schedule_send: this.state.schedulesend,
@@ -47,10 +47,8 @@ class NewCampaign_options extends Component {
             terms_and_laws: this.state.termsandlaws
         }
         this.props.CampaignOptionAction(optionData)
-        // console.log("checking id for option of start",this.optionData.campaign)
     }
     render() {
-        console.log("trackopen", this.props.location.state)
         return (
             <div>
                 <Container fluid>
@@ -132,9 +130,6 @@ class NewCampaign_options extends Component {
                                         <span className="time_zone">Asia/Calcutta</span><br />
                                     </div>
                                 </Row>
-                                {/* <Row>
-                            <DateTime  name='date' value={this.state.date} onChange={this.D}/>
-                                </Row> */}
                                 <Row style={{ marginLeft: "2px" }}>
                                     <div style={{ display: "flex", flexDirection: "row" }}>
                                         <input type="date" className="date_picker" name='date' value={this.state.date} onChange={this.handleDate} />
@@ -217,7 +212,7 @@ class NewCampaign_options extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id
+        // startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id
     };
 };
 const mapDispatchToProps = dispatch => ({
