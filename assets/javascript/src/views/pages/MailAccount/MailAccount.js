@@ -146,7 +146,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => ({
     MailSenderAction: mailData => { dispatch(MailSenderAction(mailData)) },
-    MailGetDataAction: mailGetData => { dispatch(MailGetDataAction(mailGetData)) },
+    MailGetDataAction: () => { dispatch(MailGetDataAction()) },
     MailAccountDelete: id => { dispatch(MailAccountDeleteAction(id)) },
     MailAccountUpdate: (data, id) => { dispatch(MailAccountUpdate(data, id)) }
 

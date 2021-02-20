@@ -343,6 +343,18 @@ Api.fetchUnsbcribed = (token) => {
     }
   })
 }
+Api.deleteUnsbcribed=(data,token)=>{
+return axios({
+  method:'put',
+  url:`${API_BASE_URL}/unsubscribes/unsubcribedelete/`,
+  data: {
+    data:data
+  },
+  headers: {
+    "Authorization": `Bearer ${token}`,
+  }
+})
+}
 Api.GetAllCampaigns = (token) => {
   return axios({
     url: `${API_BASE_URL}/campaign/view/`,

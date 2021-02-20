@@ -19773,13 +19773,13 @@ input:focus {
   border-bottom: 1px solid #fff;
   font-size: 12px; }
 
-.Leadcatcher_modalheader {
-  background-color: #005aac;
+.Leadcatcher_modalheader, .prospect_modalheader {
+  background-color: #035aac;
   padding-bottom: 0px;
   opacity: 1;
   border-radius: 0px; }
 
-.Leadcatcher_modalbody {
+.Leadcatcher_modalbody, .prospect_modalbody {
   padding-top: 0px;
   background-color: #f5f5f5; }
 
@@ -21185,4 +21185,7 @@ input::-webkit-inner-spin-button {
     cursor: pointer; }
   .list-wrapper .mail-account-edit-list li:focus, .list-wrapper .mail-account-edit-list :hover {
     background: #e4e4e4; }
+
+.prospect_modal {
+  width: 80% !important; }
 

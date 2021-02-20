@@ -28,4 +28,14 @@ export const fetchUnsubscribeAction = () => {
         })
     }
 }
- 
+
+export const unsubscribeUsersAction = (data) => {
+    return function(dispatch){
+        const token = localStorage.getItem('access_token')
+        Api.deleteUnsbcribed(data,token).then((response)=>{
+        console.log(response,"unsubscrive")
+        }).catch((err)=>{
+            console.log(err,'err')
+        })
+    }
+}
