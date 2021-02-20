@@ -34,6 +34,7 @@ export const unsubscribeUsersAction = (data) => {
         const token = localStorage.getItem('access_token')
         Api.deleteUnsbcribed(data,token).then((response)=>{
         console.log(response,"unsubscrive")
+        dispatch(fetchUnsubscribeAction())
         }).catch((err)=>{
             console.log(err,'err')
         })

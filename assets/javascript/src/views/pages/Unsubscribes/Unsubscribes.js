@@ -11,18 +11,18 @@ import '../../../../../scss/custom/custom.scss'
 import { array } from 'prop-types'
 const SpanStyles = {
   paddingRight: "10px",
-  paddingLeft:"10px",
+  paddingLeft: "10px",
   color: "white",
-   fontSize: "25px",
-   cursor:'pointer'
+  fontSize: "25px",
+  cursor: 'pointer'
 };
 const Span = {
   paddingRight: "20px",
-  paddingLeft:"20px",
+  paddingLeft: "20px",
   color: "white",
-   fontSize: "25px",
-   borderRight:"1px dashed",
-   marginRight:"10px"
+  fontSize: "25px",
+  borderRight: "1px dashed",
+  marginRight: "10px"
 };
 class Unsubscribes extends Component {
   constructor(props) {
@@ -31,10 +31,13 @@ class Unsubscribes extends Component {
       activeTab: '1',
       selectedId: [],
       checked: false,
-      isSelectionBar:true
+      isSelectionBar: false,
+      selectedEmails: new Set()
     }
+    this.textInput = React.createRef();
+
   }
-  
+
   toggle = tab => {
     if (this.state.activeTab !== tab)
       this.setState({ activeTab: tab })
@@ -42,36 +45,47 @@ class Unsubscribes extends Component {
   componentDidMount() {
     this.props.fetchUnsbcribed()
   }
-  showSelectionBar = (id) => {
-  let array=[...this.state.selectedId]
+  showSelectionBar = (id,e) => {
+    console.log(e.target.name,"h")
+    const { selectedId } = this.state
     this.setState({
       isSelectionBar: true,
+      currentChecked:e.target.name
     })
-    for (let index = 0; index < array.length; index++) {
-      if(id===array[index]){
-        const index = array.indexOf(id);
-        if (index > -1) {
-          array.splice(index, 1);
-        }
-        this.setState({
-          selectedId:array.length
-        })
-      }
-      else{
-        this.state.selectedId.push(id)
-      }
-      
+    if (selectedId.length === 0) {
+      selectedId.push(id)
+      return
     }
-    
-    console.log( this.state.selectedId," this.state.selectedId")
+    for (let index = 0; index < selectedId.length; index++) {
+      if (id === selectedId[index]) {
+        let array = selectedId.filter(e => e != id)
+        this.setState({
+          selectedId: array
+        }, () => { console.log(array, "select") })
+        return
+      }
+    }
+    selectedId.push(id)
+    console.log(selectedId, "sdfsdg")
   }
   UnsubscribeDelete = () => {
+    this.setState({
+      isSelectionBar: false,
+      checked:false
+    })
     let data = this.state.selectedId
     this.props.unsubscribeUsers(data)
   }
+  selectAll = (e) => {
+    this.setState({
+      checked: e.target.checked
+    })
+    console.log( this.textInput.current.checked," this.textInput.current.checked")
+   
+
+  }
   render() {
-    const { isSelectionBar, selectedId } = this.state;
-    console.log(this.props.data, "dataaaaaaaa")
+    const { isSelectionBar, selectedId, checked, currentChecked } = this.state;
     return (
       <div>
         <div>
@@ -79,8 +93,8 @@ class Unsubscribes extends Component {
             <p style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Unsubscribes</p>
             <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
           </div>
-          <div style={{padding:'20px'}} className={`selection-bar ${isSelectionBar ? "_block" : " "}`} >
-            <span style={SpanStyles} onClick={() => this.setState({ isSelectionBar: false })}><i className="fa fa-close" aria-hidden="true"></i></span>
+          <div style={{ padding: '20px' }} className={`selection-bar ${isSelectionBar && selectedId.length > 0 ? "_block" : " "}`} >
+            <span style={SpanStyles} onClick={() => { this.setState({ isSelectionBar: false }); selectedId.length = 0 }}><i className="fa fa-close" aria-hidden="true"></i></span>
             <span style={Span} >{selectedId.length} selected</span>
             <div onClick={this.UnsubscribeDelete}>
               <span style={SpanStyles}><i class="fas fa-minus-circle"></i></span>
@@ -109,7 +123,14 @@ class Unsubscribes extends Component {
           <Row>
             <TabContent activeTab={this.state.activeTab} style={{ width: "100%" }}>
               <TabPane tabId="1">
-                <Addresstable showSelectionBar={this.showSelectionBar} data={this.props.data} />
+                <Addresstable
+                currentChecked={currentChecked}
+                  selectAll={this.selectAll}
+                  checked={checked}
+                  showSelectionBar={this.showSelectionBar}
+                  data={this.props.data}
+                  textInput={this.textInput}
+                />
               </TabPane>
               <TabPane tabId="2">
                 <Domainpage />

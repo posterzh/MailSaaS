@@ -80,7 +80,24 @@ input:focus{
     align-items: center;
     justify-content: space-between;
 }
-
+.selection-bar  {
+    background-color: #454545;
+    position: fixed;
+    z-index: 6;
+    width: 100%;
+    color: #fff;
+    // box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+    transition: all .25s;
+    padding:20px;
+    top: -100vh;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+}
+._block{
+    top: 0;
+}
 // campaign table css
 .header_sent,.Sent{
     background-color: rgba(0,90,172,.05); 

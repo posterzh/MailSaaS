@@ -76,6 +76,23 @@ input:focus {
   align-items: center;
   justify-content: space-between; }
 
+.selection-bar {
+  background-color: #454545;
+  position: fixed;
+  z-index: 6;
+  width: 100%;
+  color: #fff;
+  transition: all .25s;
+  padding: 20px;
+  top: -100vh;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center; }
+
+._block {
+  top: 0; }
+
 .header_sent, .Sent {
   background-color: rgba(0, 90, 172, 0.05); }
 
