@@ -79,6 +79,8 @@ Api.CampaignPreviewApi = (token, id) => {
   })
 }
 
+
+
 // CAMPAIGN UPDATE PREVIEW
 Api.CampaignUpdatePreviewApi = (token, id) => {
   return axios({
@@ -95,7 +97,7 @@ Api.CampaignSaveApi = (token, id, saveData) => {
   return axios({
     method: 'PUT',
     data: {
-      startCampaign:saveData
+      startCampaign: saveData
     },
     url: `${API_BASE_URL}/campaign/savecamp/${id}/`,
     headers: {
@@ -194,7 +196,7 @@ Api.CampaignProspects = (token) => {
 }
 
 // ONCLICK PRSPECT
-Api.CampaignOnclickProspects = (id,token) => {
+Api.CampaignOnclickProspects = (id, token) => {
   return axios({
     method: 'GET',
     url: `${API_BASE_URL}/campaign/prospects/${id}/`,
@@ -315,6 +317,7 @@ Api.MailAccountDelete = (token, id) => {
 Api.MailAccountUpdateApi = (token, data, id) => {
   return axios({
     url: `${API_BASE_URL}/mail/updatedeletemailaccount/${id}/`,
+    data:{},
     method: "PUT",
     headers: {
       "Authorization": `Bearer ${token}`
@@ -357,6 +360,28 @@ Api.CampaignCreateGetApi = (token, id) => {
   return axios({
     method: 'GET',
     url: `${API_BASE_URL}/campaign/savecamp/${id}/`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+
+// GET SCHEDULE API
+Api.GetScheduleApi = (token) => {
+  return axios({
+    method: 'GET',
+    url: `${API_BASE_URL}/campaignschedule/updateschedulemail/`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+
+//UPDATE SCHEDULE
+Api.UpdateScheduleApi=(token)=>{
+  return axios({
+    method:'PUT',
+    url:`${API_BASE_URL}/campaignschedule/updateschedulemail/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }

@@ -1,21 +1,10 @@
 import React, { Component } from 'react'
-import {
-    Container,
-    Row,
-    Navbar,
-    Nav,
-    NavItem,
-    NavLink,
-    NavbarText, Input, Col
-} from 'reactstrap';
+import {Container, Row, Nav, Input, Col} from 'reactstrap';
 import { Editor } from 'react-draft-wysiwyg';
 import { Link, Route } from 'react-router-dom';
 import { EditorState, convertToRaw ,ContentState} from 'draft-js';
 import { PreviewCampaignAction } from "../../../redux/action/CampaignAction"
 import { connect } from 'react-redux'
-// import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-// import Container from 'reactstrap/lib/Container';
-
 class CampaignPreview extends Component {
     constructor() {
         super();
@@ -421,7 +410,6 @@ const mapStateToProps = (state) => {
         CampaignFollowUp: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.follow_up,
         CampaignDrip: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.drip,
         CampaignOnClick: state.CampaignPreviewGetReducer.CampaignPreviewData && state.CampaignPreviewGetReducer.CampaignPreviewData.onLinkClick,
-
     }
 }
 const mapDispatchToProps = dispatch => ({

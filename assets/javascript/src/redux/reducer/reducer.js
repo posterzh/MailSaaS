@@ -30,7 +30,11 @@ import {
     SUCCESS_SAVE_CAMPAIGN,
     SUCCESS_FETCH_ONCLICK_PROSPECTS,
     SUCCESS_CAMPAIGN_TABLE_DATA,
-    
+    REQUEST_FOR_GET_SCHEDULE,
+    SUCCESS_GET_SCHEDULE,
+    FAILURE_GET_SCHEDULE,
+    UPDATE_REQUEST_FOR_GET_SCHEDULE,
+    UPDATE_SUCCESS_GET_SCHEDULE,  
 } from "../actionType/actionType";
 
 const initialState = {
@@ -55,7 +59,9 @@ const initialState = {
     CampaignTableData:[],
     registerResponse:null,
     loginResponse:null,
-    isRegisterSuccess:null
+    isRegisterSuccess:null,
+    ScheduleGetData:[],
+    UpdateScheduleData:[]
 }
 export const RegisterReducer = (state =  initialState , action) => {
     // console.log(action.payload && action.payload[0], 'payloaddata')
@@ -292,6 +298,27 @@ export const CampaignOverviewReducer = (state =  initialState , action) => {
     }
 }
 
+// SCHEDULE_GET_DATAampaignOverview
+export const ScheduleGetDataReducer = (state =  initialState , action) => {
+    switch (action.type) {
+        case  REQUEST_FOR_GET_SCHEDULE:
+            return {
+            }
+        case SUCCESS_GET_SCHEDULE:
+            // console.log('========================================++++++++++++',action)
+            return {
+                ...state,
+                ScheduleGetData: action.ScheduleGetData,
+            }
+        case  FAILURE_GET_SCHEDULE:
+            return {
+                
+            }
+        default: return state
+            break;
+    }
+}
+
 // CAMPAIGN TABLE DATA
 
 export const CampaignTableReducer = (state =  initialState , action) => {
@@ -301,6 +328,23 @@ export const CampaignTableReducer = (state =  initialState , action) => {
             return {
                 ...state,
                 CampaignTableData: action.CampaignTableData,
+            }
+        default: return state
+            break;
+    }
+}
+
+// UPDATE SCHEDULE DATA
+export const ScheduleUpdateReducer = (state =  initialState , action) => {
+    console.log("action for update schedule",action)
+    switch (action.type) {
+        case UPDATE_REQUEST_FOR_GET_SCHEDULE:
+            return {
+            }
+        case UPDATE_SUCCESS_GET_SCHEDULE:
+            return {
+                ...state,
+                UpdateScheduleData: action.UpdateScheduleData,
             }
         default: return state
             break;
