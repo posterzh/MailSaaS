@@ -7,22 +7,23 @@ import classnames from 'classnames';
 import { fetchUnsubscribeAction, unsubscribeUsersAction } from '../../../redux/action/UnsubscribeActions'
 import { Component } from 'react';
 import { connect } from "react-redux";
+import UnsubscribesModal from './UnsubscribesModal'
 import '../../../../../scss/custom/custom.scss'
 import { array } from 'prop-types'
 const SpanStyles = {
   paddingRight: "10px",
-  paddingLeft:"10px",
+  paddingLeft: "10px",
   color: "white",
-   fontSize: "25px",
-   cursor:'pointer'
+  fontSize: "25px",
+  cursor: 'pointer'
 };
 const Span = {
   paddingRight: "20px",
-  paddingLeft:"20px",
+  paddingLeft: "20px",
   color: "white",
-   fontSize: "25px",
-   borderRight:"1px dashed",
-   marginRight:"10px"
+  fontSize: "25px",
+  borderRight: "1px dashed",
+  marginRight: "10px"
 };
 class Unsubscribes extends Component {
   constructor(props) {
@@ -31,10 +32,11 @@ class Unsubscribes extends Component {
       activeTab: '1',
       selectedId: [],
       checked: false,
-      isSelectionBar:true
+      isSelectionBar: true,
+      modal: false,
     }
   }
-  
+
   toggle = tab => {
     if (this.state.activeTab !== tab)
       this.setState({ activeTab: tab })
@@ -43,27 +45,27 @@ class Unsubscribes extends Component {
     this.props.fetchUnsbcribed()
   }
   showSelectionBar = (id) => {
-  let array=[...this.state.selectedId]
+    let array = [...this.state.selectedId]
     this.setState({
       isSelectionBar: true,
     })
     for (let index = 0; index < array.length; index++) {
-      if(id===array[index]){
+      if (id === array[index]) {
         const index = array.indexOf(id);
         if (index > -1) {
           array.splice(index, 1);
         }
         this.setState({
-          selectedId:array.length
+          selectedId: array.length
         })
       }
-      else{
+      else {
         this.state.selectedId.push(id)
       }
-      
+
     }
-    
-    console.log( this.state.selectedId," this.state.selectedId")
+
+    console.log(this.state.selectedId, " this.state.selectedId")
   }
   UnsubscribeDelete = () => {
     let data = this.state.selectedId
@@ -79,7 +81,7 @@ class Unsubscribes extends Component {
             <p style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Unsubscribes</p>
             <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
           </div>
-          <div style={{padding:'20px'}} className={`selection-bar ${isSelectionBar ? "_block" : " "}`} >
+          <div style={{ padding: '20px' }} className={`selection-bar ${isSelectionBar ? "_block" : " "}`} >
             <span style={SpanStyles} onClick={() => this.setState({ isSelectionBar: false })}><i className="fa fa-close" aria-hidden="true"></i></span>
             <span style={Span} >{selectedId.length} selected</span>
             <div onClick={this.UnsubscribeDelete}>
@@ -117,11 +119,16 @@ class Unsubscribes extends Component {
             </TabContent>
           </Row>
         </Container>
-        <div className='plus-button-div'>
+        <div className='plus-button-div' onClick={(e) => { e.preventDefault(), this.setState({ modal: !this.state.modal }) }}>
           <div className='new_add_button'>
-            <span className="plusicon">+</span>
+            <span className="plusicon" >+</span>
           </div>
         </div>
+        <UnsubscribesModal
+          isOpen={this.state.modal}
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
+          toggle={this.toggle} />
       </div>
     );
   }
