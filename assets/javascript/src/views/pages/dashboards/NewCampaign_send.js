@@ -8,7 +8,7 @@ export class CampaignSend extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            save: false
+            // save: false
         }
     }
     componentDidMount() {

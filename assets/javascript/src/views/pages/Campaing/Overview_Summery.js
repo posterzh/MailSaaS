@@ -166,8 +166,6 @@ const mapStateToProps = (state) => {
     }
 }
 const mapDispatchToProps = dispatch => ({
-    CampaignOverviewAction:  CampaignOverviewData => {
-        dispatch(CampaignOverviewAction(CampaignOverviewData))
-    }
+    CampaignOverviewAction:  CampaignOverviewData => {dispatch(CampaignOverviewAction(CampaignOverviewData))}
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Overview_Summery)

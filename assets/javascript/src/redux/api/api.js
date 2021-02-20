@@ -90,17 +90,6 @@ Api.CampaignUpdatePreviewApi = (token, id) => {
   })
 }
 
-// Campaign save (get)
-Api.CampaignCreateGetApi = (token, id) => {
-  return axios({
-    method: 'GET',
-    url: `${API_BASE_URL}/campaign/savecamp/${id}/`,
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-  })
-}
-
 // campaign_savecampaign (put)
 Api.CampaignSaveApi = (token, id, saveData) => {
   return axios({
@@ -130,7 +119,7 @@ Api.CampaignLeadCatcher = (token, data) => {
 }
 
 // campaign get-overview
-Api.CampaignOverview = (token, id) => {
+Api.CampaignOverviewApi= (token, id) => {
   return axios({
     method: 'GET',
     url: `${API_BASE_URL}/campaign/overview/${id}/`,

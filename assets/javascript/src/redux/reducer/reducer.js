@@ -19,9 +19,7 @@ import {
     REQUEST_FOR_CAMPAIGN_CREATE_PREVIEW,
     SUCCESS_FETCH_CAMPAIGN_CREATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_CREATE_PREVIEW,
-    REQUEST_FOR_CAMPAIGN_OVERVIEW,
     SUCCESS_CAMPAIGN_OVERVIEW,
-    FAILURE_CAMPAIGN_OVERVIEW,
     SUCCESS_MAIL_ACCOUNT_DELETE,
     SUCCESS_MAIL_ACCOUNT_UPDATE,
     FAILURE_MAIL_ACCOUNT_UPDATE,
@@ -228,7 +226,7 @@ export const ProspectsGetReducer = (state =  initialState , action) => {
 
 // ONCLICK PROSPECT TABLE DATA
 export const OnclickProspectsReducer = (state =  initialState , action) => {
-    console.log("action======>",action)
+    // console.log("action======>",action)
     switch (action.type) {
         case SUCCESS_FETCH_ONCLICK_PROSPECTS:
             return {
@@ -282,18 +280,12 @@ export const CampaignPreviewUpdateReducer = (state =  initialState , action) => 
 
 // CAMPAIGN_OVERVIEW_DATA
 export const CampaignOverviewReducer = (state =  initialState , action) => {
+    // console.log("paylodad",action.CampaignTableData )
     switch (action.type) {
-        case REQUEST_FOR_CAMPAIGN_OVERVIEW:
-            return {
-            }
         case SUCCESS_CAMPAIGN_OVERVIEW:
             return {
                 ...state,
                 CampaignOverviewData: action.CampaignOverviewData,
-            }
-        case  FAILURE_CAMPAIGN_OVERVIEW:
-            return {
-                
             }
         default: return state
             break;

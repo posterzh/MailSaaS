@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { Container, Row, Col, Label, Input, Table,Modal, ModalHeader, ModalBody, Card, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
+import { Container, Row, Col, Label, Input, Table, Modal, ModalHeader, ModalBody, Card, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import { ProspectActionData } from '../../../redux/action/ProspectsAction'
 import ProspectOnclick from './ProspectOnclick'
 import { OnclickProspectActionData } from '../../../redux/action/ProspectsAction'
@@ -43,7 +43,7 @@ class Prospects extends Component {
                     <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Prospects</h1>
                     <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
                 </div>
-                <Modal  className="prospect_modal" isOpen={showProspect} toggle={this.toggle}>
+                <Modal className="prospect_modal" isOpen={showProspect} toggle={this.toggle}>
                     <ModalHeader className="prospect_modalheader" toggle={this.toggle}></ModalHeader>
                     <ModalBody className="prospect_modalbody" >
                         <ProspectOnclick />
@@ -64,7 +64,7 @@ class Prospects extends Component {
                         </Col>
                     </Row>
                     <Row className='mt-4'>
-                        <Col md='1' className=' prospect_details'><h1>{prospectData && prospectData.map((item,index)=>{return })}</h1><span >TOTAl</span></Col>
+                        <Col md='1' className=' prospect_details'><h1>{prospectData && prospectData.map((item, index) => { return })}</h1><span >TOTAl</span></Col>
                         <Col md='1' className=' prospect_details'><h1>6</h1><span >IN CAMPAIGN</span></Col>
                         <Col md='1' className=' prospect_details'><h1>6</h1><span >ENGAGED</span></Col>
                         <Col md='1' className=' prospect_details'><h1>6</h1><span >LEADS</span></Col>
@@ -137,7 +137,7 @@ class Prospects extends Component {
                                             {/* <td value={index}>{item.status}</td> */}
                                             <td value={index}>{item.campaign_count}</td>
                                             {/* <td value={index}>{item.sent === false ? 0 : 1}</td> */}
-                                            <td value={index}>{item.sent}</td>    
+                                            <td value={index}>{item.sent}</td>
                                         </tr>
                                     })
                                 }
