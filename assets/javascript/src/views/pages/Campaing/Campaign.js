@@ -20,10 +20,9 @@ class Campaign extends Component {
     }
   }
   componentDidMount() {
-    // const id=this.props.history.location.state && this.props.history.location.state.id,
+    const CampId = this.props.history.location.state && this.props.history.location.state
+    console.log("campID",CampId)
     this.props.CampaignTableAction()
-    this.props.CampaignSaveAction()
-    // console.log("state.CampaignTableReducer.CampaignTableData",this.props.CampaignTableReducer.CampaignTableData)
   }
 
   render() {
@@ -124,7 +123,7 @@ class Campaign extends Component {
                     <tbody>
                       {Tables && Tables.CampaignTableData.map((item, index) => {
                         return (<>
-                          <tr key={index} className='pointer' onClick={() => { this.props.CampaignOverviewAction() }}>
+                          <tr key={index} className='pointer' onClick={() => { this.props.CampaignOverviewAction(item.id) }}>
                             <td><input type='checkbox' /></td>
                             <td><i class="fas fa-pause"></i></td>
                             <td className="Campaign_title">{item.camp_title}</td>
@@ -165,6 +164,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   CampaignTableAction: mailGetData => { dispatch(CampaignTableAction(mailGetData)); },
   CampaignSaveAction: saveData => { dispatch(CampaignSaveAction(saveData)) },
-  CampaignOverviewAction: TableId => { dispatch(CampaignOverviewAction(TableId)) }
+  CampaignOverviewAction: id => { dispatch(CampaignOverviewAction(id)) }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Campaign)

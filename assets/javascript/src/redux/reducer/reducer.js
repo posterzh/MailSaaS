@@ -35,6 +35,8 @@ import {
     FAILURE_GET_SCHEDULE,
     UPDATE_REQUEST_FOR_GET_SCHEDULE,
     UPDATE_SUCCESS_GET_SCHEDULE,  
+    SUCCESS_LEAD_CATCHER,
+    SUCCESS_FOR_CAMPAIGN_PEOPLE
 } from "../actionType/actionType";
 
 const initialState = {
@@ -42,7 +44,7 @@ const initialState = {
     user: '',
     startCampaignData: [],
     recipientData: '',
-    mailGetData: [],
+    mailGetData: null,
     mailData: '',
     sendData:'',
     saveData:'',
@@ -61,7 +63,9 @@ const initialState = {
     loginResponse:null,
     isRegisterSuccess:null,
     ScheduleGetData:[],
-    UpdateScheduleData:[]
+    UpdateScheduleData:[],
+    leadData:'',
+    campaignPeopleData:''
 }
 export const RegisterReducer = (state =  initialState , action) => {
     // console.log(action.payload && action.payload[0], 'payloaddata')
@@ -298,6 +302,22 @@ export const CampaignOverviewReducer = (state =  initialState , action) => {
     }
 }
 
+
+//  CAMPAIGN PEOPLE
+export const CampaignPeopleReducer = (state =  initialState , action) => {
+    console.log("paylodad",action )
+    switch (action.type) {
+        case SUCCESS_FOR_CAMPAIGN_PEOPLE:
+            return {
+                ...state,
+                campaignPeopleData: action.campaignPeopleData,
+            }
+        default: return state
+            break;
+    }
+}
+
+
 // SCHEDULE_GET_DATAampaignOverview
 export const ScheduleGetDataReducer = (state =  initialState , action) => {
     switch (action.type) {
@@ -305,7 +325,6 @@ export const ScheduleGetDataReducer = (state =  initialState , action) => {
             return {
             }
         case SUCCESS_GET_SCHEDULE:
-            // console.log('========================================++++++++++++',action)
             return {
                 ...state,
                 ScheduleGetData: action.ScheduleGetData,
@@ -322,7 +341,6 @@ export const ScheduleGetDataReducer = (state =  initialState , action) => {
 // CAMPAIGN TABLE DATA
 
 export const CampaignTableReducer = (state =  initialState , action) => {
-    console.log("Action ----------->",action.CampaignTableData)
     switch (action.type) {
         case SUCCESS_CAMPAIGN_TABLE_DATA:
             return {
@@ -336,7 +354,6 @@ export const CampaignTableReducer = (state =  initialState , action) => {
 
 // UPDATE SCHEDULE DATA
 export const ScheduleUpdateReducer = (state =  initialState , action) => {
-    console.log("action for update schedule",action)
     switch (action.type) {
         case UPDATE_REQUEST_FOR_GET_SCHEDULE:
             return {
@@ -345,6 +362,19 @@ export const ScheduleUpdateReducer = (state =  initialState , action) => {
             return {
                 ...state,
                 UpdateScheduleData: action.UpdateScheduleData,
+            }
+        default: return state
+            break;
+    }
+}
+
+// lead Catcher
+export const LeadCatcherReducer = (state =  initialState , action) => {
+    switch (action.type) {
+        case SUCCESS_LEAD_CATCHER:
+            return {
+                ...state,
+                leadData: action.leadData,
             }
         default: return state
             break;

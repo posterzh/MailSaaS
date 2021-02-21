@@ -17,7 +17,10 @@ import {
     FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_CREATE_CAMPAIGN,
     REQUEST_FOR_COMPOSE_DATA,
-    SUCCESS_SAVE_CAMPAIGN
+    SUCCESS_SAVE_CAMPAIGN,
+    SUCCESS_LEAD_CATCHER,
+    SUCCESS_FOR_CAMPAIGN_PEOPLE,
+    SUCCESS_LEAD_CATCHER_GET
 
 } from "../actionType/actionType"
 import Api from "../api/api"
@@ -129,25 +132,50 @@ export const requestForCampaignCompose = () => {
         type: REQUEST_FOR_COMPOSE_DATA
     }
 }
+// CAMPAIGN_PEOPLE
+export const requestForCampaignPeopleSuccess = (campaignPeopleData) => {
+    // console.log(peopleData, 'data')
+    return {
+        type: SUCCESS_FOR_CAMPAIGN_PEOPLE,
+        campaignPeopleData
+    }
+}
+
+
+// lead catcher
+export const leadCatcherSuccess = (leadData) => {
+    return {
+        type: SUCCESS_LEAD_CATCHER,
+        leadData
+    }
+}
+
+// lead catcher get
+export const leadCatcherGetSuccess = (leadGetData) => {
+    return {
+        type: SUCCESS_LEAD_CATCHER_GET,
+        leadGetData
+    }
+}
+
 
 // CAMPAIGN_OVERVIEW_MIDDLEWARE
 export const CampaignOverviewAction = (id) => {
-    console.log("idkfgjkgjfdkgj===============>",id)
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        Api.CampaignOverviewApi(token,id).then(result => {
+        Api.CampaignOverviewApi(token, id).then(result => {
+            result.data.id = id
             dispatch(CampaignOverviewSuccess(result.data))
-            setTimeout(() => {history.push('/app/admin/OverView')}
-            , 2000);
+            setTimeout(() => { history.push('/app/admin/OverView',{id:result.data.id}) }
+                , 2000);
         }).catch(err => {
             console.log(err)
-            
+
         })
     }
 }
 
 export const StartCampaignAction = (data) => {
-    console.log("data ka data", data)
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         console.log('this is a token', token)
@@ -167,7 +195,6 @@ export const CampaignOptionAction = (optionData) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.OptionApi(optionData, token).then(result => {
-            console.log("you=======>", result.data)
             setTimeout(() => {
                 dispatch(OptionSuccess(result.data))
                 history.push('/app/admin/CampaignSend', { id: result.data.id })
@@ -204,8 +231,10 @@ export const CampaignTableAction = () => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.CampaignTableDataApi(token).then(result => {
+            setTimeout(() => {
                 dispatch(CampaignTableDataSuccess(result.data))
-                console.log("create Table",result.data)
+                history.push({ id: result.data.id,})
+            }, 100);
         }).catch(err => {
             console.log(err)
         })
@@ -256,6 +285,36 @@ export const CampaignComposeAction = (data) => {
             setTimeout(() => {
                 dispatch(requestForCampaignCompose(result.data))
                 history.push('/app/admin/CampaignPreview', { id: data.normal.campaign })
+            }, 2000);
+        }).catch(err => {
+            console.log(err, 'error-')
+        })
+    }
+}
+
+// CAMPAIGN PEOPLE DATA
+export const CampaignPeopleAction = (id) => {
+    console.log("id hu------->",id)
+    return function (dispatch) {
+        const token = localStorage.getItem('access_token')
+        Api.CampaignRecipientPeopleApi(token, id).then(result => {
+            console.log("result--->",result.data)
+                dispatch(requestForCampaignPeopleSuccess(result.data))
+        }).catch(err => {
+            console.log(err, 'error-')
+        })
+    }
+}
+
+// leadCatcher
+
+export const CampaignLeadCatcherAction = (leadData) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('access_token')
+        Api.CampaignLeadCatcherApi(token, leadData).then(result => {
+            setTimeout(() => {
+                dispatch(leadCatcherSuccess(result.data))
+                console.log('lead',result.data)
             }, 2000);
         }).catch(err => {
             console.log(err, 'error-')

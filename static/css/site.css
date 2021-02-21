@@ -21192,3 +21192,11 @@ input::-webkit-inner-spin-button {
 .calender_details {
   color: black; }
 
+.nav_link {
+  color: white; }
+
+.inputField {
+  height: 13px;
+  width: 13px;
+  border: 1px solid silver; }
+
