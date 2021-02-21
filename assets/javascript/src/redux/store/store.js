@@ -16,7 +16,11 @@ import {
   CampaignPreviewUpdateReducer,
   CamapignSaveReducer,
   OnclickProspectsReducer,
-  CampaignTableReducer
+  CampaignTableReducer,
+  ScheduleGetDataReducer,
+  ScheduleUpdateReducer,
+  LeadCatcherReducer,
+  CampaignPeopleReducer
 } from '../reducer/reducer';
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
@@ -37,7 +41,11 @@ const rootReducer = combineReducers({
   CampaignPreviewUpdateReducer,
   CamapignSaveReducer,
   OnclickProspectsReducer,
-  CampaignTableReducer
+  CampaignTableReducer,
+  ScheduleGetDataReducer,
+  ScheduleUpdateReducer,
+  LeadCatcherReducer,
+  CampaignPeopleReducer
 })
 
 const store = createStore(

@@ -1,7 +1,7 @@
 
 // file for option pick in campaign
 import React, { Component } from 'react'
-import { Container, Row, Col, Form, Nav } from 'reactstrap'
+import { Container, Row, Col, Form, Nav,Button } from 'reactstrap'
 import { CampaignOptionAction } from '../../../redux/action/CampaignAction'
 import { Link, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -15,6 +15,7 @@ class NewCampaign_options extends Component {
             termsandlaws: false,
             date: '',
             time: '',
+            show:false
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -111,20 +112,21 @@ class NewCampaign_options extends Component {
                         </Col>
                     </Row>
                     <Row className="option_note">Tweak how your campaign will be sent</Row>
-                    <Row>
+                    <Row >
                         <Form onSubmit={this.handleSubmit}>
-                            <Col md="8" className="mx-auto">
+                            <Col md="8" className="mx-auto w-100">
                                 <Row>
                                     <div >
-                                        <input id="1" type="checkbox" value={this.state.trackopen} name='trackopen' defaultChecked={this.state.trackopen} onChange={this.handleChange}></input>&nbsp;
+                                        <input id="1" type="checkbox" value={this.state.trackopen} className='inputField' name='trackopen' defaultChecked={this.state.trackopen} onChange={this.handleChange}></input>&nbsp;
                                     <span className="track_option">Track opens</span><br />
-                                        <input id="2" type="checkbox" name='tracklinkclicks' defaultChecked={this.state.tracklinkclicks} onChange={this.handleChange}></input>
+                                        <input id="2" type="checkbox" name='tracklinkclicks' className='inputField' defaultChecked={this.state.tracklinkclicks} onChange={this.handleChange}></input>
                                         <span className="track_line">Track Link clicks</span><br />
-                                        <input id="3" type="checkbox" name='schedulesend' defaultChecked={this.state.schedulesend} onChange={this.handleChange}></input>
+                                        <input id="3" type="checkbox" name='schedulesend' className='inputField' defaultChecked={this.state.schedulesend} onClick={()=>this.setState({show:!this.state.show})} onChange={this.handleChange}></input>
                                         <span className="schedule">Schedule this send</span>
                                     </div>
                                 </Row>
-                                <Row>
+                                {this.state.show && <>
+                                    <Row>
                                     <div className="time_container">
                                         <span className="sending_calendar">Sending calendar timezone</span><br />
                                         <span className="time_zone">Asia/Calcutta</span><br />
@@ -135,8 +137,8 @@ class NewCampaign_options extends Component {
                                         <input type="date" className="date_picker" name='date' value={this.state.date} onChange={this.handleDate} />
                                         <input type="time" className="time_picker" name='time' value={this.state.time} onChange={this.handleTime} /><br />
                                     </div>
-                                </Row>
-                                <Row className="Leadcatcher_settingdiv">
+                                </Row></>}
+                                {/* <Row className="Leadcatcher_settingdiv">
                                     <span className="leadcatchersetting_icon"><i className="fa fa-caret-down"></i></span>
                                     <span className="leadcatchersetting">Lead Catcher setting</span>
                                 </Row>
@@ -176,8 +178,8 @@ class NewCampaign_options extends Component {
 
                                         </div>
                                     </div>
-                                </Row>
-                                <Row>
+                                </Row> */}
+                                {/* <Row>
                                     <span><i className="fa fa-caret-down"></i></span>
                                     <span>CRM sync</span>
                                 </Row>
@@ -191,16 +193,16 @@ class NewCampaign_options extends Component {
                                     <span><input type="checkbox" /></span>
                                     <span><i className="fa fa-slack"></i></span>
                                     <span>Extern Labs</span>
-                                </Row>
-                                <Row>
+                                </Row> */}
+                                <Row className='mt-3'>
                                     <div>
-                                        <input type="checkbox" name='termsandlaws' defaultChecked={this.state.termsandlaws} onClick={this.handleChange} required />
+                                        <input type="checkbox" name='termsandlaws' className='inputField' defaultChecked={this.state.termsandlaws} onClick={this.handleChange} required />
                                         <span>I'll obey pertinent laws and I've read theshsdasdsade< a href="www.google.com"> important notes.</a>
                                         </span>
                                     </div>
                                 </Row>
-                                <Row>
-                                    <button type="submit">next</button>
+                                <Row className='mt-3'>
+                                    <Button className='btn startBtn' type="submit">NEXT</Button>
                                 </Row>
                             </Col>
                         </Form>

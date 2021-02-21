@@ -79,22 +79,13 @@ Api.CampaignPreviewApi = (token, id) => {
   })
 }
 
+
+
 // CAMPAIGN UPDATE PREVIEW
 Api.CampaignUpdatePreviewApi = (token, id) => {
   return axios({
     method: 'PUT',
     url: `${API_BASE_URL}/campaign/personalize/2/`,
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-  })
-}
-
-// Campaign save (get)
-Api.CampaignCreateGetApi = (token, id) => {
-  return axios({
-    method: 'GET',
-    url: `${API_BASE_URL}/campaign/savecamp/${id}/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -116,12 +107,12 @@ Api.CampaignSaveApi = (token, id, saveData) => {
 }
 
 // campaign leadcatcher
-Api.CampaignLeadCatcher = (token, data) => {
+Api.CampaignLeadCatcherApi = (token, leadData) => {
   return axios({
-    method: "GET",
-    url: `${API_BASE_URL}/campaign/leadscatcher/`,
+    method: "POST",
+    url: `${API_BASE_URL}/campaign/settings-leadcatcher/`,
     data: {
-      'campaign': 1
+        leadData
     },
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -130,7 +121,7 @@ Api.CampaignLeadCatcher = (token, data) => {
 }
 
 // campaign get-overview
-Api.CampaignOverview = (token, id) => {
+Api.CampaignOverviewApi = (token, id) => {
   return axios({
     method: 'GET',
     url: `${API_BASE_URL}/campaign/overview/${id}/`,
@@ -140,10 +131,10 @@ Api.CampaignOverview = (token, id) => {
   })
 }
 // campaign recipient people (get)
-Api.CampaignRecipientPeople = (token) => {
+Api.CampaignRecipientPeopleApi = (token,id) => {
   return axios({
     method: 'GET',
-    url: `${API_BASE_URL}/campaign/recipients/people/1/`,
+    url: `${API_BASE_URL}/campaign/recipients/people/${id}/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -259,16 +250,16 @@ Api.ChangePassword = (token, data) => {
 }
 
 // mail sender delete
-Api.MailSenderDelete = (token) => {
-  return axios({
-    method: 'DELETE',
-    url: `${API_BASE_URL}/mail/sender/1/`,
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
+// Api.MailSenderDelete = (token) => {
+//   return axios({
+//     method: 'DELETE',
+//     url: `${API_BASE_URL}/mail/sender/1/`,
+//     headers: {
+//       "Authorization": `Bearer ${token}`,
+//     }
 
-  })
-}
+//   })
+// }
 
 // unsubscribe delete
 Api.UnsubscribeDelete = (token, data) => {
@@ -326,6 +317,7 @@ Api.MailAccountDelete = (token, id) => {
 Api.MailAccountUpdateApi = (token, data, id) => {
   return axios({
     url: `${API_BASE_URL}/mail/updatedeletemailaccount/${id}/`,
+    data: {},
     method: "PUT",
     headers: {
       "Authorization": `Bearer ${token}`
@@ -391,6 +383,28 @@ Api.CampaignCreateGetApi = (token, id) => {
   return axios({
     method: 'GET',
     url: `${API_BASE_URL}/campaign/savecamp/${id}/`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+
+// GET SCHEDULE API
+Api.GetScheduleApi = (token) => {
+  return axios({
+    method: 'GET',
+    url: `${API_BASE_URL}/campaignschedule/updateschedulemail/`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+
+//UPDATE SCHEDULE
+Api.UpdateScheduleApi = (token) => {
+  return axios({
+    method: 'PUT',
+    url: `${API_BASE_URL}/campaignschedule/updateschedulemail/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }

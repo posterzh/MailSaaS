@@ -8,7 +8,6 @@ export class CampaignSend extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            save: false
         }
     }
     componentDidMount() {
@@ -188,7 +187,6 @@ const mapStateToProps = (state) => {
     console.log("sendData", state.CampaignCreateReducer && state.CampaignCreateReducer.sendData)
     return {
         sendData: state.CampaignCreateReducer && state.CampaignCreateReducer.sendData,
-        // startCampaignId: state.StartCampaignReducer.startCampaignData.id,
     };
 };
 const mapDispatchToProps = dispatch => ({

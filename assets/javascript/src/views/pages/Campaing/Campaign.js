@@ -9,7 +9,7 @@ import {
 } from "reactstrap";
 import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
-import { CampaignTableAction ,CampaignSaveAction} from '../../../redux/action/CampaignAction'
+import { CampaignTableAction, CampaignSaveAction, CampaignOverviewAction } from '../../../redux/action/CampaignAction'
 class Campaign extends Component {
   constructor(props) {
     super(props)
@@ -20,14 +20,16 @@ class Campaign extends Component {
     }
   }
   componentDidMount() {
+    const CampId = this.props.history.location.state && this.props.history.location.state
+    console.log("campID",CampId)
     this.props.CampaignTableAction()
-    this.props.CampaignSaveAction()
-    // console.log("state.CampaignTableReducer.CampaignTableData",this.props.CampaignTableReducer.CampaignTableData)
   }
 
   render() {
     const { show, hide } = this.state;
-    const { Tables } = this.props;
+    const { Tables, CampaignOverviewAction } = this.props;
+    console.log("this.props.history.location.state && this.props.history.location.state.id",this.props.history.location.state&&this.props.history.location.state.id)
+    
     return (
       <>
         <div className='main-view'>
@@ -121,10 +123,10 @@ class Campaign extends Component {
                     <tbody>
                       {Tables && Tables.CampaignTableData.map((item, index) => {
                         return (<>
-                          <tr key={index} className='pointer' >
+                          <tr key={index} className='pointer' onClick={() => { this.props.CampaignOverviewAction(item.id) }}>
                             <td><input type='checkbox' /></td>
                             <td><i class="fas fa-pause"></i></td>
-                            <td className="Campaign_title"><Link to='/app/admin/OverView'>{item.camp_title}</Link></td>
+                            <td className="Campaign_title">{item.camp_title}</td>
                             <td className='Created'>{item.camp_created_date_time.substring(5, 10)}</td>
                             <td className='Assigned'>{item.assigned}</td>
                             <td className='Recipient'>{item.recipientCount}</td>
@@ -154,14 +156,14 @@ class Campaign extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log("tab", state.CamapignSaveReducer && state.CamapignSaveReducer.saveData)
-  // console.log('statedjshadjsahdjh', state.CampaignTableReducer.CampaignTableData && state.CampaignTableReducer.CampaignTableData)
+  console.log("tab", state.CampaignOverviewReducer && state.CampaignOverviewReducer.CampaignOverviewData)
   return {
     Tables: state.CampaignTableReducer.CampaignTableData && state.CampaignTableReducer
   };
 };
 const mapDispatchToProps = dispatch => ({
   CampaignTableAction: mailGetData => { dispatch(CampaignTableAction(mailGetData)); },
-  CampaignSaveAction:saveData=>{dispatch(CampaignSaveAction(saveData))}
+  CampaignSaveAction: saveData => { dispatch(CampaignSaveAction(saveData)) },
+  CampaignOverviewAction: id => { dispatch(CampaignOverviewAction(id)) }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Campaign)

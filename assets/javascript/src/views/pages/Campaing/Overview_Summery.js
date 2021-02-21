@@ -4,10 +4,6 @@ import { Container, Row, Col, Table, Nav, NavItem, NavLink, TabContent, TabPane,
 import {CampaignOverviewAction} from '../../../redux/action/CampaignAction';
 import { connect } from 'react-redux';
 class Overview_Summery extends Component {
-    componentDidMount()
-    {
-        this.props.CampaignOverviewAction();
-    }
     render() {
         return (
             <div>
@@ -159,15 +155,10 @@ class Overview_Summery extends Component {
 }
 // export default Overview_Summery
 const mapStateToProps = (state) => {
-    // .CampaignOverviewReducer.CampaignPreviewData
-    console.log("cheking state for overviewwwwwwww", state.CampaignOverviewReducer.CampaignOverviewData);
     return {
          CampaignOverviewData: state.CampaignOverviewReducer.CampaignOverviewData
     }
 }
 const mapDispatchToProps = dispatch => ({
-    CampaignOverviewAction:  CampaignOverviewData => {
-        dispatch(CampaignOverviewAction(CampaignOverviewData))
-    }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Overview_Summery)

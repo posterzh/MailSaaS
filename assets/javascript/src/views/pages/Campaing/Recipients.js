@@ -1,9 +1,19 @@
 import { Container, Row, Col, Table, Input, Modal } from 'reactstrap';
 import Campaign_details from "../../../views/pages/Campaing/Campaign_details"
 import React, { Component } from 'react'
+import { CampaignPeopleAction } from '../../../redux/action/CampaignAction'
+import { connect } from 'react-redux';
 
-export default class Recipients extends Component {
+class Recipients extends Component {
+    constructor() {
+        super()
+    }
+    componentDidMount() {
+        this.props.CampaignPeopleAction(this.props.campaignOverviewData.id)
+    }
     render() {
+        const { getData } = this.props;
+        console.log("getData", getData)
         return (
             <div>
                 <Container fluid>
@@ -79,26 +89,21 @@ export default class Recipients extends Component {
                                     <th><input type='checkbox' /></th>
                                     <th >EMAIL</th>
                                     <th>NAME</th>
-                                    <th>CREATED</th>
-                                    <th>STATUS</th>
-                                    <th>CAMPAGINS</th>
-                                    <th>SENT</th>
-                                    <th>ENGAGED</th>
-                                    <th>TASKS</th>
+                                    <th>ADDED ON</th>
+                                    <th>SENT ON</th>
+
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><input type='checkbox' /></td>
-                                    <td>EMAIL</td>
-                                    <td>NAME</td>
-                                    <td>CREATED</td>
-                                    <td>STATUS</td>
-                                    <td>CAMPAGINS</td>
-                                    <td>SENT</td>
-                                    <td>ENGAGED</td>
-                                    <td>TASKS</td>
-                                </tr>
+                                {getData && getData.map((item, index) => (
+                                    <tr key={index}>
+                                        <td><input type='checkbox' /></td>
+                                        <td>{item.email}</td>
+                                        <td>{}</td>
+                                        <td>{item.created_date_time.substring(5, 10)}</td>
+                                        <td>{}</td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </Table>
                     </Row>
@@ -126,3 +131,15 @@ export default class Recipients extends Component {
         )
     }
 }
+const mapStateToProps = (state) => {
+    // console.log('state',state.CampaignPeopleReducer&&state.CampaignPeopleReducer.campaignPeopleData )
+    return {
+
+        campaignOverviewData: state.CampaignOverviewReducer.CampaignOverviewData,
+        getData: state.CampaignPeopleReducer && state.CampaignPeopleReducer.campaignPeopleData
+    };
+};
+const mapDispatchToProps = dispatch => ({
+    CampaignPeopleAction: (id) => dispatch(CampaignPeopleAction(id))
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Recipients)

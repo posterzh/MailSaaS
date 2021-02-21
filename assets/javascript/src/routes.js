@@ -68,6 +68,7 @@ const routes = [
     state: "campaign",
     views: [
       {
+        open: true,
         path: "/CampaignStart",
         name: "Create Campaign",
         miniName: "CC",
