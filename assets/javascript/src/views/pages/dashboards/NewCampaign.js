@@ -8,16 +8,16 @@ class NewCampaign extends React.Component {
             <>
                 <Container fluid>
                     <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
-                        <Col md='2' style={{ display: 'flex', alignItems: 'center' }}>
+                        <Col md={2} style={{ display: 'flex', alignItems: 'center' }}>
                             <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
                                 <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
                                     <span style={{ color: 'black', fontSize: '20px' }}>MailSaaaS</span></div>
                             </div>
                         </Col>
-                        <Col md='8'>
+                        <Col md={8}>
                             <h1 style={{ textAlign: 'center', fontSize: '6em', color: "#333333" }}>New Campaign</h1>
                         </Col>
-                        <Col md='2' style={{ display: "flex", flexDirection: "row-reverse" }}>
+                        <Col md={2} style={{ display: "flex", flexDirection: "row-reverse" }}>
                             <div className='mt-3'>
                                 <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                     <span><i className="fa fa-question-circle-o fa-lg" aria-hidden="true"></i></span>

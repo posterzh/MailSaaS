@@ -14,14 +14,14 @@ export default class UnsubscribesModal extends Component {
                         <ModalBody >
                             <Container>
                                 <Row>
-                                    <Col md='5'>
+                                    <Col md={5}>
                                         <textarea placeholder='Email addresses'></textarea>
                                     </Col>
-                                    <Col md='2'>or</Col>
-                                    <Col md='5'>Upload a CSV (comma-separated-values) file up to 1MB. It should contain just one column or have a column with the word "email" in it.</Col>
+                                    <Col md={2}>or</Col>
+                                    <Col md={5}>Upload a CSV (comma-separated-values) file up to 1MB. It should contain just one column or have a column with the word "email" in it.</Col>
                                 </Row>
                                 <Row>
-                                    <Col md='5'>
+                                    <Col md={5}>
                                         <button className='btn'>SUBMIT</button>
                                     </Col>
                                     <Col><button className='btn'>UPLOAD</button></Col>

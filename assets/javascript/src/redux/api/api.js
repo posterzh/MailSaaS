@@ -107,13 +107,31 @@ Api.CampaignSaveApi = (token, id, saveData) => {
 }
 
 // campaign leadcatcher
-Api.CampaignLeadCatcherApi = (token, leadData) => {
+Api.CampaignLeadCatcherApi = (token,id, leadData) => {
+  console.log('m id hu --->',id)
   return axios({
     method: "POST",
     url: `${API_BASE_URL}/campaign/settings-leadcatcher/`,
     data: {
-        leadData
+        campaign:id,
+        of_times:leadData.of_times,
+        leadcatcher_recipient:leadData.leadcatcher_recipient
+
     },
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+
+// LEAD CATCHER GET DATA
+Api.CampaignLeadGetApi = (token, id) => {
+  return axios({
+    method: 'GET',
+    data:{
+      campaign:id
+    },
+    url: `${API_BASE_URL}/campaign/settings-leadcatcher/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }

@@ -57,7 +57,7 @@ class Option extends Component {
                 <Container>
                     <Row>
                         <Form onSubmit={this.handleSubmit}>
-                            <Col md="6" className="mx-auto">
+                            <Col md={6} className="mx-auto">
                                 <Row>
                                     <div >
                                         <input id="1" type="checkbox" value={this.state.trackopen} name='trackopen' defaultChecked={this.state.trackopen} onChange={this.handleChange}></input>&nbsp;
@@ -158,7 +158,7 @@ class Option extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    console.log("===================>",state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id)
+    // console.log("===================>",state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id)
     return {
         startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id        
     };

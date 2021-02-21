@@ -39,7 +39,7 @@ class Campaign extends Component {
           </div>
           <Container fluid className=''>
             <Row>
-              <Col md='2' className='mt-1'>
+              <Col md={2} className='mt-1'>
                 <div className='grand_parent' >
                   <div className='input_field'>
                     <Input type='email' className='in' placeholder='Search' />
@@ -48,7 +48,7 @@ class Campaign extends Component {
                   </div>
                 </div>
               </Col>
-              <Col md='1'>
+              <Col md={1}>
                 <div>
                   <label className='filter_app'>Teammate</label><br></br>
                   <select className='filter_select'>
@@ -58,15 +58,15 @@ class Campaign extends Component {
                   </select>
                 </div>
               </Col>
-              <Col md='9'></Col>
+              <Col md={9}></Col>
             </Row>
             <Row className='mt-4'>
-              {show && <Col md='1' style={{ height: '40px' }}>
+              {show && <Col md={1} style={{ height: '40px' }}>
                 <div className='campaign_label'>
                   <div className='add_label' onClick={(e) => { e.preventDefault(), this.setState({ show: !show }) }}> <span>+ Label</span></div>
                 </div>
               </Col>}
-              {!show && <Col md='3'>
+              {!show && <Col md={3}>
                 <div className='grand_parent' >
                   <div className='input_field'>
                     <Input type='email' className='label_input w-100' placeholder='Create a campaign label' />
@@ -83,13 +83,13 @@ class Campaign extends Component {
                   </div>
                 </div>
               </Col>}
-              <Col md='1'>
+              <Col md={1}>
                 <div className='campaign_label'>
                   <div className='add_label'> <span>
                     <i className="fa fa-ban" aria-hidden="true"></i><span style={{ fontSize: '1em' }}>Unlabeled</span></span></div>
                 </div>
               </Col>
-              <Col md='1'>
+              <Col md={1}>
                 <div className='campaign_label'>
                   <div className='add_label' onMouseOut={(e) => { e.preventDefault(), this.setState({ hide: hide }) }} onMouseMove={(e) => { e.preventDefault(), this.setState({ hide: !hide }) }}>
                     <span><i className="fa fa-tags" aria-hidden="true"></i>testlabel<span>
@@ -103,7 +103,7 @@ class Campaign extends Component {
           <Container fluid className='mt-4' >
             <Card>
               <Row>
-                <Col md='12'>
+                <Col md={12}>
                   <Table responsive hover >
                     <thead>
                       <tr>

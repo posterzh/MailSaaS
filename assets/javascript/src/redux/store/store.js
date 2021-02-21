@@ -20,7 +20,8 @@ import {
   ScheduleGetDataReducer,
   ScheduleUpdateReducer,
   LeadCatcherReducer,
-  CampaignPeopleReducer
+  CampaignPeopleReducer,
+  LeadGetReducer
 } from '../reducer/reducer';
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
@@ -45,7 +46,8 @@ const rootReducer = combineReducers({
   ScheduleGetDataReducer,
   ScheduleUpdateReducer,
   LeadCatcherReducer,
-  CampaignPeopleReducer
+  CampaignPeopleReducer,
+  LeadGetReducer
 })
 
 const store = createStore(

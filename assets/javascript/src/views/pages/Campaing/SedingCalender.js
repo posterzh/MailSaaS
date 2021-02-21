@@ -36,7 +36,7 @@ export class SendindCalender extends Component {
         {!this.state.hide &&
           <Container style={{ marginLeft: "0px" }}>
             <Row className='mt-3'>
-              <Col md="4">
+              <Col md={4}>
                 <Card>
                   <CardHeader style={{ border: "none" }}>
                     <select className='scalender_filter_select'>
@@ -78,7 +78,7 @@ export class SendindCalender extends Component {
           </Container>}
           {!this.state.show && <Container fluid>
             <Row className='mt-3 mb-5'>
-              <Col md='4' style={{ border: '1px solid #ccc', background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
+              <Col md={4} style={{ border: '1px solid #ccc', background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
                 <div style={{ margin: '17px 0px 24px 24px' }}>
                   <div className='dv1'>
                     <Row> <label>Mail account</label></Row>

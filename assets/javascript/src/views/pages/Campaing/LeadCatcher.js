@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import LeadCatchermodel from "./LeadCatchermodel"
+import { connect } from 'react-redux'
+import { CampaignLeadGetAction } from "../../../redux/action/CampaignAction";
 import { Container, Row, Col, Input, Modal, ModalHeader, ModalBody, Card } from 'reactstrap'
 
 class LeadCatcher extends Component {
@@ -9,6 +11,9 @@ class LeadCatcher extends Component {
       modal: false
 
     }
+  }
+  componentDidMount() {
+    this.props.CampaignLeadGetAction()
   }
   toggle = () => {
     this.setState({ modal: !this.state.modal })
@@ -34,7 +39,7 @@ class LeadCatcher extends Component {
         </div>
         <Container fluid>
           <Row>
-            <Col md='3' className=''>
+            <Col md={3} className=''>
               <div className='grand_parent'>
                 <div className='input_field'>
                   <Input type='email' className='in' placeholder='Search' />
@@ -46,7 +51,7 @@ class LeadCatcher extends Component {
                 </div>
               </div>
             </Col>
-            <Col md="3">
+            <Col md={3}>
               <div >
                 <select className='filter_select1 w-100 mt-3' >
                   <option value='one'>All Campaigns</option>
@@ -56,7 +61,7 @@ class LeadCatcher extends Component {
                 </select>
               </div>
             </Col>
-            <Col md="3">
+            <Col md={3}>
               <div>
                 <select className='filter_select1 mt-3'>
                   <option value='one'>unassigned</option>
@@ -65,7 +70,7 @@ class LeadCatcher extends Component {
                 </select>
               </div>
             </Col>
-            <Col md="2">
+            <Col md={2}>
               <div>
                 <select className='filter_select1 mt-3'>
                   <option value='open'>open</option>
@@ -75,7 +80,7 @@ class LeadCatcher extends Component {
                 </select>
               </div>
             </Col>
-            <Col md="1">
+            <Col md={1}>
               <div className='refresh_child mt-3'>
                 <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                   <span className='font_icon'><i className="fa fa-undo" aria-hidden="true"></i></span>
@@ -112,5 +117,15 @@ class LeadCatcher extends Component {
     )
   }
 }
+const mapStateToProps = (state) => {
+  console.log("state", state.LeadGetReducer && state.LeadGetReducer.leadGetData)
+  return {
+    campaignOverviewData: state.CampaignOverviewReducer.CampaignOverviewData,
+  };
+};
+const mapDispatchToProps = (dispatch) => ({
+  CampaignLeadGetAction: (id) => { dispatch(CampaignLeadGetAction(id)) },
 
-export default LeadCatcher
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LeadCatcher)

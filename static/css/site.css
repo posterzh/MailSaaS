@@ -20257,6 +20257,8 @@ button .import_button {
   border: none;
   background-color: #F8F9FE;
   border-bottom: 1px solid;
+  display: flex;
+  flex-wrap: nowrap;
   opacity: 0.3; }
 
 .preview_email {

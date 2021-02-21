@@ -124,7 +124,7 @@ class NewCampaign_start extends React.Component {
                         </Col>
                     </Row>
                     <Row >
-                        <Col md='6' className='mx-auto mt-5'>
+                        <Col md={6} className='mx-auto mt-5'>
                             <Form onSubmit={this.handleSubmit}>
                                 <Row style={{ display: 'flex', justifyContent: 'center' }} >
                                     <h1 style={{ fontSize: '30px', textAlign: 'center', color: "#333333" }}> Let's get started</h1>

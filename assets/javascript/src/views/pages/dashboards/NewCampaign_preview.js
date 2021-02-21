@@ -87,7 +87,7 @@ class CampaignPreview extends Component {
                             </Col>
                         </Row>
                         <Row className='mt-3'>
-                            <Col md="6" className="mx-auto">
+                            <Col md={6} className="mx-auto">
                                 <Row className="preview_email">Preview and personalize each email</Row>
                                 <Row className="beforehitting_next">Before hitting next, make sure:</Row>
                                 <Row style={{ display: "flex", justifyContent: "center" }}>
@@ -139,7 +139,7 @@ class CampaignPreview extends Component {
                     </Container>
                     <Container>
                         <Row className="mt-3">
-                            <Col md='12' className='mx-auto'>
+                            <Col md={12} className='mx-auto'>
                                 <div style={{ backgroundColor: "#005aac", color: "white" }}>
                                     {
                                         <ul >
@@ -164,7 +164,7 @@ class CampaignPreview extends Component {
                             {
                                 this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((item, index) => {
                                     return <div>
-                                        <Col md='11' className='mx-auto'>
+                                        <Col md={11} className='mx-auto'>
                                             <Row className='mt-3'>
                                                 <div><i className="fa fa-envelope-o" aria-hidden="true"></i><label style={{ marginLeft: "5px" }}>Initial campaign email</label></div>
                                                 <div className='grand_parent'>
@@ -219,7 +219,7 @@ class CampaignPreview extends Component {
                                                 {
                                                     this.props.CampaignFollowUp && this.props.CampaignFollowUp.map((item, index) => {
                                                         return <div>
-                                                            <Col md='11' className='alignRight'>
+                                                            <Col md={11} className='alignRight'>
                                                                 <Row>
                                                                     <h1 className='display-6'>Follow-ups &nbsp;<a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                                                         <span><i className='QuestionCircle' className="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -229,7 +229,7 @@ class CampaignPreview extends Component {
                                                                     <p style={{ fontSize: '14px' }}>Follow-ups are stopped when a recipient becomes a lead. <a href=''>Learn how to customize Lead Catcher.</a></p>
                                                                 </Row>
                                                                 <Row>
-                                                                    <Col md='2' className='WaitDiv'>
+                                                                    <Col md={2} className='WaitDiv'>
                                                                         <label className='filter_app_new'>Wait X days</label><br></br>
                                                                         <input value={item.waitDays} type='number' className='WaitInput'></input>
                                                                     </Col>
@@ -272,7 +272,7 @@ class CampaignPreview extends Component {
                                                 {
                                                     this.props.CampaignDrip && this.props.CampaignDrip.map((item, index) => {
                                                         return <div>
-                                                            <Col md='11' className='alignRight'>
+                                                            <Col md={11} className='alignRight'>
                                                                 <Row>
                                                                     <h1 className='display-6'>Drips &nbsp;<a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                                                         <span><i className='QuestionCircle' class="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -282,7 +282,7 @@ class CampaignPreview extends Component {
                                                                     <p style={{ fontSize: '14px' }}>Unlike follow-ups, drips keep sending even after a recipient becomes a lead.<a href=''>Learn how to customize Lead Catcher.</a></p>
                                                                 </Row>
                                                                 <Row>
-                                                                    <Col md='2' className='WaitDiv'>
+                                                                    <Col md={2} className='WaitDiv'>
                                                                         <label className='filter_app_new'>Wait X days</label><br></br>
                                                                         <input key={index} value={item.waitDays} type='number' className='WaitInput'></input>
                                                                     </Col>
@@ -331,7 +331,7 @@ class CampaignPreview extends Component {
                                                     this.props.CampaignOnClick && this.props.CampaignOnClick.map((item, index) => {
                                                         return <div>
 
-                                                            <Col md='11' className='alignRight'>
+                                                            <Col md={11} className='alignRight'>
                                                                 <Row>
                                                                     <h1 className='display-6'>On Link Clicks &nbsp;<a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                                                         <span><i className='QuestionCircle' class="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -341,11 +341,11 @@ class CampaignPreview extends Component {
                                                                     <p style={{ fontSize: '14px' }}>These emails are sent when a recipient clicks a link in one of your sent messages.</p>
                                                                 </Row>
                                                                 <Row>
-                                                                    <Col md='4'>
+                                                                    <Col md={4}>
                                                                         <label className='filter_app_new'>Wait X days</label><br></br>
                                                                         <input  value={item.waitDays}  type='number'></input>
                                                                     </Col>
-                                                                    <Col md='8'>
+                                                                    <Col md={8}>
                                                                         <Input type='text'value={item.url} className='in mt-3' style={{ borderBottom: '1px solid' }} placeholder='Clicked link url must exactly match:' required />
                                                                     </Col>
                                                                 </Row>

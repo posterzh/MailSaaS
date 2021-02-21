@@ -51,7 +51,7 @@ class Prospects extends Component {
                 </Modal>
                 <Container fluid className='mt-4' >
                     <Row>
-                        <Col md='2'>
+                        <Col md={2}>
                             <div>
                                 <label className='filter_app'>Teammate</label><br></br>
                                 <select className='filter_select_prospect'>
@@ -64,22 +64,22 @@ class Prospects extends Component {
                         </Col>
                     </Row>
                     <Row className='mt-4'>
-                        <Col md='1' className=' prospect_details'><h1>{prospectData && prospectData.map((item, index) => { return })}</h1><span >TOTAl</span></Col>
-                        <Col md='1' className=' prospect_details'><h1>6</h1><span >IN CAMPAIGN</span></Col>
-                        <Col md='1' className=' prospect_details'><h1>6</h1><span >ENGAGED</span></Col>
-                        <Col md='1' className=' prospect_details'><h1>6</h1><span >LEADS</span></Col>
-                        <Col md='1' className=' prospect_details'><h1>6</h1><span >BOUNCES</span></Col>
-                        <Col md='1' className=' prospect_details'><h1>6</h1><span >UNSUBSCRIBES</span></Col>
+                        <Col md={1} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index) => { return })}</h1><span >TOTAl</span></Col>
+                        <Col md={1} className=' prospect_details'><h1>6</h1><span >IN CAMPAIGN</span></Col>
+                        <Col md={1} className=' prospect_details'><h1>6</h1><span >ENGAGED</span></Col>
+                        <Col md={1} className=' prospect_details'><h1>6</h1><span >LEADS</span></Col>
+                        <Col md={1} className=' prospect_details'><h1>6</h1><span >BOUNCES</span></Col>
+                        <Col md={1} className=' prospect_details'><h1>6</h1><span >UNSUBSCRIBES</span></Col>
                     </Row>
                     <Row className=' mt-3 input_search_div'>
-                        <Col md='4'>
+                        <Col md={4}>
                             <div className='grand_parent' >
                                 <div className='input_field'>
                                     <Input type='email' className='in' placeholder='SearchEmail' onChange={(event) => { this.setState({ searchEmail: event.target.value }) }} />
                                 </div>
                             </div>
                         </Col>
-                        <Col md='4'>
+                        <Col md={4}>
                             <div className='grand_parent mt-4'>
                                 <div className='select_div'>
                                     <select className='filter_select_prospect'>
@@ -91,7 +91,7 @@ class Prospects extends Component {
                                 </div>
                             </div>
                         </Col>
-                        <Col md='4'>
+                        <Col md={4}>
                             <div className='grand_parent mt-4'>
                                 <div className='select_div'>
                                     <select className='filter_select_prospect'>

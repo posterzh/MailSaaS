@@ -114,7 +114,7 @@ class NewCampaign_options extends Component {
                     <Row className="option_note">Tweak how your campaign will be sent</Row>
                     <Row >
                         <Form onSubmit={this.handleSubmit}>
-                            <Col md="8" className="mx-auto w-100">
+                            <Col md={8} className="mx-auto w-100">
                                 <Row>
                                     <div >
                                         <input id="1" type="checkbox" value={this.state.trackopen} className='inputField' name='trackopen' defaultChecked={this.state.trackopen} onChange={this.handleChange}></input>&nbsp;

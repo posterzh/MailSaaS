@@ -49,10 +49,8 @@ class CampaignData extends Component {
                     <Campaign_details />
                 </Row>
                 <Row className='mt-4'>
-                    {/* <Col md='12' className='mx-auto mt-4'>
-                        <Row className='overview_hr'> */}
-                    <Col md='8' className='mx-auto'><Nav tabs>
-                        <Col md='3'>
+                    <Col md={8} className='mx-auto'><Nav tabs>
+                        <Col md={3}>
                             <select className='select_overview'>
                                 <option>All recipient lists</option>
                                 <option value='Date'>Date</option>
@@ -63,7 +61,7 @@ class CampaignData extends Component {
                         }, index) => (
                             <Col key={index} md={3} ><NavItem><NavLink className={classnames({ [`active${index + 1}`]: activeTab === index })} to={to} onClick={() => { this.onSelectTab(index); }}>{title}</NavLink></NavItem></Col>
                         ))}
-                        <Col md='1'><div className='child ml-3'>
+                        <Col md={1}><div className='child ml-3'>
                             <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                 <span className='font_icon'><i className="fa fa-undo" aria-hidden="true"></i></span>
                             </a></div>

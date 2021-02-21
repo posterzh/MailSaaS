@@ -36,6 +36,7 @@ import {
     UPDATE_REQUEST_FOR_GET_SCHEDULE,
     UPDATE_SUCCESS_GET_SCHEDULE,  
     SUCCESS_LEAD_CATCHER,
+    SUCCESS_LEAD_CATCHER_GET,
     SUCCESS_FOR_CAMPAIGN_PEOPLE
 } from "../actionType/actionType";
 
@@ -65,6 +66,7 @@ const initialState = {
     ScheduleGetData:[],
     UpdateScheduleData:[],
     leadData:'',
+    leadGetData:'',
     campaignPeopleData:''
 }
 export const RegisterReducer = (state =  initialState , action) => {
@@ -375,6 +377,19 @@ export const LeadCatcherReducer = (state =  initialState , action) => {
             return {
                 ...state,
                 leadData: action.leadData,
+            }
+        default: return state
+            break;
+    }
+}
+
+// LEAD CATCHER GET DATA
+export const LeadGetReducer = (state =  initialState , action) => {
+    switch (action.type) {
+        case SUCCESS_LEAD_CATCHER_GET:
+            return {
+                ...state,
+                leadGetData: action.leadGetData,
             }
         default: return state
             break;

@@ -92,7 +92,7 @@ export class CampaignSend extends Component {
                     <Row className='mt-3'><Button className='btn mx-auto' onClick={this.campaignPause}>Pause Campaign</Button></Row>
                     <Row className="mt-5 mb-4 w-50 mx-auto" style={{ borderBottom: "1px solid #ddd" }}></Row>
                     <Row>
-                        <Col md="6" className="mx-auto" style={{ background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
+                        <Col md={6} className="mx-auto" style={{ background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
                             <div style={{ margin: '17px 0px 24px 24px' }}>
                                 <div className="dv1">
                                     <Row>
@@ -107,7 +107,7 @@ export class CampaignSend extends Component {
                         </Col>
                     </Row>
                     <Row className="mt-5">
-                        <Col md="6" className="mx-auto" style={{ background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
+                        <Col md={6} className="mx-auto" style={{ background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
                             <div style={{ margin: '17px 0px 24px 24px' }}>
                                 <div className="dv1">
                                     <Row>
@@ -128,7 +128,7 @@ export class CampaignSend extends Component {
                         </Col>
                     </Row>
                     <Row className="mt-5 mb-5">
-                        <Col md="6" className="mx-auto" style={{ background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
+                        <Col md={6} className="mx-auto" style={{ background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
                             <div style={{ margin: '17px 0px 24px 24px' }}>
                                 <div className="dv1">
                                     <Row>

@@ -177,7 +177,7 @@ class CampaignCompose extends Component {
                                 </Col>
                             </Row>
                             <Row>
-                                <Col md='10' className='mx-auto'>
+                                <Col md={10} className='mx-auto'>
                                     <Row className="composeemail_heading">
                                         Compose the emails in this campaign
                                 </Row>
@@ -245,8 +245,8 @@ class CampaignCompose extends Component {
                                         </Col>
                                     </Row>
                                     <Row className='mx-auto'>
-                                        <Col md='3'><Button>CANCLE EDITS</Button></Col>
-                                        <Col md='2'><Button className="newcampaign_button btn" type='submit' >NEXT<i className="fa fa-arrow-right" aria-hidden="true"></i></Button></Col>
+                                        <Col md={3}><Button>CANCLE EDITS</Button></Col>
+                                        <Col md={2}><Button className="newcampaign_button btn" type='submit' >NEXT<i className="fa fa-arrow-right" aria-hidden="true"></i></Button></Col>
                                     </Row>
                                 </Col>
                             </Row>

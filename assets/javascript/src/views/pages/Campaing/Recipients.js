@@ -21,9 +21,9 @@ class Recipients extends Component {
                         <Campaign_details />
                     </Row>
                     <Row className='mt-5'>
-                        <Col md='1' className='Recipients_details'><a href='#'><h1>1</h1><span >LISTS</span></a></Col>
-                        <Col md='1' className='Recipients_details'><a href='#'><h1>1</h1><span >WON</span></a></Col>
-                        <Col md='10' className='align-right' >
+                        <Col md={1}className='Recipients_details'><a href='#'><h1>1</h1><span >LISTS</span></a></Col>
+                        <Col md={1}className='Recipients_details'><a href='#'><h1>1</h1><span >WON</span></a></Col>
+                        <Col md={10} className='align-right' >
                             <div className='w-h-25' >
                                 <button className='btn sequence_btn btn-md'>ADD RECIPIENTS</button>
                                 <div className='child ml-3'>
@@ -40,7 +40,7 @@ class Recipients extends Component {
                         </Col>
                     </Row>
                     <Row className=' mt-3 input_search_div'>
-                        <Col md='4'>
+                        <Col md={4}>
                             <div className='grand_parent' >
                                 <div className='input_field'>
                                     <Input type='email' className='in' placeholder='Search' />
@@ -52,7 +52,7 @@ class Recipients extends Component {
                                 </div>
                             </div>
                         </Col>
-                        <Col md='4'>
+                        <Col md={4}>
                             <div className='grand_parent mt-4'>
                                 <div className='select_div'>
                                     <select className='filter_select_prospect'>
@@ -64,7 +64,7 @@ class Recipients extends Component {
                                 </div>
                             </div>
                         </Col>
-                        <Col md='4'>
+                        <Col md={4}>
                             <div className='grand_parent mt-4'>
                                 <div className='select_div'>
                                     <select className='filter_select_prospect'>

@@ -14,7 +14,7 @@ export class AppsandCrm extends Component {
                     <div className='native_media'>
                         <Container  fluid>
                             <Row className="mt-5">
-                                <Col md='3'>
+                                <Col md={3}>
                                     <a href="" className='native_link'>
                                         <div className='native_media_div'>
                                             <div>
@@ -28,7 +28,7 @@ export class AppsandCrm extends Component {
                                         </div>
                                     </a>
                                 </Col>
-                                <Col md='3'>
+                                <Col md={3}>
                                     <a href="" className='native_link'>
                                         <div className='native_media_div'>
                                             <div>
@@ -42,7 +42,7 @@ export class AppsandCrm extends Component {
                                         </div>
                                     </a>
                                 </Col>
-                                <Col md='3'>
+                                <Col md={3}>
                                     <a href="" className='native_link'>
                                         <div className='native_media_div'>
                                             <div>
@@ -56,7 +56,7 @@ export class AppsandCrm extends Component {
                                         </div>
                                     </a>
                                 </Col>
-                                {/* <Col md='3'>
+                                {/* <Col md={3}>
                                     <a href="" className='native_link'>
                                         <div className='native_media_div'>
                                             <div>

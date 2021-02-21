@@ -11,7 +11,7 @@ export default class Sequence extends React.Component {
                         <Campaign_details />
                     </Row>
                     <Row className='mt-5'>
-                        <Col md='10' className='mx-auto'>
+                        <Col md={10} className='mx-auto'>
                             <Row>
                                 <div className='sequence_btn_div'>
                                     <button className='btn sequence_btn btn-md'>EDIT SEQUENCE</button>
