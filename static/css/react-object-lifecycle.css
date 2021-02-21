@@ -427,6 +427,41 @@ input:focus {
   margin-top: 4px;
   color: #005aac; }
 
+.choose_file {
+  background: #ff4081;
+  color: white;
+  width: 40%; }
+
+.modal-dialog {
+  min-width: 60% !important;
+  width: 70%; }
+
+.unsubscribe-btn-wrapper {
+  display: flex;
+  width: 40%;
+  justify-content: flex-end;
+  margin-top: 40px; }
+  .unsubscribe-btn-wrapper input[type="file"] {
+    width: 25% !important; }
+    .unsubscribe-btn-wrapper input[type="file"]::before {
+      content: "Upload";
+      color: white;
+      margin: 0px 10px; }
+  .unsubscribe-btn-wrapper .chooseOption::-webkit-file-upload-button {
+    display: inline-block;
+    border: none;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    margin: 0px;
+    padding: 0px;
+    opacity: 0; }
+  .unsubscribe-btn-wrapper .example-text {
+    background: #f7f7f7 !important;
+    padding: 10px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.54); }
+
 .Beta {
   background-color: #ffab40;
   color: white;
@@ -1601,4 +1636,24 @@ input::-webkit-inner-spin-button {
 
 .prospect_modal {
   width: 80% !important; }
+
+.unsubscribe_container {
+  font-size: 18px !important; }
+
+.loader {
+  border: 5px solid #f3f3f3;
+  /* Light grey */
+  border-top: 5px solid #3498db;
+  /* Blue */
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  animation: spin 1s linear infinite;
+  margin: auto; }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
 

@@ -106,7 +106,7 @@ Api.CampaignSaveApi = (token, id, saveData) => {
   return axios({
     method: 'PUT',
     data: {
-      startCampaign:saveData
+      startCampaign: saveData
     },
     url: `${API_BASE_URL}/campaign/savecamp/${id}/`,
     headers: {
@@ -205,7 +205,7 @@ Api.CampaignProspects = (token) => {
 }
 
 // ONCLICK PRSPECT
-Api.CampaignOnclickProspects = (id,token) => {
+Api.CampaignOnclickProspects = (id, token) => {
   return axios({
     method: 'GET',
     url: `${API_BASE_URL}/campaign/prospects/${id}/`,
@@ -343,17 +343,40 @@ Api.fetchUnsbcribed = (token) => {
     }
   })
 }
-Api.deleteUnsbcribed=(data,token)=>{
-return axios({
-  method:'put',
-  url:`${API_BASE_URL}/unsubscribes/unsubcribedelete/`,
-  data: {
-    data:data
-  },
-  headers: {
-    "Authorization": `Bearer ${token}`,
-  }
-})
+Api.deleteUnsbcribed = (data, token) => {
+  return axios({
+    method: 'put',
+    url: `${API_BASE_URL}/unsubscribes/unsubcribedelete/`,
+    data: {
+      data: data
+    },
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+Api.unsubscribeUsersWithEmailApi = (email, token) => {
+  return axios({
+    method:'post',
+    url: `${API_BASE_URL}/unsubscribes/`,
+    data: {
+      email: [email]
+    },
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+Api.unsubscribeUsersWithCsvApi = (file, token) => {
+  console.log(file,"fsfsdfdsfgdsfgsdfg")
+  return axios({
+    method:'post',
+    url: `${API_BASE_URL}/unsubscribes/unsubcribecsv/`,
+    data: file,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
 }
 Api.GetAllCampaigns = (token) => {
   return axios({

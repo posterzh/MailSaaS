@@ -32,7 +32,9 @@ import {
     SUCCESS_SAVE_CAMPAIGN,
     SUCCESS_FETCH_ONCLICK_PROSPECTS,
     SUCCESS_CAMPAIGN_TABLE_DATA,
-    
+    REQUEST_FOR_UNSUBSCRIBE_WITH_CSV,
+    SUCCESS_UNSUBSCRIBE_WITH_CSV,
+     FAILURE_UNSUBSCRIBE_WITH_CSV
 } from "../actionType/actionType";
 
 const initialState = {
@@ -57,7 +59,8 @@ const initialState = {
     CampaignTableData:[],
     registerResponse:null,
     loginResponse:null,
-    isRegisterSuccess:null
+    isRegisterSuccess:null,
+    loading:false
 }
 export const RegisterReducer = (state =  initialState , action) => {
     // console.log(action.payload && action.payload[0], 'payloaddata')
@@ -189,6 +192,22 @@ export const UnsubscribeReducer = (state =  initialState , action) => {
                 ...state,
                 unsubscribeData: action.payload
             }
+        case REQUEST_FOR_UNSUBSCRIBE_WITH_CSV:
+            return{
+                ...state,
+                loading:true,
+            }
+        case SUCCESS_UNSUBSCRIBE_WITH_CSV:
+            return{
+                ...state,
+                loading:false
+            }
+       case FAILURE_UNSUBSCRIBE_WITH_CSV:
+        return{
+            ...state,
+            loading:false
+        }
+        
         default: return state
             break;
     }
