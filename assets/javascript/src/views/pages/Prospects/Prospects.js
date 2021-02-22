@@ -12,7 +12,10 @@ class Prospects extends Component {
             dd1: false,
             value: 'Any',
             searchEmail: "",
-            showProspect: false
+            showProspect: false,
+            isSelectionBar: false,
+            selectedId: [],
+
         };
     }
     dropdownToggle = () => {
@@ -25,6 +28,11 @@ class Prospects extends Component {
             showProspect: !this.state.showProspect
         })
     }
+    UnsubscribeDelete = () => {
+        this.setState({
+          isSelectionBar: false,
+          checked: false
+        })
     select = (e) => {
         this.setState({
             dropdownOpen: !this.state.dropdownOpen,
@@ -43,6 +51,18 @@ class Prospects extends Component {
                     <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Prospects</h1>
                     <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
                 </div>
+
+
+                <div style={{ padding: '20px' }} className={`selection-bar ${isSelectionBar && selectedId.length > 0 ? "_block" : " "}`} >
+            <span style={SpanStyles} onClick={() => { this.setState({ isSelectionBar: false }); selectedId.length = 0 }}><i className="fa fa-close" aria-hidden="true"></i></span>
+            <span style={Span} >{selectedId.length} selected</span>
+            <div onClick={this.UnsubscribeDelete}>
+              <span style={SpanStyles}><i className="fas fa-minus-circle"></i></span>
+              <span style={SpanStyles} >Delete</span>
+            </div>
+          </div>
+
+                
                 <Modal className="prospect_modal" isOpen={showProspect} toggle={this.toggle}>
                     <ModalHeader className="prospect_modalheader" toggle={this.toggle}></ModalHeader>
                     <ModalBody className="prospect_modalbody" >
