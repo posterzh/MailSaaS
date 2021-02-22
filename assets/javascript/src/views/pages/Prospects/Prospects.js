@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Container, Row, Col, Label, Input, Table, Modal, ModalHeader, ModalBody, Card, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import { ProspectActionData,ProspectUnsubscribeAction } from '../../../redux/action/ProspectsAction'
 import ProspectOnclick from './ProspectOnclick'
+import { OnclickProspectActionData, deleteProspectAction } from '../../../redux/action/ProspectsAction'
 const SpanStyles = {
     paddingRight: "10px",
     paddingLeft: "10px",
@@ -68,9 +69,13 @@ class Prospects extends Component {
     }
     select = (e) => {
         this.setState({
-            dropdownOpen: !this.state.dropdownOpen,
-            value: e.target.innerText
-        });
+            isSelectionBar: false,
+            checked: false
+        })
+        let id = this.state.selectedId;
+        this.props.deleteProspectData(id)
+        this.state.selectedId.length = 0;
+        console.log("000000000000000000000000???????", this.props.deleteProspectData())
     }
     unsubscribeProspect=()=>{
         this.props.unsubscribeProspectAction(this.state.selectedId)
@@ -83,7 +88,7 @@ class Prospects extends Component {
         this.props.ProspectActionData(this.props);
     }
     render() {
-        const { showProspect, isSelectionBar, selectedId } = this.state;
+        const { showProspect, isSelectionBar, selectedId, currentChecked, checked } = this.state;
         const { prospectData } = this.props;
         return (
             <div className="prospect-main-container">
@@ -91,8 +96,6 @@ class Prospects extends Component {
                     <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Prospects</h1>
                     <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
                 </div>
-
-
                 <div style={{ padding: '20px' }} className={`selection-bar ${isSelectionBar && selectedId.length > 0 ? "_block" : " "}`} >
                     <span style={SpanStyles} onClick={() => { this.setState({ isSelectionBar: false }); selectedId.length = 0 }}><i className="fa fa-close" aria-hidden="true"></i></span>
                     <span style={Span} >{selectedId.length} selected</span>
@@ -212,15 +215,17 @@ class Prospects extends Component {
 const mapStateToProps = (state) => {
     return {
         prospectData: state.ProspectsGetReducer.prospectData,
+        id: state.ProspectsGetReducer.prospectData
     }
 }
-
 const mapDispatchToProps = dispatch => ({
     ProspectActionData: prospectData => {
         dispatch(ProspectActionData(prospectData))
     },
     unsubscribeProspectAction: id=>{
         dispatch(ProspectUnsubscribeAction(id))
-    }
+    },
+    OnclickProspectActionData: id => { dispatch(OnclickProspectActionData(id)) },
+    deleteProspectData: id => { dispatch(deleteProspectAction(id)) }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Prospects)

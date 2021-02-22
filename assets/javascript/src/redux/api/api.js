@@ -212,6 +212,26 @@ Api.CampaignProspects = (token) => {
   })
 }
 
+
+Api.deleteProspects = (id,token) => {
+  console.log('aaaaaaaaaaaaaaaaaaaaaaaa',id)
+  return axios({
+    method: 'DELETE',
+    url: `${API_BASE_URL}/campaign/prospects/${id}/`,
+    id: {    
+            id: id,
+            
+    },
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+
+
+
+
+
 // ONCLICK PRSPECT
 Api.CampaignOnclickProspects = (id, token) => {
   return axios({
@@ -376,6 +396,7 @@ Api.deleteUnsbcribed = (data, token) => {
     }
   })
 }
+
 Api.unsubscribeUsersWithEmailApi = (email, token) => {
   return axios({
     method:'post',

@@ -2,7 +2,8 @@ import {
     FETCH_PROSPECTS,
     SUCCESS_FETCH_PROSPECTS,
     FAILURE_FETCH_PROSPECTS,
-    SUCCESS_FETCH_ONCLICK_PROSPECTS
+    SUCCESS_FETCH_ONCLICK_PROSPECTS,
+    DELETE_PROSPECT
 } from "../../redux/actionType/actionType"
 
 import Api from "../api/api"
@@ -33,12 +34,14 @@ export const FetchOnclickProspectsSuccess = (prospectOnclickData) => {
     }
 }
 
+// DELETE PROPSPECT
 
-export const ProspectActionData = () => {
+
+export const ProspectActionData = (id) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         dispatch(FetchProspects(token))
-        Api.CampaignProspects(token).then(result => {
+        Api.CampaignProspects(token,id).then(result => {
             console.log(result.data)
             dispatch(FetchProspectsSuccess(result.data))
             console.log("checking prospect data:", result.data)
@@ -67,6 +70,18 @@ export const ProspectUnsubscribeAction = (id) => {
            dispatch(ProspectActionData())
         }).catch(err => {
             console.log(err)
+        })
+    }
+}
+
+
+export const deleteProspectAction = (id) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('access_token')
+        Api.deleteProspects(id, token).then((response) => {
+            dispatch(OnclickProspectActionData())
+        }).catch((err) => {
+            console.log(err, 'err')
         })
     }
 }

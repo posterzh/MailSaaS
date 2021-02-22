@@ -194,7 +194,7 @@
 
 
 import React, { Component } from 'react'
-import { Container, Row, Col, Label, Input, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Table, Button, Card } from 'reactstrap'
+import { Container, Row, Col,Form, Label, Input, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Table, Button, Card } from 'reactstrap'
 import CardBody from 'reactstrap/lib/CardBody'
 import CardFooter from 'reactstrap/lib/CardFooter'
 import CardHeader from 'reactstrap/lib/CardHeader'
@@ -206,35 +206,53 @@ export class SendindCalender extends Component {
     this.state = {
       show: true,
       hide: false,
-      StartTime:this.props.schedulestarttime,
-      EndTime:this.props.scheduleendtime,
-      MailAccounts:"",
+      MailAccounts:'',
+      BlockDays:'',
+      Date:'',
+      StartTime:'',
+      EndTime:'',
+      Timezone:'',
       MaxEmails:'',
-      MaxEmailSend:'',
+      Strategy:'',
       Minutes:'',
-      date:'',
-      blockdays:''
+      MaxEmailSend:''
     }
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
     this.props.GetScheduleAction()
-    this.props.ScheduleUpdateAction(this.props)
   }
+ 
   handleChange = (e) => {
+    console.log("called")
     this.setState({
       [e.target.name]: e.target.value
     })
   }
   handleSubmit=(e)=>{
     console.log('sending calender.js')
-    const scheduledataa={
-      end_time:this.state.EndTime
-    }
+    
     this.props.ScheduleUpdateAction(scheduledataa)
   }
+  edit=(ScheduleData)=>{
+    console.log(this.props.ScheduleMailAccount,"this.props.ScheduleMailAccount",this.props.ScheduleMaxEmails,"this.props.ScheduleMaxEmails")
+    this.setState({
+      MailAccounts:ScheduleData.mail_account,
+      BlockDays:ScheduleData.block_days,
+      Date:ScheduleData.date,
+      StartTime:ScheduleData.start_time,
+      EndTime:ScheduleData.end_time,
+      Timezone:ScheduleData.time_zone,
+      MaxEmails:ScheduleData.max_email,
+      Strategy:ScheduleData.strategy,
+      Minutes:ScheduleData.mint_between_sends,
+      MaxEmailSend:ScheduleData.max_email_send,
+      show: !this.state.show,
+      hide: !this.state.hide 
+    })
+  }
   render() {
-    const { ScheduleData,schedulestarttime } = this.props
+    const { ScheduleData} = this.props
     return (
       <div>
         <div className='campaign_navbar' >
@@ -279,13 +297,14 @@ export class SendindCalender extends Component {
                     </div>
                   </CardBody>
                   <CardFooter >
-                    <Button className="b1" onClick={(e) => { e.preventDefault(), this.setState({ show: !this.state.show, hide: !this.state.hide }) }}>Edit Rules</Button>
+                    <Button className="b1" onClick={()=>this.edit(ScheduleData) }>Edit Rules</Button>
                   </CardFooter>
                 </Card>
               </Col>
             </Row>
           </Container>}
           {!this.state.show && <Container fluid>
+            <Form onSubmit={this.handleSubmit}>
             <Row className='mt-3 mb-5'>
               <Col md='4' style={{ border: '1px solid #ccc', background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
                 <div style={{ margin: '17px 0px 24px 24px' }}>
@@ -310,18 +329,18 @@ export class SendindCalender extends Component {
                       <label>Start time</label>
                     </Row>
                     <Row>
-                      <input className='teamname-input' name='StartTime' onChange={()=>this.handleChange} value={this.state.StartTime}></input>
+                      <input className='teamname-input' name='StartTime' onChange={this.handleChange} value={this.state.StartTime}></input>
                     </Row>
                     <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
                       <label>End time</label>
                     </Row>
                     <Row>
-                      <input className='teamname-input' name="EndTime" value={this.state.EndTime}></input>
+                      <input className='teamname-input' name="EndTime" onChange={this.handleChange} value={this.state.EndTime}></input>
                     </Row>
                     <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
                       <label>TimeZone</label>
                       <select className='teamname-input'>
-                        <option>{ScheduleData && ScheduleData.time_zone}</option>
+                        <option>{this.state.Timezone}</option>
                       </select>
                     </Row>
                     <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
@@ -330,40 +349,42 @@ export class SendindCalender extends Component {
                           <label>Max emails per day</label>
                         </Col>
                       </Row>
-                      <input type='number' className='teamname-input' name='maxEmail' value={ScheduleData && ScheduleData.max_email}></input>
+                      <input type='number' className='teamname-input' name='MaxEmails' onChange={this.handleChange} value={this.state.MaxEmails}></input>
                     </Row>
                     <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
                       <label>Strategy</label>
                       <select className='teamname-input'>
-                        <option>{ScheduleData && ScheduleData.strategy}</option>
+                        <option>{this.state.Strategy}</option>
                       </select>
                     </Row>
                     <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
                       <label>Minutes between sends</label>
                     </Row>
                     <Row>
-                      <input type='number' className='teamname-input' value={ScheduleData && ScheduleData.mint_between_sends} ></input>
+                      <input type='number' className='teamname-input' name='Minutes'onChange={this.handleChange} value={this.state.Minutes} ></input>
                     </Row>
                     <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
                       <label>Minimum emils tosend at a time</label>
                     </Row>
                     <Row>
-                      <input type='number' className='teamname-input' value={ScheduleData && ScheduleData.max_email_send}></input>
+                      <input type='number' className='teamname-input' name='MaxEmailSend' onChange={this.handleChange} value={this.state.MaxEmailSend}></input>
                     </Row>
                     <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
                       <label>Maximum emils to send at a time</label>
                     </Row>
                     <Row>
-                      <input type='number' className='teamname-input' value={ScheduleData && ScheduleData.max_email_send}></input>
+                      <input type='number' className='teamname-input' name='MaxEmailSend' onChange={this.handleChange} value={this.state.MaxEmailSend}></input>
                     </Row>
                     <Row className='mt-5'>
-                      <button className='savebutton' type='Submit'onSubmit={this.handleSubmit} onClick={(e)=>{e.preventDefault(),this.setState({hide:!this.state.hide,show: !this.state.show})}}>save</button>
+                      <button className='savebutton' type='Submit' onSubmit={this.handleSubmit} onClick={(e)=>{()=>this.edit(ScheduleData),e.preventDefault(),this.setState({hide:!this.state.hide,show: !this.state.show})}}>save</button>
                       <button className='savebutton' onClick={(e)=>{e.preventDefault(),this.setState({hide:!this.state.hide,show: !this.state.show})}}>CANCEL</button>
+                      <button type='Submit' onSubmit={this.handleSubmit} >hit me</button>
                     </Row>
                   </div>
                 </div>
               </Col>
             </Row>
+         </Form>
           </Container>}
       {!this.state.hide&&<div className="calender_box" style={{ backgroundColor: "transparant", width: "100%", display: "flex", flexDirection: "row" }}>
             <div className="su_box">
@@ -381,7 +402,7 @@ export class SendindCalender extends Component {
             <div className="th_box">
               <p>a</p>
             </div>
-            <div className="fr_box">ScheduleData && ScheduleData.end_time
+            <div className="fr_box">
               <p>w</p>
             </div>
             <div className="sa_box">
@@ -395,13 +416,20 @@ export class SendindCalender extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log("==============*******======>", state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData .end_time)
+  console.log("data", state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData.mail_account)
   // console.log("cheeeeeeeeeeeeeeeeeeeeking",state.ScheduleUpdateReducer.UpdateScheduleData )
    return {
      ScheduleData: state.ScheduleGetDataReducer.ScheduleGetData ,
-     schedulestarttime: state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData .start_time,
-     scheduleendtime: state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData.end_time,
-    //  datap:state.ScheduleUpdateReducer.UpdateScheduleData,
+    //  ScheduleMailAccount:state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData.mail_account,
+    //  ScheduleBlockDays:state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData.block_days,
+    //  ScheduleDate:state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData.date,
+    //  ScheduleStartTime: state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData.start_time,
+    //  ScheduleEndTime: state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData.end_time,
+    //  ScheduleTimezone: state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData.time_zone,
+    //  ScheduleMaxEmails:state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData.max_email,
+    //  ScheduleStrategy:state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData.strategy,
+    //  ScheduleMaxMinutesBetweenSend:state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData.mint_between_sends,
+    //  ScheduleMaxEmailSend:state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData.max_email_send,
     } }
 const mapDispatchToProps = dispatch => ({
    GetScheduleAction: ScheduleGetData =>{dispatch(GetScheduleAction(ScheduleGetData))},
