@@ -3,17 +3,19 @@ import Campaign_details from "../../../views/pages/Campaing/Campaign_details"
 import React, { Component } from 'react'
 import { CampaignPeopleAction } from '../../../redux/action/CampaignAction'
 import { connect } from 'react-redux';
+import { unsubscribeRecipientAction } from '../../../redux/action/UnsubscribeActions';
 
 class Recipients extends Component {
     constructor() {
         super()
     }
     componentDidMount() {
-        this.props.CampaignPeopleAction(this.props.campaignOverviewData.id)
+        let id = this.props.history.location.state&&this.props.history.location.state.id
+        this.props.CampaignPeopleAction(id)
     }
     render() {
         const { getData } = this.props;
-        console.log("getData", getData)
+        console.log("getData", this.props.history)
         return (
             <div>
                 <Container fluid>
@@ -140,6 +142,7 @@ const mapStateToProps = (state) => {
     };
 };
 const mapDispatchToProps = dispatch => ({
-    CampaignPeopleAction: (id) => dispatch(CampaignPeopleAction(id))
+    CampaignPeopleAction: (id) => dispatch(CampaignPeopleAction(id)),
+    RecipientUnsubscribe: (id) =>{ dispatch(unsubscribeRecipientAction(id)) }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Recipients)

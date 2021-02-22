@@ -182,6 +182,7 @@ export const StartCampaignAction = (data) => {
         console.log('this is a token', token)
         Api.StartCampaignApi(data, token).then(result => {
             dispatch(StartCampaignSuccess(result.data))
+            console.log( result.data," result.data")
             setTimeout(() => {
                 history.push('/app/admin/CampaignRecipient', { id: result.data.id })
             }, 2000);
@@ -295,7 +296,6 @@ export const CampaignComposeAction = (data) => {
 
 // CAMPAIGN PEOPLE DATA
 export const CampaignPeopleAction = (id) => {
-    console.log("id hu------->", id)
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.CampaignRecipientPeopleApi(token, id).then(result => {

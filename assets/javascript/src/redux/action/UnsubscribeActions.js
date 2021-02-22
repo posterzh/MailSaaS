@@ -46,6 +46,7 @@ export const deleteUnsubscribeUsersAction = (data) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.deleteUnsbcribed(data, token).then((response) => {
+            console.log(response,"seudfdfgfhfdhdfgh")
             dispatch(fetchUnsubscribeAction())
         }).catch((err) => {
             console.log(err, 'err')
@@ -73,6 +74,16 @@ export const unsubscribeUsersWithEmailAction = (data) => {
         }).catch((err) => {
             console.log(err, 'err')
             dispatch(failureUserUnsubscribeWithCsv())
+        })
+    }
+}
+export const unsubscribeRecipientAction = (data) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('access_token')
+        Api.unsubscribeRecipientApi(data,token).then((response) => {
+            console.log(response,"fdsgdfsgdgfdgfdfds")
+        }).catch((err) => {
+            console.log(err, 'err')
         })
     }
 }

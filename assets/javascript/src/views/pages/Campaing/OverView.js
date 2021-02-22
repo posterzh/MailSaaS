@@ -42,11 +42,11 @@ class CampaignData extends Component {
             activeTab
         } = this.state;
         const { campaignOverviewData } = this.props;
-        console.log('campaignOverviewData', campaignOverviewData)
+        console.log('campaignOverviewData', this.props.history)
         return (<div>
             <Container fluid>
                 <Row>
-                    <Campaign_details />
+                    <Campaign_details id={this.props.history.location.state&&this.props.history.location.state.id} />
                 </Row>
                 <Row className='mt-4'>
                     <Col md={8} className='mx-auto'><Nav tabs>

@@ -35,8 +35,8 @@ class ContactViewSet(generics.CreateAPIView):
         FirstName = request.data['first_name']
         LastName = request.data['last_name']
         Email = request.data['email']
-        # sf.Contact.create({'FirstName':"Gaurav",'LastName':'surolia','Email':'khandelwal@externlabs.com'})
-        sf.Lead.create({"Company":Company,'FirstName':FirstName,'LastName':LastName,'Email':Email})
+        sf.Contact.create({'FirstName':"neetu",'LastName':'surolia','Email':'neetu@externlabs.com'})
+        # sf.Lead.create({"Company":Company,'FirstName':FirstName,'LastName':LastName,'Email':Email})
         return Response({'response':'Sales_force'})
         
 
