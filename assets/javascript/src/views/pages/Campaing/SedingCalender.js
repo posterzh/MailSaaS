@@ -381,7 +381,7 @@ export class SendindCalender extends Component {
             <div className="th_box">
               <p>a</p>
             </div>
-            <div className="fr_box">
+            <div className="fr_box">ScheduleData && ScheduleData.end_time
               <p>w</p>
             </div>
             <div className="sa_box">

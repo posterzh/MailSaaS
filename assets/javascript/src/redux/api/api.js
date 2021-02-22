@@ -418,10 +418,11 @@ Api.GetScheduleApi = (token) => {
 }
 
 //UPDATE SCHEDULE
-Api.UpdateScheduleApi = (token) => {
+Api.UpdateScheduleApi=(token,scheduledataa)=>{
   return axios({
-    method: 'PUT',
-    url: `${API_BASE_URL}/campaignschedule/updateschedulemail/`,
+    method:'PUT',
+    data:{...scheduledataa},
+    url:`${API_BASE_URL}/campaignschedule/updateschedulemail/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }

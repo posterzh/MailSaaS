@@ -36,11 +36,15 @@ class UnsubscribeEmailAdd(CreateAPIView):
                 "email" : email,
                 'user':request.user.id
             }
+       
+           
+            data_list = []
             serializer = UnsubscribeEmailSerializers(data=data)
-        if serializer.is_valid():            
-            serializer.save()
-            return Response({"message":"Unsubcribe Successfully done","success":True})
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            if serializer.is_valid():
+                serializer.save()
+                data_list.append(serializer.data)            
+        return Response({"message":"Unsubcribe Successfully done","success":True})
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
             
@@ -111,9 +115,9 @@ class UnsubcribeEmailDelete(APIView):
 
                     unsubcribe.on_delete=True
                     unsubcribe.save()
-                return Response("Unsubcribe Recipient Successfully Done ")
             except UnsubscribeEmail.DoesNotExist:
                 return Response("Does Not exist ")
+        return Response("Unsubcribe Recipient Successfully Done ")
        
 
  

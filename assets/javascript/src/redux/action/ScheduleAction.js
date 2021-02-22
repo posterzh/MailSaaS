@@ -62,12 +62,12 @@ export const GetScheduleAction = () => {
 }
 
 // MIDLEWARE FOR UPDATE SCHEDULE
-export const ScheduleUpdateAction = () => {
+export const ScheduleUpdateAction = (scheduledataa) => {
     // console.log("ScheduleGetData",ScheduleGetData)
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         dispatch(UpdateSchedule(token))
-        Api.UpdateScheduleApi(token).then(result => {
+        Api.UpdateScheduleApi(token,scheduledataa).then(result => {
             dispatch(UpdateScheduleSuccess(result.data))
             console.log("checking for schedule update data in MIDDLEWARE", result.data)
         }).catch(err => {
