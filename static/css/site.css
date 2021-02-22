@@ -21262,6 +21262,7 @@ input::-webkit-inner-spin-button {
     transform: rotate(0deg); }
   100% {
     transform: rotate(360deg); } }
+
 .calender_details {
   color: black; }
 
