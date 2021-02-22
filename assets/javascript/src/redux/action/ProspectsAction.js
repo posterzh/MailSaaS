@@ -60,3 +60,13 @@ export const OnclickProspectActionData = (id) => {
         })
     }
 }
+export const ProspectUnsubscribeAction = (id) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('access_token')
+        Api.ProspectsUnsubscribe(id,token).then(result => {
+           dispatch(ProspectActionData())
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+}
