@@ -116,7 +116,6 @@ Api.CampaignLeadCatcherApi = (token,id, leadData) => {
         campaign:id,
         of_times:leadData.of_times,
         leadcatcher_recipient:leadData.leadcatcher_recipient
-
     }],
     headers: {
       "Authorization": `Bearer ${token}`,

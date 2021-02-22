@@ -93,7 +93,7 @@ export class CampSetting extends Component {
                                                                 <option value='replies'>Replies</option>
                                                                 <option value='open'>Opens</option>
                                                                 <option value='click_any_link'>Click any link</option>
-                                                                <option value='click_specific_link'>Click specific link</option>
+                                                                <option value='clicks_specific_link'>Click specific link</option>
                                                             </select>
                                                         </Col>
                                                         <Col md={5} className='mt-4'>
