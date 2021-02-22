@@ -42,6 +42,12 @@ import CampaignPreview from "./views/pages/dashboards/NewCampaign_preview"
 import NewCampaign_options from "./views/pages/dashboards/NewCampaign_options"
 import CampaignSend from "./views/pages/dashboards/NewCampaign_send"
 import Campaign_Details from './views/pages/Campaing/Campaign_details.js'
+import ProspectOnclick from './views/pages/Prospects/ProspectOnclick'
+import CampaignDetails from './views/pages/Campaing/Campaign_details.js'
+import OverView from './views/pages/Campaing/OverView'
+import Sequence from './views/pages/Campaing/Sequence'
+import Recipients from './views/pages/Campaing/Recipients'
+import CampSetting from './views/pages/Campaing/Setting'
 
 const routes = [
   {
@@ -62,6 +68,7 @@ const routes = [
     state: "campaign",
     views: [
       {
+        open: true,
         path: "/CampaignStart",
         name: "Create Campaign",
         miniName: "CC",
@@ -125,12 +132,47 @@ const routes = [
 
 
       {
-        path: "/campaign-detail",
+        path: "/CampaignDetails",
         name: "Campaign Details",
         miniName: "CD",
-        component: Campaign_Details,
+        component: CampaignDetails,
         layout: "/app/admin"
       },
+      {
+        path: "/OverView",
+        name: "CampaignOverView",
+        miniName: "CD",
+        component: OverView,
+        layout: "/app/admin"
+      },
+      {
+        path: "/Message",
+        name: "CampaignMessage",
+        miniName: "CD",
+        component: Sequence,
+        layout: "/app/admin"
+      },
+      {
+        path: "/Recipient/people",
+        name: "CampaignPeople",
+        miniName: "CD",
+        component: Recipients,
+        layout: "/app/admin"
+      },
+      {
+        path: "/settings",
+        name: "CampaignSetting",
+        miniName: "CD",
+        component: CampSetting,
+        layout: "/app/admin"
+      },
+
+
+
+
+
+
+
       {
         path: "/lead-catcher",
         name: "Lead Catcher",
@@ -159,6 +201,13 @@ const routes = [
     component: Prospects,
     layout: "/app/admin"
   },
+  // {
+  //   path: "/prospect-detail",
+  //   name: "Prospect Onclick",
+  //   miniName: "PD",
+  //   component: ProspectOnclick,
+  //   layout: "/app/admin"
+  // },
 
   // for MailAccount
   {

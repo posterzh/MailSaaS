@@ -66,7 +66,7 @@ export default function Overview_Summery() {
                         <h3>GOOD TEST</h3> </div>
                     </Row>
                     <Row>
-                        <Col md='12'><div className='good_test_div'>
+                        <Col md={12}><div className='good_test_div'>
                             <div className=' text_purple'><span className='btn_heading'>0</span><br></br><span className='good_btn_span'>0%<br></br>OPENED</span></div>
                             <div className='text_leaf'><span className='btn_heading'>0</span><br></br><span className='good_btn_span'>0%<br></br>OPENED</span></div>
                             <div className='text_green'><span className='btn_heading'>0</span><br></br><span className='good_btn_span' >0%<br></br>OPENED</span></div>
@@ -93,7 +93,7 @@ export default function Overview_Summery() {
                         <h3>FOLLOW UP</h3> </div>
                     </Row>
                     <Row>
-                        <Col md='12'><div className='good_test_div'>
+                        <Col md={12}><div className='good_test_div'>
                             <div className=' text_purple'><span className='btn_heading'>0</span><br></br><span className='good_btn_span'>0%<br></br>OPENED</span></div>
                             <div className='text_leaf'><span className='btn_heading'>0</span><br></br><span className='good_btn_span'>0%<br></br>OPENED</span></div>
                             <div className='text_green'><span className='btn_heading'>0</span><br></br><span className='good_btn_span' >0%<br></br>OPENED</span></div>
@@ -121,19 +121,19 @@ export default function Overview_Summery() {
                     </div>
                 </Row>
                 <Row className='mt-5'>
-                    <Col md='4'>
+                    <Col md={4}>
                         <Table className='table' hover responsive>
                             <thead> <tr><th colSpan='2'>SUMMARY</th></tr></thead>
                             <tbody> <tr><td>8</td><td>Recipients</td></tr></tbody>
                         </Table>
                     </Col>
-                    <Col md='4'>
+                    <Col md={4}>
                         <Table hover responsive>
                             <thead> <tr><th colSpan='2'>REPLIES</th></tr></thead>
                             <tbody> <tr><td>8</td><td>Recipients</td></tr></tbody>
                         </Table>
                     </Col>
-                    <Col md='4'>
+                    <Col md={4}>
                         <Table hover responsive>
                             <thead> <tr><th colSpan='2'>LEADS</th></tr></thead>
                             <tbody> <tr><td>8</td><td>Recipients</td></tr></tbody>

@@ -11,7 +11,7 @@ export class Setting extends Component {
                     </div>
                 <Container fluid >
                     <Row className='mt-3'>
-                        <Col md='4' style={{ border: '1px solid #ccc', background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
+                        <Col md={4} style={{ border: '1px solid #ccc', background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
                             <div style={{ margin: '17px 0px 24px 24px' }}>
                                 <div className='dv1'>
                                     <Row>
@@ -31,7 +31,7 @@ export class Setting extends Component {
                 <Container fluid >
                     <Row className='mt-5' style={{ color: '#777c', fontSize: '24px' }}>SENDING SETTINGS</Row>
                     <Row className='mt-5'>
-                        <Col md='3' className='mr-3' style={{ border: '1px solid #ccc', background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
+                        <Col md={3} className='mr-3' style={{ border: '1px solid #ccc', background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
                             <div style={{ margin: '17px 0px 24px 24px' }}>
                                 <div className='dv1'>
                                     <Row>
@@ -55,7 +55,7 @@ export class Setting extends Component {
                                 </div>
                             </div>
                         </Col>
-                        <Col md='3' style={{ border: '1px solid #ccc', background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
+                        <Col md={3} style={{ border: '1px solid #ccc', background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
                             <div style={{ margin: '17px 0px 24px 24px' }}>
                                 <div className='dv1'>
                                     <Row>
@@ -99,7 +99,7 @@ export class Setting extends Component {
                 </Container>
                 <Container fluid>
                     <Row className="mt-5">
-                        <Col md="4">
+                        <Col md={4}>
                             <ol className="links">
                                 <li>  <Row className="mt-5 mb-5 ml-1" style={{ fontSize: "24px", color: "#777" }}>USEFUL LINKS</Row></li>
                                 <li>CHANGE TEAMMATES</li>

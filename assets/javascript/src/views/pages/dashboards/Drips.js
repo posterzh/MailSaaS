@@ -43,7 +43,7 @@ export default class FollowUpPage extends React.Component {
             <div>
                 <Container fluid>
                     <Row>
-                        <Col md='11' className='alignRight'>
+                        <Col md={11} className='alignRight'>
                             <Row>
                                 <h1 className='display-6'>Drips &nbsp;<a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                     <span><i className='QuestionCircle' class="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -53,7 +53,7 @@ export default class FollowUpPage extends React.Component {
                                 <p style={{ fontSize: '14px' }}>Unlike follow-ups, drips keep sending even after a recipient becomes a lead.<a href=''>Learn how to customize Lead Catcher.</a></p>
                             </Row>
                             <Row>
-                                <Col md='2' className='WaitDiv'>
+                                <Col md={2} className='WaitDiv'>
                                     <label className='filter_app_new'>Wait X days</label><br></br>
                                     <input value={this.state.waitDays} onChange={this.handleWaitDays}  type='number' className='WaitInput'></input>
                                 </Col>
@@ -73,6 +73,7 @@ export default class FollowUpPage extends React.Component {
                             </Row>
                             <Row className='mt-3'>
                                 <div className='Editor_div'>
+                                <div style={{padding:0}} className="btn" onClick={this.onDeleteList}><i style={{padding:5}} className="fa">&#xf014;</i>DELETE</div>
                                     <Editor
                                         value={this.state.body}
                                         onChange={this.handleChangeBody}
