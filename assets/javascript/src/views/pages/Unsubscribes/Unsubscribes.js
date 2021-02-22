@@ -4,12 +4,11 @@ import { Container, Row } from 'reactstrap'
 import Domainpage from './Domainpage'
 import Addresstable from "./Addresstable"
 import classnames from 'classnames';
-import { fetchUnsubscribeAction, unsubscribeUsersAction } from '../../../redux/action/UnsubscribeActions'
+import { fetchUnsubscribeAction, deleteUnsubscribeUsersAction, unsubscribeUsersWithCsvAction, unsubscribeUsersWithEmailAction, requestUserUnsubscribeWithCsv, } from '../../../redux/action/UnsubscribeActions'
 import { Component } from 'react';
 import { connect } from "react-redux";
 import UnsubscribesModal from './UnsubscribesModal'
 import '../../../../../scss/custom/custom.scss'
-import { array } from 'prop-types'
 const SpanStyles = {
   paddingRight: "10px",
   paddingLeft: "10px",
@@ -32,11 +31,16 @@ class Unsubscribes extends Component {
       activeTab: '1',
       selectedId: [],
       checked: false,
-      isSelectionBar: true,
+      isSelectionBar: false,
       modal: false,
+      email: '',
     }
   }
-
+  handleClose = () => {
+    this.setState({
+      modal: false
+    })
+  }
   toggle = tab => {
     if (this.state.activeTab !== tab)
       this.setState({ activeTab: tab })
@@ -44,36 +48,67 @@ class Unsubscribes extends Component {
   componentDidMount() {
     this.props.fetchUnsbcribed()
   }
-  showSelectionBar = (id) => {
-    let array = [...this.state.selectedId]
+  showSelectionBar = (id, e) => {
+    console.log(e.target.name, "h")
+    const { selectedId } = this.state
     this.setState({
       isSelectionBar: true,
+      currentChecked: e.target.name
     })
-    for (let index = 0; index < array.length; index++) {
-      if (id === array[index]) {
-        const index = array.indexOf(id);
-        if (index > -1) {
-          array.splice(index, 1);
-        }
-        this.setState({
-          selectedId: array.length
-        })
-      }
-      else {
-        this.state.selectedId.push(id)
-      }
-
+    if (selectedId.length === 0) {
+      selectedId.push(id)
+      return
     }
-
-    console.log(this.state.selectedId, " this.state.selectedId")
+    for (let index = 0; index < selectedId.length; index++) {
+      if (id === selectedId[index]) {
+        let array = selectedId.filter(e => e != id)
+        this.setState({
+          selectedId: array
+        }, () => { console.log(array, "select") })
+        return
+      }
+    }
+    selectedId.push(id)
+    console.log(selectedId, "sdfsdg")
   }
   UnsubscribeDelete = () => {
-    let data = this.state.selectedId
-    this.props.unsubscribeUsers(data)
+    this.setState({
+      isSelectionBar: false,
+      checked: false
+    })
+    let data = this.state.selectedId;
+    this.props.deleteUnsubscribeUsers(data)
+    this.state.selectedId.length = 0;
+
+  }
+  selectAll = (e) => {
+    this.setState({
+      checked: e.target.checked
+    })
+    console.log(this.textInput.current.checked, " this.textInput.current.checked")
+  }
+  unsubscribeWithEmail = (e) => {
+    console.log(e.target.value)
+    this.setState({
+      email: e.target.value
+    })
+  }
+  unsubscribeWithCsv = (e) => {
+    let fileData = new FormData();
+    fileData.append('csv_file', e.target.files[0])
+    if (e.target.files[0]) {
+      this.props.unsubscribeUsersWithCsvAction(fileData)
+    }
+    this.setState({
+      modal: false
+    })
+  }
+  handleSubmit = () => {
+    this.setState({ modal: false })
+    this.props.unsubscribeUsersWithEmailAction(this.state.email)
   }
   render() {
-    const { isSelectionBar, selectedId } = this.state;
-    console.log(this.props.data, "dataaaaaaaa")
+    const { isSelectionBar, selectedId, checked, currentChecked } = this.state;
     return (
       <div>
         <div>
@@ -81,11 +116,11 @@ class Unsubscribes extends Component {
             <p style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Unsubscribes</p>
             <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
           </div>
-          <div style={{ padding: '20px' }} className={`selection-bar ${isSelectionBar ? "_block" : " "}`} >
-            <span style={SpanStyles} onClick={() => this.setState({ isSelectionBar: false })}><i className="fa fa-close" aria-hidden="true"></i></span>
+          <div style={{ padding: '20px' }} className={`selection-bar ${isSelectionBar && selectedId.length > 0 ? "_block" : " "}`} >
+            <span style={SpanStyles} onClick={() => { this.setState({ isSelectionBar: false }); selectedId.length = 0 }}><i className="fa fa-close" aria-hidden="true"></i></span>
             <span style={Span} >{selectedId.length} selected</span>
             <div onClick={this.UnsubscribeDelete}>
-              <span style={SpanStyles}><i class="fas fa-minus-circle"></i></span>
+              <span style={SpanStyles}><i className="fas fa-minus-circle"></i></span>
               <span style={SpanStyles} >Delete</span>
             </div>
           </div>
@@ -97,7 +132,7 @@ class Unsubscribes extends Component {
             </div>
             <div className="unsubscribe-buttonsdiv">
               <div>
-                <button className="refresh-button" ><i style={{ fontSize: "15px" }} class="fa fa-refresh" aria-hidden="true"></i>
+                <button className="refresh-button" ><i style={{ fontSize: "15px" }} className="fa fa-refresh" aria-hidden="true"></i>
                   <span onClick={() => window.location.reload()} style={{ marginLeft: "10px" }}>REFRESH</span></button></div>
               <div><button className="Export-button">EXPORT</button></div>
             </div>
@@ -111,7 +146,15 @@ class Unsubscribes extends Component {
           <Row>
             <TabContent activeTab={this.state.activeTab} style={{ width: "100%" }}>
               <TabPane tabId="1">
-                <Addresstable showSelectionBar={this.showSelectionBar} data={this.props.data} />
+                <Addresstable
+                  currentChecked={currentChecked}
+                  selectAll={this.selectAll}
+                  checked={checked}
+                  showSelectionBar={this.showSelectionBar}
+                  data={this.props.data}
+                  textInput={this.textInput}
+
+                />
               </TabPane>
               <TabPane tabId="2">
                 <Domainpage />
@@ -126,23 +169,29 @@ class Unsubscribes extends Component {
         </div>
         <UnsubscribesModal
           isOpen={this.state.modal}
-          handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
-          toggle={this.toggle} />
+          handleClose={this.handleClose}
+          unsubscribeWithEmail={this.unsubscribeWithEmail}
+          unsubscribeWithCsv={this.unsubscribeWithCsv}
+          handleSubmit={this.handleSubmit}
+          loading={this.props.loading}
+        />
+
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  console.log(state.UnsubscribeReducer.unsubscribeData && state.UnsubscribeReducer.unsubscribeData, "state.UnsubscribeReducer.unsubscribeData")
   return {
-    data: state.UnsubscribeReducer.unsubscribeData
+    data: state.UnsubscribeReducer.unsubscribeData,
+    loading: state.UnsubscribeReducer.loading
   };
 };
 const mapDispatchToProps = dispatch => ({
   fetchUnsbcribed: () => { dispatch(fetchUnsubscribeAction()) },
-  unsubscribeUsers: (data) => { dispatch(unsubscribeUsersAction(data)) },
-
+  deleteUnsubscribeUsers: (data) => { dispatch(deleteUnsubscribeUsersAction(data)) },
+  unsubscribeUsersWithCsvAction: (data) => { dispatch(unsubscribeUsersWithCsvAction(data)) },
+  unsubscribeUsersWithEmailAction: (data) => { dispatch(unsubscribeUsersWithEmailAction(data)) }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Unsubscribes);

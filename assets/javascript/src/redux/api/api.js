@@ -365,6 +365,29 @@ Api.deleteUnsbcribed = (data, token) => {
     }
   })
 }
+Api.unsubscribeUsersWithEmailApi = (email, token) => {
+  return axios({
+    method:'post',
+    url: `${API_BASE_URL}/unsubscribes/`,
+    data: {
+      email: [email]
+    },
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+Api.unsubscribeUsersWithCsvApi = (file, token) => {
+  console.log(file,"fsfsdfdsfgdsfgsdfg")
+  return axios({
+    method:'post',
+    url: `${API_BASE_URL}/unsubscribes/unsubcribecsv/`,
+    data: file,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
 Api.GetAllCampaigns = (token) => {
   return axios({
     url: `${API_BASE_URL}/campaign/view/`,

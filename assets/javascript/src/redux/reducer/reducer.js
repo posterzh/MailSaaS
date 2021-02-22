@@ -30,6 +30,9 @@ import {
     SUCCESS_SAVE_CAMPAIGN,
     SUCCESS_FETCH_ONCLICK_PROSPECTS,
     SUCCESS_CAMPAIGN_TABLE_DATA,
+    REQUEST_FOR_UNSUBSCRIBE_WITH_CSV,
+    SUCCESS_UNSUBSCRIBE_WITH_CSV,
+     FAILURE_UNSUBSCRIBE_WITH_CSV,
     REQUEST_FOR_GET_SCHEDULE,
     SUCCESS_GET_SCHEDULE,
     FAILURE_GET_SCHEDULE,
@@ -63,6 +66,7 @@ const initialState = {
     registerResponse:null,
     loginResponse:null,
     isRegisterSuccess:null,
+    loading:false,
     ScheduleGetData:[],
     UpdateScheduleData:[],
     leadData:'',
@@ -199,6 +203,22 @@ export const UnsubscribeReducer = (state =  initialState , action) => {
                 ...state,
                 unsubscribeData: action.payload
             }
+        case REQUEST_FOR_UNSUBSCRIBE_WITH_CSV:
+            return{
+                ...state,
+                loading:true,
+            }
+        case SUCCESS_UNSUBSCRIBE_WITH_CSV:
+            return{
+                ...state,
+                loading:false
+            }
+       case FAILURE_UNSUBSCRIBE_WITH_CSV:
+        return{
+            ...state,
+            loading:false
+        }
+        
         default: return state
             break;
     }
