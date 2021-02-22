@@ -9,7 +9,7 @@ class CampaignPreview extends Component {
     constructor() {
         super();
         this.state = {
-            editorState: EditorState.createWithContent(ContentState.createFromText('Hello'))
+            editorState: EditorState.createEmpty()
         }
     }
     onEditorStateChange = (editorState) => {
@@ -169,7 +169,9 @@ class CampaignPreview extends Component {
                                                 <div><i className="fa fa-envelope-o" aria-hidden="true"></i><label style={{ marginLeft: "5px" }}>Initial campaign email</label></div>
                                                 <div className='grand_parent'>
                                                     <div className='input_field'>
-                                                        <Input type='email' className='in' placeholder='Subject' key={index} value={item.subject}  />
+                                                        <Input type='email' className='in' placeholder='Subject' key={index}  value={item.subject} onChange={()=>{
+
+                                                        }}  />
                                                         <div className='mt-3'>
                                                             <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                                                 <span><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -182,6 +184,7 @@ class CampaignPreview extends Component {
                                                 <div className='Editor_div'>
                                                     <Editor
                                                         className='editorDiv'
+                                                        readOnly
                                                         // mention={{
                                                         //     separator: ' ',
                                                         //     trigger: '@',
@@ -194,12 +197,11 @@ class CampaignPreview extends Component {
                                                         //         { text: 'FIG', value: 'fig', url: 'fig' },
                                                         //         { text: 'GRAPEFRUIT', value: 'grapefruit', url: 'grapefruit' },
                                                         //         { text: 'HONEYDEW', value: 'honeydew', url: 'honeydew' },
-                                                        //     ],
-                                                           
+                                                        //     ],                                                           
                                                         // }}
-                                                        defaultEditorState={'rgerrrytreyeryerrtyre'}
+                                                        placeholder={item.email_body}
                                                         editorState={editorState}
-                                                        value={"item.email_body"}
+                                                        value={item.email_body}
                                                         defaultContentState={"etertretertert"}
                                                         currentState={item.email_body}
                                                         toolbarClassName="rdw-storybook-toolbar"
@@ -244,6 +246,7 @@ class CampaignPreview extends Component {
                                                                     <div className='Editor_div'>
                                                                         <div style={{ padding: 0 }} className="btn"><i style={{ padding: 5 }} className="fa">&#xf014;</i>DELETE</div>
                                                                         <Editor
+                                                                        placeholder={item.email_body}
                                                                             className='editorDiv'
                                                                             onChange={this.handleChangeBody}
                                                                             editorState={editorState}

@@ -4,26 +4,42 @@ import CardBody from 'reactstrap/lib/CardBody'
 import CardFooter from 'reactstrap/lib/CardFooter'
 import CardHeader from 'reactstrap/lib/CardHeader'
 import { connect } from 'react-redux'
-import { GetScheduleAction } from '../../../redux/action/ScheduleAction'
+import { GetScheduleAction,ScheduleUpdateAction } from '../../../redux/action/ScheduleAction'
 export class SendindCalender extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       show: true,
       hide: false,
+      StartTime:this.props.schedulestarttime,
+      EndTime:this.props.scheduleendtime,
+      MailAccounts:"",
+      MaxEmails:'',
+      MaxEmailSend:'',
+      Minutes:'',
+      date:'',
+      blockdays:''
       
     }
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
     this.props.GetScheduleAction()
+    // this.props.ScheduleUpdateAction(this.props)
   }
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
     })
   }
+  handleSubmit=(e)=>{
+    const scheduledataa={
+      end_time:this.state.EndTime
+    }
+    this.props.ScheduleUpdateAction(scheduledataa)
+  }
   render() {
-    const { ScheduleData } = this.props
+    const { ScheduleData,schedulestarttime } = this.props
 
     return (
       <div>
@@ -101,13 +117,13 @@ export class SendindCalender extends Component {
                       <label>Start time</label>
                     </Row>
                     <Row>
-                      <input className='teamname-input' name='StartTime' value={ScheduleData && ScheduleData.start_time}></input>
+                      <input className='teamname-input' name='StartTime' onChange={()=>this.handleChange} value={this.state.StartTime}></input>
                     </Row>
                     <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
                       <label>End time</label>
                     </Row>
                     <Row>
-                      <input className='teamname-input' name="EndTime" value={ScheduleData && ScheduleData.end_time}></input>
+                      <input className='teamname-input' name="EndTime" value={this.state.EndTime}></input>
                     </Row>
                     <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
                       <label>TimeZone</label>
@@ -150,7 +166,7 @@ export class SendindCalender extends Component {
                       <input type='number' className='teamname-input' value={ScheduleData && ScheduleData.max_email_send}></input>
                     </Row>
                     <Row className='mt-5'>
-                      <button className='savebutton' onClick={(e)=>{e.preventDefault(),this.setState({hide:!this.state.hide,show: !this.state.show})}}>save</button>
+                      <button className='savebutton' type='Submit'onSubmit={this.handleSubmit} onClick={(e)=>{e.preventDefault(),this.setState({hide:!this.state.hide,show: !this.state.show})}}>save</button>
                       <button className='savebutton' onClick={(e)=>{e.preventDefault(),this.setState({hide:!this.state.hide,show: !this.state.show})}}>CANCEL</button>
                     </Row>
                   </div>
@@ -175,7 +191,7 @@ export class SendindCalender extends Component {
             <div className="th_box">
               <p>a</p>
             </div>
-            <div className="fr_box">
+            <div className="fr_box">ScheduleData && ScheduleData.end_time
               <p>w</p>
             </div>
             <div className="sa_box">
@@ -188,6 +204,16 @@ export class SendindCalender extends Component {
     )
   }
 }
-const mapStateToProps = (state) => { return { ScheduleData: state.ScheduleGetDataReducer.ScheduleGetData } }
-const mapDispatchToProps = dispatch => ({ GetScheduleAction: ScheduleGetData => { dispatch(GetScheduleAction(ScheduleGetData)) }, })
+const mapStateToProps = (state) => {
+  console.log("==============*******======>", state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData .end_time)
+   return { 
+     ScheduleData: state.ScheduleGetDataReducer.ScheduleGetData ,
+     schedulestarttime: state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData .start_time,
+     scheduleendtime: state.ScheduleGetDataReducer.ScheduleGetData &&  state.ScheduleGetDataReducer.ScheduleGetData.end_time
+
+    } }
+const mapDispatchToProps = dispatch => ({
+   GetScheduleAction: ScheduleGetData =>{dispatch(GetScheduleAction(ScheduleGetData))},
+   ScheduleUpdateAction:scheduledataa=>{dispatch(ScheduleUpdateAction(scheduledataa))}
+   })
 export default connect(mapStateToProps, mapDispatchToProps)(SendindCalender)

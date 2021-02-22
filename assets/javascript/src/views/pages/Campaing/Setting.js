@@ -90,10 +90,10 @@ export class CampSetting extends Component {
                                                         <Col md={6} className='mt-4'>
                                                             <label>Recipients</label>
                                                             <select name='recipientsData' onChange={this.handleChange} value={this.state.name} className='filter_select_prospect mt-3' required>
-                                                                <option value='Replies'>Replies</option>
-                                                                <option value='Opens'>Opens</option>
-                                                                <option value='Click_any_link'>Click any link</option>
-                                                                <option value='Click_specific_link'>Click specific link</option>
+                                                                <option value='replies'>Replies</option>
+                                                                <option value='open'>Opens</option>
+                                                                <option value='click_any_link'>Click any link</option>
+                                                                <option value='click_specific_link'>Click specific link</option>
                                                             </select>
                                                         </Col>
                                                         <Col md={5} className='mt-4'>

@@ -112,12 +112,12 @@ Api.CampaignLeadCatcherApi = (token,id, leadData) => {
   return axios({
     method: "POST",
     url: `${API_BASE_URL}/campaign/settings-leadcatcher/`,
-    data: {
+    data: [{
         campaign:id,
         of_times:leadData.of_times,
         leadcatcher_recipient:leadData.leadcatcher_recipient
 
-    },
+    }],
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -419,10 +419,11 @@ Api.GetScheduleApi = (token) => {
 }
 
 //UPDATE SCHEDULE
-Api.UpdateScheduleApi = (token) => {
+Api.UpdateScheduleApi=(token,scheduledataa)=>{
   return axios({
-    method: 'PUT',
-    url: `${API_BASE_URL}/campaignschedule/updateschedulemail/`,
+    method:'PUT',
+    data:{...scheduledataa},
+    url:`${API_BASE_URL}/campaignschedule/updateschedulemail/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
