@@ -397,6 +397,17 @@ Api.unsubscribeUsersWithEmailApi = (email, token) => {
     }
   })
 }
+Api.unsubscribeRecipientApi = (id,token)=>{
+  return axios({
+    method:'put', url: `${API_BASE_URL}/campaign/recipientunsubcribe/`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    },
+    data:{
+      recipient_id:id
+    }
+  })
+}
 Api.unsubscribeUsersWithCsvApi = (file, token) => {
   console.log(file,"fsfsdfdsfgdsfgsdfg")
   return axios({

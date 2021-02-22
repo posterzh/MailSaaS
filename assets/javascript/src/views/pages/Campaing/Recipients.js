@@ -3,19 +3,74 @@ import Campaign_details from "../../../views/pages/Campaing/Campaign_details"
 import React, { Component } from 'react'
 import { CampaignPeopleAction } from '../../../redux/action/CampaignAction'
 import { connect } from 'react-redux';
-
+import { unsubscribeRecipientAction } from '../../../redux/action/UnsubscribeActions';
+const SpanStyles = {
+    paddingRight: "10px",
+    paddingLeft: "10px",
+    color: "white",
+    fontSize: "25px",
+    cursor: 'pointer'
+  };
+  const Span = {
+    paddingRight: "20px",
+    paddingLeft: "20px",
+    color: "white",
+    fontSize: "25px",
+    borderRight: "1px dashed",
+    marginRight: "10px"
+  };
 class Recipients extends Component {
     constructor() {
-        super()
+        super();
+        this.state={
+            isSelectionBar:true,
+            selectedId:[]
+        }
     }
     componentDidMount() {
-        this.props.CampaignPeopleAction(this.props.campaignOverviewData.id)
+        let id = this.props.history.location.state&&this.props.history.location.state.id
+        this.props.CampaignPeopleAction(id)
+    }
+    showSelectionBar = (id) => {
+        console.log(id,"dfsfsdfsdfsd")
+        const { selectedId } = this.state
+        this.setState({
+          isSelectionBar: true,
+        })
+        if (selectedId.length === 0) {
+          selectedId.push(id)
+          return
+        }
+        for (let index = 0; index < selectedId.length; index++) {
+          if (id === selectedId[index]) {
+            let array = selectedId.filter(e => e != id)
+            this.setState({
+              selectedId: array
+            }, () => { console.log(array, "select") })
+            return
+          }
+        }
+        selectedId.push(id)
+    }
+    unsubscribeRecipient = () => {
+        let data = this.state.selectedId
+        this.props.unsubscribeRecipientAction(data)
+        this.state.selectedId = 0;
     }
     render() {
         const { getData } = this.props;
-        console.log("getData", getData)
+        const { isSelectionBar,selectedId} = this.state
+        console.log("getData", this.props.history)
         return (
             <div>
+                <div style={{ padding: '20px' }} className={`selection-bar ${isSelectionBar && selectedId.length > 0 ? "_block" : " "}`} >
+                    <span style={SpanStyles} onClick={() => { this.setState({ isSelectionBar: false }); selectedId.length = 0 }}><i className="fa fa-close" aria-hidden="true"></i></span>
+                    <span style={Span} >{selectedId.length} selected</span>
+                    <div onClick={this.unsubscribeRecipient}>
+                        <span style={SpanStyles}><i className="fas fa-minus-circle"></i></span>
+                        <span style={SpanStyles} >Delete</span>
+                    </div>
+                </div>
                 <Container fluid>
                     <Row>
                         <Campaign_details />
@@ -97,9 +152,9 @@ class Recipients extends Component {
                             <tbody>
                                 {getData && getData.map((item, index) => (
                                     <tr key={index}>
-                                        <td><input type='checkbox' /></td>
+                                        <td><input onChange={()=>this.showSelectionBar(item.id)} type='checkbox' /></td>
                                         <td>{item.email}</td>
-                                        <td>{}</td>
+                                        <td>{item.full_name}</td>
                                         <td>{item.created_date_time.substring(5, 10)}</td>
                                         <td>{}</td>
                                     </tr>
@@ -134,12 +189,12 @@ class Recipients extends Component {
 const mapStateToProps = (state) => {
     // console.log('state',state.CampaignPeopleReducer&&state.CampaignPeopleReducer.campaignPeopleData )
     return {
-
         campaignOverviewData: state.CampaignOverviewReducer.CampaignOverviewData,
         getData: state.CampaignPeopleReducer && state.CampaignPeopleReducer.campaignPeopleData
     };
 };
 const mapDispatchToProps = dispatch => ({
-    CampaignPeopleAction: (id) => dispatch(CampaignPeopleAction(id))
+    CampaignPeopleAction: (id) => dispatch(CampaignPeopleAction(id)),
+    RecipientUnsubscribe: (id) =>{ dispatch(unsubscribeRecipientAction(id)) }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Recipients)
