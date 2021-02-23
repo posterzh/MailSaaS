@@ -107,36 +107,75 @@ Api.CampaignSaveApi = (token, id, saveData) => {
 }
 
 // campaign leadcatcher
-Api.CampaignLeadCatcherApi = (token,id, leadData) => {
-  console.log('m id hu --->',id)
+Api.CampaignLeadCatcherApi = (token, id, leadData) => {
   return axios({
     method: "POST",
     url: `${API_BASE_URL}/campaign/settings-leadcatcher/`,
-    data: [{
-        campaign:id,
-        of_times:leadData.of_times,
-        leadcatcher_recipient:leadData.leadcatcher_recipient
-    }],
+    data: {
+      campaign: id,
+      of_times: leadData.of_times,
+      leadcatcher_recipient: leadData.leadcatcher_recipient,
+      specific_link: leadData.specific_link
+    },
     headers: {
       "Authorization": `Bearer ${token}`,
-    }
+    } 
   })
+  
 }
 
 // LEAD CATCHER GET DATA
 Api.CampaignLeadGetApi = (token, id) => {
   return axios({
     method: 'GET',
-    data:{
-      campaign:id
-    },
-    url: `${API_BASE_URL}/campaign/settings-leadcatcher/`,
+    url: `${API_BASE_URL}/campaign/settings-leadcatcherView/${id}/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
   })
 }
 
+// LEAD CATCHER DELETE DATA
+Api.CampaignLeadDeleteApi = (token, id) => {
+  return axios({
+    method: 'DELETE',
+    url: `${API_BASE_URL}/campaign/settings-leadcatcher/${id}/`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+
+// CampaignLeadUpadteApi
+Api.CampaignLeadUpadteApi = (token, id) => {
+  return axios({
+    method: 'PUT',
+    data:{
+      campaign: id,
+      of_times: updateLeadData.of_times,
+      leadcatcher_recipient: updateLeadData.leadcatcher_recipient,
+      specific_link: updateLeadData.specific_link
+    },
+    url: `${API_BASE_URL}/campaign/settings-leadcatcher/${id}/`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+// http://127.0.0.1:8000/campaign/settings-leadcatcher/31/
+
+// view all leads
+Api.CampaignAllLeadApi = (token, id) => {
+  return axios({
+    method: 'GET',
+    url: `${API_BASE_URL}/campaign/leadscatcher/${id}/`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+
+// /campaign/leadscatcher/214/
 // campaign get-overview
 Api.CampaignOverviewApi = (token, id) => {
   return axios({
@@ -148,7 +187,7 @@ Api.CampaignOverviewApi = (token, id) => {
   })
 }
 // campaign recipient people (get)
-Api.CampaignRecipientPeopleApi = (token,id) => {
+Api.CampaignRecipientPeopleApi = (token, id) => {
   return axios({
     method: 'GET',
     url: `${API_BASE_URL}/campaign/recipients/people/${id}/`,
@@ -366,7 +405,7 @@ Api.deleteUnsbcribed = (data, token) => {
 }
 Api.unsubscribeUsersWithEmailApi = (email, token) => {
   return axios({
-    method:'post',
+    method: 'post',
     url: `${API_BASE_URL}/unsubscribes/`,
     data: {
       email: [email]
@@ -376,21 +415,21 @@ Api.unsubscribeUsersWithEmailApi = (email, token) => {
     }
   })
 }
-Api.unsubscribeRecipientApi = (id,token)=>{
+Api.unsubscribeRecipientApi = (id, token) => {
   return axios({
-    method:'put', url: `${API_BASE_URL}/campaign/recipientunsubcribe/`,
+    method: 'put', url: `${API_BASE_URL}/campaign/recipientunsubcribe/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     },
-    data:{
-      recipient_id:id
+    data: {
+      recipient_id: id
     }
   })
 }
 Api.unsubscribeUsersWithCsvApi = (file, token) => {
-  console.log(file,"fsfsdfdsfgdsfgsdfg")
+  console.log(file, "fsfsdfdsfgdsfgsdfg")
   return axios({
-    method:'post',
+    method: 'post',
     url: `${API_BASE_URL}/unsubscribes/unsubcribecsv/`,
     data: file,
     headers: {
@@ -429,11 +468,11 @@ Api.GetScheduleApi = (token) => {
 }
 
 //UPDATE SCHEDULE
-Api.UpdateScheduleApi=(token,scheduledataa)=>{
+Api.UpdateScheduleApi = (token, scheduledataa) => {
   return axios({
-    method:'PUT',
-    data:{...scheduledataa},
-    url:`${API_BASE_URL}/campaignschedule/updateschedulemail/`,
+    method: 'PUT',
+    data: { ...scheduledataa },
+    url: `${API_BASE_URL}/campaignschedule/updateschedulemail/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }

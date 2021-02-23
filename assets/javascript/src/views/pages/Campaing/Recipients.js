@@ -73,7 +73,7 @@ class Recipients extends Component {
                 </div>
                 <Container fluid>
                     <Row>
-                        <Campaign_details />
+                    <Campaign_details id={this.props.history.location.state&&this.props.history.location.state.id} />
                     </Row>
                     <Row className='mt-5'>
                         <Col md={1}className='Recipients_details'><a href='#'><h1>1</h1><span >LISTS</span></a></Col>
