@@ -52,10 +52,12 @@ export const ProspectActionData = (id) => {
 }
 
 // ACTION FOR ONCLICK PROSPECT
-export const OnclickProspectActionData = (id) => {
+export const OnclickProspectActionData = (data) => {
+    console.log('mera name geet ',data);
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        Api.CampaignOnclickProspects(id,token).then(result => {
+        // const datat=localStorage.getItem('pid')
+        Api.CampaignOnclickProspects(data,token).then(result => {
             dispatch(FetchOnclickProspectsSuccess(result.data[0]))
             console.log("checking onclick prospect data:", result.data[0])
         }).catch(err => {
@@ -65,11 +67,14 @@ export const OnclickProspectActionData = (id) => {
 }
 
 
-export const deleteProspectAction = (id) => {
+export const deleteProspectAction = (data) => {
+    console.log('pagala gya hai kya',data[0]);
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        Api.deleteProspects(id, token).then((response) => {
-            dispatch(OnclickProspectActionData())
+        // const pid=localStorage.setItem('pid')
+        Api.deleteProspects(data, token).then((response) => {
+            console.log('2222 pagala gya hai kya',data,response);
+            dispatch(ProspectActionData(data[0]))
         }).catch((err) => {
             console.log(err, 'err')
         })

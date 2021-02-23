@@ -70,10 +70,10 @@ class Prospects extends Component {
             isSelectionBar: false,
             checked: false
         })
-        let id = this.state.selectedId;
-        this.props.deleteProspectData(id)
+        let data = this.state.selectedId;
+        this.props.deleteProspectData(data)
         this.state.selectedId.length = 0;
-        console.log("000000000000000000000000???????", this.props.deleteProspectData())
+        // console.log("000000000000000000000000???????", data)
     }
 
     componentDidMount() {
@@ -220,7 +220,7 @@ const mapDispatchToProps = dispatch => ({
     ProspectActionData: prospectData => {
         dispatch(ProspectActionData(prospectData))
     },
-    OnclickProspectActionData: id => { dispatch(OnclickProspectActionData(id)) },
-    deleteProspectData: id => { dispatch(deleteProspectAction(id)) }
+    OnclickProspectActionData: data => { dispatch(OnclickProspectActionData(data)) },
+    deleteProspectData: data => { dispatch(deleteProspectAction(data)) }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Prospects)

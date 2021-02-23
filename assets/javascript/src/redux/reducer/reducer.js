@@ -36,7 +36,7 @@ import {
     REQUEST_FOR_GET_SCHEDULE,
     SUCCESS_GET_SCHEDULE,
     FAILURE_GET_SCHEDULE,
-    UPDATE_REQUEST_FOR_GET_SCHEDULE,
+    // UPDATE_REQUEST_FOR_GET_SCHEDULE,
     UPDATE_SUCCESS_GET_SCHEDULE,  
     SUCCESS_LEAD_CATCHER,
     SUCCESS_LEAD_CATCHER_GET,
@@ -342,18 +342,13 @@ export const CampaignPeopleReducer = (state =  initialState , action) => {
 
 // SCHEDULE_GET_DATAampaignOverview
 export const ScheduleGetDataReducer = (state =  initialState , action) => {
+    console.log("schedule update reducer:",action)
     switch (action.type) {
-        case  REQUEST_FOR_GET_SCHEDULE:
-            return {
-            }
+        
         case SUCCESS_GET_SCHEDULE:
             return {
                 ...state,
                 ScheduleGetData: action.ScheduleGetData,
-            }
-        case  FAILURE_GET_SCHEDULE:
-            return {
-                
             }
         default: return state
             break;
@@ -377,16 +372,13 @@ export const CampaignTableReducer = (state =  initialState , action) => {
 // UPDATE SCHEDULE DATA
 export const ScheduleUpdateReducer = (state =  initialState , action) => {
     switch (action.type) {
-        case UPDATE_REQUEST_FOR_GET_SCHEDULE:
-            return {
-            }
+       
         case UPDATE_SUCCESS_GET_SCHEDULE:
             return {
                 ...state,
                 UpdateScheduleData: action.UpdateScheduleData,
             }
         default: return state
-            break;
     }
 }
 

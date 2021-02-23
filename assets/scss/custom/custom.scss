@@ -699,6 +699,10 @@ button .import_button{
     border: none;
     color: white;
 }
+.newcampaign_button:hover{
+    background: #ff4081;
+    color:white !important
+}
 .dashboard_title{
     border-bottom: 1px solid #dedede;
     padding-bottom: 15px;
@@ -1654,6 +1658,18 @@ input::-webkit-inner-spin-button {
      width: 80px;
      height: 35px;   
 }
+.b1{
+    background-color: #ff4081;
+    color:white;
+    border:none;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    }
+
+.b1:hover{
+   background-color: #ff4081;
+   color:white;
+     }
+
 .deleteteambutton{
      border: none;
      background-color: transparent;    
@@ -1790,7 +1806,13 @@ margin-top: 0px !important;
     100% { transform: rotate(360deg); }
   }
 .calender_details{
-    color:black
+    color:#ccc;
+    font-size: 17px;
+}
+.calendedata{
+    color:#777;
+    font-weight: bold;
+    font-size: 17px;
 }
 .nav_link{
     color:white;
