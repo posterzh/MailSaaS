@@ -36,7 +36,7 @@ def change(times,timezones):
     naive = datetime.strptime (times,"%H:%M:%S")
     local_dt = local.localize(naive, is_dst=None)
     utc_dt = local_dt.astimezone(pytz.utc)
-    convert_time = datetime.datetime.strftime(utc_dt, "%H:%M:%S")
+    convert_time = datetime.strftime(utc_dt, "%H:%M:%S")
     return convert_time
     
 

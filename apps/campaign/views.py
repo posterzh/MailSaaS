@@ -1082,6 +1082,11 @@ class ProspectsView(generics.ListAPIView):
             resp.append(data)
 
         return Response(resp)
+
+
+    def delete(self, request, format=None):
+        recp_to_delete = CampaignRecipient.objects.filter(id__in=request.data["recp_ids"]).update(is_delete=True)
+        return Response({"message":"Successfully Deleted","success":True})
         
 
 
@@ -1110,9 +1115,7 @@ class ProspectsCampaignView(generics.ListAPIView):
 
         return Response(resp)
 
-    def delete(self, request, pk, format=None):
-        recp_to_delete = CampaignRecipient.objects.filter(id__in=request.data["recp_ids"]).update(is_delete=True)
-        return Response({"message":"Successfully Deleted","success":True})
+    
 
 
 class RecipientUnsubcribe(generics.CreateAPIView):
