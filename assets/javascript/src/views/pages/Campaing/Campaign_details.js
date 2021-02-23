@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import Navbar from 'reactstrap/lib/Navbar';
 import Container from 'reactstrap/lib/Container';
 import Row from 'reactstrap/lib/Row';
 
 export default class Campaign_details extends Component {
   render() {
+    const { id } =this.props;
     return (
       <>
        <div className='campaign_navbar'>
@@ -18,9 +18,26 @@ export default class Campaign_details extends Component {
                 <ul style={{ listStyleType: 'none', display: 'flex'  }}>
                   <li className='m-3'><Link to="/app/admin/campaign"><span className='nav_link'><i className="fas fa-chevron-left"></i></span></Link></li>
                   <li className='m-3'><Link to="/app/admin/OverView"><span className='nav_link'>OverView</span></Link></li>
-                  <li className='m-3'><Link to="/app/admin/Message"><span className='nav_link'>Sequence</span></Link></li>
-                  <li className='m-3'><Link to="/app/admin/Recipient/people"><span className='nav_link'>Recipients</span></Link></li>
-                  <li className='m-3'><Link to="/app/admin/settings"><span className='nav_link'>Setting</span></Link></li>
+                  <li className='m-3'><Link 
+                  to={{
+                    pathname:"/app/admin/Message",
+                   state:{
+                     id:this.props.id
+                   }
+                  }}><span className='nav_link'>Sequence</span></Link></li>
+
+                  <li className='m-3'><Link to={{
+                    pathname:"/app/admin/Recipient/people",
+                   state:{
+                     id:this.props.id
+                   }
+                  }}><span className='nav_link'>Recipients</span></Link></li>
+                  <li className='m-3'><Link to={{
+                    pathname:"/app/admin/settings",
+                   state:{
+                     id:this.props.id
+                   }
+                  }}><span className='nav_link'>Setting</span></Link></li>
                 </ul>
               
           </Row>

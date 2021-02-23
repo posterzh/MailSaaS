@@ -20,7 +20,10 @@ import {
     SUCCESS_SAVE_CAMPAIGN,
     SUCCESS_LEAD_CATCHER,
     SUCCESS_FOR_CAMPAIGN_PEOPLE,
-    SUCCESS_LEAD_CATCHER_GET
+    SUCCESS_LEAD_CATCHER_GET,
+    SUCCESS_LEAD_DELETE,
+    SUCCESS_LEAD_UPDATE,
+    SUCCESS_LEAD_CATCHER_ALL
 
 } from "../actionType/actionType"
 import Api from "../api/api"
@@ -146,7 +149,7 @@ export const requestForCampaignPeopleSuccess = (campaignPeopleData) => {
 export const leadCatcherSuccess = (leadData) => {
     return {
         type: SUCCESS_LEAD_CATCHER,
-        leadData
+        payload: leadData
     }
 }
 
@@ -154,10 +157,31 @@ export const leadCatcherSuccess = (leadData) => {
 export const leadCatcherGetSuccess = (leadGetData) => {
     return {
         type: SUCCESS_LEAD_CATCHER_GET,
-        leadGetData
+        paylod: leadGetData
     }
 }
 
+// lead catcher delete
+export const leadCatcherDeleteSuccess = () => {
+    return {
+        type: SUCCESS_LEAD_DELETE,
+    }
+}
+// lead catcher UPDATE
+export const leadCatcherUpdateSuccess = (leadData) => {
+    return {
+        type: SUCCESS_LEAD_UPDATE,
+        payload: leadData
+    }
+}
+
+// lead catcher all
+export const leadCatcherAllSuccess = (leadUpdateData) => {
+    return {
+        type: SUCCESS_LEAD_CATCHER_ALL,
+        payload: leadUpdateData
+    }
+}
 
 
 // CAMPAIGN_OVERVIEW_MIDDLEWARE
@@ -182,6 +206,7 @@ export const StartCampaignAction = (data) => {
         console.log('this is a token', token)
         Api.StartCampaignApi(data, token).then(result => {
             dispatch(StartCampaignSuccess(result.data))
+            console.log(result.data, " result.data")
             setTimeout(() => {
                 history.push('/app/admin/CampaignRecipient', { id: result.data.id })
             }, 2000);
@@ -295,7 +320,6 @@ export const CampaignComposeAction = (data) => {
 
 // CAMPAIGN PEOPLE DATA
 export const CampaignPeopleAction = (id) => {
-    console.log("id hu------->", id)
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.CampaignRecipientPeopleApi(token, id).then(result => {
@@ -313,9 +337,7 @@ export const CampaignLeadCatcherAction = (id, leadData) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.CampaignLeadCatcherApi(token, id, leadData).then(result => {
-            setTimeout(() => {
-                dispatch(leadCatcherSuccess(result.data))
-            }, 2000);
+            dispatch(CampaignLeadGetAction(result.data))
         }).catch(err => {
             console.log(err, 'error-')
         })
@@ -325,15 +347,62 @@ export const CampaignLeadCatcherAction = (id, leadData) => {
 // LEAD CATCHER GET ACTION
 
 export const CampaignLeadGetAction = (id) => {
-    console.log("========>",id)
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.CampaignLeadGetApi(token, id).then(result => {
-            setTimeout(() => {
-                dispatch(leadCatcherGetSuccess(result.data))
-            }, 2000);
+            dispatch(leadCatcherGetSuccess(result.data))
         }).catch(err => {
             console.log(err, 'error-')
         })
     }
 }
+
+// LEAD CATCHER DELETE ACTION
+
+export const CampaignLeadDeleteAction = (id) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('access_token')
+        Api.CampaignLeadDeleteApi(token, id).then(result => {
+            console.log(result, "===========results")
+            dispatch(leadCatcherDeleteSuccess())
+        }).catch(err => {
+            console.log(err, 'error-')
+        })
+    }
+}
+// LEAD CATCHER UPDATE ACTION
+export const CampaignLeadUpdateAction = (id) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('access_token')
+        Api.CampaignLeadUpadteApi(token, id).then(result => {
+            dispatch(leadCatcherUpdateSuccess())
+        }).catch(err => {
+            console.log(err, 'error-')
+        })
+    }
+}
+
+// LEAD CATCHER VIEW ALL
+export const CampaignLeadAllAction = (id) => {
+    console.log('camp id',id)
+    return function (dispatch) {
+        const token = localStorage.getItem('access_token')
+        Api.CampaignAllLeadApi(token, id).then(result => {
+            console.log(result, "===========results")
+            dispatch(leadCatcherAllSuccess())
+        }).catch(err => {
+            console.log(err, 'error-')
+        })
+    }
+}
+export const unsubscribeRecipientAction = (data,id) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('access_token')
+        Api.unsubscribeRecipientApi(data,token).then((response) => {
+            dispatch(CampaignPeopleAction(id))
+        }).catch((err) => {
+            console.log(err, 'err')
+        })
+    }
+}
+ 

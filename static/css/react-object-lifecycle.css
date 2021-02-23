@@ -1658,6 +1658,7 @@ input::-webkit-inner-spin-button {
     transform: rotate(0deg); }
   100% {
     transform: rotate(360deg); } }
+
 .calender_details {
   color: black; }
 
@@ -1668,4 +1669,7 @@ input::-webkit-inner-spin-button {
   height: 13px;
   width: 13px;
   border: 1px solid silver; }
+
+.fa-eye-slash {
+  color: #e5e5ee; }
 

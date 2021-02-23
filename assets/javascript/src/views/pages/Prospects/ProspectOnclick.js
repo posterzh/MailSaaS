@@ -3,8 +3,11 @@ import { connect } from 'react-redux';
 import { Container, Row, Col, Label, Input, Table, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import { OnclickProspectActionData } from '../../../redux/action/ProspectsAction'
 export class ProspectOnclick extends Component {
+    constructor(props){
+        super(props)
+    }
     componentDidMount() {
-        this.props.OnclickProspectActionData(this.props);
+        this.props.OnclickProspectActionData(this.props.id);
     }
     render() {
         const { propData } = this.props;

@@ -6,6 +6,7 @@ import {
 
 } from "../actionType/actionType"
 import Api from "../api/api";
+import { CampaignPeopleAction } from "./CampaignAction";
 
 export const requestUserUnsubscribeWithCsv = () => {
     return {
@@ -29,7 +30,7 @@ export const successFetchUnsubscribe = (payload) => {
     }
 }
 
-export const fetchUnsubscribeAction = () => {
+export const fetchUnsubscribeAction =() => {
     return function (dispatch) {
         console.log("hiii")
         const token = localStorage.getItem('access_token')
@@ -46,6 +47,7 @@ export const deleteUnsubscribeUsersAction = (data) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.deleteUnsbcribed(data, token).then((response) => {
+            console.log(response,"seudfdfgfhfdhdfgh")
             dispatch(fetchUnsubscribeAction())
         }).catch((err) => {
             console.log(err, 'err')
@@ -76,4 +78,3 @@ export const unsubscribeUsersWithEmailAction = (data) => {
         })
     }
 }
- 
