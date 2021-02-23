@@ -251,6 +251,26 @@ Api.CampaignProspects = (token) => {
   })
 }
 
+
+Api.deleteProspects = (id,token) => {
+  console.log('aaaaaaaaaaaaaaaaaaaaaaaa',id)
+  return axios({
+    method: 'DELETE',
+    url: `${API_BASE_URL}/campaign/prospects/${id}/`,
+    id: {    
+            id: id,
+            
+    },
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+
+
+
+
+
 // ONCLICK PRSPECT
 Api.CampaignOnclickProspects = (id, token) => {
   return axios({
@@ -261,7 +281,19 @@ Api.CampaignOnclickProspects = (id, token) => {
     }
   })
 }
-
+// ProspectsUnsubscribe
+Api.ProspectsUnsubscribe=(id,token)=>{
+  return axios({
+    method:'put',
+     url: `${API_BASE_URL}/campaign/recipientunsubcribe/`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    },
+    data:{
+      recipient_id:id
+    }
+  })
+}
 // user settings
 Api.UserSetting = (token) => {
   return axios({
@@ -403,6 +435,7 @@ Api.deleteUnsbcribed = (data, token) => {
     }
   })
 }
+
 Api.unsubscribeUsersWithEmailApi = (email, token) => {
   return axios({
     method: 'post',
@@ -417,7 +450,8 @@ Api.unsubscribeUsersWithEmailApi = (email, token) => {
 }
 Api.unsubscribeRecipientApi = (id, token) => {
   return axios({
-    method: 'put', url: `${API_BASE_URL}/campaign/recipientunsubcribe/`,
+    method:'put',
+     url: `${API_BASE_URL}/campaign/recipientunsubcribe/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     },
