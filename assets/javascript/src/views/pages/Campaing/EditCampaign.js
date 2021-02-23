@@ -48,7 +48,7 @@ export default class EditCampaign extends Component {
                 <div className='main-view'>
                     <Container>
                         <Row>
-                            <Col md='10' className='mx-auto'>
+                            <Col md={1} className='mx-auto'>
                                 <Row>
                                     <div><button className='EditTest'><i className="fa fa-plus-circle" aria-hidden="true"></i> A/B TEST</button>
                                     </div>
@@ -100,7 +100,7 @@ export default class EditCampaign extends Component {
                                 <Row className='mt-5'>
                                     <Container fluid>
                                         <Row>
-                                            <Col md='11' className='alignRight'>
+                                            <Col md={11} className='alignRight'>
                                                 <Row>
                                                     <h1 className='display-6'>Follow-ups &nbsp;<a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                                         <span><i className='QuestionCircle' class="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -110,7 +110,7 @@ export default class EditCampaign extends Component {
                                                     <p style={{ fontSize: '14px' }}>Follow-ups are stopped when a recipient becomes a lead. <a href=''>Learn how to customize Lead Catcher.</a></p>
                                                 </Row>
                                                 <Row>
-                                                    <Col md='2' className='WaitDiv'>
+                                                    <Col md={2} className='WaitDiv'>
                                                         <label className='filter_app'>Wait X days</label><br></br>
                                                         <input type='number' className='WaitInput'></input>
                                                     </Col>

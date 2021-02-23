@@ -1,45 +1,120 @@
+
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { Container, Row, Col, Label, Input, Table, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
-// import {Prospects} from "../../../redux/action/"
-import {ProspectActionData} from '../../../redux/action/ProspectsAction'
+import { Container, Row, Col, Label, Input, Table, Modal, ModalHeader, ModalBody, Card, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
+import { ProspectActionData,ProspectUnsubscribeAction } from '../../../redux/action/ProspectsAction'
+import ProspectOnclick from './ProspectOnclick'
+import { OnclickProspectActionData, deleteProspectAction } from '../../../redux/action/ProspectsAction'
+const SpanStyles = {
+    paddingRight: "10px",
+    paddingLeft: "10px",
+    color: "white",
+    fontSize: "25px",
+    cursor: 'pointer'
+};
+const Span = {
+    paddingRight: "20px",
+    paddingLeft: "20px",
+    color: "white",
+    fontSize: "25px",
+    borderRight: "1px dashed",
+    marginRight: "10px"
+};
+
 class Prospects extends Component {
     constructor(props) {
         super(props);
         this.state = {
             dd1: false,
-            value: 'Any'
+            value: 'Any',
+            searchEmail: "",
+            showProspect: false,
+            isSelectionBar: false,
+            selectedId: [],
+            id: ''
+
         };
     }
-
     dropdownToggle = () => {
         this.setState({
             dd1: !this.state.dd1
         });
     }
+    toggle = (id) => {
+        this.setState({
+            showProspect: !this.state.showProspect,
+            id: id
+        })
+    }
+    showSelectionBar = (id) => {
+        const { selectedId } = this.state
+        this.setState({
+            isSelectionBar: true,
+        })
+
+        if (selectedId.length === 0) {
+            selectedId.push(id)
+            return
+        }
+        for (let index = 0; index < selectedId.length; index++) {
+            if (id === selectedId[index]) {
+                let array = selectedId.filter(e => e != id)
+                this.setState({
+                    selectedId: array
+                })
+                return
+            }
+        }
+        selectedId.push(id)
+    }
     select = (e) => {
         this.setState({
-            dropdownOpen: !this.state.dropdownOpen,
-            value: e.target.innerText
-        });
+            isSelectionBar: false,
+            checked: false
+        })
+        let id = this.state.selectedId;
+        this.props.deleteProspectData(id)
+        this.state.selectedId.length = 0;
+        console.log("000000000000000000000000???????", this.props.deleteProspectData())
+    }
+    unsubscribeProspect=()=>{
+        this.props.unsubscribeProspectAction(this.state.selectedId)
+        this.setState({
+            isSelectionBar:false,
+            selectedId:[]
+        })
     }
     componentDidMount() {
-        this.props.ProspectActionData();
-        console.log("asdfghjkldfghjkldtfyghj",this.props)
-      }
-      
-
+        this.props.ProspectActionData(this.props);
+    }
     render() {
-const {prospectData}=this.props;
+        const { showProspect, isSelectionBar, selectedId, currentChecked, checked } = this.state;
+        const { prospectData } = this.props;
         return (
-            <div>
+            <div className="prospect-main-container">
                 <div className='campaign_navbar' >
                     <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Prospects</h1>
                     <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
                 </div>
+                <div style={{ padding: '20px' }} className={`selection-bar ${isSelectionBar && selectedId.length > 0 ? "_block" : " "}`} >
+                    <span style={SpanStyles} onClick={() => { this.setState({ isSelectionBar: false }); selectedId.length = 0 }}><i className="fa fa-close" aria-hidden="true"></i></span>
+                    <span style={Span} >{selectedId.length} selected</span>
+                    <div onClick={this.UnsubscribeDelete}>
+                        <span style={SpanStyles}><i className="fas fa-minus-circle"></i></span>
+                       <span onClick={this.unsubscribeProspect} style={SpanStyles} >Unsubscribe</span> : <span style={SpanStyles} >delete</span>
+                    </div>
+                </div>
+
+
+                <Modal className="prospect_modal" isOpen={showProspect} toggle={this.toggle}>
+                    <ModalHeader className="prospect_modalheader" toggle={this.toggle}></ModalHeader>
+                    <ModalBody className="prospect_modalbody" >
+                        <ProspectOnclick id={this.state.id} />
+                    </ModalBody>
+                </Modal>
                 <Container fluid className='mt-4' >
                     <Row>
-                        <Col md='2'>
+                        <Col md={2}>
                             <div>
                                 <label className='filter_app'>Teammate</label><br></br>
                                 <select className='filter_select_prospect'>
@@ -50,31 +125,24 @@ const {prospectData}=this.props;
                                 </select>
                             </div>
                         </Col>
-
                     </Row>
                     <Row className='mt-4'>
-                        <Col md='1' className=' prospect_details'><h1>33</h1><span >TOTAl</span></Col>
-                        <Col md='1' className=' prospect_details'><h1>6</h1><span >IN CAMPAIGN</span></Col>
-                        <Col md='1' className=' prospect_details'><h1>6</h1><span >ENGAGED</span></Col>
-                        <Col md='1' className=' prospect_details'><h1>6</h1><span >LEADS</span></Col>
-                        <Col md='1' className=' prospect_details'><h1>6</h1><span >BOUNCES</span></Col>
-                        <Col md='1' className=' prospect_details'><h1>6</h1><span >UNSUBSCRIBES</span></Col>
+                        <Col md={1} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index) => { return })}</h1><span >TOTAl</span></Col>
+                        <Col md={1} className=' prospect_details'><h1>6</h1><span >IN CAMPAIGN</span></Col>
+                        <Col md={1} className=' prospect_details'><h1>6</h1><span >ENGAGED</span></Col>
+                        <Col md={1} className=' prospect_details'><h1>6</h1><span >LEADS</span></Col>
+                        <Col md={1} className=' prospect_details'><h1>6</h1><span >BOUNCES</span></Col>
+                        <Col md={1} className=' prospect_details'><h1>6</h1><span >UNSUBSCRIBES</span></Col>
                     </Row>
                     <Row className=' mt-3 input_search_div'>
-                        <Col md='4'>
+                        <Col md={4}>
                             <div className='grand_parent' >
                                 <div className='input_field'>
-                                    <Input type='email' className='in' placeholder='Search' />
-                                    <div className='child mt-2'>
-                                        <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                            <span className='font_icon'><i className="fa fa-search" aria-hidden="true"></i></span>
-                                        </a>
-                                    </div>
+                                    <Input type='email' className='in' placeholder='SearchEmail' onChange={(event) => { this.setState({ searchEmail: event.target.value }) }} />
                                 </div>
                             </div>
-
                         </Col>
-                        <Col md='4'>
+                        <Col md={4}>
                             <div className='grand_parent mt-4'>
                                 <div className='select_div'>
                                     <select className='filter_select_prospect'>
@@ -86,7 +154,7 @@ const {prospectData}=this.props;
                                 </div>
                             </div>
                         </Col>
-                        <Col md='4'>
+                        <Col md={4}>
                             <div className='grand_parent mt-4'>
                                 <div className='select_div'>
                                     <select className='filter_select_prospect'>
@@ -112,41 +180,30 @@ const {prospectData}=this.props;
                                     <th >EMAIL</th>
                                     <th>NAME</th>
                                     <th>CREATED</th>
-                                    <th>STATUS</th>
+                                    {/* <th>STATUS</th> */}
                                     <th>CAMPAGINS</th>
                                     <th>SENT</th>
-                                    <th>ENGAGED</th>
-                                    <th>TASKS</th>
+                                    {/* <th>TASKS</th> */}
                                 </tr>
                             </thead>
                             <tbody>
                                 {
-                                    prospectData&& prospectData.map((item,index)=>{
-                                        console.log("item",item);
-                                       return <tr>
-                                           <td key={index}><input type='checkbox'></input></td>
-                                            <td value={index}>{item.email}</td>
+                                    prospectData && prospectData.filter((item) => {
+                                        if (item.email.toLowerCase().includes(this.state.searchEmail.toLowerCase())) { return <div>{item.email}</div> } else (this.state.searchEmail == "")
+                                        { return null }
+                                    }).map((item, index) => {
+                                        return <tr >
+                                            <td key={index}><input onChange={() => this.showSelectionBar(item.id)} type='checkbox'></input></td>
+                                            <td onClick={() => this.toggle(item.id)} value={index}>{item.email}</td>
                                             <td value={index}>{item.name}</td>
                                             <td value={index}>{item.created}</td>
-                                            <td value={index}>{item.status}</td>
-                                            <td value={index}>{item.campaign}</td>
+                                            {/* <td value={index}>{item.status}</td> */}
+                                            <td value={index}>{item.campaign_count}</td>
+                                            {/* <td value={index}>{item.sent === false ? 0 : 1}</td> */}
                                             <td value={index}>{item.sent}</td>
-                                            <td value={index}>{item.id}</td>
-                                            <td value={index}>{item.name}</td>
                                         </tr>
                                     })
                                 }
-                                {/* <tr>
-                                    <td><input type='checkbox' /></td>
-                                    <td>EMAIL</td>
-                                    <td>NAME</td>
-                                    <td>CREATED</td>
-                                    <td>STATUS</td>
-                                    <td>CAMPAGINS</td>
-                                    <td>SENT</td>
-                                    <td>ENGAGED</td>
-                                    <td>TASKS</td>
-                                </tr> */}
                             </tbody>
                         </Table>
                     </Row>
@@ -155,35 +212,20 @@ const {prospectData}=this.props;
         )
     }
 }
-// export default Prospects
-
-const mapStateToProps=(state)=>
-{
-    console.log("cheking state",typeof state.ProspectsGetReducer.prospectData)
-    return{
-        prospectData:state.ProspectsGetReducer.prospectData
+const mapStateToProps = (state) => {
+    return {
+        prospectData: state.ProspectsGetReducer.prospectData,
+        id: state.ProspectsGetReducer.prospectData
     }
 }
-
-const mapDispatchToProps=dispatch=>({
-    ProspectActionData:prospectData=>{
+const mapDispatchToProps = dispatch => ({
+    ProspectActionData: prospectData => {
         dispatch(ProspectActionData(prospectData))
-    }
+    },
+    unsubscribeProspectAction: id=>{
+        dispatch(ProspectUnsubscribeAction(id))
+    },
+    OnclickProspectActionData: id => { dispatch(OnclickProspectActionData(id)) },
+    deleteProspectData: id => { dispatch(deleteProspectAction(id)) }
 })
-export default connect(mapStateToProps,mapDispatchToProps)(Prospects)
-// Message Deepika Maheshwari
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default connect(mapStateToProps, mapDispatchToProps)(Prospects)

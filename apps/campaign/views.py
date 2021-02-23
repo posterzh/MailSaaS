@@ -787,32 +787,39 @@ class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
         return Response({'Sucess':True,"status":status.HTTP_200_OK})
 
 
-class CampaignleadCatcherView(generics.CreateAPIView):
+class CampaignleadCatcher(generics.CreateAPIView):
 
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = CampaignLeadCatcherSerializer
 
     def post(self, request, format=None):
         
-        for data in request.data:
-            data['assigned'] = request.user.id
-            serializer = CampaignLeadCatcherSerializer(data = data)
+        # for data in request.data:
+        try:
+            already_exist_lead_catcher = CampaignLeadCatcher.objects.get(campaign = request.data['campaign'])
+        # if not already_exist_lead_catcher:
+        except:
+            request.data['assigned'] = request.user.id
+            serializer = CampaignLeadCatcherSerializer(data = request.data)
             if serializer.is_valid():
                 serializer.save()
+                return Response({"sucess":True,"message":"leadcatcher settings created"})
             else:
                 return Response({"sucess":False, "status":serializer.errors})
-        return Response({"sucess":True,"message":"leadcatcher settings created"})
+        return Response({"sucess":False,"message":"leadcatcher for this campaign already exist"})
+        
 
-    def get(self, request, format=None):
-        try :
-            queryset = CampaignLeadCatcher.objects.get(campaign = request.data['campaign'])
+class LeadCatcherView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = CampaignLeadCatcherSerializer
+
+    def get(self, request, pk):
+        try:
+            queryset = CampaignLeadCatcher.objects.get(campaign=pk)
             serializer = CampaignLeadCatcherSerializer(queryset)
             return Response(serializer.data)
-        except :
+        except:
             return Response({"message":"lead catcher not available "})
-            
-
-
 
 
 class LeadCatcherUpdateView(generics.RetrieveUpdateDestroyAPIView):
@@ -935,13 +942,7 @@ class ProspectsView(generics.ListAPIView):
 
     def get(self, request, *args,**kwargs):
 
-        counts_data = {
-            "total_count": 0,
-            "in_campaign_count": 0,
-            "leads_count": 0,
-            "unsubscribe": 0
-        }
-
+        
         params = list(dict(request.GET).keys())
         if ("search" in params) and ("filter" in params):
             toSearch = request.GET['search']
@@ -1065,9 +1066,23 @@ class ProspectsView(generics.ListAPIView):
         else:
             queryset = CampaignRecipient.objects.filter(campaign__assigned=request.user.id, is_delete=False)
         
-        resp = []
+
+        counts_data = {
+            "total_count": 0,
+            "in_campaign_count": 0,
+            "leads_count": 0,
+            "unsubscribe": 0
+        }
+        resp = [counts_data]
 
         for recep in queryset:
+            counts_data["total_count"] += 1
+            counts_data["in_campaign_count"] += 1
+            if recep.leads:
+                counts_data["leads_count"] += 1
+            if recep.unsubscribe:
+                counts_data["unsubscribe"] += 1
+
             data = {
                 "id": recep.id,
                 "email": recep.email,
@@ -1082,6 +1097,11 @@ class ProspectsView(generics.ListAPIView):
             resp.append(data)
 
         return Response(resp)
+
+
+    def delete(self, request, format=None):
+        recp_to_delete = CampaignRecipient.objects.filter(id__in=request.data["recp_ids"]).update(is_delete=True)
+        return Response({"message":"Successfully Deleted","success":True})
         
 
 
@@ -1098,6 +1118,7 @@ class ProspectsCampaignView(generics.ListAPIView):
         for queryset in queryset:
             data = {
                 'campaign_id': queryset.campaign.id,
+                'reciepent_email': queryset.email,
                 'campaign_title':queryset.campaign.title,
                 'added': Campaign.objects.filter(id=queryset.campaign.id).values_list("created_date_time")[0][0].strftime("%B %d, %Y"),
                 'sent_in_a_camp': CampaignRecipient.objects.filter(campaign=queryset.campaign.id, sent=True).count(),
@@ -1110,9 +1131,7 @@ class ProspectsCampaignView(generics.ListAPIView):
 
         return Response(resp)
 
-    def delete(self, request, pk, format=None):
-        recp_to_delete = CampaignRecipient.objects.filter(id__in=request.data["recp_ids"]).update(is_delete=True)
-        return Response({"message":"Successfully Deleted","success":True})
+    
 
 
 class RecipientUnsubcribe(generics.CreateAPIView):

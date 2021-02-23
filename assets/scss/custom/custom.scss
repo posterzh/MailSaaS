@@ -72,14 +72,32 @@ input:focus{
     font-weight: 400;
 }
 .campaign_navbar{
-    height: 100px;
+    height: auto;
+    width: 100%;
     background-color: #035aac;
     display: flex;
     // flex-direction: column;
     align-items: center;
     justify-content: space-between;
 }
- 
+.selection-bar  {
+    background-color: #454545;
+    position: fixed;
+    z-index: 6;
+    width: 100%;
+    color: #fff;
+    // box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+    transition: all .25s;
+    padding:20px;
+    top: -100vh;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+}
+._block{
+    top: 0;
+}
 // campaign table css
 .header_sent,.Sent{
     background-color: rgba(0,90,172,.05); 
@@ -192,14 +210,13 @@ input:focus{
    }
 
 // leadcatcher  modal css
-
-.Leadcatcher_modalheader{
-    background-color: #005aac;
+.Leadcatcher_modalheader,.prospect_modalheader{
+    background-color: #035aac;
      padding-bottom: 0px;
      opacity: 1;
      border-radius: 0px;
 }
-.Leadcatcher_modalbody{
+.Leadcatcher_modalbody,.prospect_modalbody{
     padding-top:0px;
     background-color: #f5f5f5;
 }
@@ -454,6 +471,45 @@ margin-top: 10px;
 .choose_option{
     margin-top:4px;
     color:#005aac;
+}
+.choose_file{
+    background: #ff4081;
+    color: white;
+    width: 40%;
+}
+ .modal-dialog{
+    min-width: 60% !important;
+    width: 70%;
+}
+.unsubscribe-btn-wrapper{
+    display: flex;
+    width: 40%;
+    justify-content: flex-end;
+    margin-top: 40px;
+    input[type="file"]{
+        width: 25% !important;
+        &::before{
+            content: "Upload";
+            color: white;
+            margin:0px 10px;
+    }
+}
+.chooseOption::-webkit-file-upload-button{
+    display: inline-block;
+    border: none;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    margin: 0px;
+    padding: 0px;
+    opacity: 0;
+}
+   .example-text{
+    background: #f7f7f7 !important;
+    padding: 10px;
+    font-size: 14px;
+    color: rgba(0,0,0, 0.54);
+    }
 }
 .Beta{
     background-color:#ffab40;
@@ -723,6 +779,8 @@ button .import_button{
     border: none;
     background-color: #F8F9FE;
     border-bottom: 1px solid;
+    display: flex;
+    flex-wrap: nowrap;
     opacity: 0.3;
 }
 // css for preview page
@@ -1711,15 +1769,49 @@ margin-top: 0px !important;
         background: #e4e4e4;
    }
 }
-.main-view .compose-alert{
-    display: flex !important;
-    position: fixed;
-    bottom: 0px;
-    justify-content: center;
-    .alert{
-        width: max-content !important;
-    }
+.prospect_modal{
+    width: 80% !important;
 }
-.alert_{
-    margin-bottom:0px !important;
+.unsubscribe_container{
+    font-size: 18px !important;
 }
+.loader {
+    border: 5px solid #f3f3f3; /* Light grey */
+    border-top: 5px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    animation: spin 1s linear infinite;
+    margin: auto;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+.calender_details{
+    color:black
+}
+.nav_link{
+    color:white;
+}
+.inputField{
+    height: 13px;
+    width: 13px;
+    border: 1px solid silver;
+}
+<<<<<<< HEAD
+// .bottomView{
+//     width: 100%,
+//     height: 50,
+//     backgroundColor: '#EE5407',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     position: 'absolute', //Here is the trick
+//     bottom: 0, //Here is the trick
+//   }
+=======
+.fa-eye-slash{
+    color: #e5e5ee;
+}
+>>>>>>> 973a074d1d92bcb1d4f261ea0dcc408b64244252

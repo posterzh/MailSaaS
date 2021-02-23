@@ -21,10 +21,8 @@ class MailAccount extends Component {
             user: null,
             accountId: null,
             flag: false
-
         }
     }
-
     componentDidMount() {
         this.props.MailGetDataAction();
     }
@@ -148,41 +146,10 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => ({
     MailSenderAction: mailData => { dispatch(MailSenderAction(mailData)) },
-    MailGetDataAction: mailGetData => { dispatch(MailGetDataAction(mailGetData)) },
+    MailGetDataAction: () => { dispatch(MailGetDataAction()) },
     MailAccountDelete: id => { dispatch(MailAccountDeleteAction(id)) },
     MailAccountUpdate: (data, id) => { dispatch(MailAccountUpdate(data, id)) }
 
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MailAccount)
 
-{/* < Container >
-                            <Row>
-                                <Col md='3'>
-                                    <a href=''><div style={{ border: '2px solid', height: '100%', width: '100%', textAlign: 'center' }}>
-                                        <div>logo</div>
-                                        <div style={{ fontSize: '0.8em', fontWeight: 'bold' }}>GMAIL /G SUITE </div>
-                                        <div><p style={{ fontSize: '0.7em' }}>Any Google account</p></div>
-                                    </div></a>
-                                </Col>
-                                <Col md='3'>
-                                    <a href=''><div style={{ border: '2px solid', height: '100%', width: '100%', textAlign: 'center' }}>
-                                        <div>logo</div>
-                                        <div style={{ fontSize: '0.8em', fontWeight: 'bold' }}>GMAIL ALIAS</div>
-                                        <div><p style={{ fontSize: '0.7em' }}>Any Google account</p></div>
-                                    </div></a>
-                                </Col>
-                                <Col md='3'>
-                                    <a href=''><div style={{ border: '2px solid', height: '100%', width: '100%', textAlign: 'center' }}>
-                                        <div>logo</div>
-                                        <div style={{ fontSize: '0.8em', fontWeight: 'bold' }}>mICROSOFT</div>
-                                        <div><p style={{ fontSize: '0.7em' }}>Any Google account</p></div>
-                                    </div></a>
-                                </Col><Col md='3'>
-                                    <a href=''><div style={{ border: '2px solid', height: '100%', width: '100%', textAlign: 'center' }}>
-                                        <div>logo</div>
-                                        <div style={{ fontSize: '0.8em', fontWeight: 'bold' }}>SMPT</div>
-                                        <div><p style={{ fontSize: '0.7em' }}>Any Google account</p></div>
-                                    </div></a>
-                                </Col>
-                            </Row>
-                        </Container > */}

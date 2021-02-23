@@ -14,11 +14,12 @@ class NewCampaign_start extends React.Component {
         const date = thisMonth + ' ' + now.getDate() + " Outreach";
         this.state = {
             title: date,
-            from_address: this.props.mailGetData && this.props.mailGetData[0].id
-            // date: date
+            from_address: '',
+            mailsExist: null
         }
     }
     handleChange = (e) => {
+        console.log(e.target.name, e.target.value)
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -30,13 +31,37 @@ class NewCampaign_start extends React.Component {
         e.preventDefault();
         const data = {
             title: this.state.title,
-            from_address: this.props.mailGetData&&this.props.mailGetData[0].id
+            from_address: this.state.from_address
         }
         this.props.StartCampaignAction(data)
-        console.log("data--------->",data)
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.mailGetData && props.mailGetData[0] && props.mailGetData[0].id && !state.mailsExist) {
+            console.log('Call')
+            return {
+                from_address: props.mailGetData && props.mailGetData[0].id,
+                mailsExist: true
+            }
+        }
+        if (props.mailGetData && !props.mailGetData.length) {
+            alert('Please go to create mail account');
+            return {
+                mailsExist: false
+            }
+        }
+        return null
+    }
+
+    componentWillReceiveProps(preProps, nextProps) {
+        console.log({
+            preProps, nextProps
+        })
     }
     render() {
         const { mailGetData } = this.props;
+        console.log('from_address', this.state.from_address)
+        const { mailsExist} = this.state;
         return (
             <div className='main-view'>
                 <Container fluid>
@@ -63,18 +88,43 @@ class NewCampaign_start extends React.Component {
                             <Row className='mx-auto' style={{ width: '100%' }}>
                                 <ul style={{ listStyleType: 'none', display: 'flex' }}>
                                     <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignRecipient">RECIPICIENT</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignCompose">COMPOSE</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignPreview">PREVIEW</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignOptions">OPTIONS</Link></li>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignSend">SEND</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignRecipient",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>RECIPICIENT</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignCompose",
+                                        state: {
+                                            mailGetData: this.props.mailGetData
+                                        }
+                                    }}>COMPOSE</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignPreview",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>PREVIEW</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignOptions",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>OPTIONS</Link></li>
+                                    <li className='mr-3 ml-3'><Link to={{
+                                        pathname: "/app/admin/CampaignSend",
+                                        state: {
+                                            id: this.props.history.location.state && this.props.history.location.state.id
+                                        }
+                                    }}>SEND</Link></li>
                                 </ul>
                             </Row>
                         </Nav>
                         </Col>
                     </Row>
                     <Row >
-                        <Col md='6' className='mx-auto mt-5'>
+                        <Col md={6} className='mx-auto mt-5'>
                             <Form onSubmit={this.handleSubmit}>
                                 <Row style={{ display: 'flex', justifyContent: 'center' }} >
                                     <h1 style={{ fontSize: '30px', textAlign: 'center', color: "#333333" }}> Let's get started</h1>
@@ -85,8 +135,10 @@ class NewCampaign_start extends React.Component {
                                 </Row>
                                 <Row className='mt-5'>
                                     <div style={{ width: '100%' }}><label >From Address</label><br></br>
-                                        <Input type="select" name='from_address' onChange={this.handleChange} id="exampleSelect" >
+                                        <Input required type="select" name='from_address' value={this.state.from_address} onChange={this.handleChange} id="exampleSelect" >
+                                            <option value={''}>Select</option>
                                             {
+
                                                 mailGetData && mailGetData.map((item, index) => {
                                                     return <option key={index} value={item.id}>{item.email}</option>
                                                 })
@@ -96,7 +148,7 @@ class NewCampaign_start extends React.Component {
                                 </Row>
                                 <Row className='mt-5'>
                                     <Col style={{ display: "flex", justifyContent: "center" }}>
-                                        <button type='submit' className='btn startBtn'>Next <i className="fas fa-angle-right"></i>
+                                        <button disabled={!mailsExist} type='submit' className='btn startBtn'>Next <i className="fas fa-angle-right"></i>
                                         </button>
                                     </Col>
                                 </Row>
@@ -110,13 +162,13 @@ class NewCampaign_start extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-     // console.log("------------------------->",state.MailGetDataReducer.mailGetData&&state.MailGetDataReducer.mailGetData.map((e,i)=> e.email[0].id))
+    // console.log("------------------------->",state.MailGetDataReducer.mailGetData&&state.MailGetDataReducer.mailGetData.map((e,i)=> e.email[0].id))
     return {
         mailGetData: state.MailGetDataReducer.mailGetData && state.MailGetDataReducer.mailGetData
     };
 };
 const mapDispatchToProps = dispatch => ({
-    StartCampaignAction: data => { dispatch(StartCampaignAction(data)) },
+    StartCampaignAction: (data) => { dispatch(StartCampaignAction(data)) },
     MailGetDataAction: mailGetData => { dispatch(MailGetDataAction(mailGetData)) },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(NewCampaign_start)
