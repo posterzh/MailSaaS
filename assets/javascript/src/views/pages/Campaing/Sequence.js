@@ -8,10 +8,10 @@ export default class Sequence extends React.Component {
             <div>
                 <Container fluid>
                     <Row>
-                        <Campaign_details />
+                    <Campaign_details id={this.props.history.location.state&&this.props.history.location.state.id} />
                     </Row>
                     <Row className='mt-5'>
-                        <Col md='10' className='mx-auto'>
+                        <Col md={10} className='mx-auto'>
                             <Row>
                                 <div className='sequence_btn_div'>
                                     <button className='btn sequence_btn btn-md'>EDIT SEQUENCE</button>

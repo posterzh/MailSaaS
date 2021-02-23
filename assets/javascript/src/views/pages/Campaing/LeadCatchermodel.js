@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Label, Input, Dropdown, Modal, ModalHeader, ModalBody, ModalFooter, DropdownToggle, DropdownMenu, DropdownItem, Table, Button, Card } from 'reactstrap'
+import {Row, Col} from 'reactstrap'
 
 
 export class LeadCatchermodel extends Component {
@@ -108,7 +108,6 @@ export class LeadCatchermodel extends Component {
                             <span className="leadwon_icon">  <i className="fa fa-thumbs-up"></i></span>
                             <span className="leadstatus_rewon"> Lead won</span>
                             <span className="leadwon_redate">jan 24,2020</span>
-                            {/* <span className="saparator"><i className="fa fa-circle"></i></span> */}
                             <span className="leadwon_retime">12:19pm</span>
                         </div>
                     </Row>

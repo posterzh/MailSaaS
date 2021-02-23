@@ -76,7 +76,7 @@ class CampaignCompose extends Component {
             })
         }
         else {
-            Object.assign(this.state.normalData, { 'campaign': this.props.history.location.state.id })
+            Object.assign(this.state.normalData, { 'campaign': this.props.history.location.state &&this.props.history.location.state.id })
             let data = {
                 normal: this.state.normalData,
                 follow_up: this.state.followUpData,
@@ -98,22 +98,19 @@ class CampaignCompose extends Component {
         Object.assign(this.state.normalData, { 'email_body': e.blocks[0].text })
     }
 
-    onDeleteList=(e)=>{
+    onDeleteList = (e) => {
         var array = [...this.state.inputListFollow];
-        let index = e - 1
-        console.log(index, "index")
-        if (index !== -1) {
-            array.splice(index, 1);
-            this.setState({
-                inputListFollow: array,
-            })
-        }
-        if(array.length-1===index)
-        console.log(array.length-1,'array.length-1')
-       this.counter=0
+        let index = e - 1;
+     let a = this.state.inputListFollow.keys()
+     console.log(e,"sgsd")
+    //     const newList = array.filter((item,i) => i !== index);
+    //     this.setState({
+    //         inputListFollow:newList
+    //     })
+    //    this.counter=0
     }
     render() {
-        const { editorState,inputListLinkClick,inputListFollow } = this.state;
+        const { editorState, inputListFollow } = this.state;
 
         console.log(inputListFollow, "compose")
         return (
@@ -180,7 +177,7 @@ class CampaignCompose extends Component {
                                 </Col>
                             </Row>
                             <Row>
-                                <Col md='10' className='mx-auto'>
+                                <Col md={10} className='mx-auto'>
                                     <Row className="composeemail_heading">
                                         Compose the emails in this campaign
                                 </Row>
@@ -248,8 +245,8 @@ class CampaignCompose extends Component {
                                         </Col>
                                     </Row>
                                     <Row className='mx-auto'>
-                                        <Col md='3'><Button>CANCLE EDITS</Button></Col>
-                                        <Col md='2'><Button className="newcampaign_button btn" type='submit' >NEXT<i className="fa fa-arrow-right" aria-hidden="true"></i></Button></Col>
+                                        <Col md={3}><Button>CANCLE EDITS</Button></Col>
+                                        <Col md={2}><Button className="newcampaign_button btn" type='submit' >NEXT<i className="fa fa-arrow-right" aria-hidden="true"></i></Button></Col>
                                     </Row>
                                 </Col>
                             </Row>

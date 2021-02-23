@@ -14,10 +14,12 @@ class NewCampaign_start extends React.Component {
         const date = thisMonth + ' ' + now.getDate() + " Outreach";
         this.state = {
             title: date,
-            from_address: this.props.mailGetData[0] && this.props.mailGetData[0].id,
+            from_address: '',
+            mailsExist: null
         }
     }
     handleChange = (e) => {
+        console.log(e.target.name, e.target.value)
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -29,12 +31,37 @@ class NewCampaign_start extends React.Component {
         e.preventDefault();
         const data = {
             title: this.state.title,
-            from_address: this.props.mailGetData && this.props.mailGetData[0].id
+            from_address: this.state.from_address
         }
         this.props.StartCampaignAction(data)
     }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.mailGetData && props.mailGetData[0] && props.mailGetData[0].id && !state.mailsExist) {
+            console.log('Call')
+            return {
+                from_address: props.mailGetData && props.mailGetData[0].id,
+                mailsExist: true
+            }
+        }
+        if (props.mailGetData && !props.mailGetData.length) {
+            alert('Please go to create mail account');
+            return {
+                mailsExist: false
+            }
+        }
+        return null
+    }
+
+    componentWillReceiveProps(preProps, nextProps) {
+        console.log({
+            preProps, nextProps
+        })
+    }
     render() {
         const { mailGetData } = this.props;
+        console.log('from_address', this.state.from_address)
+        const { mailsExist} = this.state;
         return (
             <div className='main-view'>
                 <Container fluid>
@@ -97,7 +124,7 @@ class NewCampaign_start extends React.Component {
                         </Col>
                     </Row>
                     <Row >
-                        <Col md='6' className='mx-auto mt-5'>
+                        <Col md={6} className='mx-auto mt-5'>
                             <Form onSubmit={this.handleSubmit}>
                                 <Row style={{ display: 'flex', justifyContent: 'center' }} >
                                     <h1 style={{ fontSize: '30px', textAlign: 'center', color: "#333333" }}> Let's get started</h1>
@@ -108,8 +135,10 @@ class NewCampaign_start extends React.Component {
                                 </Row>
                                 <Row className='mt-5'>
                                     <div style={{ width: '100%' }}><label >From Address</label><br></br>
-                                        <Input type="select" name='from_address' onChange={this.handleChange} id="exampleSelect" >
+                                        <Input required type="select" name='from_address' value={this.state.from_address} onChange={this.handleChange} id="exampleSelect" >
+                                            <option value={''}>Select</option>
                                             {
+
                                                 mailGetData && mailGetData.map((item, index) => {
                                                     return <option key={index} value={item.id}>{item.email}</option>
                                                 })
@@ -119,7 +148,7 @@ class NewCampaign_start extends React.Component {
                                 </Row>
                                 <Row className='mt-5'>
                                     <Col style={{ display: "flex", justifyContent: "center" }}>
-                                        <button type='submit' className='btn startBtn'>Next <i className="fas fa-angle-right"></i>
+                                        <button disabled={!mailsExist} type='submit' className='btn startBtn'>Next <i className="fas fa-angle-right"></i>
                                         </button>
                                     </Col>
                                 </Row>
@@ -135,7 +164,7 @@ class NewCampaign_start extends React.Component {
 const mapStateToProps = (state) => {
     // console.log("------------------------->",state.MailGetDataReducer.mailGetData&&state.MailGetDataReducer.mailGetData.map((e,i)=> e.email[0].id))
     return {
-        mailGetData: state.MailGetDataReducer.mailGetData
+        mailGetData: state.MailGetDataReducer.mailGetData && state.MailGetDataReducer.mailGetData
     };
 };
 const mapDispatchToProps = dispatch => ({

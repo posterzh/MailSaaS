@@ -6,7 +6,7 @@ export default function Overview_Activity() {
         <div>
             <Container>
                 <Row className='mt-5'>
-                    <Col md='3'>
+                    <Col md={3}>
                         <select className='select_overview'>
                             <option>All recipient lists</option>
                             <option>Ignore sends</option>

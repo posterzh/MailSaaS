@@ -144,6 +144,7 @@ class Sidebar extends React.Component {
             <Collapse isOpen={this.state[prop.state]}>
               <Nav className="nav-sm flex-column">
                 {this.createLinks(prop.views)}
+                {/* .filter(({open}) => open) */}
               </Nav>
             </Collapse>
           </NavItem>

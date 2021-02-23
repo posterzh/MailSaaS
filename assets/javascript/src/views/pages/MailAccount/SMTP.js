@@ -18,8 +18,8 @@ componentWillUnmount(){
                         <ModalBody >
                             <Container>
                                 <Row>
-                                    <Col md='2'>logo</Col>
-                                    <Col md='10'>
+                                    <Col md={2}>logo</Col>
+                                    <Col md={10}>
                                         <Row>Sending address</Row>
                                         <Row><p style={{ fontSize: '0.7em' }}>This will be the “from” name and address on your emails and must be an address allowed by your email provider.</p></Row>
                                         <Row><Input type='email' name='emailAddress' value={this.props.emailAddress} autoComplete='off' onChange={this.props.handleChange} placeholder='Email Address'></Input></Row><br></br>
@@ -27,13 +27,13 @@ componentWillUnmount(){
                                     </Col>
                                 </Row><br></br>
                                 <Row>
-                                    <Col md='2'>logo</Col>
-                                    <Col md='10'>
+                                    <Col md={2}>logo</Col>
+                                    <Col md={10}>
                                         <Row>SMTP connection</Row>
                                         <Row><p style={{ fontSize: '0.7em' }}>This information comes from your email provider and is how we‘ll send your emails.</p></Row>
                                         <Row>
-                                            <Col md='8'><Input name='smtpHost' value={this.props.smtpHost} onChange={this.props.handleChange} className='mt-4' type='text' placeholder='Host(e.g.mail.server.com)'></Input></Col>
-                                            <Col md='4'><label className='selectbox_label' >Port Number</label>
+                                            <Col md={8}><Input name='smtpHost' value={this.props.smtpHost} onChange={this.props.handleChange} className='mt-4' type='text' placeholder='Host(e.g.mail.server.com)'></Input></Col>
+                                            <Col md={4}><label className='selectbox_label' >Port Number</label>
                                                 <Input name='smtpPort' type='select' onChange={this.props.handleChange} defaultValue='587'>
                                                     <option value='25'>25</option>
                                                     <option value='465'>465</option>
@@ -47,13 +47,13 @@ componentWillUnmount(){
                                     </Col>
                                 </Row><br></br>
                                 <Row>
-                                    <Col md='2'>logo</Col>
-                                    <Col md='10'>
+                                    <Col md={2}>logo</Col>
+                                    <Col md={10}>
                                         <Row>IMAP connection</Row>
                                         <Row><p style={{ fontSize: '0.7em' }}>This information comes from your email provider and is how we‘ll check your inbox for replies.</p></Row>
                                         <Row>
-                                            <Col md='8'><Input onChange={this.props.handleChange} name='imapHost' value={this.props.imapHost} className='mt-4' type='text' placeholder='Host(e.g.mail.server.com)'></Input></Col>
-                                            <Col md='4'><label className='selectbox_label' >Port Number</label>
+                                            <Col md={8}><Input onChange={this.props.handleChange} name='imapHost' value={this.props.imapHost} className='mt-4' type='text' placeholder='Host(e.g.mail.server.com)'></Input></Col>
+                                            <Col md={4}><label className='selectbox_label' >Port Number</label>
                                                 <Input type='select' name='imapPort' onChange={this.props.handleChange} defaultValue='993'>
                                                     <option value='143' >143</option>
                                                     <option value='993'>993</option>
@@ -67,8 +67,8 @@ componentWillUnmount(){
                                     </Col>
                                 </Row>
                                 <Row><br></br>
-                                    <Col md='2'>logo</Col>
-                                    <Col md='10'>
+                                    <Col md={2}>logo</Col>
+                                    <Col md={10}>
                                         <Row>Help</Row>
                                         <Row><p style={{ fontSize: '0.7em' }}>In most cases you‘ll need to contact your email provider or administrator to get help connecting your mail account. We‘re here to help as best we can.</p></Row>
                                         <Row><p style={{ fontSize: '0.7em' }}>Not having luck? Let Mailshake try auto-configuration.</p></Row><br></br>

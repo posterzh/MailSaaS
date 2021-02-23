@@ -1,3 +1,4 @@
+import { history } from "../.."
 import {
 
     FAILURE_REGISTER,
@@ -25,9 +26,10 @@ export const registerSuccess = (user) => {
         
     }
 }
-export const registerFailure = () => {
+export const registerFailure = (payload) => {
     return {
         type: FAILURE_REGISTER,
+        payload
     }
 }
 
@@ -44,9 +46,10 @@ export const LoginSuccess = (Loginuser) => {
         Loginuser
     }
 }
-export const loginFailure = () => {
+export const loginFailure = (payload) => {
     return {
         type: FAILURE_LOGIN,
+        payload
     }
 }
 
@@ -57,8 +60,12 @@ export const RegisterAction = (user) => {
         Api.RegisterApi(user).then(result => {
             console.log( 'registerSuccess',result.data)
             dispatch(registerSuccess(result.data))
+            setTimeout(() => {
+            history.push('/app/auth/login')
+            }, 2000);
         }).catch(err => {
-            console.log(err)
+            err.response.data.email&&  dispatch(registerFailure(err.response.data.email))
+            console.log(err.response.data.email)
         })
     }
 }
@@ -68,13 +75,14 @@ export const LoginAction = (Loginuser) => {
     return function (dispatch) {
         dispatch(requestForLogin(Loginuser))
         Api.LoginApi(Loginuser).then(result => {
-            console.log(".....................>>>",result)
             const token = result.data.token;
             localStorage.setItem('access_token', token)
             dispatch(LoginSuccess(result.data))
+            setTimeout(() => {
+            history.push('/app/admin/dashboard')
+            }, 2000);
         }).catch(err => {
-            console.log(".....................>>>",err)
-            dispatch(loginFailure(result.data))
+            dispatch(loginFailure(err.response.data.non_field_errors&&err.response.data.non_field_errors[0]))
         })
     }
 }

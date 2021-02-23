@@ -56,7 +56,7 @@ export default class FollowUpPage extends React.Component {
             <div>
                 <Container fluid>
                     <Row>
-                        <Col md='11' className='alignRight'>
+                        <Col md={11} className='alignRight'>
                             <Row>
                                 <h1 className='display-6'>On Link Clicks &nbsp;<a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                     <span><i className='QuestionCircle' class="fa fa-question-circle-o" aria-hidden="true"></i></span>
@@ -66,11 +66,11 @@ export default class FollowUpPage extends React.Component {
                                 <p style={{ fontSize: '14px' }}>These emails are sent when a recipient clicks a link in one of your sent messages.</p>
                             </Row>
                             <Row>
-                                <Col md='4'>
+                                <Col md={4}>
                                     <label className='filter_app_new'>Wait X days</label><br></br>
                                     <input value={this.state.waitDays} onChange={this.handleWaitDays} type='number'></input>
                                 </Col>
-                                <Col md='8'>
+                                <Col md={8}>
                                     <Input type='text' onChange={this.onUrlChange} value={this.state.url} className='in mt-3' style={{ borderBottom: '1px solid' }} placeholder='Clicked link url must exactly match:' required />
                                 </Col>
                             </Row>

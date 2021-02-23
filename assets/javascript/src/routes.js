@@ -41,6 +41,8 @@ import CampaignCompose from "./views/pages/dashboards/NewCampaign_compose"
 import CampaignPreview from "./views/pages/dashboards/NewCampaign_preview"
 import NewCampaign_options from "./views/pages/dashboards/NewCampaign_options"
 import CampaignSend from "./views/pages/dashboards/NewCampaign_send"
+import Campaign_Details from './views/pages/Campaing/Campaign_details.js'
+import ProspectOnclick from './views/pages/Prospects/ProspectOnclick'
 import CampaignDetails from './views/pages/Campaing/Campaign_details.js'
 import OverView from './views/pages/Campaing/OverView'
 import Sequence from './views/pages/Campaing/Sequence'
@@ -66,6 +68,7 @@ const routes = [
     state: "campaign",
     views: [
       {
+        open: true,
         path: "/CampaignStart",
         name: "Create Campaign",
         miniName: "CC",
@@ -198,6 +201,13 @@ const routes = [
     component: Prospects,
     layout: "/app/admin"
   },
+  // {
+  //   path: "/prospect-detail",
+  //   name: "Prospect Onclick",
+  //   miniName: "PD",
+  //   component: ProspectOnclick,
+  //   layout: "/app/admin"
+  // },
 
   // for MailAccount
   {
