@@ -12,3 +12,5 @@ for day in week_names:
     if not WeekDays.objects.filter(name = day):
         week_ob = WeekDays(name = day)
         week_ob.save()
+        print(day, " created in 'Week Days' table")
+print()
