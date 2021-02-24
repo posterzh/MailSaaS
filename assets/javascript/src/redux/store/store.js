@@ -20,6 +20,7 @@ import {
   ScheduleGetDataReducer,
   ScheduleUpdateReducer,
   LeadCatcherReducer,
+  LeadUpdateReducer,
   CampaignPeopleReducer,
   LeadGetReducer,
 } from '../reducer/reducer';
@@ -48,6 +49,7 @@ const rootReducer = combineReducers({
   LeadCatcherReducer,
   CampaignPeopleReducer,
   LeadGetReducer,
+  LeadUpdateReducer
 })
 
 const store = createStore(

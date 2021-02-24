@@ -31,7 +31,7 @@ export class CampSetting extends Component {
         if (!this.state.recipientsData || !this.state.num) {
             alert('Fill all information')
         }
-        console.log(this.state)
+        var id = this.props.history.location.state && this.props.history.location.state.id
         if (this.props.lead && this.props.lead.campaign) {
             //put
             const updateLeadData = {
@@ -39,7 +39,8 @@ export class CampSetting extends Component {
                 of_times: this.state.num,
                 specific_link: this.state.specific_link
             }
-            this.state.CampaignLeadUpdateAction(id, updateLeadData)
+            const getId = this.props.lead.id;
+            this.props.CampaignLeadUpdateAction(getId, id, updateLeadData)
         }
         else {
             //post
@@ -48,15 +49,12 @@ export class CampSetting extends Component {
                 of_times: this.state.num,
                 specific_link: this.state.specific_link
             }
-            console.log('leadData', leadData)
-            var id = this.props.history.location.state && this.props.history.location.state.id
             this.props.CampaignLeadCatcherAction(id, leadData)
 
         }
     }
     componentDidMount() {
         const id = this.props.history.location.state && this.props.history.location.state.id;
-        console.log("id=====>", id)
         this.props.CampaignLeadGetAction(id)
     }
     // this.props.CampaignLeadUpdateAction(id)
@@ -68,7 +66,6 @@ export class CampSetting extends Component {
     leadDeleteAction(id) {
         this.props.CampaignLeadDelete(id)
         alert('You want to delete this leadCatcher')
-        // window.location.reload()
     }
     render() {
         const id = this.props.history.location.state && this.props.history.location.state.id;
@@ -167,15 +164,14 @@ export class CampSetting extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        lead: state.LeadGetReducer && state.LeadGetReducer.leadGetData || {},
-        leadData: {}
+        lead: state.LeadGetReducer && state.LeadGetReducer.leadGetData,
     };
 };
 const mapDispatchToProps = (dispatch) => ({
     CampaignLeadCatcherAction: (id, leadData) => { dispatch(CampaignLeadCatcherAction(id, leadData)) },
     CampaignLeadDelete: (id) => { dispatch(CampaignLeadDeleteAction(id)) },
     CampaignLeadGetAction: (id) => { dispatch(CampaignLeadGetAction(id)) },
-    CampaignLeadUpdateAction:(id)=>{dispatch(CampaignLeadUpdateAction(id))}
+    CampaignLeadUpdateAction: (getId, id, updateLeadData) => { dispatch(CampaignLeadUpdateAction(getId, id, updateLeadData)) }
 
 });
 
