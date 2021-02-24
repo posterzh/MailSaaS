@@ -337,3 +337,14 @@ export const CampaignLeadGetAction = (id) => {
         })
     }
 }
+export const unsubscribeRecipientAction = (data,id) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('access_token')
+        Api.unsubscribeRecipientApi(data,token).then((response) => {
+            dispatch(CampaignPeopleAction(id))
+        }).catch((err) => {
+            console.log(err, 'err')
+        })
+    }
+}
+ 

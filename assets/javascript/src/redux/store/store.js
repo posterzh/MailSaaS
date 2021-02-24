@@ -18,7 +18,7 @@ import {
   OnclickProspectsReducer,
   CampaignTableReducer,
   ScheduleGetDataReducer,
-  ScheduleUpdateReducer,
+  // ScheduleUpdateReducer,
   LeadCatcherReducer,
   CampaignPeopleReducer,
   LeadGetReducer
@@ -44,7 +44,7 @@ const rootReducer = combineReducers({
   OnclickProspectsReducer,
   CampaignTableReducer,
   ScheduleGetDataReducer,
-  ScheduleUpdateReducer,
+  // ScheduleUpdateReducer,
   LeadCatcherReducer,
   CampaignPeopleReducer,
   LeadGetReducer

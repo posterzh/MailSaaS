@@ -1,8 +1,7 @@
-
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Container, Row, Col, Label, Input, Table, Modal, ModalHeader, ModalBody, Card, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
-import { ProspectActionData } from '../../../redux/action/ProspectsAction'
+import { ProspectActionData, ProspectUnsubscribeAction } from '../../../redux/action/ProspectsAction'
 import ProspectOnclick from './ProspectOnclick'
 import { OnclickProspectActionData, deleteProspectAction } from '../../../redux/action/ProspectsAction'
 const SpanStyles = {
@@ -20,6 +19,7 @@ const Span = {
     borderRight: "1px dashed",
     marginRight: "10px"
 };
+
 class Prospects extends Component {
     constructor(props) {
         super(props);
@@ -30,6 +30,8 @@ class Prospects extends Component {
             showProspect: false,
             isSelectionBar: false,
             selectedId: [],
+            id: ''
+
         };
     }
     dropdownToggle = () => {
@@ -37,18 +39,18 @@ class Prospects extends Component {
             dd1: !this.state.dd1
         });
     }
-    toggle = () => {
+    toggle = (id) => {
         this.setState({
-            showProspect: !this.state.showProspect
+            showProspect: !this.state.showProspect,
+            id: id
         })
     }
-    showSelectionBar = (id, e) => {
-        console.log(e.target.name, "h")
+    showSelectionBar = (id) => {
         const { selectedId } = this.state
         this.setState({
             isSelectionBar: true,
-            currentChecked: e.target.name
         })
+
         if (selectedId.length === 0) {
             selectedId.push(id)
             return
@@ -58,30 +60,36 @@ class Prospects extends Component {
                 let array = selectedId.filter(e => e != id)
                 this.setState({
                     selectedId: array
-                }, () => { console.log(array, "select") })
+                })
                 return
             }
         }
         selectedId.push(id)
-        console.log(selectedId, "sdfsdg")
     }
-    ProspectDelete = () => {
+    ProspectDelete = (data) => {
+        let id = this.state.selectedId;
+        this.props.deleteProspectData(id)
+        // this.state.selectedId.length = 0;
         this.setState({
             isSelectionBar: false,
             checked: false
         })
-        let data = this.state.selectedId;
-        this.props.deleteProspectData(data)
-        this.state.selectedId.length = 0;
-        // console.log("000000000000000000000000???????", data)
+        alert("deleted")
     }
-
+    unsubscribeProspect = () => {
+        this.props.unsubscribeProspectAction(this.state.selectedId)
+        this.setState({
+            isSelectionBar: false,
+            selectedId: []
+        })
+        alert("unsubscribed")
+    }
     componentDidMount() {
         this.props.ProspectActionData(this.props);
     }
     render() {
-        const { showProspect, isSelectionBar, selectedId, currentChecked, checked } = this.state;
-        const { prospectData } = this.props;
+        const { showProspect, isSelectionBar, selectedId } = this.state;
+        const { prospectData, propData } = this.props;
         return (
             <div className="prospect-main-container">
                 <div className='campaign_navbar' >
@@ -91,15 +99,21 @@ class Prospects extends Component {
                 <div style={{ padding: '20px' }} className={`selection-bar ${isSelectionBar && selectedId.length > 0 ? "_block" : " "}`} >
                     <span style={SpanStyles} onClick={() => { this.setState({ isSelectionBar: false }); selectedId.length = 0 }}><i className="fa fa-close" aria-hidden="true"></i></span>
                     <span style={Span} >{selectedId.length} selected</span>
-                    <div onClick={this.ProspectDelete}>
+                    <div >
                         <span style={SpanStyles}><i className="fas fa-minus-circle"></i></span>
-                        <span style={SpanStyles} >Delete</span>
+                        <span onClick={this.ProspectDelete} style={SpanStyles} >delete</span>:
+                        <span onClick={this.unsubscribeProspect} style={SpanStyles} >Unsubscribe</span>
+                    </div>
+                    <div>
+
                     </div>
                 </div>
+
+
                 <Modal className="prospect_modal" isOpen={showProspect} toggle={this.toggle}>
-                    <ModalHeader className="prospect_modalheader" toggle={this.toggle}></ModalHeader>
+                    <ModalHeader className="prospect_modalheader" toggle={this.toggle}>{propData && propData.reciepent_email}</ModalHeader>
                     <ModalBody className="prospect_modalbody" >
-                        <ProspectOnclick />
+                        <ProspectOnclick id={this.state.id} />
                     </ModalBody>
                 </Modal>
                 <Container fluid className='mt-4' >
@@ -117,12 +131,10 @@ class Prospects extends Component {
                         </Col>
                     </Row>
                     <Row className='mt-4'>
-                        <Col md={1} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index) => { return })}</h1><span >TOTAl</span></Col>
-                        <Col md={1} className=' prospect_details'><h1>6</h1><span >IN CAMPAIGN</span></Col>
-                        <Col md={1} className=' prospect_details'><h1>6</h1><span >ENGAGED</span></Col>
-                        <Col md={1} className=' prospect_details'><h1>6</h1><span >LEADS</span></Col>
-                        <Col md={1} className=' prospect_details'><h1>6</h1><span >BOUNCES</span></Col>
-                        <Col md={1} className=' prospect_details'><h1>6</h1><span >UNSUBSCRIBES</span></Col>
+                        <Col md={2} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index) => { return item.total_count})}</h1><span >TOTAl</span></Col>
+                        <Col md={2} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index)=>{ return item.in_campaign_count})}</h1><span >IN CAMPAIGN</span></Col>
+                        <Col md={2} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index)=>{ return item.leads_count})}</h1><span >LEADS</span></Col>
+                        <Col md={2} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index)=>{ return item.unsubscribe})}</h1><span >UNSUBSCRIBES</span></Col>
                     </Row>
                     <Row className=' mt-3 input_search_div'>
                         <Col md={4}>
@@ -179,24 +191,18 @@ class Prospects extends Component {
                             <tbody>
                                 {
                                     prospectData && prospectData.filter((item) => {
-                                        if (item.email.toLowerCase().includes(this.state.searchEmail.toLowerCase())) { return <div>{item.email}</div> } else (this.state.searchEmail == "")
+                                        if (item.email && item.email.toLowerCase().includes(this.state.searchEmail.toLowerCase())) { return <div>{item.email}</div> } else (this.state.searchEmail == "")
                                         { return null }
-                                    }).map((e, index) => {
-                                        return <tr onClick={() => this.props.OnclickProspectActionData(e.id)} >
-                                            <td
-                                                name={index}
-                                                key={index}
-                                                onChange={(event) => { this.showSelectionBar(e.id, event) }}
-                                                style={{ width: '20px', height: '20px' }}><input type='checkbox'>
-                                                </input>
-                                            </td>
-                                            <td onClick={this.toggle} value={index}>{e.email}</td>
-                                            <td value={index}>{e.name}</td>
-                                            <td value={index}>{e.created}</td>
-                                            {/* <td value={index}>{e.status}</td> */}
-                                            <td value={index}>{e.campaign_count}</td>
-                                            {/* <td value={index}>{e.sent === false ? 0 : 1}</td> */}
-                                            <td value={index}>{e.sent}</td>
+                                    }).map((item, index) => {
+                                        return <tr >
+                                            <td key={index}><input onChange={() => this.showSelectionBar(item.id)} type='checkbox'></input></td>
+                                            <td onClick={() => this.toggle(item.id)} value={index}>{item.email}</td>
+                                            <td value={index}>{item.name}</td>
+                                            <td value={index}>{item.created}</td>
+                                            {/* <td value={index}>{item.status}</td> */}
+                                            <td value={index}>{item.campaign_count}</td>
+                                            {/* <td value={index}>{item.sent === false ? 0 : 1}</td> */}
+                                            <td value={index}>{item.sent}</td>
                                         </tr>
                                     })
                                 }
@@ -209,18 +215,21 @@ class Prospects extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    // console.log("cheking state", state.ProspectsGetReducer.prospectData)
-    console.log("++++++++++++++++", state.ProspectsGetReducer.prospectData && state.ProspectsGetReducer.prospectData.map((e, i) => { return e.id }))
+    console.log("propData: state.OnclickProspectsReducer.prospectOnclickData &&state.OnclickProspectsReducer.prospectOnclickData", state.OnclickProspectsReducer.prospectOnclickData && state.OnclickProspectsReducer.prospectOnclickData)
     return {
         prospectData: state.ProspectsGetReducer.prospectData,
-        id: state.ProspectsGetReducer.prospectData
+        id: state.ProspectsGetReducer.prospectData,
+        propData: state.OnclickProspectsReducer.prospectOnclickData && state.OnclickProspectsReducer.prospectOnclickData
     }
 }
 const mapDispatchToProps = dispatch => ({
     ProspectActionData: prospectData => {
         dispatch(ProspectActionData(prospectData))
     },
-    OnclickProspectActionData: data => { dispatch(OnclickProspectActionData(data)) },
-    deleteProspectData: data => { dispatch(deleteProspectAction(data)) }
+    unsubscribeProspectAction: id => {
+        dispatch(ProspectUnsubscribeAction(id))
+    },
+    OnclickProspectActionData: id => { dispatch(OnclickProspectActionData(id)) },
+    deleteProspectData: id => { dispatch(deleteProspectAction(id)) }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Prospects)

@@ -16,7 +16,7 @@ export const FetchSchedule=()=>{
 export const FetchScheduleSuccess = (ScheduleGetData) => {
     return {
         type: SUCCESS_GET_SCHEDULE,
-        ScheduleGetData
+        payload: ScheduleGetData
     }
 }
 export const FetchScheduleFailure=()=>{
@@ -31,7 +31,7 @@ export const UpdateScheduleSuccess = (UpdateScheduleData) => {
     console.log("in schedue updte action.js file ",UpdateScheduleData)
     return {
         type: UPDATE_SUCCESS_GET_SCHEDULE,
-        UpdateScheduleData
+        payload: UpdateScheduleData
     }
 }
 

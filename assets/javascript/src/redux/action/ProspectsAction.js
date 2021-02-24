@@ -53,7 +53,7 @@ export const ProspectActionData = (id) => {
 
 // ACTION FOR ONCLICK PROSPECT
 export const OnclickProspectActionData = (data) => {
-    console.log('mera name geet ',data);
+    // console.log('OnclickProspectActionData ',data);
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         // const datat=localStorage.getItem('pid')
@@ -68,7 +68,7 @@ export const OnclickProspectActionData = (data) => {
 
 
 export const deleteProspectAction = (data) => {
-    console.log('pagala gya hai kya',data[0]);
+    // console.log('deleteProspectActiondata[0]:',data[0]);
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         // const pid=localStorage.setItem('pid')
@@ -77,6 +77,17 @@ export const deleteProspectAction = (data) => {
             dispatch(ProspectActionData(data[0]))
         }).catch((err) => {
             console.log(err, 'err')
+        })
+    }
+}
+
+export const ProspectUnsubscribeAction = (id) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('access_token')
+        Api.ProspectsUnsubscribe(id,token).then(result => {
+           dispatch(ProspectActionData())
+        }).catch(err => {
+            console.log(err)
         })
     }
 }

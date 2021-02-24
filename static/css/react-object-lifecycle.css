@@ -164,28 +164,6 @@ input:focus {
   height: 159px;
   width: 214px; }
 
-.su, .tu, .we, .th, .fr, .sa {
-  font-size: 12px;
-  background-color: #ddd;
-  padding-right: 5px;
-  text-align: center; }
-
-.mo {
-  font-size: 12px;
-  background-color: white;
-  padding-right: 5px; }
-
-.su_box, .mo_box, .tu_box, .we_box, .th_box, .fr_box, .sa_box {
-  width: 225px;
-  height: 141px;
-  border-right: 1px solid #fff;
-  background-color: #ddd; }
-
-.su_box > p, .mo_box > p, .tu_box > p, .we_box > p, .th_box > p, .fr_box > p, .sa_box > p {
-  color: black;
-  border-bottom: 1px solid #fff;
-  font-size: 12px; }
-
 .Leadcatcher_modalheader, .prospect_modalheader {
   background-color: #035aac;
   padding-bottom: 0px;
@@ -1689,4 +1667,18 @@ input::-webkit-inner-spin-button {
   height: 13px;
   width: 13px;
   border: 1px solid silver; }
+
+.fa-eye-slash {
+  color: #e5e5ee; }
+
+.password-message {
+  color: red;
+  font-size: 12px; }
+
+.blockdays {
+  color: black;
+  font-size: 12px;
+  border: 1px solid;
+  border-color: #ccc;
+  padding: 3px 10px; }
 

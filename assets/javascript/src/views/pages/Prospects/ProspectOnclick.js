@@ -3,8 +3,11 @@ import { connect } from 'react-redux';
 import { Container, Row, Col, Label, Input, Table, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import { OnclickProspectActionData } from '../../../redux/action/ProspectsAction'
 export class ProspectOnclick extends Component {
+    constructor(props){
+        super(props)
+    }
     componentDidMount() {
-        this.props.OnclickProspectActionData(this.props);
+        this.props.OnclickProspectActionData(this.props.id);
     }
     render() {
         const { propData } = this.props;
@@ -47,7 +50,6 @@ export class ProspectOnclick extends Component {
     }
 }
 
-// export default ProspectOnclick
 const mapStateToProps = (state) => {
     console.log("cheking state for onclick",state.OnclickProspectsReducer.prospectOnclickData &&state.OnclickProspectsReducer.prospectOnclickData.campaign_title)
     return {

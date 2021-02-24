@@ -240,7 +240,19 @@ Api.CampaignOnclickProspects = (data, token) => {
     }
   })
 }
-
+// ProspectsUnsubscribe
+Api.ProspectsUnsubscribe=(id,token)=>{
+  return axios({
+    method:'put',
+     url: `${API_BASE_URL}/campaign/recipientunsubcribe/`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    },
+    data:{
+      recipient_id:id
+    }
+  })
+}
 // user settings
 Api.UserSetting = (token) => {
   return axios({
@@ -397,7 +409,8 @@ Api.unsubscribeUsersWithEmailApi = (email, token) => {
 }
 Api.unsubscribeRecipientApi = (id,token)=>{
   return axios({
-    method:'put', url: `${API_BASE_URL}/campaign/recipientunsubcribe/`,
+    method:'put',
+     url: `${API_BASE_URL}/campaign/recipientunsubcribe/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     },
