@@ -21286,3 +21286,14 @@ input::-webkit-inner-spin-button {
   border-color: #ccc;
   padding: 3px 10px; }
 
+.su_box, .mo_box, .tu_box, .we_box, .th_box, .fr_box, .sa_box {
+  width: 225px;
+  height: 141px;
+  border-right: 1px solid #fff;
+  background-color: #ddd; }
+
+.su_box > p, .mo_box > p, .tu_box > p, .we_box > p, .th_box > p, .fr_box > p, .sa_box > p {
+  color: black;
+  border-bottom: 1px solid #fff;
+  font-size: 12px; }
+

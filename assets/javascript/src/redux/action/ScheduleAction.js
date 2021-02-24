@@ -49,7 +49,6 @@ export const GetScheduleAction = () => {
         })
     }
 }
-
 // MIDLEWARE FOR UPDATE SCHEDULE
 export const ScheduleUpdateAction = (updatedataschedule) => {
     console.log("ScheduleGetDataaaaaaaaaaaaaaaaaaaa",updatedataschedule)

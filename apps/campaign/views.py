@@ -787,32 +787,39 @@ class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
         return Response({'Sucess':True,"status":status.HTTP_200_OK})
 
 
-class CampaignleadCatcherView(generics.CreateAPIView):
+class CampaignleadCatcher(generics.CreateAPIView):
 
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = CampaignLeadCatcherSerializer
 
     def post(self, request, format=None):
         
-        for data in request.data:
-            data['assigned'] = request.user.id
-            serializer = CampaignLeadCatcherSerializer(data = data)
+        # for data in request.data:
+        try:
+            already_exist_lead_catcher = CampaignLeadCatcher.objects.get(campaign = request.data['campaign'])
+        # if not already_exist_lead_catcher:
+        except:
+            request.data['assigned'] = request.user.id
+            serializer = CampaignLeadCatcherSerializer(data = request.data)
             if serializer.is_valid():
                 serializer.save()
+                return Response({"sucess":True,"message":"leadcatcher settings created"})
             else:
                 return Response({"sucess":False, "status":serializer.errors})
-        return Response({"sucess":True,"message":"leadcatcher settings created"})
+        return Response({"sucess":False,"message":"leadcatcher for this campaign already exist"})
+        
 
-    def get(self, request, format=None):
-        try :
-            queryset = CampaignLeadCatcher.objects.get(campaign = request.data['campaign'])
+class LeadCatcherView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = CampaignLeadCatcherSerializer
+
+    def get(self, request, pk):
+        try:
+            queryset = CampaignLeadCatcher.objects.get(campaign=pk)
             serializer = CampaignLeadCatcherSerializer(queryset)
             return Response(serializer.data)
-        except :
+        except:
             return Response({"message":"lead catcher not available "})
-            
-
-
 
 
 class LeadCatcherUpdateView(generics.RetrieveUpdateDestroyAPIView):
