@@ -29,6 +29,8 @@ from .serializers import (CampaignEmailSerializer,
                           CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer,
                           OnclickSerializer)
+from apps.mailaccounts.models import EmailAccount
+from apps.mailaccounts.views import send_mail_with_smtp
 
 
 class CreateCampaignStartView(APIView):
@@ -370,12 +372,14 @@ class CreateCampaignSendView(APIView):
                     subject = campemail.subject
                     text_content = 'plain text body message.'
                     html_content = emailData
-                    msg = EmailMultiAlternatives(subject, text_content, campemail.campaign.from_address.email, [campemail.email])
+                    # msg = EmailMultiAlternatives(subject, text_content, campemail.campaign.from_address.email, [campemail.email])
 
-                    msg.attach_alternative(html_content, "text/html")
-                    msg.send()
+                    # msg.attach_alternative(html_content, "text/html")
+                    # msg.send()
 
-                    
+                    email_account_ob = EmailAccount.objects.get(user=request.user.id, email=camp.from_address.email)
+                    if email_account_ob.provider == "SMTP":
+                        send_mail_with_smtp(email_account_ob.smtp_host, email_account_ob.smtp_port, email_account_ob.smtp_username, email_account_ob.smtp_password, [campemail.email], campemail.subject, emailData)
 
                     campemail.sent = True
                     campemail.reciepent_status = True

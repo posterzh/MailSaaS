@@ -182,7 +182,7 @@ class PostToSchedule(APIView):
                 # es = EmailScheduleSerializers(schedule_exist_count)
                 data["time"] = next_email_send_at_time
                 email_schedule_serlzr = EmailScheduleSerializers(data = data)
-                print(email_schedule_serlzr)
+                print(schedule_exist_count,email_schedule_serlzr)
                 if email_schedule_serlzr.is_valid():
                     print()
                     print()
