@@ -145,7 +145,6 @@ class PostToSchedule(APIView):
 
     def post(self, request, format=None):
         postData = request.data
-
         schedule = Schedule.objects.get(user = request.user.id)
         next_email_send_at_time = schedule.start_time
 
@@ -160,6 +159,7 @@ class PostToSchedule(APIView):
         post_data = []
         
         for camp_id in postData["campaign_ids"]:
+            print("reqqqqqqqqqqq userrrrrrrrrrrr ",camp_id)
             # camp = Campaign.objects.get(id = camp_id)
             camp_email = CampaignRecipient.objects.filter(campaign = camp_id)
             for recipient in camp_email:

@@ -13,15 +13,14 @@ export class CampaignSend extends Component {
     componentDidMount() {
         const CampId = this.props.history.location.state && this.props.history.location.state.id
         this.props.CampaignCreateAction(CampId)
-        console.log("mounting in Send", CampId)
     }
     campaignStart = (e) => {
         e.preventDefault()
-        this.props.CampaignSaveAction(true,this.props.history.location.state && this.props.history.location.state.id)
+        this.props.CampaignSaveAction(true, this.props.history.location.state && this.props.history.location.state.id)
     }
     campaignPause = (e) => {
         e.preventDefault()
-        this.props.CampaignSaveAction(false,this.props.history.location.state && this.props.history.location.state.id)
+        this.props.CampaignSaveAction(false, this.props.history.location.state && this.props.history.location.state.id)
     }
     render() {
         const { sendData } = this.props;
@@ -191,6 +190,6 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = dispatch => ({
     CampaignCreateAction: (CampId) => { dispatch(CampaignCreateAction(CampId)); },
-    CampaignSaveAction: (saveData,CampId) => { dispatch(CampaignSaveAction(saveData,CampId)); },
+    CampaignSaveAction: (saveData, CampId) => { dispatch(CampaignSaveAction(saveData, CampId)); },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignSend)

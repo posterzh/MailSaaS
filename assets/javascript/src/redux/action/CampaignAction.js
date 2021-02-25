@@ -23,7 +23,7 @@ import {
     SUCCESS_LEAD_CATCHER_GET,
     SUCCESS_LEAD_DELETE,
     SUCCESS_LEAD_UPDATE,
-    SUCCESS_LEAD_CATCHER_ALL,
+    SUCCESS_LEAD_VIEW,
     SUCCESS_CREATE_LEAD
 
 } from "../actionType/actionType"
@@ -176,14 +176,14 @@ export const leadCatcherUpdateSuccess = (leadUpdateData) => {
     }
 }
 // view all leads
-export const leadViewSuccess = (leadUpdateData) => {
+export const leadViewSuccess = (leadViewData) => {
     return {
-        type: SUCCESS_LEAD_CATCHER_ALL,
-        payload: leadUpdateData
+        type: SUCCESS_LEAD_VIEW,
+        payload: leadViewData
     }
 }
 
-// lead catcher all
+// lead catcher 
 export const leadCreateSuccess = (createLeadData) => {
     return {
         type: SUCCESS_CREATE_LEAD,
@@ -200,7 +200,7 @@ export const CampaignOverviewAction = (id) => {
             result.data.id = id
             dispatch(CampaignOverviewSuccess(result.data))
             setTimeout(() => { history.push('/app/admin/OverView', { id: result.data.id }) }
-                , 2000);
+                , 1000);
         }).catch(err => {
             console.log(err)
 
@@ -217,7 +217,7 @@ export const StartCampaignAction = (data) => {
             console.log(result.data, " result.data")
             setTimeout(() => {
                 history.push('/app/admin/CampaignRecipient', { id: result.data.id })
-            }, 2000);
+            }, 1000);
 
         }).catch(err => {
             console.log(err)
@@ -232,7 +232,7 @@ export const CampaignOptionAction = (optionData) => {
             setTimeout(() => {
                 dispatch(OptionSuccess(result.data))
                 history.push('/app/admin/CampaignSend', { id: result.data.id })
-            }, 2000);
+            }, 1000);
         }).catch(err => {
             console.log(err)
         })
@@ -245,7 +245,7 @@ export const RecipientAction = (recipientData) => {
             setTimeout(() => {
                 dispatch(StartCampaignSuccess(result.data))
                 history.push('/app/admin/CampaignCompose', { id: recipientData.campaign })
-            }, 2000);
+            }, 1000);
         }).catch(err => { console.log(err) })
     }
 }
@@ -280,19 +280,20 @@ export const CampaignCreateAction = (id) => {
         Api.CampaignCreateGetApi(token, id).then(result => {
             setTimeout(() => {
                 dispatch(CampaignCreateSuccess(result.data))
-            }, 3000);
+            }, 1000);
         })
     }
 }
 
 export const CampaignSaveAction = (saveData, id) => {
+    console.log(';CampaignSaveAction',saveData,id);
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.CampaignSaveApi(token, id, saveData).then(result => {
             setTimeout(() => {
                 dispatch(CampaignSaveSuccess(result.data))
                 history.push("/app/admin/campaign", { id: id, saveData: saveData })
-            }, 3000);
+            }, 1000);
         }).catch(err => {
             console.log(err)
 
@@ -319,7 +320,7 @@ export const CampaignComposeAction = (data) => {
             setTimeout(() => {
                 dispatch(requestForCampaignCompose(result.data))
                 history.push('/app/admin/CampaignPreview', { id: data.normal.campaign })
-            }, 2000);
+            }, 1000);
         }).catch(err => {
             console.log(err, 'error-')
         })
@@ -398,8 +399,8 @@ export const CampaignCreateLeadAction = (id,createLeadData) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.CampaignCreateLeadApi(token, id, createLeadData).then(result => {
-            console.log("result.data",result.data)
             dispatch(leadCreateSuccess(result.data))
+            dispatch(CampaignLeadViewAction(id))
         }).catch(err => {
             console.log(err, 'error-')
         })
@@ -407,13 +408,12 @@ export const CampaignCreateLeadAction = (id,createLeadData) => {
 }
 
 // LEAD CATCHER VIEW ALL
-export const CampaignLeadAllAction = (id) => {
-    console.log('camp id', id)
+export const CampaignLeadViewAction = (id,leadViewData) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        Api.CampaignAllLeadApi(token, id).then(result => {
+        Api.CampaignLeadViewApi(token, id,leadViewData).then(result => {
             console.log(result, "===========results")
-            dispatch(leadCatcherAllSuccess())
+            dispatch(leadViewSuccess(result.data))
         }).catch(err => {
             console.log(err, 'error-')
         })

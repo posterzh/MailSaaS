@@ -43,7 +43,7 @@ import {
     SUCCESS_FOR_CAMPAIGN_PEOPLE,
     SUCCESS_LEAD_DELETE,
     SUCCESS_LEAD_UPDATE,
-    SUCCESS_LEAD_CATCHER_ALL
+    SUCCESS_LEAD_VIEW
 } from "../actionType/actionType";
 
 const initialState = {
@@ -75,7 +75,7 @@ const initialState = {
     leadData: '',
     leadGetData: '',
     campaignPeopleData: '',
-    leadAllData:'',
+    leadViewData:'',
     updateLeadData:''
 }
 export const RegisterReducer = (state = initialState, action) => {
@@ -417,12 +417,12 @@ export const LeadGetReducer = (state = initialState, action) => {
     }
 }
 // lead view all
-export const LeadAllReducer = (state = initialState, action) => {
+export const LeadViewReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SUCCESS_LEAD_CATCHER_ALL:
+        case SUCCESS_LEAD_VIEW:
             return {
                 ...state,
-                leadAllData: action.payload,
+                leadViewData: action.payload,
             }
         default: return state
             break;

@@ -759,7 +759,7 @@ class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
             queryset = CampaignRecipient.objects.filter(campaign=pk)
         campEmailserializer = CampaignEmailSerializer(queryset, many = True)
         return Response(campEmailserializer.data)
-
+get
 
 
 class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
