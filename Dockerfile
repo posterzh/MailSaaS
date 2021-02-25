@@ -5,6 +5,6 @@ COPY . /
 WORKDIR /
 RUN apt-get update
 RUN apt-get install libpq-dev gcc -y
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 RUN npm i 
 CMD python3 manage.py runserver 0.0.0.0:8000 && npm run dev-watch
