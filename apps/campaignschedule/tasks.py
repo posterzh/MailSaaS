@@ -9,6 +9,8 @@ from django.core.mail import send_mail
 from django.http import JsonResponse
 
 from apps.campaign.models import Campaign, CampaignRecipient
+from apps.mailaccounts.models import EmailAccount
+from apps.mailaccounts.views import send_mail_with_smtp
 
 from .models import Email_schedule, Schedule
 from .serializers import EmailScheduleSerializers
@@ -69,23 +71,32 @@ def send_email_task():
         max_mail_at_a_time = schedule.max_email_send
         
         
-        print(min_mail_at_a_time)
-        print(max_mail_at_a_time)
-        print(random.randint(min_mail_at_a_time, max_mail_at_a_time))
+        # print(min_mail_at_a_time)
+        # print(max_mail_at_a_time)
+        # print(random.randint(min_mail_at_a_time, max_mail_at_a_time))
 
         random_no_of_mails_at_a_time = random.randint(min_mail_at_a_time, max_mail_at_a_time)
 
         for i in list(schedule.block_days.values()):
-            block_days_list.append(i["name"])  
+            block_days_list.append(i["name"])
+        # print(datetime.now().time().strftime("%H:%M") == email_data.time.strftime("%H:%M"))
+        # print(today_day not in block_days_list)
+        # print(mail_sent_count < max_email_to_send_today)
         # print(today_day, block_days_list, datetime.now().time().strftime("%H:%M") == email_data.time.strftime("%H:%M"), today_day not in block_days_list)
         if (datetime.now().time().strftime("%H:%M") == email_data.time.strftime("%H:%M")) and (today_day not in block_days_list) and (mail_sent_count < max_email_to_send_today):
-            print("Mail Gayo")
-            mail_sent_count += 1
-
+            # print("email_data.mail_account", type(email_data.mail_account), email_data.mail_account)
+            email_account_ob = EmailAccount.objects.get(email=email_data.mail_account)
+            if email_account_ob.provider == "SMTP":
+                send_mail_with_smtp(email_account_ob.smtp_host, email_account_ob.smtp_port, email_account_ob.smtp_username, email_account_ob.smtp_password, [email_data.recipient_email], email_data.subject, email_data.email_body)
+                email_data.delete()
+                mail_sent_count += 1
+                print("Mail Sent")
             # send_mail(email_data.subject, email_data.email_body, email_data.mail_account, [email_data.recipient_email],fail_silently=False)
-            email_data.delete()
+            
+            
+
         else:
-            print("Koni Gayo")
+            print("Mail Not Sent")
         # print("Mail Send to "+email_data.recipient_email+" from "+email_data.mail_account+" with subjects "+email_data.subject+" with Email "+email_data.email_body)
     return "Done"
     

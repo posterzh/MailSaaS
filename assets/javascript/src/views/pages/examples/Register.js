@@ -75,27 +75,27 @@ class Register extends React.Component {
 
     };
     this.props.RegisterAction(user)
-    console.log(user)
-   
+    // console.log(user)
+
     // const token=localStorage.getItem("access_token")
     // if(token){
     //   alert('Successful')
     // }
   }
-  static getDerivedStateFromProps(props, state){
-    return
-  }
-  componentDidUpdate(prevProps){
-    if(prevProps!==this.props.registerResponse)
-    console.log("true")
-    else{
-      console.log("false")
+  // static getDerivedStateFromProps(props, state){
+  //   return
+  // }
+  // componentDidUpdate(prevProps){
+  //   if(prevProps!==this.props.registerResponse)
+  //   console.log("true")
+  //   else{
+  //     console.log("false")
 
-    }
+  //   }
 
-  }
+  // }
   render() {
-    const { registerResponse,isRegisterSuccess } = this.props
+    const { registerResponse, isRegisterSuccess } = this.props
     return (
       <>
         <AuthHeader
@@ -110,7 +110,7 @@ class Register extends React.Component {
                   <div className="text-center text-muted mt-1 mb-4">
                     <small style={{ fontSize: 30, color: '#525f7f', fontWeight: 'bold' }}>Register</small>
                   </div>
-                  <Form onSubmit={this.handleSubmit} >
+                  <Form onSubmit={this.handleSubmit} role="form">
                     <FormGroup
                       className={classnames({
                         focused: this.state.focusedName
@@ -166,9 +166,7 @@ class Register extends React.Component {
                       <InputGroup className="input-group-merge input-group-alternative mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
-                            {/* <i className="ni ni-email-83" /> */}
-                            {/* <i class="fa fa-key" aria-hidden="true"></i> */}
-                            <i class="fa fa-phone-square" aria-hidden="true"></i>
+                            <i className="fa fa-phone" />
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input
@@ -190,8 +188,7 @@ class Register extends React.Component {
                       <InputGroup className="input-group-merge input-group-alternative mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
-                            {/* <i className="ni ni-email-83" /> */}
-                            <i class="fa fa-building" aria-hidden="true"></i>
+                            <i className="fas fa-building" />
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input
@@ -236,7 +233,7 @@ class Register extends React.Component {
                       {!this.state.show && <span className='password-message'> A minimum 8 characters password contains a combination of uppercase and lowercase letter and number are required.</span>}  
                         </div>
                       <FormGroup className='mt-4'>
-                        <Input type="select" name="mailsaas_type" value={this.state.mailsaas_type} onChange={this.handleChange} id="exampleSelect">
+                        <Input type="select" name="mailsaas_type" value={this.state.mailsaas_type} defaultValue='Sales' onChange={this.handleChange} id="exampleSelect">
                           <option value='Sales'>Sales</option>
                           <option value='Marketing'>Marketing/PR</option>
                           <option value='Recruiting'>Recruiting</option>
@@ -294,10 +291,10 @@ class Register extends React.Component {
             </Col>
           </Row>
         </Container>
-        <div style={{ display:'flex', justifyContent: 'center', position: 'fixed', bottom: 0, right: 0,left:0 }}>
-          <Alert className="alert_" toggle={()=>{
-            this.setState({isOpen:true})
-          }}  isOpen={!this.state.isOpen&&isRegisterSuccess} color="warning">{registerResponse}</Alert>
+        <div style={{ display: 'flex', justifyContent: 'center', position: 'fixed', bottom: 0, right: 0, left: 0 }}>
+          <Alert className="alert_" toggle={() => {
+            this.setState({ isOpen: true })
+          }} isOpen={!this.state.isOpen && isRegisterSuccess} color="warning">{registerResponse}</Alert>
         </div>
       </>
     );
@@ -307,7 +304,7 @@ class Register extends React.Component {
 const mapStateToProps = (state) => {
   return {
     registerResponse: state.RegisterReducer.registerResponse,
-    isRegisterSuccess:state.RegisterReducer.isRegisterSuccess
+    isRegisterSuccess: state.RegisterReducer.isRegisterSuccess
   };
 };
 const mapDispatchToProps = dispatch => ({
