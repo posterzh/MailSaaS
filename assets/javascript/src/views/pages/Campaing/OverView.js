@@ -15,13 +15,10 @@ const tabs = [{
     title: 'SUMMARY'
 }, {
     to: 'campaign_data',
-    title: 'SUMMARY'
+    title: 'ACTIVITY'
 }, {
     to: 'Overview_Activity',
-    title: 'Activity'
-}, {
-    to: '',
-    title: 'Timeline'
+    title: 'TIMELINE'
 }]
 class CampaignData extends Component {
     constructor(props) {
@@ -61,11 +58,11 @@ class CampaignData extends Component {
                         }, index) => (
                             <Col key={index} md={3} ><NavItem><NavLink className={classnames({ [`active${index + 1}`]: activeTab === index })} to={to} onClick={() => { this.onSelectTab(index); }}>{title}</NavLink></NavItem></Col>
                         ))}
-                        <Col md={1}><div className='child ml-3'>
+                        {/* <Col md={1}><div className='child ml-3'>
                             <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
                                 <span className='font_icon'><i className="fa fa-undo" aria-hidden="true"></i></span>
                             </a></div>
-                        </Col>
+                        </Col> */}
                     </Nav>
                         <TabContent activeTab={activeTab}>
                             <TabPane tabId={0}>

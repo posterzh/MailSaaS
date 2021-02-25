@@ -23,7 +23,8 @@ import {
     SUCCESS_LEAD_CATCHER_GET,
     SUCCESS_LEAD_DELETE,
     SUCCESS_LEAD_UPDATE,
-    SUCCESS_LEAD_CATCHER_ALL
+    SUCCESS_LEAD_CATCHER_ALL,
+    SUCCESS_CREATE_LEAD
 
 } from "../actionType/actionType"
 import Api from "../api/api"
@@ -157,7 +158,7 @@ export const leadCatcherSuccess = (leadData) => {
 export const leadCatcherGetSuccess = (leadGetData) => {
     return {
         type: SUCCESS_LEAD_CATCHER_GET,
-        paylod: leadGetData
+        leadGetData
     }
 }
 
@@ -168,18 +169,25 @@ export const leadCatcherDeleteSuccess = () => {
     }
 }
 // lead catcher UPDATE
-export const leadCatcherUpdateSuccess = (leadData) => {
+export const leadCatcherUpdateSuccess = (leadUpdateData) => {
     return {
         type: SUCCESS_LEAD_UPDATE,
-        payload: leadData
+        payload: leadUpdateData
+    }
+}
+// view all leads
+export const leadViewSuccess = (leadUpdateData) => {
+    return {
+        type: SUCCESS_LEAD_CATCHER_ALL,
+        payload: leadUpdateData
     }
 }
 
 // lead catcher all
-export const leadCatcherAllSuccess = (leadUpdateData) => {
+export const leadCreateSuccess = (createLeadData) => {
     return {
-        type: SUCCESS_LEAD_CATCHER_ALL,
-        payload: leadUpdateData
+        type: SUCCESS_CREATE_LEAD,
+        payload: createLeadData
     }
 }
 
@@ -337,7 +345,7 @@ export const CampaignLeadCatcherAction = (id, leadData) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.CampaignLeadCatcherApi(token, id, leadData).then(result => {
-            dispatch(CampaignLeadGetAction(result.data))
+            dispatch(CampaignLeadGetAction(id))
         }).catch(err => {
             console.log(err, 'error-')
         })
@@ -350,7 +358,9 @@ export const CampaignLeadGetAction = (id) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.CampaignLeadGetApi(token, id).then(result => {
+            console.log('result getdata', result.data)
             dispatch(leadCatcherGetSuccess(result.data))
+            // dispatch(CampaignLeadUpdateAction(id))
         }).catch(err => {
             console.log(err, 'error-')
         })
@@ -371,11 +381,25 @@ export const CampaignLeadDeleteAction = (id) => {
     }
 }
 // LEAD CATCHER UPDATE ACTION
-export const CampaignLeadUpdateAction = (id) => {
+export const CampaignLeadUpdateAction = (getId, id, updateLeadData) => {
+    console.log("update====>", id, updateLeadData)
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        Api.CampaignLeadUpadteApi(token, id).then(result => {
+        Api.CampaignLeadUpadteApi(token, getId, id, updateLeadData).then(result => {
             dispatch(leadCatcherUpdateSuccess())
+        }).catch(err => {
+            console.log(err, 'error-')
+        })
+    }
+}
+
+// CREATE LEAD
+export const CampaignCreateLeadAction = (id,createLeadData) => {
+    return function (dispatch) {
+        const token = localStorage.getItem('access_token')
+        Api.CampaignCreateLeadApi(token, id, createLeadData).then(result => {
+            console.log("result.data",result.data)
+            dispatch(leadCreateSuccess(result.data))
         }).catch(err => {
             console.log(err, 'error-')
         })
@@ -384,7 +408,7 @@ export const CampaignLeadUpdateAction = (id) => {
 
 // LEAD CATCHER VIEW ALL
 export const CampaignLeadAllAction = (id) => {
-    console.log('camp id',id)
+    console.log('camp id', id)
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         Api.CampaignAllLeadApi(token, id).then(result => {
@@ -395,10 +419,10 @@ export const CampaignLeadAllAction = (id) => {
         })
     }
 }
-export const unsubscribeRecipientAction = (data,id) => {
+export const unsubscribeRecipientAction = (data, id) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        Api.unsubscribeRecipientApi(data,token).then((response) => {
+        Api.unsubscribeRecipientApi(data, token).then((response) => {
             dispatch(CampaignPeopleAction(id))
         }).catch((err) => {
             console.log(err, 'err')

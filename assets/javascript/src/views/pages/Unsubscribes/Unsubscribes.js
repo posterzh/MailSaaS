@@ -154,7 +154,6 @@ class Unsubscribes extends Component {
                   showSelectionBar={this.showSelectionBar}
                   data={this.props.data}
                   textInput={this.textInput}
-
                 />
               </TabPane>
               <TabPane tabId="2">

@@ -147,7 +147,8 @@ Api.CampaignLeadDeleteApi = (token, id) => {
 }
 
 // CampaignLeadUpadteApi
-Api.CampaignLeadUpadteApi = (token, id) => {
+Api.CampaignLeadUpadteApi = (token,getId ,id,updateLeadData) => {
+  console.log("getId",getId,id)
   return axios({
     method: 'PUT',
     data:{
@@ -156,7 +157,7 @@ Api.CampaignLeadUpadteApi = (token, id) => {
       leadcatcher_recipient: updateLeadData.leadcatcher_recipient,
       specific_link: updateLeadData.specific_link
     },
-    url: `${API_BASE_URL}/campaign/settings-leadcatcher/${id}/`,
+    url: `${API_BASE_URL}/campaign/settings-leadcatcher/${getId}/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -210,14 +211,12 @@ Api.CampaignRecipienPutPeople = (token) => {
 
 // campaign recipient (put) (api for update recipient details)   
 // its not working
-Api.CampaignUpdateRecipient = (token, data) => {
+Api.CampaignCreateLeadApi = (token,id,createLeadData) => {
   return axios({
     method: 'PUT',
-    url: `${API_BASE_URL}/campaign/recipients/1/`,
+    url: `${API_BASE_URL}/campaign/recipients/${id}/`,
     data: {
-      'campaign': 1,
-      'email': 'developer@externlabs.com',
-      'password': 'developer@externlabs'
+      createLeadData
     },
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -252,15 +251,12 @@ Api.CampaignProspects = (token) => {
 }
 
 
-Api.deleteProspects = (id,token) => {
-  console.log('aaaaaaaaaaaaaaaaaaaaaaaa',id)
+Api.deleteProspects = (data,token) => {
+  console.log('gettttttttttttttttttttttt',data)
   return axios({
     method: 'DELETE',
-    url: `${API_BASE_URL}/campaign/prospects/${id}/`,
-    id: {    
-            id: id,
-            
-    },
+    url: `${API_BASE_URL}/campaign/prospects/`,
+    data: { recp_ids:data},
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -272,10 +268,11 @@ Api.deleteProspects = (id,token) => {
 
 
 // ONCLICK PRSPECT
-Api.CampaignOnclickProspects = (id, token) => {
+Api.CampaignOnclickProspects = (data, token) => {
+  console.log('------------EL LAB----->',data);
   return axios({
     method: 'GET',
-    url: `${API_BASE_URL}/campaign/prospects/${id}/`,
+    url: `${API_BASE_URL}/campaign/prospects/${data}/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -501,12 +498,12 @@ Api.GetScheduleApi = (token) => {
   })
 }
 
-//UPDATE SCHEDULE
-Api.UpdateScheduleApi = (token, scheduledataa) => {
+Api.UpdateScheduleApi=(updatedataschedule,token)=>{
+  console.log("update api data of schedule",updatedataschedule)
   return axios({
-    method: 'PUT',
-    data: { ...scheduledataa },
-    url: `${API_BASE_URL}/campaignschedule/updateschedulemail/`,
+    method:'PUT',
+    data:{...updatedataschedule},
+    url:`${API_BASE_URL}/campaignschedule/updateschedulemail/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }

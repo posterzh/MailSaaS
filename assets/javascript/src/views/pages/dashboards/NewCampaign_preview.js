@@ -420,4 +420,3 @@ const mapDispatchToProps = dispatch => ({
     PreviewUpdateCampaignAction: campaignPreviewUpdateData => { dispatch(PreviewUpdateCampaignAction(campaignPreviewUpdateData)) },
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignPreview)
-

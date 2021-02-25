@@ -36,12 +36,13 @@ import {
     REQUEST_FOR_GET_SCHEDULE,
     SUCCESS_GET_SCHEDULE,
     FAILURE_GET_SCHEDULE,
-    UPDATE_REQUEST_FOR_GET_SCHEDULE,
-    UPDATE_SUCCESS_GET_SCHEDULE,
+    // UPDATE_REQUEST_FOR_GET_SCHEDULE,
+    UPDATE_SUCCESS_GET_SCHEDULE,  
     SUCCESS_LEAD_CATCHER,
     SUCCESS_LEAD_CATCHER_GET,
     SUCCESS_FOR_CAMPAIGN_PEOPLE,
     SUCCESS_LEAD_DELETE,
+    SUCCESS_LEAD_UPDATE,
     SUCCESS_LEAD_CATCHER_ALL
 } from "../actionType/actionType";
 
@@ -74,7 +75,8 @@ const initialState = {
     leadData: '',
     leadGetData: '',
     campaignPeopleData: '',
-    leadAllData:''
+    leadAllData:'',
+    updateLeadData:''
 }
 export const RegisterReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -340,20 +342,17 @@ export const CampaignPeopleReducer = (state = initialState, action) => {
 
 
 // SCHEDULE_GET_DATAampaignOverview
-export const ScheduleGetDataReducer = (state = initialState, action) => {
+export const ScheduleGetDataReducer = (state =  initialState , action) => {
+    console.log("schedule update reducer:",action)
     switch (action.type) {
-        case REQUEST_FOR_GET_SCHEDULE:
-            return {
-            }
+        
         case SUCCESS_GET_SCHEDULE:
+        case UPDATE_SUCCESS_GET_SCHEDULE:
             return {
                 ...state,
-                ScheduleGetData: action.ScheduleGetData,
+                ScheduleGetData: action.payload,
             }
-        case FAILURE_GET_SCHEDULE:
-            return {
-
-            }
+        
         default: return state
             break;
     }
@@ -374,20 +373,17 @@ export const CampaignTableReducer = (state = initialState, action) => {
 }
 
 // UPDATE SCHEDULE DATA
-export const ScheduleUpdateReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case UPDATE_REQUEST_FOR_GET_SCHEDULE:
-            return {
-            }
-        case UPDATE_SUCCESS_GET_SCHEDULE:
-            return {
-                ...state,
-                UpdateScheduleData: action.UpdateScheduleData,
-            }
-        default: return state
-            break;
-    }
-}
+// export const ScheduleUpdateReducer = (state =  initialState , action) => {
+//     switch (action.type) {
+       
+//         case UPDATE_SUCCESS_GET_SCHEDULE:
+//             return {
+//                 ...state,
+//                 UpdateScheduleData: action.UpdateScheduleData,
+//             }
+//         default: return state
+//     }
+// }
 
 export const LeadCatcherReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -403,11 +399,12 @@ export const LeadCatcherReducer = (state = initialState, action) => {
 
 // LEAD CATCHER GET DATA
 export const LeadGetReducer = (state = initialState, action) => {
+    console.log("action.payload", action.leadGetData)
     switch (action.type) {
-        case SUCCESS_LEAD_CATCHER:
+        case SUCCESS_LEAD_CATCHER_GET:
             return {
                 ...state,
-                leadGetData: action.payload,
+                leadGetData: action.leadGetData,
             }
         default: return state
             break;
@@ -420,6 +417,19 @@ export const LeadAllReducer = (state = initialState, action) => {
             return {
                 ...state,
                 leadAllData: action.payload,
+            }
+        default: return state
+            break;
+    }
+}
+
+// update lead
+export const LeadUpdateReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case SUCCESS_LEAD_UPDATE:
+            return {
+                ...state,
+                updateLeadData: action.payload,
             }
         default: return state
             break;

@@ -18,8 +18,9 @@ import {
   OnclickProspectsReducer,
   CampaignTableReducer,
   ScheduleGetDataReducer,
-  ScheduleUpdateReducer,
+  // ScheduleUpdateReducer,
   LeadCatcherReducer,
+  LeadUpdateReducer,
   CampaignPeopleReducer,
   LeadGetReducer,
 } from '../reducer/reducer';
@@ -44,10 +45,11 @@ const rootReducer = combineReducers({
   OnclickProspectsReducer,
   CampaignTableReducer,
   ScheduleGetDataReducer,
-  ScheduleUpdateReducer,
+  // ScheduleUpdateReducer,
   LeadCatcherReducer,
   CampaignPeopleReducer,
   LeadGetReducer,
+  LeadUpdateReducer
 })
 
 const store = createStore(
