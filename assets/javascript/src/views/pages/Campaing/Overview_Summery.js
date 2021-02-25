@@ -9,42 +9,6 @@ class Overview_Summery extends Component {
             <div>
                 <Container fluid>
                     <Row>
-                        <p className='view_calender'>This is an estimate. Actual times vary by recipient actions, pending changes, etc. <a href=''>View and tweak your full calendar.</a></p>
-                    </Row>
-                    <Row>
-                        <div className='overview_calender'>
-                            <div className='overview_day_hd'>Sun</div>
-                            <div className='overview_day_hd'>Mon</div>
-                            <div className='overview_day_hd'>Tue</div>
-                            <div className='overview_day_hd' >Wed</div>
-                            <div className='overview_day_hd'>Thu</div>
-                            <div className='overview_day_hd'>Fri</div>
-                            <div className='overview_day_hd'>Sat</div>
-                        </div>
-                    </Row>
-                    <Row>
-                        <div className='overview_calender'>
-                            <div className='overview_day_hd_detils'>January 31</div>
-                            <div className='overview_day_hd_detils'>February 1</div>
-                            <div className='overview_day_hd_detils'>2</div>
-                            <div className='overview_day_hd_detils' >3</div>
-                            <div className='overview_day_hd_detils'>4</div>
-                            <div className='overview_day_hd_detils'>5</div>
-                            <div className='overview_day_hd_detils'>6</div>
-                        </div>
-                    </Row>
-                    <Row style={{ height: '20px' }}>
-                        <div className='overview_calender'>
-                            <div className='overview_day_hd_detils'></div>
-                            <div className='overview_day_hd_detils'></div>
-                            <div className='overview_day_hd_detils'></div>
-                            <div className='overview_day_hd_detils'></div>
-                            <div className='overview_day_hd_detils'></div>
-                            <div className='overview_day_hd_detils'></div>
-                            <div className='overview_day_hd_detils'></div>
-                        </div>
-                    </Row>
-                    <Row>
                         <label>
                             <h1 className='display-4'>FUNNEL</h1>
                             <span><a href='#' className='explain_number' ><i className="fa fa-question-circle-o" aria-hidden="true"></i> Explain these numbers</a></span>
