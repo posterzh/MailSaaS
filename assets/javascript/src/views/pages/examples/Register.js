@@ -48,7 +48,7 @@ class Register extends React.Component {
       PhoneNumber: '',
       CompanyName: '',
       Password: '',
-      mailsaas_type: 0,
+      mailsaas_type: 'Sales',
       isOpen: false
     }
 
@@ -69,19 +69,16 @@ class Register extends React.Component {
       company_name: this.state.CompanyName,
       password1: this.state.Password,
       mailsaas_type: this.state.mailsaas_type
-
     };
+
     this.props.RegisterAction(user)
-    console.log(user)
    
     // const token=localStorage.getItem("access_token")
     // if(token){
     //   alert('Successful')
     // }
   }
-  static getDerivedStateFromProps(props, state){
-    return
-  }
+
   componentDidUpdate(prevProps){
     if(prevProps!==this.props.registerResponse)
     console.log("true")

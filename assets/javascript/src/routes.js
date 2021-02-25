@@ -329,13 +329,13 @@ const routes = [
         component: Register,
         layout: "/app/auth"
       },
-      {
-        path: "/lock",
-        name: "Lock",
-        miniName: "L",
-        component: Lock,
-        layout: "/app/auth"
-      },
+      // {
+      //   path: "/lock",
+      //   name: "Lock",
+      //   miniName: "L",
+      //   component: Lock,
+      //   layout: "/app/auth"
+      // },
       {
         path: "/timeline",
         name: "Timeline",
