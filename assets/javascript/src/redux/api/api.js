@@ -83,9 +83,11 @@ Api.CampaignPreviewApi = (token, id) => {
 
 // CAMPAIGN UPDATE PREVIEW
 Api.CampaignUpdatePreviewApi = (token, id) => {
+  console.log("update preview id is:->",id)
   return axios({
     method: 'PUT',
-    url: `${API_BASE_URL}/campaign/personalize/2/`,
+    url: `${API_BASE_URL}/campaign/personalize/${id}/`,
+    data:{},
     headers: {
       "Authorization": `Bearer ${token}`,
     }

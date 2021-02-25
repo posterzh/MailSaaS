@@ -120,12 +120,8 @@ class LeadCatcher extends Component {
 const mapStateToProps = (state) => {
   console.log("state", state)
   return {
-   
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  // CampaignLeadAllAction: (id) => { dispatch(CampaignLeadAllAction(id)) },
-
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(LeadCatcher)

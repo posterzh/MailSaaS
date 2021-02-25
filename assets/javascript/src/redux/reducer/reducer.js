@@ -24,7 +24,6 @@ import {
     SUCCESS_MAIL_ACCOUNT_UPDATE,
     FAILURE_MAIL_ACCOUNT_UPDATE,
     SUCCESS_CREATE_CAMPAIGN,
-    REQUEST_FOR_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_SAVE_CAMPAIGN,
@@ -273,7 +272,6 @@ export const OnclickProspectsReducer = (state = initialState, action) => {
     }
 }
 
-
 // CAMPAIGN_PREVIEW_DATA
 export const CampaignPreviewGetReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -293,8 +291,6 @@ export const CampaignPreviewGetReducer = (state = initialState, action) => {
             break;
     }
 }
-
-
 // CAMPAIGN_PREVIEW_UPDATE_DATA 
 export const CampaignPreviewUpdateReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -311,8 +307,6 @@ export const CampaignPreviewUpdateReducer = (state = initialState, action) => {
             break;
     }
 }
-
-
 // CAMPAIGN_OVERVIEW_DATA
 export const CampaignOverviewReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -325,8 +319,6 @@ export const CampaignOverviewReducer = (state = initialState, action) => {
             break;
     }
 }
-
-
 //  CAMPAIGN PEOPLE
 export const CampaignPeopleReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -339,7 +331,6 @@ export const CampaignPeopleReducer = (state = initialState, action) => {
             break;
     }
 }
-
 
 // SCHEDULE_GET_DATAampaignOverview
 export const ScheduleGetDataReducer = (state =  initialState , action) => {

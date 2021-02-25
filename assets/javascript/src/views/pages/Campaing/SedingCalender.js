@@ -5,10 +5,11 @@ import CardFooter from 'reactstrap/lib/CardFooter'
 import CardHeader from 'reactstrap/lib/CardHeader'
 import { connect } from 'react-redux'
 import { GetScheduleAction, ScheduleUpdateAction } from '../../../redux/action/ScheduleAction'
+import {MailGetDataAction} from '../../../redux/action/MailSenderAction'
 export class SendingCalender extends Component {
   constructor(props) {
     super(props)
-    var days = ['mo', 'tu', 'we', 'th', 'fr', 'st'];
+    var days = ['mo', 'tu', 'we', 'th', 'fr', 'st','su'];
     this.state = {
       show: true,
       hide: false,
@@ -24,17 +25,22 @@ export class SendingCalender extends Component {
       MaxEmailSend: '',
       days: days
     }
+    // console.log('))))))))))))===========>',this.state.BlockDaysssssssss)
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
     this.props.GetScheduleAction()
+    this.props.MailGetDataAction()
   }
 
   handleChange = (e) => {
-    console.log("called", e)
+    console.log("called",e)
     this.setState({
       [e.target.name]: e.target.value
     })
+  }
+  handleBlockDays = (data) => {
+    console.log(data)
   }
   handleSubmit = (event) => {
     event.preventDefault();
@@ -71,7 +77,7 @@ export class SendingCalender extends Component {
     })
   }
   render() {
-    const { ScheduleData } = this.props;
+    const { ScheduleData,mailGetDat } = this.props;
     console.log('ScheduleData', ScheduleData)
     return (
       <div>
@@ -87,15 +93,12 @@ export class SendingCalender extends Component {
                   <Card>
                     <CardHeader style={{ border: "none" }}>
                       <select className='scalender_filter_select'>
-                        <option value='one'>unassigned</option>
-                        <option value='two'>unassigned1</option>
-                        <option value='three'>unassigned1</option>
+                        <option>{this.props.mailGetDat &&this.props.mailGetDat.map((e,i)=>{return e.email}) }</option>
                       </select>
                     </CardHeader>
                     <CardBody>
                       <div >
                           {this.state.days.map((item, index) => {
-                            console.log('sdfnoasnfanifonaoifnowaif', item, index + 1);
                             return <span className='blockdays' key={index}>{item}</span>
                           })}
                       </div>
@@ -121,16 +124,19 @@ export class SendingCalender extends Component {
                   <div style={{ margin: '17px 0px 24px 24px' }}>
                     <div className='dv1'>
                       <Row> <label>Mail account</label></Row>
-                      <Row ><input className='teamname-input' type='text' value='developer@externlabs.com'></input></Row>
+                      <Row >
+                        <select className='teamname-input'>
+                        <option>{this.props.mailGetDat &&this.props.mailGetDat.map((e,i)=>{return e.email}) }</option>
+                        </select>
+                      </Row>
                       <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
                         <label>Blocked out days</label>
                       </Row>
                       <Row>
                         <div>
                           {this.state.days.map((item, index) => {
-                            console.log('sdfnoasnfanifonaoifnowaif', item, index + 1);
-                            return <span className='blockdays' name='days' onClick={(e, index) => this.handleChange(e, index)} value={this.state.days} key={index}>{item}</span>
-
+                            // console.log('blockdays index:', item, index);
+                            return <input className='blockdays' onClick={() => this.handleBlockDays(index)} name='BlockDays' value={this.state.BlockDays} key={index}></input>
                           })}
                         </div>
                       </Row>
@@ -194,7 +200,7 @@ export class SendingCalender extends Component {
               </Row>
             </Form>
           </Container>}
-          {!this.state.hide && <div className="calender_box" style={{ backgroundColor: "transparant", width: "100%", display: "flex", flexDirection: "row" }}>
+          {/* {!this.state.hide && <div className="calender_box" style={{ backgroundColor: "transparant", width: "100%", display: "flex", flexDirection: "row" }}>
             <div className="su_box">
               <p>{ScheduleData && ScheduleData.date}</p>
             </div>
@@ -217,19 +223,22 @@ export class SendingCalender extends Component {
               <p>w</p>
             </div>
           </div>
-          }
+          } */}
         </div>
       </div>
     )
   }
 }
 const mapStateToProps = (state) => {
+  console.log('checking mail data', state.MailGetDataReducer.mailGetData && state.MailGetDataReducer.mailGetData.map((e,i)=>{return e.email}))
   return {
     ScheduleData: state.ScheduleGetDataReducer.ScheduleGetData,
+    mailGetDat: state.MailGetDataReducer.mailGetData 
   }
 }
 const mapDispatchToProps = dispatch => ({
   GetScheduleAction: ScheduleGetData => { dispatch(GetScheduleAction(ScheduleGetData)) },
-  ScheduleUpdateAction: updatedataschedule => { dispatch(ScheduleUpdateAction(updatedataschedule)) }
+  ScheduleUpdateAction: updatedataschedule => { dispatch(ScheduleUpdateAction(updatedataschedule)) },
+  MailGetDataAction: () => { dispatch(MailGetDataAction()) }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(SendingCalender)
