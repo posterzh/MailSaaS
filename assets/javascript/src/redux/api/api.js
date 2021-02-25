@@ -147,7 +147,8 @@ Api.CampaignLeadDeleteApi = (token, id) => {
 }
 
 // CampaignLeadUpadteApi
-Api.CampaignLeadUpadteApi = (token, id) => {
+Api.CampaignLeadUpadteApi = (token,getId ,id,updateLeadData) => {
+  console.log("getId",getId,id)
   return axios({
     method: 'PUT',
     data:{
@@ -156,7 +157,7 @@ Api.CampaignLeadUpadteApi = (token, id) => {
       leadcatcher_recipient: updateLeadData.leadcatcher_recipient,
       specific_link: updateLeadData.specific_link
     },
-    url: `${API_BASE_URL}/campaign/settings-leadcatcher/${id}/`,
+    url: `${API_BASE_URL}/campaign/settings-leadcatcher/${getId}/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -210,14 +211,12 @@ Api.CampaignRecipienPutPeople = (token) => {
 
 // campaign recipient (put) (api for update recipient details)   
 // its not working
-Api.CampaignUpdateRecipient = (token, data) => {
+Api.CampaignCreateLeadApi = (token,id,createLeadData) => {
   return axios({
     method: 'PUT',
-    url: `${API_BASE_URL}/campaign/recipients/1/`,
+    url: `${API_BASE_URL}/campaign/recipients/${id}/`,
     data: {
-      'campaign': 1,
-      'email': 'developer@externlabs.com',
-      'password': 'developer@externlabs'
+      createLeadData
     },
     headers: {
       "Authorization": `Bearer ${token}`,
