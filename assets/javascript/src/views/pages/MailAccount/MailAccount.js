@@ -139,6 +139,7 @@ class MailAccount extends Component {
     }
 }
 const mapStateToProps = (state) => {
+    console.log("**************mailgetdata************",state.MailGetDataReducer.mailGetData)
     return {
         mailGetData: state.MailGetDataReducer.mailGetData,
         mailAccountId: state.MailGetDataReducer.mailAccountId

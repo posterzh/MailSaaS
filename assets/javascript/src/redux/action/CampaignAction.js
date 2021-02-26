@@ -12,7 +12,6 @@ import {
     REQUEST_FOR_CAMPAIGN_OVERVIEW,
     SUCCESS_CAMPAIGN_OVERVIEW,
     FAILURE_CAMPAIGN_OVERVIEW,
-    REQUEST_FOR_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_CREATE_CAMPAIGN,
@@ -72,11 +71,6 @@ export const CampaignPreviewFailure = () => {
     }
 }
 // CAMPAIGN UPDATE PREVIEW
-export const requestForCampaignPreviewUpdate = () => {
-    return {
-        type: REQUEST_FOR_CAMPAIGN_UPDATE_PREVIEW
-    }
-}
 export const CampaignPreviewUpdateSuccess = (CampaignPreviewData) => {
     return {
         type: SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
@@ -301,11 +295,11 @@ export const CampaignSaveAction = (saveData, id) => {
     }
 }
 //  CAMPAIGN_UPDATE_PREVIEW MIDDLEWARE
-export const PreviewUpdateCampaignAction = () => {
+export const PreviewUpdateCampaignAction = (id) => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
         console.log('token:', token)
-        Api.CampaignUpdatePreviewApi(token, 2).then(result => {
+        Api.CampaignUpdatePreviewApi(token, id).then(result => {
             dispatch(CampaignPreviewUpdateSuccess(result.data))
         }).catch(err => {
             console.log(err)
@@ -429,3 +423,4 @@ export const unsubscribeRecipientAction = (data, id) => {
         })
     }
 }
+ 

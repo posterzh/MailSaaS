@@ -761,7 +761,6 @@ class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
         return Response(campEmailserializer.data)
 
 
-
 class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     permission_classes = (permissions.IsAuthenticated,)

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { Container, Row, Col, Button, Input, Nav, Form } from 'reactstrap';
 import { Link, Route } from 'react-router-dom';
-
+import AdminNavbar from "../../../../../javascript/src/components/Navbars/AdminNavbar"
 import { RecipientAction, StartCampaignAction } from "../../../redux/action/CampaignAction";
 import Csvfile from './csvfile'
 
@@ -50,18 +50,20 @@ class NewCampaign_recipients extends Component {
             email: `["${this.state.email}"]`,
             campaign: this.state.campaign
         }
-        console.log(this.state.csvFile,'file')
+        console.log(this.state.csvFile, 'file')
         this.props.RecipientAction(recipientData)
     }
-   
+
     render() {
         const { show } = this.state;
         console.log(this.props.location, this.props.campaignDetails, "recipient")
         return (
+            <>
+            <AdminNavbar />
             <div className='main-view'>
                 <div style={{ height: 980, width: '100%', backgroundColor: "#eee" }}>
                     <Container fluid>
-                        <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
+                        {/* <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
                             <Col style={{ display: 'flex', alignItems: 'center' }}>
                                 <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
                                     <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
@@ -78,7 +80,7 @@ class NewCampaign_recipients extends Component {
                                     </a>
                                 </div>
                             </Col>
-                        </Row>
+                        </Row> */}
                         <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
                             <Col style={{ display: "flex" }}><Nav className='mx-auto' navbar>
                                 <Row className='mx-auto' style={{ width: '100%' }}>
@@ -154,6 +156,7 @@ class NewCampaign_recipients extends Component {
                     </Container>
                 </div>
             </div>
+            </>
         )
     }
 }

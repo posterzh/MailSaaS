@@ -24,7 +24,6 @@ import {
     SUCCESS_MAIL_ACCOUNT_UPDATE,
     FAILURE_MAIL_ACCOUNT_UPDATE,
     SUCCESS_CREATE_CAMPAIGN,
-    REQUEST_FOR_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_SAVE_CAMPAIGN,
@@ -36,8 +35,8 @@ import {
     REQUEST_FOR_GET_SCHEDULE,
     SUCCESS_GET_SCHEDULE,
     FAILURE_GET_SCHEDULE,
-    UPDATE_REQUEST_FOR_GET_SCHEDULE,
-    UPDATE_SUCCESS_GET_SCHEDULE,
+    // UPDATE_REQUEST_FOR_GET_SCHEDULE,
+    UPDATE_SUCCESS_GET_SCHEDULE,  
     SUCCESS_LEAD_CATCHER,
     SUCCESS_LEAD_CATCHER_GET,
     SUCCESS_FOR_CAMPAIGN_PEOPLE,
@@ -273,7 +272,6 @@ export const OnclickProspectsReducer = (state = initialState, action) => {
     }
 }
 
-
 // CAMPAIGN_PREVIEW_DATA
 export const CampaignPreviewGetReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -293,8 +291,6 @@ export const CampaignPreviewGetReducer = (state = initialState, action) => {
             break;
     }
 }
-
-
 // CAMPAIGN_PREVIEW_UPDATE_DATA 
 export const CampaignPreviewUpdateReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -311,8 +307,6 @@ export const CampaignPreviewUpdateReducer = (state = initialState, action) => {
             break;
     }
 }
-
-
 // CAMPAIGN_OVERVIEW_DATA
 export const CampaignOverviewReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -325,8 +319,6 @@ export const CampaignOverviewReducer = (state = initialState, action) => {
             break;
     }
 }
-
-
 //  CAMPAIGN PEOPLE
 export const CampaignPeopleReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -340,22 +332,18 @@ export const CampaignPeopleReducer = (state = initialState, action) => {
     }
 }
 
-
 // SCHEDULE_GET_DATAampaignOverview
-export const ScheduleGetDataReducer = (state = initialState, action) => {
+export const ScheduleGetDataReducer = (state =  initialState , action) => {
+    console.log("schedule update reducer:",action)
     switch (action.type) {
-        case REQUEST_FOR_GET_SCHEDULE:
-            return {
-            }
+        
         case SUCCESS_GET_SCHEDULE:
+        case UPDATE_SUCCESS_GET_SCHEDULE:
             return {
                 ...state,
-                ScheduleGetData: action.ScheduleGetData,
+                ScheduleGetData: action.payload,
             }
-        case FAILURE_GET_SCHEDULE:
-            return {
-
-            }
+        
         default: return state
             break;
     }
@@ -376,20 +364,17 @@ export const CampaignTableReducer = (state = initialState, action) => {
 }
 
 // UPDATE SCHEDULE DATA
-export const ScheduleUpdateReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case UPDATE_REQUEST_FOR_GET_SCHEDULE:
-            return {
-            }
-        case UPDATE_SUCCESS_GET_SCHEDULE:
-            return {
-                ...state,
-                UpdateScheduleData: action.UpdateScheduleData,
-            }
-        default: return state
-            break;
-    }
-}
+// export const ScheduleUpdateReducer = (state =  initialState , action) => {
+//     switch (action.type) {
+       
+//         case UPDATE_SUCCESS_GET_SCHEDULE:
+//             return {
+//                 ...state,
+//                 UpdateScheduleData: action.UpdateScheduleData,
+//             }
+//         default: return state
+//     }
+// }
 
 export const LeadCatcherReducer = (state = initialState, action) => {
     switch (action.type) {

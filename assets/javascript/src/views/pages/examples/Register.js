@@ -49,7 +49,8 @@ class Register extends React.Component {
       CompanyName: '',
       Password: '',
       mailsaas_type: 'Sales',
-      isOpen: false
+      isOpen: false,
+      show:true
     }
 
   }
@@ -58,10 +59,12 @@ class Register extends React.Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+    // this.setState({show:!this.state.show})
   }
   handleSubmit = (e) => {
     e.preventDefault();
-    this.setState({ isOpen: false })
+    this.setState({isOpen:false})
+    
     const user = {
       full_name: this.state.FullName,
       email: this.state.Email,
@@ -99,7 +102,7 @@ class Register extends React.Component {
           title="Create an account"
           lead="Use these awesome forms to login or create new account in your project for free."
         />
-        <Container className="mt--8 pb-5">
+        <Container className="mt--8 pb-5" >
           <Row className="justify-content-center">
             <Col lg="6" md="8">
               <Card className="bg-secondary border-0">
@@ -163,7 +166,7 @@ class Register extends React.Component {
                       <InputGroup className="input-group-merge input-group-alternative mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
-                            <i className="fa fa-phone " />
+                            <i className="fa fa-phone" />
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input
@@ -215,6 +218,7 @@ class Register extends React.Component {
                           placeholder="Password"
                           type="password"
                           name="Password"
+                          onClick={()=>{this.setState({show:!this.state.show})}}
                           onChange={this.handleChange}
                           onFocus={() =>
                             this.setState({ focusedPassword: true })
@@ -225,6 +229,9 @@ class Register extends React.Component {
                           required
                         />
                       </InputGroup>
+                      <div >
+                      {!this.state.show && <span className='password-message'> A minimum 8 characters password contains a combination of uppercase and lowercase letter and number are required.</span>}  
+                        </div>
                       <FormGroup className='mt-4'>
                         <Input type="select" name="mailsaas_type" value={this.state.mailsaas_type} defaultValue='Sales' onChange={this.handleChange} id="exampleSelect">
                           <option value='Sales'>Sales</option>
@@ -234,14 +241,14 @@ class Register extends React.Component {
                         </Input>
                       </FormGroup>
                     </FormGroup>
-                    <div className="text-muted font-italic">
+                    {/* <div className="text-muted font-italic"> */}
                       {/* <small>
                         password strength:{" "}
                         <span className="text-success font-weight-700">
                           strong
                         </span>
                       </small> */}
-                    </div>
+                    {/* </div> */}
                     <Row className="my-4">
                       <Col xs="12">
                         <div className="custom-control custom-control-alternative custom-checkbox">
@@ -268,7 +275,7 @@ class Register extends React.Component {
                       </Col>
                     </Row>
                     <div className="text-center">
-                      <Button className="mt-4" color="info" type="submit" >
+                      <Button className="mt-4 mb-4" color="info" type="submit" >
                         Create account
                       </Button>
                     </div>

@@ -50,7 +50,6 @@ export class ProspectOnclick extends Component {
     }
 }
 
-// export default ProspectOnclick
 const mapStateToProps = (state) => {
     console.log("cheking state for onclick",state.OnclickProspectsReducer.prospectOnclickData &&state.OnclickProspectsReducer.prospectOnclickData.campaign_title)
     return {

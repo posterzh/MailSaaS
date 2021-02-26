@@ -3,7 +3,7 @@ import {Container, Row, Nav, Input, Col} from 'reactstrap';
 import { Editor } from 'react-draft-wysiwyg';
 import { Link, Route } from 'react-router-dom';
 import { EditorState, convertToRaw ,ContentState} from 'draft-js';
-import { PreviewCampaignAction } from "../../../redux/action/CampaignAction"
+import { PreviewCampaignAction,PreviewUpdateCampaignAction } from "../../../redux/action/CampaignAction"
 import { connect } from 'react-redux'
 class CampaignPreview extends Component {
     constructor() {
@@ -19,6 +19,7 @@ class CampaignPreview extends Component {
         console.log(this.props.history.location.state && this.props.history.location.state.id, "preview")
         let id = this.props.history.location.state && this.props.history.location.state.id
         this.props.PreviewCampaignAction(id);
+        this.props.PreviewUpdateCampaignAction(id)
     }
     render() {
         const { editorState } = this.state;
@@ -147,15 +148,6 @@ class CampaignPreview extends Component {
                                         </ul>
                                     }
                                 </div>
-
-                                {/* <div style={{ backgroundColor: "#005aac", color: "white" }}>
-                                    <ul>
-                                        {
-                                            console.log(this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((e, i) => e.email)),
-                                            console.log(this.props.CampaignPreviewEmails && this.props.CampaignPreviewEmails.map((e, i) => e.email_body))
-                                        }
-                                    </ul>
-                                </div> */}
                             </Col>
                         </Row>
                     </Container>
@@ -270,7 +262,6 @@ class CampaignPreview extends Component {
                                                 }
 
                                             </Row>
-                                            {/* ============================================================================================================== */}
                                             <Row>
                                                 {
                                                     this.props.CampaignDrip && this.props.CampaignDrip.map((item, index) => {
@@ -328,7 +319,6 @@ class CampaignPreview extends Component {
                                                     })
                                                 }
                                             </Row>
-                                            {/* ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */}
                                             <Row className='mb-3'>
                                                 {
                                                     this.props.CampaignOnClick && this.props.CampaignOnClick.map((item, index) => {
@@ -405,7 +395,7 @@ class CampaignPreview extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    console.log("-----------------------------------))))))", state.CampaignPreviewGetReducer.CampaignPreviewData.follow_up)
+    console.log("-----------------------------------))))))", state.CampaignPreviewGetReducer.CampaignPreviewData)
     return {
         campaignId: state.StartCampaignReducer.startCampaignData.id,
         CampaignPreviewData: state.CampaignPreviewGetReducer.CampaignPreviewData,
@@ -420,4 +410,3 @@ const mapDispatchToProps = dispatch => ({
     PreviewUpdateCampaignAction: campaignPreviewUpdateData => { dispatch(PreviewUpdateCampaignAction(campaignPreviewUpdateData)) },
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignPreview)
-

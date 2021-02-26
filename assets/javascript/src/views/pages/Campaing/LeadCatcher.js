@@ -122,13 +122,8 @@ class LeadCatcher extends Component {
 const mapStateToProps = (state) => {
   console.log("state",state.MailGetDataReducer && state.MailGetDataReducer.mailGetData)
   return {
-    campId:state.StartCampaignReducer &&state.StartCampaignReducer.startCampaignData.id
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  CampaignLeadViewAction: (id) => { dispatch(CampaignLeadViewAction(id)) },
-  
-
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(LeadCatcher)

@@ -1,8 +1,7 @@
-
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Container, Row, Col, Label, Input, Table, Modal, ModalHeader, ModalBody, Card, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
-import { ProspectActionData,ProspectUnsubscribeAction } from '../../../redux/action/ProspectsAction'
+import { ProspectActionData, ProspectUnsubscribeAction } from '../../../redux/action/ProspectsAction'
 import ProspectOnclick from './ProspectOnclick'
 import { OnclickProspectActionData, deleteProspectAction } from '../../../redux/action/ProspectsAction'
 const SpanStyles = {
@@ -67,29 +66,30 @@ class Prospects extends Component {
         }
         selectedId.push(id)
     }
-    select = (e) => {
+    ProspectDelete = (data) => {
+        let id = this.state.selectedId;
+        this.props.deleteProspectData(id)
+        // this.state.selectedId.length = 0;
         this.setState({
             isSelectionBar: false,
             checked: false
         })
-        let id = this.state.selectedId;
-        this.props.deleteProspectData(id)
-        this.state.selectedId.length = 0;
-        console.log("000000000000000000000000???????", this.props.deleteProspectData())
+        alert("deleted")
     }
-    unsubscribeProspect=()=>{
+    unsubscribeProspect = () => {
         this.props.unsubscribeProspectAction(this.state.selectedId)
         this.setState({
-            isSelectionBar:false,
-            selectedId:[]
+            isSelectionBar: false,
+            selectedId: []
         })
+        alert("unsubscribed")
     }
     componentDidMount() {
         this.props.ProspectActionData(this.props);
     }
     render() {
-        const { showProspect, isSelectionBar, selectedId, currentChecked, checked } = this.state;
-        const { prospectData } = this.props;
+        const { showProspect, isSelectionBar, selectedId } = this.state;
+        const { prospectData, propData } = this.props;
         return (
             <div className="prospect-main-container">
                 <div className='campaign_navbar' >
@@ -99,15 +99,19 @@ class Prospects extends Component {
                 <div style={{ padding: '20px' }} className={`selection-bar ${isSelectionBar && selectedId.length > 0 ? "_block" : " "}`} >
                     <span style={SpanStyles} onClick={() => { this.setState({ isSelectionBar: false }); selectedId.length = 0 }}><i className="fa fa-close" aria-hidden="true"></i></span>
                     <span style={Span} >{selectedId.length} selected</span>
-                    <div onClick={this.UnsubscribeDelete}>
+                    <div >
                         <span style={SpanStyles}><i className="fas fa-minus-circle"></i></span>
-                       <span onClick={this.unsubscribeProspect} style={SpanStyles} >Unsubscribe</span> : <span style={SpanStyles} >delete</span>
+                        <span onClick={this.ProspectDelete} style={SpanStyles} >delete</span>:
+                        <span onClick={this.unsubscribeProspect} style={SpanStyles} >Unsubscribe</span>
+                    </div>
+                    <div>
+
                     </div>
                 </div>
 
 
                 <Modal className="prospect_modal" isOpen={showProspect} toggle={this.toggle}>
-                    <ModalHeader className="prospect_modalheader" toggle={this.toggle}></ModalHeader>
+                    <ModalHeader className="prospect_modalheader" toggle={this.toggle}>{propData && propData.reciepent_email}</ModalHeader>
                     <ModalBody className="prospect_modalbody" >
                         <ProspectOnclick id={this.state.id} />
                     </ModalBody>
@@ -127,12 +131,10 @@ class Prospects extends Component {
                         </Col>
                     </Row>
                     <Row className='mt-4'>
-                        <Col md={1} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index) => { return })}</h1><span >TOTAl</span></Col>
-                        <Col md={1} className=' prospect_details'><h1>6</h1><span >IN CAMPAIGN</span></Col>
-                        <Col md={1} className=' prospect_details'><h1>6</h1><span >ENGAGED</span></Col>
-                        <Col md={1} className=' prospect_details'><h1>6</h1><span >LEADS</span></Col>
-                        <Col md={1} className=' prospect_details'><h1>6</h1><span >BOUNCES</span></Col>
-                        <Col md={1} className=' prospect_details'><h1>6</h1><span >UNSUBSCRIBES</span></Col>
+                        <Col md={2} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index) => { return item.total_count})}</h1><span >TOTAl</span></Col>
+                        <Col md={2} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index)=>{ return item.in_campaign_count})}</h1><span >IN CAMPAIGN</span></Col>
+                        <Col md={2} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index)=>{ return item.leads_count})}</h1><span >LEADS</span></Col>
+                        <Col md={2} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index)=>{ return item.unsubscribe})}</h1><span >UNSUBSCRIBES</span></Col>
                     </Row>
                     <Row className=' mt-3 input_search_div'>
                         <Col md={4}>
@@ -189,7 +191,7 @@ class Prospects extends Component {
                             <tbody>
                                 {
                                     prospectData && prospectData.filter((item) => {
-                                        if (item.email.toLowerCase().includes(this.state.searchEmail.toLowerCase())) { return <div>{item.email}</div> } else (this.state.searchEmail == "")
+                                        if (item.email && item.email.toLowerCase().includes(this.state.searchEmail.toLowerCase())) { return <div>{item.email}</div> } else (this.state.searchEmail == "")
                                         { return null }
                                     }).map((item, index) => {
                                         return <tr >
@@ -213,16 +215,18 @@ class Prospects extends Component {
     }
 }
 const mapStateToProps = (state) => {
+    console.log("propData: state.OnclickProspectsReducer.prospectOnclickData &&state.OnclickProspectsReducer.prospectOnclickData", state.OnclickProspectsReducer.prospectOnclickData && state.OnclickProspectsReducer.prospectOnclickData)
     return {
         prospectData: state.ProspectsGetReducer.prospectData,
-        id: state.ProspectsGetReducer.prospectData
+        id: state.ProspectsGetReducer.prospectData,
+        propData: state.OnclickProspectsReducer.prospectOnclickData && state.OnclickProspectsReducer.prospectOnclickData
     }
 }
 const mapDispatchToProps = dispatch => ({
     ProspectActionData: prospectData => {
         dispatch(ProspectActionData(prospectData))
     },
-    unsubscribeProspectAction: id=>{
+    unsubscribeProspectAction: id => {
         dispatch(ProspectUnsubscribeAction(id))
     },
     OnclickProspectActionData: id => { dispatch(OnclickProspectActionData(id)) },

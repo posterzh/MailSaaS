@@ -197,7 +197,7 @@ class Sidebar extends React.Component {
       <div className="scrollbar-inner">
         <div className="sidenav-header d-flex align-items-center">
           {logo ? (
-            <NavbarBrand {...navbarBrandProps}>
+            <NavbarBrand {...navbarBrandProps} to="/app/" tag={Link}>
               { <img
                  alt={logo.imgAlt}
                 className="navbar-brand-img"

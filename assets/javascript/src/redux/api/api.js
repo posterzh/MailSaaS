@@ -83,9 +83,11 @@ Api.CampaignPreviewApi = (token, id) => {
 
 // CAMPAIGN UPDATE PREVIEW
 Api.CampaignUpdatePreviewApi = (token, id) => {
+  console.log("update preview id is:->",id)
   return axios({
     method: 'PUT',
-    url: `${API_BASE_URL}/campaign/personalize/2/`,
+    url: `${API_BASE_URL}/campaign/personalize/${id}/`,
+    data:{},
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -252,15 +254,12 @@ Api.CampaignProspects = (token) => {
 }
 
 
-Api.deleteProspects = (id,token) => {
-  console.log('aaaaaaaaaaaaaaaaaaaaaaaa',id)
+Api.deleteProspects = (data,token) => {
+  console.log('gettttttttttttttttttttttt',data)
   return axios({
     method: 'DELETE',
-    url: `${API_BASE_URL}/campaign/prospects/${id}/`,
-    id: {    
-            id: id,
-            
-    },
+    url: `${API_BASE_URL}/campaign/prospects/`,
+    data: { recp_ids:data},
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -272,10 +271,11 @@ Api.deleteProspects = (id,token) => {
 
 
 // ONCLICK PRSPECT
-Api.CampaignOnclickProspects = (id, token) => {
+Api.CampaignOnclickProspects = (data, token) => {
+  console.log('------------EL LAB----->',data);
   return axios({
     method: 'GET',
-    url: `${API_BASE_URL}/campaign/prospects/${id}/`,
+    url: `${API_BASE_URL}/campaign/prospects/${data}/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -501,12 +501,12 @@ Api.GetScheduleApi = (token) => {
   })
 }
 
-//UPDATE SCHEDULE
-Api.UpdateScheduleApi = (token, scheduledataa) => {
+Api.UpdateScheduleApi=(updatedataschedule,token)=>{
+  console.log("update api data of schedule",updatedataschedule)
   return axios({
-    method: 'PUT',
-    data: { ...scheduledataa },
-    url: `${API_BASE_URL}/campaignschedule/updateschedulemail/`,
+    method:'PUT',
+    data:{...updatedataschedule},
+    url:`${API_BASE_URL}/campaignschedule/updateschedulemail/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
