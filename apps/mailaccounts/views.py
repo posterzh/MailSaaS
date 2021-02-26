@@ -87,8 +87,9 @@ class EmailAccountsView(generics.ListCreateAPIView):
                                 max_email_send=1)
                             schedule_ob.save()
                 except:
-                    return Response({"message":check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[1],"sucess":False})
-                return Response({"message":serializer.data,"sucess":True})
+                    print(check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"]))
+                    return Response({"message":check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[8:-2],"sucess":False})
+                # return Response({"message":serializer.data,"sucess":True})
             return Response({'message':serializer.errors,"success":False})
         return Response({"message":"Smtp username and Imap username does not match to email"})
 
