@@ -807,6 +807,21 @@ button .import_button{
         background-color: white;
         border: 1px solid silver;
     }
+    
+    //  Quill div    
+    .Quill_div{
+        margin-top: 10px;
+        height:250px;
+        margin-bottom: 50px;
+    }
+    .ql-container {
+        height: 100%;
+    }
+    .ql-editor {
+        height: 100%;        
+        overflow-y: auto;
+    }
+
     .editorDiv{
         background-color: #F5F5F5;
         border: 2px solid;

@@ -30,7 +30,7 @@ import { Router, Route, Switch, Redirect } from "react-router-dom";
 // import "assets/vendor/fullcalendar/dist/fullcalendar.min.css";
 // import "assets/vendor/sweetalert2/dist/sweetalert2.min.css";
 // import "assets/vendor/select2/dist/css/select2.min.css";
-// import "assets/vendor/quill/dist/quill.core.css";
+import "quill/dist/quill.core.css";
 // import "assets/vendor/nucleo/css/nucleo.css";
 // import "assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
 // // core styles

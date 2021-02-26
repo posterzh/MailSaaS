@@ -22,7 +22,7 @@ module.exports = {
         options: { presets: ["@babel/env", "@babel/preset-react"] }
       },
       {
-        test: /\.scss$/,
+        test: /\.(css|scss)$/,
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
