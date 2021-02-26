@@ -115,14 +115,14 @@ class AdminNavbar extends React.Component {
                     <span className="nav-link-inner--text">Register</span>
                   </NavLink>
                 </NavItem>
-                <NavItem>
+                {/* <NavItem>
                   <NavLink to="/app/auth/lock" tag={Link}>
                     <span className="nav-link-inner--text">Lock</span>
                   </NavLink>
-                </NavItem>
+                </NavItem> */}
               </Nav>
               <hr className="d-lg-none" />
-              <Nav className="align-items-lg-center ml-lg-auto" navbar>
+              {/* <Nav className="align-items-lg-center ml-lg-auto" navbar>
                 <NavItem>
                   <NavLink
                     className="nav-link-icon"
@@ -200,7 +200,7 @@ class AdminNavbar extends React.Component {
                     <span className="nav-link-inner--text">Purchase now</span>
                   </Button>
                 </NavItem>
-              </Nav>
+              </Nav> */}
             </UncontrolledCollapse>
           </Container>
         </Navbar>

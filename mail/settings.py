@@ -151,7 +151,7 @@ DATABASES = {
         'NAME': config('DATABASE_NAME'),
         'USER': config('DATABASE_USER'),
         'PASSWORD': config('DATABASE_PASSWORD'),
-        'HOST': config('DATABASE_HOST'),
+        'HOST':config('DATABASE_HOST'),
         'PORT':config('DATABASE_PORT'),
     }
 }
@@ -341,7 +341,7 @@ PROJECT_METADATA = {
 }
 
 
-ADMINS = [('Elon Musk', 'elon.musk@localhost:8000')]
+# ADMINS = [('Elon Musk', 'elon.musk@localhost:8000')]
 
 GOOGLE_ANALYTICS_ID = ''  # replace with your google analytics ID to connect to Google Analytics
 
@@ -402,9 +402,10 @@ JWT_AUTH = {
 
 
 #Mail_configuration
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST='sg3plcpnl0063.prod.sin3.secureserver.net'
 EMAIL_PORT=config('EMAIL_PORT')
+EMAIL_USE_TLS = False
 EMAIL_USE_SSL=config('EMAIL_USE_SSL')
 EMAIL_HOST_USER=config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')

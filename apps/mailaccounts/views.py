@@ -87,8 +87,9 @@ class EmailAccountsView(generics.ListCreateAPIView):
                                 max_email_send=1)
                             schedule_ob.save()
                 except:
-                    return Response({"message":check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[1],"sucess":False})
-                return Response({"message":serializer.data,"sucess":True})
+                    print(check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"]))
+                    return Response({"message":check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[8:-2],"sucess":False})
+                # return Response({"message":serializer.data,"sucess":True})
             return Response({'message':serializer.errors,"success":False})
         return Response({"message":"Smtp username and Imap username does not match to email"})
 
@@ -180,19 +181,16 @@ def send_mail_with_gmail():
     API_NAME = 'gmail'
     API_VERSION = 'v1'
     SCOPES = ['https://mail.google.com/']
-    print(SCOPES,">>>>>>>>>>>>>>>")
 
     service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
     emailMsg = 'You won $100,000'
     mimeMessage = MIMEMultipart()
-    print(mimeMessage,"<<<<>>>>><<>>>")
     mimeMessage['to'] = 'ashutoshsharma@externlabs.com'
     mimeMessage['subject'] = 'You won'
     mimeMessage.attach(MIMEText(emailMsg, 'plain'))
     raw_string = base64.urlsafe_b64encode(mimeMessage.as_bytes()).decode()
     # print(raw_string,"<<<<<<<<<<<<<raw_string")
     # raw_string2 = base64.urlsafe_b64encode(mimeMessage.as_bytes())
-    print(mimeMessage,"raw_string2>>>>>>>>>>>>>")
     # message = service.users().messages().send(userId='me', body={'raw': raw_string}).execute()
     # print('Message Id: %s' % message['id'])
     # print(message)
@@ -217,6 +215,8 @@ def imap():
     imap_port = mail_setting.imap_port
     # connect to host using SSL
     imap = imaplib.IMAP4_SSL(imap_host,imap_port)
+
+
     def animated_marker(): 
         widgets = ['Loading: ', progressbar.AnimatedMarker()] 
         bar = progressbar.ProgressBar(widgets=widgets).start() 
@@ -235,16 +235,12 @@ def imap():
     for num in data[0].split():
         animated_marker()
         tmpo, data = imap.fetch(num, '(RFC822)')
-        # print('Message: {0}\n'.format(num))
         emal = data[0][1].decode('utf-8')
         msg = message_from_string(emal)
-        # print(msg, "this is message")
 
         # emailData = str(email_message)
 
     # for response_part in data:
-
-    #     print(response_part, " <<----------response part")
 
     # if isinstance(response_part, tuple):
 

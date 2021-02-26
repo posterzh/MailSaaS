@@ -48,7 +48,7 @@ class Register extends React.Component {
       PhoneNumber: '',
       CompanyName: '',
       Password: '',
-      mailsaas_type: 0,
+      mailsaas_type: 'Sales',
       isOpen: false,
       show:true
     }
@@ -72,8 +72,8 @@ class Register extends React.Component {
       company_name: this.state.CompanyName,
       password1: this.state.Password,
       mailsaas_type: this.state.mailsaas_type
-
     };
+
     this.props.RegisterAction(user)
     // console.log(user)
 

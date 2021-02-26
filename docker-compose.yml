@@ -1,47 +1,68 @@
-version: "3.8"
+version: "3"
 
 services:
   db:
     image: postgres
-    # persist data beyond lifetime of container
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_DB=mail
+      - POSTGRES_DB=mailsaas
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   redis:
-    image: redis
-    # persistent storage
-    command: redis-server --appendonly yes
+    image: redis:alpine
+    restart: always
     volumes:
       - redis_data:/data
   web:
     build:
       context: .
-      dockerfile: Dockerfile.dev
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/code
-    ports:
+      dockerfile: Dockerfile
+    ports :
       - "8000:8000"
-    env_file:
-      - ./.env.dev
+    environment: 
+      - DEBUG=1
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    volumes:
+      - .:/app
+    command: > 
+      sh -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
     depends_on:
       - db
       - redis
   celery:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     command: celery -A mail worker -l INFO
     volumes:
-      - .:/code
-    env_file:
-      - ./.env.dev
-    depends_on:
-      - db
+      - .:/app
+    environment:
+      - DEBUG=1
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    links: 
       - redis
+      - db
+    depends_on:
+      - redis
+      - db
+  frontend:
+    restart: always
+    stdin_open: true
+    command: npm run build
+    build: 
+      context: . 
+      dockerfile: Dockerfile
+    depends_on: 
+      - web
+    volumes: 
+      - .:/app
+      - ./app/node_modules
+
+  
+ 
 
 volumes:
   postgres_data:
