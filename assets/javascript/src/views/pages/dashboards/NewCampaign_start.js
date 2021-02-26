@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from "react-redux";
-import { Container, Row, Col, Form, Input, Nav, NavItem, BreadcrumbItem, Breadcrumb } from 'reactstrap';
+import { Container, Row, Col, Form, Input, Nav, NavItem,Button} from 'reactstrap';
 import { Link, Route } from 'react-router-dom';
 import AdminNavbar from '../../../../../javascript/src/components/Navbars/AdminNavbar'
 import { StartCampaignAction } from "../../../redux/action/CampaignAction";
@@ -122,33 +122,6 @@ class NewCampaign_start extends React.Component {
                     </div>
                 </Nav>
                 <Container fluid className="w-100">
-                    {/* <Row style={{ width: '100%', borderBottom: "1px solid #dedede", color: 'white' }}>
-                        <Col style={{ display: 'flex', alignItems: 'center' }}>
-                            <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
-                                <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
-                                    <span style={{ color: 'black', fontSize: '20px' }}>MailSaaaS</span></div>
-                            </div>
-                        </Col>
-                        <Col >
-                            <h1 style={{ textAlign: 'center', fontSize: '60px', color: "#333333" }}>New Campaign</h1>
-                        </Col>
-                        <Col style={{ display: "flex", flexDirection: "row-reverse" }}>
-                            <div className='mt-3'>
-                                <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                    <span><i className="fa fa-question-circle-o fa-lg" aria-hidden="true"></i></span>
-                                </a>
-                            </div>
-                        </Col>
-                    </Row> */}
-                    {/* <Row>
-                        <Col style={{ display: "flex" }}> */}
-                    {/* <Nav className='mx-auto w-100' navbar> */}
-                    {/* <Row> */}
-
-                    {/* </Row> */}
-                    {/* </Nav> */}
-                    {/* </Col>
-                    </Row> */}
                     <Row >
                         <Col md={6} className='mx-auto mt-5'>
                             <Form onSubmit={this.handleSubmit}>
@@ -174,8 +147,7 @@ class NewCampaign_start extends React.Component {
                                 </Row>
                                 <Row className='mt-5'>
                                     <Col style={{ display: "flex", justifyContent: "center" }}>
-                                        <button disabled={!mailsExist} type='submit' className='btn startBtn'>Next <i className="fas fa-angle-right"></i>
-                                        </button>
+                                        <Button disabled={!mailsExist} type='submit' className='startBtn'>Next <i className="fas fa-angle-right"></i></Button>
                                     </Col>
                                 </Row>
                             </Form>

@@ -64,7 +64,7 @@ class CardsHeader extends React.Component {
                 </Col> */}
                 <Col className="text-right" lg="" xs="12">
                     <Link to="/app/admin/CampaignStart">
-                      <Button style={{ background: 'white', color: "#5e72e4" }}>+ NEW CAMPAIGN</Button>
+                      <Button className='newBtn'>+ NEW CAMPAIGN</Button>
                     </Link>
                 </Col>
               </Row>

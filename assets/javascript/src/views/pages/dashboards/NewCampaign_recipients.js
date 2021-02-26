@@ -140,7 +140,7 @@ class NewCampaign_recipients extends Component {
                                                             <Col md={3} className="option1"><span>OPTION #2</span></Col>
                                                             <Col md={9}><span><textarea type="email" style={{ background: 'transparent' }} name='email' value={this.state.email}
                                                                 onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>
-                                                                {show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
+                                                                {show && <Button className='startBtn'>IMPORT</Button>}</span></Col>
                                                         </Row>
                                                     </div>
                                                 </div>

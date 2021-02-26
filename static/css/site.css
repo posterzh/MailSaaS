@@ -20086,15 +20086,6 @@ button .import_button {
 .start_input:focus {
   background: transparent; }
 
-.startBtn {
-  background-color: #ff4081;
-  color: white; }
-
-.startBtn:hover {
-  opacity: 0.7;
-  color: white;
-  background: #ff4081; }
-
 .campaign-form .start_input:hover {
   opacity: 0.6;
   color: black !important; }
@@ -21320,4 +21311,17 @@ input::-webkit-inner-spin-button {
 
 .navSpan:hover {
   color: navy; }
+
+.newBtn {
+  background: white;
+  color: #5e72e4; }
+
+.startBtn {
+  background: #5e72e4;
+  color: white; }
+
+.startBtn:hover {
+  opacity: 0.9;
+  background: #5e72e4;
+  color: white; }
 

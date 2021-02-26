@@ -540,15 +540,6 @@ button .import_button{
 .start_input:focus{
     background:transparent
 }
-.startBtn{
-    background-color: #ff4081;
-    color:white;
-}
-.startBtn:hover{
-    opacity: 0.7;
-    color:white;
-    background: #ff4081;
-}
 .campaign-form .start_input:hover{
     opacity: 0.6;
     color:black !important;
@@ -1839,9 +1830,6 @@ margin-top: 0px !important;
    font-size: 20px;
    background:#11cdef
 }
-.navDiv:hover{
-    // color: orange;
-}
 .startItem{
     margin-left: 20px;
 }
@@ -1850,4 +1838,17 @@ margin-top: 0px !important;
 }
 .navSpan:hover{
     color: navy;
+}
+.newBtn{
+    background: white;
+     color: #5e72e4 
+}
+.startBtn{
+    background: #5e72e4;
+     color: white 
+}
+.startBtn:hover{
+    opacity:0.9;
+    background: #5e72e4;
+     color: white 
 }

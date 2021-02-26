@@ -245,8 +245,8 @@ class CampaignCompose extends Component {
                                         </Col>
                                     </Row>
                                     <Row className='mx-auto'>
-                                        <Button className='btn startBtn'>CANCEL EDITS</Button>
-                                        <Button className="newcampaign_button btn" type='submit' >NEXT<i className="fa fa-arrow-right" aria-hidden="true"></i></Button>
+                                        <Button className='startBtn'>CANCEL</Button>
+                                        <Button className="startBtn" type='submit' >NEXT<i className="fa fa-arrow-right" aria-hidden="true"></i></Button>
                                     </Row>
                                 </Col>
                             </Row>
