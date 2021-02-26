@@ -414,7 +414,6 @@ margin-top: 10px;
 }
 .receipentlist_data_box{
     width: 100%;
-    background-color: #eee;
     justify-content: center;
 }
 .option1
@@ -1826,4 +1825,29 @@ margin-top: 0px !important;
     display: flex;
     justify-content: space-around;
      background-color: #11cdef;
+}
+.navLink>.startItem:hover{
+    border: 2px solid black;
+}
+.navDiv{
+    // border: 2px solid;
+//    text-align: center;
+   display:flex;
+   justify-content: center;
+   width:16%;
+   margin: 2px;
+   font-size: 20px;
+   background:#11cdef
+}
+.navDiv:hover{
+    // color: orange;
+}
+.startItem{
+    margin-left: 20px;
+}
+.navSpan{
+    color: white;
+}
+.navSpan:hover{
+    color: navy;
 }

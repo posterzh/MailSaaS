@@ -19981,7 +19981,6 @@ input:focus {
 
 .receipentlist_data_box {
   width: 100%;
-  background-color: #eee;
   justify-content: center; }
 
 .option1 {
@@ -21301,4 +21300,24 @@ input::-webkit-inner-spin-button {
   display: flex;
   justify-content: space-around;
   background-color: #11cdef; }
+
+.navLink > .startItem:hover {
+  border: 2px solid black; }
+
+.navDiv {
+  display: flex;
+  justify-content: center;
+  width: 16%;
+  margin: 2px;
+  font-size: 20px;
+  background: #11cdef; }
+
+.startItem {
+  margin-left: 20px; }
+
+.navSpan {
+  color: white; }
+
+.navSpan:hover {
+  color: navy; }
 

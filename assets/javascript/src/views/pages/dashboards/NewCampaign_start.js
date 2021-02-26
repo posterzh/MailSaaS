@@ -66,48 +66,60 @@ class NewCampaign_start extends React.Component {
             <div className='main-view'>
                 <AdminNavbar />
                 <Nav className='mx-auto navLink'  role='tablist'>
-                    <NavItem className='mr-3 ml-3'>
-                        <Link to="/app/admin/CampaignStart">START</Link>
+                    <div className='navDiv'>
+                    <NavItem className='startItem' active>
+                        <Link to="/app/admin/CampaignStart"><span className='navSpan'>START</span></Link>
                     </NavItem>
-                    <NavItem className='mr-3 ml-3'>
+                    </div>
+                    <div className='navDiv'>
+                    <NavItem className='startItem '>
                         <Link to={{
                             pathname: "/app/admin/CampaignRecipient",
                             state: {
                                 id: this.props.history.location.state && this.props.history.location.state.id
                             }
-                        }}>RECIPICIENT</Link>
+                        }}><span className='navSpan'>RECIPICIENT</span></Link>
                     </NavItem>
-                    <NavItem className='mr-3 ml-3'>
+                    </div>
+                    <div className='navDiv'>
+                    <NavItem className='startItem '>
                         <Link to={{
                             pathname: "/app/admin/CampaignCompose",
                             state: {
                                 mailGetData: this.props.mailGetData
                             }
-                        }}>COMPOSE</Link>
+                        }}><span className='navSpan'>COMPOSE</span></Link>
                     </NavItem>
-                    <NavItem className='mr-3 ml-3'>
+                    </div>
+                    <div className='navDiv'>
+                    <NavItem className='startItem '>
                         <Link to={{
                             pathname: "/app/admin/CampaignPreview",
                             state: {
                                 id: this.props.history.location.state && this.props.history.location.state.id
                             }
-                        }}>PREVIEW</Link>
+                        }}><span className='navSpan'>PREVIEW</span></Link>
                     </NavItem>
-                    <NavItem className='mr-3 ml-3'>
+                    </div>
+                    <div className='navDiv'>
+                    <NavItem className='startItem '>
                         <Link to={{
                             pathname: "/app/admin/CampaignOptions",
                             state: {
                                 id: this.props.history.location.state && this.props.history.location.state.id
                             }
-                        }}>OPTIONS</Link>
+                        }}><span className='navSpan'>OPTIONS</span></Link>
                     </NavItem>
-                    <NavItem className='mr-3 ml-3'><Link to={{
+                    </div>
+                    <div className='navDiv'>
+                    <NavItem className='startItem '><Link to={{
                         pathname: "/app/admin/CampaignSend",
                         state: {
                             id: this.props.history.location.state && this.props.history.location.state.id
                         }
-                    }}>SEND</Link>
+                    }}><span className='navSpan'>SEND</span></Link>
                     </NavItem>
+                    </div>
                 </Nav>
                 <Container fluid className="w-100">
                     {/* <Row style={{ width: '100%', borderBottom: "1px solid #dedede", color: 'white' }}>

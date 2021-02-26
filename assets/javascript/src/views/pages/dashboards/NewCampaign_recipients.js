@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { Container, Row, Col, Button, Input, Nav, Form } from 'reactstrap';
+import { Container, Row, Col, Button, Input, Nav, Form, NavItem } from 'reactstrap';
 import { Link, Route } from 'react-router-dom';
 import AdminNavbar from "../../../../../javascript/src/components/Navbars/AdminNavbar"
 import { RecipientAction, StartCampaignAction } from "../../../redux/action/CampaignAction";
@@ -59,75 +59,70 @@ class NewCampaign_recipients extends Component {
         console.log(this.props.location, this.props.campaignDetails, "recipient")
         return (
             <>
-            <AdminNavbar />
-            <div className='main-view'>
-                <div style={{ height: 980, width: '100%', backgroundColor: "#eee" }}>
-                    <Container fluid>
-                        {/* <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
-                            <Col style={{ display: 'flex', alignItems: 'center' }}>
-                                <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
-                                    <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
-                                        <span style={{ color: 'black', fontSize: '20px' }}>MailSaaaS</span></div>
-                                </div>
-                            </Col>
-                            <Col >
-                                <h1 style={{ textAlign: 'center', fontSize: '60px', color: "#333333" }}>New Campaign</h1>
-                            </Col>
-                            <Col style={{ display: "flex", flexDirection: "row-reverse" }}>
-                                <div className='mt-3'>
-                                    <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                        <span><i className="fa fa-question-circle-o fa-lg" aria-hidden="true"></i></span>
-                                    </a>
-                                </div>
-                            </Col>
-                        </Row> */}
-                        <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
-                            <Col style={{ display: "flex" }}><Nav className='mx-auto' navbar>
-                                <Row className='mx-auto' style={{ width: '100%' }}>
-                                    <ul style={{ listStyleType: 'none', display: 'flex' }}>
-                                        <li className='mr-3 ml-3'><Link to={{
-                                            pathname: "/app/admin/CampaignStart",
-                                            state: {
-                                                id: this.props.history.location.state && this.props.history.location.state.id
-                                            }
-                                        }}>START</Link></li>
-                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignRecipient">RECIPICIENT</Link></li>
-                                        <li className='mr-3 ml-3'><Link to={{
-                                            pathname:
-                                                "/app/admin/CampaignCompose",
-                                            state: {
-                                                id: this.props.history.location.state && this.props.history.location.state.id
-                                            }
-                                        }}>COMPOSE</Link></li>
-                                        <li className='mr-3 ml-3'><Link to={{
-                                            pathname: "/app/admin/CampaignPreview",
-                                            state: {
-                                                id: this.props.history.location.state && this.props.history.location.state.id
-                                            }
-                                        }}>PREVIEW</Link></li>
-                                        <li className='mr-3 ml-3'><Link to={{
-                                            pathname: "/app/admin/CampaignOptions",
-                                            state: {
-                                                id: this.props.history.location.state && this.props.history.location.state.id
-                                            }
-                                        }}>OPTIONS</Link></li>
-                                        <li className='mr-3 ml-3'><Link to={{
-                                            pathname: "/app/admin/CampaignSend",
-                                            state: {
-                                                id: this.props.history.location.state && this.props.history.location.state.id
-                                            }
-                                        }}>SEND</Link></li>
-                                    </ul>
-                                </Row>
-                            </Nav>
-                            </Col>
-                        </Row>
+                <div className='main-view'>
+                    <AdminNavbar />
+                    <Nav className='mx-auto navLink' role='tablist'>
+                        <div className='navDiv'>
+                            <NavItem className='startItem' active>
+                            <Link to={{
+                                    pathname: "/app/admin/CampaignStart",
+                                    state: {
+                                        id: this.props.history.location.state && this.props.history.location.state.id
+                                    }
+                                }}><span className='navSpan'>START</span></Link>
+                            </NavItem>
+                        </div>
+                        <div className='navDiv'>
+                            <NavItem className='startItem '>
+                                <Link to="/app/admin/CampaignRecipient"><span className='navSpan'>RECIPICIENT</span></Link>
+                            </NavItem>
+                        </div>
+                        <div className='navDiv'>
+                            <NavItem className='startItem '><Link to={{
+                                pathname:
+                                    "/app/admin/CampaignCompose",
+                                state: {
+                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                }
+                            }}><span className='navSpan'>COMPOSE</span></Link>
+                            </NavItem>
+                        </div>
+                        <div className='navDiv'>
+                            <NavItem className='startItem '><Link to={{
+                                pathname: "/app/admin/CampaignPreview",
+                                state: {
+                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                }
+                            }}><span className='navSpan'>PREVIEW</span></Link>
+                            </NavItem>
+                        </div>
+                        <div className='navDiv'>
+                            <NavItem className='startItem '><Link to={{
+                                pathname: "/app/admin/CampaignOptions",
+                                state: {
+                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                }
+                            }}><span className='navSpan'>OPTIONS</span></Link>
+                            </NavItem>
+                        </div>
+                        <div className='navDiv'>
+                            <NavItem className='startItem '>
+                                <Link to={{
+                                    pathname: "/app/admin/CampaignSend",
+                                    state: {
+                                        id: this.props.history.location.state && this.props.history.location.state.id
+                                    }
+                                }}><span className='navSpan'>SEND</span></Link>
+                            </NavItem>
+                        </div>
+                    </Nav>
+                    <Container fluid className="w-100">
                         <Row>
-                            <Col md={12} style={{ backgroundColor: "#eee" }}>
+                            <Col md={12}>
                                 <Form onSubmit={this.handleSubmit}>
                                     <Container fluid>
                                         <Row className='mt-5'>
-                                            <Col><h1 style={{ fontSize: '30px', fontWeight: '200', textAlign: 'center', color: 'black', backgroundColor: "#eee" }}>Drop in your first list of recipients</h1></Col>
+                                            <Col><h1 style={{ fontSize: '30px', fontWeight: '200', textAlign: 'center', color: 'black' }}>Drop in your first list of recipients</h1></Col>
                                         </Row>
                                         <Row className='mt-5'>
                                             <Col md={6} className="receipentlist_box mx-auto">
@@ -143,7 +138,9 @@ class NewCampaign_recipients extends Component {
                                                         </Row>
                                                         <Row className='mt-5'>
                                                             <Col md={3} className="option1"><span>OPTION #2</span></Col>
-                                                            <Col md={9}><span className="textarea"><textarea type="email" name='email' value={this.state.email} onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>{show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
+                                                            <Col md={9}><span><textarea type="email" style={{ background: 'transparent' }} name='email' value={this.state.email}
+                                                                onChange={(e) => { this.setState({ show: true, email: e.target.value }) }} placeholder="type here"></textarea>
+                                                                {show && <Button className='btn startBtn'>IMPORT</Button>}</span></Col>
                                                         </Row>
                                                     </div>
                                                 </div>
@@ -154,8 +151,7 @@ class NewCampaign_recipients extends Component {
                             </Col>
                         </Row>
                     </Container>
-                </div>
-            </div>
+                </div >
             </>
         )
     }
