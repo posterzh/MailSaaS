@@ -57,6 +57,7 @@ class EmailAccountsView(generics.ListCreateAPIView):
         request.data["user"] = request.user.id
         if request.data['smtp_username'] == request.data['email'] and request.data['imap_username'] == request.data['email']:
             # print(request.data)
+            request.data["provider"] = "SMTP"
             serializer = EmailAccountSerializer(data=request.data)
             if serializer.is_valid():
                 # login_status = check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[1].decode("utf-8")
@@ -87,7 +88,8 @@ class EmailAccountsView(generics.ListCreateAPIView):
                                 max_email_send=1)
                             schedule_ob.save()
                 except:
-                    return Response({"message":check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[1],"sucess":False})
+                    # print(check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"]))
+                    return Response({"message":check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[8:-2],"sucess":False})
                 return Response({"message":serializer.data,"sucess":True})
             return Response({'message':serializer.errors,"success":False})
         return Response({"message":"Smtp username and Imap username does not match to email"})

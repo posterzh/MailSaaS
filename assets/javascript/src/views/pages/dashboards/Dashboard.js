@@ -49,17 +49,8 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div>
-     <AdminNavbar/>
-          {/* <Container fluid className="dashboard_title" style={{}}>
-            <Row className="main_title"><h1 className="Main-title">Welcome to MailSaaS</h1></Row>
-            <Row className="sub_title"><h3>A simple solution for email outreach.</h3></Row>
-            <Row className="New_campaign_button">
-              <Link to="/app/admin/CampaignStart">
-                <Button style={{ background: '#172b4d', color: "white" }}>+ NEW CAMPAIGN</Button>
-              </Link>
-            </Row>
-          </Container> */}
-          <CardHeader></CardHeader>
+        <AdminNavbar />
+        <CardHeader />
       </div>
     );
   }

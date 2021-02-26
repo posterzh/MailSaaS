@@ -399,8 +399,6 @@ JWT_AUTH = {
 }
 
 
-
-
 #Mail_configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST='sg3plcpnl0063.prod.sin3.secureserver.net'

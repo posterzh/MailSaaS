@@ -414,7 +414,6 @@ margin-top: 10px;
 }
 .receipentlist_data_box{
     width: 100%;
-    background-color: #eee;
     justify-content: center;
 }
 .option1
@@ -540,15 +539,6 @@ button .import_button{
 }
 .start_input:focus{
     background:transparent
-}
-.startBtn{
-    background-color: #ff4081;
-    color:white;
-}
-.startBtn:hover{
-    opacity: 0.7;
-    color:white;
-    background: #ff4081;
 }
 .campaign-form .start_input:hover{
     opacity: 0.6;
@@ -807,7 +797,8 @@ button .import_button{
         background-color: white;
         border: 1px solid silver;
     }
-    .editorDiv{
+.editorDiv{
+        height:210px;
         background-color: #F5F5F5;
         border: 2px solid;
     }
@@ -1826,4 +1817,39 @@ margin-top: 0px !important;
     display: flex;
     justify-content: space-around;
      background-color: #11cdef;
+}
+.navLink>.startItem:hover{
+    border: 2px solid black;
+}
+.navDiv{
+    // border: 2px solid;
+//    text-align: center;
+   display:flex;
+   justify-content: center;
+   width:16%;
+   margin: 2px;
+   font-size: 20px;
+   background:#11cdef
+}
+.startItem{
+    margin-left: 20px;
+}
+.navSpan{
+    color: white;
+}
+.navSpan:hover{
+    color: navy;
+}
+.newBtn{
+    background: white;
+     color: #5e72e4 
+}
+.startBtn{
+    background: #5e72e4;
+     color: white 
+}
+.startBtn:hover{
+    opacity:0.9;
+    background: #5e72e4;
+     color: white 
 }
