@@ -134,3 +134,4 @@ yarn.lock
 
 static/js
 static/css//site.css
+.DS_Store
