@@ -1,37 +1,13 @@
 # MailSaaS
 
-The most amazing SaaS application the world has ever seen!
-
 ## Installation
-
-Setup a virtualenv and install requirements:
-
 ```bash
-python3 -m venv env
 pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
-```
-
-## Running server for backend
-
-```bash
-python manage.py runserver
-```
-
-## Building front-end
-
-To build JavaScript and CSS files, first install npm packages:
-
-```bash
 npm install
-```
-
-Then to build (and watch for changes locally) just run:
-
-```bash
 npm run dev-watch
-```
+python manage.py runserver
 
 ## Running Celery
 
@@ -102,4 +78,3 @@ docker-compose rm
 ```bash
 docker-compose down
 ```
-

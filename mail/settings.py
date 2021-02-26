@@ -148,11 +148,12 @@ FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DATABASE_NAME'),
-        'USER': config('DATABASE_USER'),
-        'PASSWORD': config('DATABASE_PASSWORD'),
-        'HOST':config('DATABASE_HOST'),
-        'PORT':config('DATABASE_PORT'),
+        'USER' : 'doadmin',
+        'PASSWORD':'yatptfrbv10yq4nc',
+        'HOST':'db-postgresql-sfo2-22721-do-user-8602625-0.b.db.ondigitalocean.com',
+        'PORT':'25060',
+        'NAME': 'defaultdb'
+
     }
 }
 
@@ -402,21 +403,28 @@ JWT_AUTH = {
 #Mail_configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST='sg3plcpnl0063.prod.sin3.secureserver.net'
-EMAIL_PORT=config('EMAIL_PORT')
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL=config('EMAIL_USE_SSL')
-EMAIL_HOST_USER=config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
+# <<<<<<< digital-ocean
+# # EMAIL_PORT=config('EMAIL_PORT')
+# # EMAIL_USE_SSL=config('EMAIL_USE_SSL')
+# # EMAIL_HOST_USER=config('EMAIL_HOST_USER')
+# # EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
+# =======
+# EMAIL_PORT=config('EMAIL_PORT')
+# EMAIL_USE_TLS = False
+# EMAIL_USE_SSL=config('EMAIL_USE_SSL')
+# EMAIL_HOST_USER=config('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
+# >>>>>>> master
 
 
 
 
 # Slack Configuration
-VERIFICATION_TOKEN = config('VERIFICATION_TOKEN')
-OAUTH_ACCESS_TOKEN = config('OAUTH_ACCESS_TOKEN')
-BOT_USER_ACCESS_TOKEN = config('BOT_USER_ACCESS_TOKEN')
-SLACK_CLIENT_ID = config('SLACK_CLIENT_ID')
-SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
+# VERIFICATION_TOKEN = config('VERIFICATION_TOKEN')
+# OAUTH_ACCESS_TOKEN = config('OAUTH_ACCESS_TOKEN')
+# BOT_USER_ACCESS_TOKEN = config('BOT_USER_ACCESS_TOKEN')
+# SLACK_CLIENT_ID = config('SLACK_CLIENT_ID')
+# SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
 
 #Salesforce Configuration
 
@@ -430,6 +438,6 @@ SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
 
 PIPEDRIVE_API_KEY="67ffc61ad9d85760cee59c2115bddd5cc536e9c6"
 
-#Google Configuration
-GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
-GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
+# #Google Configuration
+# GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
+# GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
