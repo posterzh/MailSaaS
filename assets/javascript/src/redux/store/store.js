@@ -23,6 +23,7 @@ import {
   LeadUpdateReducer,
   CampaignPeopleReducer,
   LeadGetReducer,
+  LeadViewReducer
 } from '../reducer/reducer';
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
@@ -49,7 +50,8 @@ const rootReducer = combineReducers({
   LeadCatcherReducer,
   CampaignPeopleReducer,
   LeadGetReducer,
-  LeadUpdateReducer
+  LeadUpdateReducer,
+  LeadViewReducer
 })
 
 const store = createStore(

@@ -147,7 +147,7 @@ class PasswordResetLink(generics.CreateAPIView):
         try:
             user = CustomUser.objects.get(email=email) 
         except CustomUser.DoesNotExist:
-            return Response('messgae':'User does not exists','sucess':False})
+            return Response({'message':'User does not exists','sucess':False})
         try:
             payload = jwt_payload_handler(user)
             jwt_token = jwt_encode_handler(payload)
@@ -185,7 +185,7 @@ class ForgotPassword(generics.CreateAPIView):
                         my_user.password_change=True
                         my_user.save()
                         return Response({'message':'Password updated successfully','sucess':True})
-                    return Response({"message":serializer.errors,'status':False)
+                    return Response({"message":serializer.errors,'status':False})
                        
             return Response({"message":"password don't match","status":False})
         else:

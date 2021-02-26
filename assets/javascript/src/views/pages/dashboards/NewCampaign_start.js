@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from "react-redux";
 import { Container, Row, Col, Form, Input, Nav } from 'reactstrap';
 import { Link, Route } from 'react-router-dom';
-
+import AdminNavbar from '../../../../../javascript/src/components/Navbars/AdminNavbar'
 import { StartCampaignAction } from "../../../redux/action/CampaignAction";
 import { MailGetDataAction } from '../../../redux/action/MailSenderAction';
 class NewCampaign_start extends React.Component {
@@ -61,11 +61,12 @@ class NewCampaign_start extends React.Component {
     render() {
         const { mailGetData } = this.props;
         console.log('from_address', this.state.from_address)
-        const { mailsExist} = this.state;
+        const { mailsExist } = this.state;
         return (
             <div className='main-view'>
-                <Container fluid>
-                    <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
+                <AdminNavbar />
+                <Container fluid className="w-100">
+                    {/* <Row style={{ width: '100%', borderBottom: "1px solid #dedede", color: 'white' }}>
                         <Col style={{ display: 'flex', alignItems: 'center' }}>
                             <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
                                 <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
@@ -82,45 +83,46 @@ class NewCampaign_start extends React.Component {
                                 </a>
                             </div>
                         </Col>
-                    </Row>
-                    <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
-                        <Col style={{ display: "flex" }}><Nav className='mx-auto' navbar>
-                            <Row className='mx-auto' style={{ width: '100%' }}>
-                                <ul style={{ listStyleType: 'none', display: 'flex' }}>
-                                    <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
-                                    <li className='mr-3 ml-3'><Link to={{
-                                        pathname: "/app/admin/CampaignRecipient",
-                                        state: {
-                                            id: this.props.history.location.state && this.props.history.location.state.id
-                                        }
-                                    }}>RECIPICIENT</Link></li>
-                                    <li className='mr-3 ml-3'><Link to={{
-                                        pathname: "/app/admin/CampaignCompose",
-                                        state: {
-                                            mailGetData: this.props.mailGetData
-                                        }
-                                    }}>COMPOSE</Link></li>
-                                    <li className='mr-3 ml-3'><Link to={{
-                                        pathname: "/app/admin/CampaignPreview",
-                                        state: {
-                                            id: this.props.history.location.state && this.props.history.location.state.id
-                                        }
-                                    }}>PREVIEW</Link></li>
-                                    <li className='mr-3 ml-3'><Link to={{
-                                        pathname: "/app/admin/CampaignOptions",
-                                        state: {
-                                            id: this.props.history.location.state && this.props.history.location.state.id
-                                        }
-                                    }}>OPTIONS</Link></li>
-                                    <li className='mr-3 ml-3'><Link to={{
-                                        pathname: "/app/admin/CampaignSend",
-                                        state: {
-                                            id: this.props.history.location.state && this.props.history.location.state.id
-                                        }
-                                    }}>SEND</Link></li>
-                                </ul>
-                            </Row>
-                        </Nav>
+                    </Row> */}
+                    <Row>
+                        <Col style={{ display: "flex" }}>
+                            <Nav className='mx-auto w-100' navbar>
+                                <Row className='mx-auto' style={{ width: '100%' }}>
+                                    <ul style={{ listStyleType: 'none', display: 'flex' }}>
+                                        <li className='mr-3 ml-3'><Link to="/app/admin/CampaignStart">START</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname: "/app/admin/CampaignRecipient",
+                                            state: {
+                                                id: this.props.history.location.state && this.props.history.location.state.id
+                                            }
+                                        }}>RECIPICIENT</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname: "/app/admin/CampaignCompose",
+                                            state: {
+                                                mailGetData: this.props.mailGetData
+                                            }
+                                        }}>COMPOSE</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname: "/app/admin/CampaignPreview",
+                                            state: {
+                                                id: this.props.history.location.state && this.props.history.location.state.id
+                                            }
+                                        }}>PREVIEW</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname: "/app/admin/CampaignOptions",
+                                            state: {
+                                                id: this.props.history.location.state && this.props.history.location.state.id
+                                            }
+                                        }}>OPTIONS</Link></li>
+                                        <li className='mr-3 ml-3'><Link to={{
+                                            pathname: "/app/admin/CampaignSend",
+                                            state: {
+                                                id: this.props.history.location.state && this.props.history.location.state.id
+                                            }
+                                        }}>SEND</Link></li>
+                                    </ul>
+                                </Row>
+                            </Nav>
                         </Col>
                     </Row>
                     <Row >

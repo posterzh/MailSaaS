@@ -28,7 +28,6 @@ class Campaign extends Component {
   render() {
     const { show, hide } = this.state;
     const { Tables, CampaignOverviewAction } = this.props;
-    console.log("this.props.history.location.state && this.props.history.location.state.id",this.props.history.location.state&&this.props.history.location.state.id)
     
     return (
       <>
