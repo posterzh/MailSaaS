@@ -28,7 +28,7 @@ import {
   Row,
   Col,
   Card,
-  CardHeader,
+  CardHeader as ReactstrapCardHeader,
   CardTitle,
   CardText,
   CardBody,
@@ -61,11 +61,11 @@ class Dashboard extends React.Component {
             <Row className="justify-content-center">
               <Col className="card-wrapper" lg="8">
                 <Card>
-                  <CardHeader>
+                  <ReactstrapCardHeader>
                     <h3 className="heading-title text-info mb-0 text-center">
                       Welcome to MailSaaS
                     </h3>
-                  </CardHeader>
+                  </ReactstrapCardHeader>
                   <CardBody>
                     <CardTitle className="mb-3" tag="h3">
                       Create Capmaing
@@ -94,8 +94,8 @@ class Dashboard extends React.Component {
               </Col>
             </Row>
           </Container>
-        <AdminNavbar />
-        <CardHeader />
+        {/* <AdminNavbar />
+        <CardHeader /> */}
       </div>
     );
   }
