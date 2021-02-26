@@ -20328,6 +20328,7 @@ button .import_button {
   border: 1px solid silver; }
 
 .editorDiv {
+  height: 210px;
   background-color: #F5F5F5;
   border: 2px solid; }
 

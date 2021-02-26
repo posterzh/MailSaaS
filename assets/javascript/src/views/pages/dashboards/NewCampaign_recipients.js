@@ -14,7 +14,7 @@ class NewCampaign_recipients extends Component {
             csvFile: '',
             email: [],
             options: [],
-            campaign: this.props.history.location.state && this.props.history.location.state.id
+            campaign: this.props.history.location.state && this.props.history.location.state.id,
         }
     }
     handleChange = (e) => {
@@ -28,6 +28,7 @@ class NewCampaign_recipients extends Component {
         this.state.options.length = 0
         if (!this.state.email && !this.state.csvFile) {
             alert('Fill option 1 or 2')
+
             return false;
         }
         else if (this.state.csvFile && !this.state.email) {
@@ -43,7 +44,11 @@ class NewCampaign_recipients extends Component {
             let temp2 = 2;
             this.state.options.push(temp1, temp2)
         }
-        else { return false }
+        else { 
+            this.setState({
+               })
+            return false 
+        }
         const recipientData = {
             csvfile_op1: this.state.csvFile,
             option: `[${this.state.options}]`,
@@ -51,6 +56,7 @@ class NewCampaign_recipients extends Component {
             campaign: this.state.campaign
         }
         console.log(this.state.csvFile, 'file')
+
         this.props.RecipientAction(recipientData)
     }
 

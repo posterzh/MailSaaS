@@ -201,6 +201,7 @@ class CampaignCompose extends Component {
                                         <div className='Editor_div'>
                                             <Editor
                                                 className='editorDiv'
+                                                style={{height:'210px'}}
                                                 editorState={editorState}
                                                 toolbarClassName="rdw-storybook-toolbar"
                                                 wrapperClassName="rdw-storybook-wrapper"

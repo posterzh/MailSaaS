@@ -107,7 +107,7 @@ class Campaign extends Component {
                   <Table responsive hover  style={{textAlign:'center'}}>
                     <thead>
                       <tr>
-                        <th scope="col" className="tableheader1" ><input type="checkbox" /></th>
+                        <th scope="col" className="tableheader1" ><input type="checkbox" onClick={} /></th>
                         <th></th>
                         <th className="tableheader2">Campaign Title</th>
                         <th className="header_created">Created</th>
@@ -123,18 +123,18 @@ class Campaign extends Component {
                     <tbody>
                       {Tables && Tables.CampaignTableData.map((item, index) => {
                         return (<>
-                          <tr key={index} className='pointer' onClick={() => { this.props.CampaignOverviewAction(item.id) }}>
+                          <tr key={index} className='pointer' >
                             <td><input type='checkbox' /></td>
                             <td><i class="fas fa-pause"></i></td>
-                            <td className="Campaign_title">{item.camp_title}</td>
-                            <td className='Created'>{item.camp_created_date_time.slice(0, 3).concat(item.camp_created_date_time.slice(-3, ))}</td>
-                            <td className='Assigned'>{item.assigned}</td>
-                            <td className='Recipient'>{item.recipientCount}</td>
-                            <td className='Sent'>{item.sentCount}</td>
-                            <td className='Leads'>{item.leadCount}</td>
-                            {/* <td className='Replies'>-</td> */}
-                            <td className='Open'>{item.opensCount}</td>
-                            {/* <td key={index} className='Bounces'>-</td> */}
+                            <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className="Campaign_title">{item.camp_title}</td>
+                            <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Created'>{item.camp_created_date_time.substring(5, 10)}</td>
+                            <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Assigned'>{item.assigned}</td>
+                            <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Recipient'>{item.recipientCount}</td>
+                            <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Sent'>{item.sentCount}</td>
+                            <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Leads'>{item.leadCount}</td>
+                            {/* <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Replies'>-</td> */}
+                            <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Open'>{item.opensCount}</td>
+                            {/* <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} key={index} className='Bounces'>-</td> */}
                           </tr>
                         </>
                         )
@@ -145,11 +145,9 @@ class Campaign extends Component {
               </Row>
             </Card>
           </Container>
-          <div className='plus-button-div'>
-            <div className='new_add_button'>
-              <span className="plusicon" 
-              // onClick={()=>{<SMTP />}}
-              >+</span>
+          <div className='plus-button-div' style={{position:'fixed',bottom:0,right:5}}>
+            <div className='new_add_button' onClick={()=>{}}>
+              <span className="plusicon">+</span>
             </div>
           </div>
         </div>
