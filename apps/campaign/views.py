@@ -29,6 +29,8 @@ from .serializers import (CampaignEmailSerializer,
                           CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer,
                           OnclickSerializer)
+from apps.mailaccounts.models import EmailAccount
+from apps.mailaccounts.views import send_mail_with_smtp
 
 
 class CreateCampaignStartView(APIView):
@@ -358,26 +360,50 @@ class CreateCampaignSendView(APIView):
                     if email_body_links:
                         #URL is Present
                         emailData = campemail.email_body
-                        for link in email_body_links:
-                            new_link = pytracking.get_click_tracking_url(
-                                link, {"campEmailId": campemail.id, "campaign": campemail.campaign.id},
-                                base_click_tracking_url=campemail.email_body,
-                                webhook_url=campemail.email_body, include_webhook_url=True)
-                            emailData = emailData.replace(link, new_link)
+                        # for link in email_body_links:
+                            # new_link = pytracking.get_click_tracking_url(
+                            #     link, {"campEmailId": campemail.id, "campaign": campemail.campaign.id},
+                            #     base_click_tracking_url=campemail.email_body,
+                            #     webhook_url=campemail.email_body, include_webhook_url=True)
+                            # emailData = emailData.replace(link, new_link)
+                        emailData += " <img width=0 height=0 src='"+open_tracking_url+"' />"
                     else:
                         #No URL Present
-                        emailData = campemail.email_body + "<img width=0 height=0 src='"+open_tracking_url+"' />"
+                        emailData = campemail.email_body + " <img width=0 height=0 src='"+open_tracking_url+"' />"
                     subject = campemail.subject
                     text_content = 'plain text body message.'
                     html_content = emailData
-                    msg = EmailMultiAlternatives(subject, text_content, campemail.campaign.from_address.email, [campemail.email])
+                    # msg = EmailMultiAlternatives(subject, text_content, campemail.campaign.from_address.email, [campemail.email])
 
-                    msg.attach_alternative(html_content, "text/html")
-                    msg.send()
+                    # msg.attach_alternative(html_content, "text/html")
+                    # msg.send()
+                    email_account_ob = EmailAccount.objects.get(user=request.user.id, email=camp.from_address.email)
+                    if email_account_ob.provider == "SMTP":
+                        print("Sending maile to ", campemail.email)
+                        # send_mail_with_smtp(email_account_ob.smtp_host, email_account_ob.smtp_port, email_account_ob.smtp_username, email_account_ob.smtp_password, [campemail.email], campemail.subject, emailData)
+                        import smtplib
+                        import email.message
+                        # server = smtplib.SMTP(email_account_ob.smtp_host)
+                        msg = email.message.Message()
+                        msg['Subject'] = campemail.subject
+                        
+                        
+                        msg['From'] = email_account_ob.smtp_username
+                        msg['To'] = campemail.email
+                        password = email_account_ob.smtp_password
+                        msg.add_header('Content-Type', 'text/html')
+                        msg.set_payload(emailData)
+                        
+                        s = smtplib.SMTP(email_account_ob.smtp_host+ ':' + email_account_ob.smtp_port)
+                        s.starttls()
+                        
+                        # Login Credentials for sending the mail
+                        s.login(msg['From'], password)
+                        
+                        s.sendmail(msg['From'], [msg['To']], msg.as_string())
 
-                    
 
-                    campemail.sent = True
+                        campemail.sent = True
                     campemail.reciepent_status = True
                     campemail.save()
                    
@@ -432,11 +458,12 @@ class CampaignView(generics.ListAPIView):
             resp = {
                 "id":camp.pk,
                 "camp_title": camp.title,
-                "camp_created_date_time": camp.created_date_time,
+                "camp_created_date_time": camp.created_date_time.strftime("%B %d"),
                 "assigned": camp.assigned.full_name,
                 "recipientCount": campEmail.count(),
                 "sentCount":0,
                 "leadCount": 0,
+                "opensCount": 0,
                 "openLeadCount": 0,
                 "wonLeadCount": 0,
                 "lostLeadCount": 0,
@@ -448,6 +475,8 @@ class CampaignView(generics.ListAPIView):
 
                 if campData["leads"]:
                     resp["leadCount"] = resp["leadCount"] + 1
+                if campData["opens"]:
+                    resp["opensCount"] = resp["opensCount"] + 1
 
                     if campData["lead_status"]=="openLead":
                         resp["openLeadCount"] = resp["openLeadCount"] + 1                    
@@ -547,8 +576,9 @@ class LeadsCatcherView(generics.ListAPIView):
 
 
 class TrackEmailOpen(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.AllowAny,)
     def get(self, request, format=None, id=None):
+        print("Tracking open startttttttttt")
         full_url = settings.SITE_URL + request.get_full_path()
         tracking_result = pytracking.get_open_tracking_result(
             full_url, base_open_tracking_url = settings.SITE_URL + "/campaign/email/open/")
@@ -559,6 +589,7 @@ class TrackEmailOpen(APIView):
 
         campEmail = CampaignRecipient.objects.get(id = trackData["campEmailId"])
         campEmail.opens = True
+        campEmail.leads = True
         campEmail.save()
         return Response({"message":"Saved Successfully"})
 
@@ -755,7 +786,6 @@ class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
             queryset = CampaignRecipient.objects.filter(campaign=pk)
         campEmailserializer = CampaignEmailSerializer(queryset, many = True)
         return Response(campEmailserializer.data)
-
 
 
 class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):

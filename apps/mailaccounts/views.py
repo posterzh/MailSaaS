@@ -17,6 +17,8 @@ from apps.users.models import CustomUser
 from .models import EmailAccount
 from .serializers import EmailAccountSerializer
 
+from apps.campaignschedule.models import Schedule
+
 def check_smtp_email(server, port, email, password):
     import smtplib, ssl
 
@@ -42,8 +44,8 @@ def check_smtp_email(server, port, email, password):
         # Print any error messages to stdout
         print("error = ",e)
         return str(e)
-    finally:
-        server.quit() 
+    # finally:
+    #     server.quit() 
 
 
 class EmailAccountsView(generics.ListCreateAPIView):
@@ -55,17 +57,39 @@ class EmailAccountsView(generics.ListCreateAPIView):
         request.data["user"] = request.user.id
         if request.data['smtp_username'] == request.data['email'] and request.data['imap_username'] == request.data['email']:
             # print(request.data)
+            request.data["provider"] = "SMTP"
             serializer = EmailAccountSerializer(data=request.data)
             if serializer.is_valid():
                 # login_status = check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[1].decode("utf-8")
                 # imap()
                 # print("login_statussssssss",login_status)
                 # print(str(login_status))
+                # print(type(check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[1].decode("utf-8")))
+                # print(check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[1].decode("utf-8"))
+                # check_smtp_email_var = check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[1].decode("utf-8")
                 try:
-                   if check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[1].decode("utf-8") == "Authentication succeeded":
+                    if check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[1].decode("utf-8") == "Authentication succeeded":
                         serializer.save()
+                        email_account_data = EmailAccount.objects.filter(user=request.user.id)
+                        count_email_accounts_of_current_user = email_account_data.count()
+                        if count_email_accounts_of_current_user==1:
+                            user = CustomUser.objects.get(id=request.user.id)
+                            mail_account = EmailAccount.objects.get(id=email_account_data.get().id)
+                            schedule_ob = Schedule(
+                                user=user,
+                                mail_account=mail_account,
+                                start_time='06:00:00',
+                                end_time='11:00:00',
+                                time_zone='America/Los_Angeles',
+                                max_email=20,
+                                strategy='SPACE',
+                                mint_between_sends=12,
+                                min_email_send=1,
+                                max_email_send=1)
+                            schedule_ob.save()
                 except:
-                    return Response({"message":"Wrong Credentials","sucess":False})
+                    # print(check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"]))
+                    return Response({"message":check_smtp_email(request.data["smtp_host"], request.data["smtp_port"], request.data["email"], request.data["smtp_password"])[8:-2],"sucess":False})
                 return Response({"message":serializer.data,"sucess":True})
             return Response({'message':serializer.errors,"success":False})
         return Response({"message":"Smtp username and Imap username does not match to email"})
@@ -89,6 +113,7 @@ class EmailAccountsUpdateView(generics.UpdateAPIView):
 
     def put(self,request,pk,format=None):
         queryset = EmailAccount.objects.get(id=pk)
+        request.data["user"] = request.user.id
         serializer = EmailAccountSerializer(queryset, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -105,17 +130,18 @@ class EmailAccountsUpdateView(generics.UpdateAPIView):
 
 
 
-def send_mail_with_smtp():
+def send_mail_with_smtp(host, host_port, host_user, host_pass, send_to, subject, msg):
     try:
         con = mail.get_connection()
         con.open()
         print('Django connected to the SMTP server')
 
-        mail_setting = EmailAccount.objects.last()
-        host = mail_setting.smtp_host
-        host_user = mail_setting.smtp_username
-        host_pass = mail_setting.smtp_password
-        host_port = mail_setting.smtp_port
+        # mail_setting = EmailAccount.objects.last()
+        # print(mail_setting)
+        # host = mail_setting.smtp_host
+        # host_user = mail_setting.smtp_username
+        # host_pass = mail_setting.smtp_password
+        # host_port = mail_setting.smtp_port
 
         mail_obj = EmailBackend(
             host=host,
@@ -127,19 +153,20 @@ def send_mail_with_smtp():
             timeout=10
         )
         msg = mail.EmailMessage(
-            subject="this is subject",
-            body="Hi, This is for testing purpose",
+            subject=subject,
+            body=msg,
             from_email=host_user,
             
-            to=['divyakhandelwal@externlabs.com','ashutoshsharma@externlabs.com'],
+            to=send_to,
             connection=con,
         )
-        print("mail_obj.ssl_keyfile >>>>>>", mail_obj.close(), "mail_obj.ssl_certfile"  )
-        # mail_obj.send_messages([msg])
+        # print("mail_obj.ssl_keyfile >>>>>>", mail_obj.close(), "mail_obj.ssl_certfile"  )
+        mail_obj.send_messages([msg])
 
         print('Message has been sent.')
 
         mail_obj.close()
+        con.close()
         print('SMTP server closed')
         return True
 
@@ -155,72 +182,19 @@ def send_mail_with_gmail():
     API_NAME = 'gmail'
     API_VERSION = 'v1'
     SCOPES = ['https://mail.google.com/']
-    print(SCOPES,">>>>>>>>>>>>>>>")
 
     service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
     emailMsg = 'You won $100,000'
     mimeMessage = MIMEMultipart()
-    print(mimeMessage,"<<<<>>>>><<>>>")
     mimeMessage['to'] = 'ashutoshsharma@externlabs.com'
     mimeMessage['subject'] = 'You won'
     mimeMessage.attach(MIMEText(emailMsg, 'plain'))
     raw_string = base64.urlsafe_b64encode(mimeMessage.as_bytes()).decode()
     # print(raw_string,"<<<<<<<<<<<<<raw_string")
     # raw_string2 = base64.urlsafe_b64encode(mimeMessage.as_bytes())
-    print(mimeMessage,"raw_string2>>>>>>>>>>>>>")
     # message = service.users().messages().send(userId='me', body={'raw': raw_string}).execute()
     # print('Message Id: %s' % message['id'])
     # print(message)
-    
-
-
-
-
-import imaplib
-from email import encoders, message_from_string
-from email.mime.base import MIMEBase
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-
-
-def sendmail():
-    ok = True
-    mail_setting = EmailAccount.objects.last()
-    # print(EmailAccount.objects.all() , "This is all wali ")
-
-    print(mail_setting , "This is last wali ")
-    gmail_user = mail_setting.smtp_username
-    gmail_pwd  = mail_setting.smtp_password
-    host = mail_setting.smtp_host
-    host_port = mail_setting.smtp_port
-
-    msg = MIMEMultipart('alternative')
-    # print(dir(msg),"<<<<<<<<<<<<<<<")
-    msg['From']    = gmail_user
-    msg['To']      = 'ashutoshsharma@externlabs.com'
-    msg['Cc']      = 'you@gmail.com'
-    msg['Subject'] = "this is the subject"
-    message = "This is Message for testing"
-    msg.attach(MIMEText(message))
-
-    try:
-        mailServer = smtplib.SMTP(host, host_port)
-        print(dir(smtplib.SMTP),"\n")
-
-        print(smtplib.SMTP.connect , "\n")
-        mailServer.ehlo()
-        mailServer.starttls()
-
-        mailServer.ehlo()
-        mailServer.login(gmail_user, gmail_pwd)
-        # mailServer.sendmail(gmail_user,[msg['To'],msg['Cc']],msg.as_string())
-        print("Message send sucessfully")
-        mailServer.close()
-    except:
-        ok = False
-    return ok
-
-
 
 
 
@@ -242,6 +216,8 @@ def imap():
     imap_port = mail_setting.imap_port
     # connect to host using SSL
     imap = imaplib.IMAP4_SSL(imap_host,imap_port)
+
+
     def animated_marker(): 
         widgets = ['Loading: ', progressbar.AnimatedMarker()] 
         bar = progressbar.ProgressBar(widgets=widgets).start() 
@@ -260,16 +236,12 @@ def imap():
     for num in data[0].split():
         animated_marker()
         tmpo, data = imap.fetch(num, '(RFC822)')
-        # print('Message: {0}\n'.format(num))
         emal = data[0][1].decode('utf-8')
         msg = message_from_string(emal)
-        # print(msg, "this is message")
 
         # emailData = str(email_message)
 
     # for response_part in data:
-
-    #     print(response_part, " <<----------response part")
 
     # if isinstance(response_part, tuple):
 

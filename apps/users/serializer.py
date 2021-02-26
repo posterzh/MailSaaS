@@ -82,3 +82,16 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['old_password','new_password','new_confirm_password']
+        
+
+class ResetPasswordSerializer(serializers.Serializer):
+    new_password = serializers.CharField(required=True)
+    confirm_new_password = serializers.CharField(required=True)
+  
+
+
+class GetEmailSerializer(serializers.Serializer):
+
+    """ Serializer for Get Email """
+
+    email = serializers.CharField(required=True)

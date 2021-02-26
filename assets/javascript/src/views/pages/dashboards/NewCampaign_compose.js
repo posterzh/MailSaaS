@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Row, Button, Input, Col, Form, Nav } from 'reactstrap';
+import { Container, Row, Button, Input, Col, Form, Nav, NavItem, NavLink } from 'reactstrap';
 import { Editor } from 'react-draft-wysiwyg';
 import { Link } from 'react-router-dom';
 import { EditorState } from 'draft-js';
@@ -9,6 +9,7 @@ import LinkClicksPage from './LinkClicksPage'
 import { connect } from 'react-redux';
 import { CampaignComposeAction } from '../../../redux/action/CampaignAction';
 import { Alert } from 'reactstrap';
+import AdminNavbar from "../../../../../javascript/src/components/Navbars/AdminNavbar"
 class CampaignCompose extends Component {
     constructor() {
         super();
@@ -76,7 +77,7 @@ class CampaignCompose extends Component {
             })
         }
         else {
-            Object.assign(this.state.normalData, { 'campaign': this.props.history.location.state &&this.props.history.location.state.id })
+            Object.assign(this.state.normalData, { 'campaign': this.props.history.location.state && this.props.history.location.state.id })
             let data = {
                 normal: this.state.normalData,
                 follow_up: this.state.followUpData,
@@ -101,13 +102,13 @@ class CampaignCompose extends Component {
     onDeleteList = (e) => {
         var array = [...this.state.inputListFollow];
         let index = e - 1;
-     let a = this.state.inputListFollow.keys()
-     console.log(e,"sgsd")
-    //     const newList = array.filter((item,i) => i !== index);
-    //     this.setState({
-    //         inputListFollow:newList
-    //     })
-    //    this.counter=0
+        let a = this.state.inputListFollow.keys()
+        console.log(e, "sgsd")
+        //     const newList = array.filter((item,i) => i !== index);
+        //     this.setState({
+        //         inputListFollow:newList
+        //     })
+        //    this.counter=0
     }
     render() {
         const { editorState, inputListFollow } = this.state;
@@ -115,67 +116,66 @@ class CampaignCompose extends Component {
         console.log(inputListFollow, "compose")
         return (
             <div>
+
                 <div className='main-view'>
+                    <AdminNavbar />
+                    <Nav className='mx-auto navLink' role='tablist'>
+                        <div className='navDiv'>
+                            <NavItem className='startItem' active>
+                                <Link to={{
+                                    pathname: "/app/admin/CampaignStart",
+                                    state: {
+                                        id: this.props.history.location.state && this.props.history.location.state.id
+                                    }
+                                }}><span className='navSpan'>START</span></Link>
+                            </NavItem>
+                        </div>
+                        <div className='navDiv'>
+                            <NavItem className='startItem '>
+                                <Link to={{
+                                    pathname: "/app/admin/CampaignRecipient",
+                                    state: {
+                                        id: this.props.history.location.state && this.props.history.location.state.id
+                                    }
+                                }}><span className='navSpan'>RECIPICIENT</span></Link>
+                            </NavItem>
+                        </div>
+                        <div className='navDiv'>
+                            <NavItem className='startItem '>
+                                <Link to="/app/admin/CampaignCompose"><span className='navSpan'>COMPOSE</span></Link>
+                            </NavItem>
+                        </div>
+                        <div className='navDiv'>
+                            <NavItem className='startItem '><Link to={{
+                                pathname: "/app/admin/CampaignPreview",
+                                state: {
+                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                }
+                            }}><span className='navSpan'>PREVIEW</span></Link>
+                            </NavItem>
+                        </div>
+                        <div className='navDiv'>
+                            <NavItem className='startItem '><Link to={{
+                                pathname: "/app/admin/CampaignOptions",
+                                state: {
+                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                }
+                            }}><span className='navSpan'>OPTIONS</span></Link>
+                            </NavItem>
+                        </div>
+                        <div className='navDiv'>
+                            <NavItem className='startItem '>
+                                <Link to={{
+                                    pathname: "/app/admin/CampaignSend",
+                                    state: {
+                                        id: this.props.history.location.state && this.props.history.location.state.id
+                                    }
+                                }}><span className='navSpan'>SEND</span></Link>
+                            </NavItem>
+                        </div>
+                    </Nav>
                     <Form onSubmit={this.handleSubmit} >
                         <Container fluid>
-                            <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
-                                <Col style={{ display: 'flex', alignItems: 'center' }}>
-                                    <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
-                                        <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
-                                            <span style={{ color: 'black', fontSize: '20px' }}>MailSaaaS</span></div>
-                                    </div>
-                                </Col>
-                                <Col >
-                                    <h1 style={{ textAlign: 'center', fontSize: '60px', color: "#333333" }}>New Campaign</h1>
-                                </Col>
-                                <Col style={{ display: "flex", flexDirection: "row-reverse" }}>
-                                    <div className='mt-3'>
-                                        <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                            <span><i className="fa fa-question-circle-o fa-lg" aria-hidden="true"></i></span>
-                                        </a>
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row style={{ width: '100%', borderBottom: "1px solid #dedede" }}>
-                                <Col style={{ display: "flex" }}><Nav className='mx-auto' navbar>
-                                    <Row className='mx-auto' style={{ width: '100%' }}>
-                                        <ul style={{ listStyleType: 'none', display: 'flex' }}>
-                                            <li className='mr-3 ml-3'><Link to={{
-                                                pathname: "/app/admin/CampaignStart",
-                                                state: {
-                                                    id: this.props.history.location.state && this.props.history.location.state.id
-                                                }
-                                            }}>START</Link></li>
-                                            <li className='mr-3 ml-3'><Link to={{
-                                                pathname: "/app/admin/CampaignRecipient",
-                                                state: {
-                                                    id: this.props.history.location.state && this.props.history.location.state.id
-                                                }
-                                            }}>RECIPICIENT</Link></li>
-                                            <li className='mr-3 ml-3'><Link to="/app/admin/CampaignCompose">COMPOSE</Link></li>
-                                            <li className='mr-3 ml-3'><Link to={{
-                                                pathname: "/app/admin/CampaignPreview",
-                                                state: {
-                                                    id: this.props.history.location.state && this.props.history.location.state.id
-                                                }
-                                            }}>PREVIEW</Link></li>
-                                            <li className='mr-3 ml-3'><Link to={{
-                                                pathname: "/app/admin/CampaignOptions",
-                                                state: {
-                                                    id: this.props.history.location.state && this.props.history.location.state.id
-                                                }
-                                            }}>OPTIONS</Link></li>
-                                            <li className='mr-3 ml-3'><Link to={{
-                                                pathname: "/app/admin/CampaignSend",
-                                                state: {
-                                                    id: this.props.history.location.state && this.props.history.location.state.id
-                                                }
-                                            }}>SEND</Link></li>
-                                        </ul>
-                                    </Row>
-                                </Nav>
-                                </Col>
-                            </Row>
                             <Row>
                                 <Col md={10} className='mx-auto'>
                                     <Row className="composeemail_heading">
@@ -201,6 +201,7 @@ class CampaignCompose extends Component {
                                         <div className='Editor_div'>
                                             <Editor
                                                 className='editorDiv'
+                                                style={{height:'210px'}}
                                                 editorState={editorState}
                                                 toolbarClassName="rdw-storybook-toolbar"
                                                 wrapperClassName="rdw-storybook-wrapper"
@@ -245,8 +246,8 @@ class CampaignCompose extends Component {
                                         </Col>
                                     </Row>
                                     <Row className='mx-auto'>
-                                       <Button className='btn startBtn'>CANCEL EDITS</Button>
-                                       <Button className="newcampaign_button btn" type='submit' >NEXT<i className="fa fa-arrow-right" aria-hidden="true"></i></Button>
+                                        <Button className='startBtn'>CANCEL</Button>
+                                        <Button className="startBtn" type='submit' >NEXT<i className="fa fa-arrow-right" aria-hidden="true"></i></Button>
                                     </Row>
                                 </Col>
                             </Row>

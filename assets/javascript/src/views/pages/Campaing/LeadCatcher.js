@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import LeadCatchermodel from "./LeadCatchermodel"
 import { connect } from 'react-redux'
-import { CampaignLeadAllAction } from "../../../redux/action/CampaignAction";
+import { CampaignLeadViewAction,CampaignOverviewAction } from "../../../redux/action/CampaignAction";
 import { Container, Row, Col, Input, Modal, ModalHeader, ModalBody, Card } from 'reactstrap'
 
 class LeadCatcher extends Component {
@@ -13,7 +13,9 @@ class LeadCatcher extends Component {
     }
   }
   componentDidMount() {
-    
+    const id = this.props
+    console.log("id hu m===>",id)
+    this.props.CampaignLeadViewAction(id)
   }
   toggle = () => {
     this.setState({ modal: !this.state.modal })
@@ -118,14 +120,10 @@ class LeadCatcher extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log("state", state)
+  console.log("state",state.MailGetDataReducer && state.MailGetDataReducer.mailGetData)
   return {
-   
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  // CampaignLeadAllAction: (id) => { dispatch(CampaignLeadAllAction(id)) },
-
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(LeadCatcher)

@@ -83,9 +83,11 @@ Api.CampaignPreviewApi = (token, id) => {
 
 // CAMPAIGN UPDATE PREVIEW
 Api.CampaignUpdatePreviewApi = (token, id) => {
+  console.log("update preview id is:->",id)
   return axios({
     method: 'PUT',
-    url: `${API_BASE_URL}/campaign/personalize/2/`,
+    url: `${API_BASE_URL}/campaign/personalize/${id}/`,
+    data:{},
     headers: {
       "Authorization": `Bearer ${token}`,
     }
@@ -166,9 +168,10 @@ Api.CampaignLeadUpadteApi = (token,getId ,id,updateLeadData) => {
 // http://127.0.0.1:8000/campaign/settings-leadcatcher/31/
 
 // view all leads
-Api.CampaignAllLeadApi = (token, id) => {
+Api.CampaignLeadViewApi = (token, id,leadViewData) => {
   return axios({
     method: 'GET',
+    data:leadViewData,
     url: `${API_BASE_URL}/campaign/leadscatcher/${id}/`,
     headers: {
       "Authorization": `Bearer ${token}`,

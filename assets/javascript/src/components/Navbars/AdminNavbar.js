@@ -19,6 +19,7 @@ import React from "react";
 import classnames from "classnames";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
+import { Link } from 'react-router-dom'
 // reactstrap components
 import {
   Collapse,
@@ -27,6 +28,7 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   FormGroup,
+  Button,
   Form,
   Input,
   InputGroupAddon,
@@ -74,7 +76,7 @@ class AdminNavbar extends React.Component {
   render() {
     return (
       <>
-        {/* <Navbar
+        <Navbar
           className={classnames(
             "navbar-top navbar-expand border-bottom",
             { "navbar-dark bg-info": this.props.theme === "dark" },
@@ -85,12 +87,18 @@ class AdminNavbar extends React.Component {
             <Collapse navbar isOpen={true}>
               <Form
                 className={classnames(
-                  "navbar-search form-inline mr-sm-3",
+                  "navbar-search form-inline mr-sm-3 mx-auto",
                   { "navbar-search-light": this.props.theme === "dark" },
                   { "navbar-search-dark": this.props.theme === "light" }
                 )}
               >
-                <FormGroup className="mb-0">
+                {/* <div style={{border:'2px solid'}}></div> */}
+
+                <div style={{ textAlign: 'center',display:'flex',flexDirection:'column'}}>
+                  <h1 className="Main-title" style={{ color: 'white' }}>Welcome to MailSaaS</h1>
+                  <h3 style={{ color: 'white' }}>A simple solution for email outreach.</h3>
+                </div>
+                {/* <FormGroup className="mb-0">
                   <InputGroup className="input-group-alternative input-group-merge">
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>
@@ -99,15 +107,15 @@ class AdminNavbar extends React.Component {
                     </InputGroupAddon>
                     <Input placeholder="Search" type="text" />
                   </InputGroup>
-                </FormGroup>
-                <button
+                </FormGroup> */}
+                {/* <button
                   aria-label="Close"
                   className="close"
                   type="button"
                   onClick={this.closeSearch}
                 >
                   <span aria-hidden={true}>×</span>
-                </button>
+                </button> */}
               </Form>
 
               <Nav className="align-items-center ml-md-auto" navbar>
@@ -127,28 +135,28 @@ class AdminNavbar extends React.Component {
                     </div>
                   </div>
                 </NavItem>
-                <NavItem className="d-sm-none">
+                {/* <NavItem className="d-sm-none">
                   <NavLink onClick={this.openSearch}>
                     <i className="ni ni-zoom-split-in" />
                   </NavLink>
-                </NavItem>
+                </NavItem> */}
                 <UncontrolledDropdown nav>
-                  <DropdownToggle className="nav-link" color="" tag="a">
+                  {/* <DropdownToggle className="nav-link" color="" tag="a">
                     <i className="ni ni-bell-55" />
-                  </DropdownToggle>
+                  </DropdownToggle> */}
                   <DropdownMenu
                     className="dropdown-menu-xl py-0 overflow-hidden"
                     right
                   >
-                    <div className="px-3 py-3">
+                    {/* <div className="px-3 py-3">
                       <h6 className="text-sm text-muted m-0">
-                        You have <strong className="text-info">13</strong>{" "}
+                        You have <strong className="text-info">13</strong>
                         notifications.
                       </h6>
-                    </div>
+                    </div> */}
 
                     <ListGroup flush>
-                      <ListGroupItem
+                      {/* <ListGroupItem
                         className="list-group-item-action"
                         href="#pablo"
                         onClick={e => e.preventDefault()}
@@ -206,8 +214,8 @@ class AdminNavbar extends React.Component {
                             </p>
                           </div>
                         </Row>
-                      </ListGroupItem>
-                      <ListGroupItem
+                      </ListGroupItem> */}
+                      {/* <ListGroupItem
                         className="list-group-item-action"
                         href="#pablo"
                         onClick={e => e.preventDefault()}
@@ -236,8 +244,8 @@ class AdminNavbar extends React.Component {
                             </p>
                           </div>
                         </Row>
-                      </ListGroupItem>
-                      <ListGroupItem
+                      </ListGroupItem> */}
+                      {/* <ListGroupItem
                         className="list-group-item-action"
                         href="#pablo"
                         onClick={e => e.preventDefault()}
@@ -294,19 +302,19 @@ class AdminNavbar extends React.Component {
                             </p>
                           </div>
                         </Row>
-                      </ListGroupItem>
+                      </ListGroupItem> */}
                     </ListGroup>
 
-                    <DropdownItem
+                    {/* <DropdownItem
                       className="text-center text-info font-weight-bold py-3"
                       href="#pablo"
                       onClick={e => e.preventDefault()}
                     >
                       View all
-                    </DropdownItem>
+                    </DropdownItem> */}
                   </DropdownMenu>
                 </UncontrolledDropdown>
-                <UncontrolledDropdown nav>
+                {/* <UncontrolledDropdown nav>
                   <DropdownToggle className="nav-link" color="" tag="a">
                     <i className="ni ni-ungroup" />
                   </DropdownToggle>
@@ -389,7 +397,7 @@ class AdminNavbar extends React.Component {
                       </Col>
                     </Row>
                   </DropdownMenu>
-                </UncontrolledDropdown>
+                </UncontrolledDropdown> */}
               </Nav>
               <Nav className="align-items-center ml-auto ml-md-0" navbar>
                 <UncontrolledDropdown nav>
@@ -453,7 +461,7 @@ class AdminNavbar extends React.Component {
               </Nav>
             </Collapse>
           </Container>
-        </Navbar> */}
+        </Navbar>
       </>
     );
   }

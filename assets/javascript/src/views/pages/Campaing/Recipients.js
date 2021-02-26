@@ -115,11 +115,6 @@ class Recipients extends Component {
                                         <span className='font_icon'><i className="fa fa-arrow-down" style={{ borderBottom: '2px solid silver' }}></i></span>
                                     </a>
                                 </div>
-                                {/* <div className='child ml-3'>
-                                    <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                        <span className='font_icon'><i className="fa fa-undo" aria-hidden="true"></i></span>
-                                    </a>
-                                </div> */}
                             </div>
                         </Col>
                     </Row>

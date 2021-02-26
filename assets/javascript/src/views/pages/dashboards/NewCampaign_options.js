@@ -1,8 +1,9 @@
 
 // file for option pick in campaign
 import React, { Component } from 'react'
-import { Container, Row, Col, Form, Nav,Button } from 'reactstrap'
+import { Container, Row, Col, Form, Nav, Button,NavItem } from 'reactstrap'
 import { CampaignOptionAction } from '../../../redux/action/CampaignAction'
+import AdminNavbar from "../../../../../javascript/src/components/Navbars/AdminNavbar"
 import { Link, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 class NewCampaign_options extends Component {
@@ -15,7 +16,7 @@ class NewCampaign_options extends Component {
             termsandlaws: false,
             date: '',
             time: '',
-            show:false
+            show: false
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -39,7 +40,7 @@ class NewCampaign_options extends Component {
         event.preventDefault();
         console.log(this.state)
         const optionData = {
-            campaign: this.props.history.location.state&&this.props.history.location.state.id,
+            campaign: this.props.history.location.state && this.props.history.location.state.id,
             track_Opens: this.state.trackopen,
             track_LinkClick: this.state.tracklinkclicks,
             schedule_send: this.state.schedulesend,
@@ -51,9 +52,66 @@ class NewCampaign_options extends Component {
     }
     render() {
         return (
-            <div>
+            <div className="main-view">
+                <AdminNavbar />
+                <Nav className='mx-auto navLink' role='tablist'>
+                    <div className='navDiv'>
+                        <NavItem className='startItem' active>
+                            <Link to={{
+                                pathname: "/app/admin/CampaignStart",
+                                state: {
+                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                }
+                            }}><span className='navSpan'>START</span></Link>
+                        </NavItem>
+                    </div>
+                    <div className='navDiv'>
+                        <NavItem className='startItem '>
+                            <Link to={{
+                                pathname: "/app/admin/CampaignRecipient",
+                                state: {
+                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                }
+                            }}><span className='navSpan'>RECIPICIENT</span></Link>
+                        </NavItem>
+                    </div>
+                    <div className='navDiv'>
+                        <NavItem className='startItem '>
+                            <Link to={{
+                                pathname: "/app/admin/CampaignCompose",
+                                state: {
+                                    mailGetData: this.props.mailGetData
+                                }
+                            }}><span className='navSpan'>COMPOSE</span></Link>
+                        </NavItem>
+                    </div>
+                    <div className='navDiv'>
+                        <NavItem className='startItem '><Link to={{
+                            pathname: "/app/admin/CampaignPreview",
+                            state: {
+                                id: this.props.history.location.state && this.props.history.location.state.id
+                            }
+                        }}><span className='navSpan'>PREVIEW</span></Link>
+                        </NavItem>
+                    </div>
+                    <div className='navDiv'>
+                        <NavItem className='startItem '>
+                            <Link to="/app/admin/CampaignOptions"><span className='navSpan'>OPTIONS</span></Link>
+                        </NavItem>
+                    </div>
+                    <div className='navDiv'>
+                        <NavItem className='startItem '>
+                            <Link to={{
+                                pathname: "/app/admin/CampaignSend",
+                                state: {
+                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                }
+                            }}><span className='navSpan'>SEND</span></Link>
+                        </NavItem>
+                    </div>
+                </Nav>
                 <Container fluid>
-                    <Row style={{ width: '100%', borderBottom: "1px solid #DEDEDE" }}>
+                    {/* <Row style={{ width: '100%', borderBottom: "1px solid #DEDEDE" }}>
                         <Col style={{ display: 'flex', alignItems: 'center' }}>
                             <div className='logo_div' style={{ display: 'flex', alignItems: 'center' }}>
                                 <div><img src={STATIC_FILES.mailsaas_logo_32}></img>
@@ -110,7 +168,7 @@ class NewCampaign_options extends Component {
                             </Row>
                         </Nav>
                         </Col>
-                    </Row>
+                    </Row> */}
                     <Row className="option_note">Tweak how your campaign will be sent</Row>
                     <Row >
                         <Form onSubmit={this.handleSubmit}>
@@ -121,23 +179,23 @@ class NewCampaign_options extends Component {
                                     <span className="track_option">Track opens</span><br />
                                         <input id="2" type="checkbox" name='tracklinkclicks' className='inputField' defaultChecked={this.state.tracklinkclicks} onChange={this.handleChange}></input>
                                         <span className="track_line">Track Link clicks</span><br />
-                                        <input id="3" type="checkbox" name='schedulesend' className='inputField' defaultChecked={this.state.schedulesend} onClick={()=>this.setState({show:!this.state.show})} onChange={this.handleChange}></input>
+                                        <input id="3" type="checkbox" name='schedulesend' className='inputField' defaultChecked={this.state.schedulesend} onClick={() => this.setState({ show: !this.state.show })} onChange={this.handleChange}></input>
                                         <span className="schedule">Schedule this send</span>
                                     </div>
                                 </Row>
                                 {this.state.show && <>
                                     <Row>
-                                    <div className="time_container">
-                                        <span className="sending_calendar">Sending calendar timezone</span><br />
-                                        <span className="time_zone">Asia/Calcutta</span><br />
-                                    </div>
-                                </Row>
-                                <Row style={{ marginLeft: "2px" }}>
-                                    <div style={{ display: "flex", flexDirection: "row" }}>
-                                        <input type="date" className="date_picker" name='date' value={this.state.date} onChange={this.handleDate} />
-                                        <input type="time" className="time_picker" name='time' value={this.state.time} onChange={this.handleTime} /><br />
-                                    </div>
-                                </Row></>}
+                                        <div className="time_container">
+                                            <span className="sending_calendar">Sending calendar timezone</span><br />
+                                            <span className="time_zone">Asia/Calcutta</span><br />
+                                        </div>
+                                    </Row>
+                                    <Row style={{ marginLeft: "2px" }}>
+                                        <div style={{ display: "flex", flexDirection: "row" }}>
+                                            <input type="date" className="date_picker" name='date' value={this.state.date} onChange={this.handleDate} />
+                                            <input type="time" className="time_picker" name='time' value={this.state.time} onChange={this.handleTime} /><br />
+                                        </div>
+                                    </Row></>}
                                 {/* <Row className="Leadcatcher_settingdiv">
                                     <span className="leadcatchersetting_icon"><i className="fa fa-caret-down"></i></span>
                                     <span className="leadcatchersetting">Lead Catcher setting</span>

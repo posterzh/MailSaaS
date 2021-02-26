@@ -12,11 +12,13 @@
 =========================================================
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
+/home/hr-01/project/MailSaaS/assets/javascript/src/components/Navbars/AdminNavbar.js
 */
 import React from "react";
+import classnames from "classnames";
+import AdminNavbar from '../../../../../javascript/src/components/Navbars/AdminNavbar'
 // node.js library that concatenates classes (strings)
-
+import CardHeader from "../../../../src/components/Headers/CardsHeader"
 // importing routing module
 import { Link } from 'react-router-dom'
 import SimpleHeader from "../../../components/Headers/SimpleHeader.js";
@@ -29,9 +31,12 @@ import {
   CardHeader,
   CardTitle,
   CardText,
-  CardBody
-} from "reactstrap";
-
+  CardBody,
+  Nav,
+  Navbar
+} 
+from "reactstrap";
+// /home/hr-01/project/MailSaaS/assets/javascript/src/components/Headers/CardsHeader.js
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -89,6 +94,8 @@ class Dashboard extends React.Component {
               </Col>
             </Row>
           </Container>
+        <AdminNavbar />
+        <CardHeader />
       </div>
     );
   }

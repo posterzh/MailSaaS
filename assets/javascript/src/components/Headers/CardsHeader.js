@@ -19,8 +19,6 @@ import React from "react";
 import PropTypes from "prop-types";
 // reactstrap components
 import {
-  Breadcrumb,
-  BreadcrumbItem,
   Button,
   Card,
   CardBody,
@@ -29,57 +27,23 @@ import {
   Row,
   Col
 } from "reactstrap";
+import {Link} from 'react-router-dom'
 
 class CardsHeader extends React.Component {
+  constructor(){
+    super()
+  }
   render() {
     return (
       <>
-        <div className="header bg-info pb-6">
+        <div className="header bg-info pb-1">
           <Container fluid>
             <div className="header-body">
               <Row className="align-items-center py-4">
-                <Col lg="6" xs="7">
-                  <h6 className="h2 text-white d-inline-block mb-0">
-                    {this.props.name}
-                  </h6>{" "}
-                  <Breadcrumb
-                    className="d-none d-md-inline-block ml-md-4"
-                    listClassName="breadcrumb-links breadcrumb-dark"
-                  >
-                    <BreadcrumbItem>
-                      <a href="#pablo" onClick={e => e.preventDefault()}>
-                        <i className="fas fa-home" />
-                      </a>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                      <a href="#pablo" onClick={e => e.preventDefault()}>
-                        {this.props.parentName}
-                      </a>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem aria-current="page" className="active">
-                      {this.props.name}
-                    </BreadcrumbItem>
-                  </Breadcrumb>
-                </Col>
-                <Col className="text-right" lg="6" xs="5">
-                  <Button
-                    className="btn-neutral"
-                    color="default"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                    size="sm"
-                  >
-                    New
-                  </Button>
-                  <Button
-                    className="btn-neutral"
-                    color="default"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                    size="sm"
-                  >
-                    Filters
-                  </Button>
+                <Col className="text-right" lg="" xs="12">
+                    <Link to="/app/admin/CampaignStart">
+                      <Button className='newBtn' >+ NEW CAMPAIGN</Button>
+                    </Link>
                 </Col>
               </Row>
 
@@ -99,11 +63,7 @@ class CardsHeader extends React.Component {
                             350,897
                           </span>
                         </div>
-                        <Col className="col-auto">
-                          <div className="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
-                            <i className="ni ni-active-40" />
-                          </div>
-                        </Col>
+                       
                       </Row>
                       <p className="mt-3 mb-0 text-sm">
                         <span className="text-success mr-2">
@@ -129,11 +89,7 @@ class CardsHeader extends React.Component {
                             2,356
                           </span>
                         </div>
-                        <Col className="col-auto">
-                          <div className="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
-                            <i className="ni ni-chart-pie-35" />
-                          </div>
-                        </Col>
+                      
                       </Row>
                       <p className="mt-3 mb-0 text-sm">
                         <span className="text-success mr-2">
@@ -157,11 +113,7 @@ class CardsHeader extends React.Component {
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">924</span>
                         </div>
-                        <Col className="col-auto">
-                          <div className="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
-                            <i className="ni ni-money-coins" />
-                          </div>
-                        </Col>
+                        
                       </Row>
                       <p className="mt-3 mb-0 text-sm">
                         <span className="text-success mr-2">
@@ -187,11 +139,7 @@ class CardsHeader extends React.Component {
                             49,65%
                           </span>
                         </div>
-                        <Col className="col-auto">
-                          <div className="icon icon-shape bg-gradient-primary text-white rounded-circle shadow">
-                            <i className="ni ni-chart-bar-32" />
-                          </div>
-                        </Col>
+                       
                       </Row>
                       <p className="mt-3 mb-0 text-sm">
                         <span className="text-success mr-2">
