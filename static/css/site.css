@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /*!
 
 =========================================================
@@ -21296,4 +21295,9 @@ input::-webkit-inner-spin-button {
   color: black;
   border-bottom: 1px solid #fff;
   font-size: 12px; }
+
+.navLink {
+  display: flex;
+  justify-content: space-around;
+  background-color: #11cdef; }
 

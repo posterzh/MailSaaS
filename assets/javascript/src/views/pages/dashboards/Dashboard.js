@@ -12,11 +12,13 @@
 =========================================================
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
+/home/hr-01/project/MailSaaS/assets/javascript/src/components/Navbars/AdminNavbar.js
 */
 import React from "react";
+import classnames from "classnames";
+import AdminNavbar from '../../../../../javascript/src/components/Navbars/AdminNavbar'
 // node.js library that concatenates classes (strings)
-
+import CardHeader from "../../../../src/components/Headers/CardsHeader"
 // importing routing module
 import { Link } from 'react-router-dom'
 
@@ -24,8 +26,10 @@ import {
   Button,
   Container,
   Row,
+  Nav,
+  Navbar
 } from "reactstrap";
-
+// /home/hr-01/project/MailSaaS/assets/javascript/src/components/Headers/CardsHeader.js
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -45,15 +49,17 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div>
-          <Container fluid className="dashboard_title" style={{}}>
+     <AdminNavbar/>
+          {/* <Container fluid className="dashboard_title" style={{}}>
             <Row className="main_title"><h1 className="Main-title">Welcome to MailSaaS</h1></Row>
             <Row className="sub_title"><h3>A simple solution for email outreach.</h3></Row>
             <Row className="New_campaign_button">
               <Link to="/app/admin/CampaignStart">
-                <Button className="newcampaign_button">+ NEW CAMPAIGN</Button>
+                <Button style={{ background: '#172b4d', color: "white" }}>+ NEW CAMPAIGN</Button>
               </Link>
             </Row>
-          </Container>
+          </Container> */}
+          <CardHeader></CardHeader>
       </div>
     );
   }

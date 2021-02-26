@@ -24,7 +24,6 @@ import {
     SUCCESS_MAIL_ACCOUNT_UPDATE,
     FAILURE_MAIL_ACCOUNT_UPDATE,
     SUCCESS_CREATE_CAMPAIGN,
-    REQUEST_FOR_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_SAVE_CAMPAIGN,
@@ -43,7 +42,7 @@ import {
     SUCCESS_FOR_CAMPAIGN_PEOPLE,
     SUCCESS_LEAD_DELETE,
     SUCCESS_LEAD_UPDATE,
-    SUCCESS_LEAD_CATCHER_ALL
+    SUCCESS_LEAD_VIEW
 } from "../actionType/actionType";
 
 const initialState = {
@@ -75,7 +74,7 @@ const initialState = {
     leadData: '',
     leadGetData: '',
     campaignPeopleData: '',
-    leadAllData:'',
+    leadViewData:'',
     updateLeadData:''
 }
 export const RegisterReducer = (state = initialState, action) => {
@@ -273,7 +272,6 @@ export const OnclickProspectsReducer = (state = initialState, action) => {
     }
 }
 
-
 // CAMPAIGN_PREVIEW_DATA
 export const CampaignPreviewGetReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -293,8 +291,6 @@ export const CampaignPreviewGetReducer = (state = initialState, action) => {
             break;
     }
 }
-
-
 // CAMPAIGN_PREVIEW_UPDATE_DATA 
 export const CampaignPreviewUpdateReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -311,8 +307,6 @@ export const CampaignPreviewUpdateReducer = (state = initialState, action) => {
             break;
     }
 }
-
-
 // CAMPAIGN_OVERVIEW_DATA
 export const CampaignOverviewReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -325,8 +319,6 @@ export const CampaignOverviewReducer = (state = initialState, action) => {
             break;
     }
 }
-
-
 //  CAMPAIGN PEOPLE
 export const CampaignPeopleReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -339,7 +331,6 @@ export const CampaignPeopleReducer = (state = initialState, action) => {
             break;
     }
 }
-
 
 // SCHEDULE_GET_DATAampaignOverview
 export const ScheduleGetDataReducer = (state =  initialState , action) => {
@@ -411,12 +402,12 @@ export const LeadGetReducer = (state = initialState, action) => {
     }
 }
 // lead view all
-export const LeadAllReducer = (state = initialState, action) => {
+export const LeadViewReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SUCCESS_LEAD_CATCHER_ALL:
+        case SUCCESS_LEAD_VIEW:
             return {
                 ...state,
-                leadAllData: action.payload,
+                leadViewData: action.payload,
             }
         default: return state
             break;

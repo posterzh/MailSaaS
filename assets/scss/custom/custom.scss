@@ -1822,4 +1822,8 @@ margin-top: 0px !important;
  font-size: 12px;
 
 }
-//  style={{ color: '#ccc',borderRight:'1px solid #ccc',paddingRight:'10px',paddingLeft:'10px',borderTop:'1px solid #ccc',borderBottom:'1px solid #ccc',borderLeft:'1px solid'}}
+.navLink{
+    display: flex;
+    justify-content: space-around;
+     background-color: #11cdef;
+}

@@ -8,9 +8,11 @@ from django.views.decorators.http import require_POST
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework_jwt.settings import api_settings
-
+from django.conf import settings
+from django.core.mail import send_mail
+from django.contrib.sites.shortcuts import get_current_site
 from apps.users.serializer import (ChangePasswordSerializer, TokenSerializer,
-                                   UserSettingSerilizer)
+                                   UserSettingSerilizer,GetEmailSerializer,ResetPasswordSerializer)
 
 from .forms import CustomUserChangeForm, UploadAvatarForm
 from .helpers import (require_email_confirmation,
@@ -125,3 +127,66 @@ class ChangePasswordView(generics.RetrieveUpdateAPIView):
             else:
                 return Response({'message':"confirm password did't match"})            
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class PasswordResetLink(generics.CreateAPIView):
+    """
+    POST get_token/
+    """
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = GetEmailSerializer
+    queryset = CustomUser.objects.all()
+    
+    @csrf_exempt
+    def post(self, request, *args, **kwargs):
+        global jwt_token,user
+        if not request.data.get('email'):
+            return Response({"message":'please enter your correct email address','sucess':False})
+        email = request.data.get("email",'')
+        try:
+            user = CustomUser.objects.get(email=email) 
+        except CustomUser.DoesNotExist:
+            return Response({'message':'User does not exists','sucess':False})
+        try:
+            payload = jwt_payload_handler(user)
+            jwt_token = jwt_encode_handler(payload)
+            user_email = user.email
+            current_site = request._get_raw_host()
+            # url = 'http://127.0.0.1:8000/auth/token/'+jwt_token
+            url = current_site+'/users/token/'+jwt_token
+            subject = 'change password  link'
+            message = f'''your token will be expired in 24 hours..\n {url} '''
+            sender = settings.EMAIL_HOST_USER
+            to = [user_email]
+            send_mail(subject,message,sender,to)
+            return Response({'email':email,'token':jwt_token,'path':f'{url}{jwt_token}'})
+        except Exception as e:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+class ForgotPassword(generics.CreateAPIView):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = ResetPasswordSerializer
+    
+    def post(self, request,token_data):
+        jwt_token_data = jwt_decode_handler(token_data)
+        users_id = jwt_token_data['user_id']
+        my_user = CustomUser.objects.get(id=users_id)
+        if my_user is not None:
+            new_password = request.data.get('new_password')
+            confirm_new_password = request.data.get('confirm_new_password')
+            if new_password == confirm_new_password:
+                    serializer = ResetPasswordSerializer(data=request.data)
+                    if serializer.is_valid():
+                        my_user.set_password(serializer.data['new_password'])
+                        my_user.password_change=True
+                        my_user.save()
+                        return Response({'message':'Password updated successfully','sucess':True})
+                    return Response({"message":serializer.errors,'status':False})
+                       
+            return Response({"message":"password don't match","status":False})
+        else:
+            return Response({'message':'signature has expired'})

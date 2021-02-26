@@ -29,16 +29,17 @@ import {
   Row,
   Col
 } from "reactstrap";
+import {Link} from 'react-router-dom'
 
 class CardsHeader extends React.Component {
   render() {
     return (
       <>
-        <div className="header bg-info pb-6">
+        <div className="header bg-info pb-1">
           <Container fluid>
             <div className="header-body">
               <Row className="align-items-center py-4">
-                <Col lg="6" xs="7">
+                {/* <Col lg="6" xs="7">
                   <h6 className="h2 text-white d-inline-block mb-0">
                     {this.props.name}
                   </h6>{" "}
@@ -60,26 +61,11 @@ class CardsHeader extends React.Component {
                       {this.props.name}
                     </BreadcrumbItem>
                   </Breadcrumb>
-                </Col>
-                <Col className="text-right" lg="6" xs="5">
-                  <Button
-                    className="btn-neutral"
-                    color="default"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                    size="sm"
-                  >
-                    New
-                  </Button>
-                  <Button
-                    className="btn-neutral"
-                    color="default"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                    size="sm"
-                  >
-                    Filters
-                  </Button>
+                </Col> */}
+                <Col className="text-right" lg="" xs="12">
+                    <Link to="/app/admin/CampaignStart">
+                      <Button style={{ background: 'white', color: "#5e72e4" }}>+ NEW CAMPAIGN</Button>
+                    </Link>
                 </Col>
               </Row>
 
@@ -99,11 +85,7 @@ class CardsHeader extends React.Component {
                             350,897
                           </span>
                         </div>
-                        <Col className="col-auto">
-                          <div className="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
-                            <i className="ni ni-active-40" />
-                          </div>
-                        </Col>
+                       
                       </Row>
                       <p className="mt-3 mb-0 text-sm">
                         <span className="text-success mr-2">
@@ -129,11 +111,7 @@ class CardsHeader extends React.Component {
                             2,356
                           </span>
                         </div>
-                        <Col className="col-auto">
-                          <div className="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
-                            <i className="ni ni-chart-pie-35" />
-                          </div>
-                        </Col>
+                      
                       </Row>
                       <p className="mt-3 mb-0 text-sm">
                         <span className="text-success mr-2">
@@ -157,11 +135,7 @@ class CardsHeader extends React.Component {
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">924</span>
                         </div>
-                        <Col className="col-auto">
-                          <div className="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
-                            <i className="ni ni-money-coins" />
-                          </div>
-                        </Col>
+                        
                       </Row>
                       <p className="mt-3 mb-0 text-sm">
                         <span className="text-success mr-2">
@@ -187,11 +161,7 @@ class CardsHeader extends React.Component {
                             49,65%
                           </span>
                         </div>
-                        <Col className="col-auto">
-                          <div className="icon icon-shape bg-gradient-primary text-white rounded-circle shadow">
-                            <i className="ni ni-chart-bar-32" />
-                          </div>
-                        </Col>
+                       
                       </Row>
                       <p className="mt-3 mb-0 text-sm">
                         <span className="text-success mr-2">
