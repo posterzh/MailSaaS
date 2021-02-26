@@ -126,6 +126,7 @@ class Campaign extends Component {
                           <tr key={index} className='pointer' >
                             <td><input type='checkbox' /></td>
                             <td><i class="fas fa-pause"></i></td>
+// <<<<<<< HEAD
                             <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className="Campaign_title">{item.camp_title}</td>
                             <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Created'>{item.camp_created_date_time.substring(5, 10)}</td>
                             <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Assigned'>{item.assigned}</td>
@@ -134,7 +135,22 @@ class Campaign extends Component {
                             <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Leads'>{item.leadCount}</td>
                             {/* <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Replies'>-</td> */}
                             <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Open'>{item.opensCount}</td>
+// <<<<<<< feature/schedule
+//                             <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} key={index} className='Bounces'>-</td>
+// =======
+//                             <td className="Campaign_title">{item.camp_title}</td>
+//                             <td className='Created'>{item.camp_created_date_time.slice(0, 3).concat(item.camp_created_date_time.slice(-3, ))}</td>
+//                             <td className='Assigned'>{item.assigned}</td>
+//                             <td className='Recipient'>{item.recipientCount}</td>
+//                             <td className='Sent'>{item.sentCount}</td>
+//                             <td className='Leads'>{item.leadCount}</td>
+//                             {/* <td className='Replies'>-</td> */}
+//                             <td className='Open'>{item.opensCount}</td>
+//                             {/* <td key={index} className='Bounces'>-</td> */}
+// >>>>>>> 442051cd1bd514a802db51ce1714a6dae486d0de
+=======
                             {/* <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} key={index} className='Bounces'>-</td> */}
+// >>>>>>> master
                           </tr>
                         </>
                         )
@@ -145,9 +161,17 @@ class Campaign extends Component {
               </Row>
             </Card>
           </Container>
+// <<<<<<< HEAD
           <div className='plus-button-div' style={{position:'fixed',bottom:0,right:5}}>
             <div className='new_add_button' onClick={()=>{}}>
               <span className="plusicon">+</span>
+// =======
+          <div className='plus-button-div'>
+            <div className='new_add_button'>
+              <span className="plusicon" 
+              // onClick={()=>{<SMTP />}}
+              >+</span>
+// >>>/>>>> 442051cd1bd514a802db51ce1714a6dae486d0de
             </div>
           </div>
         </div>
