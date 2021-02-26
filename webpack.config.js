@@ -29,6 +29,22 @@ module.exports = {
           'sass-loader',
         ],
       },
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'raw-loader',
+          'css-loader'
+        ]
+      },
+      {
+        test: /.(png|jpg|woff|woff2|eot|ttf|svg|gif)$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'url-loader',
+          'file-loader'
+        ],
+      }
     ]
   },
   plugins: [
