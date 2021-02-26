@@ -19,11 +19,17 @@ import React from "react";
 
 // importing routing module
 import { Link } from 'react-router-dom'
-
+import SimpleHeader from "../../../components/Headers/SimpleHeader.js";
 import {
   Button,
   Container,
   Row,
+  Col,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardText,
+  CardBody
 } from "reactstrap";
 
 class Dashboard extends React.Component {
@@ -45,13 +51,42 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div>
-          <Container fluid className="dashboard_title" style={{}}>
-            <Row className="main_title"><h1 className="Main-title">Welcome to MailSaaS</h1></Row>
-            <Row className="sub_title"><h3>A simple solution for email outreach.</h3></Row>
-            <Row className="New_campaign_button">
-              <Link to="/app/admin/CampaignStart">
-                <Button className="newcampaign_button">+ NEW CAMPAIGN</Button>
-              </Link>
+          <SimpleHeader name="Buttons" parentName="Components" />
+          <Container className="mt--6" fluid>
+            <Row className="justify-content-center">
+              <Col className="card-wrapper" lg="8">
+                <Card>
+                  <CardHeader>
+                    <h3 className="heading-title text-info mb-0 text-center">
+                      Welcome to MailSaaS
+                    </h3>
+                  </CardHeader>
+                  <CardBody>
+                    <CardTitle className="mb-3" tag="h3">
+                      Create Capmaing
+                    </CardTitle>
+                    <CardText className="mb-4">
+                      A simple solution for email outreach.
+                      A simple solution for email outreach.
+                      A simple solution for email outreach.
+                      A simple solution for email outreach.
+                      A simple solution for email outreach.
+                      A simple solution for email outreach.
+                      A simple solution for email outreach.
+                      A simple solution for email outreach.
+                      A simple solution for email outreach.
+                    </CardText>
+                    <Link to="/app/admin/CampaignStart">
+                      <Button className="btn-icon" color="primary" type="button">
+                        <span className="btn-inner--icon mr-1">
+                          <i className="ni ni-fat-add" />
+                        </span>
+                        <span className="btn-inner--text">NEW CAMPAIGN</span>
+                      </Button>
+                    </Link>
+                  </CardBody>
+                </Card>
+              </Col>
             </Row>
           </Container>
       </div>

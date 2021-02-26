@@ -51,7 +51,11 @@ body {
   line-height: $line-height-base;
   color: $body-color;
   text-align: left; // 3
-  background-color: #f5f5f5; // 2
+  background-color: #f8f9fe; // 2
+}
+
+.text-center {
+  text-align: center;
 }
 
 // Future-proof rule: in browsers that support :focus-visible, suppress the focus outline
