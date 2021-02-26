@@ -9,6 +9,7 @@ import {
 } from "reactstrap";
 import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
+// import SMTP from "../../../../src/views/pages/MailAccount/SMTP"
 import { CampaignTableAction, CampaignSaveAction, CampaignOverviewAction } from '../../../redux/action/CampaignAction'
 class Campaign extends Component {
   constructor(props) {
@@ -103,7 +104,7 @@ class Campaign extends Component {
             <Card>
               <Row>
                 <Col md={12}>
-                  <Table responsive hover >
+                  <Table responsive hover  style={{textAlign:'center'}}>
                     <thead>
                       <tr>
                         <th scope="col" className="tableheader1" ><input type="checkbox" onClick={} /></th>
@@ -114,9 +115,9 @@ class Campaign extends Component {
                         <th className="header_recipents">RECIPIENTS</th>
                         <th className="header_sent">SENT</th>
                         <th className="header_leads">LEADS</th>
-                        <th className="header_replies">REPLIES</th>
+                        {/* <th className="header_replies">REPLIES</th> */}
                         <th className="header_open">OPENS</th>
-                        <th className="header_bounces">BOUNCES</th>
+                        {/* <th className="header_bounces">BOUNCES</th> */}
                       </tr>
                     </thead>
                     <tbody>
@@ -125,6 +126,7 @@ class Campaign extends Component {
                           <tr key={index} className='pointer' >
                             <td><input type='checkbox' /></td>
                             <td><i class="fas fa-pause"></i></td>
+<<<<<<< HEAD
                             <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className="Campaign_title">{item.camp_title}</td>
                             <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Created'>{item.camp_created_date_time.substring(5, 10)}</td>
                             <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Assigned'>{item.assigned}</td>
@@ -134,6 +136,17 @@ class Campaign extends Component {
                             <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Replies'>-</td>
                             <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} className='Open'>{item.opensCount}</td>
                             <td onClick={() => { this.props.CampaignOverviewAction(item.id) }} key={index} className='Bounces'>-</td>
+=======
+                            <td className="Campaign_title">{item.camp_title}</td>
+                            <td className='Created'>{item.camp_created_date_time.slice(0, 3).concat(item.camp_created_date_time.slice(-3, ))}</td>
+                            <td className='Assigned'>{item.assigned}</td>
+                            <td className='Recipient'>{item.recipientCount}</td>
+                            <td className='Sent'>{item.sentCount}</td>
+                            <td className='Leads'>{item.leadCount}</td>
+                            {/* <td className='Replies'>-</td> */}
+                            <td className='Open'>{item.opensCount}</td>
+                            {/* <td key={index} className='Bounces'>-</td> */}
+>>>>>>> 442051cd1bd514a802db51ce1714a6dae486d0de
                           </tr>
                         </>
                         )
@@ -144,9 +157,17 @@ class Campaign extends Component {
               </Row>
             </Card>
           </Container>
+<<<<<<< HEAD
           <div className='plus-button-div' style={{position:'fixed',bottom:0,right:5}}>
             <div className='new_add_button' onClick={()=>{}}>
               <span className="plusicon">+</span>
+=======
+          <div className='plus-button-div'>
+            <div className='new_add_button'>
+              <span className="plusicon" 
+              // onClick={()=>{<SMTP />}}
+              >+</span>
+>>>>>>> 442051cd1bd514a802db51ce1714a6dae486d0de
             </div>
           </div>
         </div>

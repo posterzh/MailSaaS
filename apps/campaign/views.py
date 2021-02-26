@@ -379,7 +379,7 @@ class CreateCampaignSendView(APIView):
                     # msg.send()
                     email_account_ob = EmailAccount.objects.get(user=request.user.id, email=camp.from_address.email)
                     if email_account_ob.provider == "SMTP":
-                        # print("Sending maile to ", campemail.email, "\n", emailData)
+                        print("Sending maile to ", campemail.email)
                         # send_mail_with_smtp(email_account_ob.smtp_host, email_account_ob.smtp_port, email_account_ob.smtp_username, email_account_ob.smtp_password, [campemail.email], campemail.subject, emailData)
                         import smtplib
                         import email.message
@@ -458,11 +458,12 @@ class CampaignView(generics.ListAPIView):
             resp = {
                 "id":camp.pk,
                 "camp_title": camp.title,
-                "camp_created_date_time": camp.created_date_time,
+                "camp_created_date_time": camp.created_date_time.strftime("%B %d"),
                 "assigned": camp.assigned.full_name,
                 "recipientCount": campEmail.count(),
                 "sentCount":0,
                 "leadCount": 0,
+                "opensCount": 0,
                 "openLeadCount": 0,
                 "wonLeadCount": 0,
                 "lostLeadCount": 0,
@@ -474,6 +475,8 @@ class CampaignView(generics.ListAPIView):
 
                 if campData["leads"]:
                     resp["leadCount"] = resp["leadCount"] + 1
+                if campData["opens"]:
+                    resp["opensCount"] = resp["opensCount"] + 1
 
                     if campData["lead_status"]=="openLead":
                         resp["openLeadCount"] = resp["openLeadCount"] + 1                    
