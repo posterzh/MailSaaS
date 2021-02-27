@@ -1,40 +1,13 @@
 # MailSaaS
 
-The most amazing SaaS application the world has ever seen!
-
 ## Installation
-
-Setup a virtualenv and install requirements:
-
 ```bash
-python3 -m venv env
 pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
-```
-
-## Running server
-
-```bash
-python manage.py runserver
-```
-```bash
-yarn run dev-watch
-```
-
-## Building front-end
-
-To build JavaScript and CSS files, first install npm packages:
-
-```bash
 npm install
-```
-
-Then to build (and watch for changes locally) just run:
-
-```bash
 npm run dev-watch
-```
+python manage.py runserver
 
 ## Running Celery
 
@@ -43,29 +16,65 @@ Celery can be used to run background tasks. To run it you can use:
 ```bash
 celery -A mail worker -l INFO
 ```
+## Getting Started with Docker
 
-<!-- ## Google Authentication Setup
-
-To setup Google Authentication, follow the [instructions here](https://django-allauth.readthedocs.io/en/latest/providers.html#google).
+These instructions will cover usage information and for the docker container 
 
 
-## Running Tests
+### Prerequisities
 
-To run tests simply run:
+In order to run this container you'll need docker installed.
+
+* [Windows](https://docs.docker.com/windows/started)
+* [OS X](https://docs.docker.com/mac/started/)
+* [Linux](https://docs.docker.com/linux/started/)
+
+#### Commands for this project
+
+- For create and start container and build images
 
 ```bash
-./manage.py test
+docker-compose up --build    
+```
+###  Create superuser on Docker
+
+```bash
+docker-compose run web python3 manage.py createsuperuser
 ```
 
-Or to test a specific app/module:
+- For start specific service 
 
 ```bash
-./manage.py test apps.utils.tests.test_slugs
+docker-compose up <service name>
 ```
 
+- For view images
+```bash
+docker-compose images
+```
 
-On Linux-based systems you can watch for changes using the following:
+- For view containers
 
 ```bash
-ack --python | entr python ./manage.py test
-``` -->
+docker-compose ps
+```
+
+- For stop services
+```bash
+docker-compose stop
+```
+
+- For kill services
+```bash
+docker-compose kill
+```
+
+- For remove stopped containers
+```bash
+docker-compose rm
+```
+
+- For stop all containers and remove images, volumes
+```bash
+docker-compose down
+```
