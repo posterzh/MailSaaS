@@ -44,6 +44,8 @@ DJANGO_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+
+    'livereload',
     'django.contrib.staticfiles',
     
     'django.forms',
@@ -113,6 +115,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+
+    'livereload.middleware.LiveReloadScript',
 ]
 
 ROOT_URLCONF = 'mail.urls'
