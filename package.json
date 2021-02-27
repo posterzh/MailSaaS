@@ -31,7 +31,6 @@
     "@types/markerclustererplus": "2.1.33",
     "@types/react": "16.9.21",
     "babel-loader": "^8.1.0",
-    "css-loader": "^2.1.1",
     "eslint-plugin-flowtype": "3.13.0",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
@@ -44,6 +43,8 @@
   },
   "dependencies": {
     "@babel/plugin-syntax-jsx": "^7.12.1",
+    "@fortawesome/fontawesome-free": "^5.15.2",
+    "@fullcalendar/common": "^5.5.1",
     "@fullcalendar/core": "4.4.0",
     "@fullcalendar/daygrid": "4.4.0",
     "@fullcalendar/interaction": "4.4.0",
@@ -51,6 +52,7 @@
     "bulma": "^0.9.1",
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
+    "css-loader": "^5.1.0",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
     "dropzone": "5.7.0",
@@ -62,6 +64,7 @@
     "node-sass": "4.14.1",
     "nouislider": "14.1.1",
     "prop-types": "^15.7.2",
+    "raw-loader": "^4.0.2",
     "react": "16.12.0",
     "react-bootstrap-sweetalert": "5.1.9",
     "react-bootstrap-table-next": "3.3.5",
@@ -90,6 +93,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.2.1",
+    "sweetalert2": "^10.15.5",
     "url-loader": "^4.1.1",
     "xlsx": "^0.16.9"
   }
