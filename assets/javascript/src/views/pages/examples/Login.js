@@ -21,7 +21,6 @@ import classnames from "classnames";
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
   FormGroup,
   Form,
@@ -33,6 +32,7 @@ import {
   Row,
   Col
 } from "reactstrap";
+import {Link} from 'react-router-dom'
 import AuthHeader from "../../../components/Headers/AuthHeader.js";
 import { LoginAction } from "../../../redux/action/AuthourizationAction"
 import { connect } from "react-redux"
@@ -42,7 +42,9 @@ class Login extends React.Component {
     super(props)
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      focusedEmail:false,
+      focusedPassword:false
     }
   }
   handleChange = (event) => {
@@ -59,12 +61,6 @@ class Login extends React.Component {
     };
 
     this.props.LoginAction(loginuser)
-    console.log(loginuser)
-    // const token =localStorage.("access_token")
-    // if(token)
-    // {
-    //   alert("bjnm")
-    // }
   }
   render() {
     const { Loginuser, isLogin,loginResponse } = this.props
@@ -76,7 +72,7 @@ class Login extends React.Component {
         />
         <Container className="mt--8 pb-5">
           <Row className="justify-content-center">
-            <Col lg="5" md="7">
+            <Col lg="6" md="7">
               <Card className="bg-secondary border-0 mb-0">
                 <CardBody className="px-lg-5 py-lg-5">
                   <Form onSubmit={this.handleSubmit} role="form">
@@ -99,6 +95,7 @@ class Login extends React.Component {
                           value={this.state.email}
                           onFocus={() => this.setState({ focusedEmail: true })}
                           onBlur={() => this.setState({ focusedEmail: false })}
+                          autoComplete='off'
                         />
                       </InputGroup>
                     </FormGroup>
@@ -160,21 +157,17 @@ class Login extends React.Component {
               </Card>
               <Row className="mt-3">
                 <Col xs="6">
-                  <a className="text-light" href="#pablo" onClick={e => e.preventDefault()}><small>Forgot password?</small></a>
+                <Link to='/app/auth/forgetPassword'><small className="text-light">ForgetPassword ?</small></Link>
+                  {/* <a className="text-light" href="#pablo" onClick={e => e.preventDefault()}><small>Forgot password?</small></a> */}
                 </Col>
-                <Col className="text-right" xs="6"><a
-                    className="text-light"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                  >
-                    <small>Create new account</small>
-                  </a>
+                <Col className="text-right" xs="6">
+                <Link to='/app/auth/register'><small className="text-light">Create new account</small></Link> 
                 </Col>
               </Row>
             </Col>
           </Row>
-
         </Container>
+       
       </>
     );
   }

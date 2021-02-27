@@ -334,7 +334,6 @@ export const CampaignPeopleReducer = (state = initialState, action) => {
 
 // SCHEDULE_GET_DATAampaignOverview
 export const ScheduleGetDataReducer = (state =  initialState , action) => {
-    console.log("schedule update reducer:",action)
     switch (action.type) {
         
         case SUCCESS_GET_SCHEDULE:
@@ -390,7 +389,6 @@ export const LeadCatcherReducer = (state = initialState, action) => {
 
 // LEAD CATCHER GET DATA
 export const LeadGetReducer = (state = initialState, action) => {
-    console.log("action.payload", action.leadGetData)
     switch (action.type) {
         case SUCCESS_LEAD_CATCHER_GET:
             return {

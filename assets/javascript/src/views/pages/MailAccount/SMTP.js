@@ -18,7 +18,7 @@ componentWillUnmount(){
                         <ModalBody >
                             <Container>
                                 <Row>
-                                    <Col md={2}>logo</Col>
+                                    <Col md={2}><i className="far fa-user s-4"  ></i></Col>
                                     <Col md={10}>
                                         <Row>Sending address</Row>
                                         <Row><p style={{ fontSize: '0.7em' }}>This will be the “from” name and address on your emails and must be an address allowed by your email provider.</p></Row>
@@ -27,7 +27,7 @@ componentWillUnmount(){
                                     </Col>
                                 </Row><br></br>
                                 <Row>
-                                    <Col md={2}>logo</Col>
+                                    <Col md={2}><i className="far fa-paper-plane s-4"></i></Col>
                                     <Col md={10}>
                                         <Row>SMTP connection</Row>
                                         <Row><p style={{ fontSize: '0.7em' }}>This information comes from your email provider and is how we‘ll send your emails.</p></Row>
@@ -47,7 +47,7 @@ componentWillUnmount(){
                                     </Col>
                                 </Row><br></br>
                                 <Row>
-                                    <Col md={2}>logo</Col>
+                                    <Col md={2}><i className="fas fa-inbox s-4"></i></Col>
                                     <Col md={10}>
                                         <Row>IMAP connection</Row>
                                         <Row><p style={{ fontSize: '0.7em' }}>This information comes from your email provider and is how we‘ll check your inbox for replies.</p></Row>
@@ -66,8 +66,8 @@ componentWillUnmount(){
                                         <Row><Input type='password' name='imapPassword' onChange={this.props.handleChange} value={this.props.imapPassword} placeholder='Password'></Input></Row>
                                     </Col>
                                 </Row>
-                                <Row><br></br>
-                                    <Col md={2}>logo</Col>
+                                <Row className='mt-4'>
+                                    <Col md={2}><i className="fas fa-question s-4"></i></Col>
                                     <Col md={10}>
                                         <Row>Help</Row>
                                         <Row><p style={{ fontSize: '0.7em' }}>In most cases you‘ll need to contact your email provider or administrator to get help connecting your mail account. We‘re here to help as best we can.</p></Row>
@@ -77,7 +77,7 @@ componentWillUnmount(){
                             </Container>
                         </ModalBody>
                         <ModalFooter>
-                            <Button type='submit'>NEXT<i className='fa fa-right-arrow '></i></Button>
+                            <Button type='submit' className="btn startBtn">NEXT<i className='fa fa-right-arrow '></i></Button>
                             <Button onClick={(e) => { e.preventDefault, this.setState({ modal: !this.props.modal }) }}>CANCEL</Button>
                         </ModalFooter>
                     </Form>

@@ -71,8 +71,7 @@ class Unsubscribes extends Component {
     selectedId.push(id)
     console.log(selectedId, "sdfsdg")
   }
-  UnsubscribeDelete = () => {
-  
+  UnsubscribeDelete = () => {  
     let data = this.state.selectedId;
     this.props.deleteUnsubscribeUsers(data)
     this.setState({

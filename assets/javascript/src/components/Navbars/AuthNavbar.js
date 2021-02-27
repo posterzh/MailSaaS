@@ -115,11 +115,6 @@ class AdminNavbar extends React.Component {
                     <span className="nav-link-inner--text">Register</span>
                   </NavLink>
                 </NavItem>
-                {/* <NavItem>
-                  <NavLink to="/app/auth/lock" tag={Link}>
-                    <span className="nav-link-inner--text">Lock</span>
-                  </NavLink>
-                </NavItem> */}
               </Nav>
               <hr className="d-lg-none" />
               {/* <Nav className="align-items-lg-center ml-lg-auto" navbar>

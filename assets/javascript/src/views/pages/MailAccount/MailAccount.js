@@ -118,7 +118,7 @@ class MailAccount extends Component {
                         </div>
                     </div>
                 </div>
-                <Button className='btn btn-light mt-5 mt-6' onClick={(e) => { e.preventDefault(), this.setState({ modal: !this.state.modal }) }}>+</Button>
+                <Button className='btn startBtn mt-5 mt-6' onClick={(e) => { e.preventDefault(), this.setState({ modal: !this.state.modal }) }}>+</Button>
                 <SMTP
                     isOpen={this.state.modal}
                     handleChange={this.handleChange}
@@ -139,7 +139,7 @@ class MailAccount extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    console.log("**************mailgetdata************",state.MailGetDataReducer.mailGetData)
+    // console.log("**************mailgetdata************",state.MailGetDataReducer.mailGetData)
     return {
         mailGetData: state.MailGetDataReducer.mailGetData,
         mailAccountId: state.MailGetDataReducer.mailAccountId

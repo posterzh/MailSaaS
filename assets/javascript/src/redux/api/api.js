@@ -168,11 +168,10 @@ Api.CampaignLeadUpadteApi = (token,getId ,id,updateLeadData) => {
 // http://127.0.0.1:8000/campaign/settings-leadcatcher/31/
 
 // view all leads
-Api.CampaignLeadViewApi = (token, id,leadViewData) => {
+Api.CampaignLeadViewApi = (token) => {
   return axios({
     method: 'GET',
-    data:leadViewData,
-    url: `${API_BASE_URL}/campaign/leadscatcher/${id}/`,
+    url: `${API_BASE_URL}/campaign/leadscatcher/`,
     headers: {
       "Authorization": `Bearer ${token}`,
     }

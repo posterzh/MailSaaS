@@ -50,21 +50,26 @@ class Register extends React.Component {
       Password: '',
       mailsaas_type: 'Sales',
       isOpen: false,
-      show:true
+      show: true,
+      focusedName: false,
+      focusedEmail: false,
+      focusedPassword: false,
+      focusedPhone: false,
+      focusedCompany: false
     }
 
   }
 
   handleChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
     // this.setState({show:!this.state.show})
   }
   handleSubmit = (e) => {
     e.preventDefault();
-    this.setState({isOpen:false})
-    
+    this.setState({ isOpen: false })
+
     const user = {
       full_name: this.state.FullName,
       email: this.state.Email,
@@ -75,27 +80,10 @@ class Register extends React.Component {
     };
 
     this.props.RegisterAction(user)
-    // console.log(user)
-
-    // const token=localStorage.getItem("access_token")
-    // if(token){
-    //   alert('Successful')
-    // }
   }
-  // static getDerivedStateFromProps(props, state){
-  //   return
-  // }
-  // componentDidUpdate(prevProps){
-  //   if(prevProps!==this.props.registerResponse)
-  //   console.log("true")
-  //   else{
-  //     console.log("false")
-
-  //   }
-
-  // }
   render() {
     const { registerResponse, isRegisterSuccess } = this.props
+    const { focusedName, focusedEmail, focusedPhone, focusedCompany, focusedPassword } = this.state
     return (
       <>
         <AuthHeader
@@ -113,7 +101,7 @@ class Register extends React.Component {
                   <Form onSubmit={this.handleSubmit} role="form">
                     <FormGroup
                       className={classnames({
-                        focused: this.state.focusedName
+                        focused: focusedName
                       })}
                     >
                       <InputGroup className="input-group-merge input-group-alternative mb-3">
@@ -128,15 +116,16 @@ class Register extends React.Component {
                           name="FullName"
                           value={this.state.FullName}
                           onChange={this.handleChange}
-                          onFocus={() => this.setState({ focusedName: true })}
-                          onBlur={() => this.setState({ focusedName: false })}
+                          onFocus={() => { this.setState({ focusedName: true }) }}
+                          onBlur={() => { this.setState({ focusedName: false }) }}
+                          autoComplete='off'
                           required
                         />
                       </InputGroup>
                     </FormGroup>
                     <FormGroup
                       className={classnames({
-                        focused: this.state.focusedEmail
+                        focused: focusedEmail
                       })}
                     >
                       <InputGroup className="input-group-merge input-group-alternative mb-3">
@@ -153,6 +142,7 @@ class Register extends React.Component {
                           onChange={this.handleChange}
                           onFocus={() => this.setState({ focusedEmail: true })}
                           onBlur={() => this.setState({ focusedEmail: false })}
+                          autoComplete='off'
                           required
                         />
                       </InputGroup>
@@ -160,7 +150,7 @@ class Register extends React.Component {
                     {/*  */}
                     <FormGroup
                       className={classnames({
-                        focused: this.state.focusedEmail
+                        focused: focusedPhone
                       })}
                     >
                       <InputGroup className="input-group-merge input-group-alternative mb-3">
@@ -174,15 +164,15 @@ class Register extends React.Component {
                           type="number"
                           name='PhoneNumber'
                           onChange={this.handleChange}
-                          onFocus={() => this.setState({ focusedEmail: true })}
-                          onBlur={() => this.setState({ focusedEmail: false })}
+                          onFocus={() => this.setState({ focusedPhone: true })}
+                          onBlur={() => this.setState({ focusedPhone: false })}
                           required
                         />
                       </InputGroup>
                     </FormGroup>
                     <FormGroup
                       className={classnames({
-                        focused: this.state.focusedEmail
+                        focused: focusedCompany
                       })}
                     >
                       <InputGroup className="input-group-merge input-group-alternative mb-3">
@@ -196,8 +186,9 @@ class Register extends React.Component {
                           type="text"
                           name="CompanyName"
                           onChange={this.handleChange}
-                          onFocus={() => this.setState({ focusedEmail: true })}
-                          onBlur={() => this.setState({ focusedEmail: false })}
+                          onFocus={() => this.setState({ focusedCompany: true })}
+                          onBlur={() => this.setState({ focusedCompany: false })}
+                          autoComplete='off'
                           required
                         />
                       </InputGroup>
@@ -205,7 +196,7 @@ class Register extends React.Component {
                     {/*  */}
                     <FormGroup
                       className={classnames({
-                        focused: this.state.focusedPassword
+                        focused: focusedPassword
                       })}
                     >
                       <InputGroup className="input-group-merge input-group-alternative">
@@ -218,7 +209,7 @@ class Register extends React.Component {
                           placeholder="Password"
                           type="password"
                           name="Password"
-                          onClick={()=>{this.setState({show:!this.state.show})}}
+                          onClick={() => { this.setState({ show: !this.state.show }) }}
                           onChange={this.handleChange}
                           onFocus={() =>
                             this.setState({ focusedPassword: true })
@@ -230,8 +221,8 @@ class Register extends React.Component {
                         />
                       </InputGroup>
                       <div >
-                      {!this.state.show && <span className='password-message'> A minimum 8 characters password contains a combination of uppercase and lowercase letter and number are required.</span>}  
-                        </div>
+                        {!this.state.show && <span className='password-message'> A minimum 8 characters password contains a combination of uppercase and lowercase letter and number are required.</span>}
+                      </div>
                       <FormGroup className='mt-4'>
                         <Input type="select" name="mailsaas_type" value={this.state.mailsaas_type} defaultValue='Sales' onChange={this.handleChange} id="exampleSelect">
                           <option value='Sales'>Sales</option>
@@ -242,7 +233,7 @@ class Register extends React.Component {
                       </FormGroup>
                     </FormGroup>
                     {/* <div className="text-muted font-italic"> */}
-                      {/* <small>
+                    {/* <small>
                         password strength:{" "}
                         <span className="text-success font-weight-700">
                           strong
