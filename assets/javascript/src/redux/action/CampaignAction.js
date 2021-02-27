@@ -394,7 +394,7 @@ export const CampaignCreateLeadAction = (id,createLeadData) => {
         const token = localStorage.getItem('access_token')
         Api.CampaignCreateLeadApi(token, id, createLeadData).then(result => {
             dispatch(leadCreateSuccess(result.data))
-            dispatch(CampaignLeadViewAction(id))
+            // dispatch(CampaignLeadViewAction(id))
         }).catch(err => {
             console.log(err, 'error-')
         })
@@ -402,10 +402,10 @@ export const CampaignCreateLeadAction = (id,createLeadData) => {
 }
 
 // LEAD CATCHER VIEW ALL
-export const CampaignLeadViewAction = (id,leadViewData) => {
+export const CampaignLeadViewAction = () => {
     return function (dispatch) {
         const token = localStorage.getItem('access_token')
-        Api.CampaignLeadViewApi(token, id,leadViewData).then(result => {
+        Api.CampaignLeadViewApi(token).then(result => {
             console.log(result, "===========results")
             dispatch(leadViewSuccess(result.data))
         }).catch(err => {

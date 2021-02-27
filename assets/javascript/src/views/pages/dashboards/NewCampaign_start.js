@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from "react-redux";
-import { Container, Row, Col, Form, Input, Nav, NavItem,Button} from 'reactstrap';
+import { Container, Row, Col, Form, Input, Nav, NavItem, Button, Modal } from 'reactstrap';
 import { Link, Route } from 'react-router-dom';
 import AdminNavbar from '../../../../../javascript/src/components/Navbars/AdminNavbar'
 import { StartCampaignAction } from "../../../redux/action/CampaignAction";
@@ -15,7 +15,8 @@ class NewCampaign_start extends React.Component {
         this.state = {
             title: date,
             from_address: '',
-            mailsExist: null
+            mailsExist: null,
+            exampleModal: false
         }
     }
     handleChange = (e) => {
@@ -41,12 +42,13 @@ class NewCampaign_start extends React.Component {
             console.log('Call')
             return {
                 from_address: props.mailGetData && props.mailGetData[0].id,
+                exampleModal:false,
                 mailsExist: true
             }
         }
         if (props.mailGetData && !props.mailGetData.length) {
-            alert('Please go to create mail account');
             return {
+                exampleModal: true,
                 mailsExist: false
             }
         }
@@ -60,65 +62,64 @@ class NewCampaign_start extends React.Component {
     }
     render() {
         const { mailGetData } = this.props;
-        console.log('from_address', this.state.from_address)
-        const { mailsExist } = this.state;
+        const { mailsExist, exampleModal } = this.state;
         return (
             <div className='main-view'>
                 <AdminNavbar />
-                <Nav className='mx-auto navLink'  role='tablist'>
+                <Nav className='mx-auto navLink' role='tablist'>
                     <div className='navDiv'>
-                    <NavItem className='startItem' active>
-                        <Link to="/app/admin/CampaignStart"><span className='navSpan'>START</span></Link>
-                    </NavItem>
+                        <NavItem className='startItem' active>
+                            <Link to="/app/admin/CampaignStart"><span className='navSpan'>START</span></Link>
+                        </NavItem>
                     </div>
                     <div className='navDiv'>
-                    <NavItem className='startItem '>
-                        <Link to={{
-                            pathname: "/app/admin/CampaignRecipient",
+                        <NavItem className='startItem '>
+                            <Link to={{
+                                pathname: "/app/admin/CampaignRecipient",
+                                state: {
+                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                }
+                            }}><span className='navSpan'>RECIPICIENT</span></Link>
+                        </NavItem>
+                    </div>
+                    <div className='navDiv'>
+                        <NavItem className='startItem '>
+                            <Link to={{
+                                pathname: "/app/admin/CampaignCompose",
+                                state: {
+                                    mailGetData: this.props.mailGetData
+                                }
+                            }}><span className='navSpan'>COMPOSE</span></Link>
+                        </NavItem>
+                    </div>
+                    <div className='navDiv'>
+                        <NavItem className='startItem '>
+                            <Link to={{
+                                pathname: "/app/admin/CampaignPreview",
+                                state: {
+                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                }
+                            }}><span className='navSpan'>PREVIEW</span></Link>
+                        </NavItem>
+                    </div>
+                    <div className='navDiv'>
+                        <NavItem className='startItem '>
+                            <Link to={{
+                                pathname: "/app/admin/CampaignOptions",
+                                state: {
+                                    id: this.props.history.location.state && this.props.history.location.state.id
+                                }
+                            }}><span className='navSpan'>OPTIONS</span></Link>
+                        </NavItem>
+                    </div>
+                    <div className='navDiv'>
+                        <NavItem className='startItem '><Link to={{
+                            pathname: "/app/admin/CampaignSend",
                             state: {
                                 id: this.props.history.location.state && this.props.history.location.state.id
                             }
-                        }}><span className='navSpan'>RECIPICIENT</span></Link>
-                    </NavItem>
-                    </div>
-                    <div className='navDiv'>
-                    <NavItem className='startItem '>
-                        <Link to={{
-                            pathname: "/app/admin/CampaignCompose",
-                            state: {
-                                mailGetData: this.props.mailGetData
-                            }
-                        }}><span className='navSpan'>COMPOSE</span></Link>
-                    </NavItem>
-                    </div>
-                    <div className='navDiv'>
-                    <NavItem className='startItem '>
-                        <Link to={{
-                            pathname: "/app/admin/CampaignPreview",
-                            state: {
-                                id: this.props.history.location.state && this.props.history.location.state.id
-                            }
-                        }}><span className='navSpan'>PREVIEW</span></Link>
-                    </NavItem>
-                    </div>
-                    <div className='navDiv'>
-                    <NavItem className='startItem '>
-                        <Link to={{
-                            pathname: "/app/admin/CampaignOptions",
-                            state: {
-                                id: this.props.history.location.state && this.props.history.location.state.id
-                            }
-                        }}><span className='navSpan'>OPTIONS</span></Link>
-                    </NavItem>
-                    </div>
-                    <div className='navDiv'>
-                    <NavItem className='startItem '><Link to={{
-                        pathname: "/app/admin/CampaignSend",
-                        state: {
-                            id: this.props.history.location.state && this.props.history.location.state.id
-                        }
-                    }}><span className='navSpan'>SEND</span></Link>
-                    </NavItem>
+                        }}><span className='navSpan'>SEND</span></Link>
+                        </NavItem>
                     </div>
                 </Nav>
                 <Container fluid className="w-100">
@@ -154,6 +155,19 @@ class NewCampaign_start extends React.Component {
                         </Col>
                     </Row>
                 </Container>
+                <Modal className="modal-dialog-centered" isOpen={this.state.exampleModal}>
+                    <div className="modal-header">
+                        {/* <h5 className="modal-title" id="exampleModalLabel"> Modal title </h5> */}
+                        {/* <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={() => this.setState({ exampleModal: exampleModal })} >
+                            <span aria-hidden={true}>×</span>
+                        </button> */}
+                    </div>
+                    <div className="modal-body"><h1>Create Mail Account</h1></div>
+                    <div className="modal-footer">
+                        {/* <Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.setState({ exampleModal: exampleModal})}>Close</Button> */}
+                        <Link to="/app/admin/mail-account"><Button color="primary" type="button">Create</Button></Link>
+                    </div>
+                </Modal>
                 {/* </div> */}
             </div>
         )

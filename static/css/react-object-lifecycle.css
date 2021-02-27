@@ -1,5 +1,5 @@
 input:focus {
-  background-color: #ddd !important;
+  background-color: white !important;
   outline: none !important; }
 
 .searchbar {
@@ -1721,4 +1721,7 @@ input::-webkit-inner-spin-button {
   opacity: 0.9;
   background: #5e72e4;
   color: white; }
+
+.s-4 {
+  font-size: 40px; }
 

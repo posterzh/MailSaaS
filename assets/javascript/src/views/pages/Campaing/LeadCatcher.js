@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import LeadCatchermodel from "./LeadCatchermodel"
 import { connect } from 'react-redux'
-import { CampaignLeadViewAction,CampaignOverviewAction } from "../../../redux/action/CampaignAction";
-import { Container, Row, Col, Input, Modal, ModalHeader, ModalBody, Card } from 'reactstrap'
+import { CampaignLeadViewAction, CampaignOverviewAction } from "../../../redux/action/CampaignAction";
+import { Container, Row, Col, Input, Modal, ModalHeader, ModalBody, Table } from 'reactstrap'
 
 class LeadCatcher extends Component {
   constructor() {
@@ -13,15 +13,14 @@ class LeadCatcher extends Component {
     }
   }
   componentDidMount() {
-    const id = this.props
-    console.log("id hu m===>",id)
-    this.props.CampaignLeadViewAction(id)
+    this.props.CampaignLeadViewAction()
   }
   toggle = () => {
     this.setState({ modal: !this.state.modal })
   }
   render() {
     const { modal } = this.state;
+    const { leadData } = this.props;
     return (
       <div >
         <div className='campaign_navbar' >
@@ -90,20 +89,52 @@ class LeadCatcher extends Component {
               </div>
             </Col>
           </Row>
+          <Table className="align-items-center" responsive>
+            <thead className="thead-light">
+              <tr>
+                <th scope="col"><input type="checkbox" /></th>
+                <th scope="col">Person</th>
+                <th scope="col">Campaign</th>
+                <th scope="col">AssignedTo</th>
+                <th scope="col">LeadDate</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leadData && leadData.map((item, index) => {
+                return (
+                  <>
+                    <tr key={index} className='pointer'>
+                      <td className="check_box"><input type="checkbox" /></td>
+                      <td onClick={this.toggle}>{item.email}</td>
+                      <td onClick={this.toggle}></td>
+                      <td onClick={this.toggle}></td>
+                      <td onClick={this.toggle}></td>
+                    </tr>
+                  </>
+                )
+              })}
+            </tbody>
+          </Table>
         </Container>
-        <div className="Leadcatcher_table">
-          <Card className="table">
+        {/* <div className="Leadcatcher_table">
             <table >
               <thead>
                 <tr>
-                  <th scope="col" className="tableheader1" ><input type="checkbox" /></th>
-                  <th scope="col" className="tableheader2">Person</th>
-                  <th scope="col" className="header_created">Campaign</th>
-                  <th scope="col" className="header_assigned">AssignedTo</th>
-                  <th scope="col" className="header_recipents">LeadDate</th>
+                  <th ><input type="checkbox" /></th>
+                  <th >Person</th>
+                  <th >Campaign</th>
+                  <th >AssignedTo</th>
+                  <th >LeadDate</th>
                 </tr>
               </thead>
               <tbody>
+                {
+                  leadData && leadData.map((item, index) => {
+                    <tr key={index}>
+                      <td className="check_box"><input type="checkbox" /></td>
+                    </tr>
+                  })
+                }
                 <tr onClick={this.toggle}>
                   <td className="check_box"><input type="checkbox" /></td>
                   <td className="Campaign_title">Person name</td>
@@ -112,18 +143,20 @@ class LeadCatcher extends Component {
                   <td className="Recipient">00:00</td>
                 </tr>
               </tbody>
-            </table>
-          </Card>
-        </div>
+            </table> */}
       </div >
     )
   }
 }
 const mapStateToProps = (state) => {
-  console.log("state",state.MailGetDataReducer && state.MailGetDataReducer.mailGetData)
+  console.log("state", state.LeadViewReducer && state.LeadViewReducer.leadViewData)
   return {
+    leadData: state.LeadViewReducer && state.LeadViewReducer.leadViewData
   };
 };
 const mapDispatchToProps = (dispatch) => ({
+  // CampaignLeadGetAction:()=>dispatch(CampaignLeadGetAction)
+  CampaignLeadViewAction: () => dispatch(CampaignLeadViewAction())
+
 });
 export default connect(mapStateToProps, mapDispatchToProps)(LeadCatcher)

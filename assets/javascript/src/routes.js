@@ -48,6 +48,7 @@ import OverView from './views/pages/Campaing/OverView'
 import Sequence from './views/pages/Campaing/Sequence'
 import Recipients from './views/pages/Campaing/Recipients'
 import CampSetting from './views/pages/Campaing/Setting'
+import ForgetPassword from "./views/pages/examples/ForgetPassword";
 
 const routes = [
   {
@@ -58,6 +59,17 @@ const routes = [
     path: "/dashboard",
     layout: "/app/admin",
     component: Dashboard,
+
+  },
+  {
+    open:true,
+    collapse: false,
+    name: "ForgetPassword",
+    // icon: "fa fa-home text-dark",
+    // state: "dashboardsCollapse",
+    path: "/forgetPassword",
+    layout: "/app/auth",
+    component: ForgetPassword,
 
   },
   // for campaign
@@ -71,14 +83,14 @@ const routes = [
         open: true,
         path: "/CampaignStart",
         name: "Create Campaign",
-        miniName: "CC",
+        miniName: " ",
         component: NewCampaign_start,
         layout: "/app/admin"
       },
       {
         path: "/campaign",
         name: "Campaign",
-        miniName: "CO",
+        miniName: " ",
         component: Campaign,
         layout: "/app/admin"
       },
@@ -87,42 +99,42 @@ const routes = [
       {
         path: "/CampaignStart",
         name: "CampaignStart",
-        miniName: "CO",
+        miniName: " ",
         component: NewCampaign_start,
         layout: "/app/admin"
       },
       {
         path: "/CampaignRecipient",
         name: "CampaignRecipients",
-        miniName: "CO",
+        miniName: " ",
         component: NewCampaign_recipients,
         layout: "/app/admin"
       },
       {
         path: "/CampaignCompose",
         name: "CampaignCompose",
-        miniName: "CO",
+        miniName: " ",
         component: CampaignCompose,
         layout: "/app/admin"
       },
       {
         path: "/CampaignPreview",
         name: "CampaignPreview",
-        miniName: "CO",
+        miniName: " ",
         component: CampaignPreview,
         layout: "/app/admin"
       },
       {
         path: "/CampaignOptions",
         name: "CampaignOption",
-        miniName: "CO",
+        miniName: " ",
         component: NewCampaign_options,
         layout: "/app/admin"
       },
       {
         path: "/CampaignSend",
         name: "CampaignSend",
-        miniName: "CO",
+        miniName: " ",
         component: CampaignSend,
         layout: "/app/admin"
       },
@@ -134,35 +146,35 @@ const routes = [
       {
         path: "/CampaignDetails",
         name: "Campaign Details",
-        miniName: "CD",
+        miniName: " ",
         component: CampaignDetails,
         layout: "/app/admin"
       },
       {
         path: "/OverView",
         name: "CampaignOverView",
-        miniName: "CD",
+        miniName: " ",
         component: OverView,
         layout: "/app/admin"
       },
       {
         path: "/Message",
         name: "CampaignMessage",
-        miniName: "CD",
+        miniName: " ",
         component: Sequence,
         layout: "/app/admin"
       },
       {
         path: "/Recipient/people",
         name: "CampaignPeople",
-        miniName: "CD",
+        miniName: " ",
         component: Recipients,
         layout: "/app/admin"
       },
       {
         path: "/settings",
         name: "CampaignSetting",
-        miniName: "CD",
+        miniName: " ",
         component: CampSetting,
         layout: "/app/admin"
       },
@@ -176,14 +188,14 @@ const routes = [
       {
         path: "/lead-catcher",
         name: "Lead Catcher",
-        miniName: "LC",
+        miniName: " ",
         component: LeadCatcher,
         layout: "/app/admin"
       },
       {
         path: "/sending-calender",
         name: "Sending Calender",
-        miniName: "SC",
+        miniName: " ",
         component: SendingCalender,
         layout: "/app/admin"
       },
@@ -204,7 +216,7 @@ const routes = [
   // {
   //   path: "/prospect-detail",
   //   name: "Prospect Onclick",
-  //   miniName: "PD",
+  //   miniName: " ",
   //   component: ProspectOnclick,
   //   layout: "/app/admin"
   // },
@@ -217,7 +229,7 @@ const routes = [
     state: "mailAccount",
     path: "/mail-account",
     name: "MailAccount",
-    miniName: "Ma",
+    miniName: " ",
     component: MailAccount,
     layout: "/app/admin"
   },
@@ -231,28 +243,28 @@ const routes = [
       {
         path: "/setting",
         name: "Setting",
-        miniName: "S",
+        miniName:  " ",
         component: Setting,
         layout: "/app/admin"
       },
       {
         path: "/teammates",
         name: "Teammates",
-        miniName: "Tm",
+        miniName: " ",
         component: Teammates,
         layout: "/app/admin"
       },
       {
         path: "/billing",
         name: "Billing",
-        miniName: "B",
+        miniName:  " ",
         component: Billing,
         layout: "/app/admin"
       },
       {
         path: "/redeem",
         name: "Redeem",
-        miniName: "R",
+        miniName:  " ",
         component: Redeem,
         layout: "/app/admin"
       },
@@ -269,21 +281,21 @@ const routes = [
       {
         path: "/integrations",
         name: "Apps & CRMs",
-        miniName: "A&C",
+        miniName: "  ",
         component: AppsandCrm,
         layout: "/app/admin"
       },
       {
         path: "/api",
         name: "API",
-        miniName: "API",
+        miniName: "  ",
         component: Api,
         layout: "/app/admin"
       },
       {
         path: "/conversionTracking",
         name: "ConversionTracking",
-        miniName: "CT",
+        miniName: " ",
         component: ConversionTracking,
         layout: "/app/admin"
       }
@@ -297,7 +309,7 @@ const routes = [
     icon: "fa fa-user-alt-slash text-orange",
     state: "unsubscribe",
     path: "/unsubscribes",
-    miniName: "Us",
+    miniName: " ",
     component: Unsubscribes,
     layout: "/app/admin"
   },
@@ -311,42 +323,42 @@ const routes = [
       {
         path: "/pricing",
         name: "Pricing",
-        miniName: "P",
+        miniName: " ",
         component: Pricing,
         layout: "/app/auth"
       },
       {
         path: "/login",
         name: "Login",
-        miniName: "L",
+        miniName:  " ",
         component: Login,
         layout: "/app/auth"
       },
       {
         path: "/register",
         name: "Register",
-        miniName: "R",
+        miniName:  " ",
         component: Register,
         layout: "/app/auth"
       },
       // {
       //   path: "/lock",
       //   name: "Lock",
-      //   miniName: "L",
+      //   miniName:  ",
       //   component: Lock,
       //   layout: "/app/auth"
       // },
       {
         path: "/timeline",
         name: "Timeline",
-        miniName: "T",
+        miniName:" ",
         component: Timeline,
         layout: "/app/admin"
       },
       {
         path: "/profile",
         name: "Profile",
-        miniName: "P",
+        miniName:" ",
         component: Profile,
         layout: "/app/admin"
       },

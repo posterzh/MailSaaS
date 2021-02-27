@@ -60,9 +60,7 @@ export const RegisterAction = (user) => {
         Api.RegisterApi(user).then(result => {
             console.log( 'registerSuccess',result.data)
             dispatch(registerSuccess(result.data))
-            setTimeout(() => {
             history.push('/app/auth/login')
-            }, 2000);
         }).catch(err => {
             err.response.data.email&&  dispatch(registerFailure(err.response.data.email))
             console.log(err.response.data.email)
@@ -78,9 +76,7 @@ export const LoginAction = (Loginuser) => {
             const token = result.data.token;
             localStorage.setItem('access_token', token)
             dispatch(LoginSuccess(result.data))
-            setTimeout(() => {
             history.push('/app/admin/dashboard')
-            }, 2000);
         }).catch(err => {
             dispatch(loginFailure(err.response.data.non_field_errors&&err.response.data.non_field_errors[0]))
         })
