@@ -1,5 +1,16 @@
 import React, { Component } from "react";
-import { Container, Row, Button, Input, Col, Form, Nav } from "reactstrap";
+import {
+  Container,
+  Row,
+  Button,
+  Input,
+  Col,
+  Form,
+  Nav,
+  Card,
+  CardHeader,
+  CardBody,
+} from "reactstrap";
 import { Editor } from "react-draft-wysiwyg";
 import { Link } from "react-router-dom";
 // import { EditorState } from 'draft-js';
@@ -12,6 +23,8 @@ import { Alert } from "reactstrap";
 import ReactQuill from "react-quill";
 import NewCampaignHeader from "./components/NewCampaignHeader";
 import CardsHeader from "../../../components/Headers/CardsHeader";
+import Searchbar from "../../../components/Navbars/Searchbar";
+import AdminNavbar from "../../../components/Navbars/AdminNavbar";
 
 class CampaignCompose extends Component {
   constructor() {
@@ -147,141 +160,102 @@ class CampaignCompose extends Component {
     console.log(inputListFollow, "compose");
     return (
       <>
+        <AdminNavbar />
         <CardsHeader name="Default" parentName="Dashboards" />
-        <div>
-          <div className="main-view">
-            <Form onSubmit={this.handleSubmit}>
-              <Container fluid>
-                <Row
-                  style={{ width: "100%", borderBottom: "1px solid #dedede" }}
-                >
-                  <Col style={{ display: "flex", alignItems: "center" }}>
-                    <div
-                      className="logo_div"
-                      style={{ display: "flex", alignItems: "center" }}
-                    >
-                      <div>
-                        <img src={STATIC_FILES.mailsaas_logo_32}></img>
-                        <span style={{ color: "black", fontSize: "20px" }}>
-                          MailSaaaS
-                        </span>
-                      </div>
-                    </div>
-                  </Col>
-                  <Col>
-                    <h1
-                      style={{
-                        textAlign: "center",
-                        fontSize: "50px",
-                        color: "#333333",
-                      }}
-                    >
-                      New Campaign
-                    </h1>
-                  </Col>
-                  <Col
-                    style={{ display: "flex", flexDirection: "row-reverse" }}
-                  >
-                    <div className="mt-3">
-                      <a
-                        href=""
-                        onClick={(e) => {
-                          e.preventDefault();
-                          alert("msg");
-                        }}
-                      >
-                        <span>
-                          <i
-                            className="fa fa-question-circle-o fa-lg"
-                            aria-hidden="true"
-                          ></i>
-                        </span>
-                      </a>
-                    </div>
-                  </Col>
-                </Row>
-                <Row
-                  style={{ width: "100%", borderBottom: "1px solid #dedede" }}
-                >
-                  <Col style={{ display: "flex" }}>
-                    <Nav className="mx-auto" navbar>
-                      <Row className="mx-auto" style={{ width: "100%" }}>
-                        <NewCampaignHeader active="COMPOSE" />
+        {/* <Searchbar /> */}
+
+        <Container fluid className="mt--5">
+          <Row>
+            <Col>
+              <Card>
+                <CardHeader>
+                  <h2 className="mx-auto mb-0 text-center display-2">
+                    New Campaign
+                  </h2>
+                </CardHeader>
+                <CardBody>
+                  <Form onSubmit={this.handleSubmit}>
+                    <Container fluid>
+                      <Row>
+                        <Col style={{ display: "flex" }}>
+                          <Nav className="mx-auto" navbar>
+                            <Row className="mx-auto" style={{ width: "100%" }}>
+                              <NewCampaignHeader active="COMPOSE" />
+                            </Row>
+                          </Nav>
+                        </Col>
                       </Row>
-                    </Nav>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={10} className="mx-auto">
-                    <Row className="composeemail_heading">
-                      Compose the emails in this campaign
-                    </Row>
-                    <Row className="mt-5">
-                      <Col>
-                        <Button color="default" outline type="submit">
-                          <i
-                            className="fa fa-plus-circle"
-                            aria-hidden="true"
-                          ></i>{" "}
-                          A/B TEST
-                        </Button>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <div className="grand_parent px-3">
-                        <div className="input_field ">
-                          <Input
-                            type="text"
-                            className="in"
-                            name="subject"
-                            value={this.state.subject}
-                            onChange={this.handleSubject}
-                            placeholder="Subject"
-                            required
-                          />
-                          <div className="mt-3">
-                            <a
-                              href=""
-                              onClick={(e) => {
-                                e.preventDefault();
-                                alert("msg");
-                              }}
-                            >
-                              <span>
+                      <Row>
+                        <Col md={10} className="mx-auto">
+                          <Row className="composeemail_heading">
+                            Compose the emails in this campaign
+                          </Row>
+                          <Row className="mt-5">
+                            <Col>
+                              <Button color="default" outline type="submit">
                                 <i
-                                  className="fa fa-question-circle-o"
+                                  className="fa fa-plus-circle"
                                   aria-hidden="true"
-                                ></i>
-                              </span>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <ReactQuill
-                          value={this.state.email_body}
-                          onChange={this.handleMsgBody}
-                          theme="snow"
-                          className="Quill_div"
-                          modules={{
-                            toolbar: [
-                              ["bold", "italic"],
-                              ["link", "blockquote", "code", "image"],
-                              [
-                                {
-                                  list: "ordered",
-                                },
-                                {
-                                  list: "bullet",
-                                },
-                              ],
-                            ],
-                          }}
-                        />
-                      </Col>
-                      {/* <div className='Editor_div'>
+                                ></i>{" "}
+                                A/B TEST
+                              </Button>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <div className="grand_parent px-3">
+                              <div className="input_field ">
+                                <Input
+                                  type="text"
+                                  className="in"
+                                  name="subject"
+                                  value={this.state.subject}
+                                  onChange={this.handleSubject}
+                                  placeholder="Subject"
+                                  required
+                                />
+                                <div className="mt-3">
+                                  <a
+                                    href=""
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      alert("msg");
+                                    }}
+                                  >
+                                    <span>
+                                      <i
+                                        className="fa fa-question-circle-o"
+                                        aria-hidden="true"
+                                      ></i>
+                                    </span>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          </Row>
+                          <Row>
+                            <Col>
+                              <ReactQuill
+                                value={this.state.email_body}
+                                onChange={this.handleMsgBody}
+                                theme="snow"
+                                className="Quill_div"
+                                modules={{
+                                  toolbar: [
+                                    ["bold", "italic"],
+                                    ["link", "blockquote", "code", "image"],
+                                    [
+                                      {
+                                        list: "ordered",
+                                      },
+                                      {
+                                        list: "bullet",
+                                      },
+                                    ],
+                                  ],
+                                }}
+                              />
+                            </Col>
+                            {/* <div className='Editor_div'>
                                             <Editor
                                                 className='editorDiv'
                                                 editorState={editorState}
@@ -295,90 +269,99 @@ class CampaignCompose extends Component {
                                                 required
                                             />
                                         </div> */}
-                    </Row>
-                    <Row className="mt-5">
-                      <Col>{this.state.inputListFollow}</Col>
-                    </Row>
+                          </Row>
+                          <Row className="mt-5">
+                            <Col>{this.state.inputListFollow}</Col>
+                          </Row>
 
-                    <Row>
-                      <Col className="mt-3">
-                        <Button
-                          color="default"
-                          outline
-                          type="button"
-                          block
-                          onClick={this.onAddBtnClickFollow}
-                        >
-                          <i className="fa fa-plus"></i> &nbsp;ADD FOLLOW-UP
-                        </Button>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>{this.state.inputListDrips}</Col>
-                    </Row>
-                    <Row>
-                      <Col className="mt-3">
-                        <Button
-                          color="default"
-                          outline
-                          type="button"
-                          block
-                          onClick={this.onAddBtnClickDrips}
-                        >
-                          <i className="fa fa-plus"></i> &nbsp;ADD DRIP
-                        </Button>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>{this.state.inputListLinkClick}</Col>
-                    </Row>
-                    <Row>
-                      <Col className="mt-3 mb-5">
-                        <Button
-                          color="default"
-                          outline
-                          type="button"
-                          block
-                          onClick={this.onAddBtnClickLinkClick}
-                        >
-                          <i className="fa fa-plus"></i> &nbsp;ADD ON CLICK
-                        </Button>
-                      </Col>
-                    </Row>
-                    <Row className="mx-auto mb-5">
-                      <Button color="default" type="button">
-                        CANCEL EDITS
-                      </Button>
-                      <Button color="primary" type="button" type="submit">
-                        NEXT&nbsp;
-                        <i className="fa fa-arrow-right" aria-hidden="true"></i>
-                      </Button>
-                    </Row>
-                  </Col>
-                </Row>
-              </Container>
-            </Form>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                position: "absolute",
-                bottom: 0,
-                right: 10,
-              }}
-            >
-              <Alert
-                className="alert_"
-                toggle={() => {
-                  this.setState({ isOpen: false });
-                }}
-                isOpen={this.state.isOpen}
-                color="warning"
-              >
-                Initial message must have a body
-              </Alert>
-            </div>
-          </div>
+                          <Row>
+                            <Col className="mt-3">
+                              <Button
+                                color="default"
+                                outline
+                                type="button"
+                                block
+                                onClick={this.onAddBtnClickFollow}
+                              >
+                                <i className="fa fa-plus"></i> &nbsp;ADD
+                                FOLLOW-UP
+                              </Button>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col>{this.state.inputListDrips}</Col>
+                          </Row>
+                          <Row>
+                            <Col className="mt-3">
+                              <Button
+                                color="default"
+                                outline
+                                type="button"
+                                block
+                                onClick={this.onAddBtnClickDrips}
+                              >
+                                <i className="fa fa-plus"></i> &nbsp;ADD DRIP
+                              </Button>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col>{this.state.inputListLinkClick}</Col>
+                          </Row>
+                          <Row>
+                            <Col className="mt-3 mb-5">
+                              <Button
+                                color="default"
+                                outline
+                                type="button"
+                                block
+                                onClick={this.onAddBtnClickLinkClick}
+                              >
+                                <i className="fa fa-plus"></i> &nbsp;ADD ON
+                                CLICK
+                              </Button>
+                            </Col>
+                          </Row>
+                          <Row className="mx-auto mb-5">
+                            <Button color="default" type="button">
+                              CANCEL EDITS
+                            </Button>
+                            <Button color="primary" type="button" type="submit">
+                              NEXT&nbsp;
+                              <i
+                                className="fa fa-arrow-right"
+                                aria-hidden="true"
+                              ></i>
+                            </Button>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </Container>
+                  </Form>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            position: "absolute",
+            bottom: 0,
+            right: 10,
+          }}
+        >
+          <Alert
+            className="alert_"
+            toggle={() => {
+              this.setState({ isOpen: false });
+            }}
+            isOpen={this.state.isOpen}
+            color="warning"
+          >
+            Initial message must have a body
+          </Alert>
         </div>
       </>
     );
