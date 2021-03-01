@@ -8,10 +8,14 @@ import {
   Input,
   Nav,
   Form,
+  FormGroup,
   Card,
   CardHeader,
   CardBody,
+  ListGroupItem,
+  ListGroup,
 } from "reactstrap";
+import Dropzone from "dropzone";
 
 import {
   RecipientAction,
@@ -22,6 +26,8 @@ import Csvfile from "./components/csvfile";
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import CampaignsHeader from "./components/CampaignsHeader";
+
+Dropzone.autoDiscover = false;
 
 class CampaignRecipient extends Component {
   constructor(props) {
@@ -35,9 +41,36 @@ class CampaignRecipient extends Component {
         this.props.history.location.state &&
         this.props.history.location.state.id,
     };
-
-    console.log("CampaignRecipient : Start...");
   }
+
+  componentDidMount() {
+    // this variable is to delete the previous image from the dropzone state
+    // it is just to make the HTML DOM a bit better, and keep it light
+    let currentMultipleFile = undefined;
+    // multiple dropzone file - accepts any type of file
+    new Dropzone(document.getElementById("dropzone-multiple"), {
+      url: "https://",
+      dictDefaultMessage: "Drop a CSV file here (or choose one)",
+      thumbnailWidth: null,
+      thumbnailHeight: null,
+      previewsContainer: document.getElementsByClassName(
+        "dz-preview-multiple"
+      )[0],
+      previewTemplate: document.getElementsByClassName("dz-preview-multiple")[0]
+        .innerHTML,
+      maxFiles: null,
+      acceptedFiles: null,
+      init: function () {
+        this.on("addedfile", function (file) {
+          if (currentMultipleFile) {
+          }
+          currentMultipleFile = file;
+        });
+      },
+    });
+    document.getElementsByClassName("dz-preview-multiple")[0].innerHTML = "";
+  }
+
   handleChange = (e) => {
     this.setState({
       csvFile: e.target.files[0],
@@ -99,49 +132,78 @@ class CampaignRecipient extends Component {
               </Col>
             </Row>
             <Row>
-              <Col md={4}>
-                <span>OPTION #1</span>
-              </Col>
-              <Col md={8}>
-                <span className="csv_logo">
-                  <i className="fa fa-file" aria-hidden="true"></i>
-                </span>
-                <span className="csv_logo_text">Drop a CSV file here</span>
-                <div className="choose_option">
-                  <Input
-                    type="file"
-                    name="csvFile"
-                    value={this.state.value}
-                    onChange={this.handleChange}
-                  ></Input>
-                </div>
-                <Row>
-                  <span>
-                    Campaigns are limited to 5k recipients; uploads to 1MB.
-                  </span>
-                </Row>
-              </Col>
-            </Row>
-            <Row className="my-4">
-              <Col md={4}>
-                <span>OPTION #2</span>
-              </Col>
-              <Col md={8}>
-                <span className="textarea">
-                  <textarea
-                    type="email"
-                    name="email"
-                    value={this.state.email}
-                    onChange={(e) => {
-                      this.setState({
-                        show: true,
-                        email: e.target.value,
-                      });
-                    }}
-                    placeholder="type here"
-                  ></textarea>
-                  {show && <Button className="btn startBtn">IMPORT</Button>}
-                </span>
+              <Col>
+                <Card>
+                  <CardBody>
+                    <h3 className="mb-2">OPTION #1</h3>
+                    <div
+                      className="dropzone dropzone-multiple"
+                      id="dropzone-multiple"
+                    >
+                      <div className="fallback">
+                        <div className="custom-file">
+                          <input
+                            className="custom-file-input"
+                            id="customFileUploadMultiple"
+                            multiple="multiple"
+                            type="file"
+                          />
+                          <label
+                            className="custom-file-label"
+                            htmlFor="customFileUploadMultiple"
+                          >
+                            Choose file
+                          </label>
+                        </div>
+                      </div>
+                      <ListGroup
+                        className=" dz-preview dz-preview-multiple list-group-lg"
+                        flush
+                      >
+                        <ListGroupItem className=" px-0">
+                          <Row className=" align-items-center">
+                            <Col className=" col-auto">
+                              <div className=" avatar">
+                                <img
+                                  alt="..."
+                                  className=" avatar-img rounded"
+                                  data-dz-thumbnail
+                                  src="..."
+                                />
+                              </div>
+                            </Col>
+                            <div className=" col ml--3">
+                              <h4 className=" mb-1" data-dz-name>
+                                ...
+                              </h4>
+                              <p
+                                className=" small text-muted mb-0"
+                                data-dz-size
+                              >
+                                ...
+                              </p>
+                            </div>
+                            <Col className=" col-auto">
+                              <Button size="sm" color="danger" data-dz-remove>
+                                <i className="fas fa-trash" />
+                              </Button>
+                            </Col>
+                          </Row>
+                        </ListGroupItem>
+                      </ListGroup>
+                    </div>
+
+                    <h3 className="mt-3 mb-2">OPTION #2</h3>
+                    <div>
+                      <Input
+                        id="exampleFormControlTextarea2"
+                        rows="3"
+                        type="textarea"
+                        placeholder="Type email addresses manually"
+                      />
+                    </div>
+                  </CardBody>
+                </Card>
               </Col>
             </Row>
           </Form>
