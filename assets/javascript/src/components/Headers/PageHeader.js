@@ -30,7 +30,7 @@ import {
   Col,
 } from "reactstrap";
 
-function PageHeader({ current, parent, showStatus, showDataStatus=[] }) {
+function PageHeader({ current, parent, showStatus }) {
   return (
     <>
       <div className="header bg-info pb-5">
@@ -62,50 +62,106 @@ function PageHeader({ current, parent, showStatus, showDataStatus=[] }) {
 
             {(showStatus == undefined || showStatus) && (
               <Row>
-                {
-                  showDataStatus.map((item) => {
-                    return (
-                      <Col md="3" xl="3" sm="6" xs="6">
-                        <Card className="card-stats">
-                          <CardBody>
-                            <Row>
-                              <div className="col">
-                                <CardTitle
-                                  tag="h5"
-                                  className="text-uppercase text-muted mb-0"
-                                >
-                                  {item.name}
-                                </CardTitle>
-                                <span className="h1 font-weight-bold mb-0">{item.count}</span>
-                              </div>
-                              <Col className="col-auto">
-                                <div
-                                  className={
-                                    "icon icon-shape text-white rounded-circle shadow " +
-                                      (
-                                        item.persent >= 0  && item.persent <= 25 ? "bg-gradient-red": (
-                                          item.persent > 25 && item.persent <= 60 ? "bg-gradient-orange" : (
-                                            item.persent > 60 && item.persent <= 85 ? "bg-gradient-primary" : (
-                                              "bg-gradient-green"
-                                            )
-                                          )
-                                        )
-                                      )
-                                    }
-                                  >
-                                  <i className="ni ni-active-40" />
-                                </div>
-                              </Col>
-                            </Row>
-                            <p className="mt-3 mb-0 text-sm">
-                              <span className="text-success mr-2">{item.persent}%</span>{" "}
-                            </p>
-                          </CardBody>
-                        </Card>
-                      </Col>
-                    )
-                  })
-                }
+                <Col md="3" xl="3" sm="6" xs="6">
+                  <Card className="card-stats">
+                    <CardBody>
+                      <Row>
+                        <div className="col">
+                          <CardTitle
+                            tag="h5"
+                            className="text-uppercase text-muted mb-0"
+                          >
+                            Draft
+                          </CardTitle>
+                          <span className="h1 font-weight-bold mb-0">76</span>
+                        </div>
+                        <Col className="col-auto">
+                          <div className="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
+                            <i className="ni ni-active-40" />
+                          </div>
+                        </Col>
+                      </Row>
+                      <p className="mt-3 mb-0 text-sm">
+                        <span className="text-success mr-2">53%</span>{" "}
+                      </p>
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col md="3" xl="3" sm="6" xs="6">
+                  <Card className="card-stats">
+                    <CardBody>
+                      <Row>
+                        <div className="col">
+                          <CardTitle
+                            tag="h5"
+                            className="text-uppercase text-muted mb-0"
+                          >
+                            Working
+                          </CardTitle>
+                          <span className="h1 font-weight-bold mb-0">12</span>
+                        </div>
+                        <Col className="col-auto">
+                          <div className="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
+                            <i className="ni ni-chart-pie-35" />
+                          </div>
+                        </Col>
+                      </Row>
+                      <p className="mt-3 mb-0 text-sm">
+                        <span className="text-success mr-2">5%</span>{" "}
+                      </p>
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col md="3" xl="3" sm="6" xs="6">
+                  <Card className="card-stats">
+                    <CardBody>
+                      <Row>
+                        <div className="col">
+                          <CardTitle
+                            tag="h5"
+                            className="text-uppercase text-muted mb-0"
+                          >
+                            Paused
+                          </CardTitle>
+                          <span className="h1 font-weight-bold mb-0">42</span>
+                        </div>
+                        <Col className="col-auto">
+                          <div className="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
+                            <i className="ni ni-money-coins" />
+                          </div>
+                        </Col>
+                      </Row>
+                      <p className="mt-3 mb-0 text-sm">
+                        <span className="text-success mr-2">32%</span>{" "}
+                      </p>
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col md="3" xl="3" sm="6" xs="6">
+                  <Card className="card-stats">
+                    <CardBody>
+                      <Row>
+                        <div className="col">
+                          <CardTitle
+                            tag="h5"
+                            className="text-uppercase text-muted mb-0"
+                          >
+                            Ended
+                          </CardTitle>
+                          <span className="h1 font-weight-bold mb-0">0</span>
+                        </div>
+                        <Col className="col-auto">
+                          <div className="icon icon-shape bg-gradient-primary text-white rounded-circle shadow">
+                            <i className="ni ni-chart-bar-32" />
+                          </div>
+                        </Col>
+                      </Row>
+                      <p className="mt-3 mb-0 text-sm">
+                        <span className="text-success mr-2">0%</span>{" "}
+                      </p>
+                    </CardBody>
+                  </Card>
+                </Col>
               </Row>
             )}
           </div>
