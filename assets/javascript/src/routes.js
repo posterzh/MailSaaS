@@ -24,31 +24,32 @@ import Lock from "./views/pages/examples/Lock.js";
 import Login from "./views/pages/examples/Login.js";
 import MailAccount from "./views/pages/MailAccount/MailAccount";
 import Pricing from "./views/pages/examples/Pricing.js";
-import Prospects from "./views/pages/Prospects/Prospects.js"
+import Prospects from "./views/pages/Prospects/Prospects.js";
 import Profile from "./views/pages/examples/Profile.js";
 import Redeem from "./views/pages/TeamSettings/Redeem";
 import Register from "./views/pages/examples/Register.js";
-import Setting from "./views/pages/TeamSettings/Setting"
+import Setting from "./views/pages/TeamSettings/Setting";
 import Teammates from "./views/pages/TeamSettings/Teammates";
 import Timeline from "./views/pages/examples/Timeline.js";
 import Unsubscribes from "./views/pages/Unsubscribes/Unsubscribes";
 import ConversionTracking from "./views/pages/Extension/ConversionTracking";
 import SendingCalender from "./views/pages/Campaing/SedingCalender";
-import NewCampaign from "./views/pages/dashboards/NewCampaign.js";
-import NewCampaign_start from "./views/pages/dashboards/NewCampaign_start";
-import NewCampaign_recipients from "./views/pages/dashboards/NewCampaign_recipients";
-import CampaignCompose from "./views/pages/dashboards/NewCampaign_compose"
-import CampaignPreview from "./views/pages/dashboards/NewCampaign_preview"
-import NewCampaign_options from "./views/pages/dashboards/NewCampaign_options"
-import CampaignSend from "./views/pages/dashboards/NewCampaign_send"
-import Campaign_Details from './views/pages/Campaing/Campaign_details.js'
-import ProspectOnclick from './views/pages/Prospects/ProspectOnclick'
-import CampaignDetails from './views/pages/Campaing/Campaign_details.js'
-import OverView from './views/pages/Campaing/OverView'
-import Sequence from './views/pages/Campaing/Sequence'
-import Recipients from './views/pages/Campaing/Recipients'
-import CampSetting from './views/pages/Campaing/Setting'
+import Campaign_Details from "./views/pages/Campaing/Campaign_details.js";
+import ProspectOnclick from "./views/pages/Prospects/ProspectOnclick";
+import CampaignDetails from "./views/pages/Campaing/Campaign_details.js";
+import OverView from "./views/pages/Campaing/OverView";
+import Sequence from "./views/pages/Campaing/Sequence";
+import Recipients from "./views/pages/Campaing/Recipients";
+import CampSetting from "./views/pages/Campaing/Setting";
 import ForgetPassword from "./views/pages/examples/ForgetPassword";
+
+import CampaignCompose from "./views/pages/dashboards/NewCampaign/CampaignCompose";
+import CampaignOption from "./views/pages/dashboards/NewCampaign/CampaignOptions";
+import CampaignPreview from "./views/pages/dashboards/NewCampaign/CampaignPreview";
+import CampaignRecipients from "./views/pages/dashboards/NewCampaign/CampaignRecipients";
+import CampaignSend from "./views/pages/dashboards/NewCampaign/CampaignSend";
+import CampaignStart from "./views/pages/dashboards/NewCampaign/CampaignStart";
+import CampaignOptions from "./views/pages/dashboards/NewCampaign/CampaignOptions";
 
 const routes = [
   {
@@ -59,10 +60,9 @@ const routes = [
     path: "/dashboard",
     layout: "/app/admin",
     component: Dashboard,
-
   },
   {
-    open:true,
+    open: true,
     collapse: false,
     name: "ForgetPassword",
     // icon: "fa fa-home text-dark",
@@ -70,7 +70,6 @@ const routes = [
     path: "/forgetPassword",
     layout: "/app/auth",
     component: ForgetPassword,
-
   },
   // for campaign
   {
@@ -84,123 +83,111 @@ const routes = [
         path: "/CampaignStart",
         name: "Create Campaign",
         miniName: " ",
-        component: NewCampaign_start,
-        layout: "/app/admin"
+        component: CampaignStart,
+        layout: "/app/admin",
       },
       {
         path: "/campaign",
         name: "Campaign",
         miniName: " ",
         component: Campaign,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
-
 
       {
         path: "/CampaignStart",
         name: "CampaignStart",
         miniName: " ",
-        component: NewCampaign_start,
-        layout: "/app/admin"
+        component: CampaignStart,
+        layout: "/app/admin",
       },
       {
         path: "/CampaignRecipient",
         name: "CampaignRecipients",
         miniName: " ",
-        component: NewCampaign_recipients,
-        layout: "/app/admin"
+        component: CampaignRecipients,
+        layout: "/app/admin",
       },
       {
         path: "/CampaignCompose",
         name: "CampaignCompose",
         miniName: " ",
         component: CampaignCompose,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
       {
         path: "/CampaignPreview",
         name: "CampaignPreview",
         miniName: " ",
         component: CampaignPreview,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
       {
         path: "/CampaignOptions",
         name: "CampaignOption",
         miniName: " ",
-        component: NewCampaign_options,
-        layout: "/app/admin"
+        component: CampaignOptions,
+        layout: "/app/admin",
       },
       {
         path: "/CampaignSend",
         name: "CampaignSend",
         miniName: " ",
         component: CampaignSend,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
-
-
-
-
 
       {
         path: "/CampaignDetails",
         name: "Campaign Details",
         miniName: " ",
         component: CampaignDetails,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
       {
         path: "/OverView",
         name: "CampaignOverView",
         miniName: " ",
         component: OverView,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
       {
         path: "/Message",
         name: "CampaignMessage",
         miniName: " ",
         component: Sequence,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
       {
         path: "/Recipient/people",
         name: "CampaignPeople",
         miniName: " ",
         component: Recipients,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
       {
         path: "/settings",
         name: "CampaignSetting",
         miniName: " ",
         component: CampSetting,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
-
-
-
-
-
-
 
       {
         path: "/lead-catcher",
         name: "Lead Catcher",
         miniName: " ",
         component: LeadCatcher,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
       {
         path: "/sending-calender",
         name: "Sending Calender",
         miniName: " ",
         component: SendingCalender,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
-
-    ]
+    ],
   },
 
   // for Prospects
@@ -211,7 +198,7 @@ const routes = [
     state: "prospects",
     path: "/prospects",
     component: Prospects,
-    layout: "/app/admin"
+    layout: "/app/admin",
   },
   // {
   //   path: "/prospect-detail",
@@ -231,7 +218,7 @@ const routes = [
     name: "MailAccount",
     miniName: " ",
     component: MailAccount,
-    layout: "/app/admin"
+    layout: "/app/admin",
   },
   // for TeamSetting
   {
@@ -243,32 +230,32 @@ const routes = [
       {
         path: "/setting",
         name: "Setting",
-        miniName:  " ",
+        miniName: " ",
         component: Setting,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
       {
         path: "/teammates",
         name: "Teammates",
         miniName: " ",
         component: Teammates,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
       {
         path: "/billing",
         name: "Billing",
-        miniName:  " ",
+        miniName: " ",
         component: Billing,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
       {
         path: "/redeem",
         name: "Redeem",
-        miniName:  " ",
+        miniName: " ",
         component: Redeem,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
-    ]
+    ],
   },
 
   // for Extension
@@ -283,23 +270,23 @@ const routes = [
         name: "Apps & CRMs",
         miniName: "  ",
         component: AppsandCrm,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
       {
         path: "/api",
         name: "API",
         miniName: "  ",
         component: Api,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
       {
         path: "/conversionTracking",
         name: "ConversionTracking",
         miniName: " ",
         component: ConversionTracking,
-        layout: "/app/admin"
-      }
-    ]
+        layout: "/app/admin",
+      },
+    ],
   },
 
   // for Unsubscribes
@@ -311,7 +298,7 @@ const routes = [
     path: "/unsubscribes",
     miniName: " ",
     component: Unsubscribes,
-    layout: "/app/admin"
+    layout: "/app/admin",
   },
 
   {
@@ -325,21 +312,21 @@ const routes = [
         name: "Pricing",
         miniName: " ",
         component: Pricing,
-        layout: "/app/auth"
+        layout: "/app/auth",
       },
       {
         path: "/login",
         name: "Login",
-        miniName:  " ",
+        miniName: " ",
         component: Login,
-        layout: "/app/auth"
+        layout: "/app/auth",
       },
       {
         path: "/register",
         name: "Register",
-        miniName:  " ",
+        miniName: " ",
         component: Register,
-        layout: "/app/auth"
+        layout: "/app/auth",
       },
       // {
       //   path: "/lock",
@@ -351,21 +338,19 @@ const routes = [
       {
         path: "/timeline",
         name: "Timeline",
-        miniName:" ",
+        miniName: " ",
         component: Timeline,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
       {
         path: "/profile",
         name: "Profile",
-        miniName:" ",
+        miniName: " ",
         component: Profile,
-        layout: "/app/admin"
+        layout: "/app/admin",
       },
-
-    ]
+    ],
   },
-
 ];
 
 export default routes;

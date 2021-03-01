@@ -87,7 +87,7 @@ class AdminNavbar extends React.Component {
             <Collapse navbar isOpen={true}>
               <Form
                 className={classnames(
-                  "navbar-search form-inline mr-sm-3 mx-auto",
+                  "navbar-search form-inline",
                   { "navbar-search-light": this.props.theme === "dark" },
                   { "navbar-search-dark": this.props.theme === "light" }
                 )}
@@ -96,14 +96,12 @@ class AdminNavbar extends React.Component {
 
                 <div
                   style={{
-                    textAlign: "center",
+                    textAlign: "left",
                     display: "flex",
                     flexDirection: "column",
                   }}
                 >
-                  <h2 className="Main-title" style={{ color: "white" }}>
-                    MailSaaS
-                  </h2>
+                  <h1 style={{ color: "white" }}>MailSaaS</h1>
                 </div>
                 {/* <FormGroup className="mb-0">
                   <InputGroup className="input-group-alternative input-group-merge">
@@ -126,7 +124,7 @@ class AdminNavbar extends React.Component {
               </Form>
 
               <Nav className="align-items-center ml-md-auto" navbar>
-                <NavItem className="d-xl-none">
+                {/* <NavItem className="d-xl-none">
                   <div
                     className={classnames(
                       "pr-3 sidenav-toggler",
@@ -141,7 +139,7 @@ class AdminNavbar extends React.Component {
                       <i className="sidenav-toggler-line" />
                     </div>
                   </div>
-                </NavItem>
+                </NavItem> */}
                 {/* <NavItem className="d-sm-none">
                   <NavLink onClick={this.openSearch}>
                     <i className="ni ni-zoom-split-in" />

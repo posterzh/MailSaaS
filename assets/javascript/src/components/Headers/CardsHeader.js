@@ -36,9 +36,9 @@ function CardsHeader({ name, parentName }) {
       <div className="header bg-info pb-5">
         <Container fluid>
           <div className="header-body">
-            <Row className="align-items-center pb-3">
-              <Col lg="6" xs="7">
-                <h6 className="h2 text-white d-inline-block mb-0">{name}</h6>{" "}
+            <Row className="align-items-center pb-3  px-0">
+              <Col lg="6" xs="7" className="px-0">
+                {/* <h6 className="h2 text-white d-inline-block mb-0">{name}</h6>{" "} */}
                 <Breadcrumb
                   className="d-none d-md-inline-block ml-md-4"
                   listClassName="breadcrumb-links breadcrumb-dark"
