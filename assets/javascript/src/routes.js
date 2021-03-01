@@ -17,9 +17,7 @@
 import Api from "./views/pages/Extension/Api";
 import AppsandCrm from "./views/pages/Extension/Apps&Crm";
 import Billing from "./views/pages/TeamSettings/Billing";
-import Campaign from "./views/pages/Campaing/Campaign";
 import Dashboard from "./views/pages/dashboards/Dashboard.js";
-import LeadCatcher from "./views/pages/Campaing/LeadCatcher";
 import Lock from "./views/pages/examples/Lock.js";
 import Login from "./views/pages/examples/Login.js";
 import Pricing from "./views/pages/examples/Pricing.js";
@@ -48,11 +46,13 @@ import CampaignStart from "./views/pages/dashboards/NewCampaign/CampaignStart";
 import CampaignOptions from "./views/pages/dashboards/NewCampaign/CampaignOptions";
 
 // Campaign pages
-import CampaignDetails from "./views/pages/Campaing/CampaignDetails.js";
-import OverView from "./views/pages/Campaing/OverView";
-import Sequence from "./views/pages/Campaing/Sequence";
-import Recipients from "./views/pages/Campaing/Recipients";
-import CampSetting from "./views/pages/Campaing/Setting";
+import CampaignDetails from "./views/pages/campaign/CampaignDetails.js";
+import OverView from "./views/pages/campaign/OverView";
+import Sequence from "./views/pages/campaign/Sequence";
+import Recipients from "./views/pages/campaign/Recipients";
+import CampSetting from "./views/pages/campaign/Setting";
+import Campaign from "./views/pages/campaign/Campaign";
+import LeadCatcher from "./views/pages/campaign/LeadCatcher";
 
 const routes = [
   {
