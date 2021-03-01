@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import LeadCatchermodel from "./LeadCatchermodel"
+import LeadCatchermodel from "./components/LeadCatchermodel"
 import { connect } from 'react-redux'
 import { CampaignLeadViewAction, CampaignOverviewAction } from "../../../redux/action/CampaignAction";
 import { Container, Row, Col, Input, Modal, ModalHeader, ModalBody, Table } from 'reactstrap'

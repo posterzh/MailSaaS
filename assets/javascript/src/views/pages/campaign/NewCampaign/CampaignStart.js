@@ -1,6 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Container, Row, Col, Form, Input, Button } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  Button,
+} from "reactstrap";
 import { StartCampaignAction } from "../../../../redux/action/CampaignAction";
 import { MailGetDataAction } from "../../../../redux/action/MailSenderAction";
 import PageHeader from "../../../../components/Headers/PageHeader";
@@ -63,12 +71,12 @@ class CampaignStart extends React.Component {
         mailsExist: true,
       };
     }
-    if (props.mailGetData && !props.mailGetData.length) {
-      alert("Please go to create mail account");
-      return {
-        mailsExist: false,
-      };
-    }
+    // if (props.mailGetData && !props.mailGetData.length) {
+    //   alert("Please go to create mail account");
+    //   return {
+    //     mailsExist: false,
+    //   };
+    // }
     return null;
   }
 
@@ -101,47 +109,50 @@ class CampaignStart extends React.Component {
                 <h1 className="text-center my-4">Let's get started</h1>
               </Col>
             </Row>
+
             <Row>
-              <div style={{ width: "100%" }}>
-                {" "}
-                <label>Title (for your team's eyes only)</label>
-                <br></br>
-                <input
-                  type="text"
-                  name="title"
-                  value={this.state.title}
-                  onChange={this.handleChange}
-                  className="start_input"
-                  autoComplete="off"
-                  placeholder={this.state.date}
-                  required
-                ></input>
-              </div>
+              <Col>
+                <FormGroup>
+                  <label className="form-control-label" htmlFor="inputTitle">
+                    Title
+                  </label>
+                  <Input
+                    id="inputTitle"
+                    type="text"
+                    name="title"
+                    value={this.state.title}
+                    onChange={this.handleChange}
+                    placeholder={this.state.date}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <label
+                    className="form-control-label"
+                    htmlFor="selectFromAddress"
+                  >
+                    From Address
+                  </label>
+                  <Input
+                    id="selectFromAddress"
+                    type="select"
+                    name="from_address"
+                    value={this.state.from_address}
+                    onChange={this.handleChange}
+                  >
+                    <option value={""}>Select</option>
+                    {mailGetData &&
+                      mailGetData.map((item, index) => {
+                        return (
+                          <option key={index} value={item.id}>
+                            {item.email}
+                          </option>
+                        );
+                      })}
+                  </Input>
+                </FormGroup>
+              </Col>
             </Row>
-            <Row>
-              <div style={{ width: "100%" }}>
-                <label>From Address</label>
-                <br></br>
-                <Input
-                  required
-                  type="select"
-                  name="from_address"
-                  value={this.state.from_address}
-                  onChange={this.handleChange}
-                  id="exampleSelect"
-                >
-                  <option value={""}>Select</option>
-                  {mailGetData &&
-                    mailGetData.map((item, index) => {
-                      return (
-                        <option key={index} value={item.id}>
-                          {item.email}
-                        </option>
-                      );
-                    })}
-                </Input>
-              </div>
-            </Row>
+
             <Row>
               <Col>
                 <Button

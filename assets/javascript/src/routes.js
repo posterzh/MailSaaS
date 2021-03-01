@@ -17,12 +17,9 @@
 import Api from "./views/pages/Extension/Api";
 import AppsandCrm from "./views/pages/Extension/Apps&Crm";
 import Billing from "./views/pages/TeamSettings/Billing";
-import Campaign from "./views/pages/Campaing/Campaign";
 import Dashboard from "./views/pages/dashboards/Dashboard.js";
-import LeadCatcher from "./views/pages/Campaing/LeadCatcher";
 import Lock from "./views/pages/examples/Lock.js";
 import Login from "./views/pages/examples/Login.js";
-import MailAccount from "./views/pages/MailAccount/MailAccount";
 import Pricing from "./views/pages/examples/Pricing.js";
 import Prospects from "./views/pages/Prospects/Prospects.js";
 import Profile from "./views/pages/examples/Profile.js";
@@ -33,23 +30,36 @@ import Teammates from "./views/pages/TeamSettings/Teammates";
 import Timeline from "./views/pages/examples/Timeline.js";
 import Unsubscribes from "./views/pages/Unsubscribes/Unsubscribes";
 import ConversionTracking from "./views/pages/Extension/ConversionTracking";
-import SendingCalender from "./views/pages/Campaing/SedingCalender";
-import Campaign_Details from "./views/pages/Campaing/Campaign_details.js";
 import ProspectOnclick from "./views/pages/Prospects/ProspectOnclick";
-import CampaignDetails from "./views/pages/Campaing/Campaign_details.js";
-import OverView from "./views/pages/Campaing/OverView";
-import Sequence from "./views/pages/Campaing/Sequence";
-import Recipients from "./views/pages/Campaing/Recipients";
-import CampSetting from "./views/pages/Campaing/Setting";
 import ForgetPassword from "./views/pages/examples/ForgetPassword";
 
-import CampaignCompose from "./views/pages/dashboards/NewCampaign/CampaignCompose";
-import CampaignOption from "./views/pages/dashboards/NewCampaign/CampaignOptions";
-import CampaignPreview from "./views/pages/dashboards/NewCampaign/CampaignPreview";
-import CampaignRecipients from "./views/pages/dashboards/NewCampaign/CampaignRecipients";
-import CampaignSend from "./views/pages/dashboards/NewCampaign/CampaignSend";
-import CampaignStart from "./views/pages/dashboards/NewCampaign/CampaignStart";
-import CampaignOptions from "./views/pages/dashboards/NewCampaign/CampaignOptions";
+// Mail Account
+import MailAccount from "./views/pages/MailAccount/MailAccount";
+import SendingCalender from "./views/pages/MailAccount/SedingCalender";
+
+// New Campaign pages
+import CampaignCompose from "./views/pages/campaign/NewCampaign/CampaignCompose";
+import CampaignPreview from "./views/pages/campaign/NewCampaign/CampaignPreview";
+import CampaignRecipient from "./views/pages/campaign/NewCampaign/CampaignRecipient";
+import CampaignSend from "./views/pages/campaign/NewCampaign/CampaignSend";
+import CampaignStart from "./views/pages/campaign/NewCampaign/CampaignStart";
+import CampaignOptions from "./views/pages/campaign/NewCampaign/CampaignOptions";
+
+// Campaign List page
+import CampaignList from "./views/pages/campaign/CampaignList";
+
+// Campaign Detail pages
+import CampaignDetail from "./views/pages/campaign/CampaignDetail/CampaignDetail.js";
+import CampaignDetailOverview from "./views/pages/campaign/CampaignDetail/CampaignDetailOverview";
+import CampaignDetailSequence from "./views/pages/campaign/CampaignDetail/CampaignDetailSequence";
+import CampaignDetailRecipients from "./views/pages/campaign/CampaignDetail/CampaignDetailRecipients";
+import CampaignDetailSettings from "./views/pages/campaign/CampaignDetail/CampaignDetailSettings";
+
+// Edit Campaign page
+import EditCampaign from "./views/pages/campaign/EditCampaign";
+
+// Campaign > LeadCatcher page
+import LeadCatcher from "./views/pages/campaign/LeadCatcher";
 
 const routes = [
   {
@@ -70,7 +80,6 @@ const routes = [
     state: "campaign",
     views: [
       {
-        open: true,
         path: "/CampaignStart",
         name: "Create Campaign",
         miniName: " ",
@@ -78,17 +87,24 @@ const routes = [
         layout: "/app/admin",
       },
       {
-        path: "/campaign",
-        name: "Campaigns",
+        path: "/CampaigList",
+        name: "Campaign List",
         miniName: " ",
-        component: Campaign,
+        component: CampaignList,
         layout: "/app/admin",
       },
       {
-        path: "/CampaignDetails",
-        name: "Campaign Details",
+        path: "/CampaignDetail",
+        name: "Campaign Detail",
         miniName: " ",
-        component: CampaignDetails,
+        component: CampaignDetail,
+        layout: "/app/admin",
+      },
+      {
+        path: "/EditCampaign",
+        name: "Edit Campaign",
+        miniName: " ",
+        component: EditCampaign,
         layout: "/app/admin",
       },
       {
@@ -98,26 +114,89 @@ const routes = [
         component: LeadCatcher,
         layout: "/app/admin",
       },
+      // New Campaign Redirects
+      {
+        path: "/CampaignRecipient",
+        component: CampaignRecipient,
+        layout: "/app/admin",
+        redirect: true,
+      },
+      {
+        path: "/CampaignCompose",
+        component: CampaignCompose,
+        layout: "/app/admin",
+        redirect: true,
+      },
+      {
+        path: "/CampaignPreview",
+        component: CampaignPreview,
+        layout: "/app/admin",
+        redirect: true,
+      },
+      {
+        path: "/CampaignOptions",
+        component: CampaignOptions,
+        layout: "/app/admin",
+        redirect: true,
+      },
+      {
+        path: "/CampaignSend",
+        component: CampaignSend,
+        layout: "/app/admin",
+        redirect: true,
+      },
+
+      // Campaign Detail Redirects
+      {
+        path: "/CampaignDetailOverview",
+        component: CampaignDetailOverview,
+        layout: "/app/admin",
+        redirect: true,
+      },
+      {
+        path: "/CampaignDetailSequence",
+        component: CampaignDetailSequence,
+        layout: "/app/admin",
+        redirect: true,
+      },
+      {
+        path: "/CampaignDetailRecipients",
+        component: CampaignDetailRecipients,
+        layout: "/app/admin",
+        redirect: true,
+      },
+      {
+        path: "/CampaignDetailSettings",
+        component: CampaignDetailSettings,
+        layout: "/app/admin",
+        redirect: true,
+      },
     ],
   },
 
   // for Prospects
   {
-    collapse: false,
+    collapse: true,
     name: "Prospects",
     icon: "fa fa-users text-dark",
     state: "prospects",
-    path: "/prospects",
-    component: Prospects,
-    layout: "/app/admin",
+    views: [
+      {
+        path: "/prospects",
+        name: "Prospects",
+        miniName: " ",
+        component: Prospects,
+        layout: "/app/admin",
+      },
+      {
+        name: " Unsubscribes",
+        path: "/unsubscribes",
+        miniName: " ",
+        component: Unsubscribes,
+        layout: "/app/admin",
+      },
+    ],
   },
-  // {
-  //   path: "/prospect-detail",
-  //   name: "Prospect Onclick",
-  //   miniName: " ",
-  //   component: ProspectOnclick,
-  //   layout: "/app/admin"
-  // },
 
   // for MailAccount
   {
@@ -209,18 +288,6 @@ const routes = [
         layout: "/app/admin",
       },
     ],
-  },
-
-  // for Unsubscribes
-  {
-    collapse: false,
-    name: " Unsubscribes",
-    icon: "fa fa-user-alt-slash text-orange",
-    state: "unsubscribe",
-    path: "/unsubscribes",
-    miniName: " ",
-    component: Unsubscribes,
-    layout: "/app/admin",
   },
   {
     open: true,

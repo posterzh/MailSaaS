@@ -23,7 +23,7 @@ import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import CampaignsHeader from "./components/CampaignsHeader";
 
-class CampaignRecipients extends Component {
+class CampaignRecipient extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,6 +35,8 @@ class CampaignRecipients extends Component {
         this.props.history.location.state &&
         this.props.history.location.state.id,
     };
+
+    console.log("CampaignRecipient : Start...");
   }
   handleChange = (e) => {
     this.setState({
@@ -160,4 +162,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CampaignRecipients);
+export default connect(mapStateToProps, mapDispatchToProps)(CampaignRecipient);

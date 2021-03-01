@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
-import { CampaignCreateLeadAction } from "../../../redux/action/CampaignAction"
+import { CampaignCreateLeadAction } from "../../../../../redux/action/CampaignAction"
 
 class LeadClick extends Component {
     constructor(props) {

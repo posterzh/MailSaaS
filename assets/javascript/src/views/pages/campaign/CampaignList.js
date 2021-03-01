@@ -18,7 +18,7 @@ import {
   CampaignOverviewAction,
 } from "../../../redux/action/CampaignAction";
 // import SearchNavbar from '../../../components/Navbars/Searchbar';
-class Campaign extends Component {
+class CampaignList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -380,4 +380,4 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(CampaignOverviewAction(id));
   },
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Campaign);
+export default connect(mapStateToProps, mapDispatchToProps)(CampaignList);
