@@ -1,5 +1,5 @@
 import { Container, Row, Col, Table, Input, Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
-import Campaign_details from "../../../views/pages/Campaing/Campaign_details"
+import Campaign_details from "./CampaignDetails"
 import React, { Component } from 'react'
 import { CampaignPeopleAction, unsubscribeRecipientAction, CampaignCreateLeadAction } from '../../../redux/action/CampaignAction'
 import { connect } from 'react-redux';

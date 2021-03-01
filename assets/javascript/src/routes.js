@@ -22,7 +22,6 @@ import Dashboard from "./views/pages/dashboards/Dashboard.js";
 import LeadCatcher from "./views/pages/Campaing/LeadCatcher";
 import Lock from "./views/pages/examples/Lock.js";
 import Login from "./views/pages/examples/Login.js";
-import MailAccount from "./views/pages/MailAccount/MailAccount";
 import Pricing from "./views/pages/examples/Pricing.js";
 import Prospects from "./views/pages/Prospects/Prospects.js";
 import Profile from "./views/pages/examples/Profile.js";
@@ -33,22 +32,27 @@ import Teammates from "./views/pages/TeamSettings/Teammates";
 import Timeline from "./views/pages/examples/Timeline.js";
 import Unsubscribes from "./views/pages/Unsubscribes/Unsubscribes";
 import ConversionTracking from "./views/pages/Extension/ConversionTracking";
-import SendingCalender from "./views/pages/Campaing/SedingCalender";
-import Campaign_Details from "./views/pages/Campaing/Campaign_details.js";
 import ProspectOnclick from "./views/pages/Prospects/ProspectOnclick";
-import CampaignDetails from "./views/pages/Campaing/Campaign_details.js";
-import OverView from "./views/pages/Campaing/OverView";
-import Sequence from "./views/pages/Campaing/Sequence";
-import Recipients from "./views/pages/Campaing/Recipients";
-import CampSetting from "./views/pages/Campaing/Setting";
 import ForgetPassword from "./views/pages/examples/ForgetPassword";
 
+// Mail Account
+import MailAccount from "./views/pages/MailAccount/MailAccount";
+import SendingCalender from "./views/pages/MailAccount/SedingCalender";
+
+// New Campaign pages
 import CampaignCompose from "./views/pages/dashboards/NewCampaign/CampaignCompose";
 import CampaignPreview from "./views/pages/dashboards/NewCampaign/CampaignPreview";
 import CampaignRecipient from "./views/pages/dashboards/NewCampaign/CampaignRecipient";
 import CampaignSend from "./views/pages/dashboards/NewCampaign/CampaignSend";
 import CampaignStart from "./views/pages/dashboards/NewCampaign/CampaignStart";
 import CampaignOptions from "./views/pages/dashboards/NewCampaign/CampaignOptions";
+
+// Campaign pages
+import CampaignDetails from "./views/pages/Campaing/CampaignDetails.js";
+import OverView from "./views/pages/Campaing/OverView";
+import Sequence from "./views/pages/Campaing/Sequence";
+import Recipients from "./views/pages/Campaing/Recipients";
+import CampSetting from "./views/pages/Campaing/Setting";
 
 const routes = [
   {

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { Container, Row, Col, Table, Nav, NavItem, NavLink, TabContent, TabPane, } from 'reactstrap'
 import classnames from 'classnames';
-import Campaign_details from "../../../views/pages/Campaing/Campaign_details"
+import Campaign_details from "./CampaignDetails"
 import Overview_Summery from './Overview_Summery';
 import Overview_Activity from './Overview_Activity';
 import { Component } from 'react';

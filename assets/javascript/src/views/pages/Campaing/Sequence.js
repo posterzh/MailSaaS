@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Row, Col, Table } from 'reactstrap';
-import Campaign_details from "../../../views/pages/Campaing/Campaign_details"
+import Campaign_details from "./CampaignDetails"
 
 export default class Sequence extends React.Component {
     render() {

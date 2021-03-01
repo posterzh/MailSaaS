@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Container, Row, Col, Button, Alert } from 'reactstrap'
 import Form from 'reactstrap/lib/Form'
-import Campaign_details from "../../../views/pages/Campaing/Campaign_details"
+import Campaign_details from "./CampaignDetails"
 import { CampaignLeadCatcherAction, CampaignLeadGetAction, CampaignLeadDeleteAction, CampaignLeadUpdateAction } from "../../../redux/action/CampaignAction"
 
 // export default function Setting() {
