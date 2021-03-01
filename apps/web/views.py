@@ -11,20 +11,25 @@ from apps.teams.util import get_default_team
 
 
 def home(request):
-    if request.user.is_authenticated:
+    """
+    Set home page on django side.
+    """
+    return HttpResponseRedirect(reverse('pegasus:react_object_lifecycle'))
+    # May use letter thats why didn't removed.
+    # if request.user.is_authenticated:
 
-        team = get_default_team(request)
-        if team:
-            return HttpResponseRedirect(reverse('web:team_home', args=[team.slug]))
-        else:
-            messages.info(request, _(
-                'Teams are enabled but you have no teams. '
-                'Create a team below to access the rest of the dashboard.'
-            ))
-            return HttpResponseRedirect(reverse('teams:manage_teams'))
+    #     team = get_default_team(request)
+    #     if team:
+    #         return HttpResponseRedirect(reverse('web:team_home', args=[team.slug]))
+    #     else:
+    #         messages.info(request, _(
+    #             'Teams are enabled but you have no teams. '
+    #             'Create a team below to access the rest of the dashboard.'
+    #         ))
+    #         return HttpResponseRedirect(reverse('teams:manage_teams'))
 
-    else:
-        return render(request, 'web/landing_page.html')
+    # else:
+    #     return render(request, 'web/landing_page.html')
 
 
 
