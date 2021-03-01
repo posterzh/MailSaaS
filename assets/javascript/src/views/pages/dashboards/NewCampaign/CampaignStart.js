@@ -71,12 +71,12 @@ class CampaignStart extends React.Component {
         mailsExist: true,
       };
     }
-    if (props.mailGetData && !props.mailGetData.length) {
-      alert("Please go to create mail account");
-      return {
-        mailsExist: false,
-      };
-    }
+    // if (props.mailGetData && !props.mailGetData.length) {
+    //   alert("Please go to create mail account");
+    //   return {
+    //     mailsExist: false,
+    //   };
+    // }
     return null;
   }
 

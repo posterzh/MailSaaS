@@ -44,9 +44,8 @@ import CampSetting from "./views/pages/Campaing/Setting";
 import ForgetPassword from "./views/pages/examples/ForgetPassword";
 
 import CampaignCompose from "./views/pages/dashboards/NewCampaign/CampaignCompose";
-import CampaignOption from "./views/pages/dashboards/NewCampaign/CampaignOptions";
 import CampaignPreview from "./views/pages/dashboards/NewCampaign/CampaignPreview";
-import CampaignRecipients from "./views/pages/dashboards/NewCampaign/CampaignRecipients";
+import CampaignRecipient from "./views/pages/dashboards/NewCampaign/CampaignRecipient";
 import CampaignSend from "./views/pages/dashboards/NewCampaign/CampaignSend";
 import CampaignStart from "./views/pages/dashboards/NewCampaign/CampaignStart";
 import CampaignOptions from "./views/pages/dashboards/NewCampaign/CampaignOptions";
@@ -70,7 +69,6 @@ const routes = [
     state: "campaign",
     views: [
       {
-        open: true,
         path: "/CampaignStart",
         name: "Create Campaign",
         miniName: " ",
@@ -98,26 +96,63 @@ const routes = [
         component: LeadCatcher,
         layout: "/app/admin",
       },
+      // Redirects
+      {
+        path: "/CampaignRecipient",
+        component: CampaignRecipient,
+        layout: "/app/admin",
+        redirect: true,
+      },
+      {
+        path: "/CampaignCompose",
+        component: CampaignCompose,
+        layout: "/app/admin",
+        redirect: true,
+      },
+      {
+        path: "/CampaignPreview",
+        component: CampaignPreview,
+        layout: "/app/admin",
+        redirect: true,
+      },
+      {
+        path: "/CampaignOptions",
+        component: CampaignOptions,
+        layout: "/app/admin",
+        redirect: true,
+      },
+      {
+        path: "/CampaignSend",
+        component: CampaignSend,
+        layout: "/app/admin",
+        redirect: true,
+      },
     ],
   },
 
   // for Prospects
   {
-    collapse: false,
+    collapse: true,
     name: "Prospects",
     icon: "fa fa-users text-dark",
     state: "prospects",
-    path: "/prospects",
-    component: Prospects,
-    layout: "/app/admin",
+    views: [
+      {
+        path: "/prospects",
+        name: "Prospects",
+        miniName: " ",
+        component: Prospects,
+        layout: "/app/admin",
+      },
+      {
+        name: " Unsubscribes",
+        path: "/unsubscribes",
+        miniName: " ",
+        component: Unsubscribes,
+        layout: "/app/admin",
+      },
+    ],
   },
-  // {
-  //   path: "/prospect-detail",
-  //   name: "Prospect Onclick",
-  //   miniName: " ",
-  //   component: ProspectOnclick,
-  //   layout: "/app/admin"
-  // },
 
   // for MailAccount
   {
@@ -209,18 +244,6 @@ const routes = [
         layout: "/app/admin",
       },
     ],
-  },
-
-  // for Unsubscribes
-  {
-    collapse: false,
-    name: " Unsubscribes",
-    icon: "fa fa-user-alt-slash text-orange",
-    state: "unsubscribe",
-    path: "/unsubscribes",
-    miniName: " ",
-    component: Unsubscribes,
-    layout: "/app/admin",
   },
   {
     open: true,
