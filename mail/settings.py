@@ -355,8 +355,8 @@ GOOGLE_ANALYTICS_ID = ''  # replace with your google analytics ID to connect to 
 # modeled to be the same as https://github.com/dj-stripe/dj-stripe
 STRIPE_LIVE_PUBLIC_KEY = os.environ.get("STRIPE_LIVE_PUBLIC_KEY", "<your publishable key>")
 STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY", "<your secret key>")
-STRIPE_TEST_PUBLIC_KEY = os.environ.get("STRIPE_TEST_PUBLIC_KEY", "pk_test_<your publishable key>")
-STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY", "sk_test_<your secret key>")
+STRIPE_TEST_PUBLIC_KEY = "pk_test_51IBszEBZVXmQYn2L10zhEROWJZIExUWXwFdIg47Sgv8VX064fmyOLaBS6wFysLJuvkTXiBpeqWmaljbmTzYgalys00VCRN4C5p" #, "pk_test_<your publishable key>")
+STRIPE_TEST_SECRET_KEY = "sk_test_51IBszEBZVXmQYn2LG0WRyPwcYrV6O3D83lD55hjDuuNkdjcawOJhYjVZ8K2mujFZlkD4x53UTbAxGoz8JSWeFa2l003KGHQZmq"#os.environ.get("STRIPE_TEST_SECRET_KEY", "sk_test_<your secret key>")
 STRIPE_LIVE_MODE = False  # Change to True in production
 
 # Get it from the section in the Stripe dashboard where you added the webhook endpoint

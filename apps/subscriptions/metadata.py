@@ -123,36 +123,8 @@ ACTIVE_PLAN_INTERVALS = [
 # These are the products that will be shown to users in the UI and allowed to be associated
 # with plans on your side
 ACTIVE_PRODUCTS = [
-    ProductMetadata(
-        stripe_id='',
-        name=_('Starter'),
-        description=_('For hobbyists and side-projects'),
-        features=[
-            _('Up to 100 Widgets'),
-            _('Unlimited Widget Editing'),
-        ],
-    ),
-    ProductMetadata(
-        stripe_id='',
-        name=_('Standard'),
-        description=_('For small businesses and teams'),
-        is_default=True,
-        features=[
-            _('Up to 500 Widgets'),
-            _('Unlimited Widget Editing'),
-            _('Advanced Widget Editing Features'),
-        ],
-    ),
-    ProductMetadata(
-        stripe_id='',
-        name=_('Premium'),
-        description=_('For small businesses and teams'),
-        features=[
-            _('Unlimited Widgets'),
-            _('All Features'),
-            _('Priority Support and Training'),
-        ],
-    ),
+    ProductMetadata(stripe_id='prod_J2MnL4qup3qNCY', name='Email Warmup', features=['Email Warmup Feature 1', 'Email Warmup Feature 2', 'Email Warmup Feature 3'], description='The Email Warmup plan', is_default=True),
+    ProductMetadata(stripe_id='prod_J2Mnq82J87lv9k', name='Email Automation', features=['Email Automation Feature 1', 'Email Automation Feature 2', 'Email Automation Feature 3'], description='The Email Automation plan', is_default=False),
 ]
 
 ACTIVE_PRODUCTS_BY_ID = {
