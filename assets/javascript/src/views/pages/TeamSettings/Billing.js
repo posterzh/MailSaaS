@@ -1,46 +1,129 @@
-import React, { Component } from 'react'
-import { Container, Row, Col } from 'reactstrap'
+import React, { Component } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  Table,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  CardFooter,
+  Alert,
+} from "reactstrap";
+
+import PageHeader from "../../../components/Headers/PageHeader";
+import PageContainer from "../../../components/Containers/PageContainer";
+
 class Billing extends Component {
-    render() {
-        return (
-            <div>
-                <div className='campaign_navbar' >
-                    <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Billing</h1>
-                    <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i class="fa fa-question-circle-o" aria-hidden="true"></i></p>
-                </div>
-                <Container fluid >
-                    <Row className='mt-3'>
-                        <Col md='4' style={{ border: '1px solid #ccc', background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
-                            <div className='dv1'>
-                                <Row>
-                                    <h1 style={{ color: "green" }} className='ml-4'>ACTIVE PLAN</h1>
-                                </Row>
-                                <Row style={{ fontSize: '12px', color: '#005aac' }} className='mt-3 ml-2'>Renews On</Row>
-                                <Row style={{ fontSize: '16px', color: 'rgba(0,0,0, 0.54)', fontWaight: "700" }} className='mt-0 ml-2'>Feb 11, 2021</Row>
-                                <Row style={{ fontSize: '12px', color: '#005aac' }} className='mt-3 ml-2'>Plan type</Row>
-                                <Row style={{ fontSize: '16px', color: 'rgba(0,0,0, 0.54)', fontWaight: "700" }} className='mt-0 ml-2'>Monthly Email Outreach</Row>
-                                <Row style={{ fontSize: '12px', color: '#005aac' }} className='mt-3 ml-2'>Number of users</Row>
-                                <Row style={{ fontSize: '16px', color: 'rgba(0,0,0, 0.54)', fontWaight: "700" }} className='mt-0 ml-2'>1</Row>
-                                <Row className="mt-2" style={{ backgroundColor: "#ccc", borderTop: "1px solid #ccc", borderBottom: "1px solid #ccc" }}>
-                                    <div style={{ width: "100%", display: "flex", padding: "10px 0px" }}>
-                                        <div style={{ width: "50%", display: "flex", justifyContent: "flex-start", paddingLeft: "10px" }}>CHNGE</div>
-                                        <div style={{ width: "45%", display: "flex", justifyContent: "flex-end" }}>
-                                            <div><i class="fa fa-dollar-sign"></i></div>
-                                            <div>59</div>
-                                        </div>
-                                    </div>
-                                </Row>
-                                <Row className='mt-3 ml-1 mb-3'>
-                                    <button className='savebutton' style={{ width: "7em" }}>UPGRADE</button>
-                                    <button className='deleteteambutton mr-3'>CHANGE</button>
-                                </Row>
-                            </div>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-        )
-    }
+  render() {
+    const receipts = [
+      {
+        date: "Feb 11, 2021",
+        amount: "$51.00",
+      },
+      {
+        date: "Jan 11, 2021",
+        amount: "$60.00",
+      },
+    ];
+
+    return (
+      <>
+        <PageHeader
+          current="Billing"
+          parent="Team settings"
+          showStatus={false}
+        />
+
+        <PageContainer title="Billing">
+          <Container fluid>
+            <Row className="mt-3">
+              <Col md="6">
+                <Card>
+                  <CardHeader>
+                    <h3 className="mb-0 text-success">ACTIVE PLAN</h3>
+                  </CardHeader>
+                  <CardBody>
+                    <div className="mb-2">
+                      <small className="text-info">Renews On</small>
+                      <p className="text-muted">Feb 11, 2021</p>
+                    </div>
+                    <div className="mb-2">
+                      <small className="text-info">Plan type</small>
+                      <p className="text-muted">Monthly Email Outreach</p>
+                    </div>
+                    <div className="mb-2">
+                      <small className="text-info">Renews On</small>
+                      <p className="text-muted">Feb 11, 2021</p>
+                    </div>
+                  </CardBody>
+                  <Alert
+                    className="d-flex justify-content-between align-items-center"
+                    color="default"
+                  >
+                    <span>Total monthly price</span>
+                    <b>$51.00</b>
+                  </Alert>
+                  <CardFooter className="bg-transparent">
+                    <Button
+                      color="info"
+                      type="submit"
+                      className="text-uppercase"
+                    >
+                      Upgrade
+                    </Button>
+                    <Button
+                      color="secondary"
+                      type="submit"
+                      className="text-uppercase"
+                    >
+                      change
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+          <Container fluid>
+            <Row className="mt-3">
+              <Col md="8">
+                <h1 className="mt-5 mb-3">RECEIPTS</h1>
+                <p>Edit the company information that shows on your receipts.</p>
+                <Table
+                  className="align-items-center table-flush"
+                  responsive
+                  hover
+                >
+                  <thead className="thead-light">
+                    <tr>
+                      <th></th>
+                      <th>INVOICE DATE</th>
+                      <th>AMOUNT</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {receipts &&
+                      receipts.map((receipt, index) => (
+                        <tr key={index}>
+                          <td>
+                            <Button color="secondary" outline type="button">
+                              VIEW
+                            </Button>
+                          </td>
+                          <td>{receipt.date}</td>
+                          <td>{receipt.amount}</td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </Table>
+              </Col>
+            </Row>
+          </Container>
+        </PageContainer>
+      </>
+    );
+  }
 }
 
-export default Billing
+export default Billing;
