@@ -19,7 +19,7 @@ import React from "react";
 import classnames from "classnames";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 // reactstrap components
 import {
   Collapse,
@@ -43,7 +43,7 @@ import {
   Nav,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 
 class AdminNavbar extends React.Component {
@@ -87,16 +87,21 @@ class AdminNavbar extends React.Component {
             <Collapse navbar isOpen={true}>
               <Form
                 className={classnames(
-                  "navbar-search form-inline mr-sm-3 mx-auto",
+                  "navbar-search form-inline",
                   { "navbar-search-light": this.props.theme === "dark" },
                   { "navbar-search-dark": this.props.theme === "light" }
                 )}
               >
                 {/* <div style={{border:'2px solid'}}></div> */}
 
-                <div style={{ textAlign: 'center',display:'flex',flexDirection:'column'}}>
-                  <h1 className="Main-title" style={{ color: 'white' }}>Welcome to MailSaaS</h1>
-                  <h3 style={{ color: 'white' }}>A simple solution for email outreach.</h3>
+                <div
+                  style={{
+                    textAlign: "left",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <h1 style={{ color: "white" }}>MailSaaS</h1>
                 </div>
                 {/* <FormGroup className="mb-0">
                   <InputGroup className="input-group-alternative input-group-merge">
@@ -119,7 +124,7 @@ class AdminNavbar extends React.Component {
               </Form>
 
               <Nav className="align-items-center ml-md-auto" navbar>
-                <NavItem className="d-xl-none">
+                {/* <NavItem className="d-xl-none">
                   <div
                     className={classnames(
                       "pr-3 sidenav-toggler",
@@ -134,7 +139,7 @@ class AdminNavbar extends React.Component {
                       <i className="sidenav-toggler-line" />
                     </div>
                   </div>
-                </NavItem>
+                </NavItem> */}
                 {/* <NavItem className="d-sm-none">
                   <NavLink onClick={this.openSearch}>
                     <i className="ni ni-zoom-split-in" />
@@ -404,10 +409,7 @@ class AdminNavbar extends React.Component {
                   <DropdownToggle className="nav-link pr-0" color="" tag="a">
                     <Media className="align-items-center">
                       <span className="avatar avatar-sm rounded-circle">
-                        <img
-                          alt="..."
-                          src={STATIC_FILES.team_4}
-                        />
+                        <img alt="..." src={STATIC_FILES.team_4} />
                       </span>
                       <Media className="ml-2 d-none d-lg-block">
                         <span className="mb-0 text-sm font-weight-bold">
@@ -422,28 +424,28 @@ class AdminNavbar extends React.Component {
                     </DropdownItem>
                     <DropdownItem
                       href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      onClick={(e) => e.preventDefault()}
                     >
                       <i className="ni ni-single-02" />
                       <span>My profile</span>
                     </DropdownItem>
                     <DropdownItem
                       href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      onClick={(e) => e.preventDefault()}
                     >
                       <i className="ni ni-settings-gear-65" />
                       <span>Settings</span>
                     </DropdownItem>
                     <DropdownItem
                       href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      onClick={(e) => e.preventDefault()}
                     >
                       <i className="ni ni-calendar-grid-58" />
                       <span>Activity</span>
                     </DropdownItem>
                     <DropdownItem
                       href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      onClick={(e) => e.preventDefault()}
                     >
                       <i className="ni ni-support-16" />
                       <span>Support</span>
@@ -451,7 +453,7 @@ class AdminNavbar extends React.Component {
                     <DropdownItem divider />
                     <DropdownItem
                       href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      onClick={(e) => e.preventDefault()}
                     >
                       <i className="ni ni-user-run" />
                       <span>Logout</span>
@@ -467,14 +469,14 @@ class AdminNavbar extends React.Component {
   }
 }
 AdminNavbar.defaultProps = {
-  toggleSidenav: () => { },
+  toggleSidenav: () => {},
   sidenavOpen: false,
-  theme: "dark"
+  theme: "dark",
 };
 AdminNavbar.propTypes = {
   toggleSidenav: PropTypes.func,
   sidenavOpen: PropTypes.bool,
-  theme: PropTypes.oneOf(["dark", "light"])
+  theme: PropTypes.oneOf(["dark", "light"]),
 };
 
 export default AdminNavbar;

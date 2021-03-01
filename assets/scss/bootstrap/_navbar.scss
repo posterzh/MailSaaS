@@ -9,7 +9,6 @@
 // Navbar position
 // Navbar themes
 
-
 // Navbar
 //
 // Provide a static navbar from which we expand to create full-width, fixed, and
@@ -21,7 +20,7 @@
   flex-wrap: wrap; // allow us to do the line break for collapsing content
   align-items: center;
   justify-content: space-between; // space out brand from logo
-  padding: $navbar-padding-y $navbar-padding-x;
+  padding: 0.2em $navbar-padding-x;
 
   // Because flex properties aren't inherited, we need to redeclare these first
   // few properties so that content nested within behave properly.
@@ -44,7 +43,6 @@
   }
 }
 
-
 // Navbar brand
 //
 // Used for brand, project, or site names.
@@ -62,7 +60,6 @@
     text-decoration: none;
   }
 }
-
 
 // Navbar nav
 //
@@ -86,7 +83,6 @@
   }
 }
 
-
 // Navbar text
 //
 //
@@ -96,7 +92,6 @@
   padding-top: $nav-link-padding-y;
   padding-bottom: $nav-link-padding-y;
 }
-
 
 // Responsive navbar
 //
@@ -213,7 +208,6 @@
     }
   }
 }
-
 
 // Navbar themes
 //
