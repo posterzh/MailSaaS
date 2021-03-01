@@ -37,9 +37,13 @@ class TimelineHeader extends React.Component {
               <Row className="align-items-center py-4">
                 <Col lg="6" xs="7">
                   <h6 className="fullcalendar-title h2 text-white d-inline-block mb-0">
+                  {this.props.icon &&
+                    <a href="#pablo" onClick={e => e.preventDefault()}>
+                      <i className={this.props.icon} />
+                    </a>}{"  "}
                     {this.props.name}
                   </h6>{" "}
-                  <Breadcrumb
+                  {this.props.parentName && <Breadcrumb
                     className="d-none d-md-inline-block ml-lg-4"
                     listClassName="breadcrumb-links breadcrumb-dark"
                   >
@@ -53,19 +57,19 @@ class TimelineHeader extends React.Component {
                         {this.props.parentName}
                       </a>
                     </BreadcrumbItem>
-                    <BreadcrumbItem aria-current="page" className="active">
+                    {/* <BreadcrumbItem aria-current="page" className="active">
                       {this.props.name}
-                    </BreadcrumbItem>
-                  </Breadcrumb>
+                    </BreadcrumbItem> */}
+                  </Breadcrumb>}
                 </Col>
-                <Col className="mt-3 mt-md-0 text-md-right" lg="6" xs="5">
+                {/* <Col className="mt-3 mt-md-0 text-md-right" lg="6" xs="5">
                   <Button className="btn-neutral" color="default" size="sm">
                     New
                   </Button>
                   <Button className="btn-neutral" color="default" size="sm">
                     Filters
                   </Button>
-                </Col>
+                </Col> */}
               </Row>
             </div>
           </Container>
