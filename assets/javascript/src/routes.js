@@ -61,16 +61,7 @@ const routes = [
     layout: "/app/admin",
     component: Dashboard,
   },
-  {
-    open: true,
-    collapse: false,
-    name: "ForgetPassword",
-    // icon: "fa fa-home text-dark",
-    // state: "dashboardsCollapse",
-    path: "/forgetPassword",
-    layout: "/app/auth",
-    component: ForgetPassword,
-  },
+
   // for campaign
   {
     collapse: true,
@@ -88,55 +79,11 @@ const routes = [
       },
       {
         path: "/campaign",
-        name: "Campaign",
+        name: "Campaigns",
         miniName: " ",
         component: Campaign,
         layout: "/app/admin",
       },
-
-      {
-        path: "/CampaignStart",
-        name: "CampaignStart",
-        miniName: " ",
-        component: CampaignStart,
-        layout: "/app/admin",
-      },
-      {
-        path: "/CampaignRecipient",
-        name: "CampaignRecipients",
-        miniName: " ",
-        component: CampaignRecipients,
-        layout: "/app/admin",
-      },
-      {
-        path: "/CampaignCompose",
-        name: "CampaignCompose",
-        miniName: " ",
-        component: CampaignCompose,
-        layout: "/app/admin",
-      },
-      {
-        path: "/CampaignPreview",
-        name: "CampaignPreview",
-        miniName: " ",
-        component: CampaignPreview,
-        layout: "/app/admin",
-      },
-      {
-        path: "/CampaignOptions",
-        name: "CampaignOption",
-        miniName: " ",
-        component: CampaignOptions,
-        layout: "/app/admin",
-      },
-      {
-        path: "/CampaignSend",
-        name: "CampaignSend",
-        miniName: " ",
-        component: CampaignSend,
-        layout: "/app/admin",
-      },
-
       {
         path: "/CampaignDetails",
         name: "Campaign Details",
@@ -145,46 +92,10 @@ const routes = [
         layout: "/app/admin",
       },
       {
-        path: "/OverView",
-        name: "CampaignOverView",
-        miniName: " ",
-        component: OverView,
-        layout: "/app/admin",
-      },
-      {
-        path: "/Message",
-        name: "CampaignMessage",
-        miniName: " ",
-        component: Sequence,
-        layout: "/app/admin",
-      },
-      {
-        path: "/Recipient/people",
-        name: "CampaignPeople",
-        miniName: " ",
-        component: Recipients,
-        layout: "/app/admin",
-      },
-      {
-        path: "/settings",
-        name: "CampaignSetting",
-        miniName: " ",
-        component: CampSetting,
-        layout: "/app/admin",
-      },
-
-      {
         path: "/lead-catcher",
         name: "Lead Catcher",
         miniName: " ",
         component: LeadCatcher,
-        layout: "/app/admin",
-      },
-      {
-        path: "/sending-calender",
-        name: "Sending Calender",
-        miniName: " ",
-        component: SendingCalender,
         layout: "/app/admin",
       },
     ],
@@ -210,15 +121,26 @@ const routes = [
 
   // for MailAccount
   {
-    collapse: false,
+    collapse: true,
     name: "Mail Accounts",
     icon: "fa fa-envelope text-dark",
     state: "mailAccount",
-    path: "/mail-account",
-    name: "MailAccount",
-    miniName: " ",
-    component: MailAccount,
-    layout: "/app/admin",
+    views: [
+      {
+        path: "/mail-account",
+        name: "Mail Accounts",
+        miniName: " ",
+        component: MailAccount,
+        layout: "/app/admin",
+      },
+      {
+        path: "/sending-calender",
+        name: "Sending Calender",
+        miniName: " ",
+        component: SendingCalender,
+        layout: "/app/admin",
+      },
+    ],
   },
   // for TeamSetting
   {
@@ -299,6 +221,16 @@ const routes = [
     miniName: " ",
     component: Unsubscribes,
     layout: "/app/admin",
+  },
+  {
+    open: true,
+    collapse: false,
+    name: "ForgetPassword",
+    // icon: "fa fa-home text-dark",
+    // state: "dashboardsCollapse",
+    path: "/forgetPassword",
+    layout: "/app/auth",
+    component: ForgetPassword,
   },
 
   {
