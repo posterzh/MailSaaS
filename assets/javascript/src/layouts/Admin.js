@@ -18,16 +18,16 @@ import React from "react";
 // react library for routing
 import { Route, Switch, Redirect } from "react-router-dom";
 // core components
-// import AdminNavbar from "components/Navbars/AdminNavbar.js";
+import AdminNavbar from "../components/Navbars/AdminNavbar.js";
 import Sidebar from "../components/Sidebar/Sidebar.js";
-import Api from "../redux/api/api"
+import Api from "../redux/api/api";
 
 // import routes from "routes.js";
-import routes from "./../routes"
+import routes from "./../routes";
 
 class Admin extends React.Component {
   state = {
-    sidenavOpen: true
+    sidenavOpen: true,
   };
   componentDidUpdate(e) {
     if (e.history.pathname !== e.location.pathname) {
@@ -36,7 +36,7 @@ class Admin extends React.Component {
       this.refs.mainContent.scrollTop = 0;
     }
   }
-  getRoutes = routes => {
+  getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.collapse) {
         return this.getRoutes(prop.views);
@@ -54,7 +54,7 @@ class Admin extends React.Component {
       }
     });
   };
-  getBrandText = path => {
+  getBrandText = (path) => {
     for (let i = 0; i < routes.length; i++) {
       if (
         this.props.location.pathname.indexOf(
@@ -67,7 +67,7 @@ class Admin extends React.Component {
     return "Brand";
   };
   // toggles collapse between mini sidenav and normal
-  toggleSidenav = e => {
+  toggleSidenav = (e) => {
     if (document.body.classList.contains("g-sidenav-pinned")) {
       document.body.classList.remove("g-sidenav-pinned");
       document.body.classList.add("g-sidenav-hidden");
@@ -76,13 +76,11 @@ class Admin extends React.Component {
       document.body.classList.remove("g-sidenav-hidden");
     }
     this.setState({
-      sidenavOpen: !this.state.sidenavOpen
+      sidenavOpen: !this.state.sidenavOpen,
     });
   };
   getNavbarTheme = () => {
-    return this.props.location.pathname.indexOf(
-      "dashboard"
-    ) === -1
+    return this.props.location.pathname.indexOf("dashboard") === -1
       ? "dark"
       : "light";
   };
@@ -97,7 +95,7 @@ class Admin extends React.Component {
           logo={{
             innerLink: "/",
             imgsrc: STATIC_FILES.argon_react,
-            imgAlt: "..."
+            imgAlt: "...",
           }}
         />
         <div
@@ -105,6 +103,7 @@ class Admin extends React.Component {
           ref="mainContent"
           onClick={this.closeSidenav}
         >
+          <AdminNavbar />
           <Switch>
             {this.getRoutes(routes)}
             <Redirect from="*" to="/app/admin/dashboard" />
