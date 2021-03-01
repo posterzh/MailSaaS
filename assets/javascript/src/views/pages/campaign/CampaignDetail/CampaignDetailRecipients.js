@@ -10,7 +10,7 @@ import {
   ModalFooter,
   Button,
 } from "reactstrap";
-import CampaignDetails from "./CampaignDetails";
+import CampaignDetail from "./CampaignDetail";
 import React, { Component } from "react";
 import {
   CampaignPeopleAction,
@@ -35,7 +35,7 @@ const Span = {
   borderRight: "1px dashed",
   marginRight: "10px",
 };
-class Recipients extends Component {
+class CampaignDetailRecipients extends Component {
   constructor() {
     super();
     var months = [
@@ -163,7 +163,7 @@ class Recipients extends Component {
         </div>
         <Container fluid>
           <Row>
-            <CampaignDetails
+            <CampaignDetail
               id={
                 this.props.history.location.state &&
                 this.props.history.location.state.id
@@ -388,4 +388,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   CampaignCreateLeadAction: (id) => dispatch(CampaignCreateLeadAction(id)),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Recipients);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CampaignDetailRecipients);

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Container from "reactstrap/lib/Container";
 import Row from "reactstrap/lib/Row";
 
-export default class CampaignDetails extends Component {
+export default class CampaignDetail extends Component {
   render() {
     const { id } = this.props;
     return (
@@ -26,21 +26,21 @@ export default class CampaignDetails extends Component {
             <Row className="">
               <ul style={{ listStyleType: "none", display: "flex" }}>
                 <li className="m-3">
-                  <Link to="/app/admin/campaign">
+                  <Link to="/app/admin/CampaignList">
                     <span className="nav_link">
                       <i className="fas fa-chevron-left"></i>
                     </span>
                   </Link>
                 </li>
                 <li className="m-3">
-                  <Link to="/app/admin/OverView">
-                    <span className="nav_link">OverView</span>
+                  <Link to="/app/admin/CampaignDetailOverview">
+                    <span className="nav_link">Overview</span>
                   </Link>
                 </li>
                 <li className="m-3">
                   <Link
                     to={{
-                      pathname: "/app/admin/Message",
+                      pathname: "/app/admin/CampaignDetailSequence",
                       state: {
                         id: this.props.id,
                       },
@@ -53,7 +53,7 @@ export default class CampaignDetails extends Component {
                 <li className="m-3">
                   <Link
                     to={{
-                      pathname: "/app/admin/Recipient/people",
+                      pathname: "/app/admin/CampaignDetailRecipients",
                       state: {
                         id: this.props.id,
                       },
@@ -65,13 +65,13 @@ export default class CampaignDetails extends Component {
                 <li className="m-3">
                   <Link
                     to={{
-                      pathname: "/app/admin/settings",
+                      pathname: "/app/admin/CampaignDetailsettings",
                       state: {
                         id: this.props.id,
                       },
                     }}
                   >
-                    <span className="nav_link">Setting</span>
+                    <span className="nav_link">Settings</span>
                   </Link>
                 </li>
               </ul>

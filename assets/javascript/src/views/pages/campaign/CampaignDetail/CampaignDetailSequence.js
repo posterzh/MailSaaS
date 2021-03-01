@@ -1,14 +1,14 @@
 import React from "react";
 import { Container, Row, Col, Table } from "reactstrap";
-import CampaignDetails from "./CampaignDetails";
+import CampaignDetail from "./CampaignDetail";
 
-export default class Sequence extends React.Component {
+export default class CampaignDetailRecipients extends React.Component {
   render() {
     return (
       <div>
         <Container fluid>
           <Row>
-            <CampaignDetails
+            <CampaignDetail
               id={
                 this.props.history.location.state &&
                 this.props.history.location.state.id

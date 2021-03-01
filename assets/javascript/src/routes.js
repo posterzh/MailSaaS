@@ -38,22 +38,22 @@ import MailAccount from "./views/pages/MailAccount/MailAccount";
 import SendingCalender from "./views/pages/MailAccount/SedingCalender";
 
 // New Campaign pages
-import CampaignCompose from "./views/pages/dashboards/NewCampaign/CampaignCompose";
-import CampaignPreview from "./views/pages/dashboards/NewCampaign/CampaignPreview";
-import CampaignRecipient from "./views/pages/dashboards/NewCampaign/CampaignRecipient";
-import CampaignSend from "./views/pages/dashboards/NewCampaign/CampaignSend";
-import CampaignStart from "./views/pages/dashboards/NewCampaign/CampaignStart";
-import CampaignOptions from "./views/pages/dashboards/NewCampaign/CampaignOptions";
+import CampaignCompose from "./views/pages/campaign/NewCampaign/CampaignCompose";
+import CampaignPreview from "./views/pages/campaign/NewCampaign/CampaignPreview";
+import CampaignRecipient from "./views/pages/campaign/NewCampaign/CampaignRecipient";
+import CampaignSend from "./views/pages/campaign/NewCampaign/CampaignSend";
+import CampaignStart from "./views/pages/campaign/NewCampaign/CampaignStart";
+import CampaignOptions from "./views/pages/campaign/NewCampaign/CampaignOptions";
 
 // Campaign List page
 import CampaignList from "./views/pages/campaign/CampaignList";
 
-// Campaign Details pages
-import CampaignDetails from "./views/pages/campaign/CampaignDetails/CampaignDetails.js";
-import OverView from "./views/pages/campaign/CampaignDetails/OverView";
-import Sequence from "./views/pages/campaign/CampaignDetails/Sequence";
-import Recipients from "./views/pages/campaign/CampaignDetails/Recipients";
-import CampSetting from "./views/pages/campaign/CampaignDetails/Setting";
+// Campaign Detail pages
+import CampaignDetail from "./views/pages/campaign/CampaignDetail/CampaignDetail.js";
+import CampaignDetailOverview from "./views/pages/campaign/CampaignDetail/CampaignDetailOverview";
+import CampaignDetailSequence from "./views/pages/campaign/CampaignDetail/CampaignDetailSequence";
+import CampaignDetailRecipients from "./views/pages/campaign/CampaignDetail/CampaignDetailRecipients";
+import CampaignDetailSettings from "./views/pages/campaign/CampaignDetail/CampaignDetailSettings";
 
 // Edit Campaign page
 import EditCampaign from "./views/pages/campaign/EditCampaign";
@@ -94,10 +94,17 @@ const routes = [
         layout: "/app/admin",
       },
       {
-        path: "/CampaignDetails",
-        name: "Campaign Details",
+        path: "/CampaignDetail",
+        name: "Campaign Detail",
         miniName: " ",
-        component: CampaignDetails,
+        component: CampaignDetail,
+        layout: "/app/admin",
+      },
+      {
+        path: "/EditCampaign",
+        name: "Edit Campaign",
+        miniName: " ",
+        component: EditCampaign,
         layout: "/app/admin",
       },
       {
@@ -107,7 +114,7 @@ const routes = [
         component: LeadCatcher,
         layout: "/app/admin",
       },
-      // Redirects
+      // New Campaign Redirects
       {
         path: "/CampaignRecipient",
         component: CampaignRecipient,
@@ -135,6 +142,32 @@ const routes = [
       {
         path: "/CampaignSend",
         component: CampaignSend,
+        layout: "/app/admin",
+        redirect: true,
+      },
+
+      // Campaign Detail Redirects
+      {
+        path: "/CampaignDetailOverview",
+        component: CampaignDetailOverview,
+        layout: "/app/admin",
+        redirect: true,
+      },
+      {
+        path: "/CampaignDetailSequence",
+        component: CampaignDetailSequence,
+        layout: "/app/admin",
+        redirect: true,
+      },
+      {
+        path: "/CampaignDetailRecipients",
+        component: CampaignDetailRecipients,
+        layout: "/app/admin",
+        redirect: true,
+      },
+      {
+        path: "/CampaignDetailSettings",
+        component: CampaignDetailSettings,
         layout: "/app/admin",
         redirect: true,
       },

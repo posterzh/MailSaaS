@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Container, Row, Col, Button, Alert } from "reactstrap";
 import Form from "reactstrap/lib/Form";
-import CampaignDetails from "./CampaignDetails";
+import CampaignDetail from "./CampaignDetail";
 import {
   CampaignLeadCatcherAction,
   CampaignLeadGetAction,
@@ -12,7 +12,7 @@ import {
 } from "../../../../redux/action/CampaignAction";
 
 // export default function Setting() {
-export class CampSetting extends Component {
+export class CampaignDetailSettings extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -82,7 +82,7 @@ export class CampSetting extends Component {
         <div>
           <Container fluid>
             <Row>
-              <CampaignDetails
+              <CampaignDetail
                 id={
                   this.props.history.location.state &&
                   this.props.history.location.state.id
@@ -244,4 +244,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CampSetting);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CampaignDetailSettings);

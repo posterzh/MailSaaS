@@ -12,7 +12,7 @@ import {
   TabPane,
 } from "reactstrap";
 import classnames from "classnames";
-import CampaignDetails from "./CampaignDetails";
+import CampaignDetail from "./CampaignDetail";
 import OverviewSummery from "./components/OverviewSummery";
 import OverviewActivity from "./components/OverviewActivity";
 import { Component } from "react";
@@ -32,7 +32,7 @@ const tabs = [
     title: "TIMELINE",
   },
 ];
-class CampaignData extends Component {
+class CampaignDetailOverview extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -54,7 +54,7 @@ class CampaignData extends Component {
       <div>
         <Container fluid>
           <Row>
-            <CampaignDetails
+            <CampaignDetail
               id={
                 this.props.history.location.state &&
                 this.props.history.location.state.id
@@ -128,4 +128,7 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = (dispatch) => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(CampaignData);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CampaignDetailOverview);
