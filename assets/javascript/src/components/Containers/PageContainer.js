@@ -22,17 +22,17 @@ class PageContainer extends React.Component {
     return (
       <>
         <Container fluid className="mt--5">
-          <Row>
-            <Col>
+          <Row className="justify-content-center">
+            <Col className="card-wrapper ct-example" lg="8">
               <Card>
                 <CardHeader>
-                  <h2 className="mx-auto mb-0 text-center display-2">
+                  <h2 className="mb-0 text-center display-2">
                     {title}
                   </h2>
                 </CardHeader>
                 <CardBody>
                   <Row>
-                    <Col md={8} className="mx-auto">
+                    <Col md={8}>
                       {children}
                     </Col>
                   </Row>
