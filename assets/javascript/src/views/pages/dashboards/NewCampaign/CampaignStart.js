@@ -16,11 +16,12 @@ import { Link, Route } from "react-router-dom";
 
 import { StartCampaignAction } from "../../../../redux/action/CampaignAction";
 import { MailGetDataAction } from "../../../../redux/action/MailSenderAction";
-import NewCampaignHeader from "./components/CampaignsHeader";
 
 import AdminNavbar from "../../../../components/Navbars/AdminNavbar";
-import CardsHeader from "../../../../components/Headers/CardsHeader";
+import PageHeader from "../../../../components/Headers/PageHeader";
 import CampaignsHeader from "./components/CampaignsHeader";
+
+import PageContainer from "../../../../components/Containers/PageContainer";
 
 class CampaignStart extends React.Component {
   constructor(props) {
@@ -96,104 +97,84 @@ class CampaignStart extends React.Component {
   // }
   render() {
     const { mailGetData } = this.props;
-    console.log("from_address", this.state.from_address);
     const { mailsExist } = this.state;
     return (
       <>
-        <AdminNavbar />
-        <CardsHeader name="New Campaign" parentName="Campaign" />
+        <PageHeader
+          current="New Campaign"
+          parent="Campaign"
+          showStatus={true}
+        />
 
-        <Container fluid className="mt--5">
-          <Row>
-            <Col>
-              <Card>
-                <CardHeader>
-                  <h2 className="mx-auto mb-0 text-center display-2">
-                    New Campaign
-                  </h2>
-                </CardHeader>
-                <CardBody>
-                  <Row>
-                    <Col md={8} className="mx-auto">
-                      <Form onSubmit={this.handleSubmit}>
-                        <Row>
-                          <Col>
-                            <CampaignsHeader active="START" />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                            <h1 className="text-center my-4">
-                              Let's get started
-                            </h1>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <div style={{ width: "100%" }}>
-                            {" "}
-                            <label>Title (for your team's eyes only)</label>
-                            <br></br>
-                            <input
-                              type="text"
-                              name="title"
-                              value={this.state.title}
-                              onChange={this.handleChange}
-                              className="start_input"
-                              autoComplete="off"
-                              placeholder={this.state.date}
-                              required
-                            ></input>
-                          </div>
-                        </Row>
-                        <Row>
-                          <div style={{ width: "100%" }}>
-                            <label>From Address</label>
-                            <br></br>
-                            <Input
-                              required
-                              type="select"
-                              name="from_address"
-                              value={this.state.from_address}
-                              onChange={this.handleChange}
-                              id="exampleSelect"
-                            >
-                              <option value={""}>Select</option>
-                              {mailGetData &&
-                                mailGetData.map((item, index) => {
-                                  return (
-                                    <option key={index} value={item.id}>
-                                      {item.email}
-                                    </option>
-                                  );
-                                })}
-                            </Input>
-                          </div>
-                        </Row>
-                        <Row>
-                          <Col>
-                            <Button
-                              color="primary"
-                              type="button"
-                              type="submit"
-                              disabled={!mailsExist}
-                              className="my-3"
-                            >
-                              NEXT&nbsp;
-                              <i
-                                className="fa fa-arrow-right"
-                                aria-hidden="true"
-                              ></i>
-                            </Button>
-                          </Col>
-                        </Row>
-                      </Form>
-                    </Col>
-                  </Row>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
+        <PageContainer title="New Campaign">
+          <Form onSubmit={this.handleSubmit}>
+            <Row>
+              <Col>
+                <CampaignsHeader active="START" />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <h1 className="text-center my-4">Let's get started</h1>
+              </Col>
+            </Row>
+            <Row>
+              <div style={{ width: "100%" }}>
+                {" "}
+                <label>Title (for your team's eyes only)</label>
+                <br></br>
+                <input
+                  type="text"
+                  name="title"
+                  value={this.state.title}
+                  onChange={this.handleChange}
+                  className="start_input"
+                  autoComplete="off"
+                  placeholder={this.state.date}
+                  required
+                ></input>
+              </div>
+            </Row>
+            <Row>
+              <div style={{ width: "100%" }}>
+                <label>From Address</label>
+                <br></br>
+                <Input
+                  required
+                  type="select"
+                  name="from_address"
+                  value={this.state.from_address}
+                  onChange={this.handleChange}
+                  id="exampleSelect"
+                >
+                  <option value={""}>Select</option>
+                  {mailGetData &&
+                    mailGetData.map((item, index) => {
+                      return (
+                        <option key={index} value={item.id}>
+                          {item.email}
+                        </option>
+                      );
+                    })}
+                </Input>
+              </div>
+            </Row>
+            <Row>
+              <Col>
+                <Button
+                  color="primary"
+                  type="button"
+                  type="submit"
+                  disabled={!mailsExist}
+                  className="my-3"
+                >
+                  NEXT&nbsp;
+                  <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        </PageContainer>
       </>
     );
   }

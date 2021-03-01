@@ -18,7 +18,7 @@ import {
 } from "../../../../redux/action/CampaignAction";
 
 import AdminNavbar from "../../../../components/Navbars/AdminNavbar";
-import CardsHeader from "../../../../components/Headers/CardsHeader";
+import PageHeader from "../../../../components/Headers/PageHeader";
 import CampaignsHeader from "./components/CampaignsHeader";
 
 export class CampaignSend extends Component {
@@ -50,8 +50,7 @@ export class CampaignSend extends Component {
     const { sendData } = this.props;
     return (
       <>
-        <AdminNavbar />
-        <CardsHeader name="New Campaign" parentName="Campaign" />
+        <PageHeader name="New Campaign" parentName="Campaign" />
 
         <Container fluid className="mt--5">
           <Row>

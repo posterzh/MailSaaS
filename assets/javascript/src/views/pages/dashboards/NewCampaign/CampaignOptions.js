@@ -16,7 +16,7 @@ import { Link, Route } from "react-router-dom";
 import { connect } from "react-redux";
 
 import AdminNavbar from "../../../../components/Navbars/AdminNavbar";
-import CardsHeader from "../../../../components/Headers/CardsHeader";
+import PageHeader from "../../../../components/Headers/PageHeader";
 import CampaignsHeader from "./components/CampaignsHeader";
 
 class CampaignOptions extends Component {
@@ -83,8 +83,7 @@ class CampaignOptions extends Component {
   render() {
     return (
       <>
-        <AdminNavbar />
-        <CardsHeader name="New Campaign" parentName="Campaign" />
+        <PageHeader name="New Campaign" parentName="Campaign" />
 
         <Container fluid className="mt--5">
           <Row>

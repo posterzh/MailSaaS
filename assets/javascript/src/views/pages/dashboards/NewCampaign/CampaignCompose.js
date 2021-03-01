@@ -23,7 +23,7 @@ import { Alert } from "reactstrap";
 import ReactQuill from "react-quill";
 
 import AdminNavbar from "../../../../components/Navbars/AdminNavbar";
-import CardsHeader from "../../../../components/Headers/CardsHeader";
+import PageHeader from "../../../../components/Headers/PageHeader";
 import CampaignsHeader from "./components/CampaignsHeader";
 
 class CampaignCompose extends Component {
@@ -160,8 +160,7 @@ class CampaignCompose extends Component {
     console.log(inputListFollow, "compose");
     return (
       <>
-        <AdminNavbar />
-        <CardsHeader name="New Campaign" parentName="Campaign" />
+        <PageHeader name="New Campaign" parentName="Campaign" />
 
         <Container fluid className="mt--5">
           <Row>

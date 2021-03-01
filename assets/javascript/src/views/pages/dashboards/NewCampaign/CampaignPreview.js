@@ -18,7 +18,7 @@ import { PreviewCampaignAction } from "../../../../redux/action/CampaignAction";
 import { connect } from "react-redux";
 
 import AdminNavbar from "../../../../components/Navbars/AdminNavbar";
-import CardsHeader from "../../../../components/Headers/CardsHeader";
+import PageHeader from "../../../../components/Headers/PageHeader";
 import CampaignsHeader from "./components/CampaignsHeader";
 
 class CampaignPreview extends Component {
@@ -46,8 +46,7 @@ class CampaignPreview extends Component {
     console.log(editorState, "preview");
     return (
       <>
-        <AdminNavbar />
-        <CardsHeader name="New Campaign" parentName="Campaign" />
+        <PageHeader name="New Campaign" parentName="Campaign" />
 
         <Container fluid className="mt--5">
           <Row>
