@@ -12,7 +12,6 @@ import {
   CardHeader,
   CardBody,
 } from "reactstrap";
-import { Link, Route } from "react-router-dom";
 
 import {
   RecipientAction,
@@ -20,8 +19,8 @@ import {
 } from "../../../../redux/action/CampaignAction";
 import Csvfile from "./components/csvfile";
 
-import AdminNavbar from "../../../../components/Navbars/AdminNavbar";
 import PageHeader from "../../../../components/Headers/PageHeader";
+import PageContainer from "../../../../components/Containers/PageContainer";
 import CampaignsHeader from "./components/CampaignsHeader";
 
 class CampaignRecipients extends Component {
@@ -77,92 +76,74 @@ class CampaignRecipients extends Component {
     console.log(this.props.location, this.props.campaignDetails, "recipient");
     return (
       <>
-        <PageHeader name="New Campaign" parentName="Campaign" />
+        <PageHeader
+          current="New Campaign"
+          parent="Campaign"
+          showStatus={true}
+        />
 
-        <Container fluid className="mt--5">
-          <Row>
-            <Col>
-              <Card>
-                <CardHeader>
-                  <h2 className="mx-auto mb-0 text-center display-2">
-                    New Campaign
-                  </h2>
-                </CardHeader>
-                <CardBody>
-                  <Row>
-                    <Col md={8} className="mx-auto">
-                      <Form onSubmit={this.handleSubmit}>
-                        <Row>
-                          <Col>
-                            <CampaignsHeader active="RECIPIENT" />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                            <h1 className="text-center my-4">
-                              Drop in your first list of recipients
-                            </h1>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col md={4}>
-                            <span>OPTION #1</span>
-                          </Col>
-                          <Col md={8}>
-                            <span className="csv_logo">
-                              <i className="fa fa-file" aria-hidden="true"></i>
-                            </span>
-                            <span className="csv_logo_text">
-                              Drop a CSV file here
-                            </span>
-                            <div className="choose_option">
-                              <Input
-                                type="file"
-                                name="csvFile"
-                                value={this.state.value}
-                                onChange={this.handleChange}
-                              ></Input>
-                            </div>
-                            <Row>
-                              <span>
-                                Campaigns are limited to 5k recipients; uploads
-                                to 1MB.
-                              </span>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="my-4">
-                          <Col md={4}>
-                            <span>OPTION #2</span>
-                          </Col>
-                          <Col md={8}>
-                            <span className="textarea">
-                              <textarea
-                                type="email"
-                                name="email"
-                                value={this.state.email}
-                                onChange={(e) => {
-                                  this.setState({
-                                    show: true,
-                                    email: e.target.value,
-                                  });
-                                }}
-                                placeholder="type here"
-                              ></textarea>
-                              {show && (
-                                <Button className="btn startBtn">IMPORT</Button>
-                              )}
-                            </span>
-                          </Col>
-                        </Row>
-                      </Form>
-                    </Col>
-                  </Row>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
+        <PageContainer title="New Campaign">
+          <Form onSubmit={this.handleSubmit}>
+            <Row>
+              <Col>
+                <CampaignsHeader active="RECIPIENT" />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <h1 className="text-center my-4">
+                  Drop in your first list of recipients
+                </h1>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={4}>
+                <span>OPTION #1</span>
+              </Col>
+              <Col md={8}>
+                <span className="csv_logo">
+                  <i className="fa fa-file" aria-hidden="true"></i>
+                </span>
+                <span className="csv_logo_text">Drop a CSV file here</span>
+                <div className="choose_option">
+                  <Input
+                    type="file"
+                    name="csvFile"
+                    value={this.state.value}
+                    onChange={this.handleChange}
+                  ></Input>
+                </div>
+                <Row>
+                  <span>
+                    Campaigns are limited to 5k recipients; uploads to 1MB.
+                  </span>
+                </Row>
+              </Col>
+            </Row>
+            <Row className="my-4">
+              <Col md={4}>
+                <span>OPTION #2</span>
+              </Col>
+              <Col md={8}>
+                <span className="textarea">
+                  <textarea
+                    type="email"
+                    name="email"
+                    value={this.state.email}
+                    onChange={(e) => {
+                      this.setState({
+                        show: true,
+                        email: e.target.value,
+                      });
+                    }}
+                    placeholder="type here"
+                  ></textarea>
+                  {show && <Button className="btn startBtn">IMPORT</Button>}
+                </span>
+              </Col>
+            </Row>
+          </Form>
+        </PageContainer>
       </>
     );
   }
