@@ -45,13 +45,20 @@ import CampaignSend from "./views/pages/dashboards/NewCampaign/CampaignSend";
 import CampaignStart from "./views/pages/dashboards/NewCampaign/CampaignStart";
 import CampaignOptions from "./views/pages/dashboards/NewCampaign/CampaignOptions";
 
-// Campaign pages
-import CampaignDetails from "./views/pages/campaign/CampaignDetails.js";
-import OverView from "./views/pages/campaign/OverView";
-import Sequence from "./views/pages/campaign/Sequence";
-import Recipients from "./views/pages/campaign/Recipients";
-import CampSetting from "./views/pages/campaign/Setting";
-import Campaign from "./views/pages/campaign/Campaign";
+// Campaign List page
+import CampaignList from "./views/pages/campaign/CampaignList";
+
+// Campaign Details pages
+import CampaignDetails from "./views/pages/campaign/CampaignDetails/CampaignDetails.js";
+import OverView from "./views/pages/campaign/CampaignDetails/OverView";
+import Sequence from "./views/pages/campaign/CampaignDetails/Sequence";
+import Recipients from "./views/pages/campaign/CampaignDetails/Recipients";
+import CampSetting from "./views/pages/campaign/CampaignDetails/Setting";
+
+// Edit Campaign page
+import EditCampaign from "./views/pages/campaign/EditCampaign";
+
+// Campaign > LeadCatcher page
 import LeadCatcher from "./views/pages/campaign/LeadCatcher";
 
 const routes = [
@@ -80,10 +87,10 @@ const routes = [
         layout: "/app/admin",
       },
       {
-        path: "/campaign",
-        name: "Campaigns",
+        path: "/CampaigList",
+        name: "Campaign List",
         miniName: " ",
-        component: Campaign,
+        component: CampaignList,
         layout: "/app/admin",
       },
       {
