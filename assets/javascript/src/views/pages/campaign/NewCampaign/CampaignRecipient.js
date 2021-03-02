@@ -16,7 +16,7 @@ import {
   ListGroup,
 } from "reactstrap";
 import Dropzone from "dropzone";
-
+import { Link } from "react-router-dom";
 import {
   RecipientAction,
   StartCampaignAction,
@@ -118,95 +118,123 @@ class CampaignRecipient extends Component {
         />
 
         <PageContainer title="New Campaign">
-          <Form onSubmit={this.handleSubmit}>
-            <Row>
-              <Col>
-                <CampaignsHeader active="RECIPIENT" />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <h1 className="text-center my-4">
-                  Drop in your first list of recipients
-                </h1>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Card>
-                  <CardBody>
-                    <h3 className="mb-2">OPTION #1</h3>
-                    <div
-                      className="dropzone dropzone-multiple"
-                      id="dropzone-multiple"
-                    >
-                      <div className="fallback">
-                        <div className="custom-file">
-                          <input
-                            className="custom-file-input"
-                            id="customFileUploadMultiple"
-                            multiple="multiple"
-                            type="file"
-                          />
-                          <label
-                            className="custom-file-label"
-                            htmlFor="customFileUploadMultiple"
-                          >
-                            Choose file
-                          </label>
-                        </div>
-                      </div>
-                      <ListGroup
-                        className=" dz-preview dz-preview-multiple list-group-lg"
-                        flush
-                      >
-                        <ListGroupItem className=" px-0">
-                          <Row className=" align-items-center">
-                            <Col className=" col-auto">
-                              <div className=" avatar">
-                                <img
-                                  alt="..."
-                                  className=" avatar-img rounded"
-                                  data-dz-thumbnail
-                                  src="..."
-                                />
-                              </div>
-                            </Col>
-                            <div className=" col ml--3">
-                              <h4 className=" mb-1" data-dz-name>
-                                ...
-                              </h4>
-                              <p
-                                className=" small text-muted mb-0"
-                                data-dz-size
+          <Row>
+            <Col md={8} className="mx-auto">
+              <Form onSubmit={this.handleSubmit}>
+                <Row>
+                  <Col>
+                    <CampaignsHeader active="RECIPIENT" />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <h1 className="text-center my-4">
+                      Drop in your first list of recipients
+                    </h1>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Card>
+                      <CardBody>
+                        <h3 className="mb-2">OPTION #1</h3>
+                        <div
+                          className="dropzone dropzone-multiple"
+                          id="dropzone-multiple"
+                        >
+                          <div className="fallback">
+                            <div className="custom-file">
+                              <input
+                                className="custom-file-input"
+                                id="customFileUploadMultiple"
+                                multiple="multiple"
+                                type="file"
+                              />
+                              <label
+                                className="custom-file-label"
+                                htmlFor="customFileUploadMultiple"
                               >
-                                ...
-                              </p>
+                                Choose file
+                              </label>
                             </div>
-                            <Col className=" col-auto">
-                              <Button size="sm" color="danger" data-dz-remove>
-                                <i className="fas fa-trash" />
-                              </Button>
-                            </Col>
-                          </Row>
-                        </ListGroupItem>
-                      </ListGroup>
-                    </div>
+                          </div>
+                          <ListGroup
+                            className=" dz-preview dz-preview-multiple list-group-lg"
+                            flush
+                          >
+                            <ListGroupItem className=" px-0">
+                              <Row className=" align-items-center">
+                                <Col className=" col-auto">
+                                  <div className=" avatar">
+                                    <img
+                                      alt="..."
+                                      className=" avatar-img rounded"
+                                      data-dz-thumbnail
+                                      src="..."
+                                    />
+                                  </div>
+                                </Col>
+                                <div className=" col ml--3">
+                                  <h4 className=" mb-1" data-dz-name>
+                                    ...
+                                  </h4>
+                                  <p
+                                    className=" small text-muted mb-0"
+                                    data-dz-size
+                                  >
+                                    ...
+                                  </p>
+                                </div>
+                                <Col className=" col-auto">
+                                  <Button
+                                    size="sm"
+                                    color="danger"
+                                    data-dz-remove
+                                  >
+                                    <i className="fas fa-trash" />
+                                  </Button>
+                                </Col>
+                              </Row>
+                            </ListGroupItem>
+                          </ListGroup>
+                        </div>
 
-                    <h3 className="mt-3 mb-2">OPTION #2</h3>
-                    <div>
-                      <Input
-                        id="exampleFormControlTextarea2"
-                        rows="3"
-                        type="textarea"
-                        placeholder="Type email addresses manually"
-                      />
-                    </div>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
-          </Form>
+                        <h3 className="mt-3 mb-2">OPTION #2</h3>
+                        <div>
+                          <Input
+                            id="exampleFormControlTextarea2"
+                            rows="3"
+                            type="textarea"
+                            placeholder="Type email addresses manually"
+                          />
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                </Row>
+
+                <Row className="my-3">
+                  <Col className="d-flex align-items-center justify-content-center">
+                    <Link
+                      to={{
+                        pathname: "/app/admin/CampaignCompose",
+                        state: {
+                          id:
+                            this.props.history.location.state &&
+                            this.props.history.location.state.id,
+                        },
+                      }}
+                    >
+                      <Button color="danger" type="button" type="submit">
+                        NEXT{" "}
+                        <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                      </Button>
+                    </Link>
+                  </Col>
+                </Row>
+              </Form>
+            </Col>
+          </Row>
         </PageContainer>
       </>
     );

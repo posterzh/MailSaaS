@@ -77,7 +77,7 @@ const routes = [
     views: [
       {
         path: "/CampaignStart",
-        name: "Create Campaign",
+        name: "New Campaign",
         miniName: " ",
         component: CampaignStart,
         layout: "/app/admin",
