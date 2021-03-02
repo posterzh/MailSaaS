@@ -236,6 +236,7 @@ const routes = [
         miniName: " ",
         component: Redeem,
         layout: "/app/admin",
+        redirect: true,
       },
     ],
   },
@@ -260,6 +261,7 @@ const routes = [
         miniName: "  ",
         component: Api,
         layout: "/app/admin",
+        redirect: true,
       },
       {
         path: "/conversionTracking",
@@ -267,6 +269,7 @@ const routes = [
         miniName: " ",
         component: ConversionTracking,
         layout: "/app/admin",
+        redirect: true,
       },
     ],
   },
@@ -279,14 +282,13 @@ const routes = [
   },
 
   {
-    open: true,
-    collapse: false,
     name: "ForgetPassword",
     // icon: "fa fa-home text-dark",
     // state: "dashboardsCollapse",
     path: "/forgetPassword",
     layout: "/app/auth",
     component: ForgetPassword,
+    redirect: true,
   },
 
   // User management redirects
