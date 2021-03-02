@@ -1,17 +1,57 @@
-import React from 'react'
-import { Container, Row } from 'reactstrap'
+import React from "react";
+import { Table } from "reactstrap";
 
-function Domainpage() {
-    return (
-        <div>
-            <Container fluid>
-                <Row className="mt-3">
-            <p style={{color:"black"}}>Search returned 0 unsubscribed domains.</p>
-            </Row>
-            </Container>
-            
-        </div>
-    )
+function Domainpage(props) {
+  return (
+    <>
+      {!props.data || !props.data.length ? (
+        <p style={{ color: "black" }}>
+          Search returned 0 unsubscribed domains.
+        </p>
+      ) : (
+        <Table hover responsive>
+          <thead className="thead-light">
+            <tr>
+              <th>
+                <input
+                  id="check-all"
+                  type="checkbox"
+                  checked={props.data.length === props.selectedId.length}
+                  ref={props.textInput}
+                  onChange={props.selectAll}
+                />
+              </th>
+              <th>Domain</th>
+              <th>Name</th>
+              <th>UNSUBSCRIBE DATE</th>
+            </tr>
+          </thead>
+          <tbody>
+            {props.data.map((row, index) => (
+              <tr key={index} className="">
+                <td>
+                  <input
+                    id={"row_" + row.id}
+                    type="checkbox"
+                    checked={
+                      props.selectedId &&
+                      props.selectedId.filter((id) => id === row.id).length
+                    }
+                    onChange={(event) => {
+                      props.selectRecored(row.id, event);
+                    }}
+                  />
+                </td>
+                <td>{row.domain}</td>
+                <td>{row.name}</td>
+                <td>{new Date(row.date).toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
+    </>
+  );
 }
 
 export default Domainpage
