@@ -4,25 +4,13 @@ import { Link } from "react-router-dom";
 import Container from "reactstrap/lib/Container";
 import Row from "reactstrap/lib/Row";
 
-export default class CampaignDetail extends Component {
+export default class CampaignDetailHeader extends Component {
   render() {
     const { id } = this.props;
     return (
       <>
         <div className="campaign_navbar">
           <Container fluid>
-            <Row className="">
-              <h1
-                style={{
-                  color: "white",
-                  fontSize: "30px",
-                  marginLeft: "0px",
-                  textAlign: "left",
-                }}
-              >
-                Date Outreach
-              </h1>
-            </Row>
             <Row className="">
               <ul style={{ listStyleType: "none", display: "flex" }}>
                 <li className="m-3">
@@ -78,19 +66,6 @@ export default class CampaignDetail extends Component {
             </Row>
           </Container>
         </div>
-        {/* <div className='campaign_navbar' >
-          <h1 style={{ color: 'white', fontSize: '30px', textAlign: 'left' }}>Date Outreach</h1>
-        </div>
-        <div className='main-view'>
-          <div style={{ background: '#035AAC' }}>
-            <ul style={{ listStyleType: 'none', display: 'flex' }}>
-              <li className='ml-3'><Link to="/app/admin/OverView">OverView</Link></li>
-              <li className='ml-3'><Link to="/app/admin/Message">Sequence</Link></li>
-              <li className='ml-3'><Link to="/app/admin/Recipient/people">Recipients</Link></li>
-              <li className='ml-3'><Link to="/app/admin/settings">Setting</Link></li>
-            </ul>
-          </div>
-          </div> */}
       </>
     );
   }

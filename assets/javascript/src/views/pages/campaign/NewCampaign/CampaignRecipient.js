@@ -137,7 +137,6 @@ class CampaignRecipient extends Component {
                   <Col>
                     <Card>
                       <CardBody>
-                        <h3 className="mb-2">OPTION #1</h3>
                         <div
                           className="dropzone dropzone-multiple"
                           id="dropzone-multiple"
@@ -197,16 +196,6 @@ class CampaignRecipient extends Component {
                               </Row>
                             </ListGroupItem>
                           </ListGroup>
-                        </div>
-
-                        <h3 className="mt-3 mb-2">OPTION #2</h3>
-                        <div>
-                          <Input
-                            id="exampleFormControlTextarea2"
-                            rows="3"
-                            type="textarea"
-                            placeholder="Type email addresses manually"
-                          />
                         </div>
                       </CardBody>
                     </Card>

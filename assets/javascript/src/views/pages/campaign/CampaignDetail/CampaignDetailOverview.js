@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   Container,
   Row,
@@ -10,13 +10,18 @@ import {
   NavLink,
   TabContent,
   TabPane,
+  Form,
+  FormGroup,
+  Input,
+  Button,
 } from "reactstrap";
+import { Link } from "react-router-dom";
 import classnames from "classnames";
-import CampaignDetail from "./CampaignDetail";
+import PageHeader from "../../../../components/Headers/PageHeader";
+import PageContainer from "../../../../components/Containers/PageContainer";
+import CampaignDetailHeader from "./components/CampaignDetailHeader";
 import OverviewSummery from "./components/OverviewSummery";
 import OverviewActivity from "./components/OverviewActivity";
-import { Component } from "react";
-import { connect } from "react-redux";
 
 const tabs = [
   {
@@ -51,10 +56,16 @@ class CampaignDetailOverview extends Component {
     const { campaignOverviewData } = this.props;
     console.log("campaignOverviewData", this.props.history);
     return (
-      <div>
-        <Container fluid>
+      <>
+        <PageHeader
+          current="Date Outreach"
+          parent="Campaign List"
+          showStatus={false}
+        />
+
+        <PageContainer title="Date Outreach">
           <Row>
-            <CampaignDetail
+            <CampaignDetailHeader
               id={
                 this.props.history.location.state &&
                 this.props.history.location.state.id
@@ -87,11 +98,6 @@ class CampaignDetailOverview extends Component {
                     </NavItem>
                   </Col>
                 ))}
-                {/* <Col md={1}><div className='child ml-3'>
-                            <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                <span className='font_icon'><i className="fa fa-undo" aria-hidden="true"></i></span>
-                            </a></div>
-                        </Col> */}
               </Nav>
               <TabContent activeTab={activeTab}>
                 <TabPane tabId={0}>
@@ -114,10 +120,8 @@ class CampaignDetailOverview extends Component {
               </TabContent>
             </Col>
           </Row>
-          {/* </Col>
-                </Row> */}
-        </Container>
-      </div>
+        </PageContainer>
+      </>
     );
   }
 }

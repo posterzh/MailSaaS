@@ -1,14 +1,37 @@
-import React from "react";
-import { Container, Row, Col, Table } from "reactstrap";
-import CampaignDetail from "./CampaignDetail";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import {
+  Container,
+  Row,
+  Col,
+  Table,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
+  Form,
+  FormGroup,
+  Input,
+  Button,
+} from "reactstrap";
+import PageHeader from "../../../../components/Headers/PageHeader";
+import PageContainer from "../../../../components/Containers/PageContainer";
+import CampaignDetailHeader from "./components/CampaignDetailHeader";
 
 export default class CampaignDetailRecipients extends React.Component {
   render() {
     return (
-      <div>
-        <Container fluid>
+      <>
+        <PageHeader
+          current="Date Outreach"
+          parent="Campaign List"
+          showStatus={false}
+        />
+
+        <PageContainer title="Date Outreach">
           <Row>
-            <CampaignDetail
+            <CampaignDetailHeader
               id={
                 this.props.history.location.state &&
                 this.props.history.location.state.id
@@ -64,8 +87,8 @@ export default class CampaignDetailRecipients extends React.Component {
               </Row>
             </Col>
           </Row>
-        </Container>
-      </div>
+        </PageContainer>
+      </>
     );
   }
 }

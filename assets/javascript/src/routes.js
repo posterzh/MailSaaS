@@ -45,7 +45,6 @@ import CampaignOptions from "./views/pages/campaign/NewCampaign/CampaignOptions"
 import CampaignList from "./views/pages/campaign/CampaignList";
 
 // Campaign Detail pages
-import CampaignDetail from "./views/pages/campaign/CampaignDetail/CampaignDetail.js";
 import CampaignDetailOverview from "./views/pages/campaign/CampaignDetail/CampaignDetailOverview";
 import CampaignDetailSequence from "./views/pages/campaign/CampaignDetail/CampaignDetailSequence";
 import CampaignDetailRecipients from "./views/pages/campaign/CampaignDetail/CampaignDetailRecipients";
@@ -90,10 +89,10 @@ const routes = [
         layout: "/app/admin",
       },
       {
-        path: "/CampaignDetail",
+        path: "/CampaignDetailOverview",
         name: "Campaign Detail",
         miniName: " ",
-        component: CampaignDetail,
+        component: CampaignDetailOverview,
         layout: "/app/admin",
       },
       {
