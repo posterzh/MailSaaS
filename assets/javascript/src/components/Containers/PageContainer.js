@@ -26,15 +26,11 @@ class PageContainer extends React.Component {
             <Col>
               <Card>
                 <CardHeader>
-                  <h2 className="mx-auto mb-0 text-center display-2">
-                    {title}
-                  </h2>
+                  <h2 className="mx-auto text-center display-2">{title}</h2>
                 </CardHeader>
                 <CardBody>
                   <Row>
-                    <Col md={8} className="mx-auto">
-                      {children}
-                    </Col>
+                    <Col className="m-0">{children}</Col>
                   </Row>
                 </CardBody>
               </Card>
