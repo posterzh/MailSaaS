@@ -1886,3 +1886,18 @@ input::-webkit-inner-spin-button {
 .search-bar input:focus {
   background-color: transparent !important;
 }
+
+@media (max-width: 767px) {
+  .mobile-p-0 {
+    padding: 0px;
+  }
+}
+
+@media (max-width: 374px) {
+  .small-mobile-ml-0 {
+    margin-left: 0px !important;
+  }
+  .small-mobile-mt-1 {
+    margin-top: 10px;
+  }
+}

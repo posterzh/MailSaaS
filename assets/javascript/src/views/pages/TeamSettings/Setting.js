@@ -30,31 +30,29 @@ export class Setting extends Component {
         />
 
         <PageContainer title="Settings">
-          <Container fluid>
+          <Container>
             <Row>
-              <Col lg={6} md={8} sm={12}>
+              <Col lg={6} md={8} sm={12} className="mobile-p-0">
                 <Card>
                   <CardHeader>
                     <h3 className="mb-0">Team Information</h3>
                   </CardHeader>
                   <Form className="needs-validation" noValidate>
                     <CardBody>
-                      <Col md={12}>
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="team-name"
-                          >
-                            Team Name
-                          </label>
-                          <Input
-                            id="team-name"
-                            placeholder="Team Name"
-                            required
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
+                      <FormGroup>
+                        <label
+                          className="form-control-label"
+                          htmlFor="team-name"
+                        >
+                          Team Name
+                        </label>
+                        <Input
+                          id="team-name"
+                          placeholder="Team Name"
+                          required
+                          type="text"
+                        />
+                      </FormGroup>
                     </CardBody>
                     <CardFooter className="bg-transparent">
                       <Button
@@ -67,8 +65,7 @@ export class Setting extends Component {
                       <Button
                         color="danger"
                         type="submit"
-                        className="text-uppercase"
-                        style={{ marginLeft: 0 }}
+                        className="text-uppercase small-mobile-ml-0 small-mobile-mt-1"
                       >
                         Delete Team
                       </Button>
@@ -78,10 +75,10 @@ export class Setting extends Component {
               </Col>
             </Row>
           </Container>
-          <Container fluid>
+          <Container>
             <h1 className="mt-5 mb-3">SENDING SETTINGS</h1>
             <Row>
-              <Col md={6} sm={12}>
+              <Col md={6} sm={12} className="mobile-p-0">
                 <Card>
                   <CardHeader>
                     <h3 className="mb-0">Custom tracking domains</h3>
@@ -121,18 +118,16 @@ export class Setting extends Component {
                           </Alert>
                         </Col>
                       </Row>
-                      <div className="form-row">
-                        <Col md={12}>
-                          <FormGroup>
-                            <Input
-                              id="your-domain-name"
-                              placeholder="Your domain name"
-                              required
-                              type="text"
-                            />
-                          </FormGroup>
-                        </Col>
-                      </div>
+                      {/* <div className="form-row"> */}
+                      <FormGroup>
+                        <Input
+                          id="your-domain-name"
+                          placeholder="Your domain name"
+                          required
+                          type="text"
+                        />
+                      </FormGroup>
+                      {/* </div> */}
                     </CardBody>
                     <CardFooter className="bg-transparent">
                       <Button
@@ -146,68 +141,60 @@ export class Setting extends Component {
                   </Form>
                 </Card>
               </Col>
-              <Col md={6} sm={12}>
+              <Col md={6} sm={12} className="mobile-p-0">
                 <Card>
                   <CardHeader>
                     <h3 className="mb-0">Campaign settings</h3>
                   </CardHeader>
                   <Form className="needs-validation" noValidate>
                     <CardBody>
-                      <div className="form-row">
-                        <Col md={12}>
-                          <FormGroup>
-                            <Input
-                              id="bcc-email"
-                              placeholder="Bcc every email"
-                              required
-                              type="text"
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col md={12}>
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="list-cleaning"
-                            >
-                              show list-cleaning feature?
-                            </label>
-                            <Input id="list-cleaning" required type="select">
-                              <option>Yes</option>
-                              <option selected>No</option>
-                            </Input>
-                          </FormGroup>
-                        </Col>
-                        <Col md={12}>
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="unsubscribe-link"
-                            >
-                              How should unsubscribe link works?
-                            </label>
-                            <Input id="unsubscribe-link" required type="select">
-                              <option>One-Click</option>
-                              <option selected>Two-click</option>
-                            </Input>
-                          </FormGroup>
-                        </Col>
-                        <Col md={12}>
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="enable-dialer"
-                            >
-                              Enable mailassas dialer
-                            </label>
-                            <Input id="enable-dialer" required type="select">
-                              <option>Yes</option>
-                              <option selected>No</option>
-                            </Input>
-                          </FormGroup>
-                        </Col>
-                        <a href="#">looking to hookup your CRM?</a>
-                      </div>
+                      {/* <div className="form-row"> */}
+                      <FormGroup>
+                        <Input
+                          id="bcc-email"
+                          placeholder="Bcc every email"
+                          required
+                          type="text"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <label
+                          className="form-control-label"
+                          htmlFor="list-cleaning"
+                        >
+                          show list-cleaning feature?
+                        </label>
+                        <Input id="list-cleaning" required type="select">
+                          <option>Yes</option>
+                          <option selected>No</option>
+                        </Input>
+                      </FormGroup>
+                      <FormGroup>
+                        <label
+                          className="form-control-label"
+                          htmlFor="unsubscribe-link"
+                        >
+                          How should unsubscribe link works?
+                        </label>
+                        <Input id="unsubscribe-link" required type="select">
+                          <option>One-Click</option>
+                          <option selected>Two-click</option>
+                        </Input>
+                      </FormGroup>
+                      <FormGroup>
+                        <label
+                          className="form-control-label"
+                          htmlFor="enable-dialer"
+                        >
+                          Enable mailassas dialer
+                        </label>
+                        <Input id="enable-dialer" required type="select">
+                          <option>Yes</option>
+                          <option selected>No</option>
+                        </Input>
+                      </FormGroup>
+                      <a href="#">looking to hookup your CRM?</a>
+                      {/* </div> */}
                     </CardBody>
                     <CardFooter className="bg-transparent">
                       <Button
@@ -223,7 +210,7 @@ export class Setting extends Component {
               </Col>
             </Row>
           </Container>
-          <Container fluid>
+          <Container>
             <h1 className="mt-5 mb-3">USEFUL LINKS</h1>
             <ListGroup>
               <ListGroupItem
