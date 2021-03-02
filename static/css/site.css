@@ -21383,3 +21383,12 @@ input::-webkit-inner-spin-button {
   .small-mobile-mt-1 {
     margin-top: 10px; } }
 
+@media (max-width: 575px) {
+  .mb-sm-0 {
+    margin-bottom: 0px !important; } }
+
+.tabs-nav-wrapper {
+  border-bottom: 1px solid #ccc; }
+  .tabs-nav-wrapper .nav-link {
+    border-radius: unset; }
+
