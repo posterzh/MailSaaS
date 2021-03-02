@@ -37,9 +37,9 @@ class Billing extends Component {
         />
 
         <PageContainer title="Billing">
-          <Container fluid>
+          <Container>
             <Row className="mt-3">
-              <Col md="6">
+              <Col md="6" sm="12" className="mobile-p-0">
                 <Card>
                   <CardHeader>
                     <h3 className="mb-0 text-success">ACTIVE PLAN</h3>
@@ -76,7 +76,7 @@ class Billing extends Component {
                     <Button
                       color="secondary"
                       type="submit"
-                      className="text-uppercase"
+                      className="text-uppercase small-mobile-ml-0 small-mobile-mt-1"
                     >
                       change
                     </Button>
@@ -85,9 +85,9 @@ class Billing extends Component {
               </Col>
             </Row>
           </Container>
-          <Container fluid>
+          <Container>
             <Row className="mt-3">
-              <Col md="8">
+              <Col md="8" sm="12" className="mobile-p-0">
                 <h1 className="mt-5 mb-3">RECEIPTS</h1>
                 <p>Edit the company information that shows on your receipts.</p>
                 <Table
