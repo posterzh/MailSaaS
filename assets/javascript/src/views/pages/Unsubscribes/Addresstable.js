@@ -1,40 +1,57 @@
-import React from 'react'
-import { Container, Row, Col, Table } from 'reactstrap'
+import React from "react";
+import { Table } from "reactstrap";
 
 function Addresstable(props) {
-    return (
-        <div>
-            <Container fluid >
-                <Row>
-                    <Table responsive hover>
-                        <thead>
-                            <tr>
-                                <th>
-                                    {/* <input ref={props.textInput} onChange={props.selectAll} style={{width:'20px',height:'20px'}} type="checkbox" /> */}
-                                </th>
-                                <th className="Email">Email</th>
-                                <th className="name">Name</th>
-                                <th className="IsAdmin">UNSUBSCRIBE DATE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                props.data.map((e,i)=><tr key={i} className='' >
-                                    <td ><input name={i} onChange={(event)=>{props.showSelectionBar(e.id,event)}} style={{width:'20px',height:'20px'}}  type="checkbox" /></td>
-                                    <td className="name-value">{e.email} </td>
-                                    <td className="Email-value">{e.name}</td>
-                                    <td className="IsAdmin-value">{e.date.substring(0,10)}</td>
-                                </tr>
-                                )
-                            }
-                           
-                        </tbody>
-                    </Table>
-                </Row>
-            </Container>
-
-        </div>
-    )
+  return (
+    <>
+      {!props.data || !props.data.length ? (
+        <p style={{ color: "black" }}>
+          Search returned 0 unsubscribed address.
+        </p>
+      ) : (
+        <Table hover responsive>
+          <thead className="thead-light">
+            <tr>
+              <th>
+                <input
+                  id="check-all"
+                  type="checkbox"
+                  checked={props.data.length === props.selectedId.length}
+                  ref={props.textInput}
+                  onChange={props.selectAll}
+                />
+              </th>
+              <th>Email</th>
+              <th>Name</th>
+              <th>UNSUBSCRIBE DATE</th>
+            </tr>
+          </thead>
+          <tbody>
+            {props.data.map((row, index) => (
+              <tr key={index} className="">
+                <td>
+                  <input
+                    id={"row_" + row.id}
+                    type="checkbox"
+                    checked={
+                      props.selectedId &&
+                      props.selectedId.filter((id) => id === row.id).length
+                    }
+                    onChange={(event) => {
+                      props.selectRecored(row.id, event);
+                    }}
+                  />
+                </td>
+                <td>{row.email}</td>
+                <td>{row.name}</td>
+                <td>{new Date(row.date).toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
+    </>
+  );
 }
 
-export default Addresstable
+export default Addresstable;
