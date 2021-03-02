@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 import classnames from "classnames";
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
-import CampaignDetailHeader from "./components/CampaignDetailHeader";
+import DetailHeader from "./components/DetailHeader";
 import OverviewSummery from "./components/OverviewSummery";
 import OverviewActivity from "./components/OverviewActivity";
 
@@ -65,32 +65,33 @@ class CampaignDetailOverview extends Component {
 
         <PageContainer title="Date Outreach">
           <Row>
-            <CampaignDetailHeader
-              id={
-                this.props.history.location.state &&
-                this.props.history.location.state.id
-              }
-            />
+            <DetailHeader activeItem="OVERVIEW" />
           </Row>
           <Row className="mt-4">
             <Col md={8} className="mx-auto">
               <Nav tabs>
                 <Col md={3}>
-                  <select className="select_overview">
+                  <Input
+                    id="selectRecipients"
+                    type="select"
+                    className="form-control-sm"
+                  >
                     <option>All recipient lists</option>
                     <option value="Date">Date</option>
-                  </select>
+                  </Input>
                 </Col>
                 {tabs.map(({ to, title }, index) => (
                   <Col key={index} md={3}>
                     <NavItem>
                       <NavLink
-                        className={classnames({
-                          [`active${index + 1}`]: activeTab === index,
-                        })}
+                        className={classnames({ active: activeTab === index })}
                         to={to}
                         onClick={() => {
                           this.onSelectTab(index);
+                        }}
+                        style={{
+                          backgroundColor: "transparent",
+                          textAlign: "center",
                         }}
                       >
                         {title}
@@ -108,12 +109,8 @@ class CampaignDetailOverview extends Component {
                 </TabPane>
                 <TabPane tabId={2}>
                   <Row>
-                    <Col
-                      sm="4"
-                      className="mx-auto"
-                      style={{ border: "2px solid" }}
-                    >
-                      <h4>Tab 3 Contents</h4>
+                    <Col>
+                      <p className="my-5">Tab 3 Contents</p>
                     </Col>
                   </Row>
                 </TabPane>

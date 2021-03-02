@@ -58,7 +58,7 @@ class CampaignPreview extends Component {
               <Form onSubmit={this.handleSubmit}>
                 <Row>
                   <Col>
-                    <CampaignsHeader active="PREVIEW" />
+                    <CampaignsHeader color="secondary" activeItem="PREVIEW" />
                   </Col>
                 </Row>
                 <Row>

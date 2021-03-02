@@ -95,7 +95,7 @@ class CampaignOptions extends Component {
               <Form onSubmit={this.handleSubmit}>
                 <Row>
                   <Col>
-                    <CampaignsHeader active="OPTIONS" />
+                    <CampaignsHeader color="secondary" activeItem="OPTIONS" />
                   </Col>
                 </Row>
                 <Row>

@@ -59,7 +59,7 @@ export class CampaignSend extends Component {
           <Form onSubmit={this.handleSubmit}>
             <Row>
               <Col>
-                <CampaignsHeader active="SEND" />
+                <CampaignsHeader color="secondary" activeItem="SEND" />
               </Col>
             </Row>
             <Row>

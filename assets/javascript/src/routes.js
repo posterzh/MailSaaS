@@ -82,7 +82,7 @@ const routes = [
         layout: "/app/admin",
       },
       {
-        path: "/CampaigList",
+        path: "/CampaignList",
         name: "Campaign List",
         miniName: " ",
         component: CampaignList,

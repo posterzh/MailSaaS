@@ -123,7 +123,7 @@ class CampaignRecipient extends Component {
               <Form onSubmit={this.handleSubmit}>
                 <Row>
                   <Col>
-                    <CampaignsHeader active="RECIPIENT" />
+                    <CampaignsHeader color="secondary" activeItem="RECIPIENT" />
                   </Col>
                 </Row>
                 <Row>

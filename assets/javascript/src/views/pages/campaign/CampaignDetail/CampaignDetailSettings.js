@@ -9,7 +9,7 @@ import {
 } from "../../../../redux/action/CampaignAction";
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
-import CampaignDetailHeader from "./components/CampaignDetailHeader";
+import DetailHeader from "./components/DetailHeader";
 
 export class CampaignDetailSettings extends Component {
   constructor(props) {
@@ -86,12 +86,7 @@ export class CampaignDetailSettings extends Component {
 
         <PageContainer title="Date Outreach">
           <Row>
-            <CampaignDetailHeader
-              id={
-                this.props.history.location.state &&
-                this.props.history.location.state.id
-              }
-            />
+            <DetailHeader activeItem="SETTINGS" />
           </Row>
           <Row className="mb-5 mt-5">
             <Col md={4}>

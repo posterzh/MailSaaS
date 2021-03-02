@@ -21,7 +21,7 @@ import { connect } from "react-redux";
 
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
-import CampaignDetailHeader from "./components/CampaignDetailHeader";
+import DetailHeader from "./components/DetailHeader";
 import LinkClick from "./components/LeadClick";
 
 const SpanStyles = {
@@ -173,12 +173,7 @@ class CampaignDetailRecipients extends Component {
             </div>
           </div>
           <Row>
-            <CampaignDetailHeader
-              id={
-                this.props.history.location.state &&
-                this.props.history.location.state.id
-              }
-            />
+            <DetailHeader activeItem="RECIPIENTS" />
           </Row>
           <Row className="mt-5">
             <Col md={1} className="Recipients_details">
@@ -195,9 +190,7 @@ class CampaignDetailRecipients extends Component {
             </Col>
             <Col md={10} className="align-right">
               <div className="w-h-25">
-                <button className="btn sequence_btn btn-md">
-                  ADD RECIPIENTS
-                </button>
+                <Button color="danger">ADD RECIPIENTS</Button>
                 <div className="child ml-3">
                   <a
                     href=""

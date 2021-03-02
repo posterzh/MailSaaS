@@ -17,7 +17,7 @@ import {
 } from "reactstrap";
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
-import CampaignDetailHeader from "./components/CampaignDetailHeader";
+import DetailHeader from "./components/DetailHeader";
 
 export default class CampaignDetailRecipients extends React.Component {
   render() {
@@ -31,21 +31,14 @@ export default class CampaignDetailRecipients extends React.Component {
 
         <PageContainer title="Date Outreach">
           <Row>
-            <CampaignDetailHeader
-              id={
-                this.props.history.location.state &&
-                this.props.history.location.state.id
-              }
-            />
+            <DetailHeader activeItem="SEQUENCE" />
           </Row>
           <Row className="mt-5">
             <Col md={10} className="mx-auto">
               <Row>
-                <div className="sequence_btn_div">
-                  <button className="btn sequence_btn btn-md">
-                    EDIT SEQUENCE
-                  </button>
-                </div>
+                <Button color="danger" className="mx-auto">
+                  EDIT SEQUENCE
+                </Button>
               </Row>
               <Row className="mt-4">
                 <div className="Sequence_div">

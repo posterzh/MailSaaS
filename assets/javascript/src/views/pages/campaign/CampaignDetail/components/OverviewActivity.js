@@ -1,15 +1,5 @@
 import React from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Table,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-} from "reactstrap";
+import { Container, Row, Col, Input } from "reactstrap";
 
 export default function OverviewActivity() {
   return (
@@ -17,10 +7,10 @@ export default function OverviewActivity() {
       <Container>
         <Row className="mt-5">
           <Col md={3}>
-            <select className="select_overview">
-              <option>All recipient lists</option>
-              <option>Ignore sends</option>
-            </select>
+            <Input id="selectFilter" type="select" className="form-control-sm">
+              <option>All activities</option>
+              <option value="Date">Ignore sends</option>
+            </Input>
           </Col>
         </Row>
         <Row>
