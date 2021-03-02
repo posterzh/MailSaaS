@@ -19605,10 +19605,6 @@ button:focus, :focus {
   100% {
     opacity: 1; } }
 
-input:focus {
-  background-color: #ddd !important;
-  outline: none !important; }
-
 .searchbar {
   padding: 4px 0px 0px; }
 
@@ -20040,10 +20036,6 @@ input:focus {
   background: #ff4081;
   color: white;
   width: 40%; }
-
-.modal-dialog {
-  min-width: 60% !important;
-  width: 70%; }
 
 .unsubscribe-btn-wrapper {
   display: flex;
@@ -21373,9 +21365,26 @@ input::-webkit-inner-spin-button {
 .search-bar input:focus {
   background-color: transparent !important; }
 
-input:focus {
-  background-color: #ddd !important;
-  outline: none !important; }
+.no-shadow {
+  box-shadow: none; }
+
+.text-right {
+  text-align: right; }
+
+.text-center {
+  text-align: center; }
+
+.days-col {
+  padding-right: 5px;
+  padding-left: 4px; }
+  .days-col span {
+    padding: 5px !important;
+    text-align: center; }
+
+.page-information {
+  position: absolute;
+  right: 0;
+  top: -18px; }
 
 .searchbar {
   padding: 4px 0px 0px; }
@@ -21808,10 +21817,6 @@ input:focus {
   background: #ff4081;
   color: white;
   width: 40%; }
-
-.modal-dialog {
-  min-width: 60% !important;
-  width: 70%; }
 
 .unsubscribe-btn-wrapper {
   display: flex;
@@ -23140,4 +23145,25 @@ input::-webkit-inner-spin-button {
 
 .search-bar input:focus {
   background-color: transparent !important; }
+
+.no-shadow {
+  box-shadow: none; }
+
+.text-right {
+  text-align: right; }
+
+.text-center {
+  text-align: center; }
+
+.days-col {
+  padding-right: 5px;
+  padding-left: 4px; }
+  .days-col span {
+    padding: 5px !important;
+    text-align: center; }
+
+.page-information {
+  position: absolute;
+  right: 0;
+  top: -18px; }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col, Input, Form } from 'reactstrap';
+import { Button } from 'reactstrap';
 import SMTP from './SMTP'
 import { connect } from "react-redux";
 import { MailSenderAction, MailGetDataAction, MailAccountDeleteAction, MailAccountUpdate } from '../../../redux/action/MailSenderAction'
