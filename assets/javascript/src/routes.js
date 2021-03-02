@@ -18,16 +18,12 @@ import Api from "./views/pages/Extension/Api";
 import AppsandCrm from "./views/pages/Extension/Apps&Crm";
 import Billing from "./views/pages/TeamSettings/Billing";
 import Dashboard from "./views/pages/dashboards/Dashboard.js";
-import Lock from "./views/pages/examples/Lock.js";
 import Login from "./views/pages/examples/Login.js";
-import Pricing from "./views/pages/examples/Pricing.js";
 import Prospects from "./views/pages/Prospects/Prospects.js";
-import Profile from "./views/pages/examples/Profile.js";
 import Redeem from "./views/pages/TeamSettings/Redeem";
 import Register from "./views/pages/examples/Register.js";
 import Setting from "./views/pages/TeamSettings/Setting";
 import Teammates from "./views/pages/TeamSettings/Teammates";
-import Timeline from "./views/pages/examples/Timeline.js";
 import Unsubscribes from "./views/pages/Unsubscribes/Unsubscribes";
 import ConversionTracking from "./views/pages/Extension/ConversionTracking";
 import ProspectOnclick from "./views/pages/Prospects/ProspectOnclick";
@@ -174,28 +170,13 @@ const routes = [
     ],
   },
 
-  // for Prospects
+  // Prospects
   {
-    collapse: true,
+    path: "/prospects",
     name: "Prospects",
     icon: "fa fa-users text-dark",
-    state: "prospects",
-    views: [
-      {
-        path: "/prospects",
-        name: "Prospects",
-        miniName: " ",
-        component: Prospects,
-        layout: "/app/admin",
-      },
-      {
-        name: " Unsubscribes",
-        path: "/unsubscribes",
-        miniName: " ",
-        component: Unsubscribes,
-        layout: "/app/admin",
-      },
-    ],
+    component: Prospects,
+    layout: "/app/admin",
   },
 
   // for MailAccount
@@ -290,6 +271,14 @@ const routes = [
     ],
   },
   {
+    path: "/unsubscribes",
+    name: "Unsubscribes",
+    icon: "fas fa-user-slash text-dark",
+    component: Unsubscribes,
+    layout: "/app/admin",
+  },
+
+  {
     open: true,
     collapse: false,
     name: "ForgetPassword",
@@ -300,55 +289,18 @@ const routes = [
     component: ForgetPassword,
   },
 
+  // User management redirects
   {
-    collapse: true,
-    name: "Examples",
-    icon: "ni ni-ungroup text-orange",
-    state: "examplesCollapse",
-    views: [
-      {
-        path: "/pricing",
-        name: "Pricing",
-        miniName: " ",
-        component: Pricing,
-        layout: "/app/auth",
-      },
-      {
-        path: "/login",
-        name: "Login",
-        miniName: " ",
-        component: Login,
-        layout: "/app/auth",
-      },
-      {
-        path: "/register",
-        name: "Register",
-        miniName: " ",
-        component: Register,
-        layout: "/app/auth",
-      },
-      // {
-      //   path: "/lock",
-      //   name: "Lock",
-      //   miniName:  ",
-      //   component: Lock,
-      //   layout: "/app/auth"
-      // },
-      {
-        path: "/timeline",
-        name: "Timeline",
-        miniName: " ",
-        component: Timeline,
-        layout: "/app/admin",
-      },
-      {
-        path: "/profile",
-        name: "Profile",
-        miniName: " ",
-        component: Profile,
-        layout: "/app/admin",
-      },
-    ],
+    path: "/login",
+    component: Login,
+    layout: "/app/auth",
+    redirect: true,
+  },
+  {
+    path: "/register",
+    component: Register,
+    layout: "/app/auth",
+    redirect: true,
   },
 ];
 
