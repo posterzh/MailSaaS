@@ -21385,6 +21385,7 @@ input::-webkit-inner-spin-button {
   position: absolute;
   right: 0;
   top: -18px; }
+
 @media (max-width: 767px) {
   .mobile-p-0 {
     padding: 0px; } }
@@ -21394,10 +21395,6 @@ input::-webkit-inner-spin-button {
     margin-left: 0px !important; }
   .small-mobile-mt-1 {
     margin-top: 10px; } }
-
-input:focus {
-  background-color: #ddd !important;
-  outline: none !important; }
 
 .searchbar {
   padding: 4px 0px 0px; }
@@ -23179,6 +23176,7 @@ input::-webkit-inner-spin-button {
   position: absolute;
   right: 0;
   top: -18px; }
+
 @media (max-width: 767px) {
   .mobile-p-0 {
     padding: 0px; } }
