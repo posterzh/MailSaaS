@@ -1,16 +1,21 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Form, Label, Input, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Table, Button, Card } from 'reactstrap'
+import { Container, Row, Col, Form, Input, Button, Card, FormGroup, CardTitle, Modal, ModalHeader, InputGroup, InputGroupAddon } from 'reactstrap'
 import CardBody from 'reactstrap/lib/CardBody'
 import CardFooter from 'reactstrap/lib/CardFooter'
 import CardHeader from 'reactstrap/lib/CardHeader'
 import { connect } from 'react-redux'
 import { GetScheduleAction, ScheduleUpdateAction } from '../../../redux/action/ScheduleAction'
-import {MailGetDataAction} from '../../../redux/action/MailSenderAction'
+import { MailGetDataAction } from '../../../redux/action/MailSenderAction'
+import PageHeader from "../../../components/Headers/PageHeader";
+import PageContainer from "../../../components/Containers/PageContainer";
+
+
 export class SendingCalender extends Component {
   constructor(props) {
     super(props)
-    var days = ['mo', 'tu', 'we', 'th', 'fr', 'st','su'];
+    var days = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'St', 'Su'];
     this.state = {
+      openModel: false,
       show: true,
       hide: false,
       MailAccounts: '',
@@ -34,7 +39,7 @@ export class SendingCalender extends Component {
   }
 
   handleChange = (e) => {
-    console.log("called",e)
+    console.log("called", e)
     this.setState({
       [e.target.name]: e.target.value
     })
@@ -77,163 +82,329 @@ export class SendingCalender extends Component {
     })
   }
   render() {
-    const { ScheduleData,mailGetDat } = this.props;
+    const { ScheduleData, mailGetDat } = this.props;
     console.log('ScheduleData', ScheduleData)
     return (
       <div>
-        <div className='campaign_navbar' >
-          <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>SendingCalendar</h1>
-          <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
-        </div>
-        <div>
-          {!this.state.hide &&
-            <Container style={{ marginLeft: "0px" }}>
-              <Row className='mt-3'>
-                <Col md="4">
-                  <Card>
-                    <CardHeader style={{ border: "none" }}>
-                      <select className='scalender_filter_select'>
-                        <option>{this.props.mailGetDat &&this.props.mailGetDat.map((e,i)=>{return e.email}) }</option>
-                      </select>
+        <PageHeader
+          current="Sending Calendar"
+          parent="Mail Accounts"
+          showStatus={false}
+        />
+        <PageContainer title="Sending Calendar">
+          <i onClick={(e)=>{this.setState({openModel:true})}} class="far fa-question-circle fa-2x page-information"></i>
+          <Container fluid>
+            {!this.state.hide &&
+              <Row>
+                <Col md="3" sm="0"></Col>
+                <Col md="6" sm="12">
+                  <Card className="no-shadow">
+                    <CardHeader>
+                      <Form>
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="exampleFormControlInput1"
+                          >
+                            Mail account
+                            </label>
+                          <Input type='select' name='selected_mail'>
+                            <option>{this.props.mailGetDat && this.props.mailGetDat.map((e, i) => { return e.email })}</option>
+                          </Input>
+                        </FormGroup>
+                      </Form>
                     </CardHeader>
                     <CardBody>
-                      <div >
-                          {this.state.days.map((item, index) => {
-                            return <span className='blockdays' key={index}>{item}</span>
-                          })}
-                      </div>
-                      <div style={{ fontSize:"12px",marginTop:'5px'}}>
-                        <div className="calender_details">
-                          <span className='calendedata'> {ScheduleData && ScheduleData.start_time}</span> to <span className='calendedata'>{ScheduleData && ScheduleData.end_time} {ScheduleData && ScheduleData.time_zone}</span> Send no more than <span className='calendedata'>{ScheduleData && ScheduleData.max_email}</span> emails per day Space emails out over the day Pause  <span className='calendedata'>{ScheduleData && ScheduleData.mint_between_sends}</span> minutes between sends  Send at least <span className='calendedata'>{ScheduleData && ScheduleData.max_email_send}</span> emails at a time </div> </div>
-                      <div>
-                        <span style={{ fontSize: "10px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></span>
-                        <span style={{ fontSize: "10px" }}>about these settings</span>
-                      </div>
+                      <Row className="row-example">
+                        {this.state.days.map((item, index) => {
+                          return (
+                            <Col className="days-col" key={index}>
+                              <span>{item}</span>
+                            </Col>
+                          )
+                        })}
+                      </Row>
+                      <Row>
+                        <p className="text-muted mb-0">
+                          <span className='calendedata'>
+                            {ScheduleData && ScheduleData.start_time}
+                          </span> to
+                          <span className='calendedata'>
+                            {ScheduleData && ScheduleData.end_time} {ScheduleData && ScheduleData.time_zone}
+                          </span> Send no more than
+                          <span className='calendedata'>
+                            {ScheduleData && ScheduleData.max_email}
+                          </span> emails per day Space emails out over the day Pause
+                          <span className='calendedata'>
+                            {ScheduleData && ScheduleData.mint_between_sends}
+                          </span> minutes between sends  Send at least
+                          <span className='calendedata'>
+                            {ScheduleData && ScheduleData.max_email_send}
+                          </span> emails at a time
+                        </p>
+                      </Row>
+                      <Row>
+                        <p className="text-info mb-0">
+                          <i class="far fa-question-circle mr-2"></i>
+                          about these settings
+                        </p>
+                      </Row>
                     </CardBody>
                     <CardFooter >
-                      <Button className="b1" onClick={() => this.edit(ScheduleData)}>Edit Rules</Button>
+                      <Button type="button" onClick={() => this.edit(ScheduleData)}>Edit Rules</Button>
                     </CardFooter>
                   </Card>
                 </Col>
+                <Col md="3" sm="0"></Col>
               </Row>
-            </Container>}
-          {!this.state.show && <Container fluid>
-            <Form onSubmit={this.handleSubmit}>
-              <Row className='mt-3 mb-5'>
-                <Col md='4' style={{ border: '1px solid #ccc', background: 'white', boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)' }}>
-                  <div style={{ margin: '17px 0px 24px 24px' }}>
-                    <div className='dv1'>
-                      <Row> <label>Mail account</label></Row>
-                      <Row >
-                        <select className='teamname-input'>
-                        <option>{this.props.mailGetDat &&this.props.mailGetDat.map((e,i)=>{return e.email}) }</option>
-                        </select>
-                      </Row>
-                      <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
-                        <label>Blocked out days</label>
-                      </Row>
-                      <Row>
-                        <div>
-                          {this.state.days.map((item, index) => {
-                            // console.log('blockdays index:', item, index);
-                            return <input className='blockdays' onClick={() => this.handleBlockDays(index)} name='BlockDays' value={this.state.BlockDays} key={index}></input>
-                          })}
-                        </div>
-                      </Row>
-                      <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
-                        <label>Start time</label>
-                      </Row>
-                      <Row>
-                        <input className='teamname-input' name='StartTime' onChange={this.handleChange} value={this.state.StartTime}></input>
-                      </Row>
-                      <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
-                        <label>End time</label>
-                      </Row>
-                      <Row>
-                        <input className='teamname-input' name="EndTime" onChange={this.handleChange} value={this.state.EndTime}></input>
-                      </Row>
-                      <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
-                        <label>TimeZone</label>
-                        <select className='teamname-input'>
-                          <option>{this.state.Timezone}</option>
-                        </select>
-                      </Row>
-                      <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
+            }
+            {!this.state.show &&
+              <Row>
+                <Col md="3" sm="0"></Col>
+                <Col md="6" sm="12">
+                  <Form>
+                    <Card className="no-shadow">
+                      <CardHeader>
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="exampleFormControlInput1"
+                          >
+                            Mail account
+                            </label>
+                          <Input type='select' name='selected_mail'>
+                            <option>{this.props.mailGetDat && this.props.mailGetDat.map((e, i) => { return e.email })}</option>
+                          </Input>
+                        </FormGroup>
+                      </CardHeader>
+                      <CardBody>
                         <Row>
-                          <Col style={{ display: "flex" }}>
-                            <label>Max emails per day</label>
+                          <Col className="days-col">
+                            <FormGroup className="mb-0">
+                              <label
+                                className="form-control-label"
+                                htmlFor="exampleFormControlInput1"
+                              >
+                                Blocked out days
+                              </label>
+                            </FormGroup>
                           </Col>
                         </Row>
-                        <input type='number' className='teamname-input' name='MaxEmails' onChange={this.handleChange} value={this.state.MaxEmails}></input>
-                      </Row>
-                      <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
-                        <label>Strategy</label>
-                        <select className='teamname-input'>
-                          <option>{this.state.Strategy}</option>
-                        </select>
-                      </Row>
-                      <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
-                        <label>Minutes between sends</label>
-                      </Row>
-                      <Row>
-                        <input type='number' className='teamname-input' name='Minutes' onChange={this.handleChange} value={this.state.Minutes} ></input>
-                      </Row>
-                      <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
-                        <label>Minimum emils tosend at a time</label>
-                      </Row>
-                      <Row>
-                        <input type='number' className='teamname-input' name='MaxEmailSend' onChange={this.handleChange} value={this.state.MaxEmailSend}></input>
-                      </Row>
-                      <Row className='mt-4' style={{ display: 'flex', flexDirection: 'column' }}>
-                        <label>Maximum emils to send at a time</label>
-                      </Row>
-                      <Row>
-                        <input type='number' className='teamname-input' name='MaxEmailSend' onChange={this.handleChange} value={this.state.MaxEmailSend}></input>
-                      </Row>
-                      <Row className='mt-5'>
-                        <button className='savebutton' type='Submit' onSubmit={this.handleSubmit}>save</button>
-                        <button className='savebutton' onClick={(e) => { e.preventDefault(), this.setState({ hide: !this.state.hide, show: !this.state.show }) }}>CANCEL</button>
-                      </Row>
-                    </div>
-                  </div>
+                        <Row className="row-example">
+                          {this.state.days.map((item, index) => {
+                            return (
+                              <Col className="days-col" key={index}>
+                                <span>{item}</span>
+                              </Col>
+                            )
+                          })}
+                        </Row>
+                        <Row>
+                          <Col>
+                            <FormGroup className="row">
+                              <label
+                                className="form-control-label"
+                                htmlFor="exampleFormControlInput1"
+                              >
+                                Start time
+                              </label>
+                              <Input
+                                defaultValue="10:30:00"
+                                id="example-time-input"
+                                type="time"
+                              />
+                            </FormGroup>
+                            <FormGroup className="row">
+                              <label
+                                className="form-control-label"
+                                htmlFor="exampleFormControlInput1"
+                              >
+                                End time
+                              </label>
+                              <Input
+                                defaultValue="10:30:00"
+                                id="example-time-input"
+                                type="time"
+                              />
+                            </FormGroup>
+                            <FormGroup className="row">
+                              <label
+                                className="form-control-label"
+                                htmlFor="exampleFormControlInput1"
+                              >
+                                Timezone
+                              </label>
+                              <Input name='timezone' type='select' defaultValue='US/Alaska'>
+                                <option value="US/Alaska"> US/Alaska </option>
+                                <option value="US/Aleutian"> US/Aleutian </option>
+                                <option value="US/Arizona"> US/Arizona </option>
+                                <option value="US/Central"> US/Central </option>
+                                <option value="US/East-Indiana"> US/East-Indiana </option>
+                                <option value="US/Eastern"> US/Eastern </option>
+                                <option value="US/Hawaii"> US/Hawaii </option>
+                                <option value="US/Indiana-Starke"> US/Indiana-Starke </option>
+                                <option value="US/Michigan"> US/Michigan </option>
+                                <option value="US/Mountain"> US/Mountain </option>
+                                <option value="US/Pacific-New"> US/Pacific-New </option>
+                                <option value="US/Pacific"> US/Pacific </option>
+                                <option value="US/Samoa"> US/Samoa </option>
+                                <option value="Africa/Abidjan"> Africa/Abidjan </option>
+                                <option value="Africa/Accra"> Africa/Accra </option>
+                              </Input>
+                            </FormGroup>
+                            <FormGroup className="row">
+                              <label
+                                className="form-control-label"
+                                htmlFor="exampleFormControlInput1"
+                              >
+                                Max emails per day
+                              </label>
+                              <Input
+                                defaultValue="20"
+                                id="example-number-input"
+                                min="1"
+                                type="number"
+                              />
+                            </FormGroup>
+                            <FormGroup className="row">
+                              <label
+                                className="form-control-label"
+                                htmlFor="exampleFormControlInput1"
+                              >
+                                Strategy
+                              </label>
+                              <Input name='strategy' type='select' defaultValue='0'>
+                                <option value="0"> Space out over the day </option>
+                                <option value="1"> Send as fast as possible </option>
+                              </Input>
+                            </FormGroup>
+                            <FormGroup className="row">
+                              <label
+                                className="form-control-label"
+                                htmlFor="exampleFormControlInput1"
+                              >
+                                Minutes between sends
+                              </label>
+                              <Input
+                                defaultValue="12"
+                                id="example-number-input"
+                                min="5"
+                                type="number"
+                              />
+                            </FormGroup>
+                            <FormGroup className="row">
+                              <label
+                                className="form-control-label"
+                                htmlFor="exampleFormControlInput1"
+                              >
+                                Minutes between sends
+                              </label>
+                              <Input
+                                defaultValue="1"
+                                id="example-number-input"
+                                min="0"
+                                type="number"
+                              />
+                            </FormGroup>
+                            <FormGroup className="row">
+                              <label
+                                className="form-control-label"
+                                htmlFor="exampleFormControlInput1"
+                              >
+                                Maximum emails to send at a time
+                              </label>
+                              <Input
+                                defaultValue="1"
+                                id="example-number-input"
+                                min="1"
+                                type="number"
+                              />
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <p className="text-info mb-0">
+                            <i class="far fa-question-circle mr-2"></i>
+                            about these settings
+                          </p>
+                        </Row>
+                      </CardBody>
+                      <CardFooter>
+                        <Button type='submit' color="success" onSubmit={this.handleSubmit}>Save<i className='fa fa-right-arrow '></i></Button>
+                        <Button type="button" onClick={(e) => { e.preventDefault(), this.setState({ hide: !this.state.hide, show: !this.state.show }) }}>CANCEL</Button>
+                      </CardFooter>
+                    </Card>
+                  </Form>
                 </Col>
+                <Col md="3" sm="0"></Col>
               </Row>
-            </Form>
-          </Container>}
-          {/* {!this.state.hide && <div className="calender_box" style={{ backgroundColor: "transparant", width: "100%", display: "flex", flexDirection: "row" }}>
-            <div className="su_box">
-              <p>{ScheduleData && ScheduleData.date}</p>
-            </div>
-            <div className="mo_box">
-              <p>z</p>
-            </div>
-            <div className="tu_box">
-              <p>f</p>
-            </div>
-            <div className="we_box">
-              <p>as</p>
-            </div>
-            <div className="th_box">
-              <p>a</p>
-            </div>
-            <div className="fr_box">
-              <p>w</p>
-            </div>
-            <div className="sa_box">
-              <p>w</p>
-            </div>
-          </div>
-          } */}
-        </div>
+            }
+          </Container>
+          <Modal isOpen={this.state.openModel} size="lg">
+            <Card className="mb-0 pb-2">
+              <CardHeader className="text-center pt-4">
+                <h2>Make the most out of Mailshake</h2>
+              </CardHeader>
+              <CardBody className="p-0 pb-4">
+                <div className="text-center p-4">
+                  <InputGroup>
+                    <Input />
+                    <InputGroupAddon addonType="append">
+                      <Button color="success">Search</Button>
+                    </InputGroupAddon>
+                  </InputGroup>
+                  <p className="pt-4">Not sure exactly what you are looking for? <span className="text-info mb-0">Browse our library for help.</span></p>
+                </div>
+                <div className="bg-info pt-4 pl-4 pr-4 pb-0">
+                  <Row>
+                    <Col sm="12" md="4">
+                      <Card>
+                        <CardBody className="text-center">
+                          <i className="fa fa-tv fa-5x"></i>
+                          <h3 className="text-info mb-0">
+                            Live Training
+                          </h3>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                    <Col sm="12" md="4">
+                      <Card>
+                        <CardBody className="text-center">
+                          <i className="fa fa-play fa-5x"></i>
+                          <h3 className="text-info mb-0">
+                            Video Guides
+                          </h3>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                    <Col sm="12" md="4">
+                      <Card>
+                        <CardBody className="text-center">
+                          <i className="fa fa-file-word fa-5x"></i>
+                          <h3 className="text-info mb-0">
+                            Getting Started
+                          </h3>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                  </Row>
+                </div>
+              </CardBody>
+              <CardFooter className="text-right">
+                <p>Still need help? <a hhef="#" className="pr-4">Ask an expert</a><Button onClick={(e) => {this.setState({openModel:false})}}>Cancle</Button></p>
+              </CardFooter>
+            </Card>
+          </Modal>
+        </PageContainer>
       </div>
     )
   }
 }
 const mapStateToProps = (state) => {
-  console.log('checking mail data', state.MailGetDataReducer.mailGetData && state.MailGetDataReducer.mailGetData.map((e,i)=>{return e.email}))
+  console.log('checking mail data', state.MailGetDataReducer.mailGetData && state.MailGetDataReducer.mailGetData.map((e, i) => { return e.email }))
   return {
     ScheduleData: state.ScheduleGetDataReducer.ScheduleGetData,
-    mailGetDat: state.MailGetDataReducer.mailGetData 
+    mailGetDat: state.MailGetDataReducer.mailGetData
   }
 }
 const mapDispatchToProps = dispatch => ({
