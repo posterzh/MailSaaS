@@ -67,12 +67,20 @@ class UnsubcribeCsvEmailAdd(CreateAPIView):
                     line_count += 1
                 else:
                     data = {'email':row[0], 'name':row[1],'user':request.user.id}
-                    print(data)
+                    
+                    
+
                     serializer = UnsubscribeEmailSerializers(data = data)
                     if serializer.is_valid():
                         line_count += 1
                         serializer.save()
+                        recep = CampaignRecipient.objects.get(email=data['email'])
+                        if data['email'] == recep.email:
+                            recep.unsubscribe = True
+                            recep.save()
                         resp.append(serializer.data)
+                    
+                        
             resp.append({"success":True})
             return Response(resp)
 
@@ -82,7 +90,8 @@ class UnsubcribeEmailView(APIView):
     serializer_class = UnsubscribeEmailSerializers
     def get(self,request):
         params = list(dict(request.GET).keys())
-        if "search" in params:
+        # print(params)
+        if ["search"] in params:
             toSearch = request.GET['search']
             unsubcribe = UnsubscribeEmail.objects.filter(Q(email__contains=toSearch)|Q(name__contains=toSearch),user=request.user.id,on_delete=False)
         else:
