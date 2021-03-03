@@ -146,6 +146,9 @@ class CampaignStart extends React.Component {
                         onChange={this.handleChange}
                       >
                         <option value={""}>Select</option>
+                        {/* test */}
+                        <option value="test@gmail.com">test@gmail.com</option>
+
                         {mailGetData &&
                           mailGetData.map((item, index) => {
                             return (
@@ -161,7 +164,12 @@ class CampaignStart extends React.Component {
 
                 <Row className="my-3">
                   <Col className="d-flex align-items-center justify-content-center">
-                    <Link
+                    <Button color="danger" type="button" type="submit">
+                      NEXT{" "}
+                      <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                    </Button>
+
+                    {/* <Link
                       to={{
                         pathname: "/app/admin/CampaignRecipient",
                         state: {
@@ -175,7 +183,7 @@ class CampaignStart extends React.Component {
                         NEXT{" "}
                         <i className="fa fa-arrow-right" aria-hidden="true"></i>
                       </Button>
-                    </Link>
+                    </Link> */}
                   </Col>
                 </Row>
               </Form>

@@ -204,7 +204,12 @@ class CampaignRecipient extends Component {
 
                 <Row className="my-3">
                   <Col className="d-flex align-items-center justify-content-center">
-                    <Link
+                    <Button color="danger" type="button" type="submit">
+                      NEXT{" "}
+                      <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                    </Button>
+
+                    {/* <Link
                       to={{
                         pathname: "/app/admin/CampaignCompose",
                         state: {
@@ -218,7 +223,7 @@ class CampaignRecipient extends Component {
                         NEXT{" "}
                         <i className="fa fa-arrow-right" aria-hidden="true"></i>
                       </Button>
-                    </Link>
+                    </Link> */}
                   </Col>
                 </Row>
               </Form>

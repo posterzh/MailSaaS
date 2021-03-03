@@ -12,7 +12,6 @@ import {
   CardBody,
 } from "reactstrap";
 import { Link } from "react-router-dom";
-// import { EditorState } from 'draft-js';
 import FollowUpPage from "./components/FollowUpPage";
 import Drips from "./components/Drips";
 import LinkClicksPage from "./components/LinkClicksPage";
@@ -30,7 +29,6 @@ class CampaignCompose extends Component {
     this.state = {
       subject: "",
       email_body: "",
-      // editorState: EditorState.createEmpty(),
       inputListFollow: [],
       inputListDrips: [],
       inputListLinkClick: [],
@@ -106,9 +104,7 @@ class CampaignCompose extends Component {
       ),
     });
   };
-  onEditorStateChange = (editorState) => {
-    this.setState({ editorState });
-  };
+
   handleSubmit = (e) => {
     e.preventDefault();
     if (this.state.email_body === "") {
@@ -130,9 +126,11 @@ class CampaignCompose extends Component {
       this.props.CampaignComposeAction(data);
     }
   };
+
   onChange = (e) => {
     this.setState({ msgBody: e.blocks[0].text });
   };
+
   handleMsgBody = (value) => {
     this.setState({
       email_body: value,
@@ -145,7 +143,7 @@ class CampaignCompose extends Component {
     var array = [...this.state.inputListFollow];
     let index = e - 1;
     let a = this.state.inputListFollow.keys();
-    console.log(e, "sgsd");
+    console.log(e, "onDeleteList()");
     //     const newList = array.filter((item,i) => i !== index);
     //     this.setState({
     //         inputListFollow:newList
@@ -153,7 +151,7 @@ class CampaignCompose extends Component {
     //    this.counter=0
   };
   render() {
-    const { editorState, inputListFollow } = this.state;
+    const { inputListFollow } = this.state;
 
     console.log(inputListFollow, "compose");
     return (
@@ -234,20 +232,6 @@ class CampaignCompose extends Component {
                       }}
                     />
                   </Col>
-                  {/* <div className='Editor_div'>
-                                            <Editor
-                                                className='editorDiv'
-                                                editorState={editorState}
-                                                toolbarClassName="rdw-storybook-toolbar"
-                                                wrapperClassName="rdw-storybook-wrapper"
-                                                editorClassName="rdw-storybook-editor"
-                                                name='email_body'
-                                                value={this.state.email_body}
-                                                onChange={this.handleMsgBody}
-                                                onEditorStateChange={this.onEditorStateChange}
-                                                required
-                                            />
-                                        </div> */}
                 </Row>
                 <Row className="mt-5">
                   <Col>{this.state.inputListFollow}</Col>
