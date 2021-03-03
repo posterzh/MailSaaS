@@ -35,24 +35,23 @@ function CampaignsHeader(props) {
   return (
     <>
       <div className="d-flex align-items-center justify-content-center">
-        <ButtonGroup>
+        <ButtonGroup role="group">
           {items.map((item, index) => {
             return (
-              <>
-                <Button
-                  color={color}
-                  type="button"
-                  className={activeItem == item.name ? "active" : ""}
-                  onClick={() => {
-                    props.history.push({
-                      pathname: item.link,
-                      state: { id },
-                    });
-                  }}
-                >
-                  {item.name}
-                </Button>
-              </>
+              <Button
+                color={color}
+                type="button"
+                className={activeItem == item.name ? "active" : ""}
+                onClick={() => {
+                  props.history.push({
+                    pathname: item.link,
+                    state: { id },
+                  });
+                }}
+                key={index}
+              >
+                {item.name}
+              </Button>
             );
           })}
         </ButtonGroup>

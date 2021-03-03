@@ -11,10 +11,6 @@ import {
   CardHeader,
   CardBody,
 } from "reactstrap";
-import { Link } from "react-router-dom";
-import FollowUpPage from "./components/FollowUpPage";
-import Drips from "./components/Drips";
-import LinkClicksPage from "./components/LinkClicksPage";
 import { connect } from "react-redux";
 import { CampaignComposeAction } from "../../../../redux/action/CampaignAction";
 import ReactQuill from "react-quill";
@@ -23,119 +19,87 @@ import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import CampaignsHeader from "./components/CampaignsHeader";
 
+import FollowUpPanel from "./components/FollowUpPanel";
+import DripPanel from "./components/DripPanel";
+
 class CampaignCompose extends Component {
   constructor(props) {
     super(props);
     this.state = {
       subject: "",
       email_body: "",
-      inputListFollow: [],
-      inputListDrips: [],
-      dataObj: {},
-      arra: [],
-      followUpData: [],
-      dripData: [],
-      onClickData: [],
-      dripPageObject: {},
-      normalData: {},
-      isOpen: false,
+      followUpList: [],
+      dripList: [],
     };
-    this.counter = 0;
   }
 
-  handleSubject = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-    Object.assign(this.state.normalData, { subject: e.target.value });
-  };
-
-  onAddBtnClickFollow = () => {
-    const inputListFollow = this.state.inputListFollow;
-    this.counter = this.counter + 1;
-    this.state.counter === 0
-      ? null
-      : this.state.followUpData.push(this.state.dataObj);
-    this.setState({
-      dataObj: {},
-      inputListFollow: inputListFollow.concat(
-        <FollowUpPage
-          onDeleteList={this.onDeleteList}
-          msgBody={this.state.msgBody}
-          followUpPageObject={this.state.dataObj}
-          normalSubject={this.state.subject}
-          id={this.counter}
-        />
-      ),
-    });
-  };
-  onAddBtnClickDrips = () => {
-    const inputListDrips = this.state.inputListDrips;
-    this.counter = this.counter + 1;
-    this.state.counter === 0
-      ? null
-      : this.state.dripData.push(this.state.dataObj);
-    this.setState({
-      dataObj: {},
-      inputListDrips: inputListDrips.concat(
-        <Drips
-          dripPageObject={this.state.dataObj}
-          key={this.counter}
-          onDeleteList={this.onDeleteList}
-        />
-      ),
+  onAddFollowUp = () => {
+    this.setState((state) => {
+      const index = state.followUpList.length;
+      let newFollowUp = { index, subject: "", email_body: "" };
+      const followUpList = state.followUpList.concat(newFollowUp);
+      return {
+        ...state,
+        followUpList,
+      };
     });
   };
 
-  onChange = (e) => {
-    this.setState({ msgBody: e.blocks[0].text });
-  };
-
-  handleEmailBody = (value) => {
-    this.setState({
-      email_body: value,
-      isOpen: false,
+  onDeleteFollowUp = (index) => {
+    this.setState((state) => {
+      const followUpList = state.followUpList.filter((item, i) => i != index);
+      return {
+        ...state,
+        followUpList,
+      };
     });
-    Object.assign(this.state.normalData, { email_body: value });
   };
 
-  onDeleteList = (e) => {
-    var array = [...this.state.inputListFollow];
-    let index = e - 1;
-    let a = this.state.inputListFollow.keys();
-    console.log(e, "onDeleteList()");
-    //     const newList = array.filter((item,i) => i !== index);
-    //     this.setState({
-    //         inputListFollow:newList
-    //     })
-    //    this.counter=0
+  onAddDrip = () => {
+    this.setState((state) => {
+      const index = state.dripList.length;
+      let newFollowUp = { index, subject: "", email_body: "" };
+      const dripList = state.dripList.concat(newFollowUp);
+      return {
+        ...state,
+        dripList,
+      };
+    });
+  };
+
+  onDeleteDrip = (index) => {
+    this.setState((state) => {
+      const dripList = state.dripList.filter((item, i) => i != index);
+      return {
+        ...state,
+        dripList,
+      };
+    });
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    if (this.state.email_body === "") {
-      this.setState({
-        isOpen: true,
-      });
-    } else {
-      Object.assign(this.state.normalData, {
-        campaign:
-          this.props.history.location.state &&
-          this.props.history.location.state.id,
-      });
-      let data = {
-        normal: this.state.normalData,
-        follow_up: this.state.followUpData,
-        drips: this.state.dripData,
-      };
-      this.props.CampaignComposeAction(data);
-    }
+
+    let normal = {
+      campaign:
+        this.props.history.location.state &&
+        this.props.history.location.state.id,
+      subject: this.state.subject,
+      email_body: this.state.email_body,
+    };
+
+    let data = {
+      normal: normal,
+      follow_up: this.state.followUpList,
+      drips: this.state.dripList,
+    };
+
+    console.log(data);
+
+    this.props.CampaignComposeAction(data);
   };
 
   render() {
-    const { inputListFollow } = this.state;
-
-    console.log(inputListFollow, "compose");
     return (
       <>
         <PageHeader
@@ -167,7 +131,9 @@ class CampaignCompose extends Component {
                       className="in"
                       name="subject"
                       value={this.state.subject}
-                      onChange={this.handleSubject}
+                      onChange={(e) => {
+                        this.setState({ subject: e.target.value });
+                      }}
                       placeholder="Subject"
                       required
                     />
@@ -176,8 +142,9 @@ class CampaignCompose extends Component {
                 <Row>
                   <Col>
                     <ReactQuill
-                      value={this.state.email_body}
-                      onChange={this.handleEmailBody}
+                      onChange={(value) => {
+                        this.setState({ email_body: value });
+                      }}
                       theme="snow"
                       className="Quill_div"
                       modules={{
@@ -199,7 +166,16 @@ class CampaignCompose extends Component {
                 </Row>
 
                 <Row className="mt-5">
-                  <Col>{this.state.inputListFollow}</Col>
+                  <Col>
+                    {this.state.followUpList.map((followUp, index) => (
+                      <FollowUpPanel
+                        index={index}
+                        onDelete={this.onDeleteFollowUp}
+                        data={followUp}
+                        key={index}
+                      />
+                    ))}
+                  </Col>
                 </Row>
 
                 <Row>
@@ -209,7 +185,7 @@ class CampaignCompose extends Component {
                       outline
                       type="button"
                       block
-                      onClick={this.onAddBtnClickFollow}
+                      onClick={this.onAddFollowUp}
                     >
                       <i className="fa fa-plus"></i> &nbsp;ADD FOLLOW-UP
                     </Button>
@@ -217,7 +193,16 @@ class CampaignCompose extends Component {
                 </Row>
 
                 <Row>
-                  <Col>{this.state.inputListDrips}</Col>
+                  <Col>
+                    {this.state.dripList.map((drip, index) => (
+                      <DripPanel
+                        index={index}
+                        onDelete={this.onDeleteDrip}
+                        data={drip}
+                        key={index}
+                      />
+                    ))}
+                  </Col>
                 </Row>
 
                 <Row>
@@ -227,7 +212,7 @@ class CampaignCompose extends Component {
                       outline
                       type="button"
                       block
-                      onClick={this.onAddBtnClickDrips}
+                      onClick={this.onAddDrip}
                     >
                       <i className="fa fa-plus"></i> &nbsp;ADD DRIP
                     </Button>
