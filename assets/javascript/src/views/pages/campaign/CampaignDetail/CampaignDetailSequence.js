@@ -1,28 +1,44 @@
-import React from "react";
-import { Container, Row, Col, Table } from "reactstrap";
-import CampaignDetail from "./CampaignDetail";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import {
+  Container,
+  Row,
+  Col,
+  Table,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
+  Form,
+  FormGroup,
+  Input,
+  Button,
+} from "reactstrap";
+import PageHeader from "../../../../components/Headers/PageHeader";
+import PageContainer from "../../../../components/Containers/PageContainer";
+import DetailHeader from "./components/DetailHeader";
 
 export default class CampaignDetailRecipients extends React.Component {
   render() {
     return (
-      <div>
-        <Container fluid>
+      <>
+        <PageHeader
+          current="Date Outreach"
+          parent="Campaign List"
+          showStatus={false}
+        />
+
+        <PageContainer title="Date Outreach">
           <Row>
-            <CampaignDetail
-              id={
-                this.props.history.location.state &&
-                this.props.history.location.state.id
-              }
-            />
+            <DetailHeader activeItem="SEQUENCE" />
           </Row>
           <Row className="mt-5">
             <Col md={10} className="mx-auto">
               <Row>
-                <div className="sequence_btn_div">
-                  <button className="btn sequence_btn btn-md">
-                    EDIT SEQUENCE
-                  </button>
-                </div>
+                <Button color="danger" className="mx-auto">
+                  EDIT SEQUENCE
+                </Button>
               </Row>
               <Row className="mt-4">
                 <div className="Sequence_div">
@@ -64,8 +80,8 @@ export default class CampaignDetailRecipients extends React.Component {
               </Row>
             </Col>
           </Row>
-        </Container>
-      </div>
+        </PageContainer>
+      </>
     );
   }
 }

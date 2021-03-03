@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   Container,
   Row,
@@ -10,13 +10,18 @@ import {
   NavLink,
   TabContent,
   TabPane,
+  Form,
+  FormGroup,
+  Input,
+  Button,
 } from "reactstrap";
+import { Link } from "react-router-dom";
 import classnames from "classnames";
-import CampaignDetail from "./CampaignDetail";
+import PageHeader from "../../../../components/Headers/PageHeader";
+import PageContainer from "../../../../components/Containers/PageContainer";
+import DetailHeader from "./components/DetailHeader";
 import OverviewSummery from "./components/OverviewSummery";
 import OverviewActivity from "./components/OverviewActivity";
-import { Component } from "react";
-import { connect } from "react-redux";
 
 const tabs = [
   {
@@ -51,35 +56,42 @@ class CampaignDetailOverview extends Component {
     const { campaignOverviewData } = this.props;
     console.log("campaignOverviewData", this.props.history);
     return (
-      <div>
-        <Container fluid>
+      <>
+        <PageHeader
+          current="Date Outreach"
+          parent="Campaign List"
+          showStatus={false}
+        />
+
+        <PageContainer title="Date Outreach">
           <Row>
-            <CampaignDetail
-              id={
-                this.props.history.location.state &&
-                this.props.history.location.state.id
-              }
-            />
+            <DetailHeader activeItem="OVERVIEW" />
           </Row>
           <Row className="mt-4">
             <Col md={8} className="mx-auto">
               <Nav tabs>
                 <Col md={3}>
-                  <select className="select_overview">
+                  <Input
+                    id="selectRecipients"
+                    type="select"
+                    className="form-control-sm"
+                  >
                     <option>All recipient lists</option>
                     <option value="Date">Date</option>
-                  </select>
+                  </Input>
                 </Col>
                 {tabs.map(({ to, title }, index) => (
                   <Col key={index} md={3}>
                     <NavItem>
                       <NavLink
-                        className={classnames({
-                          [`active${index + 1}`]: activeTab === index,
-                        })}
+                        className={classnames({ active: activeTab === index })}
                         to={to}
                         onClick={() => {
                           this.onSelectTab(index);
+                        }}
+                        style={{
+                          backgroundColor: "transparent",
+                          textAlign: "center",
                         }}
                       >
                         {title}
@@ -87,11 +99,6 @@ class CampaignDetailOverview extends Component {
                     </NavItem>
                   </Col>
                 ))}
-                {/* <Col md={1}><div className='child ml-3'>
-                            <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                <span className='font_icon'><i className="fa fa-undo" aria-hidden="true"></i></span>
-                            </a></div>
-                        </Col> */}
               </Nav>
               <TabContent activeTab={activeTab}>
                 <TabPane tabId={0}>
@@ -102,22 +109,16 @@ class CampaignDetailOverview extends Component {
                 </TabPane>
                 <TabPane tabId={2}>
                   <Row>
-                    <Col
-                      sm="4"
-                      className="mx-auto"
-                      style={{ border: "2px solid" }}
-                    >
-                      <h4>Tab 3 Contents</h4>
+                    <Col>
+                      <p className="my-5">Tab 3 Contents</p>
                     </Col>
                   </Row>
                 </TabPane>
               </TabContent>
             </Col>
           </Row>
-          {/* </Col>
-                </Row> */}
-        </Container>
-      </div>
+        </PageContainer>
+      </>
     );
   }
 }

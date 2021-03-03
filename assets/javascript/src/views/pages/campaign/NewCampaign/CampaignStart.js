@@ -104,7 +104,7 @@ class CampaignStart extends React.Component {
               <Form onSubmit={this.handleSubmit}>
                 <Row>
                   <Col>
-                    <CampaignsHeader active="START" />
+                    <CampaignsHeader color="secondary" activeItem="START" />
                   </Col>
                 </Row>
                 <Row>

@@ -170,7 +170,7 @@ class CampaignCompose extends Component {
               <Form onSubmit={this.handleSubmit}>
                 <Row>
                   <Col>
-                    <CampaignsHeader active="COMPOSE" />
+                    <CampaignsHeader color="secondary" activeItem="COMPOSE" />
                   </Col>
                 </Row>
                 <Row>
