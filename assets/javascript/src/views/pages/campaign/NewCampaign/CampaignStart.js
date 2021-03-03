@@ -146,17 +146,16 @@ class CampaignStart extends React.Component {
                         onChange={this.handleChange}
                       >
                         <option value={""}>Select</option>
-                        {/* test */}
                         <option value="test@gmail.com">test@gmail.com</option>
 
-                        {mailGetData &&
+                        {/* {mailGetData &&
                           mailGetData.map((item, index) => {
                             return (
                               <option key={index} value={item.id}>
                                 {item.email}
                               </option>
                             );
-                          })}
+                          })} */}
                       </Input>
                     </FormGroup>
                   </Col>
