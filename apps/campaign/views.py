@@ -138,10 +138,6 @@ class CreateCampaignMessageView(APIView):
             DripEmail = DripEmailModel(campaign=camp, waitDays=drips["waitDays"], subject=drips["subject"], email_body=drips["email_body"])
             DripEmail.save()
 
-        for onLinkClick in postdata["onLinkClick"]:
-            onLinkClick = EmailOnLinkClick(campaign=camp, url=onLinkClick["url"], waitDays=onLinkClick["waitDays"], subject=onLinkClick["subject"], email_body=onLinkClick["email_body"])
-            onLinkClick.save()
-
         return Response({"message":"Saved Successfully"})
 
 

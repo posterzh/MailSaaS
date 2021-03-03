@@ -24,14 +24,13 @@ import PageContainer from "../../../../components/Containers/PageContainer";
 import CampaignsHeader from "./components/CampaignsHeader";
 
 class CampaignCompose extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       subject: "",
       email_body: "",
       inputListFollow: [],
       inputListDrips: [],
-      inputListLinkClick: [],
       dataObj: {},
       arra: [],
       followUpData: [],
@@ -50,6 +49,7 @@ class CampaignCompose extends Component {
     });
     Object.assign(this.state.normalData, { subject: e.target.value });
   };
+
   onAddBtnClickFollow = () => {
     const inputListFollow = this.state.inputListFollow;
     this.counter = this.counter + 1;
@@ -86,52 +86,12 @@ class CampaignCompose extends Component {
       ),
     });
   };
-  onAddBtnClickLinkClick = () => {
-    const inputListLinkClick = this.state.inputListLinkClick;
-    const inputListDrips = this.state.inputListDrips;
-    this.counter = this.counter + 1;
-    this.state.counter === 0
-      ? null
-      : this.state.onClickData.push(this.state.dataObj);
-    this.setState({
-      dataObj: {},
-      inputListLinkClick: inputListLinkClick.concat(
-        <LinkClicksPage
-          onClickPageObject={this.state.dataObj}
-          onDeleteList={this.onDeleteList}
-          key={this.counter}
-        />
-      ),
-    });
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    if (this.state.email_body === "") {
-      this.setState({
-        isOpen: true,
-      });
-    } else {
-      Object.assign(this.state.normalData, {
-        campaign:
-          this.props.history.location.state &&
-          this.props.history.location.state.id,
-      });
-      let data = {
-        normal: this.state.normalData,
-        follow_up: this.state.followUpData,
-        drips: this.state.dripData,
-        onLinkClick: this.state.onClickData,
-      };
-      this.props.CampaignComposeAction(data);
-    }
-  };
 
   onChange = (e) => {
     this.setState({ msgBody: e.blocks[0].text });
   };
 
-  handleMsgBody = (value) => {
+  handleEmailBody = (value) => {
     this.setState({
       email_body: value,
       isOpen: false,
@@ -150,6 +110,28 @@ class CampaignCompose extends Component {
     //     })
     //    this.counter=0
   };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    if (this.state.email_body === "") {
+      this.setState({
+        isOpen: true,
+      });
+    } else {
+      Object.assign(this.state.normalData, {
+        campaign:
+          this.props.history.location.state &&
+          this.props.history.location.state.id,
+      });
+      let data = {
+        normal: this.state.normalData,
+        follow_up: this.state.followUpData,
+        drips: this.state.dripData,
+      };
+      this.props.CampaignComposeAction(data);
+    }
+  };
+
   render() {
     const { inputListFollow } = this.state;
 
@@ -179,41 +161,23 @@ class CampaignCompose extends Component {
                   </Col>
                 </Row>
                 <Row>
-                  <div className="grand_parent px-3">
-                    <div className="input_field ">
-                      <Input
-                        type="text"
-                        className="in"
-                        name="subject"
-                        value={this.state.subject}
-                        onChange={this.handleSubject}
-                        placeholder="Subject"
-                        required
-                      />
-                      <div className="mt-3">
-                        <a
-                          href=""
-                          onClick={(e) => {
-                            e.preventDefault();
-                            alert("msg");
-                          }}
-                        >
-                          <span>
-                            <i
-                              className="fa fa-question-circle-o"
-                              aria-hidden="true"
-                            ></i>
-                          </span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
+                  <Col>
+                    <Input
+                      type="text"
+                      className="in"
+                      name="subject"
+                      value={this.state.subject}
+                      onChange={this.handleSubject}
+                      placeholder="Subject"
+                      required
+                    />
+                  </Col>
                 </Row>
                 <Row>
                   <Col>
                     <ReactQuill
                       value={this.state.email_body}
-                      onChange={this.handleMsgBody}
+                      onChange={this.handleEmailBody}
                       theme="snow"
                       className="Quill_div"
                       modules={{
@@ -233,6 +197,7 @@ class CampaignCompose extends Component {
                     />
                   </Col>
                 </Row>
+
                 <Row className="mt-5">
                   <Col>{this.state.inputListFollow}</Col>
                 </Row>
@@ -250,9 +215,11 @@ class CampaignCompose extends Component {
                     </Button>
                   </Col>
                 </Row>
+
                 <Row>
                   <Col>{this.state.inputListDrips}</Col>
                 </Row>
+
                 <Row>
                   <Col className="mt-3">
                     <Button
@@ -266,12 +233,14 @@ class CampaignCompose extends Component {
                     </Button>
                   </Col>
                 </Row>
-                <Row>
-                  <Col>{this.state.inputListLinkClick}</Col>
-                </Row>
+
                 <Row className="my-3">
                   <Col className="d-flex align-items-center justify-content-center">
-                    <Link
+                    <Button color="danger" type="button" type="submit">
+                      NEXT{" "}
+                      <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                    </Button>
+                    {/* <Link
                       to={{
                         pathname: "/app/admin/CampaignPreview",
                         state: {
@@ -285,7 +254,7 @@ class CampaignCompose extends Component {
                         NEXT{" "}
                         <i className="fa fa-arrow-right" aria-hidden="true"></i>
                       </Button>
-                    </Link>
+                    </Link> */}
                   </Col>
                 </Row>
               </Form>
