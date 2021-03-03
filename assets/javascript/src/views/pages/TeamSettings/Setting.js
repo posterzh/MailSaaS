@@ -65,7 +65,7 @@ export class Setting extends Component {
                       <Button
                         color="danger"
                         type="submit"
-                        className="text-uppercase small-mobile-ml-0 small-mobile-mt-1"
+                        className="text-uppercase ml-xs-0 mt-xs-1"
                       >
                         Delete Team
                       </Button>
