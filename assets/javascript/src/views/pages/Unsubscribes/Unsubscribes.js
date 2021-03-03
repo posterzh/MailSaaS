@@ -115,10 +115,10 @@ class Unsubscribes extends Component {
           showStatus={false}
         />
         <Row
-          className={`selection-bar pl-5 ${
-            selectedId.length > 0 ? "_block" : " "
-          }`}
-        >
+          className={classnames(
+            "selection-bar pl-5",
+            { "_block": selectedId.length > 0 }
+          )}>
           <span
             className="pointer"
             onClick={() => {
@@ -172,30 +172,29 @@ class Unsubscribes extends Component {
               </Button>
             </Col>
           </Row>
-          <div className="tabs-nav-wrapper mt-5 pb-0">
-            <Nav id="tabs-icons-text" pills role="tablist" color="info">
-              <NavItem className="p-0 mb-sm-0">
+
+          <div className="tabs-nav-wrapper mt-5 mb-3">
+            <Nav tabs>
+              <NavItem>
                 <NavLink
-                  aria-selected={this.state.activeTab === "addressTab"}
-                  className={classnames("mb-0", {
+                  className={classnames({
                     active: this.state.activeTab === "addressTab",
                   })}
-                  onClick={() => this.toggle("addressTab")}
-                  href="#"
-                  role="tab"
+                  onClick={() => {
+                    this.toggle("addressTab");
+                  }}
                 >
                   ADDRESS
                 </NavLink>
               </NavItem>
-              <NavItem className="p-0 mb-sm-0">
+              <NavItem>
                 <NavLink
-                  aria-selected={this.state.activeTab === "domainTab"}
-                  className={classnames("mb-0", {
+                  className={classnames({
                     active: this.state.activeTab === "domainTab",
                   })}
-                  onClick={() => this.toggle("domainTab")}
-                  href="#"
-                  role="tab"
+                  onClick={() => {
+                    this.toggle("domainTab");
+                  }}
                 >
                   DOMAIN
                 </NavLink>
@@ -220,21 +219,19 @@ class Unsubscribes extends Component {
               />
             </TabPane>
           </TabContent>
-          <div className="text-right">
-            <Button
-              className="btn-icon btn-2 rounded-circle"
-              color="info"
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                this.setState({ modal: !this.state.modal });
-              }}
-            >
-              <span className="btn-inner--icon">
-                <i className="fa fa-plus" />
-              </span>
-            </Button>
-          </div>
+          <Button
+            className="btn-icon btn-2 rounded-circle fixed-bottom-right"
+            color="info"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              this.setState({ modal: !this.state.modal });
+            }}
+          >
+            <span className="btn-inner--icon">
+              <i className="fa fa-plus" />
+            </span>
+          </Button>
           <UnsubscribesModal
             isOpen={this.state.modal}
             handleSubmit={this.handleSubmit}
