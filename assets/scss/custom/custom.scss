@@ -1935,8 +1935,15 @@ input::-webkit-inner-spin-button {
 }
 
 .tabs-nav-wrapper {
-  border-bottom: 1px solid #ccc;
-  .nav-link {
-    border-radius: unset;
+  .nav-link.active {
+    color: skyblue;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
   }
+}
+
+.fixed-bottom-right {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
 }

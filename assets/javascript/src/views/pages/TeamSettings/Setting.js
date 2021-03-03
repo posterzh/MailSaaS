@@ -53,6 +53,14 @@ export class Setting extends Component {
                           type="text"
                         />
                       </FormGroup>
+                      <FormGroup>
+                        <Input
+                          id="bcc-email"
+                          placeholder="Bcc every email"
+                          required
+                          type="text"
+                        />
+                      </FormGroup>
                     </CardBody>
                     <CardFooter className="bg-transparent">
                       <Button
@@ -75,6 +83,8 @@ export class Setting extends Component {
               </Col>
             </Row>
           </Container>
+          {/* 
+          // commented it because functionality is not implemented yet. we can uncomment and use it when we implement
           <Container>
             <h1 className="mt-5 mb-3">SENDING SETTINGS</h1>
             <Row>
@@ -118,7 +128,6 @@ export class Setting extends Component {
                           </Alert>
                         </Col>
                       </Row>
-                      {/* <div className="form-row"> */}
                       <FormGroup>
                         <Input
                           id="your-domain-name"
@@ -127,7 +136,6 @@ export class Setting extends Component {
                           type="text"
                         />
                       </FormGroup>
-                      {/* </div> */}
                     </CardBody>
                     <CardFooter className="bg-transparent">
                       <Button
@@ -148,7 +156,6 @@ export class Setting extends Component {
                   </CardHeader>
                   <Form className="needs-validation" noValidate>
                     <CardBody>
-                      {/* <div className="form-row"> */}
                       <FormGroup>
                         <Input
                           id="bcc-email"
@@ -194,7 +201,6 @@ export class Setting extends Component {
                         </Input>
                       </FormGroup>
                       <a href="#">looking to hookup your CRM?</a>
-                      {/* </div> */}
                     </CardBody>
                     <CardFooter className="bg-transparent">
                       <Button
@@ -239,6 +245,7 @@ export class Setting extends Component {
               </ListGroupItem>
             </ListGroup>
           </Container>
+          */}
         </PageContainer>
       </>
     );

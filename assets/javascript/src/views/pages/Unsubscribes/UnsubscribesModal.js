@@ -25,7 +25,7 @@ class UnsubscribesModal extends Component {
     } = this.props;
 
     return (
-      <Modal isOpen={this.props.isOpen} sm="12">
+      <Modal isOpen={this.props.isOpen} size="lg">
         <Container className="p-3">
           {loading ? (
             <div className="loader"></div>
