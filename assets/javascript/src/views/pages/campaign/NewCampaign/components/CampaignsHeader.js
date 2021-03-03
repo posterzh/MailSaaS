@@ -35,7 +35,7 @@ function CampaignsHeader(props) {
   return (
     <>
       <div className="d-flex align-items-center justify-content-center">
-        <ButtonGroup>
+        <ButtonGroup role="group">
           {items.map((item, index) => {
             return (
               <Button
@@ -48,7 +48,7 @@ function CampaignsHeader(props) {
                     state: { id },
                   });
                 }}
-                key={"_" + index}
+                key={index}
               >
                 {item.name}
               </Button>
