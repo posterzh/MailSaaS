@@ -181,14 +181,6 @@ class CampaignCompose extends Component {
                   </Col>
                 </Row>
                 <Row>
-                  <Col>
-                    <Button color="default" outline type="submit">
-                      <i className="fa fa-plus-circle" aria-hidden="true"></i>{" "}
-                      A/B TEST
-                    </Button>
-                  </Col>
-                </Row>
-                <Row>
                   <div className="grand_parent px-3">
                     <div className="input_field ">
                       <Input
@@ -293,20 +285,6 @@ class CampaignCompose extends Component {
                 <Row>
                   <Col>{this.state.inputListLinkClick}</Col>
                 </Row>
-                <Row>
-                  <Col className="mt-3 mb-5">
-                    <Button
-                      color="default"
-                      outline
-                      type="button"
-                      block
-                      onClick={this.onAddBtnClickLinkClick}
-                    >
-                      <i className="fa fa-plus"></i> &nbsp;ADD ON CLICK
-                    </Button>
-                  </Col>
-                </Row>
-
                 <Row className="my-3">
                   <Col className="d-flex align-items-center justify-content-center">
                     <Link
