@@ -5,6 +5,13 @@ from django.db import models
 from apps.mailaccounts.models import EmailAccount
 from apps.users.models import CustomUser
 
+class CampaignLabel(models.Model):
+    label_name = models.CharField(max_length=500)
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    created_date_time = models.DateTimeField(auto_now=True,blank=True,null=True)
+
+    def __str__(self):
+        return self.lable_name
 
 class Campaign(models.Model):
     title = models.CharField(max_length=200)
@@ -22,21 +29,25 @@ class Campaign(models.Model):
     schedule_time = models.TimeField(blank=True, null=True)
     terms_and_laws = models.BooleanField(default=False)
     campaign_status = models.BooleanField(default=False)    #Start Campaign or Pause Campaign
+    label_name = models.ForeignKey(CampaignLabel,on_delete=models.SET_DEFAULT,default='Unlabeled')
+
 
     def __str__(self):
         return self.title
 
-    
-LEAD_TYPE =( 
 
-    ("none", "None"), 
-    ("openLead", "Open Lead"), 
-    ("wonLead", "Won Lead"), 
-    ("lostLead", "Lost Lead"), 
-    ("ignoredLead", "Ignored Lead"),
-) 
+    
 class CampaignRecipient(models.Model):
-    campaign = models.ForeignKey('Campaign', on_delete=models.CASCADE)
+    LEAD_TYPE =( 
+
+        ("none", "None"), 
+        ("openLead", "Open Lead"), 
+        ("wonLead", "Won Lead"), 
+        ("lostLead", "Lost Lead"), 
+        ("ignoredLead", "Ignored Lead"),
+        ("forwardedLead", "Forwarded Lead"),
+    ) 
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100,blank=True, null=True)
     email = models.CharField(max_length=200)
     subject = models.CharField(max_length=2000, blank=True, null=True)
@@ -55,7 +66,8 @@ class CampaignRecipient(models.Model):
     is_delete = models.BooleanField(default=False)
     created_date_time = models.DateTimeField(auto_now=True,blank=True,null=True)
     update_date_time = models.DateTimeField(auto_now=True,blank=True,null=True)
-
+    assigned = models.BooleanField(default=True)
+    engaged = models.BooleanField(default=False)
 
 
     def __str__(self):
@@ -110,3 +122,5 @@ class CampaignLeadCatcher(models.Model):
     def __str__(self):
 
         return str(self.campaign)
+
+

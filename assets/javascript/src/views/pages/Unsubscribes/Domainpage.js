@@ -5,7 +5,7 @@ function Domainpage(props) {
   return (
     <>
       {!props.data || !props.data.length ? (
-        <p style={{ color: "black" }}>
+        <p className="mt-4">
           Search returned 0 unsubscribed domains.
         </p>
       ) : (

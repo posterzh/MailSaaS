@@ -1,105 +1,98 @@
-import React, { Component } from 'react'
-import { Container, Row, Col, Card } from 'reactstrap'
+import React, { Component } from "react";
+import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
+
+import PageHeader from "../../../components/Headers/PageHeader";
+import PageContainer from "../../../components/Containers/PageContainer";
+
 export class AppsandCrm extends Component {
-    render() {
-        return (
-            <div className='main-view'>
-                <div className='campaign_navbar' >
-                    <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Apps & CRMs</h1>
-                    <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
-                </div>
-                <div className='Apps'>
-                    <h1 className='N-I display-4'style={{borderBottom:"1px solid #ccc",paddingBottom:"10px"}} >NATIVE INTEGRATIONS</h1>
-                    {/* <hr color='silver'></hr> */}
-                    <div className='native_media'>
-                        <Container  fluid>
-                            <Row className="mt-5">
-                                <Col md={3}>
-                                    <a href="" className='native_link'>
-                                        <div className='native_media_div'>
-                                            <div>
-                                                <img alt="..." src={STATIC_FILES.sales_force} className='native_img'></img>
-                                            </div>
-                                            <div>
-                                                <span><b>SALESFORCE</b></span>
-                                                <p>Track activities and update lead statuses when actions are taken in Mailshake.</p>
-                                                <div className='native_add mx-auto'><a href=''>ADD</a></div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </Col>
-                                <Col md={3}>
-                                    <a href="" className='native_link'>
-                                        <div className='native_media_div'>
-                                            <div>
-                                                <img alt="..." src={STATIC_FILES.slack} className='native_img'></img>
-                                            </div>
-                                            <div>
-                                                <span><b>SLACK</b></span>
-                                                <p>Post messages to your channels when you receive a new reply or lead.</p>
-                                                <div className='native_add mx-auto'><a href=''>ADD</a></div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </Col>
-                                <Col md={3}>
-                                    <a href="" className='native_link'>
-                                        <div className='native_media_div'>
-                                            <div>
-                                                <img alt="..." src={STATIC_FILES.pipe_drive} className='native_img'></img>
-                                            </div>
-                                            <div>
-                                                <span><b>PIPEDRIVE</b></span>
-                                                <p>Move deals through your stages, track activities, and update lead statuses.</p>
-                                                <div className='native_add mx-auto'><a href=''>ADD</a></div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </Col>
-                                {/* <Col md={3}>
-                                    <a href="" className='native_link'>
-                                        <div className='native_media_div'>
-                                            <div>
-                                                <img alt="..." src={STATIC_FILES.hub_spot} className='native_img'></img>
-                                            </div>
-                                            <div>
-                                                <span><b>PIPEDRIVE</b></span>
-                                                <p>Track activities, move deals through stages, and update contact statuses.</p>
-                                                <div className='native_add mx-auto'><a href=''>ADD</a></div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </Col> */}
-                            </Row>
-                        </Container>
+  render() {
+    return (
+      <>
+        <PageHeader
+          current="Apps & CRMs"
+          parent="Extension"
+          showStatus={false}
+        />
+
+        <PageContainer title="Apps & CRMs">
+          <span className="display-4">NATIVE INTEGRATIONS</span>
+          <hr className="mt-2 mb-2" />
+          <Container fluid>
+            <Row className="mt-5">
+              <Col lg={3} md={4} sm={12}>
+                <Card>
+                  <CardBody>
+                    <img
+                      alt="..."
+                      className="rounded-circle img-center img-fluid shadow shadow-lg--hover rounded-center-img"
+                      src={STATIC_FILES.sales_force}
+                    />
+                    <div className="pt-4 text-center">
+                      <h5 className="h3 title">
+                        <span className="d-block mb-1">SALESFORCE</span>
+                        <small className="h4 font-weight-light text-muted">
+                          Track activities and update lead statuses when actions
+                          are taken in MailSaaS.
+                        </small>
+                      </h5>
+                      <div className="mt-3">
+                        <Button>ADD</Button>
+                      </div>
                     </div>
-                    {/* <div>
-                        <h1 className='N-I display-4 mt-5' style={{borderBottom:"1px solid #ccc",paddingBottom:"10px"}}>OTHER APPS AND CRMS</h1>
-                       
-                        <p>Through the power of <a href=''><b>Zapier</b></a>, you can connect Mailshake to all sorts of apps:</p>
-                    </div> */}
-                    {/* <div>
-                        <label className='filter_app'>Filter by app</label><br></br>
-                        <select className='filter_select'>
-                            <option value='one'>One</option>
-                            <option value='two'>two</option>
-                            <option value='three'>three</option>
-                            <option value='four'>Four</option>
-                        </select>
-                    </div> */}
-                    {/* <div>
-                        <Container>
-                            <Row>
-                                <Col>
-                                    <Card>
-                                    </Card>
-                                </Col>
-                            </Row>
-                        </Container>
-                    </div> */}
-                </div>
-            </div>
-        )
-    }
+                  </CardBody>
+                </Card>
+              </Col>
+              <Col lg={3} md={4} sm={12}>
+                <Card>
+                  <CardBody>
+                    <img
+                      alt="..."
+                      className="rounded-circle img-center img-fluid shadow shadow-lg--hover rounded-center-img"
+                      src={STATIC_FILES.slack}
+                    />
+                    <div className="pt-4 text-center">
+                      <h5 className="h3 title">
+                        <span className="d-block mb-1">SLACK</span>
+                        <small className="h4 font-weight-light text-muted">
+                          Post messages to your channels when you receive a new
+                          reply or lead.
+                        </small>
+                      </h5>
+                      <div className="mt-3">
+                        <Button>ADD</Button>
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
+              <Col lg={3} md={4} sm={12}>
+                <Card>
+                  <CardBody>
+                    <img
+                      alt="..."
+                      className="rounded-circle img-center img-fluid shadow shadow-lg--hover rounded-center-img"
+                      src={STATIC_FILES.pipe_drive}
+                    />
+                    <div className="pt-4 text-center">
+                      <h5 className="h3 title">
+                        <span className="d-block mb-1">PIPEDRIVE</span>
+                        <small className="h4 font-weight-light text-muted">
+                          Move deals through your stages, track activities, and
+                          update lead statuses.
+                        </small>
+                      </h5>
+                      <div className="mt-3">
+                        <Button>ADD</Button>
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </PageContainer>
+      </>
+    );
+  }
 }
-export default AppsandCrm
+export default AppsandCrm;

@@ -18,7 +18,6 @@ class RegisterSerializer(serializers.Serializer):
     mailsaas_type = serializers.CharField(required=True, write_only=True)
     avatar = serializers.ImageField(required=False, write_only=True)
     password1 = serializers.CharField(required=True, write_only=True)
-    # password2 = serializers.CharField(required=True, write_only=True)
 
     def validate_email(self, email):
         email = get_adapter().clean_email(email)
@@ -52,12 +51,16 @@ class RegisterSerializer(serializers.Serializer):
     def custom_signup(self, request, user):
         pass
 
-    def save(self, request):
+    def save(self, request,*args,**kwargs):
         adapter = get_adapter()
         user = adapter.new_user(request)
         self.cleaned_data = self.get_cleaned_data()
         adapter.save_user(request, user, self)
         setup_user_email(request, user, [])
+        full_name = user.full_name
+        user.first_name = full_name.split(" ")[0]
+        user.last_name = " ".join(full_name.split(" ")[1:])
+
         user.save()
         return user
 
