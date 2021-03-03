@@ -170,7 +170,7 @@ class CampaignCompose extends Component {
               <Form onSubmit={this.handleSubmit}>
                 <Row>
                   <Col>
-                    <CampaignsHeader active="COMPOSE" />
+                    <CampaignsHeader color="secondary" activeItem="COMPOSE" />
                   </Col>
                 </Row>
                 <Row>
@@ -178,14 +178,6 @@ class CampaignCompose extends Component {
                     <h1 className="text-center my-4">
                       Compose the emails in this campaign
                     </h1>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Button color="default" outline type="submit">
-                      <i className="fa fa-plus-circle" aria-hidden="true"></i>{" "}
-                      A/B TEST
-                    </Button>
                   </Col>
                 </Row>
                 <Row>
@@ -293,20 +285,6 @@ class CampaignCompose extends Component {
                 <Row>
                   <Col>{this.state.inputListLinkClick}</Col>
                 </Row>
-                <Row>
-                  <Col className="mt-3 mb-5">
-                    <Button
-                      color="default"
-                      outline
-                      type="button"
-                      block
-                      onClick={this.onAddBtnClickLinkClick}
-                    >
-                      <i className="fa fa-plus"></i> &nbsp;ADD ON CLICK
-                    </Button>
-                  </Col>
-                </Row>
-
                 <Row className="my-3">
                   <Col className="d-flex align-items-center justify-content-center">
                     <Link

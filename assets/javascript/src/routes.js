@@ -45,14 +45,10 @@ import CampaignOptions from "./views/pages/campaign/NewCampaign/CampaignOptions"
 import CampaignList from "./views/pages/campaign/CampaignList";
 
 // Campaign Detail pages
-import CampaignDetail from "./views/pages/campaign/CampaignDetail/CampaignDetail.js";
 import CampaignDetailOverview from "./views/pages/campaign/CampaignDetail/CampaignDetailOverview";
 import CampaignDetailSequence from "./views/pages/campaign/CampaignDetail/CampaignDetailSequence";
 import CampaignDetailRecipients from "./views/pages/campaign/CampaignDetail/CampaignDetailRecipients";
 import CampaignDetailSettings from "./views/pages/campaign/CampaignDetail/CampaignDetailSettings";
-
-// Edit Campaign page
-import EditCampaign from "./views/pages/campaign/EditCampaign";
 
 // Campaign > LeadCatcher page
 import LeadCatcher from "./views/pages/campaign/LeadCatcher";
@@ -83,24 +79,17 @@ const routes = [
         layout: "/app/admin",
       },
       {
-        path: "/CampaigList",
+        path: "/CampaignList",
         name: "Campaign List",
         miniName: " ",
         component: CampaignList,
         layout: "/app/admin",
       },
       {
-        path: "/CampaignDetail",
+        path: "/CampaignDetailOverview",
         name: "Campaign Detail",
         miniName: " ",
-        component: CampaignDetail,
-        layout: "/app/admin",
-      },
-      {
-        path: "/EditCampaign",
-        name: "Edit Campaign",
-        miniName: " ",
-        component: EditCampaign,
+        component: CampaignDetailOverview,
         layout: "/app/admin",
       },
       {
@@ -236,6 +225,7 @@ const routes = [
         miniName: " ",
         component: Redeem,
         layout: "/app/admin",
+        redirect: true,
       },
     ],
   },
@@ -260,6 +250,7 @@ const routes = [
         miniName: "  ",
         component: Api,
         layout: "/app/admin",
+        redirect: true,
       },
       {
         path: "/conversionTracking",
@@ -267,6 +258,7 @@ const routes = [
         miniName: " ",
         component: ConversionTracking,
         layout: "/app/admin",
+        redirect: true,
       },
     ],
   },
@@ -279,14 +271,13 @@ const routes = [
   },
 
   {
-    open: true,
-    collapse: false,
     name: "ForgetPassword",
     // icon: "fa fa-home text-dark",
     // state: "dashboardsCollapse",
     path: "/forgetPassword",
     layout: "/app/auth",
     component: ForgetPassword,
+    redirect: true,
   },
 
   // User management redirects

@@ -159,7 +159,7 @@ export default class FollowUpPage extends React.Component {
                     <i style={{ padding: 5 }} className="fa">
                       &#xf014;
                     </i>
-                    DELETE {id}
+                    DELETE
                   </div>
                   <ReactQuill
                     value={this.state.body}

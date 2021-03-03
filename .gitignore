@@ -133,5 +133,6 @@ yarn-error.log*
 yarn.lock
 
 static/js
-static/css//site.css
+static/css/site.css
+static/css/react-object-lifecycle.css
 .DS_Store

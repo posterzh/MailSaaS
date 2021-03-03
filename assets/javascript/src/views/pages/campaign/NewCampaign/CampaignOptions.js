@@ -95,7 +95,7 @@ class CampaignOptions extends Component {
               <Form onSubmit={this.handleSubmit}>
                 <Row>
                   <Col>
-                    <CampaignsHeader active="OPTIONS" />
+                    <CampaignsHeader color="secondary" activeItem="OPTIONS" />
                   </Col>
                 </Row>
                 <Row>
@@ -121,74 +121,6 @@ class CampaignOptions extends Component {
                       </label>
                     </div>
 
-                    <div className="custom-control custom-checkbox mb-3">
-                      <input
-                        className="custom-control-input"
-                        id="2"
-                        type="checkbox"
-                        value={this.state.tracklinkclicks}
-                        name="tracklinkclicks"
-                        onChange={this.handleChange}
-                      />
-                      <label className="custom-control-label" htmlFor="2">
-                        Track Link clicks
-                      </label>
-                    </div>
-
-                    <div className="custom-control custom-checkbox mb-3">
-                      <input
-                        className="custom-control-input"
-                        id="3"
-                        type="checkbox"
-                        value={this.state.schedulesend}
-                        name="schedulesend"
-                        onChange={() =>
-                          this.setState({ show: !this.state.show })
-                        }
-                      />
-                      <label className="custom-control-label" htmlFor="3">
-                        Schedule this send
-                      </label>
-                    </div>
-
-                    {this.state.show && (
-                      <>
-                        <Row>
-                          <div className="time_container">
-                            <span className="sending_calendar">
-                              Sending calendar timezone
-                            </span>
-                            <br />
-                            <span className="time_zone">Asia/Calcutta</span>
-                            <br />
-                          </div>
-                        </Row>
-                        <Row style={{ marginLeft: "2px" }}>
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "row",
-                            }}
-                          >
-                            <input
-                              type="date"
-                              className="date_picker"
-                              name="date"
-                              value={this.state.date}
-                              onChange={this.handleDate}
-                            />
-                            <input
-                              type="time"
-                              className="time_picker"
-                              name="time"
-                              value={this.state.time}
-                              onChange={this.handleTime}
-                            />
-                            <br />
-                          </div>
-                        </Row>
-                      </>
-                    )}
                     <div className="custom-control custom-checkbox mb-3">
                       <input
                         className="custom-control-input"

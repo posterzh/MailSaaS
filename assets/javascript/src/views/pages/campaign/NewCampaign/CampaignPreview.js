@@ -58,7 +58,7 @@ class CampaignPreview extends Component {
               <Form onSubmit={this.handleSubmit}>
                 <Row>
                   <Col>
-                    <CampaignsHeader active="PREVIEW" />
+                    <CampaignsHeader color="secondary" activeItem="PREVIEW" />
                   </Col>
                 </Row>
                 <Row>
@@ -66,54 +66,6 @@ class CampaignPreview extends Component {
                     <h1 className="text-center my-4">
                       Preview and personalize each email
                     </h1>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col md={8} className="mx-auto">
-                    <div className="my-3">
-                      <span className="mx-2 text-primary">
-                        <i
-                          className="fa fa-check-circle"
-                          aria-hidden="true"
-                        ></i>
-                      </span>
-                      <span class="text-dark">You sound like a human</span>
-                    </div>
-
-                    <div className="my-3">
-                      <span className="mx-2 text-primary">
-                        <i
-                          className="fa fa-check-circle"
-                          aria-hidden="true"
-                        ></i>
-                      </span>
-                      <span class="text-dark">Your signature looks good</span>
-                    </div>
-
-                    <div className="my-3">
-                      <span className="mx-2 text-primary">
-                        <i
-                          className="fa fa-check-circle"
-                          aria-hidden="true"
-                        ></i>
-                      </span>
-                      <span class="text-dark">
-                        Your call-to-action is clear
-                      </span>
-                    </div>
-
-                    <div className="my-3">
-                      <span className="mx-2 text-primary">
-                        <i
-                          className="fa fa-check-circle"
-                          aria-hidden="true"
-                        ></i>
-                      </span>
-                      <span class="text-dark">
-                        You‘ve sent a test email and checked it on your phone
-                      </span>
-                    </div>
                   </Col>
                 </Row>
 

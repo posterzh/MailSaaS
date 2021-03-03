@@ -1,40 +1,43 @@
 import React from "react";
-import { Button, ButtonGroup } from "reactstrap";
+import { Button, ButtonGroup, Navbar, Nav, NavItem, NavLink } from "reactstrap";
 import { withRouter } from "react-router-dom";
+import classnames from "classnames";
 
 const items = [
   {
-    name: "START",
-    link: "/app/admin/CampaignStart",
+    name: "OVERVIEW",
+    link: "/app/admin/CampaignDetailOverview",
   },
   {
-    name: "RECIPIENT",
-    link: "/app/admin/CampaignRecipient",
+    name: "SEQUENCE",
+    link: "/app/admin/CampaignDetailSequence",
   },
   {
-    name: "COMPOSE",
-    link: "/app/admin/CampaignCompose",
+    name: "RECIPIENTS",
+    link: "/app/admin/CampaignDetailRecipients",
   },
   {
-    name: "PREVIEW",
-    link: "/app/admin/CampaignPreview",
-  },
-  {
-    name: "OPTIONS",
-    link: "/app/admin/CampaignOptions",
-  },
-  {
-    name: "SEND",
-    link: "/app/admin/CampaignSend",
+    name: "SETTINGS",
+    link: "/app/admin/CampaignDetailsettings",
   },
 ];
 
-function CampaignsHeader(props) {
+function DetailHeader(props) {
   const { color, activeItem } = props;
   const id = props.history.location.state && props.history.location.state.id;
   return (
     <>
       <div className="d-flex align-items-center justify-content-center">
+        <Button
+          color="transparent"
+          onClick={() => {
+            props.history.push({
+              pathname: "/app/admin/CampaignList",
+            });
+          }}
+        >
+          <i className="fas fa-chevron-left"></i>
+        </Button>
         <ButtonGroup>
           {items.map((item, index) => {
             return (
@@ -61,4 +64,4 @@ function CampaignsHeader(props) {
   );
 }
 
-export default withRouter(CampaignsHeader);
+export default withRouter(DetailHeader);

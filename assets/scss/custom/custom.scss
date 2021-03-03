@@ -1919,18 +1919,18 @@ input::-webkit-inner-spin-button {
   }
 }
 
+@media (max-width: 575px) {
+  .mb-sm-0 {
+    margin-bottom: 0px !important;
+  }
+}
+
 @media (max-width: 374px) {
   .small-mobile-ml-0 {
     margin-left: 0px !important;
   }
   .small-mobile-mt-1 {
     margin-top: 10px;
-  }
-}
-
-@media (max-width: 575px) {
-  .mb-sm-0 {
-    margin-bottom: 0px !important;
   }
 }
 

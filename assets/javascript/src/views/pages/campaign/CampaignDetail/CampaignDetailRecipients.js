@@ -1,3 +1,4 @@
+import React, { Component } from "react";
 import {
   Container,
   Row,
@@ -10,16 +11,19 @@ import {
   ModalFooter,
   Button,
 } from "reactstrap";
-import CampaignDetail from "./CampaignDetail";
-import React, { Component } from "react";
+
 import {
   CampaignPeopleAction,
   unsubscribeRecipientAction,
   CampaignCreateLeadAction,
 } from "../../../../redux/action/CampaignAction";
 import { connect } from "react-redux";
+
+import PageHeader from "../../../../components/Headers/PageHeader";
+import PageContainer from "../../../../components/Containers/PageContainer";
+import DetailHeader from "./components/DetailHeader";
 import LinkClick from "./components/LeadClick";
-import { flexibleCompare } from "@fullcalendar/core";
+
 const SpanStyles = {
   paddingRight: "10px",
   paddingLeft: "10px",
@@ -128,47 +132,48 @@ class CampaignDetailRecipients extends Component {
       date,
       showModal,
     } = this.state;
+
     return (
-      <div>
-        <div
-          style={{ padding: "20px" }}
-          className={`selection-bar ${
-            isSelectionBar && selectedId.length > 0 ? "_block" : " "
-          }`}
-        >
-          <span
-            style={SpanStyles}
-            onClick={() => {
-              this.setState({ isSelectionBar: false });
-              selectedId.length = 0;
-            }}
+      <>
+        <PageHeader
+          current="Date Outreach"
+          parent="Campaign List"
+          showStatus={false}
+        />
+
+        <PageContainer title="Date Outreach">
+          <div
+            className={`selection-bar ${
+              isSelectionBar && selectedId.length > 0 ? "_block" : " "
+            }`}
           >
-            <i className="fa fa-close" aria-hidden="true"></i>
-          </span>
-          <span style={Span}>{selectedId.length} selected</span>
-          <div>
-            <span style={SpanStyles}>
-              <i className="fas fa-minus-circle"></i>
+            <span
+              style={SpanStyles}
+              onClick={() => {
+                this.setState({ isSelectionBar: false });
+                selectedId.length = 0;
+              }}
+            >
+              <i className="fa fa-close" aria-hidden="true"></i>
             </span>
-            {!isUnsubscribe ? (
-              <span onClick={this.unsubscribeRecipient} style={SpanStyles}>
-                Unsubscribe
+            <span style={Span}>{selectedId.length} selected</span>
+            <div>
+              <span style={SpanStyles}>
+                <i className="fas fa-minus-circle"></i>
               </span>
-            ) : (
-              <span onClick={this.delete} style={SpanStyles}>
-                delete
-              </span>
-            )}
+              {!isUnsubscribe ? (
+                <span onClick={this.unsubscribeRecipient} style={SpanStyles}>
+                  Unsubscribe
+                </span>
+              ) : (
+                <span onClick={this.delete} style={SpanStyles}>
+                  delete
+                </span>
+              )}
+            </div>
           </div>
-        </div>
-        <Container fluid>
           <Row>
-            <CampaignDetail
-              id={
-                this.props.history.location.state &&
-                this.props.history.location.state.id
-              }
-            />
+            <DetailHeader activeItem="RECIPIENTS" />
           </Row>
           <Row className="mt-5">
             <Col md={1} className="Recipients_details">
@@ -185,9 +190,7 @@ class CampaignDetailRecipients extends Component {
             </Col>
             <Col md={10} className="align-right">
               <div className="w-h-25">
-                <button className="btn sequence_btn btn-md">
-                  ADD RECIPIENTS
-                </button>
+                <Button color="danger">ADD RECIPIENTS</Button>
                 <div className="child ml-3">
                   <a
                     href=""
@@ -320,51 +323,51 @@ class CampaignDetailRecipients extends Component {
               </tbody>
             </Table>
           </Row>
-        </Container>
-        <div>
-          <Modal isOpen={showModal} toggle={this.toggle}>
-            <ModalHeader>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  cursor: "pointer",
-                }}
-              >
-                <span>Choose an export</span>{" "}
-                <span
+          <div>
+            <Modal isOpen={showModal} toggle={this.toggle}>
+              <ModalHeader>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    cursor: "pointer",
+                  }}
+                >
+                  <span>Choose an export</span>{" "}
+                  <span
+                    onClick={() =>
+                      this.toggle(this.setState({ showModal: !showModal }))
+                    }
+                  >
+                    &times;
+                  </span>
+                </div>
+              </ModalHeader>
+              <ModalBody toggle={this.toggle}>
+                <LinkClick
+                  id={this.state.id}
+                  email={this.state.email}
+                  full_name={this.state.full_name}
+                  time={this.state.created_date_time}
+                />
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" onClick={this.CreateLead}>
+                  Create
+                </Button>
+                <Button
+                  color="secondary"
                   onClick={() =>
                     this.toggle(this.setState({ showModal: !showModal }))
                   }
                 >
-                  &times;
-                </span>
-              </div>
-            </ModalHeader>
-            <ModalBody toggle={this.toggle}>
-              <LinkClick
-                id={this.state.id}
-                email={this.state.email}
-                full_name={this.state.full_name}
-                time={this.state.created_date_time}
-              />
-            </ModalBody>
-            <ModalFooter>
-              <Button color="primary" onClick={this.CreateLead}>
-                Create
-              </Button>
-              <Button
-                color="secondary"
-                onClick={() =>
-                  this.toggle(this.setState({ showModal: !showModal }))
-                }
-              >
-                Cancel
-              </Button>
-            </ModalFooter>
-          </Modal>
-        </div>
-      </div>
+                  Cancel
+                </Button>
+              </ModalFooter>
+            </Modal>
+          </div>
+        </PageContainer>
+      </>
     );
   }
 }

@@ -31,7 +31,7 @@ export class CampaignSend extends Component {
     this.props.CampaignCreateAction(CampId);
     console.log("mounting in Send", CampId);
   }
-  campaignStart = (e) => {
+  createCampaign = (e) => {
     e.preventDefault();
     this.props.CampaignSaveAction(
       true,
@@ -59,13 +59,13 @@ export class CampaignSend extends Component {
           <Form onSubmit={this.handleSubmit}>
             <Row>
               <Col>
-                <CampaignsHeader active="SEND" />
+                <CampaignsHeader color="secondary" activeItem="SEND" />
               </Col>
             </Row>
             <Row>
               <Col>
                 <h1 className="text-center my-4">
-                  Are you ready to start your campaign?
+                  Are you ready to create your campaign?
                 </h1>
               </Col>
             </Row>
@@ -77,9 +77,9 @@ export class CampaignSend extends Component {
                     color="danger"
                     type="button"
                     className="w-100"
-                    onClick={this.campaignStart}
+                    onClick={this.createCampaign}
                   >
-                    Start Campaign
+                    Create Campaign
                   </Button>
                 </div>
 
