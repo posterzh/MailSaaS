@@ -1,6 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Container, Row, Col, Button, Form } from "reactstrap";
+import {
+  Input,
+  Container,
+  Row,
+  Col,
+  Button,
+  Form,
+  FormGroup,
+  Card,
+  CardHeader,
+  CardBody,
+} from "reactstrap";
 import {
   CampaignLeadCatcherAction,
   CampaignLeadGetAction,
@@ -88,130 +99,85 @@ export class CampaignDetailSettings extends Component {
           <Row>
             <DetailHeader activeItem="SETTINGS" />
           </Row>
-          <Row className="mb-5 mt-5">
+
+          <Row className="mx-3 my-5">
             <Col md={4}>
-              <div className="boxShadow setting_div">
-                <div className="p-3 settingUnderline">
-                  <h3 className="display-4">Sending Account</h3>
-                  <label className="filter_app">
-                    Who should leads be assigned to ?
-                  </label>
-                  <br></br>
-                  <select className="filter_select_prospect">
-                    <option value="one">Me</option>
-                  </select>
-                  <p className="mt-3">When does a recipient become a lead?</p>
-                  <Row className="mt-3">
+              <Card>
+                <CardHeader>
+                  <h3 className="mb-0">Sending Account</h3>
+                </CardHeader>
+                <CardBody>
+                  <FormGroup>
+                    <label
+                      className="form-control-label"
+                      htmlFor="selectFromAddress"
+                    >
+                      From address
+                    </label>
+                    <Input
+                      id="selectFromAddress"
+                      type="select"
+                      className="form-control-sm"
+                    >
+                      <option>test@gmail.com</option>
+                      <option>admin@gmail.com</option>
+                    </Input>
+                  </FormGroup>
+
+                  <FormGroup>
+                    <label className="form-control-label">From name</label>
+                    <Input type="text" className="form-control-sm" />
+                  </FormGroup>
+
+                  <Row>
                     <Col>
-                      <label className="filter_app">
-                        Who should leads be assigned to ?
-                      </label>
-                      <br></br>
-                      <select className="filter_select_prospect mt-3">
-                        <option value="one">Me</option>
-                      </select>
+                      <Button color="danger">SAVE</Button>
                     </Col>
                   </Row>
-                </div>
-                <div className="p-3">
-                  <button className=" btn startBtn">SAVE</button>
-                </div>
-              </div>
+                </CardBody>
+              </Card>
             </Col>
+
             <Col md={4}>
-              <Form onSubmit={this.handleSubmit}>
-                <div className="boxShadow setting_div">
-                  <div className="p-3 settingUnderline">
-                    <h3 className="display-4">Lead Catcher</h3>
-                    <Row>
-                      <Col>
-                        <label className="filter_app">
-                          Who should leads be assigned to ?
-                        </label>
-                        <br></br>
-                        <select className="filter_select_prospect mt-3">
-                          <option value="one">Me</option>
-                        </select>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <label className="filter_app mt-3">
-                          When does a recipient become a lead?
-                        </label>
-                        <br></br>
-                        <Row className="mt-3">
-                          <Col md={6} className="mt-4">
-                            <label>Recipients</label>
-                            <select
-                              name="recipientsData"
-                              onChange={this.handleChange}
-                              value={this.state.recipientsData}
-                              className="filter_select_prospect mt-3"
-                              required
-                            >
-                              <option value="" selected disabled hidden>
-                                {lead.leadcatcher_recipient}
-                              </option>
-                              <option value="replies">Replies</option>
-                              <option value="open">Opens</option>
-                              {/* <option value='click_any_link'>Click any link</option>
-                                                                <option value='clicks_specific_link' >Click specific link</option> */}
-                            </select>
-                          </Col>
-                          {/* {this.state.hide && <div className='mt-3' style={{width:"100%"}}><input className='form-control w-100' type='url'></input></div>} */}
-                          <Col md={5} className="mt-4">
-                            <label>#Of times</label>
-                            <input
-                              type="number"
-                              name="num"
-                              onChange={this.handleChange}
-                              value={this.state.num}
-                              className="filter_select_prospect mt-2"
-                              required
-                              placeholder={lead.of_times}
-                            />
-                          </Col>
-                          {/* <Col md={1} className='mt-5' style={{ display: 'flex', flexDirection: 'row-reverse' }}>
-                                                            <span onClick={() => { this.leadDeleteAction(lead.id) }} style={{ fontSize: '20px', cursor: 'pointer' }}><i className="fa fa-trash"></i></span>
-                                                        </Col> */}
-                        </Row>
-                        <Row>
-                          {this.state.recipientsData ===
-                            "clicks_specific_link" && (
-                            <div className="mt-3 w-100 p-2">
-                              <input
-                                name="specific_link"
-                                onChange={this.handleChange}
-                                value={this.state.specific}
-                                className="form-control w-100"
-                                type="url"
-                              ></input>
-                            </div>
-                          )}
-                        </Row>
-                      </Col>
-                    </Row>
-                  </div>
-                  <Row className="ml-2">
-                    <div className="p-3" style={{ display: "flex" }}>
-                      <Button type="submit" className=" btn startBtn">
-                        SAVE
-                      </Button>
-                      {this.state.show && (
-                        <button
-                          onClick={() => {
-                            this.setState({ show: false });
-                          }}
-                          className=" btn sequence_btn"
-                        >
-                          CANCEL
-                        </button>
-                      )}
-                    </div>
+              <Card>
+                <CardHeader>
+                  <h3 className="mb-0">Lead Catcher</h3>
+                </CardHeader>
+                <CardBody>
+                  <FormGroup>
+                    <label
+                      className="form-control-label"
+                      htmlFor="selectFromAddress"
+                    >
+                      Who should leads be assigned to?
+                    </label>
+                    <Input
+                      id="selectFromAddress"
+                      type="select"
+                      className="form-control-sm"
+                    >
+                      <option>test@gmail.com</option>
+                      <option>admin@gmail.com</option>
+                    </Input>
+                  </FormGroup>
+
+                  <FormGroup>
+                    <label className="form-control-label">
+                      When does a recipient become a lead?
+                    </label>
+                    <Input type="text" className="form-control-sm" />
+                  </FormGroup>
+
+                  <Row>
+                    <Col>
+                      <Button color="danger">SAVE </Button>
+                    </Col>
+                    <Col>
+                      <Button color="secondary">CANCEL</Button>
+                    </Col>
                   </Row>
-                </div>
-              </Form>
+                </CardBody>
+              </Card>
             </Col>
           </Row>
         </PageContainer>

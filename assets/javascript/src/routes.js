@@ -50,9 +50,6 @@ import CampaignDetailSequence from "./views/pages/campaign/CampaignDetail/Campai
 import CampaignDetailRecipients from "./views/pages/campaign/CampaignDetail/CampaignDetailRecipients";
 import CampaignDetailSettings from "./views/pages/campaign/CampaignDetail/CampaignDetailSettings";
 
-// Edit Campaign page
-import EditCampaign from "./views/pages/campaign/EditCampaign";
-
 // Campaign > LeadCatcher page
 import LeadCatcher from "./views/pages/campaign/LeadCatcher";
 
@@ -93,13 +90,6 @@ const routes = [
         name: "Campaign Detail",
         miniName: " ",
         component: CampaignDetailOverview,
-        layout: "/app/admin",
-      },
-      {
-        path: "/EditCampaign",
-        name: "Edit Campaign",
-        miniName: " ",
-        component: EditCampaign,
         layout: "/app/admin",
       },
       {
