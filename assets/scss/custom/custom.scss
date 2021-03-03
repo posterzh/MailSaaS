@@ -1947,3 +1947,9 @@ input::-webkit-inner-spin-button {
   bottom: 30px;
   right: 30px;
 }
+
+.rounded-center-img {
+  height: 50px;
+  width: 50px;
+  object-fit: contain;
+}
