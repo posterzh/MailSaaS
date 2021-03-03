@@ -1,23 +1,20 @@
 import React from "react";
 import { Container, Row, Col, Input } from "reactstrap";
-import { Editor } from "react-draft-wysiwyg";
-import { EditorState, convertToRaw } from "draft-js";
-import draftToHtml from "draftjs-to-html";
-import htmlToDraft from "html-to-draftjs";
 import ReactQuill from "react-quill";
 export default class FollowUpPage extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      editorState: EditorState.createEmpty(),
       subject: "",
       waitDays: 0,
       body: "",
     };
   }
+
   onEditorStateChange = (editorState) => {
     this.setState({ editorState });
   };
+
   handleChangeBody = (value) => {
     this.setState({
       body: value,
@@ -26,6 +23,7 @@ export default class FollowUpPage extends React.Component {
       email_body: value,
     });
   };
+
   handleSubject = (event) => {
     this.setState({
       subject: event.target.value,
@@ -39,6 +37,7 @@ export default class FollowUpPage extends React.Component {
     });
     Object.assign(this.props.dripPageObject, { waitDays: event.target.value });
   };
+
   render() {
     const { editorState } = this.state;
     return (
@@ -154,21 +153,6 @@ export default class FollowUpPage extends React.Component {
                       ],
                     }}
                   />
-                  {/* <Editor
-                    value={this.state.body}
-                    onChange={this.handleChangeBody}
-                    className="editorDiv"
-                    editorState={editorState}
-                    toolbarClassName="rdw-storybook-toolbar"
-                    wrapperClassName="rdw-storybook-wrapper"
-                    editorClassName="rdw-storybook-editor"
-                    onEditorStateChange={this.onEditorStateChange}
-                    toolbar={{
-                      link: {
-                        defaultTargetOption: "_blank",
-                      },
-                    }}
-                  /> */}
                 </Col>
               </Row>
             </Col>

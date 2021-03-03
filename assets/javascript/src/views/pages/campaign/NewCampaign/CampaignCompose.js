@@ -11,10 +11,8 @@ import {
   CardHeader,
   CardBody,
 } from "reactstrap";
-import { Link } from "react-router-dom";
 import FollowUpPage from "./components/FollowUpPage";
 import Drips from "./components/Drips";
-import LinkClicksPage from "./components/LinkClicksPage";
 import { connect } from "react-redux";
 import { CampaignComposeAction } from "../../../../redux/action/CampaignAction";
 import ReactQuill from "react-quill";
@@ -52,10 +50,9 @@ class CampaignCompose extends Component {
 
   onAddBtnClickFollow = () => {
     const inputListFollow = this.state.inputListFollow;
+    this.state.followUpData.push(this.state.dataObj);
     this.counter = this.counter + 1;
-    this.state.counter === 0
-      ? null
-      : this.state.followUpData.push(this.state.dataObj);
+
     this.setState({
       dataObj: {},
       inputListFollow: inputListFollow.concat(
@@ -69,12 +66,12 @@ class CampaignCompose extends Component {
       ),
     });
   };
+
   onAddBtnClickDrips = () => {
     const inputListDrips = this.state.inputListDrips;
+    this.state.dripData.push(this.state.dataObj);
     this.counter = this.counter + 1;
-    this.state.counter === 0
-      ? null
-      : this.state.dripData.push(this.state.dataObj);
+
     this.setState({
       dataObj: {},
       inputListDrips: inputListDrips.concat(
@@ -133,9 +130,6 @@ class CampaignCompose extends Component {
   };
 
   render() {
-    const { inputListFollow } = this.state;
-
-    console.log(inputListFollow, "compose");
     return (
       <>
         <PageHeader

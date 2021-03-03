@@ -1,14 +1,11 @@
 import React from "react";
 import { Container, Row, Col, Input } from "reactstrap";
-import { Editor } from "react-draft-wysiwyg";
-import { EditorState } from "draft-js";
 import ReactQuill from "react-quill";
 
 export default class FollowUpPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editorState: EditorState.createEmpty(),
       waitDays: 0,
       replyChain: this.props.normalSubject,
       body: "",
@@ -16,6 +13,7 @@ export default class FollowUpPage extends React.Component {
       newSubject: "",
     };
   }
+
   componentDidMount() {
     Object.assign(this.props.followUpPageObject, {
       subject: this.state.replyChain,
@@ -27,6 +25,7 @@ export default class FollowUpPage extends React.Component {
       email_body: this.state.body,
     });
   }
+
   handleChangewaitDays = (event) => {
     this.setState({
       waitDays: event.target.value,
@@ -70,12 +69,7 @@ export default class FollowUpPage extends React.Component {
     });
   };
 
-  onEditorStateChange = (editorState) => {
-    this.setState({ editorState });
-  };
-
   render() {
-    const { editorState } = this.state;
     const { id } = this.props;
 
     return (
@@ -181,21 +175,6 @@ export default class FollowUpPage extends React.Component {
                       ],
                     }}
                   />
-                  {/* <Editor
-                    className="editorDiv"
-                    onChange={this.handleChangeBody}
-                    value={this.state.body}
-                    editorState={editorState}
-                    toolbarClassName="rdw-storybook-toolbar"
-                    wrapperClassName="rdw-storybook-wrapper"
-                    editorClassName="rdw-storybook-editor"
-                    onEditorStateChange={this.onEditorStateChange}
-                    toolbar={{
-                      link: {
-                        defaultTargetOption: "_blank",
-                      },
-                    }}
-                  /> */}
                 </Col>
               </Row>
             </Col>
