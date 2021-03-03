@@ -26,7 +26,8 @@ Provider = (
 class EmailAccount(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     email = models.EmailField(unique=True)
-    full_name = models.CharField(max_length=200)
+    first_name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200)
     smtp_host = models.CharField(max_length=200,blank=True,null = True)
     smtp_username = models.CharField(max_length=200,blank=True,null = True)
     smtp_password = models.CharField(max_length=200,blank=True,null = True)
@@ -40,5 +41,3 @@ class EmailAccount(models.Model):
 
     def __str__(self):
         return self.email
-
-

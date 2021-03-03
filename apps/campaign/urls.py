@@ -18,12 +18,12 @@ urlpatterns = [
     path('recipients/<int:pk>/',views.RecipientDetailView.as_view(), name = "recipients_update"),
     path('settings-leadcatcher/', views.CampaignleadCatcher.as_view(),name = 'settings-leadcatcher'),
     path('settings-leadcatcherView/<int:pk>/', views.LeadCatcherView.as_view(),name = 'LeadCatcherView'),
-
+    path('update-leadcatcherstatus/',views.LeadCatcherStatusUpdateView.as_view(),name='update-leadcatcherstatus'),
     path('settings-leadcatcher/<int:pk>/', views.LeadCatcherUpdateView.as_view(),name = 'campaignleadcatcher'),
     path('sequence/<int:pk>/', views.CampaignMessages.as_view(),name = 'campaignmessage'),
     path('prospects/', views.ProspectsView.as_view(),name = 'procpects'),
     path('prospects/<int:pk>/', views.ProspectsCampaignView.as_view(),name = 'procpects_campaign'),
     path('recipientunsubcribe/', views.RecipientUnsubcribe.as_view(), name='recipient_unsubcribe'),
-
+    path('recipientunassigned/', views.RecipientUnassignedView.as_view(), name='recipientunassigned'),
 
 ]

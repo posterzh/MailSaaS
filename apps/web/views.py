@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
@@ -50,3 +50,8 @@ def team_admin_home(request, team_slug):
         'team': request.team,
     })
 
+def msfile(request):
+    f = open('.well-known/microsoft-identity-association.json', 'r')
+    file_content = f.read()
+    f.close()
+    return HttpResponse(file_content, content_type="application/json")

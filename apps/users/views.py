@@ -123,7 +123,7 @@ class ChangePasswordView(generics.RetrieveUpdateAPIView):
                     return Response({"old_password": "Wrong password."},status=status.HTTP_400_BAD_REQUEST)
                 queryset.set_password(serializer.data.get("new_password"))
                 queryset.save()
-                return Response({"status":"success","response":"Password Sucessfully Updated"})
+                return Response({"status":"success","response":"Password successfully Updated"})
             else:
                 return Response({'message':"confirm password did't match"})            
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -142,12 +142,12 @@ class PasswordResetLink(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         global jwt_token,user
         if not request.data.get('email'):
-            return Response({"message":'please enter your correct email address','sucess':False})
+            return Response({"message":'please enter your correct email address','success':False})
         email = request.data.get("email",'')
         try:
             user = CustomUser.objects.get(email=email) 
         except CustomUser.DoesNotExist:
-            return Response({'message':'User does not exists','sucess':False})
+            return Response({'message':'User does not exists','success':False})
         try:
             payload = jwt_payload_handler(user)
             jwt_token = jwt_encode_handler(payload)
@@ -184,9 +184,9 @@ class ForgotPassword(generics.CreateAPIView):
                         my_user.set_password(serializer.data['new_password'])
                         my_user.password_change=True
                         my_user.save()
-                        return Response({'message':'Password updated successfully','sucess':True})
-                    return Response({"message":serializer.errors,'status':False})
+                        return Response({'message':'Password updated successfully','success':True})
+                    return Response({"message":serializer.errors,'success':False})
                        
-            return Response({"message":"password don't match","status":False})
+            return Response({"message":"password don't match","success":False})
         else:
             return Response({'message':'signature has expired'})
