@@ -162,7 +162,7 @@ class Unsubscribes extends Component {
                 </span>
               </Button>
               <Button
-                className="btn-icon btn-2 small-mobile-ml-0 small-mobile-mt-1"
+                className="btn-icon btn-2 ml-xs-0 mt-xs-1"
                 type="button"
               >
                 <span className="btn-inner--icon">
