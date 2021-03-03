@@ -38,21 +38,20 @@ function CampaignsHeader(props) {
         <ButtonGroup>
           {items.map((item, index) => {
             return (
-              <>
-                <Button
-                  color={color}
-                  type="button"
-                  className={activeItem == item.name ? "active" : ""}
-                  onClick={() => {
-                    props.history.push({
-                      pathname: item.link,
-                      state: { id },
-                    });
-                  }}
-                >
-                  {item.name}
-                </Button>
-              </>
+              <Button
+                color={color}
+                type="button"
+                className={activeItem == item.name ? "active" : ""}
+                onClick={() => {
+                  props.history.push({
+                    pathname: item.link,
+                    state: { id },
+                  });
+                }}
+                key={"_" + index}
+              >
+                {item.name}
+              </Button>
             );
           })}
         </ButtonGroup>
