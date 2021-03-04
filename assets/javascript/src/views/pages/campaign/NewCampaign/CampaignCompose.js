@@ -11,11 +11,6 @@ import {
   CardHeader,
   CardBody,
 } from "reactstrap";
-import { Link } from "react-router-dom";
-// import { EditorState } from 'draft-js';
-import FollowUpPage from "./components/FollowUpPage";
-import Drips from "./components/Drips";
-import LinkClicksPage from "./components/LinkClicksPage";
 import { connect } from "react-redux";
 import { CampaignComposeAction } from "../../../../redux/action/CampaignAction";
 import ReactQuill from "react-quill";
@@ -24,138 +19,87 @@ import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import CampaignsHeader from "./components/CampaignsHeader";
 
+import FollowUpPanel from "./components/FollowUpPanel";
+import DripPanel from "./components/DripPanel";
+
 class CampaignCompose extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       subject: "",
       email_body: "",
-      // editorState: EditorState.createEmpty(),
-      inputListFollow: [],
-      inputListDrips: [],
-      inputListLinkClick: [],
-      dataObj: {},
-      arra: [],
-      followUpData: [],
-      dripData: [],
-      onClickData: [],
-      dripPageObject: {},
-      normalData: {},
-      isOpen: false,
+      followUpList: [],
+      dripList: [],
     };
-    this.counter = 0;
   }
 
-  handleSubject = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-    Object.assign(this.state.normalData, { subject: e.target.value });
-  };
-  onAddBtnClickFollow = () => {
-    const inputListFollow = this.state.inputListFollow;
-    this.counter = this.counter + 1;
-    this.state.counter === 0
-      ? null
-      : this.state.followUpData.push(this.state.dataObj);
-    this.setState({
-      dataObj: {},
-      inputListFollow: inputListFollow.concat(
-        <FollowUpPage
-          onDeleteList={this.onDeleteList}
-          msgBody={this.state.msgBody}
-          followUpPageObject={this.state.dataObj}
-          normalSubject={this.state.subject}
-          id={this.counter}
-        />
-      ),
+  onAddFollowUp = () => {
+    this.setState((state) => {
+      const index = state.followUpList.length;
+      let newFollowUp = { index, subject: "", email_body: "" };
+      const followUpList = state.followUpList.concat(newFollowUp);
+      return {
+        ...state,
+        followUpList,
+      };
     });
   };
-  onAddBtnClickDrips = () => {
-    const inputListDrips = this.state.inputListDrips;
-    this.counter = this.counter + 1;
-    this.state.counter === 0
-      ? null
-      : this.state.dripData.push(this.state.dataObj);
-    this.setState({
-      dataObj: {},
-      inputListDrips: inputListDrips.concat(
-        <Drips
-          dripPageObject={this.state.dataObj}
-          key={this.counter}
-          onDeleteList={this.onDeleteList}
-        />
-      ),
+
+  onDeleteFollowUp = (index) => {
+    this.setState((state) => {
+      const followUpList = state.followUpList.filter((item, i) => i != index);
+      return {
+        ...state,
+        followUpList,
+      };
     });
   };
-  onAddBtnClickLinkClick = () => {
-    const inputListLinkClick = this.state.inputListLinkClick;
-    const inputListDrips = this.state.inputListDrips;
-    this.counter = this.counter + 1;
-    this.state.counter === 0
-      ? null
-      : this.state.onClickData.push(this.state.dataObj);
-    this.setState({
-      dataObj: {},
-      inputListLinkClick: inputListLinkClick.concat(
-        <LinkClicksPage
-          onClickPageObject={this.state.dataObj}
-          onDeleteList={this.onDeleteList}
-          key={this.counter}
-        />
-      ),
+
+  onAddDrip = () => {
+    this.setState((state) => {
+      const index = state.dripList.length;
+      let newFollowUp = { index, subject: "", email_body: "" };
+      const dripList = state.dripList.concat(newFollowUp);
+      return {
+        ...state,
+        dripList,
+      };
     });
   };
-  onEditorStateChange = (editorState) => {
-    this.setState({ editorState });
+
+  onDeleteDrip = (index) => {
+    this.setState((state) => {
+      const dripList = state.dripList.filter((item, i) => i != index);
+      return {
+        ...state,
+        dripList,
+      };
+    });
   };
+
   handleSubmit = (e) => {
     e.preventDefault();
-    if (this.state.email_body === "") {
-      this.setState({
-        isOpen: true,
-      });
-    } else {
-      Object.assign(this.state.normalData, {
-        campaign:
-          this.props.history.location.state &&
-          this.props.history.location.state.id,
-      });
-      let data = {
-        normal: this.state.normalData,
-        follow_up: this.state.followUpData,
-        drips: this.state.dripData,
-        onLinkClick: this.state.onClickData,
-      };
-      this.props.CampaignComposeAction(data);
-    }
-  };
-  onChange = (e) => {
-    this.setState({ msgBody: e.blocks[0].text });
-  };
-  handleMsgBody = (value) => {
-    this.setState({
-      email_body: value,
-      isOpen: false,
-    });
-    Object.assign(this.state.normalData, { email_body: value });
+
+    let normal = {
+      campaign:
+        this.props.history.location.state &&
+        this.props.history.location.state.id,
+      subject: this.state.subject,
+      email_body: this.state.email_body,
+    };
+
+    let data = {
+      normal: normal,
+      follow_up: this.state.followUpList,
+      drips: this.state.dripList,
+    };
+
+    console.log(data);
+
+    this.props.CampaignComposeAction(data);
   };
 
-  onDeleteList = (e) => {
-    var array = [...this.state.inputListFollow];
-    let index = e - 1;
-    let a = this.state.inputListFollow.keys();
-    console.log(e, "sgsd");
-    //     const newList = array.filter((item,i) => i !== index);
-    //     this.setState({
-    //         inputListFollow:newList
-    //     })
-    //    this.counter=0
-  };
   render() {
-    const { editorState, inputListFollow } = this.state;
-
-    console.log(inputListFollow, "compose");
     return (
       <>
         <PageHeader
@@ -181,41 +125,26 @@ class CampaignCompose extends Component {
                   </Col>
                 </Row>
                 <Row>
-                  <div className="grand_parent px-3">
-                    <div className="input_field ">
-                      <Input
-                        type="text"
-                        className="in"
-                        name="subject"
-                        value={this.state.subject}
-                        onChange={this.handleSubject}
-                        placeholder="Subject"
-                        required
-                      />
-                      <div className="mt-3">
-                        <a
-                          href=""
-                          onClick={(e) => {
-                            e.preventDefault();
-                            alert("msg");
-                          }}
-                        >
-                          <span>
-                            <i
-                              className="fa fa-question-circle-o"
-                              aria-hidden="true"
-                            ></i>
-                          </span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
+                  <Col>
+                    <Input
+                      type="text"
+                      className="in"
+                      name="subject"
+                      value={this.state.subject}
+                      onChange={(e) => {
+                        this.setState({ subject: e.target.value });
+                      }}
+                      placeholder="Subject"
+                      required
+                    />
+                  </Col>
                 </Row>
                 <Row>
                   <Col>
                     <ReactQuill
-                      value={this.state.email_body}
-                      onChange={this.handleMsgBody}
+                      onChange={(value) => {
+                        this.setState({ email_body: value });
+                      }}
                       theme="snow"
                       className="Quill_div"
                       modules={{
@@ -234,23 +163,19 @@ class CampaignCompose extends Component {
                       }}
                     />
                   </Col>
-                  {/* <div className='Editor_div'>
-                                            <Editor
-                                                className='editorDiv'
-                                                editorState={editorState}
-                                                toolbarClassName="rdw-storybook-toolbar"
-                                                wrapperClassName="rdw-storybook-wrapper"
-                                                editorClassName="rdw-storybook-editor"
-                                                name='email_body'
-                                                value={this.state.email_body}
-                                                onChange={this.handleMsgBody}
-                                                onEditorStateChange={this.onEditorStateChange}
-                                                required
-                                            />
-                                        </div> */}
                 </Row>
+
                 <Row className="mt-5">
-                  <Col>{this.state.inputListFollow}</Col>
+                  <Col>
+                    {this.state.followUpList.map((followUp, index) => (
+                      <FollowUpPanel
+                        index={index}
+                        onDelete={this.onDeleteFollowUp}
+                        data={followUp}
+                        key={index}
+                      />
+                    ))}
+                  </Col>
                 </Row>
 
                 <Row>
@@ -260,15 +185,26 @@ class CampaignCompose extends Component {
                       outline
                       type="button"
                       block
-                      onClick={this.onAddBtnClickFollow}
+                      onClick={this.onAddFollowUp}
                     >
                       <i className="fa fa-plus"></i> &nbsp;ADD FOLLOW-UP
                     </Button>
                   </Col>
                 </Row>
+
                 <Row>
-                  <Col>{this.state.inputListDrips}</Col>
+                  <Col>
+                    {this.state.dripList.map((drip, index) => (
+                      <DripPanel
+                        index={index}
+                        onDelete={this.onDeleteDrip}
+                        data={drip}
+                        key={index}
+                      />
+                    ))}
+                  </Col>
                 </Row>
+
                 <Row>
                   <Col className="mt-3">
                     <Button
@@ -276,18 +212,20 @@ class CampaignCompose extends Component {
                       outline
                       type="button"
                       block
-                      onClick={this.onAddBtnClickDrips}
+                      onClick={this.onAddDrip}
                     >
                       <i className="fa fa-plus"></i> &nbsp;ADD DRIP
                     </Button>
                   </Col>
                 </Row>
-                <Row>
-                  <Col>{this.state.inputListLinkClick}</Col>
-                </Row>
+
                 <Row className="my-3">
                   <Col className="d-flex align-items-center justify-content-center">
-                    <Link
+                    <Button color="danger" type="button" type="submit">
+                      NEXT{" "}
+                      <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                    </Button>
+                    {/* <Link
                       to={{
                         pathname: "/app/admin/CampaignPreview",
                         state: {
@@ -301,7 +239,7 @@ class CampaignCompose extends Component {
                         NEXT{" "}
                         <i className="fa fa-arrow-right" aria-hidden="true"></i>
                       </Button>
-                    </Link>
+                    </Link> */}
                   </Col>
                 </Row>
               </Form>

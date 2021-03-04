@@ -34,15 +34,32 @@ class CampaignStart extends React.Component {
     ];
     var now = new Date();
     var thisMonth = months[now.getMonth()];
-    const date = thisMonth + " " + now.getDate() + " Outreach";
+    const title = thisMonth + " " + now.getDate() + " Outreach";
     this.state = {
-      title: date,
+      title: title,
+      titleState: '',
+      addressState: '',
       from_address: "",
       mailsExist: null,
     };
+    
+  }
+
+  validateCustomStylesForm = () => {
+    if (this.state.title) {
+      this.setState({titleState: 'valid'});
+    } else {
+      this.setState({titleState: 'invalid'});
+    }
+
+    if (this.state.from_address) {
+      this.setState({addressState: 'valid'});
+    } else {
+      this.setState({addressState: 'invalid'});
+    }
+    
   }
   handleChange = (e) => {
-    console.log(e.target.name, e.target.value);
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -56,6 +73,7 @@ class CampaignStart extends React.Component {
       title: this.state.title,
       from_address: this.state.from_address,
     };
+    console.log(data);
     this.props.StartCampaignAction(data);
   };
 
@@ -101,7 +119,7 @@ class CampaignStart extends React.Component {
         <PageContainer title="New Campaign">
           <Row>
             <Col md={8} className="mx-auto">
-              <Form onSubmit={this.handleSubmit}>
+              <Form onSubmit={this.handleSubmit} className="needs-validation" noValidate>
                 <Row>
                   <Col>
                     <CampaignsHeader color="secondary" activeItem="START" />
@@ -109,7 +127,7 @@ class CampaignStart extends React.Component {
                 </Row>
                 <Row>
                   <Col>
-                    <h1 className="text-center my-4">Let's get started</h1>
+                    <h2 className="text-center my-4">Let's get started</h2>
                   </Col>
                 </Row>
 
@@ -120,7 +138,7 @@ class CampaignStart extends React.Component {
                         className="form-control-label"
                         htmlFor="inputTitle"
                       >
-                        Title
+                        Title (for your team's eyes only)
                       </label>
                       <Input
                         id="inputTitle"
@@ -128,7 +146,9 @@ class CampaignStart extends React.Component {
                         name="title"
                         value={this.state.title}
                         onChange={this.handleChange}
-                        placeholder={this.state.date}
+                        placeholder={this.state.title}
+                        valid={this.state.titleState === "valid"}
+                        invalid={this.state.titleState === "invalid"}
                       />
                     </FormGroup>
                     <FormGroup>
@@ -144,16 +164,20 @@ class CampaignStart extends React.Component {
                         name="from_address"
                         value={this.state.from_address}
                         onChange={this.handleChange}
+                        valid={this.state.addressState === "valid"}
+                        invalid={this.state.addressState === "invalid"}
                       >
-                        <option value={""}>Select</option>
-                        {mailGetData &&
+                        <option value="">Select</option>
+                        <option value="test@gmail.com">test@gmail.com</option>
+
+                        {/* {mailGetData &&
                           mailGetData.map((item, index) => {
                             return (
                               <option key={index} value={item.id}>
                                 {item.email}
                               </option>
                             );
-                          })}
+                          })} */}
                       </Input>
                     </FormGroup>
                   </Col>
@@ -161,7 +185,17 @@ class CampaignStart extends React.Component {
 
                 <Row className="my-3">
                   <Col className="d-flex align-items-center justify-content-center">
-                    <Link
+                    <Button 
+                      color="danger" 
+                      type="submit"
+                      disabled={this.state.title === "" || this.state.from_address === ""}
+                      onClick={this.validateCustomStylesForm}
+                    >
+                      NEXT{" "}
+                      <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                    </Button>
+
+                    {/* <Link
                       to={{
                         pathname: "/app/admin/CampaignRecipient",
                         state: {
@@ -175,7 +209,7 @@ class CampaignStart extends React.Component {
                         NEXT{" "}
                         <i className="fa fa-arrow-right" aria-hidden="true"></i>
                       </Button>
-                    </Link>
+                    </Link> */}
                   </Col>
                 </Row>
               </Form>

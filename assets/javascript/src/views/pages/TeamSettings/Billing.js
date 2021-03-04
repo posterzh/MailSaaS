@@ -7,15 +7,32 @@ import {
   Button,
   Card,
   CardBody,
-  CardHeader,
   CardFooter,
-  Alert,
+  Badge,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
+import EditCardDetailModal from "./EditCardDetailModal";
 
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
 
 class Billing extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false,
+    };
+  }
+
+  handleClose = () => {
+    this.setState({
+      modal: false,
+    });
+  };
+
   render() {
     const receipts = [
       {
@@ -39,47 +56,78 @@ class Billing extends Component {
         <PageContainer title="Billing">
           <Container>
             <Row className="mt-3">
-              <Col md="6" sm="12" className="mobile-p-0">
-                <Card>
-                  <CardHeader>
-                    <h3 className="mb-0 text-success">ACTIVE PLAN</h3>
-                  </CardHeader>
+              <Col lg="5" md="6" sm="12" className="mobile-p-0">
+                <Card className="bg-gradient-info">
                   <CardBody>
-                    <div className="mb-2">
-                      <small className="text-info">Renews On</small>
-                      <p className="text-muted">Feb 11, 2021</p>
-                    </div>
-                    <div className="mb-2">
-                      <small className="text-info">Plan type</small>
-                      <p className="text-muted">Monthly Email Outreach</p>
-                    </div>
-                    <div className="mb-2">
-                      <small className="text-info">Renews On</small>
-                      <p className="text-muted">Feb 11, 2021</p>
-                    </div>
+                    <Row className="justify-content-end">
+                      <Col className="col-auto">
+                        <Badge className="badge-lg" color="success">
+                          Active
+                        </Badge>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col>
+                        <span className="h6 surtitle text-white">
+                          Plan type
+                        </span>
+                        <span className="d-block h3 text-white">
+                          Monthly Email Outreach
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col>
+                        <span className="h6 surtitle text-white">
+                          Renews On
+                        </span>
+                        <span className="d-block h3 text-white">
+                          Feb 11, 2021
+                        </span>
+                      </Col>
+                      <Col>
+                        <span className="h6 surtitle text-white">
+                          Number Of Users
+                        </span>
+                        <span className="d-block h3 text-white">1</span>
+                      </Col>
+                    </Row>
                   </CardBody>
-                  <Alert
-                    className="d-flex justify-content-between align-items-center"
-                    color="default"
-                  >
-                    <span>Total monthly price</span>
-                    <b>$51.00</b>
-                  </Alert>
                   <CardFooter className="bg-transparent">
                     <Button
-                      color="info"
+                      color="primary"
                       type="submit"
                       className="text-uppercase"
                     >
                       Upgrade
                     </Button>
-                    <Button
-                      color="secondary"
-                      type="submit"
-                      className="text-uppercase small-mobile-ml-0 small-mobile-mt-1"
-                    >
-                      change
-                    </Button>
+                    <UncontrolledDropdown direction="up" group>
+                      <DropdownToggle color="secondary" className="text-uppercase mt-xs-1">
+                      Change
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        <DropdownItem
+                          onClick={(e) => {
+                            e.preventDefault();
+                            this.setState({ modal: !this.state.modal });
+                          }}
+                        >
+                          Change Credit Card, etc.
+                        </DropdownItem>
+                        <DropdownItem
+                          href="#"
+                          onClick={(e) => e.preventDefault()}
+                        >
+                          Downgrade
+                        </DropdownItem>
+                        <DropdownItem
+                          href="#"
+                          onClick={(e) => e.preventDefault()}
+                        >
+                          Cancel Subscription
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
                   </CardFooter>
                 </Card>
               </Col>
@@ -120,6 +168,10 @@ class Billing extends Component {
               </Col>
             </Row>
           </Container>
+          <EditCardDetailModal
+            isOpen={this.state.modal}
+            handleClose={this.handleClose}
+          />
         </PageContainer>
       </>
     );
