@@ -18,7 +18,7 @@ class PageContainer extends React.Component {
   }
 
   render() {
-    const { children, title, showHelper } = this.props;
+    const { children, title, showHelper, cardBodyClassNames } = this.props;
     return (
       <>
         <Container fluid className="mt--5">
