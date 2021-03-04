@@ -114,6 +114,12 @@ class Prospects extends Component {
     paginationCallback(value) {
         console.log("value : ", value)
     }
+    getSelectedRecords(value) {
+        console.log("return=" + value);
+    }
+    actionCallback(type, item) {
+        console.log("item = ", item, " , type : ", type);
+    }
     render() {
         const { showProspect, isSelectionBar, selectedId } = this.state;
         const { prospectData, propData } = this.props;
@@ -163,7 +169,7 @@ class Prospects extends Component {
                 tasks: '8'
             },
             {
-                email: 'ajju@gmail.com',
+                email: 'janak@gmail.com',
                 name: 'Azazul',
                 created: '10-10-2020',
                 status: 'Passed',
@@ -171,6 +177,40 @@ class Prospects extends Component {
                 sent: '10',
                 engaged: '2',
                 tasks: '8'
+            },
+            {
+                email: 'ajju@gmail.com',
+                name: 'janak',
+                created: '10-10-2020',
+                status: 'Passed',
+                campaign: '1458',
+                sent: '10',
+                engaged: '2',
+                tasks: '8'
+            }
+        ];
+        const filters = [
+            {
+                key: 'email',
+                options: ['janak@gmail.com', 'ajajul@gmail.com', 'mikin@gmail.com', 'ajju@gmail.com']
+            },
+            {
+                key: 'name',
+                options: ['janak', 'ajajul', 'mikin']
+            }
+        ];
+        const actionMenus = [
+            {
+                key: 'view',
+                name: 'View'
+            },
+            {
+                key: 'edit',
+                name: 'Edit'
+            },
+            {
+                key: 'delete',
+                name: 'Delete'
             }
         ]
         return (
@@ -199,7 +239,7 @@ class Prospects extends Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Col md="2" sm="4" className="sidenav-toggler" onClick={()=>{this.setState({selected: 'total'})}}>
+                        <Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'total' }) }}>
                             <Card className={this.state.selected === 'total' ? "bg-info" : "bg-light"}>
                                 <CardBody className="text-center p-3">
                                     <CardTitle className="m-0">
@@ -211,7 +251,7 @@ class Prospects extends Component {
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col md="2" sm="4" className="sidenav-toggler" onClick={()=>{this.setState({selected: 'in-campaign'})}}>
+                        <Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'in-campaign' }) }}>
                             <Card className={this.state.selected === 'in-campaign' ? "bg-info" : "bg-light"}>
                                 <CardBody className="text-center p-3">
                                     <CardTitle className="m-0">
@@ -223,7 +263,7 @@ class Prospects extends Component {
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col md="2" sm="4" className="sidenav-toggler" onClick={()=>{this.setState({selected: 'engaged'})}}>
+                        <Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'engaged' }) }}>
                             <Card className={this.state.selected === 'engaged' ? "bg-info" : "bg-light"}>
                                 <CardBody className="text-center p-3">
                                     <CardTitle className="m-0">
@@ -235,7 +275,7 @@ class Prospects extends Component {
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col md="2" sm="4" className="sidenav-toggler" onClick={()=>{this.setState({selected: 'leads'})}}>
+                        <Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'leads' }) }}>
                             <Card className={this.state.selected === 'leads' ? "bg-info" : "bg-light"}>
                                 <CardBody className="text-center p-3">
                                     <CardTitle className="m-0">
@@ -247,7 +287,7 @@ class Prospects extends Component {
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col md="2" sm="4" className="sidenav-toggler" onClick={()=>{this.setState({selected: 'bounces'})}}>
+                        <Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'bounces' }) }}>
                             <Card className={this.state.selected === 'bounces' ? "bg-info" : "bg-light"}>
                                 <CardBody className="text-center p-3">
                                     <CardTitle className="m-0">
@@ -259,7 +299,7 @@ class Prospects extends Component {
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col md="2" sm="4" className="sidenav-toggler" onClick={()=>{this.setState({selected: 'unsubscribes'})}}>
+                        <Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'unsubscribes' }) }}>
                             <Card className={this.state.selected === 'unsubscribes' ? "bg-info" : "bg-light"}>
                                 <CardBody className="text-center p-3">
                                     <CardTitle className="m-0">
@@ -273,127 +313,21 @@ class Prospects extends Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Tables titles={tableTitle} showAction={true} showSelect={true} tablePropsData={tableData} paginationCallback={this.paginationCallback}/>
+                        <Tables
+                            titles={tableTitle} // required
+                            tablePropsData={tableData}   // required
+                            showAction={true}    // optional
+                            actionMenus={actionMenus}   // optional for showing menus of row.
+                            actionCallback={this.actionCallback}        // get call back for action select of row.
+                            showSelect={true}    // optional
+                            selectedCallback={this.getSelectedRecords}      // get call back for select object.
+                            showPagination={true}   // optional
+                            paginationCallback={this.paginationCallback}     // get callback of page change.
+                            filters={filters}   // optional to enable filter
+                            searchKeys={['email', 'name']}  // optional to enable search
+                        />
                     </Row>
                 </PageContainer>
-                <div className='campaign_navbar' >
-                    <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Prospects</h1>
-                    <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
-                </div>
-                <div style={{ padding: '20px' }} className={`selection-bar ${isSelectionBar && selectedId.length > 0 ? "_block" : " "}`} >
-                    <span style={SpanStyles} onClick={() => { this.setState({ isSelectionBar: false }); selectedId.length = 0 }}><i className="fa fa-close" aria-hidden="true"></i></span>
-                    <span style={Span} >{selectedId.length} selected</span>
-                    <div >
-                        <span style={SpanStyles}><i className="fas fa-minus-circle"></i></span>
-                        <span onClick={this.ProspectDelete} style={SpanStyles} >delete</span>:
-                        <span onClick={this.unsubscribeProspect} style={SpanStyles} >Unsubscribe</span>
-                    </div>
-                    <div>
-
-                    </div>
-                </div>
-
-
-                <Modal className="prospect_modal" isOpen={showProspect} toggle={this.toggle}>
-                    <ModalHeader className="prospect_modalheader" toggle={this.toggle}>{propData && propData.reciepent_email}</ModalHeader>
-                    <ModalBody className="prospect_modalbody" >
-                        <ProspectOnclick id={this.state.id} />
-                    </ModalBody>
-                </Modal>
-                <Container fluid className='mt-4' >
-                    <Row>
-                        <Col md={2}>
-                            <div>
-                                <label className='filter_app'>Teammate</label><br></br>
-                                <select className='filter_select_prospect'>
-                                    <option value='one'>One</option>
-                                    <option value='two'>two</option>
-                                    <option value='three'>three</option>
-                                    <option value='four'>Four</option>
-                                </select>
-                            </div>
-                        </Col>
-                    </Row>
-                    <Row className='mt-4'>
-                        <Col md={2} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index) => { return item.total_count})}</h1><span >TOTAl</span></Col>
-                        <Col md={2} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index)=>{ return item.in_campaign_count})}</h1><span >IN CAMPAIGN</span></Col>
-                        <Col md={2} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index)=>{ return item.leads_count})}</h1><span >LEADS</span></Col>
-                        <Col md={2} className=' prospect_details'><h1>{prospectData && prospectData.map((item, index)=>{ return item.unsubscribe})}</h1><span >UNSUBSCRIBES</span></Col>
-                    </Row>
-                    <Row className=' mt-3 input_search_div'>
-                        <Col md={4}>
-                            <div className='grand_parent' >
-                                <div className='input_field'>
-                                    <Input type='email' className='in' placeholder='SearchEmail' onChange={(event) => { this.setState({ searchEmail: event.target.value }) }} />
-                                </div>
-                            </div>
-                        </Col>
-                        <Col md={4}>
-                            <div className='grand_parent mt-4'>
-                                <div className='select_div'>
-                                    <select className='filter_select_prospect'>
-                                        <option value='one'>One</option>
-                                        <option value='two'>two</option>
-                                        <option value='three'>three</option>
-                                        <option value='four'>Four</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </Col>
-                        <Col md={4}>
-                            <div className='grand_parent mt-4'>
-                                <div className='select_div'>
-                                    <select className='filter_select_prospect'>
-                                        <option value='one'>One</option>
-                                        <option value='two'>two</option>
-                                        <option value='three'>three</option>
-                                        <option value='four'>Four</option>
-                                    </select>
-                                </div>
-                                <div className='child ml-3'>
-                                    <a href='' onClick={(e) => { e.preventDefault(); alert('msg') }}>
-                                        <span className='font_icon'><i className="fa fa-undo" aria-hidden="true"></i></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Table responsive hover className='prospect_table' >
-                            <thead >
-                                <tr>
-                                    <th><input type='checkbox' /></th>
-                                    <th >EMAIL</th>
-                                    <th>NAME</th>
-                                    <th>CREATED</th>
-                                    {/* <th>STATUS</th> */}
-                                    <th>CAMPAGINS</th>
-                                    <th>SENT</th>
-                                    {/* <th>TASKS</th> */}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    prospectData && prospectData.filter((item) => {
-                                        if (item.email && item.email.toLowerCase().includes(this.state.searchEmail.toLowerCase())) { return <div>{item.email}</div> } else (this.state.searchEmail == "")
-                                        { return null }
-                                    }).map((item, index) => {
-                                        return <tr >
-                                            <td key={index}><input onChange={() => this.showSelectionBar(item.id)} type='checkbox'></input></td>
-                                            <td onClick={() => this.toggle(item.id)} value={index}>{item.email}</td>
-                                            <td value={index}>{item.name}</td>
-                                            <td value={index}>{item.created}</td>
-                                            {/* <td value={index}>{item.status}</td> */}
-                                            <td value={index}>{item.campaign_count}</td>
-                                            {/* <td value={index}>{item.sent === false ? 0 : 1}</td> */}
-                                            <td value={index}>{item.sent}</td>
-                                        </tr>
-                                    })
-                                }
-                            </tbody>
-                        </Table>
-                    </Row>
-                </Container>
             </div>
         )
     }

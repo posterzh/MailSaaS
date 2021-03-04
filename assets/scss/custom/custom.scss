@@ -1942,17 +1942,6 @@ input::-webkit-inner-spin-button {
   }
 }
 
-.custom-bg-info {
-  background-color: #11cdef;
-  &::before {
-    border-radius: 0.25rem;
-    border: 1px solid #11cdef;
-    transition: all 0.15s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    top: 0.25rem;
-    left: -1.75rem;
-    border-color: #11cdef;
-  }
-}
 .fixed-bottom-right {
   position: fixed;
   bottom: 30px;
