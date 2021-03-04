@@ -25,7 +25,7 @@ class PageContainer extends React.Component {
           <Row>
             <Col>
               <Card>
-                {(title || showHelper) && (
+                { (title || showHelper) &&
                   <CardHeader>
                     <h2 className="mx-auto text-center display-3">{title}</h2>
                     {(showHelper) && (
@@ -34,8 +34,8 @@ class PageContainer extends React.Component {
                       </p>
                     )}
                   </CardHeader>
-                )}
-                <CardBody className={cardBodyClassNames}>
+                }
+                <CardBody>
                   <Row>
                     <Col className="m-0">{children}</Col>
                   </Row>
