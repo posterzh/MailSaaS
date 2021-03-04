@@ -25,14 +25,16 @@ class PageContainer extends React.Component {
           <Row>
             <Col>
               <Card>
-                <CardHeader>
-                  <h2 className="mx-auto text-center display-3">{title}</h2>
-                  {(showHelper) && (
-                    <p style={{ position: "absolute", fontSize: "22px", top: "15px", right: "25px" }}>
-                      <i className="fa fa-question-circle-o" aria-hidden="true"></i>
-                    </p>
-                  )}
-                </CardHeader>
+                { (title || showHelper) &&
+                  <CardHeader>
+                    <h2 className="mx-auto text-center display-3">{title}</h2>
+                    {(showHelper) && (
+                      <p style={{ position: "absolute", fontSize: "22px", top: "15px", right: "25px" }}>
+                        <i className="fa fa-question-circle-o" aria-hidden="true"></i>
+                      </p>
+                    )}
+                  </CardHeader>
+                }
                 <CardBody>
                   <Row>
                     <Col className="m-0">{children}</Col>

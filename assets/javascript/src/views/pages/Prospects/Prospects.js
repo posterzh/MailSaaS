@@ -1,9 +1,33 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { Container, Row, Col, Label, Input, Table, Modal, ModalHeader, ModalBody, Card, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
+import {
+    Container,
+    Row,
+    Col,
+    Label,
+    Input,
+    Table,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    Card,
+    CardBody,
+    Dropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+    Form,
+    FormGroup,
+    CardTitle
+} from 'reactstrap'
 import { ProspectActionData, ProspectUnsubscribeAction } from '../../../redux/action/ProspectsAction'
 import ProspectOnclick from './ProspectOnclick'
 import { OnclickProspectActionData, deleteProspectAction } from '../../../redux/action/ProspectsAction'
+import PageHeader from "../../../components/Headers/PageHeader";
+import PageContainer from "../../../components/Containers/PageContainer";
+import Tables from "./TableContent";
+
+
 const SpanStyles = {
     paddingRight: "10px",
     paddingLeft: "10px",
@@ -30,8 +54,8 @@ class Prospects extends Component {
             showProspect: false,
             isSelectionBar: false,
             selectedId: [],
-            id: ''
-
+            id: '',
+            selected: 'total'
         };
     }
     dropdownToggle = () => {
@@ -87,11 +111,171 @@ class Prospects extends Component {
     componentDidMount() {
         this.props.ProspectActionData(this.props);
     }
+    paginationCallback(value) {
+        console.log("value : ", value)
+    }
     render() {
         const { showProspect, isSelectionBar, selectedId } = this.state;
         const { prospectData, propData } = this.props;
+        const tableTitle = [
+            {
+                key: 'email',
+                value: 'Email',
+            },
+            {
+                key: 'name',
+                value: 'Name',
+            },
+            {
+                key: 'created',
+                value: 'Created',
+            },
+            {
+                key: 'status',
+                value: 'Status',
+            },
+            {
+                key: 'campaign',
+                value: 'Campaign',
+            },
+            {
+                key: 'sent',
+                value: 'Sent',
+            },
+            {
+                key: 'engaged',
+                value: 'Engaged',
+            },
+            {
+                key: 'tasks',
+                value: 'Tasks',
+            },
+        ];
+        const tableData = [
+            {
+                email: 'ajju@gmail.com',
+                name: 'Azazul',
+                created: '10-10-2020',
+                status: 'Passed',
+                campaign: '1458',
+                sent: '10',
+                engaged: '9',
+                tasks: '8'
+            },
+            {
+                email: 'ajju@gmail.com',
+                name: 'Azazul',
+                created: '10-10-2020',
+                status: 'Passed',
+                campaign: '1458',
+                sent: '10',
+                engaged: '2',
+                tasks: '8'
+            }
+        ]
         return (
             <div className="prospect-main-container">
+                <PageHeader
+                    current="Prospects"
+                    parent="Prospects"
+                    showStatus={false}
+                />
+                <PageContainer title={false} showHelper={false}>
+                    <Row>
+                        <Col sm="12" md="3">
+                            <Form>
+                                <FormGroup>
+                                    <label
+                                        className="form-control-label"
+                                        htmlFor="exampleFormControlSelect1"
+                                    >
+                                        Teammate
+                                    </label>
+                                    <Input id="exampleFormControlSelect1" type="select" defaultValue="any">
+                                        <option value="any">Any</option>
+                                    </Input>
+                                </FormGroup>
+                            </Form>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md="2" sm="4" className="sidenav-toggler" onClick={()=>{this.setState({selected: 'total'})}}>
+                            <Card className={this.state.selected === 'total' ? "bg-info" : "bg-light"}>
+                                <CardBody className="text-center p-3">
+                                    <CardTitle className="m-0">
+                                        <h3 className="text-white heading m-0">
+                                            <div>120</div>
+                                            <div>Total</div>
+                                        </h3>
+                                    </CardTitle>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                        <Col md="2" sm="4" className="sidenav-toggler" onClick={()=>{this.setState({selected: 'in-campaign'})}}>
+                            <Card className={this.state.selected === 'in-campaign' ? "bg-info" : "bg-light"}>
+                                <CardBody className="text-center p-3">
+                                    <CardTitle className="m-0">
+                                        <h3 className="text-white heading m-0">
+                                            <div>94</div>
+                                            <div>In Campaign</div>
+                                        </h3>
+                                    </CardTitle>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                        <Col md="2" sm="4" className="sidenav-toggler" onClick={()=>{this.setState({selected: 'engaged'})}}>
+                            <Card className={this.state.selected === 'engaged' ? "bg-info" : "bg-light"}>
+                                <CardBody className="text-center p-3">
+                                    <CardTitle className="m-0">
+                                        <h3 className="text-white heading m-0">
+                                            <div>9</div>
+                                            <div>Engaged</div>
+                                        </h3>
+                                    </CardTitle>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                        <Col md="2" sm="4" className="sidenav-toggler" onClick={()=>{this.setState({selected: 'leads'})}}>
+                            <Card className={this.state.selected === 'leads' ? "bg-info" : "bg-light"}>
+                                <CardBody className="text-center p-3">
+                                    <CardTitle className="m-0">
+                                        <h3 className="text-white heading m-0">
+                                            <div>13</div>
+                                            <div>Leads</div>
+                                        </h3>
+                                    </CardTitle>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                        <Col md="2" sm="4" className="sidenav-toggler" onClick={()=>{this.setState({selected: 'bounces'})}}>
+                            <Card className={this.state.selected === 'bounces' ? "bg-info" : "bg-light"}>
+                                <CardBody className="text-center p-3">
+                                    <CardTitle className="m-0">
+                                        <h3 className="text-white heading m-0">
+                                            <div>2</div>
+                                            <div>Bounces</div>
+                                        </h3>
+                                    </CardTitle>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                        <Col md="2" sm="4" className="sidenav-toggler" onClick={()=>{this.setState({selected: 'unsubscribes'})}}>
+                            <Card className={this.state.selected === 'unsubscribes' ? "bg-info" : "bg-light"}>
+                                <CardBody className="text-center p-3">
+                                    <CardTitle className="m-0">
+                                        <h3 className="text-white heading m-0">
+                                            <div>18</div>
+                                            <div>Unsubscribes</div>
+                                        </h3>
+                                    </CardTitle>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Tables titles={tableTitle} showAction={true} showSelect={true} tablePropsData={tableData} paginationCallback={this.paginationCallback}/>
+                    </Row>
+                </PageContainer>
                 <div className='campaign_navbar' >
                     <h1 style={{ color: 'white', fontSize: '20px', marginLeft: '20px', marginTop: "20px" }}>Prospects</h1>
                     <p style={{ color: "white", fontSize: "20px", marginTop: "20px", marginRight: "20px" }}><i className="fa fa-question-circle-o" aria-hidden="true"></i></p>
