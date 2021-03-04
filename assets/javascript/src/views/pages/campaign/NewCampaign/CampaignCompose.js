@@ -105,7 +105,7 @@ class CampaignCompose extends Component {
         <PageHeader
           current="New Campaign"
           parent="Campaign"
-          showStatus={true}
+          showStatus={false}
         />
 
         <PageContainer title="New Campaign">
@@ -119,9 +119,9 @@ class CampaignCompose extends Component {
                 </Row>
                 <Row>
                   <Col>
-                    <h1 className="text-center my-4">
+                    <h2 className="text-center my-4">
                       Compose the emails in this campaign
-                    </h1>
+                    </h2>
                   </Col>
                 </Row>
                 <Row>

@@ -52,7 +52,7 @@ export class CampaignSend extends Component {
         <PageHeader
           current="New Campaign"
           parent="Campaign"
-          showStatus={true}
+          showStatus={false}
         />
 
         <PageContainer title="New Campaign">
@@ -64,9 +64,9 @@ export class CampaignSend extends Component {
             </Row>
             <Row>
               <Col>
-                <h1 className="text-center my-4">
+                <h2 className="text-center my-4">
                   Are you ready to create your campaign?
-                </h1>
+                </h2>
               </Col>
             </Row>
 

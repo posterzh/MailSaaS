@@ -49,7 +49,7 @@ class CampaignPreview extends Component {
         <PageHeader
           current="New Campaign"
           parent="Campaign"
-          showStatus={true}
+          showStatus={false}
         />
 
         <PageContainer title="New Campaign">
@@ -63,9 +63,9 @@ class CampaignPreview extends Component {
                 </Row>
                 <Row>
                   <Col>
-                    <h1 className="text-center my-4">
+                    <h2 className="text-center my-4">
                       Preview and personalize each email
-                    </h1>
+                    </h2>
                   </Col>
                 </Row>
 

@@ -68,13 +68,12 @@ export class Profile extends Component {
 
     return (
       <>
-        <PageHeader showStatus={false} showBreadcrumb={false} />
         <div>
           <div
             className="header pb-6 d-flex align-items-center justify-content-center"
             style={{ minHeight: "250px" }}
           >
-            <span className="mask bg-v-gradient-info opacity-8" />
+            <span className="mask bg-v-gradient-info" />
             <Row>
               <Col>
                 <h1 className="display-2 text-white">Hello {user.firstName}</h1>
