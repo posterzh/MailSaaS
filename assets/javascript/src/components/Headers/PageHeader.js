@@ -30,35 +30,37 @@ import {
   Col,
 } from "reactstrap";
 
-function PageHeader({ current, parent, showStatus }) {
+function PageHeader({ current, parent, showStatus, showBreadcrumb }) {
   return (
     <>
       <div className="header bg-info pb-5">
         <Container fluid>
           <div className="header-body">
-            <Row className="align-items-center pb-3  px-0">
-              <Col lg="6" xs="7" className="px-0">
-                {/* <h6 className="h2 text-white d-inline-block mb-0">{current}</h6>{" "} */}
-                <Breadcrumb
-                  className="d-none d-md-inline-block ml-md-4"
-                  listClassName="breadcrumb-links breadcrumb-dark"
-                >
-                  <BreadcrumbItem>
-                    <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                      <i className="fa fa-home fa-lg" />
-                    </a>
-                  </BreadcrumbItem>
-                  <BreadcrumbItem>
-                    <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                      {parent}
-                    </a>
-                  </BreadcrumbItem>
-                  <BreadcrumbItem aria-current="page" className="active">
-                    {current}
-                  </BreadcrumbItem>
-                </Breadcrumb>
-              </Col>
-            </Row>
+            {(showBreadcrumb == undefined || showStatus) && (
+              <Row className="align-items-center pb-3  px-0">
+                <Col lg="6" xs="7" className="px-0">
+                  {/* <h6 className="h2 text-white d-inline-block mb-0">{current}</h6>{" "} */}
+                  <Breadcrumb
+                    className="d-none d-md-inline-block ml-md-4"
+                    listClassName="breadcrumb-links breadcrumb-dark"
+                  >
+                    <BreadcrumbItem>
+                      <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                        <i className="fa fa-home fa-lg" />
+                      </a>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>
+                      <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                        {parent}
+                      </a>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem aria-current="page" className="active">
+                      {current}
+                    </BreadcrumbItem>
+                  </Breadcrumb>
+                </Col>
+              </Row>
+            )}
 
             {(showStatus == undefined || showStatus) && (
               <Row>

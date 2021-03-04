@@ -220,7 +220,7 @@ class Unsubscribes extends Component {
             </TabPane>
           </TabContent>
           <Button
-            className="btn-icon btn-2 rounded-circle fixed-bottom-right"
+            className="btn-icon btn-2 rounded-circle fixed-bottom-right-btn"
             color="info"
             type="button"
             onClick={(e) => {

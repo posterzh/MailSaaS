@@ -231,7 +231,7 @@ class Prospects extends Component {
                                     >
                                         Teammate
                                     </label>
-                                    <Input id="exampleFormControlSelect1" type="select" defaultValue="any">
+                                    <Input id="exampleFormControlSelect1" className="form-control-sm" type="select" defaultValue="any">
                                         <option value="any">Any</option>
                                     </Input>
                                 </FormGroup>

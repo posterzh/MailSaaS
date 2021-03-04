@@ -422,10 +422,7 @@ class AdminNavbar extends React.Component {
                     <DropdownItem className="noti-title" header tag="div">
                       <h6 className="text-overflow m-0">Welcome!</h6>
                     </DropdownItem>
-                    <DropdownItem
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
+                    <DropdownItem href="/app/admin/profile">
                       <i className="ni ni-single-02" />
                       <span>My profile</span>
                     </DropdownItem>
