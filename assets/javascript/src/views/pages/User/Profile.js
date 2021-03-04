@@ -13,10 +13,9 @@ import {
   Input,
 } from "reactstrap";
 import Dropzone from "dropzone";
+import ReactQuill from "react-quill";
 
 import PageHeader from "../../../components/Headers/PageHeader";
-import PageContainer from "../../../components/Containers/PageContainer";
-import ProfileHeader from "../../../components/Headers/ProfileHeader";
 
 Dropzone.autoDiscover = false;
 
@@ -69,13 +68,22 @@ export class Profile extends Component {
 
     return (
       <>
-        <PageHeader parent="My Profile" showStatus={false} />
-
-        <PageContainer cardBodyClassNames="p-0">
-          <ProfileHeader firstName={user.firstName} />
+        <PageHeader showStatus={false} showBreadcrumb={false} />
+        <div>
+          <div
+            className="header pb-6 d-flex align-items-center justify-content-center"
+            style={{ minHeight: "250px" }}
+          >
+            <span className="mask bg-v-gradient-info opacity-8" />
+            <Row>
+              <Col>
+                <h1 className="display-2 text-white">Hello {user.firstName}</h1>
+              </Col>
+            </Row>
+          </div>
           <Container className="mt--6" fluid>
             <Row>
-              <Col className="order-xl-2" xl="4">
+              <Col xl="4">
                 <Card className="card-profile">
                   <CardHeader className="p-0 mb-5">
                     <Row className="justify-content-center">
@@ -121,187 +129,202 @@ export class Profile extends Component {
                   </CardBody>
                 </Card>
               </Col>
-              <Col className="order-xl-1" xl="8">
+              <Col xl="8">
                 <Card>
                   <CardHeader>
                     <h3 className="mb-0">User information</h3>
                   </CardHeader>
                   <CardBody>
                     <Form>
-                      <Row>
-                        <Col lg="6">
-                          <FormGroup>
+                      <h6 className="heading-small text-muted mb-4">
+                        User information
+                      </h6>
+                      <div className="pl-lg-4">
+                        <Row>
+                          <Col lg="6">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="first-name"
+                              >
+                                First name
+                              </label>
+                              <Input
+                                id="first-name"
+                                placeholder="First name"
+                                type="text"
+                                value={user.firstName}
+                                name="firstName"
+                                onChange={setUser}
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col lg="6">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="last-name"
+                              >
+                                Last name
+                              </label>
+                              <Input
+                                id="last-name"
+                                placeholder="Last name"
+                                type="text"
+                                value={user.lastName}
+                                name="lastName"
+                                onChange={setUser}
+                              />
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col lg="6">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="username"
+                              >
+                                Username
+                              </label>
+                              <Input
+                                id="username"
+                                placeholder="Username"
+                                type="text"
+                                value={user.userName}
+                                name="userName"
+                                onChange={setUser}
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col lg="6">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="email"
+                              >
+                                Email address
+                              </label>
+                              <Input
+                                id="email"
+                                placeholder="jesse@example.com"
+                                type="email"
+                                value={user.email}
+                                name="email"
+                                onChange={setUser}
+                              />
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col lg="12">
                             <label
                               className="form-control-label"
-                              htmlFor="first-name"
+                              htmlFor="profile"
                             >
-                              First name
+                              Profile
                             </label>
-                            <Input
-                              id="first-name"
-                              placeholder="First name"
-                              type="text"
-                              value={user.firstName}
-                              name="firstName"
-                              onChange={setUser}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col lg="6">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="last-name"
+                            <div
+                              className="dropzone dropzone-single mb-3"
+                              id="dropzone-single"
                             >
-                              Last name
-                            </label>
-                            <Input
-                              id="last-name"
-                              placeholder="Last name"
-                              type="text"
-                              value={user.lastName}
-                              name="lastName"
-                              onChange={setUser}
-                            />
-                          </FormGroup>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg="6">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="username"
-                            >
-                              Username
-                            </label>
-                            <Input
-                              id="username"
-                              placeholder="Username"
-                              type="text"
-                              value={user.userName}
-                              name="userName"
-                              onChange={setUser}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col lg="6">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="email"
-                            >
-                              Email address
-                            </label>
-                            <Input
-                              id="email"
-                              placeholder="jesse@example.com"
-                              type="email"
-                              value={user.email}
-                              name="email"
-                              onChange={setUser}
-                            />
-                          </FormGroup>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg="12">
-                          <label
-                            className="form-control-label"
-                            htmlFor="profile"
-                          >
-                            Profile
-                          </label>
-                          <div
-                            className="dropzone dropzone-single mb-3"
-                            id="dropzone-single"
-                          >
-                            <div className="fallback">
-                              <div className="custom-file">
-                                <Input
-                                  className="custom-file-input"
-                                  id="profile"
-                                  type="file"
-                                />
+                              <div className="fallback">
+                                <div className="custom-file">
+                                  <Input
+                                    className="custom-file-input"
+                                    id="profile"
+                                    type="file"
+                                  />
+                                </div>
+                              </div>
+                              <div className="dz-preview dz-preview-single">
+                                <div className="dz-preview-cover">
+                                  <img
+                                    alt="..."
+                                    className="dz-preview-img"
+                                    data-dz-thumbnail=""
+                                  />
+                                </div>
                               </div>
                             </div>
-                            <div className="dz-preview dz-preview-single">
-                              <div className="dz-preview-cover">
-                                <img
-                                  alt="..."
-                                  className="dz-preview-img"
-                                  data-dz-thumbnail=""
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Form>
-                  </CardBody>
-                  <CardFooter className="bg-transparent text-right">
-                    <Button
-                      color="info"
-                      type="submit"
-                      className="text-uppercase"
-                    >
-                      Save
-                    </Button>
-                  </CardFooter>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <h3 className="mb-0">Change Password</h3>
-                  </CardHeader>
-                  <CardBody>
-                    <Form>
-                      <Row>
-                        <Col md="12">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="old-password"
-                            >
-                              Old Password
-                            </label>
-                            <Input
-                              id="old-password"
-                              placeholder="Old Password"
-                              type="password"
+                            <div
+                              data-quill-placeholder="Profile"
+                              data-toggle="quill"
                             />
-                          </FormGroup>
-                        </Col>
-                        <Col md="12">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="new-password"
-                            >
-                              New Password
-                            </label>
-                            <Input
-                              id="new-password"
-                              placeholder="New Password"
-                              type="password"
+                            <ReactQuill
+                              theme="snow"
+                              modules={{
+                                toolbar: [
+                                  ["bold", "italic"],
+                                  ["link", "blockquote", "code", "image"],
+                                  [
+                                    {
+                                      list: "ordered",
+                                    },
+                                    {
+                                      list: "bullet",
+                                    },
+                                  ],
+                                ],
+                              }}
                             />
-                          </FormGroup>
-                        </Col>
-                        <Col md="12">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="confirm-password"
-                            >
-                              Confirm Password
-                            </label>
-                            <Input
-                              id="confirm-password"
-                              placeholder="Confirm Password"
-                              type="password"
-                            />
-                          </FormGroup>
-                        </Col>
-                      </Row>
+                          </Col>
+                        </Row>
+                      </div>
+                      <hr className="my-4" />
+
+                      <h6 className="heading-small text-muted mb-4">
+                        Change Password
+                      </h6>
+                      <div className="pl-lg-4">
+                        <Row>
+                          <Col md="12">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="old-password"
+                              >
+                                Old Password
+                              </label>
+                              <Input
+                                id="old-password"
+                                placeholder="Old Password"
+                                type="password"
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col md="12">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="new-password"
+                              >
+                                New Password
+                              </label>
+                              <Input
+                                id="new-password"
+                                placeholder="New Password"
+                                type="password"
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col md="12">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="confirm-password"
+                              >
+                                Confirm Password
+                              </label>
+                              <Input
+                                id="confirm-password"
+                                placeholder="Confirm Password"
+                                type="password"
+                              />
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                      </div>
                     </Form>
                   </CardBody>
                   <CardFooter className="bg-transparent text-right">
@@ -317,7 +340,7 @@ export class Profile extends Component {
               </Col>
             </Row>
           </Container>
-        </PageContainer>
+        </div>
       </>
     );
   }
