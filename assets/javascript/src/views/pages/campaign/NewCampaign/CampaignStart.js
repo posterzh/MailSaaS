@@ -113,7 +113,7 @@ class CampaignStart extends React.Component {
         <PageHeader
           current="New Campaign"
           parent="Campaign"
-          showStatus={true}
+          showStatus={false}
         />
 
         <PageContainer title="New Campaign">

@@ -86,7 +86,7 @@ class CampaignOptions extends Component {
         <PageHeader
           current="New Campaign"
           parent="Campaign"
-          showStatus={true}
+          showStatus={false}
         />
 
         <PageContainer title="New Campaign">
@@ -100,9 +100,9 @@ class CampaignOptions extends Component {
                 </Row>
                 <Row>
                   <Col>
-                    <h1 className="text-center my-4">
+                    <h2 className="text-center my-4">
                       Tweak how your campaign will be sent
-                    </h1>
+                    </h2>
                   </Col>
                 </Row>
                 <Row>

@@ -114,7 +114,7 @@ class CampaignRecipient extends Component {
         <PageHeader
           current="New Campaign"
           parent="Campaign"
-          showStatus={true}
+          showStatus={false}
         />
 
         <PageContainer title="New Campaign">
@@ -128,9 +128,9 @@ class CampaignRecipient extends Component {
                 </Row>
                 <Row>
                   <Col>
-                    <h1 className="text-center my-4">
+                    <h2 className="text-center my-4">
                       Drop in your first list of recipients
-                    </h1>
+                    </h2>
                   </Col>
                 </Row>
                 <Row>
