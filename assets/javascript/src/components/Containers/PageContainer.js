@@ -18,22 +18,24 @@ class PageContainer extends React.Component {
   }
 
   render() {
-    const { children, title, showHelper } = this.props;
+    const { children, title, showHelper, cardBodyClassNames } = this.props;
     return (
       <>
         <Container fluid className="mt--5">
           <Row>
             <Col>
               <Card>
-                <CardHeader>
-                  <h2 className="mx-auto text-center display-3">{title}</h2>
-                  {(showHelper) && (
-                    <p style={{ position: "absolute", fontSize: "22px", top: "15px", right: "25px" }}>
-                      <i className="fa fa-question-circle-o" aria-hidden="true"></i>
-                    </p>
-                  )}
-                </CardHeader>
-                <CardBody>
+                {(title || showHelper) && (
+                  <CardHeader>
+                    <h2 className="mx-auto text-center display-3">{title}</h2>
+                    {(showHelper) && (
+                      <p style={{ position: "absolute", fontSize: "22px", top: "15px", right: "25px" }}>
+                        <i className="fa fa-question-circle-o" aria-hidden="true"></i>
+                      </p>
+                    )}
+                  </CardHeader>
+                )}
+                <CardBody className={cardBodyClassNames}>
                   <Row>
                     <Col className="m-0">{children}</Col>
                   </Row>

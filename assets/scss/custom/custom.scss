@@ -1942,10 +1942,13 @@ input::-webkit-inner-spin-button {
   }
 }
 
-.fixed-bottom-right {
+.fixed-bottom-right-btn {
   position: fixed;
   bottom: 30px;
   right: 30px;
+  height: 55px;
+  width: 55px;
+  font-size: 18px;
 }
 
 .rounded-center-img {
