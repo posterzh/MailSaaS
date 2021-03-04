@@ -294,7 +294,7 @@ function Tables({
                                                         </label>
                                                         <Row>
                                                             <Col>
-                                                                <Input name='smtpHost' type='text' onChange={searchFilter} placeholder='search'></Input>
+                                                                <Input name='smtpHost' type='text' className="form-control-sm" onChange={searchFilter} placeholder='search'></Input>
                                                             </Col>
                                                         </Row>
                                                     </FormGroup>
@@ -313,7 +313,7 @@ function Tables({
                                                                 </label>
                                                                 <Row>
                                                                     <Col>
-                                                                        <Input name='smtpPort' type='select' key={"filter-" + item.key} onChange={(e) => changeFilter(e, item.key)} defaultValue=''>
+                                                                        <Input name='smtpPort' className="form-control-sm" type='select' key={"filter-" + item.key} onChange={(e) => changeFilter(e, item.key)} defaultValue=''>
                                                                             <option value="">All</option>
                                                                             {item.options.map((option) => {
                                                                                 return (
