@@ -66,6 +66,17 @@ export class Profile extends Component {
       });
     };
 
+    const onChangeProfile = (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = function (e) {
+        this.setState({
+          user: { ...user, profile_url: [reader.result] },
+        });
+      }.bind(this);
+    };
+
     return (
       <>
         <PageHeader showStatus={false} showBreadcrumb={false} />
@@ -85,15 +96,24 @@ export class Profile extends Component {
             <Row>
               <Col xl="4">
                 <Card className="card-profile">
-                  <CardHeader className="p-0 mb-5">
+                  <CardHeader className="p-0 mb-5 border-0">
                     <Row className="justify-content-center">
-                      <Col className="" lg="3">
+                      <Col lg="3">
                         <div className="card-profile-image">
                           <img
                             alt="..."
-                            className="rounded-circle"
+                            className="profile-rounded-img"
                             src={user.profile_url}
                           />
+                          <label className="profile-edit-icon">
+                            <input
+                              type="file"
+                              name="profile-input"
+                              hidden
+                              onChange={onChangeProfile}
+                            />
+                            <i className="fa fa-camera"></i>
+                          </label>
                         </div>
                       </Col>
                     </Row>
