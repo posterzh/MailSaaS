@@ -1960,3 +1960,29 @@ input::-webkit-inner-spin-button {
 .bg-v-gradient-info {
   background: linear-gradient(#11cdef 0, #1171ef 100%) !important;
 }
+
+.profile-rounded-img {
+  border-radius: 50% !important;
+  width: 140px;
+  height: 140px;
+}
+
+.profile-edit-icon {
+  position: absolute;
+  z-index: 50;
+  right: -18px;
+  bottom: -55px;
+  height: 30px;
+  width: 30px;
+  background: #fff;
+  border-radius: 50%;
+  margin: 0;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  i {
+    color: $info;
+  }
+}
