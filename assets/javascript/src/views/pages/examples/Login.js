@@ -160,7 +160,7 @@ class Login extends React.Component {
                         Sign in
                         {
                           this.state.loginPending && (
-                            <i className="ml-1 fas fa-circle-notch fa-spin"></i>
+                            <i className="ml-2 fas fa-spinner fa-spin"></i>
                           )
                         }
                       </Button>

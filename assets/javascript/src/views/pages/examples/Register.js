@@ -36,8 +36,10 @@ import {
 } from "reactstrap";
 // core components
 import AuthHeader from "../../../components/Headers/AuthHeader"
-import { connect } from "react-redux";
-import { RegisterAction } from "../../../redux/action/AuthourizationAction";
+import { registerSuccess, registerFailure } from "../../../redux/action/AuthourizationAction"
+import { connect } from "react-redux"
+import Api from "../../../../src/redux/api/api"
+import { history } from "../../../index"
 import { Alert } from 'reactstrap';
 class Register extends React.Component {
   constructor(props) {
@@ -55,7 +57,8 @@ class Register extends React.Component {
       focusedEmail: false,
       focusedPassword: false,
       focusedPhone: false,
-      focusedCompany: false
+      focusedCompany: false,
+      registerPending: false
     }
 
   }
@@ -79,7 +82,20 @@ class Register extends React.Component {
       mailsaas_type: this.state.mailsaas_type
     };
 
-    this.props.RegisterAction(user)
+    this.setState({registerPending: true})
+
+    Api.RegisterApi(user).then(result => {
+      this.setState({registerPending: false})
+
+      console.log( 'registerSuccess',result.data)
+      this.props.RegisterSuccess(result.data)
+      history.push('/app/auth/login')
+    }).catch(err => {
+      this.setState({registerPending: false})
+
+      err.response.data.email&&  this.props.RegisterFailure(err.response.data.email)
+      console.log(err.response.data.email)
+    })
   }
   render() {
     const { registerResponse, isRegisterSuccess } = this.props
@@ -224,7 +240,7 @@ class Register extends React.Component {
                         {!this.state.show && <span className='password-message'> A minimum 8 characters password contains a combination of uppercase and lowercase letter and number are required.</span>}
                       </div>
                       <FormGroup className='mt-4'>
-                        <Input type="select" name="mailsaas_type" value={this.state.mailsaas_type} defaultValue='Sales' onChange={this.handleChange} id="exampleSelect">
+                        <Input type="select" name="mailsaas_type" value={this.state.mailsaas_type} onChange={this.handleChange} id="exampleSelect">
                           <option value='Sales'>Sales</option>
                           <option value='Marketing'>Marketing/PR</option>
                           <option value='Recruiting'>Recruiting</option>
@@ -268,6 +284,11 @@ class Register extends React.Component {
                     <div className="text-center">
                       <Button className="mt-4 mb-4" color="info" type="submit" >
                         Create account
+                        {
+                          this.state.registerPending && (
+                            <i className="ml-2 fas fa-spinner fa-spin"></i>
+                          )
+                        }
                       </Button>
                     </div>
                   </Form>
@@ -299,6 +320,7 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = dispatch => ({
-  RegisterAction: user => { dispatch(RegisterAction(user)); },
+  RegisterSuccess: user => dispatch(registerSuccess(user)),
+  RegisterFailure: payload => dispatch(registerFailure(payload))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Register);
