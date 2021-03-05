@@ -1,4 +1,6 @@
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux'
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk';
 import { 
   RegisterReducer, 
@@ -54,7 +56,14 @@ const rootReducer = combineReducers({
   LeadViewReducer
 })
 
+const persistConfig = {
+  key: 'root',
+  storage,
+}
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
 const store = createStore(
-  rootReducer, composeEnhancers(applyMiddleware(thunk))
+  persistedReducer, composeEnhancers(applyMiddleware(thunk))
 );
-export default store;
+const persistor = persistStore(store);
+export { persistor, store };
