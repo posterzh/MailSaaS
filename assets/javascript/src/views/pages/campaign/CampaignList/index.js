@@ -28,6 +28,7 @@ import {
 
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
+import Tables from "../../TableContent";
 
 class CampaignList extends Component {
   constructor(props) {
@@ -80,8 +81,96 @@ class CampaignList extends Component {
 
   render() {
     const { show, hide, checked, exampleModal } = this.state;
-    const { Tables, CampaignOverviewAction } = this.props;
-
+    const { CampaignOverviewAction } = this.props;
+    const tableTitle = [
+      {
+        key: 'title',
+        value: 'Title',
+      },
+      {
+        key: 'created',
+        value: 'CREATED',
+      },
+      {
+        key: 'assigned',
+        value: 'ASSIGNED',
+      },
+      {
+        key: 'recipients',
+        value: 'RECIPIENTS',
+      },
+      {
+        key: 'sent',
+        value: 'SENT',
+      },
+      {
+        key: 'leads',
+        value: 'LEADS',
+      },
+      {
+        key: 'replies',
+        value: 'REPLIES',
+      },
+      {
+        key: 'opens',
+        value: 'OPENS',
+      },
+      {
+        key: 'bounces',
+        value: 'BOUNCES',
+      }
+    ];
+    const tableData = [
+      {
+        title: 'March 8 Outreach',
+        created: 'Mar 8',
+        assigned: 'tester1',
+        recipients: '1',
+        sent: '2',
+        leads: '1',
+        replies: '0',
+        opens: '1',
+        bounces: '1'
+      },
+      {
+        title: 'March 4 Outreach',
+        created: 'Mar 4',
+        assigned: 'tester1',
+        recipients: '2',
+        sent: '1',
+        leads: '0',
+        replies: '0',
+        opens: '0',
+        bounces: '0'
+      },
+      {
+        title: 'March 1 Outreach',
+        created: 'Mar 1',
+        assigned: 'tester2',
+        recipients: '1',
+        sent: '1',
+        leads: '1',
+        replies: '1',
+        opens: '1',
+        bounces: '1'
+      },
+    ];
+    const filters = [
+      {
+        key: 'assigned',
+        options: ['tester1', 'tester2']
+      }
+    ];
+    const actionMenus = [
+      {
+        key: 'view',
+        name: 'View'
+      },
+      {
+        key: 'edit',
+        name: 'Edit'
+      }
+    ];
     return (
       <>
         <PageHeader
@@ -90,8 +179,8 @@ class CampaignList extends Component {
           showStatus={false}
         />
 
-        <PageContainer title="Campaign List">
-          <Form onSubmit={this.handleSubmit}>
+        <PageContainer title="Campaign List" showHelper={true}>
+          {/* <Form onSubmit={this.handleSubmit}>
             <Row>
               <Col>
                 <FormGroup>
@@ -134,7 +223,22 @@ class CampaignList extends Component {
                 </Button>
               </Col>
             </Row>
-          </Form>
+          </Form> */}
+          <Row>
+            <Tables
+              titles={tableTitle} // required
+              tablePropsData={tableData}   // required
+              showAction={true}    // optional
+              actionMenus={actionMenus}   // optional for showing menus of row.
+              actionCallback={this.actionCallback}        // get call back for action select of row.
+              showSelect={true}    // optional
+              selectedCallback={this.getSelectedRecords}      // get call back for select object.
+              showPagination={true}   // optional
+              paginationCallback={this.paginationCallback}     // get callback of page change.
+              filters={filters}   // optional to enable filter
+              searchKeys={['title']}  // optional to enable search
+            />
+          </Row>
         </PageContainer>
       </>
     );

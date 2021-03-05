@@ -30,74 +30,67 @@ class LeadCatcher extends Component {
         value: 'Email',
       },
       {
-        key: 'name',
-        value: 'Name',
-      },
-      {
-        key: 'created',
-        value: 'Created',
-      },
-      {
-        key: 'status',
-        value: 'Status',
-      },
-      {
         key: 'campaign',
         value: 'Campaign',
       },
       {
-        key: 'sent',
-        value: 'Sent',
+        key: 'assignedTo',
+        value: 'Assigned To',
       },
       {
-        key: 'engaged',
-        value: 'Engaged',
+        key: 'leadDate',
+        value: 'Lead Date',
       },
       {
-        key: 'tasks',
-        value: 'Tasks',
-      },
+        key: 'status',
+        value: 'Status',
+      }
     ];
     const tableData = [
       {
-        email: 'ajju@gmail.com',
-        name: 'Azazul',
-        created: '10-10-2020',
-        status: 'Passed',
-        campaign: '1458',
-        sent: '10',
-        engaged: '9',
-        tasks: '8'
+        email: 'test1@gmail.com',
+        campaign: 'March 8 Outreach',
+        assignedTo: 'tester1',
+        leadDate: '03/01/2021',
+        status: 'Open'
       },
       {
-        email: 'janak@gmail.com',
-        name: 'Azazul',
-        created: '10-10-2020',
-        status: 'Passed',
-        campaign: '1458',
-        sent: '10',
-        engaged: '2',
-        tasks: '8'
+        email: 'test2@gmail.com',
+        campaign: 'March 9 Outreach',
+        assignedTo: 'tester2',
+        leadDate: '03/01/2021',
+        status: 'Ignored'
       },
       {
-        email: 'ajju@gmail.com',
-        name: 'janak',
-        created: '10-10-2020',
-        status: 'Passed',
-        campaign: '1458',
-        sent: '10',
-        engaged: '2',
-        tasks: '8'
-      }
+        email: 'test3@gmail.com',
+        campaign: 'March 10 Outreach',
+        assignedTo: 'tester3',
+        leadDate: '03/01/2021',
+        status: 'Won'
+      },
+      {
+        email: 'test4@gmail.com',
+        campaign: 'March 11 Outreach',
+        assignedTo: 'tester1',
+        leadDate: '03/01/2021',
+        status: 'Open'
+      },
+      {
+        email: 'test1@gmail.com',
+        campaign: 'March 4 Outreach',
+        assignedTo: 'tester1',
+        leadDate: '03/01/2021',
+        status: 'Open'
+      },
     ];
     const filters = [
       {
-        key: 'email',
-        options: ['janak@gmail.com', 'ajajul@gmail.com', 'mikin@gmail.com', 'ajju@gmail.com']
+        key: 'assignedTo',
+        options: ['tester1', 'tester2']
       },
       {
-        key: 'name',
-        options: ['janak', 'ajajul', 'mikin']
+        key: 'status',
+        options: ['Open', 'Ignored', 'Won', 'Lost']
       }
     ];
     const actionMenus = [
@@ -108,12 +101,8 @@ class LeadCatcher extends Component {
       {
         key: 'edit',
         name: 'Edit'
-      },
-      {
-        key: 'delete',
-        name: 'Delete'
       }
-    ]
+    ];
     return (
       <>
         <PageHeader
@@ -124,14 +113,14 @@ class LeadCatcher extends Component {
 
         <PageContainer title="Lead Catcher" showHelper={true}>
           
-          <div>
+          {/* <div>
             <Modal className="Leadcatcher_modal" isOpen={modal} toggle={this.toggle} className={LeadCatcher}>
               <ModalHeader className="Leadcatcher_modalheader" toggle={this.toggle}>email id</ModalHeader>
               <ModalBody className="Leadcatcher_modalbody" >
                 <LeadCatchermodel />
               </ModalBody>
             </Modal>
-          </div>
+          </div> */}
           <div className="graph_container" style={{ display: "flex", flexDirection: "row-reverse" }}>
             <span className="graph_title">Last 30 days</span>
           </div>
@@ -224,7 +213,7 @@ class LeadCatcher extends Component {
                 showPagination={true}   // optional
                 paginationCallback={this.paginationCallback}     // get callback of page change.
                 filters={filters}   // optional to enable filter
-                searchKeys={['email', 'name']}  // optional to enable search
+                searchKeys={['email', 'campaign']}  // optional to enable search
               />
             </Row>
           </Container>
