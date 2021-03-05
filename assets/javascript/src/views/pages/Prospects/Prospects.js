@@ -25,7 +25,7 @@ import ProspectOnclick from './ProspectOnclick'
 import { OnclickProspectActionData, deleteProspectAction } from '../../../redux/action/ProspectsAction'
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
-import Tables from "./TableContent";
+import Tables from "../TableContent";
 
 
 const SpanStyles = {

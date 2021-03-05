@@ -5,6 +5,7 @@ import { CampaignLeadViewAction, CampaignOverviewAction } from "../../../redux/a
 import { Container, Row, Col, Input, Modal, ModalHeader, ModalBody, Table } from 'reactstrap'
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
+import Tables from "../TableContent";
 
 class LeadCatcher extends Component {
   constructor() {
@@ -23,6 +24,96 @@ class LeadCatcher extends Component {
   render() {
     const { modal } = this.state;
     const { leadData } = this.props;
+    const tableTitle = [
+      {
+        key: 'email',
+        value: 'Email',
+      },
+      {
+        key: 'name',
+        value: 'Name',
+      },
+      {
+        key: 'created',
+        value: 'Created',
+      },
+      {
+        key: 'status',
+        value: 'Status',
+      },
+      {
+        key: 'campaign',
+        value: 'Campaign',
+      },
+      {
+        key: 'sent',
+        value: 'Sent',
+      },
+      {
+        key: 'engaged',
+        value: 'Engaged',
+      },
+      {
+        key: 'tasks',
+        value: 'Tasks',
+      },
+    ];
+    const tableData = [
+      {
+        email: 'ajju@gmail.com',
+        name: 'Azazul',
+        created: '10-10-2020',
+        status: 'Passed',
+        campaign: '1458',
+        sent: '10',
+        engaged: '9',
+        tasks: '8'
+      },
+      {
+        email: 'janak@gmail.com',
+        name: 'Azazul',
+        created: '10-10-2020',
+        status: 'Passed',
+        campaign: '1458',
+        sent: '10',
+        engaged: '2',
+        tasks: '8'
+      },
+      {
+        email: 'ajju@gmail.com',
+        name: 'janak',
+        created: '10-10-2020',
+        status: 'Passed',
+        campaign: '1458',
+        sent: '10',
+        engaged: '2',
+        tasks: '8'
+      }
+    ];
+    const filters = [
+      {
+        key: 'email',
+        options: ['janak@gmail.com', 'ajajul@gmail.com', 'mikin@gmail.com', 'ajju@gmail.com']
+      },
+      {
+        key: 'name',
+        options: ['janak', 'ajajul', 'mikin']
+      }
+    ];
+    const actionMenus = [
+      {
+        key: 'view',
+        name: 'View'
+      },
+      {
+        key: 'edit',
+        name: 'Edit'
+      },
+      {
+        key: 'delete',
+        name: 'Delete'
+      }
+    ]
     return (
       <>
         <PageHeader
@@ -45,7 +136,7 @@ class LeadCatcher extends Component {
             <span className="graph_title">Last 30 days</span>
           </div>
           <Container fluid>
-            <Row>
+            {/* <Row>
               <Col md={3} className=''>
                 <div className='grand_parent'>
                   <div className='input_field'>
@@ -120,36 +211,24 @@ class LeadCatcher extends Component {
                   )
                 })}
               </tbody>
-            </Table>
+            </Table> */}
+            <Row>
+              <Tables
+                titles={tableTitle} // required
+                tablePropsData={tableData}   // required
+                showAction={true}    // optional
+                actionMenus={actionMenus}   // optional for showing menus of row.
+                actionCallback={this.actionCallback}        // get call back for action select of row.
+                showSelect={true}    // optional
+                selectedCallback={this.getSelectedRecords}      // get call back for select object.
+                showPagination={true}   // optional
+                paginationCallback={this.paginationCallback}     // get callback of page change.
+                filters={filters}   // optional to enable filter
+                searchKeys={['email', 'name']}  // optional to enable search
+              />
+            </Row>
           </Container>
-          {/* <div className="Leadcatcher_table">
-              <table >
-                <thead>
-                  <tr>
-                    <th ><input type="checkbox" /></th>
-                    <th >Person</th>
-                    <th >Campaign</th>
-                    <th >AssignedTo</th>
-                    <th >LeadDate</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    leadData && leadData.map((item, index) => {
-                      <tr key={index}>
-                        <td className="check_box"><input type="checkbox" /></td>
-                      </tr>
-                    })
-                  }
-                  <tr onClick={this.toggle}>
-                    <td className="check_box"><input type="checkbox" /></td>
-                    <td className="Campaign_title">Person name</td>
-                    <td className="Created">Campaign name</td>
-                    <td className="Assigned">Omaid Faizyar</td>
-                    <td className="Recipient">00:00</td>
-                  </tr>
-                </tbody>
-              </table> */}
+          
         </PageContainer>
       </>
     )

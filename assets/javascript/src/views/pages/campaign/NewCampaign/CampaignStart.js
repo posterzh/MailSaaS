@@ -168,7 +168,7 @@ class CampaignStart extends React.Component {
                         invalid={this.state.addressState === "invalid"}
                       >
                         <option value="">Select</option>
-                        <option value="test@gmail.com">test@gmail.com</option>
+                        <option value="test20210304@gmail.com">test20210304@gmail.com</option>
 
                         {/* {mailGetData &&
                           mailGetData.map((item, index) => {
