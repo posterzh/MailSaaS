@@ -11,12 +11,9 @@ import {
   CardHeader,
   CardBody,
   FormGroup,
-  CardFooter,
   Nav,
   NavItem,
   NavLink,
-  TabContent,
-  TabPane,
 } from "reactstrap";
 import classnames from "classnames";
 export default class ConnectMailAccountModal extends Component {
@@ -24,6 +21,21 @@ export default class ConnectMailAccountModal extends Component {
     super(props);
     this.state = {
       activeTab: 0,
+
+      emailProvider: "SMTP",
+      email: "",
+      firstName: "",
+      lastName: "",
+      SMTPUserName: "",
+      SMTPPassword: "",
+      SMTPHost: "",
+      SMTPPort: "",
+      useSMTPSSL: false,
+      IMAPUserName: "",
+      IMAPPassword: "",
+      IMAPHost: "",
+      IMAPPort: "",
+      useIMAPSSL: false,
     };
   }
 
@@ -33,11 +45,17 @@ export default class ConnectMailAccountModal extends Component {
     });
   }
 
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Connecting a mail account...");
 
-    this.props.toggle();
+    let mailAccount = Object.assign({}, this.state);
+    delete mailAccount.activeTab;
+
+    this.props.connectMailAccount(mailAccount);
   };
 
   render() {
@@ -45,7 +63,7 @@ export default class ConnectMailAccountModal extends Component {
 
     return (
       <>
-        <Modal isOpen={this.props.isOpen} toggle={this.props.toggle} size="lg">
+        <Modal isOpen={this.props.isOpen} toggle={this.props.close} size="lg">
           <Form onSubmit={this.handleSubmit}>
             <Card className="no-shadow">
               <CardHeader className="pb-0">
@@ -62,6 +80,7 @@ export default class ConnectMailAccountModal extends Component {
                           })}
                           onClick={() => {
                             this.onSelectTab(0);
+                            this.setState({ emailProvider: "SMTP" });
                           }}
                           style={{ cursor: "pointer" }}
                         >
@@ -78,6 +97,7 @@ export default class ConnectMailAccountModal extends Component {
                           })}
                           onClick={() => {
                             this.onSelectTab(1);
+                            this.setState({ emailProvider: "Google" });
                           }}
                           style={{ cursor: "pointer" }}
                         >
@@ -94,6 +114,7 @@ export default class ConnectMailAccountModal extends Component {
                           })}
                           onClick={() => {
                             this.onSelectTab(2);
+                            this.setState({ emailProvider: "Microsoft" });
                           }}
                           style={{ cursor: "pointer" }}
                         >
@@ -104,29 +125,6 @@ export default class ConnectMailAccountModal extends Component {
                         </NavLink>
                       </NavItem>
                     </Nav>
-                    {/* <TabContent activeTab={activeTab}>
-                        <TabPane tabId={0}>
-                          <Row>
-                            <Col>
-                              <p className="my-5">SMTP</p>
-                            </Col>
-                          </Row>
-                        </TabPane>
-                        <TabPane tabId={1}>
-                          <Row>
-                            <Col>
-                              <p className="my-5">Google</p>
-                            </Col>
-                          </Row>
-                        </TabPane>
-                        <TabPane tabId={2}>
-                          <Row>
-                            <Col>
-                              <p className="my-5">Microsoft</p>
-                            </Col>
-                          </Row>
-                        </TabPane>
-                      </TabContent> */}
 
                     <Row className="mt-3">
                       <Col md={6}>
@@ -140,6 +138,7 @@ export default class ConnectMailAccountModal extends Component {
                             placeholder="name@example.com"
                             type="email"
                             className="form-control-sm"
+                            onChange={this.handleChange}
                           />
                         </FormGroup>
 
@@ -155,6 +154,7 @@ export default class ConnectMailAccountModal extends Component {
                             name="firstName"
                             type="text"
                             className="form-control-sm"
+                            onChange={this.handleChange}
                           />
                         </FormGroup>
 
@@ -170,6 +170,7 @@ export default class ConnectMailAccountModal extends Component {
                             name="lastName"
                             type="text"
                             className="form-control-sm"
+                            onChange={this.handleChange}
                           />
                         </FormGroup>
                       </Col>
@@ -188,6 +189,7 @@ export default class ConnectMailAccountModal extends Component {
                                 name="SMTPUserName"
                                 type="text"
                                 className="form-control-sm"
+                                onChange={this.handleChange}
                               />
                             </FormGroup>
 
@@ -203,6 +205,7 @@ export default class ConnectMailAccountModal extends Component {
                                 name="SMTPPassword"
                                 type="text"
                                 className="form-control-sm"
+                                onChange={this.handleChange}
                               />
                             </FormGroup>
 
@@ -220,6 +223,7 @@ export default class ConnectMailAccountModal extends Component {
                                     name="SMTPHost"
                                     type="text"
                                     className="form-control-sm"
+                                    onChange={this.handleChange}
                                   />
                                 </FormGroup>
                               </Col>
@@ -236,6 +240,7 @@ export default class ConnectMailAccountModal extends Component {
                                     name="SMTPPort"
                                     type="text"
                                     className="form-control-sm"
+                                    onChange={this.handleChange}
                                   />
                                 </FormGroup>
                               </Col>
@@ -244,13 +249,14 @@ export default class ConnectMailAccountModal extends Component {
                             <div className="custom-control custom-checkbox mb-3">
                               <input
                                 className="custom-control-input"
-                                id="chkSMTPSSL"
-                                name="chkSMTPSSL"
+                                id="useSMTPSSL"
+                                name="useSMTPSSL"
                                 type="checkbox"
+                                onChange={this.handleChange}
                               />
                               <label
                                 className="custom-control-label"
-                                htmlFor="chkSMTPSSL"
+                                htmlFor="useSMTPSSL"
                               >
                                 Use SMTP SSL/TLS
                               </label>
@@ -268,6 +274,7 @@ export default class ConnectMailAccountModal extends Component {
                                 name="IMAPUserName"
                                 type="text"
                                 className="form-control-sm"
+                                onChange={this.handleChange}
                               />
                             </FormGroup>
 
@@ -283,6 +290,7 @@ export default class ConnectMailAccountModal extends Component {
                                 name="IMAPPassword"
                                 type="text"
                                 className="form-control-sm"
+                                onChange={this.handleChange}
                               />
                             </FormGroup>
 
@@ -300,6 +308,7 @@ export default class ConnectMailAccountModal extends Component {
                                     name="IMAPHost"
                                     type="text"
                                     className="form-control-sm"
+                                    onChange={this.handleChange}
                                   />
                                 </FormGroup>
                               </Col>
@@ -316,6 +325,7 @@ export default class ConnectMailAccountModal extends Component {
                                     name="IMAPPort"
                                     type="text"
                                     className="form-control-sm"
+                                    onChange={this.handleChange}
                                   />
                                 </FormGroup>
                               </Col>
@@ -324,13 +334,14 @@ export default class ConnectMailAccountModal extends Component {
                             <div className="custom-control custom-checkbox mb-3">
                               <input
                                 className="custom-control-input"
-                                id="chkIMAPSSL"
-                                name="chkIMAPSSL"
+                                id="useIMAPSSL"
+                                name="useIMAPSSL"
                                 type="checkbox"
+                                onChange={this.handleChange}
                               />
                               <label
                                 className="custom-control-label"
-                                htmlFor="chkIMAPSSL"
+                                htmlFor="useIMAPSSL"
                               >
                                 Use IMAP SSL/TLS
                               </label>
@@ -349,7 +360,7 @@ export default class ConnectMailAccountModal extends Component {
                     </Button>
                   </Col>
                   <Col md={2}>
-                    <Button type="button" onClick={this.props.toggle}>
+                    <Button type="button" onClick={this.props.close}>
                       CANCEL
                     </Button>
                   </Col>

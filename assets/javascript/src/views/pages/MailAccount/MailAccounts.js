@@ -35,8 +35,17 @@ class MailAccounts extends Component {
     this.props.MailGetDataAction();
   }
 
-  toggle = () => {
-    this.setState({ modal: !this.state.modal });
+  // Close modal
+  closeModal = () => {
+    this.setState({ modal: false });
+  };
+
+  // Connect mail account
+  connectMailAccount = (mailAccount) => {
+    console.log("Connecting mail account : ", mailAccount);
+
+    // Close modal
+    this.setState({ modal: false });
   };
 
   handleChange = (e) => {
@@ -68,12 +77,15 @@ class MailAccounts extends Component {
       this.props.MailSenderAction(mailData);
     }
   };
+
   deleteMailAccount = (id) => {
     this.props.MailAccountDelete(id);
   };
+
   handleToggle = (index) => {
     this.setState({ hide: index });
   };
+
   editDataModel = (data, e) => {
     this.setState({ modal: true });
     this.setState({
@@ -129,7 +141,7 @@ class MailAccounts extends Component {
           <p>Your team has 1 mail accounts</p>
           <Button
             onClick={(e) => {
-              e.preventDefault(), this.setState({ modal: !this.state.modal });
+              e.preventDefault(), this.setState({ modal: true });
             }}
             className="btn-icon"
             color="danger"
@@ -215,7 +227,8 @@ class MailAccounts extends Component {
           </div>
           <ConnectMailAccountModal
             isOpen={this.state.modal}
-            toggle={this.toggle}
+            close={this.closeModal}
+            connectMailAccount={this.connectMailAccount}
           />
         </PageContainer>
       </div>
