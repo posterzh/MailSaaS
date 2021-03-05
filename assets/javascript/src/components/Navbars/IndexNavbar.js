@@ -17,6 +17,7 @@
 import React from "react";
 // react library for routing
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux'
 // reactstrap components
 import {
   UncontrolledCollapse,
@@ -31,9 +32,15 @@ import {
   UncontrolledTooltip,
   Button
 } from "reactstrap";
+import {LogoutAction} from '../../redux/action/AuthourizationAction'
 
 class AdminNavbar extends React.Component {
+  onLogoutClicked = (event) => {
+    event.preventDefault();
+    this.props.LogoutAction()
+  }
   render() {
+    const {isLogin} = this.props;
     return (
       <>
         <Navbar
@@ -105,102 +112,33 @@ class AdminNavbar extends React.Component {
                     <span className="nav-link-inner--text">Pricing</span>
                   </NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink to="/app/auth/login" tag={Link}>
-                    <span className="nav-link-inner--text">Login</span>
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink to="/app/auth/register" tag={Link}>
-                    <span className="nav-link-inner--text">Register</span>
-                  </NavLink>
-                </NavItem>
-                {/* <NavItem>
-                  <NavLink to="/app/auth/lock" tag={Link}>
-                    <span className="nav-link-inner--text">Lock</span>
-                  </NavLink>
-                </NavItem> */}
+                {
+                  !isLogin && (
+                  <>
+                    <NavItem>
+                      <NavLink to="/app/auth/login" tag={Link}>
+                        <span className="nav-link-inner--text">Login</span>
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink to="/app/auth/register" tag={Link}>
+                        <span className="nav-link-inner--text">Register</span>
+                      </NavLink>
+                    </NavItem>
+                  </>)
+                }
+                {
+                  isLogin && (
+                    <>
+                      <NavItem>
+                        <NavLink to="/" tag={Link} onClick={this.onLogoutClicked}>
+                          <span className="nav-link-inner--text">Logout</span>
+                        </NavLink>
+                      </NavItem>
+                    </>)
+                }
               </Nav>
               <hr className="d-lg-none" />
-              {/* <Nav className="align-items-lg-center ml-lg-auto" navbar>
-                <NavItem>
-                  <NavLink
-                    className="nav-link-icon"
-                    href="https://www.facebook.com/creativetim?ref=creative-tim"
-                    id="tooltip601201423"
-                    target="_blank"
-                  >
-                    <i className="fab fa-facebook-square" />
-                    <span className="nav-link-inner--text d-lg-none">
-                      Facebook
-                    </span>
-                  </NavLink>
-                  <UncontrolledTooltip delay={0} target="tooltip601201423">
-                    Like us on Facebook
-                  </UncontrolledTooltip>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    className="nav-link-icon"
-                    href="https://www.instagram.com/creativetimofficial?ref=creative-tim"
-                    id="tooltip871243015"
-                    target="_blank"
-                  >
-                    <i className="fab fa-instagram" />
-                    <span className="nav-link-inner--text d-lg-none">
-                      Instagram
-                    </span>
-                  </NavLink>
-                  <UncontrolledTooltip delay={0} target="tooltip871243015">
-                    Follow us on Instagram
-                  </UncontrolledTooltip>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    className="nav-link-icon"
-                    href="https://twitter.com/creativetim?ref=creative-tim"
-                    id="tooltip366258619"
-                    target="_blank"
-                  >
-                    <i className="fab fa-twitter-square" />
-                    <span className="nav-link-inner--text d-lg-none">
-                      Twitter
-                    </span>
-                  </NavLink>
-                  <UncontrolledTooltip delay={0} target="tooltip366258619">
-                    Follow us on Twitter
-                  </UncontrolledTooltip>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    className="nav-link-icon"
-                    href="https://github.com/creativetimofficial?ref=creative-tim"
-                    id="tooltip931502898"
-                    target="_blank"
-                  >
-                    <i className="fab fa-github" />
-                    <span className="nav-link-inner--text d-lg-none">
-                      Github
-                    </span>
-                  </NavLink>
-                  <UncontrolledTooltip delay={0} target="tooltip931502898">
-                    Star us on Github
-                  </UncontrolledTooltip>
-                </NavItem>
-                <NavItem className="d-none d-lg-block ml-lg-4">
-                  <Button
-                    className="btn-neutral btn-icon"
-                    color="default"
-                    href="https://www.creative-tim.com/product/argon-dashboard-pro-react?ref=adpr-index-navbar"
-                    target="_blank"
-                  >
-                    <span className="btn-inner--icon">
-                      <i className="fas fa-shopping-cart mr-2" />
-                    </span>
-                    <span className="nav-link-inner--text">Purchase now</span>
-                  </Button>
-                </NavItem>
-              </Nav> */}
             </UncontrolledCollapse>
           </Container>
         </Navbar>
@@ -209,4 +147,14 @@ class AdminNavbar extends React.Component {
   }
 }
 
-export default AdminNavbar;
+const mapStateToProps = (state) => {
+  return {
+    isLogin: state.LoginReducer ? state.LoginReducer.isLogin : false,
+  }
+};
+
+const mapDispatchToProps = dispatch => ({
+  LogoutAction: () => { dispatch(LogoutAction()); },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdminNavbar);

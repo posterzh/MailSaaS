@@ -7,6 +7,9 @@ import {
     FAILURE_LOGIN,
     REQUEST_FOR_LOGIN,
     SUCCESS_LOGIN,  
+    REQUEST_FOR_LOGOUT,
+    SUCCESS_LOGOUT,
+    FAILURE_LOGOUT,
 } from "../actionType/actionType"
 
 import Api from "../api/api"
@@ -53,6 +56,25 @@ export const loginFailure = (payload) => {
     }
 }
 
+//Logout
+export const requestForLogout = () => {
+    return {
+        type: REQUEST_FOR_LOGOUT,
+    }
+}
+
+export const logoutSuccess = () => {
+    return {
+        type: SUCCESS_LOGOUT,
+    }
+}
+
+export const logoutFailure = () => {
+    return {
+        type: FAILURE_LOGOUT,
+    }
+}
+
 // register action
 export const RegisterAction = (user) => {
     return function (dispatch) {
@@ -71,7 +93,7 @@ export const RegisterAction = (user) => {
 // login action
 export const LoginAction = (Loginuser) => {
     return function (dispatch) {
-        dispatch(requestForLogin(Loginuser))
+        // dispatch(requestForLogin(Loginuser))
         Api.LoginApi(Loginuser).then(result => {
             const token = result.data.token;
             localStorage.setItem('access_token', token)
@@ -79,6 +101,20 @@ export const LoginAction = (Loginuser) => {
             history.push('/app/admin/dashboard')
         }).catch(err => {
             dispatch(loginFailure(err.response.data.non_field_errors&&err.response.data.non_field_errors[0]))
+        })
+    }
+}
+
+// logout action
+export const LogoutAction = () => {
+    return function (dispatch) {
+        dispatch(requestForLogout())
+        Api.LogoutApi().then(result => {
+            localStorage.removeItem('access_token')
+            dispatch(logoutSuccess())
+            history.push('/app/auth/login')
+        }).catch(err => {
+            dispatch(logoutFailure())
         })
     }
 }

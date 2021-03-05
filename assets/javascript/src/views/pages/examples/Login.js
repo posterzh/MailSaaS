@@ -34,8 +34,10 @@ import {
 } from "reactstrap";
 import {Link} from 'react-router-dom'
 import AuthHeader from "../../../components/Headers/AuthHeader.js";
-import { LoginAction } from "../../../redux/action/AuthourizationAction"
+import { LoginSuccess, loginFailure } from "../../../redux/action/AuthourizationAction"
 import { connect } from "react-redux"
+import Api from "../../../../src/redux/api/api"
+import { history } from "../../../index"
 
 class Login extends React.Component {
   constructor(props) {
@@ -44,7 +46,8 @@ class Login extends React.Component {
       email: '',
       password: '',
       focusedEmail:false,
-      focusedPassword:false
+      focusedPassword:false,
+      loginPending: false
     }
   }
   handleChange = (event) => {
@@ -60,10 +63,24 @@ class Login extends React.Component {
       password: this.state.password
     };
 
-    this.props.LoginAction(loginuser)
+    this.setState({loginPending: true})
+
+    // this.props.LoginAction(loginuser)
+    Api.LoginApi(loginuser).then(result => {
+      this.setState({loginPending: false})
+
+      const token = result.data.token;
+      localStorage.setItem('access_token', token)
+      this.props.LoginSuccess(result.data)
+      history.push('/app/admin/dashboard')
+    }).catch(err => {
+      this.setState({loginPending: false})
+
+      this.props.LoginFailure(err.response.data.non_field_errors&&err.response.data.non_field_errors[0])
+    })
   }
   render() {
-    const { Loginuser, isLogin,loginResponse } = this.props
+    const { Loginuser, isLogin, loginResponse } = this.props
     return (
       <>
         <AuthHeader
@@ -141,6 +158,11 @@ class Login extends React.Component {
                     <div className="text-center">
                       <Button className="my-4" color="info" type="submit">
                         Sign in
+                        {
+                          this.state.loginPending && (
+                            <i className="ml-1 fas fa-circle-notch fa-spin"></i>
+                          )
+                        }
                       </Button>
                     </div>
                   </Form>
@@ -173,16 +195,15 @@ class Login extends React.Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log("cheking login details======>", state.LoginReducer.Loginuser, state.LoginReducer.isLogin)
   return {
-    Loginuser: state.LoginReducer.Loginuser,
-    isLogin: state.LoginReducer.isLogin,
-    loginResponse:state.LoginReducer.loginResponse
+    Loginuser: state.LoginReducer ? state.LoginReducer.Loginuser : '',
+    isLogin: state.LoginReducer ? state.LoginReducer.isLogin : false,
+    loginResponse: state.LoginReducer ? state.LoginReducer.loginResponse : null
   }
 };
 
 const mapDispatchToProps = dispatch => ({
-  LoginAction: Loginuser => { dispatch(LoginAction(Loginuser)); },
+  LoginSuccess: loginUser => dispatch(LoginSuccess(loginUser)),
+  LoginFailure: payload => dispatch(loginFailure(payload)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
-

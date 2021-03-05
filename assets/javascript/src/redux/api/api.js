@@ -9,6 +9,10 @@ Api.RegisterApi = (user) => {
 Api.LoginApi = (loginuser) => {
   return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser)
 }
+// for logout
+Api.LogoutApi = () => {
+  return axios.post(`${API_BASE_URL}/rest-auth/logout/`)
+}
 
 Api.StartCampaignApi = (data, token) => {
   return axios({

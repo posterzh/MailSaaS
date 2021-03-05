@@ -43,20 +43,24 @@ import "../../scss/argon-dashboard-pro-react.scss?v1.2.0";
 import AdminLayout from "./layouts/Admin";
 import AuthLayout from "./layouts/Auth";
 import IndexView from "./views/Index.js";
-import store from "./redux/store/store";
+import {store, persistor} from "./redux/store/store";
+import PrivateRoute from "./layouts/PrivateRoute";
 import { createBrowserHistory } from "history";
+import { PersistGate } from 'redux-persist/integration/react';
 export const history = createBrowserHistory();
 ReactDOM.render(
   <Router history={history}>
     <Provider store={store}>
-      <Switch>
-        <Route
-          path="/app/admin"
-          render={(props) => <AdminLayout {...props} />}
-        />
-        <Route path="/app/auth" render={(props) => <AuthLayout {...props} />} />
-        <Route path="/app" render={(props) => <IndexView {...props} />} />
-      </Switch>
+      <PersistGate loading={null} persistor={persistor}>
+        <Switch>
+          <PrivateRoute
+            path="/app/admin"
+            render={(props) => <AdminLayout {...props} />}
+          />
+          <Route path="/app/auth" render={(props) => <AuthLayout {...props} />} />
+          <Route path="/app" render={(props) => <IndexView {...props} />} />
+        </Switch>
+      </PersistGate>
     </Provider>
   </Router>,
   document.getElementById("object-lifecycle-home")
