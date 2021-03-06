@@ -29,7 +29,7 @@ class Campaign(models.Model):
     schedule_time = models.TimeField(blank=True, null=True)
     terms_and_laws = models.BooleanField(default=False)
     campaign_status = models.BooleanField(default=False)    #Start Campaign or Pause Campaign
-    label_name = models.ForeignKey(CampaignLabel,on_delete=models.SET_DEFAULT,default='Unlabeled')
+    label_name = models.ForeignKey(CampaignLabel,on_delete=models.SET_DEFAULT, default=0)
 
 
     def __str__(self):
@@ -60,7 +60,7 @@ class CampaignRecipient(models.Model):
     opens = models.BooleanField(default=False)
     has_link_clicked = models.BooleanField(default=False)
     bounces = models.BooleanField(default=False)
-    lead_status = models.CharField(max_length=32,choices=LEAD_TYPE,default='none',blank = True, null = True)
+    lead_status = models.CharField(max_length=32,choices=LEAD_TYPE,default='none',null = True)
     reciepent_status = models.BooleanField(default=False)    #Start Campaign or Pause Reciepent
     unsubscribe = models.BooleanField(default=False)
     is_delete = models.BooleanField(default=False)
@@ -115,7 +115,7 @@ RECIPIENT =(
 class CampaignLeadCatcher(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     assigned = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
-    leadcatcher_recipient = models.CharField(max_length=32,choices=RECIPIENT,default=0)
+    leadcatcher_recipient = models.CharField(max_length=32,choices=RECIPIENT,default='replies')
     specific_link = models.URLField(max_length=500, null=True,blank=True)
     of_times = models.PositiveIntegerField(null = True,blank=True,default = 0)
     
