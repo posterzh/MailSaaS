@@ -24,7 +24,7 @@ class AuthHeader extends React.Component {
   render() {
     return (
       <>
-        <div className="header bg-gradient-info py-7 py-lg-8 pt-lg-9">
+        <div className="header bg-gradient-info py-5 py-lg-6 pt-lg-7">
           <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">

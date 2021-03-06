@@ -45,6 +45,9 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { LogoutAction } from '../../redux/action/AuthourizationAction'
+import { connect } from 'react-redux'
+import { parseConfigFileTextToJson } from "typescript";
 
 class AdminNavbar extends React.Component {
   // function that on mobile devices makes the search open
@@ -73,6 +76,11 @@ class AdminNavbar extends React.Component {
       document.body.classList.remove("g-navbar-search-hidden");
     }, 500);
   };
+  // handle logout
+  handleLogout = (event) => {
+    event.preventDefault();
+    this.props.LogoutAction()
+  }
   render() {
     return (
       <>
@@ -413,7 +421,13 @@ class AdminNavbar extends React.Component {
                       </span>
                       <Media className="ml-2 d-none d-lg-block">
                         <span className="mb-0 text-sm font-weight-bold">
-                          John Snow
+                          {
+                            this.props.Loginuser.user !== undefined
+                            ?
+                            this.props.Loginuser.user.first_name + " " + this.props.Loginuser.user.last_name
+                            :
+                            ''
+                          }
                         </span>
                       </Media>
                     </Media>
@@ -450,7 +464,7 @@ class AdminNavbar extends React.Component {
                     <DropdownItem divider />
                     <DropdownItem
                       href="#pablo"
-                      onClick={(e) => e.preventDefault()}
+                      onClick={this.handleLogout}
                     >
                       <i className="ni ni-user-run" />
                       <span>Logout</span>
@@ -476,4 +490,16 @@ AdminNavbar.propTypes = {
   theme: PropTypes.oneOf(["dark", "light"]),
 };
 
-export default AdminNavbar;
+const mapStateToProps = (state) => {
+  return {
+    Loginuser: state.LoginReducer.Loginuser,
+    isLogin: state.LoginReducer.isLogin,
+    loginResponse:state.LoginReducer.loginResponse
+  }
+};
+
+const mapDispatchToProps = dispatch => ({
+  LogoutAction: () => { dispatch(LogoutAction()); },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdminNavbar);

@@ -4,6 +4,9 @@ import {
     FAILURE_LOGIN,
     REQUEST_FOR_LOGIN,
     SUCCESS_LOGIN,
+    REQUEST_FOR_LOGOUT,
+    SUCCESS_LOGOUT,
+    FAILURE_LOGOUT,
     SUCCESS_START_CAMPAIGN,
     SUCCESS_RECIPIENT,
     SUCCESS_MAIL_SENDER,
@@ -115,6 +118,10 @@ export const LoginReducer = (state = initialState, action) => {
                 isLogin: false,
                 loginResponse: action.payload
 
+            }
+        case SUCCESS_LOGOUT:
+            return {
+                ...initialState
             }
         default: return state
             break;
