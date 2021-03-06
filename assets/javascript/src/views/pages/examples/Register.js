@@ -41,6 +41,7 @@ import { connect } from "react-redux"
 import Api from "../../../../src/redux/api/api"
 import { history } from "../../../index"
 import { Alert } from 'reactstrap';
+import { FAILURE_REGISTER } from "../../../redux/actionType/actionType";
 class Register extends React.Component {
   constructor(props) {
     super(props)
@@ -58,7 +59,8 @@ class Register extends React.Component {
       focusedPassword: false,
       focusedPhone: false,
       focusedCompany: false,
-      registerPending: false
+      registerPending: false,
+      registerSuccess: false
     }
 
   }
@@ -71,7 +73,6 @@ class Register extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault();
-    this.setState({ isOpen: false })
 
     const user = {
       full_name: this.state.FullName,
@@ -82,23 +83,32 @@ class Register extends React.Component {
       mailsaas_type: this.state.mailsaas_type
     };
 
-    this.setState({registerPending: true})
+    this.setState({
+      registerPending: true,
+      isOpen: false
+    })
 
     Api.RegisterApi(user).then(result => {
-      this.setState({registerPending: false})
+      this.setState({
+        registerPending: false,
+        isOpen: true
+      })
 
       console.log( 'registerSuccess',result.data)
       this.props.RegisterSuccess(result.data)
       history.push('/app/auth/login')
     }).catch(err => {
-      this.setState({registerPending: false})
+      this.setState({
+        registerPending: false,
+        isOpen: true
+      })
 
       err.response.data.email&&  this.props.RegisterFailure(err.response.data.email)
       console.log(err.response.data.email)
     })
   }
   render() {
-    const { registerResponse, isRegisterSuccess } = this.props
+    const { registerResponse } = this.props
     const { focusedName, focusedEmail, focusedPhone, focusedCompany, focusedPassword } = this.state
     return (
       <>
@@ -306,7 +316,7 @@ class Register extends React.Component {
         <div style={{ display: 'flex', justifyContent: 'center', position: 'fixed', bottom: 0, right: 0, left: 0 }}>
           <Alert className="alert_" toggle={() => {
             this.setState({ isOpen: true })
-          }} isOpen={!this.state.isOpen && isRegisterSuccess} color="warning">{registerResponse}</Alert>
+          }} isOpen={this.state.isOpen} color="warning">{registerResponse}</Alert>
         </div>
       </>
     );
@@ -315,8 +325,7 @@ class Register extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    registerResponse: state.RegisterReducer.registerResponse,
-    isRegisterSuccess: state.RegisterReducer.isRegisterSuccess
+    registerResponse: state.RegisterReducer.registerResponse
   };
 };
 const mapDispatchToProps = dispatch => ({
