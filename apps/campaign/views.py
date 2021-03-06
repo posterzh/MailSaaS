@@ -30,7 +30,6 @@ from .serializers import (CampaignEmailSerializer,
                           DripEmailSerilizer, FollowUpSerializer,
                           OnclickSerializer,CampaignLabelSerilizer)
 from apps.mailaccounts.models import EmailAccount
-from apps.mailaccounts.views import send_mail_with_smtp
 
 
 class CreateCampaignStartView(APIView):

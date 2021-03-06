@@ -10,7 +10,7 @@ from django.http import JsonResponse
 
 from apps.campaign.models import Campaign, CampaignRecipient
 from apps.mailaccounts.models import EmailAccount
-from apps.mailaccounts.views import send_mail_with_smtp
+from apps.mailaccounts.utils import send_mail_with_smtp
 
 from .models import Email_schedule, Schedule
 from .serializers import EmailScheduleSerializers

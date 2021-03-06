@@ -28,8 +28,8 @@ class EmailAccount(models.Model):
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=200)
-    last_name = models.CharField(max_length=200)
+    first_name = models.CharField(max_length=200, default='')
+    last_name = models.CharField(max_length=200, default='')
 
     # SMTP fields
     smtp_host = models.CharField(max_length=200, blank=True, null=True)
