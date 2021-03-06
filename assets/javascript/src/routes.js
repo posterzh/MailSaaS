@@ -28,6 +28,7 @@ import Unsubscribes from "./views/pages/Unsubscribes/Unsubscribes";
 import ConversionTracking from "./views/pages/Extension/ConversionTracking";
 import ProspectOnclick from "./views/pages/Prospects/ProspectOnclick";
 import ForgetPassword from "./views/pages/examples/ForgetPassword";
+import Profile from "./views/pages/User/Profile";
 
 // Mail Account
 import MailAccounts from "./views/pages/MailAccount/MailAccounts";
@@ -261,6 +262,14 @@ const routes = [
         redirect: true,
       },
     ],
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    icon: "fas fa-user-slash text-dark",
+    component: Profile,
+    layout: "/app/admin",
+    redirect: true,
   },
   {
     path: "/unsubscribes",
