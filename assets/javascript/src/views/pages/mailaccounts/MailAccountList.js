@@ -17,69 +17,60 @@ import { getMailAccounts } from "../../../redux/action/MailAccountsActions";
 
 const tableTitle = [
   {
+    key: "email_provider",
+    value: "Email Provider",
+  },
+  {
     key: "email",
     value: "Email",
   },
   {
-    key: "name",
-    value: "Name",
+    key: "first_name",
+    value: "First Name",
   },
   {
-    key: "created",
-    value: "Created",
+    key: "last_name",
+    value: "Last Name",
   },
   {
-    key: "status",
-    value: "Status",
+    key: "smtp_host",
+    value: "SMTP Host",
   },
   {
-    key: "campaign",
-    value: "Campaign",
+    key: "smtp_port",
+    value: "SMTP Port",
   },
   {
-    key: "sent",
-    value: "Sent",
+    key: "smtp_username",
+    value: "SMTP Username",
   },
   {
-    key: "engaged",
-    value: "Engaged",
+    key: "smtp_password",
+    value: "SMTP Password",
   },
   {
-    key: "tasks",
-    value: "Tasks",
-  },
-];
-
-const tableData = [
-  {
-    email: "ajju@gmail.com",
-    name: "Azazul",
-    created: "10-10-2020",
-    status: "Passed",
-    campaign: "1458",
-    sent: "10",
-    engaged: "9",
-    tasks: "8",
+    key: "use_smtp_ssl",
+    value: "Use SMTP SSL",
   },
   {
-    email: "janak@gmail.com",
-    name: "Azazul",
-    created: "10-10-2020",
-    status: "Passed",
-    campaign: "1458",
-    sent: "10",
-    engaged: "2",
-    tasks: "8",
+    key: "imap_host",
+    value: "IMAP Host",
   },
   {
-    email: "ajju@gmail.com",
-    name: "janak",
-    created: "10-10-2020",
-    status: "Passed",
-    campaign: "1458",
-    sent: "10",
-    engaged: "2",
-    tasks: "8",
+    key: "imap_port",
+    value: "IMAP Port",
+  },
+  {
+    key: "imap_username",
+    value: "IMAP Username",
+  },
+  {
+    key: "imap_password",
+    value: "IMAP Password",
+  },
+  {
+    key: "use_imap_ssl",
+    value: "Use IMAP SSL",
   },
 ];
 
@@ -108,8 +99,6 @@ class MailAccountList extends Component {
     const { modal } = this.state;
     const { mailAccounts } = this.props;
 
-    console.log("Mail Accounts : ", mailAccounts);
-
     return (
       <>
         <PageHeader
@@ -136,7 +125,7 @@ class MailAccountList extends Component {
           <Row>
             <Tables
               titles={tableTitle} // required
-              tablePropsData={tableData} // required
+              tablePropsData={mailAccounts} // required
               showPagination={true} // optional
             />
           </Row>
@@ -149,7 +138,7 @@ class MailAccountList extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  mailAccounts: state.mailAccounts,
+  mailAccounts: state.mailAccounts.mailAccounts,
 });
 
 export default connect(mapStateToProps, { getMailAccounts })(MailAccountList);
