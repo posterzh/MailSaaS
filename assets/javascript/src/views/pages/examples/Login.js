@@ -30,57 +30,69 @@ import {
   InputGroup,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 import AuthHeader from "../../../components/Headers/AuthHeader.js";
-import { LoginSuccess, loginFailure } from "../../../redux/action/AuthourizationAction"
-import { connect } from "react-redux"
-import Api from "../../../../src/redux/api/api"
-import { history } from "../../../index"
+import {
+  LoginSuccess,
+  loginFailure,
+} from "../../../redux/action/AuthourizationAction";
+import { connect } from "react-redux";
+import { history } from "../../../index";
+
+import Api from "../../../../src/redux/api/api";
+import axios from "../../../redux/api/axios";
 
 class Login extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      email: '',
-      password: '',
-      focusedEmail:false,
-      focusedPassword:false,
-      loginPending: false
-    }
+      email: "",
+      password: "",
+      focusedEmail: false,
+      focusedPassword: false,
+      loginPending: false,
+    };
   }
   handleChange = (event) => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
-
-  }
+  };
   handleSubmit = (event) => {
     event.preventDefault();
     const loginuser = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
     };
 
-    this.setState({loginPending: true})
+    this.setState({ loginPending: true });
 
     // this.props.LoginAction(loginuser)
-    Api.LoginApi(loginuser).then(result => {
-      this.setState({loginPending: false})
+    Api.LoginApi(loginuser)
+      .then((result) => {
+        this.setState({ loginPending: false });
 
-      const token = result.data.token;
-      localStorage.setItem('access_token', token)
-      this.props.LoginSuccess(result.data)
-      history.push('/app/admin/dashboard')
-    }).catch(err => {
-      this.setState({loginPending: false})
+        const token = result.data.token;
+        localStorage.setItem("access_token", token);
 
-      this.props.LoginFailure(err.response.data.non_field_errors&&err.response.data.non_field_errors[0])
-    })
-  }
+        axios.setToken(token);
+
+        this.props.LoginSuccess(result.data);
+        history.push("/app/admin/dashboard");
+      })
+      .catch((err) => {
+        this.setState({ loginPending: false });
+
+        this.props.LoginFailure(
+          err.response.data.non_field_errors &&
+            err.response.data.non_field_errors[0]
+        );
+      });
+  };
   render() {
-    const { Loginuser, isLogin, loginResponse } = this.props
+    const { Loginuser, isLogin, loginResponse } = this.props;
     return (
       <>
         <AuthHeader
@@ -95,7 +107,7 @@ class Login extends React.Component {
                   <Form onSubmit={this.handleSubmit} role="form">
                     <FormGroup
                       className={classnames("mb-3", {
-                        focused: this.state.focusedEmail
+                        focused: this.state.focusedEmail,
                       })}
                     >
                       <InputGroup className="input-group-merge input-group-alternative">
@@ -112,13 +124,13 @@ class Login extends React.Component {
                           value={this.state.email}
                           onFocus={() => this.setState({ focusedEmail: true })}
                           onBlur={() => this.setState({ focusedEmail: false })}
-                          autoComplete='off'
+                          autoComplete="off"
                         />
                       </InputGroup>
                     </FormGroup>
                     <FormGroup
                       className={classnames({
-                        focused: this.state.focusedPassword
+                        focused: this.state.focusedPassword,
                       })}
                     >
                       <InputGroup className="input-group-merge input-group-alternative">
@@ -158,52 +170,55 @@ class Login extends React.Component {
                     <div className="text-center">
                       <Button className="my-4" color="info" type="submit">
                         Sign in
-                        {
-                          this.state.loginPending && (
-                            <i className="ml-2 fas fa-spinner fa-spin"></i>
-                          )
-                        }
+                        {this.state.loginPending && (
+                          <i className="ml-2 fas fa-spinner fa-spin"></i>
+                        )}
                       </Button>
                     </div>
                   </Form>
                   <Row>
-                    <div style={{margin:'auto'}}  className="text-center">
-                      {
-                        isLogin==false ?   <p style={{ color: 'red' }}> {loginResponse}</p>:<p style={{ color: 'green',margin:'auto' }}>Sucessufully Login</p>
-                      }
-
+                    <div style={{ margin: "auto" }} className="text-center">
+                      {isLogin == false ? (
+                        <p style={{ color: "red" }}> {loginResponse}</p>
+                      ) : (
+                        <p style={{ color: "green", margin: "auto" }}>
+                          Sucessufully Login
+                        </p>
+                      )}
                     </div>
-
                   </Row>
                 </CardBody>
               </Card>
               <Row className="mt-3">
                 <Col xs="6">
-                <Link to='/app/auth/forgetPassword'><small className="text-light">ForgetPassword ?</small></Link>
+                  <Link to="/app/auth/forgetPassword">
+                    <small className="text-light">ForgetPassword ?</small>
+                  </Link>
                   {/* <a className="text-light" href="#pablo" onClick={e => e.preventDefault()}><small>Forgot password?</small></a> */}
                 </Col>
                 <Col className="text-right" xs="6">
-                <Link to='/app/auth/register'><small className="text-light">Create new account</small></Link> 
+                  <Link to="/app/auth/register">
+                    <small className="text-light">Create new account</small>
+                  </Link>
                 </Col>
               </Row>
             </Col>
           </Row>
         </Container>
-       
       </>
     );
   }
 }
 const mapStateToProps = (state) => {
   return {
-    Loginuser: state.LoginReducer ? state.LoginReducer.Loginuser : '',
+    Loginuser: state.LoginReducer ? state.LoginReducer.Loginuser : "",
     isLogin: state.LoginReducer ? state.LoginReducer.isLogin : false,
-    loginResponse: state.LoginReducer ? state.LoginReducer.loginResponse : null
-  }
+    loginResponse: state.LoginReducer ? state.LoginReducer.loginResponse : null,
+  };
 };
 
-const mapDispatchToProps = dispatch => ({
-  LoginSuccess: loginUser => dispatch(LoginSuccess(loginUser)),
-  LoginFailure: payload => dispatch(loginFailure(payload)),
+const mapDispatchToProps = (dispatch) => ({
+  LoginSuccess: (loginUser) => dispatch(LoginSuccess(loginUser)),
+  LoginFailure: (payload) => dispatch(loginFailure(payload)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
