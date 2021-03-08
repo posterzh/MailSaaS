@@ -73,8 +73,9 @@ class AdminNavbar extends React.Component {
                       <img
                         alt="..."
                         // src={require("assets/img/brand/blue.png")}
-                        src={STATIC_FILES.argon_blue}
+                        src={STATIC_FILES.mailsaas_logo}
                       />
+                      <span>MailSaaS</span>
                     </Link>
                   </Col>
                   <Col className="collapse-close" xs="6">
