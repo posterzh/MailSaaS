@@ -1,3 +1,4 @@
+from django.http import Http404
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 
@@ -17,20 +18,20 @@ class MailAccountListView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         request.data["user"] = request.user.id
         serializer = EmailAccountSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": serializer.data, "success": True})
-        return Response({'message': serializer.errors, "success": False})
+        if not serializer.is_valid():
+            return Response(serializer.data)
+
+        serializer.save()
+        return Response(serializer.data)
 
     def get(self, request, *args, **kwargs):
-
         try:
             queryset = EmailAccount.objects.filter(user=request.user.id)
             serializer = EmailAccountSerializer(queryset, many=True)
-            return Response({"message": serializer.data, "success": True})
-
         except:
-            return Response({"message": "mail accounts not available"})
+            raise Http404('Error')
+
+        return Response(serializer.data)
 
 
 class MailAccountView(generics.UpdateAPIView):
@@ -42,15 +43,16 @@ class MailAccountView(generics.UpdateAPIView):
         queryset = EmailAccount.objects.get(id=pk)
         request.data["user"] = request.user.id
         serializer = EmailAccountSerializer(queryset, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "Connection Updated successfully"})
-        return Response({"error": serializer.errors})
+        if not serializer.is_valid():
+            raise Http404(serializer.errors)
+
+        serializer.save()
+        return Response(serializer.data)
 
     def delete(self, request, pk, format=None):
         try:
             queryset = EmailAccount.objects.get(id=pk)
         except:
-            return Response({"message": "No Mail Account For this Id"})
+            raise Http404('Error')
         queryset.delete()
         return Response({"message": "Connection Delete successfully", "success": True})
