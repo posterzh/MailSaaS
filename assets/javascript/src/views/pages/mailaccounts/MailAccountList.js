@@ -87,7 +87,7 @@ class MailAccountList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isModalOpen: false,
+      modal: false,
     };
   }
 
@@ -100,46 +100,12 @@ class MailAccountList extends Component {
     this.setState({ modal: false });
   };
 
-  // Connect mail account
-  connectMailAccount = (mailAccount) => {
-    console.log("Connecting mail account : ", mailAccount);
-
-    // Close modal
-    this.setState({ modal: false });
-  };
-
-  handleAction = (e) => {
-    this.setState({
-      modal: !this.state.modal,
-      hide: false,
-      flag: false,
-    });
-    const mailData = {
-      email: this.state.emailAddress,
-      full_name: this.state.FullName,
-      smtp_port: this.state.smtpPort,
-      smtp_host: this.state.smtpHost,
-      smtp_password: this.state.smtpPassword,
-      smtp_username: this.state.emailAddress,
-      imap_port: this.state.imapPort,
-      imap_host: this.state.imapHost,
-      imap_password: this.state.imapPassword,
-      imap_username: this.state.emailAddress,
-    };
-    if (this.state.flag) {
-      mailData.user = this.state.user;
-      this.props.MailAccountUpdate(mailData, this.state.accountId);
-    } else {
-      this.props.MailSenderAction(mailData);
-    }
-  };
-
   deleteMailAccount = (id) => {
     this.props.MailAccountDelete(id);
   };
 
   render() {
-    const { isModalOpen } = this.state;
+    const { modal } = this.state;
     const { mailAccounts } = this.props;
 
     console.log("Mail Accounts : ", mailAccounts);
@@ -175,11 +141,7 @@ class MailAccountList extends Component {
             />
           </Row>
 
-          <ConnectMailAccountModal
-            isOpen={isModalOpen}
-            close={this.closeModal}
-            connectMailAccount={this.connectMailAccount}
-          />
+          <ConnectMailAccountModal isOpen={modal} close={this.closeModal} />
         </PageContainer>
       </>
     );
@@ -190,8 +152,4 @@ const mapStateToProps = (state) => ({
   mailAccounts: state.mailAccounts,
 });
 
-const mapDispatchToProps = {
-  getMailAccounts,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MailAccountList);
+export default connect(mapStateToProps, { getMailAccounts })(MailAccountList);
