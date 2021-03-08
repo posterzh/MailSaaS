@@ -80,7 +80,7 @@ class AdminNavbar extends React.Component {
                       <img
                         alt="..."
                         // src={require("assets/img/brand/blue.png")}
-                        src={STATIC_FILES.argon_blue}
+                        src={STATIC_FILES.mailsaas_logo}
                       />
                     </Link>
                   </Col>

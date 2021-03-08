@@ -27,7 +27,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = True
+
+LIVE = bool(os.environ.get("LIVE", "True"))
 
 ALLOWED_HOSTS = ['*']
 # CORS_ALLOWED_ORIGINS = ['*']
@@ -45,7 +48,6 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
 
-    'livereload',
     'django.contrib.staticfiles',
     
     'django.forms',
@@ -101,6 +103,9 @@ PROJECT_APPS = [
     
 ]
 
+if LIVE:
+    DJANGO_APPS = [ 'livereload' ] + DJANGO_APPS
+
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PEGASUS_APPS + PROJECT_APPS
 
 SITE_ID = 1
@@ -115,9 +120,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-
-    'livereload.middleware.LiveReloadScript',
 ]
+
+if LIVE:
+    MIDDLEWARE = MIDDLEWARE + [ 'livereload.middleware.LiveReloadScript' ]
 
 ROOT_URLCONF = 'mail.urls'
 
