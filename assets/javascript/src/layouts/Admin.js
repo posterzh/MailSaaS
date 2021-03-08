@@ -103,7 +103,10 @@ class Admin extends React.Component {
           ref="mainContent"
           onClick={this.closeSidenav}
         >
-          <AdminNavbar />
+          <AdminNavbar
+            toggleSidenav={this.toggleSidenav}
+            sidenavOpen={this.state.sidenavOpen}
+          />
           <Switch>
             {this.getRoutes(routes)}
             <Redirect from="*" to="/app/admin/dashboard" />

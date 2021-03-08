@@ -82,6 +82,7 @@ class AdminNavbar extends React.Component {
     this.props.LogoutAction()
   }
   render() {
+    let { theme, sidenavOpen, toggleSidenav } = this.props
     return (
       <>
         <Navbar
@@ -114,24 +115,31 @@ class AdminNavbar extends React.Component {
               </Form>
 
               <Nav className="align-items-center ml-md-auto" navbar>
-                <UncontrolledDropdown nav>
-                  <DropdownMenu
-                    className="dropdown-menu-xl py-0 overflow-hidden"
-                    right
-                  >
-                    <ListGroup flush>
-                    </ListGroup>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
               </Nav>
               <Nav className="align-items-center ml-auto ml-md-0" navbar>
+                <NavItem className="d-xl-none">
+                  <div
+                    className={classnames(
+                      "pr-3 sidenav-toggler",
+                      { active: sidenavOpen },
+                      { "sidenav-toggler-dark": theme === "dark" }
+                    )}
+                    onClick={toggleSidenav}
+                  >
+                    <div className="sidenav-toggler-inner">
+                      <i className="sidenav-toggler-line" />
+                      <i className="sidenav-toggler-line" />
+                      <i className="sidenav-toggler-line" />
+                    </div>
+                  </div>
+                </NavItem>
                 <UncontrolledDropdown nav>
                   <DropdownToggle className="nav-link pr-0" color="" tag="a">
                     <Media className="align-items-center">
                       <span className="avatar avatar-sm rounded-circle">
                         <img alt="..." src={STATIC_FILES.team_4} />
                       </span>
-                      <Media className="ml-2 d-none d-sm-block">
+                      <Media className="ml-2 d-block">
                         <span className="mb-0 text-sm font-weight-bold">
                           {
                             this.props.Loginuser.user !== undefined
