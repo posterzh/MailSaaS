@@ -31,8 +31,8 @@ import ForgetPassword from "./views/pages/examples/ForgetPassword";
 import Profile from "./views/pages/User/Profile";
 
 // Mail Account
-import MailAccounts from "./views/pages/MailAccount/MailAccounts";
-import SendingCalender from "./views/pages/MailAccount/SedingCalender";
+import MailAccountList from "./views/pages/mailaccounts/MailAccountList";
+import SendingCalender from "./views/pages/mailaccounts/SedingCalender";
 
 // New Campaign pages
 import CampaignCompose from "./views/pages/campaign/NewCampaign/CampaignCompose";
@@ -180,7 +180,7 @@ const routes = [
         path: "/mail-account",
         name: "Mail Accounts",
         miniName: " ",
-        component: MailAccounts,
+        component: MailAccountList,
         layout: "/app/admin",
       },
       {

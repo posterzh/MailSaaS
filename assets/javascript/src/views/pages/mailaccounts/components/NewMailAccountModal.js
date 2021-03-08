@@ -16,7 +16,7 @@ import {
   NavLink,
 } from "reactstrap";
 import classnames from "classnames";
-export default class ConnectMailAccountModal extends Component {
+export default class NewMailAccountModal extends Component {
   constructor(props) {
     super(props);
     this.state = {

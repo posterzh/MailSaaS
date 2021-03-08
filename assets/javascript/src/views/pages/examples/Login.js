@@ -42,7 +42,7 @@ import { connect } from "react-redux";
 import { history } from "../../../index";
 
 import Api from "../../../../src/redux/api/api";
-import axios from "../../../redux/api/axios";
+import axios from "../../../utils/axios";
 
 class Login extends React.Component {
   constructor(props) {
