@@ -73,6 +73,7 @@ class Login extends React.Component {
       localStorage.setItem('access_token', token)
       this.props.LoginSuccess(result.data)
       history.push('/app/admin/dashboard')
+      window.location.reload();
     }).catch(err => {
       this.setState({loginPending: false})
 

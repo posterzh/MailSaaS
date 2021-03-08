@@ -97,6 +97,7 @@ class Register extends React.Component {
       console.log( 'registerSuccess',result.data)
       this.props.RegisterSuccess(result.data)
       history.push('/app/auth/login')
+      window.location.reload();
     }).catch(err => {
       this.setState({
         registerPending: false,
