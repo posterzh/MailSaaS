@@ -149,7 +149,7 @@ class AdminNavbar extends React.Component {
                       <Media className="ml-2 d-none d-sm-block">
                         <span className="mb-0 text-sm font-weight-bold">
                           {
-                            this.props.user !== undefined && this.props.user.last_name
+                            this.props.user !== undefined && this.props.user.first_name
                           }
                         </span>
                       </Media>
