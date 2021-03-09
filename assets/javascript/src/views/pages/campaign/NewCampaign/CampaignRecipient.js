@@ -46,31 +46,31 @@ class CampaignRecipient extends Component {
   componentDidMount() {
     // this variable is to delete the previous image from the dropzone state
     // it is just to make the HTML DOM a bit better, and keep it light
-    let currentMultipleFile = undefined;
-    // multiple dropzone file - accepts any type of file
-    new Dropzone(document.getElementById("dropzone-multiple"), {
-      url: "https://",
-      dictDefaultMessage: "Drop a CSV file here (or choose one)",
-      thumbnailWidth: null,
-      thumbnailHeight: null,
-      previewsContainer: document.getElementsByClassName(
-        "dz-preview-multiple"
-      )[0],
-      previewTemplate: document.getElementsByClassName("dz-preview-multiple")[0]
-        .innerHTML,
-      maxFiles: 1,
-      acceptedFiles: ".csv",
-      init: function () {
-        this.on("addedfile", function (file) {
-          if (currentMultipleFile) {
-            this.removeFile(currentMultipleFile);
-          }
-          currentMultipleFile = file;
-          console.log(file);
-        });
-      },
-    });
-    document.getElementsByClassName("dz-preview-multiple")[0].innerHTML = "";
+
+    // let currentMultipleFile = undefined;
+    // new Dropzone(document.getElementById("dropzone-multiple"), {
+    //   url: "https://",
+    //   dictDefaultMessage: "Drop a CSV file here (or choose one)",
+    //   thumbnailWidth: null,
+    //   thumbnailHeight: null,
+    //   previewsContainer: document.getElementsByClassName(
+    //     "dz-preview-multiple"
+    //   )[0],
+    //   previewTemplate: document.getElementsByClassName("dz-preview-multiple")[0]
+    //     .innerHTML,
+    //   maxFiles: 1,
+    //   acceptedFiles: ".csv",
+    //   init: function () {
+    //     this.on("addedfile", function (file) {
+    //       if (currentMultipleFile) {
+    //         this.removeFile(currentMultipleFile);
+    //       }
+    //       currentMultipleFile = file;
+    //       console.log(file);
+    //     });
+    //   },
+    // });
+    // document.getElementsByClassName("dz-preview-multiple")[0].innerHTML = "";
   }
 
   handleChange = (e) => {
@@ -79,6 +79,7 @@ class CampaignRecipient extends Component {
       show: true,
     });
   };
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.state.options.length = 0;
@@ -120,7 +121,7 @@ class CampaignRecipient extends Component {
 
   handleOnRemoveFile = (data) => {
     console.log('---------------------------');
-    console.log(data)
+    console.log(data);
     console.log('---------------------------');
   }
 
@@ -170,6 +171,76 @@ class CampaignRecipient extends Component {
                         >
                           <span>Drop CSV file here or click to upload.</span>
                         </CSVReader>
+                        <Row>
+                          <Col>
+                            <h3 className="text-left mt-4">Map CSV Columns</h3>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={5} className="mx-auto ">
+                            <Card>
+                              <h4 className="text-center my-3">Special Columns</h4>
+                              <div className="custom-control custom-checkbox mb-3">
+                                <input
+                                  className="custom-control-input"
+                                  id="1"
+                                  type="checkbox"
+                                  name="trackopen"
+                                  onChange={this.handleChange}
+                                />
+                                <label className="custom-control-label" htmlFor="1">
+                                  Email
+                                </label>
+                              </div>
+
+                              <div className="custom-control custom-checkbox mb-3">
+                                <input
+                                  className="custom-control-input"
+                                  id="4"
+                                  type="checkbox"
+                                  name="schedulesend"
+                                  onChange={this.handleChange}
+                                  required
+                                />
+                                <label className="custom-control-label" htmlFor="4">
+                                  Full Name
+                                </label>
+                              </div>
+                            </Card>
+                          </Col>
+                          <Col md={5} className="mx-auto">
+                            <h4 className="text-center my-3">Text Replacement Columns</h4>
+                            <Card>
+                              <div className="custom-control custom-checkbox mb-3">
+                                <input
+                                  className="custom-control-input"
+                                  id="1"
+                                  type="checkbox"
+                                  name="trackopen"
+                                  onChange={this.handleChange}
+                                />
+                                <label className="custom-control-label" htmlFor="1">
+                                  Email
+                                </label>
+                              </div>
+
+                              <div className="custom-control custom-checkbox mb-3">
+                                <input
+                                  className="custom-control-input"
+                                  id="4"
+                                  type="checkbox"
+                                  name="schedulesend"
+                                  onChange={this.handleChange}
+                                  required
+                                />
+                                <label className="custom-control-label" htmlFor="4">
+                                  Full Name
+                                </label>
+                              </div>
+                            </Card>
+                          </Col>
+                        </Row>
+                        
                         {/* <div
                           className="dropzone dropzone-multiple"
                           id="dropzone-multiple"

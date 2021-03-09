@@ -1913,6 +1913,10 @@ input::-webkit-inner-spin-button {
   top: -18px;
 }
 
+.inner-card {
+  box-shadow: 0 0 1rem 0 #7373736e;
+}
+
 @media (max-width: 767px) {
   .mobile-p-0 {
     padding: 0px;
