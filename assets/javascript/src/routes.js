@@ -162,11 +162,26 @@ const routes = [
 
   // Prospects
   {
-    path: "/prospects",
+    collapse: true,
     name: "Prospects",
     icon: "fa fa-users text-dark",
-    component: Prospects,
-    layout: "/app/admin",
+    state: "prospects",
+    views: [
+      {
+        path: "/prospects",
+        name: "Prospects",
+        miniName: " ",
+        component: Prospects,
+        layout: "/app/admin",
+      },
+      {
+        path: "/unsubscribes",
+        name: "Unsubscribes",
+        miniName: " ",
+        component: Unsubscribes,
+        layout: "/app/admin",
+      },
+    ],
   },
 
   // MailAccount
@@ -271,14 +286,6 @@ const routes = [
     layout: "/app/admin",
     redirect: true,
   },
-  {
-    path: "/unsubscribes",
-    name: "Unsubscribes",
-    icon: "fas fa-user-slash text-dark",
-    component: Unsubscribes,
-    layout: "/app/admin",
-  },
-
   {
     name: "ForgetPassword",
     // icon: "fa fa-home text-dark",
