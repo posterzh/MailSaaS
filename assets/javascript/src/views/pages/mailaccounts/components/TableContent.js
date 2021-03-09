@@ -18,6 +18,7 @@ import {
   Form,
   FormGroup,
   Input,
+  UncontrolledTooltip,
 } from "reactstrap";
 import CardBody from "reactstrap/lib/CardBody";
 
@@ -120,6 +121,8 @@ function Tables({
   totalPages = null,
   filters = [],
   searchKeys = [],
+  onEdit = null,
+  onDelete = null,
 }) {
   const [sort, setSort] = React.useState(null);
   const [sortType, setSortType] = React.useState("asc");
@@ -129,8 +132,6 @@ function Tables({
   const [acitve, setActive] = React.useState(acitvePage);
   const [selectAll, setSelectAll] = React.useState(false);
   const [filterParams, setfilterParams] = React.useState([]);
-
-  console.log("tableData : ", tableData);
 
   const sortData = (item) => {
     let data = [];
@@ -393,6 +394,7 @@ function Tables({
                         );
                       })}
                       {showAction && <th scope="col" key="header-actions" />}
+                      <th />
                     </tr>
                   </thead>
                   <tbody className="list">
@@ -463,6 +465,43 @@ function Tables({
                               </UncontrolledDropdown>
                             </td>
                           )}
+
+                          <td className="table-actions">
+                            <a
+                              className="table-action"
+                              href="#pablo"
+                              id={`edit${index}`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                onEdit && onEdit(data, index);
+                              }}
+                            >
+                              <i className="fas fa-edit" />
+                            </a>
+                            <UncontrolledTooltip
+                              delay={0}
+                              target={`edit${index}`}
+                            >
+                              Edit
+                            </UncontrolledTooltip>
+                            <a
+                              className="table-action table-action-delete"
+                              href="#pablo"
+                              id={`delete${index}`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                onDelete && onDelete(data, index);
+                              }}
+                            >
+                              <i className="fas fa-trash" />
+                            </a>
+                            <UncontrolledTooltip
+                              delay={0}
+                              target={`delete${index}`}
+                            >
+                              Delete
+                            </UncontrolledTooltip>
+                          </td>
                         </tr>
                       );
                     })}

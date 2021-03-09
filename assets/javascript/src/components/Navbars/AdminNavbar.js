@@ -139,12 +139,12 @@ class AdminNavbar extends React.Component {
                       <span className="avatar avatar-sm rounded-circle">
                         <img alt="..." src={STATIC_FILES.team_4} />
                       </span>
-                      <Media className="ml-2 d-block">
+                      <Media className="ml-2 d-none d-sm-block">
                         <span className="mb-0 text-sm font-weight-bold">
                           {
                             this.props.Loginuser.user !== undefined
                             ?
-                            this.props.Loginuser.user.first_name + " " + this.props.Loginuser.user.last_name
+                            this.props.Loginuser.user.last_name
                             :
                             ''
                           }

@@ -16,12 +16,12 @@ import {
   ListGroup,
 } from "reactstrap";
 import Dropzone from "dropzone";
+import { CSVReader } from 'react-papaparse';
 import { Link } from "react-router-dom";
 import {
   RecipientAction,
   StartCampaignAction,
 } from "../../../../redux/action/CampaignAction";
-import Csvfile from "./components/csvfile";
 
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
@@ -46,29 +46,31 @@ class CampaignRecipient extends Component {
   componentDidMount() {
     // this variable is to delete the previous image from the dropzone state
     // it is just to make the HTML DOM a bit better, and keep it light
-    let currentMultipleFile = undefined;
-    // multiple dropzone file - accepts any type of file
-    new Dropzone(document.getElementById("dropzone-multiple"), {
-      url: "https://",
-      dictDefaultMessage: "Drop a CSV file here (or choose one)",
-      thumbnailWidth: null,
-      thumbnailHeight: null,
-      previewsContainer: document.getElementsByClassName(
-        "dz-preview-multiple"
-      )[0],
-      previewTemplate: document.getElementsByClassName("dz-preview-multiple")[0]
-        .innerHTML,
-      maxFiles: null,
-      acceptedFiles: null,
-      init: function () {
-        this.on("addedfile", function (file) {
-          if (currentMultipleFile) {
-          }
-          currentMultipleFile = file;
-        });
-      },
-    });
-    document.getElementsByClassName("dz-preview-multiple")[0].innerHTML = "";
+
+    // let currentMultipleFile = undefined;
+    // new Dropzone(document.getElementById("dropzone-multiple"), {
+    //   url: "https://",
+    //   dictDefaultMessage: "Drop a CSV file here (or choose one)",
+    //   thumbnailWidth: null,
+    //   thumbnailHeight: null,
+    //   previewsContainer: document.getElementsByClassName(
+    //     "dz-preview-multiple"
+    //   )[0],
+    //   previewTemplate: document.getElementsByClassName("dz-preview-multiple")[0]
+    //     .innerHTML,
+    //   maxFiles: 1,
+    //   acceptedFiles: ".csv",
+    //   init: function () {
+    //     this.on("addedfile", function (file) {
+    //       if (currentMultipleFile) {
+    //         this.removeFile(currentMultipleFile);
+    //       }
+    //       currentMultipleFile = file;
+    //       console.log(file);
+    //     });
+    //   },
+    // });
+    // document.getElementsByClassName("dz-preview-multiple")[0].innerHTML = "";
   }
 
   handleChange = (e) => {
@@ -77,6 +79,7 @@ class CampaignRecipient extends Component {
       show: true,
     });
   };
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.state.options.length = 0;
@@ -105,6 +108,22 @@ class CampaignRecipient extends Component {
     console.log(this.state.csvFile, "file");
     this.props.RecipientAction(recipientData);
   };
+
+  handleOnDrop = (data) => {
+    console.log('---------------------------');
+    console.log(data);
+    console.log('---------------------------');
+  }
+
+  handleOnError = (err, file, inputElem, reason) => {
+    console.log(err);
+  }
+
+  handleOnRemoveFile = (data) => {
+    console.log('---------------------------');
+    console.log(data);
+    console.log('---------------------------');
+  }
 
   render() {
     const { show } = this.state;
@@ -137,7 +156,92 @@ class CampaignRecipient extends Component {
                   <Col>
                     <Card>
                       <CardBody>
-                        <div
+                        <CSVReader
+                          onDrop={this.handleOnDrop}
+                          onError={this.handleOnError}
+                          addRemoveButton
+                          onRemoveFile={this.handleOnRemoveFile}
+                          style={{
+                            dropFile: {
+                              width: 300,
+                              height: 100,
+                              background: '#e0e0e0',
+                            }
+                          }}
+                        >
+                          <span>Drop CSV file here or click to upload.</span>
+                        </CSVReader>
+                        <Row>
+                          <Col>
+                            <h3 className="text-left mt-4">Map CSV Columns</h3>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={5} className="mx-auto ">
+                            <Card>
+                              <h4 className="text-center my-3">Special Columns</h4>
+                              <div className="custom-control custom-checkbox mb-3">
+                                <input
+                                  className="custom-control-input"
+                                  id="1"
+                                  type="checkbox"
+                                  name="trackopen"
+                                  onChange={this.handleChange}
+                                />
+                                <label className="custom-control-label" htmlFor="1">
+                                  Email
+                                </label>
+                              </div>
+
+                              <div className="custom-control custom-checkbox mb-3">
+                                <input
+                                  className="custom-control-input"
+                                  id="4"
+                                  type="checkbox"
+                                  name="schedulesend"
+                                  onChange={this.handleChange}
+                                  required
+                                />
+                                <label className="custom-control-label" htmlFor="4">
+                                  Full Name
+                                </label>
+                              </div>
+                            </Card>
+                          </Col>
+                          <Col md={5} className="mx-auto">
+                            <h4 className="text-center my-3">Text Replacement Columns</h4>
+                            <Card>
+                              <div className="custom-control custom-checkbox mb-3">
+                                <input
+                                  className="custom-control-input"
+                                  id="1"
+                                  type="checkbox"
+                                  name="trackopen"
+                                  onChange={this.handleChange}
+                                />
+                                <label className="custom-control-label" htmlFor="1">
+                                  Email
+                                </label>
+                              </div>
+
+                              <div className="custom-control custom-checkbox mb-3">
+                                <input
+                                  className="custom-control-input"
+                                  id="4"
+                                  type="checkbox"
+                                  name="schedulesend"
+                                  onChange={this.handleChange}
+                                  required
+                                />
+                                <label className="custom-control-label" htmlFor="4">
+                                  Full Name
+                                </label>
+                              </div>
+                            </Card>
+                          </Col>
+                        </Row>
+                        
+                        {/* <div
                           className="dropzone dropzone-multiple"
                           id="dropzone-multiple"
                         >
@@ -166,23 +270,19 @@ class CampaignRecipient extends Component {
                                 <Col className=" col-auto">
                                   <div className=" avatar">
                                     <img
-                                      alt="..."
+                                      alt=""
                                       className=" avatar-img rounded"
                                       data-dz-thumbnail
-                                      src="..."
+                                      src="/static/images/img/csv_icon.jpg"
                                     />
                                   </div>
                                 </Col>
                                 <div className=" col ml--3">
-                                  <h4 className=" mb-1" data-dz-name>
-                                    ...
-                                  </h4>
+                                  <h4 className=" mb-1" data-dz-name></h4>
                                   <p
                                     className=" small text-muted mb-0"
                                     data-dz-size
-                                  >
-                                    ...
-                                  </p>
+                                  ></p>
                                 </div>
                                 <Col className=" col-auto">
                                   <Button
@@ -196,7 +296,7 @@ class CampaignRecipient extends Component {
                               </Row>
                             </ListGroupItem>
                           </ListGroup>
-                        </div>
+                        </div> */}
                       </CardBody>
                     </Card>
                   </Col>

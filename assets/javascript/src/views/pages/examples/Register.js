@@ -46,7 +46,8 @@ class Register extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      FullName: '',
+      FirstName: '',
+      LastName: '',
       Email: '',
       PhoneNumber: '',
       CompanyName: '',
@@ -54,7 +55,7 @@ class Register extends React.Component {
       mailsaas_type: 'Sales',
       isOpen: false,
       show: true,
-      focusedName: false,
+      focusedFirstName: false,
       focusedEmail: false,
       focusedPassword: false,
       focusedPhone: false,
@@ -73,9 +74,11 @@ class Register extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault();
-
+    
     const user = {
-      full_name: this.state.FullName,
+      first_name: this.state.FirstName,
+      last_name: this.state.LastName,
+      full_name: this.state.LastName, // Assume full name is same to last name
       email: this.state.Email,
       phone_number: this.state.PhoneNumber,
       company_name: this.state.CompanyName,
@@ -110,7 +113,7 @@ class Register extends React.Component {
   }
   render() {
     const { registerResponse } = this.props
-    const { focusedName, focusedEmail, focusedPhone, focusedCompany, focusedPassword } = this.state
+    const { focusedFirstName, focusedLastName, focusedEmail, focusedPhone, focusedCompany, focusedPassword } = this.state
     return (
       <>
         <AuthHeader
@@ -126,9 +129,37 @@ class Register extends React.Component {
                     <small style={{ fontSize: 30, color: '#525f7f', fontWeight: 'bold' }}>Register</small>
                   </div>
                   <Form onSubmit={this.handleSubmit} role="form">
-                    <FormGroup
+                    <Row>
+                      <Col>
+                        <FormGroup
+                        className={classnames({
+                          focused: focusedFirstName
+                        })}
+                      >
+                        <InputGroup className="input-group-merge input-group-alternative mb-3">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="ni ni-hat-3" />
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input
+                            placeholder="First Name"
+                            type="text"
+                            name="FirstName"
+                            value={this.state.FirstName}
+                            onChange={this.handleChange}
+                            onFocus={() => { this.setState({ focusedFirstName: true }) }}
+                            onBlur={() => { this.setState({ focusedFirstName: false }) }}
+                            autoComplete='off'
+                            required
+                          />
+                        </InputGroup>
+                      </FormGroup>
+                      </Col>
+                      <Col>
+                        <FormGroup
                       className={classnames({
-                        focused: focusedName
+                        focused: focusedLastName
                       })}
                     >
                       <InputGroup className="input-group-merge input-group-alternative mb-3">
@@ -138,18 +169,20 @@ class Register extends React.Component {
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input
-                          placeholder="Name"
+                          placeholder="Last Name"
                           type="text"
-                          name="FullName"
-                          value={this.state.FullName}
+                          name="LastName"
+                          value={this.state.LastName}
                           onChange={this.handleChange}
-                          onFocus={() => { this.setState({ focusedName: true }) }}
-                          onBlur={() => { this.setState({ focusedName: false }) }}
+                          onFocus={() => { this.setState({ focusedLastName: true }) }}
+                          onBlur={() => { this.setState({ focusedLastName: false }) }}
                           autoComplete='off'
                           required
                         />
                       </InputGroup>
                     </FormGroup>
+                      </Col>
+                    </Row>
                     <FormGroup
                       className={classnames({
                         focused: focusedEmail
