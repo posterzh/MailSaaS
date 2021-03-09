@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseServerError, HttpResponseBadRequest
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 
@@ -28,8 +28,8 @@ class MailAccountListView(generics.ListCreateAPIView):
         try:
             queryset = EmailAccount.objects.filter(user=request.user.id)
             serializer = EmailAccountSerializer(queryset, many=True)
-        except:
-            raise Http404('Error')
+        except Exception as ex:
+            raise HttpResponseBadRequest(str(ex))
 
         return Response(serializer.data)
 
@@ -44,7 +44,7 @@ class MailAccountView(generics.UpdateAPIView):
         request.data["user"] = request.user.id
         serializer = EmailAccountSerializer(queryset, data=request.data)
         if not serializer.is_valid():
-            raise Http404(serializer.errors)
+            raise HttpResponseBadRequest(serializer.errors)
 
         serializer.save()
         return Response(serializer.data)
@@ -52,7 +52,7 @@ class MailAccountView(generics.UpdateAPIView):
     def delete(self, request, pk, format=None):
         try:
             queryset = EmailAccount.objects.get(id=pk)
-        except:
-            raise Http404('Error')
+        except Exception as ex:
+            raise HttpResponseBadRequest(str(ex))
         queryset.delete()
         return Response({"message": "Connection Delete successfully", "success": True})

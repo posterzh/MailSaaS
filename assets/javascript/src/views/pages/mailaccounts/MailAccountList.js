@@ -8,12 +8,17 @@ import {
   Input,
   Button,
 } from "reactstrap";
-import ConnectMailAccountModal from "./components/NewMailAccountModal";
 import { connect } from "react-redux";
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
-import Tables from "../TableContent";
-import { getMailAccounts } from "../../../redux/action/MailAccountsActions";
+import Tables from "./components/TableContent";
+import {
+  getMailAccounts,
+  editMailAccount,
+  deleteMailAccount,
+} from "../../../redux/action/MailAccountsActions";
+import ConnectMailAccountModal from "./components/NewMailAccountModal";
+import DeleteModal from "./components/DeleteModal";
 
 const tableTitle = [
   {
@@ -23,6 +28,10 @@ const tableTitle = [
   {
     key: "email",
     value: "Email",
+  },
+  {
+    key: "password",
+    value: "Password",
   },
   {
     key: "first_name",
@@ -78,7 +87,8 @@ class MailAccountList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false,
+      newModal: false,
+      deleteModal: false,
     };
   }
 
@@ -86,20 +96,25 @@ class MailAccountList extends Component {
     this.props.getMailAccounts();
   }
 
-  // Close modal
-  closeModal = () => {
-    this.setState({ modal: false });
+  // Close
+  closeNewModal = () => {
+    this.setState({ newModal: false });
   };
 
-  deleteMailAccount = (id) => {
-    this.props.MailAccountDelete(id);
+  editMailAccount = (data, index) => {
+    // this.props.MailAccountDelete(index);
+    console.log("Edit mail account : ", data, index);
+  };
+
+  deleteMailAccount = (data, index) => {
+    console.log("Delete mail account : ", data, index);
+
+    this.props.deleteMailAccount(data.id);
   };
 
   render() {
-    const { modal } = this.state;
+    const { newModal } = this.state;
     const { mailAccounts } = this.props;
-
-    console.log("mail accounts: ", mailAccounts);
 
     return (
       <>
@@ -112,7 +127,7 @@ class MailAccountList extends Component {
           <Row className="justify-content-end">
             <Button
               onClick={(e) => {
-                e.preventDefault(), this.setState({ modal: true });
+                e.preventDefault(), this.setState({ newModal: true });
               }}
               className="btn-icon"
               color="danger"
@@ -129,10 +144,15 @@ class MailAccountList extends Component {
               titles={tableTitle} // required
               tablePropsData={mailAccounts} // required
               showPagination={true} // optional
+              onEdit={this.editMailAccount}
+              onDelete={this.deleteMailAccount}
             />
           </Row>
 
-          <ConnectMailAccountModal isOpen={modal} close={this.closeModal} />
+          <ConnectMailAccountModal
+            isOpen={newModal}
+            close={this.closeNewModal}
+          />
         </PageContainer>
       </>
     );
@@ -143,4 +163,8 @@ const mapStateToProps = (state) => ({
   mailAccounts: state.mailAccounts.mailAccounts,
 });
 
-export default connect(mapStateToProps, { getMailAccounts })(MailAccountList);
+export default connect(mapStateToProps, {
+  getMailAccounts,
+  editMailAccount,
+  deleteMailAccount,
+})(MailAccountList);
