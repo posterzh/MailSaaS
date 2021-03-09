@@ -90,6 +90,7 @@
     "react-select2-wrapper": "1.0.4-beta6",
     "react-tagsinput": "3.19.0",
     "react-to-print": "2.5.1",
+    "react-toastify": "^7.0.3",
     "reactstrap": "8.4.1",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",

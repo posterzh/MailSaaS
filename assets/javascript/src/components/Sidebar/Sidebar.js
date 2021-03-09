@@ -37,9 +37,11 @@ class Sidebar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapseOpen: false,
       ...this.getCollapseStates(props.routes)
     };
+  }
+  componentWillMount = () => {
+    this.setState(this.getCollapseStates(this.props.routes))
   }
   // verifies if routeName is the one active (in browser input)
   activeRoute = routeName => {
@@ -56,18 +58,6 @@ class Sidebar extends React.Component {
     if (!document.body.classList.contains("g-sidenav-pinned")) {
       document.body.classList.remove("g-sidenav-show");
     }
-  };
-  // toggles collapse between opened and closed (true/false)
-  toggleCollapse = () => {
-    this.setState({
-      collapseOpen: !this.state.collapseOpen
-    });
-  };
-  // closes the collapse
-  closeCollapse = () => {
-    this.setState({
-      collapseOpen: false
-    });
   };
   // this creates the intial state of this component based on the collapse routes
   // that it gets through this.props.routes

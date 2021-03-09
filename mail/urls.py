@@ -33,8 +33,6 @@ urlpatterns = [
     path('campaign/', include('apps.campaign.urls')),
     path('teams/', include('apps.teams.urls')),
     path('intigration/', include('apps.integration.urls')),
-    path('mail/', include('apps.mailaccounts.urls')),
-    path('', include('apps.web.urls')),
     path('app/', include('apps.pegasus.urls')),
     path('celery-progress/', include('celery_progress.urls')),
     # API docs
@@ -46,4 +44,9 @@ urlpatterns = [
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     # djstripe urls - for webhooks
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
+
+    path('mailaccounts/', include('apps.mailaccounts.urls')),
+
+    # Front-end
+    path('', include('apps.web.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

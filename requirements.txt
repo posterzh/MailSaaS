@@ -100,3 +100,4 @@ wcwidth==0.2.5
 yarl==1.6.3
 zipp==3.3.0
 django-livereload-server
+django_extensions

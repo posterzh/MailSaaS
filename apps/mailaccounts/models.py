@@ -36,11 +36,13 @@ class EmailAccount(models.Model):
     smtp_port = models.CharField(max_length=20, choices=SMTP_PORTS, default='587', blank=True, null=True)
     smtp_username = models.CharField(max_length=200, blank=True, null=True)
     smtp_password = models.CharField(max_length=200, blank=True, null=True)
+    use_smtp_ssl = models.BooleanField(default=False)
 
     imap_host = models.CharField(max_length=200, blank=True, null=True)
     imap_port = models.CharField(max_length=20, choices=IMAP_PORTS, default='993', blank=True, null=True)
     imap_username = models.CharField(max_length=200, blank=True, null=True)
     imap_password = models.CharField(max_length=200, blank=True, null=True)
+    use_imap_ssl = models.BooleanField(default=False)
 
     def __str__(self):
         return self.email
