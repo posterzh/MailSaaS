@@ -144,7 +144,7 @@ class AdminNavbar extends React.Component {
                           {
                             this.props.Loginuser.user !== undefined
                             ?
-                            this.props.Loginuser.user.first_name + " " + this.props.Loginuser.user.last_name
+                            this.props.Loginuser.user.last_name
                             :
                             ''
                           }

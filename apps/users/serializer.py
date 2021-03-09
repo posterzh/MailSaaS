@@ -12,6 +12,8 @@ from .models import CustomUser
 class RegisterSerializer(serializers.Serializer):
     username = None
     email = serializers.EmailField(required=allauth_settings.EMAIL_REQUIRED)
+    first_name = serializers.CharField(required=True, write_only=True)
+    last_name = serializers.CharField(required=True, write_only=True)
     full_name = serializers.CharField(required=True, write_only=True)
     phone_number = serializers.CharField(required=True, write_only=True)
     company_name = serializers.CharField(required=True, write_only=True)
@@ -41,6 +43,8 @@ class RegisterSerializer(serializers.Serializer):
         return {
             'email': self.validated_data.get('email', ''),
             'avatar': self.validated_data.get('avatar', ''),
+            'first_name': self.validated_data.get('first_name', ''),
+            'last_name': self.validated_data.get('last_name', ''),
             'full_name': self.validated_data.get('full_name', ''),
             'phone_number': self.validated_data.get('phone_number', ''),
             'company_name': self.validated_data.get('company_name',''),
@@ -57,9 +61,6 @@ class RegisterSerializer(serializers.Serializer):
         self.cleaned_data = self.get_cleaned_data()
         adapter.save_user(request, user, self)
         setup_user_email(request, user, [])
-        full_name = user.full_name
-        user.first_name = full_name.split(" ")[0]
-        user.last_name = " ".join(full_name.split(" ")[1:])
 
         user.save()
         return user
