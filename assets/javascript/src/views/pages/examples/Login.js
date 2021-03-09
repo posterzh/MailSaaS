@@ -35,7 +35,7 @@ import {
 import { Link } from "react-router-dom";
 import AuthHeader from "../../../components/Headers/AuthHeader.js";
 import {
-  LoginSuccess,
+  loginSuccess,
   loginFailure,
 } from "../../../redux/action/AuthourizationAction";
 import { connect } from "react-redux";
@@ -76,11 +76,12 @@ class Login extends React.Component {
 
         const token = result.data.token;
         localStorage.setItem("access_token", token);
-
         axios.setToken(token);
 
-        this.props.LoginSuccess(result.data);
+        this.props.LoginSuccess(result.data.user);
+
         history.push("/app/admin/dashboard");
+        window.location.reload();
       })
       .catch((err) => {
         this.setState({ loginPending: false });
@@ -209,16 +210,9 @@ class Login extends React.Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    Loginuser: state.LoginReducer ? state.LoginReducer.Loginuser : "",
-    isLogin: state.LoginReducer ? state.LoginReducer.isLogin : false,
-    loginResponse: state.LoginReducer ? state.LoginReducer.loginResponse : null,
-  };
-};
 
 const mapDispatchToProps = (dispatch) => ({
-  LoginSuccess: (loginUser) => dispatch(LoginSuccess(loginUser)),
+  LoginSuccess: (user) => dispatch(loginSuccess(user)),
   LoginFailure: (payload) => dispatch(loginFailure(payload)),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);
