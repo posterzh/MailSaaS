@@ -31,6 +31,9 @@ class EmailAccount(models.Model):
     first_name = models.CharField(max_length=200, default='')
     last_name = models.CharField(max_length=200, default='')
 
+    # Google, Microsoft fields
+    password = models.CharField(max_length=200, default='')
+
     # SMTP fields
     smtp_host = models.CharField(max_length=200, blank=True, null=True)
     smtp_port = models.CharField(max_length=20, choices=SMTP_PORTS, default='587', blank=True, null=True)

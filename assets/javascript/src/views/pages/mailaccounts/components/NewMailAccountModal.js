@@ -146,6 +146,25 @@ export class NewMailAccountModal extends Component {
                           />
                         </FormGroup>
 
+                        {(this.state.activeTab == 1 ||
+                          this.state.activeTab == 2) && (
+                          <FormGroup className="mb-2">
+                            <label
+                              className="form-control-label"
+                              htmlFor="password"
+                            >
+                              Password
+                            </label>
+                            <Input
+                              id="password"
+                              name="password"
+                              type="text"
+                              className="form-control-sm"
+                              onChange={this.handleChange}
+                            />
+                          </FormGroup>
+                        )}
+
                         <FormGroup className="mb-2">
                           <label
                             className="form-control-label"
