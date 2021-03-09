@@ -99,6 +99,8 @@ class MailAccountList extends Component {
     const { modal } = this.state;
     const { mailAccounts } = this.props;
 
+    console.log("mail accounts: ", mailAccounts);
+
     return (
       <>
         <PageHeader

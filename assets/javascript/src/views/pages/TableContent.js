@@ -123,12 +123,14 @@ function Tables({
 }) {
   const [sort, setSort] = React.useState(null);
   const [sortType, setSortType] = React.useState("asc");
-  const [tableData, setTableData] = React.useState([]);
+  const [tableData, setTableData] = React.useState(tablePropsData);
   const [noData, setNoData] = React.useState(false);
   // const [recordLimit, setRecordLimit] = React.useState(perpageRecords);    // for future use.
   const [acitve, setActive] = React.useState(acitvePage);
   const [selectAll, setSelectAll] = React.useState(false);
   const [filterParams, setfilterParams] = React.useState([]);
+
+  console.log("tableData : ", tableData);
 
   const sortData = (item) => {
     let data = [];
