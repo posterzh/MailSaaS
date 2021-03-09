@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 import Dropzone from "dropzone";
 import ReactQuill from "react-quill";
+import { connect } from 'react-redux'
 
 import PageHeader from "../../../components/Headers/PageHeader";
 
@@ -22,12 +23,14 @@ Dropzone.autoDiscover = false;
 export class Profile extends Component {
   constructor(props) {
     super(props);
+    let { user } = this.props;
+
     this.state = {
       user: {
-        firstName: "Test",
-        lastName: "user",
-        email: "test@gmail.com",
-        userName: "Test123",
+        firstName: user.first_name,
+        lastName: user.last_name,
+        email: user.email,
+        userName: user.username || '',
         profile_url: STATIC_FILES.team_4,
       },
     };
@@ -207,11 +210,12 @@ export class Profile extends Component {
                                 Username
                               </label>
                               <Input
-                                id="username"
+                                // id="username"
                                 placeholder="Username"
                                 type="text"
                                 value={user.userName}
-                                name="userName"
+                                // name="userName"
+                                autoComplete='off'
                                 onChange={setUser}
                               />
                             </FormGroup>
@@ -365,4 +369,10 @@ export class Profile extends Component {
   }
 }
 
-export default Profile;
+const mapStateToProps = (state) => {
+  return {
+    user: state.AuthReducer.user
+  }
+};
+
+export default connect(mapStateToProps)(Profile);
