@@ -45,9 +45,11 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import { LogoutAction } from '../../redux/action/AuthourizationAction'
+import { logoutSuccess, logoutFailure } from '../../redux/action/AuthourizationAction'
 import { connect } from 'react-redux'
 import { parseConfigFileTextToJson } from "typescript";
+
+import Api from "../../../src/redux/api/api";
 
 class AdminNavbar extends React.Component {
   // function that on mobile devices makes the search open
@@ -79,7 +81,12 @@ class AdminNavbar extends React.Component {
   // handle logout
   handleLogout = (event) => {
     event.preventDefault();
-    this.props.LogoutAction()
+    Api.LogoutApi().then(result => {
+        localStorage.removeItem('access_token')
+        this.props.LogoutSuccess();
+    }).catch(err => {
+        this.props.LogoutFailure();
+    })
   }
   render() {
     let { theme, sidenavOpen, toggleSidenav } = this.props
@@ -142,11 +149,7 @@ class AdminNavbar extends React.Component {
                       <Media className="ml-2 d-none d-sm-block">
                         <span className="mb-0 text-sm font-weight-bold">
                           {
-                            this.props.Loginuser.user !== undefined
-                            ?
-                            this.props.Loginuser.user.last_name
-                            :
-                            ''
+                            this.props.user !== undefined && this.props.user.last_name
                           }
                         </span>
                       </Media>
@@ -212,14 +215,14 @@ AdminNavbar.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    Loginuser: state.LoginReducer.Loginuser,
-    isLogin: state.LoginReducer.isLogin,
-    loginResponse:state.LoginReducer.loginResponse
+    user: state.AuthReducer.user,
+    isLogin: state.AuthReducer.isLogin
   }
 };
 
 const mapDispatchToProps = dispatch => ({
-  LogoutAction: () => { dispatch(LogoutAction()); },
+  LogoutSuccess: () => { dispatch(logoutSuccess()); },
+  LogoutFailure: () => { dispatch(logoutFailure()); },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminNavbar);

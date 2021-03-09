@@ -3,8 +3,6 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
 import {
-  RegisterReducer,
-  LoginReducer,
   StartCampaignReducer,
   RecipientReducer,
   MailGetDataReducer,
@@ -28,6 +26,7 @@ import {
   LeadViewReducer,
 } from "../reducer/reducer";
 
+import { AuthReducer } from "../reducer/AuthReducer";
 import { mailAccountsReducer } from "../reducer/MailAccountsReducer";
 
 const composeEnhancers =
@@ -36,8 +35,7 @@ const composeEnhancers =
   compose;
 
 const rootReducer = combineReducers({
-  RegisterReducer,
-  LoginReducer,
+  AuthReducer,
   StartCampaignReducer,
   RecipientReducer,
   MailGetDataReducer,

@@ -12,7 +12,7 @@ class PrivateRoute extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        isLogin: state.LoginReducer === undefined ? false : state.LoginReducer.isLogin,
+        isLogin: state.AuthReducer === undefined ? false : state.AuthReducer.isLogin,
     }
 };
 
