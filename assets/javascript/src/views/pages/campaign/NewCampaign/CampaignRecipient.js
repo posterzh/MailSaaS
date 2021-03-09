@@ -16,12 +16,12 @@ import {
   ListGroup,
 } from "reactstrap";
 import Dropzone from "dropzone";
+import { CSVReader } from 'react-papaparse';
 import { Link } from "react-router-dom";
 import {
   RecipientAction,
   StartCampaignAction,
 } from "../../../../redux/action/CampaignAction";
-import Csvfile from "./components/csvfile";
 
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
@@ -58,13 +58,15 @@ class CampaignRecipient extends Component {
       )[0],
       previewTemplate: document.getElementsByClassName("dz-preview-multiple")[0]
         .innerHTML,
-      maxFiles: null,
-      acceptedFiles: null,
+      maxFiles: 1,
+      acceptedFiles: ".csv",
       init: function () {
         this.on("addedfile", function (file) {
           if (currentMultipleFile) {
+            this.removeFile(currentMultipleFile);
           }
           currentMultipleFile = file;
+          console.log(file);
         });
       },
     });
@@ -106,6 +108,22 @@ class CampaignRecipient extends Component {
     this.props.RecipientAction(recipientData);
   };
 
+  handleOnDrop = (data) => {
+    console.log('---------------------------');
+    console.log(data);
+    console.log('---------------------------');
+  }
+
+  handleOnError = (err, file, inputElem, reason) => {
+    console.log(err);
+  }
+
+  handleOnRemoveFile = (data) => {
+    console.log('---------------------------');
+    console.log(data)
+    console.log('---------------------------');
+  }
+
   render() {
     const { show } = this.state;
     console.log(this.props.location, this.props.campaignDetails, "recipient");
@@ -137,7 +155,22 @@ class CampaignRecipient extends Component {
                   <Col>
                     <Card>
                       <CardBody>
-                        <div
+                        <CSVReader
+                          onDrop={this.handleOnDrop}
+                          onError={this.handleOnError}
+                          addRemoveButton
+                          onRemoveFile={this.handleOnRemoveFile}
+                          style={{
+                            dropFile: {
+                              width: 300,
+                              height: 100,
+                              background: '#e0e0e0',
+                            }
+                          }}
+                        >
+                          <span>Drop CSV file here or click to upload.</span>
+                        </CSVReader>
+                        {/* <div
                           className="dropzone dropzone-multiple"
                           id="dropzone-multiple"
                         >
@@ -166,23 +199,19 @@ class CampaignRecipient extends Component {
                                 <Col className=" col-auto">
                                   <div className=" avatar">
                                     <img
-                                      alt="..."
+                                      alt=""
                                       className=" avatar-img rounded"
                                       data-dz-thumbnail
-                                      src="..."
+                                      src="/static/images/img/csv_icon.jpg"
                                     />
                                   </div>
                                 </Col>
                                 <div className=" col ml--3">
-                                  <h4 className=" mb-1" data-dz-name>
-                                    ...
-                                  </h4>
+                                  <h4 className=" mb-1" data-dz-name></h4>
                                   <p
                                     className=" small text-muted mb-0"
                                     data-dz-size
-                                  >
-                                    ...
-                                  </p>
+                                  ></p>
                                 </div>
                                 <Col className=" col-auto">
                                   <Button
@@ -196,7 +225,7 @@ class CampaignRecipient extends Component {
                               </Row>
                             </ListGroupItem>
                           </ListGroup>
-                        </div>
+                        </div> */}
                       </CardBody>
                     </Card>
                   </Col>
