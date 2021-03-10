@@ -41,7 +41,7 @@ import { connect } from "react-redux"
 import Api from "../../../../src/redux/api/api"
 import { history } from "../../../index"
 import { Alert } from 'reactstrap';
-import { FAILURE_REGISTER } from "../../../redux/actionType/actionType";
+
 class Register extends React.Component {
   constructor(props) {
     super(props)
@@ -49,7 +49,6 @@ class Register extends React.Component {
       FirstName: '',
       LastName: '',
       Email: '',
-      PhoneNumber: '',
       CompanyName: '',
       Password: '',
       mailsaas_type: 'Sales',
@@ -58,7 +57,6 @@ class Register extends React.Component {
       focusedFirstName: false,
       focusedEmail: false,
       focusedPassword: false,
-      focusedPhone: false,
       focusedCompany: false,
       registerPending: false,
       registerSuccess: false
@@ -80,7 +78,6 @@ class Register extends React.Component {
       last_name: this.state.LastName,
       full_name: this.state.LastName, // Assume full name is same to last name
       email: this.state.Email,
-      phone_number: this.state.PhoneNumber,
       company_name: this.state.CompanyName,
       password1: this.state.Password,
       mailsaas_type: this.state.mailsaas_type
@@ -88,23 +85,20 @@ class Register extends React.Component {
 
     this.setState({
       registerPending: true,
-      isOpen: false
     })
 
     Api.RegisterApi(user).then(result => {
       this.setState({
         registerPending: false,
-        isOpen: true
       })
 
-      console.log( 'registerSuccess',result.data)
-      this.props.RegisterSuccess(result.data)
-      history.push('/app/auth/login')
+      this.props.RegisterSuccess(result.data.user)
+
+      history.push("/app/admin/dashboard");
       window.location.reload();
     }).catch(err => {
       this.setState({
         registerPending: false,
-        isOpen: true
       })
 
       err.response.data.email&&  this.props.RegisterFailure(err.response.data.email)
@@ -112,8 +106,7 @@ class Register extends React.Component {
     })
   }
   render() {
-    const { registerResponse } = this.props
-    const { focusedFirstName, focusedLastName, focusedEmail, focusedPhone, focusedCompany, focusedPassword } = this.state
+    const { focusedFirstName, focusedLastName, focusedEmail, focusedCompany, focusedPassword } = this.state
     return (
       <>
         <AuthHeader
@@ -207,29 +200,6 @@ class Register extends React.Component {
                         />
                       </InputGroup>
                     </FormGroup>
-                    {/*  */}
-                    <FormGroup
-                      className={classnames({
-                        focused: focusedPhone
-                      })}
-                    >
-                      <InputGroup className="input-group-merge input-group-alternative mb-3">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="fa fa-phone" />
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input
-                          placeholder="Phone Number"
-                          type="number"
-                          name='PhoneNumber'
-                          onChange={this.handleChange}
-                          onFocus={() => this.setState({ focusedPhone: true })}
-                          onBlur={() => this.setState({ focusedPhone: false })}
-                          required
-                        />
-                      </InputGroup>
-                    </FormGroup>
                     <FormGroup
                       className={classnames({
                         focused: focusedCompany
@@ -249,7 +219,6 @@ class Register extends React.Component {
                           onFocus={() => this.setState({ focusedCompany: true })}
                           onBlur={() => this.setState({ focusedCompany: false })}
                           autoComplete='off'
-                          required
                         />
                       </InputGroup>
                     </FormGroup>
@@ -350,20 +319,15 @@ class Register extends React.Component {
         <div style={{ display: 'flex', justifyContent: 'center', position: 'fixed', bottom: 0, right: 0, left: 0 }}>
           <Alert className="alert_" toggle={() => {
             this.setState({ isOpen: true })
-          }} isOpen={this.state.isOpen} color="warning">{registerResponse}</Alert>
+          }} isOpen={false} color="warning">{ }</Alert>
         </div>
       </>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    registerResponse: state.RegisterReducer.registerResponse
-  };
-};
 const mapDispatchToProps = dispatch => ({
   RegisterSuccess: user => dispatch(registerSuccess(user)),
-  RegisterFailure: payload => dispatch(registerFailure(payload))
+  RegisterFailure: payload => dispatch(registerFailure(payload)),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(null, mapDispatchToProps)(Register);

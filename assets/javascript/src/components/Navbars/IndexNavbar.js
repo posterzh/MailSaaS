@@ -32,12 +32,19 @@ import {
   UncontrolledTooltip,
   Button
 } from "reactstrap";
-import {LogoutAction} from '../../redux/action/AuthourizationAction'
+
+import { logoutSuccess, logoutFailure } from '../../redux/action/AuthourizationAction'
+import Api from "../../../src/redux/api/api";
 
 class AdminNavbar extends React.Component {
   onLogoutClicked = (event) => {
     event.preventDefault();
-    this.props.LogoutAction()
+    Api.LogoutApi().then(result => {
+      localStorage.removeItem('access_token')
+      this.props.LogoutSuccess();
+    }).catch(err => {
+      this.props.LogoutFailure();
+    })
   }
   render() {
     const {isLogin} = this.props;
@@ -150,12 +157,14 @@ class AdminNavbar extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    isLogin: state.LoginReducer ? state.LoginReducer.isLogin : false,
+    user: state.AuthReducer.user,
+    isLogin: state.AuthReducer.isLogin
   }
 };
 
 const mapDispatchToProps = dispatch => ({
-  LogoutAction: () => { dispatch(LogoutAction()); },
+  LogoutSuccess: () => { dispatch(logoutSuccess()); },
+  LogoutFailure: () => { dispatch(logoutFailure()); },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminNavbar);
