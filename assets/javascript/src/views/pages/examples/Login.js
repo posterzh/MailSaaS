@@ -21,6 +21,7 @@ import classnames from "classnames";
 import {
   Button,
   Card,
+  CardHeader,
   CardBody,
   FormGroup,
   Form,
@@ -104,7 +105,39 @@ class Login extends React.Component {
           <Row className="justify-content-center">
             <Col lg="6" md="7">
               <Card className="bg-secondary border-0 mb-0">
+                <CardHeader className="bg-transparent pb-5">
+                  <div className="text-muted text-center mt-2 mb-3">
+                    <small style={{fontSize: 18}}>Sign in with</small>
+                  </div>
+                  <div className="btn-wrapper text-center">
+                    <Button
+                      className="btn-neutral btn-icon"
+                      color="default"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <span className="btn-inner--icon mr-1">
+                        <img alt="..." src={'/static/images/img/icons/common/github.svg'} />
+                      </span>
+                      <span className="btn-inner--text">Github</span>
+                    </Button>
+                    <Button
+                      className="btn-neutral btn-icon"
+                      color="default"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <span className="btn-inner--icon mr-1">
+                        <img alt="..." src={'/static/images/img/icons/common/google.svg'} />
+                      </span>
+                      <span className="btn-inner--text">Google</span>
+                    </Button>
+                  </div>
+                </CardHeader>
                 <CardBody className="px-lg-5 py-lg-5">
+                  <div className="text-center text-muted mb-4">
+                    <small style={{fontSize: 18}}>Or sign in with credentials</small>
+                  </div>
                   <Form onSubmit={this.handleSubmit} role="form">
                     <FormGroup
                       className={classnames("mb-3", {
@@ -177,17 +210,6 @@ class Login extends React.Component {
                       </Button>
                     </div>
                   </Form>
-                  <Row>
-                    <div style={{ margin: "auto" }} className="text-center">
-                      {isLogin == false ? (
-                        <p style={{ color: "red" }}> {loginResponse}</p>
-                      ) : (
-                        <p style={{ color: "green", margin: "auto" }}>
-                          Sucessufully Login
-                        </p>
-                      )}
-                    </div>
-                  </Row>
                 </CardBody>
               </Card>
               <Row className="mt-3">

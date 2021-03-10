@@ -76,7 +76,7 @@ class Register extends React.Component {
     const user = {
       first_name: this.state.FirstName,
       last_name: this.state.LastName,
-      full_name: this.state.LastName, // Assume full name is same to last name
+      full_name: this.state.FirstName, // Assume full name is same to first name
       email: this.state.Email,
       company_name: this.state.CompanyName,
       password1: this.state.Password,
@@ -117,9 +117,38 @@ class Register extends React.Component {
           <Row className="justify-content-center">
             <Col lg="6" md="8">
               <Card className="bg-secondary border-0">
-                <CardBody className="px-lg-5 py-lg-2">
-                  <div className="text-center text-muted mt-1 mb-4">
-                    <small style={{ fontSize: 30, color: '#525f7f', fontWeight: 'bold' }}>Register</small>
+                <CardHeader className="bg-transparent pb-5">
+                  <div className="text-muted text-center mt-2 mb-4">
+                    <small style={{fontSize: 18}}>Sign up with</small>
+                  </div>
+                  <div className="text-center">
+                    <Button
+                      className="btn-neutral btn-icon mr-4"
+                      color="default"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <span className="btn-inner--icon mr-1">
+                        <img alt="..." src={'/static/images/img/icons/common/github.svg'} />
+                      </span>
+                      <span className="btn-inner--text">Github</span>
+                    </Button>
+                    <Button
+                      className="btn-neutral btn-icon"
+                      color="default"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <span className="btn-inner--icon mr-1">
+                        <img alt="..." src={'/static/images/img/icons/common/google.svg'} />
+                      </span>
+                      <span className="btn-inner--text">Google</span>
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardBody className="px-lg-5 py-lg-5">
+                  <div className="text-center text-muted mb-4">
+                    <small style={{fontSize: 18}}>Or sign up with credentials</small>
                   </div>
                   <Form onSubmit={this.handleSubmit} role="form">
                     <Row>
@@ -222,7 +251,6 @@ class Register extends React.Component {
                         />
                       </InputGroup>
                     </FormGroup>
-                    {/*  */}
                     <FormGroup
                       className={classnames({
                         focused: focusedPassword
@@ -261,39 +289,6 @@ class Register extends React.Component {
                         </Input>
                       </FormGroup>
                     </FormGroup>
-                    {/* <div className="text-muted font-italic"> */}
-                    {/* <small>
-                        password strength:{" "}
-                        <span className="text-success font-weight-700">
-                          strong
-                        </span>
-                      </small> */}
-                    {/* </div> */}
-                    <Row className="my-4">
-                      <Col xs="12">
-                        <div className="custom-control custom-control-alternative custom-checkbox">
-                          {/* <input
-                            className="custom-control-input"
-                            id="customCheckRegister"
-                            type="checkbox"
-                          />
-                          <label
-                            className="custom-control-label"
-                            htmlFor="customCheckRegister"
-                          >
-                            <span className="text-muted">
-                              I agree with the{" "}
-                              <a
-                                href="#pablo"
-                                onClick={e => e.preventDefault()}
-                              >
-                                Privacy Policy
-                              </a>
-                            </span>
-                          </label> */}
-                        </div>
-                      </Col>
-                    </Row>
                     <div className="text-center">
                       <Button className="mt-4 mb-4" color="info" type="submit" >
                         Create account
@@ -305,12 +300,6 @@ class Register extends React.Component {
                       </Button>
                     </div>
                   </Form>
-                  <Row>
-
-                    {/* <div>
-                      <p>{this.token}</p>
-                    </div> */}
-                  </Row>
                 </CardBody>
               </Card>
             </Col>

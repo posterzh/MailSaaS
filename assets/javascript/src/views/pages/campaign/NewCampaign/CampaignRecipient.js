@@ -92,7 +92,7 @@ class CampaignRecipient extends Component {
     e.preventDefault();
     this.state.options.length = 0;
     if (!this.state.email && !this.state.csvFile) {
-      alert("Fill option 1 or 2");
+      alert("Fill 1 or 2");
       return false;
     } else if (this.state.csvFile && !this.state.email) {
       let temp = 1;
@@ -181,7 +181,6 @@ class CampaignRecipient extends Component {
 
   render() {
     const { show, csvMappingContent } = this.state;
-    console.log(this.props.location, this.props.campaignDetails, "recipient");
     return (
       <>
         <PageHeader
