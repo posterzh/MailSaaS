@@ -29,6 +29,7 @@ import {
 import { AuthReducer } from "../reducer/AuthReducer";
 import { mailAccountsReducer } from "../reducer/MailAccountsReducer";
 import { notificationReducer } from "../reducer/CommonReducer";
+import { sendingCalendarsReducer } from "../reducer/SendingCalendarReducer";
 
 const composeEnhancers =
   (typeof window !== "undefined" &&
@@ -61,6 +62,7 @@ const rootReducer = combineReducers({
 
   mailAccounts: mailAccountsReducer,
   notification: notificationReducer,
+  sendingCalendars: sendingCalendarsReducer,
 });
 
 const persistConfig = {
