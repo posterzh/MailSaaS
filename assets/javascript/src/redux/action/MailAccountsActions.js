@@ -9,7 +9,7 @@ import {
 
 export const getMailAccounts = () => (dispatch) => {
   axios
-    .get("/mailaccounts/")
+    .get("/mailaccounts/emailaccounts/")
     .then((response) => {
       dispatch({
         type: GET_MAILACCOUNTS,
@@ -21,9 +21,9 @@ export const getMailAccounts = () => (dispatch) => {
     });
 };
 
-export const addMailAccount = (note) => (dispatch) => {
+export const addMailAccount = (mailAccount) => (dispatch) => {
   axios
-    .post("/mailaccounts/", note)
+    .post("/mailaccounts/emailaccounts/", mailAccount)
     .then((response) => {
       dispatch({
         type: ADD_MAILACCOUNT,
@@ -37,7 +37,7 @@ export const addMailAccount = (note) => (dispatch) => {
 
 export const deleteMailAccount = (id) => (dispatch) => {
   axios
-    .delete(`/mailaccounts/${id}/`)
+    .delete(`/mailaccounts/emailaccounts/${id}/`)
     .then((response) => {
       dispatch({
         type: DELETE_MAILACCOUNT,
@@ -49,9 +49,9 @@ export const deleteMailAccount = (id) => (dispatch) => {
     });
 };
 
-export const updateMailAccount = (id, note) => (dispatch) => {
+export const updateMailAccount = (id, mailAccount) => (dispatch) => {
   axios
-    .patch(`/mailaccounts/${id}/`, note)
+    .patch(`/mailaccounts/emailaccounts/${id}/`, mailAccount)
     .then((response) => {
       dispatch({
         type: UPDATE_MAILACCOUNT,

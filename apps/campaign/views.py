@@ -31,11 +31,10 @@ from .serializers import (CampaignEmailSerializer,
                           OnclickSerializer,CampaignLabelSerilizer)
 from apps.mailaccounts.models import EmailAccount
 
-
 class CreateCampaignStartView(APIView):
 
-    permission_classes = (permissions.IsAuthenticated,)    
-        
+    permission_classes = (permissions.IsAuthenticated,)
+
     def post(self, request, format=None):
         if request.user.is_active:
             # if 'campaign.add_campaign' in request.user.get_group_permissions():
@@ -44,6 +43,9 @@ class CreateCampaignStartView(APIView):
             postdata["assigned"] = request.user.id
             # postdata._mutable = False
             serializer = CampaignSerializer(data = postdata)
+            # postdata["campaign_label"] = 1
+            # postdata["from_address"] = 1
+
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -51,7 +53,7 @@ class CreateCampaignStartView(APIView):
             # return Response({'message':"Has No Permissions",'status':401})
         return Response({'message':"Your account is not active",'status':status.HTTP_200_OK})
 
-   
+
 class CreateCampaignRecipientsView(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)

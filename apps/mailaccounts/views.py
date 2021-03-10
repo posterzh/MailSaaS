@@ -10,7 +10,7 @@ from .serializers import EmailAccountSerializer
 from .utils import check_smtp_email
 
 
-class MailAccountListView(generics.ListCreateAPIView):
+class EmailAccountListView(generics.ListCreateAPIView):
     # serializer_class = EmailAccountSerializer
     permission_classes = (permissions.IsAuthenticated,)
     queryset = EmailAccount.objects.all()
@@ -19,9 +19,9 @@ class MailAccountListView(generics.ListCreateAPIView):
         request.data["user"] = request.user.id
         serializer = EmailAccountSerializer(data=request.data)
         if not serializer.is_valid():
-            return Response(serializer.data)
+            return HttpResponseBadRequest(serializer.default_error_messages)
 
-        serializer.save()
+        saved = serializer.save()
         return Response(serializer.data)
 
     def get(self, request, *args, **kwargs):
@@ -34,7 +34,7 @@ class MailAccountListView(generics.ListCreateAPIView):
         return Response(serializer.data)
 
 
-class MailAccountView(generics.UpdateAPIView):
+class EmailAccountView(generics.UpdateAPIView):
     serializer_class = EmailAccountSerializer
     permission_classes = (permissions.IsAuthenticated,)
     queryset = EmailAccount.objects.all()
@@ -44,7 +44,7 @@ class MailAccountView(generics.UpdateAPIView):
         request.data["user"] = request.user.id
         serializer = EmailAccountSerializer(queryset, data=request.data)
         if not serializer.is_valid():
-            raise HttpResponseBadRequest(serializer.errors)
+            raise HttpResponseBadRequest(serializer.default_error_messages)
 
         serializer.save()
         return Response(serializer.data)
