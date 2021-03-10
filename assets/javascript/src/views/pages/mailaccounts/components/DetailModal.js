@@ -19,33 +19,40 @@ import classnames from "classnames";
 import { connect } from "react-redux";
 import { addMailAccount } from "../../../../redux/action/MailAccountsActions";
 
-export class NewMailAccountModal extends Component {
+const initialState = {
+  id: undefined,
+
+  email_provider: "SMTP",
+  email: "",
+  password: "",
+  first_name: "",
+  last_name: "",
+  smtp_host: "",
+  smtp_port: "",
+  smtp_username: "",
+  smtp_password: "",
+  use_smtp_ssl: false,
+  imap_host: "",
+  imap_port: "",
+  imap_username: "",
+  imap_password: "",
+  use_imap_ssl: false,
+};
+
+export class DetailModal extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      activeTab: 0,
-
-      email_provider: "SMTP",
-      email: "",
-      first_name: "",
-      last_name: "",
-      smtp_host: "",
-      smtp_port: "",
-      smtp_username: "",
-      smtp_password: "",
-      use_smtp_ssl: false,
-      imap_host: "",
-      imap_port: "",
-      imap_user_name: "",
-      imap_password: "",
-      use_imap_ssl: false,
-    };
+    this.state = initialState;
   }
 
-  onSelectTab(activeTab) {
-    this.setState({
-      activeTab,
-    });
+  componentDidUpdate(prevProps) {
+    if (this.props.data != prevProps.data) {
+      if (this.props.data) {
+        this.setState({ ...this.props.data });
+      } else {
+        this.setState({ ...initialState });
+      }
+    }
   }
 
   handleChange = (e) => {
@@ -55,16 +62,18 @@ export class NewMailAccountModal extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    let newMailAccount = Object.assign({}, this.state);
-    delete newMailAccount.activeTab;
+    let mailAccount = Object.assign({}, this.state);
 
-    this.props.addMailAccount(newMailAccount);
-    this.props.close();
+    if (this.state.id) {
+      console.log("update:", this.state);
+      this.props.update(mailAccount);
+    } else {
+      console.log("create:", this.state);
+      this.props.create(mailAccount);
+    }
   };
 
   render() {
-    const { activeTab } = this.state;
-
     return (
       <>
         <Modal isOpen={this.props.isOpen} toggle={this.props.close} size="lg">
@@ -80,10 +89,9 @@ export class NewMailAccountModal extends Component {
                       <NavItem>
                         <NavLink
                           className={classnames({
-                            active: activeTab === 0,
+                            active: this.state.email_provider == "SMTP",
                           })}
                           onClick={() => {
-                            this.onSelectTab(0);
                             this.setState({ email_provider: "SMTP" });
                           }}
                           style={{ cursor: "pointer" }}
@@ -97,10 +105,9 @@ export class NewMailAccountModal extends Component {
                       <NavItem>
                         <NavLink
                           className={classnames({
-                            active: activeTab === 1,
+                            active: this.state.email_provider == "Google",
                           })}
                           onClick={() => {
-                            this.onSelectTab(1);
                             this.setState({ email_provider: "Google" });
                           }}
                           style={{ cursor: "pointer" }}
@@ -114,10 +121,9 @@ export class NewMailAccountModal extends Component {
                       <NavItem>
                         <NavLink
                           className={classnames({
-                            active: activeTab === 2,
+                            active: this.state.email_provider == "Microsoft",
                           })}
                           onClick={() => {
-                            this.onSelectTab(2);
                             this.setState({ email_provider: "Microsoft" });
                           }}
                           style={{ cursor: "pointer" }}
@@ -143,11 +149,12 @@ export class NewMailAccountModal extends Component {
                             type="email"
                             className="form-control-sm"
                             onChange={this.handleChange}
+                            value={this.state.email}
                           />
                         </FormGroup>
 
-                        {(this.state.activeTab == 1 ||
-                          this.state.activeTab == 2) && (
+                        {(this.state.email_provider == "Google" ||
+                          this.state.email_provider == "Microsoft") && (
                           <FormGroup className="mb-2">
                             <label
                               className="form-control-label"
@@ -161,6 +168,7 @@ export class NewMailAccountModal extends Component {
                               type="text"
                               className="form-control-sm"
                               onChange={this.handleChange}
+                              value={this.state.password}
                             />
                           </FormGroup>
                         )}
@@ -178,6 +186,7 @@ export class NewMailAccountModal extends Component {
                             type="text"
                             className="form-control-sm"
                             onChange={this.handleChange}
+                            value={this.state.first_name}
                           />
                         </FormGroup>
 
@@ -194,11 +203,12 @@ export class NewMailAccountModal extends Component {
                             type="text"
                             className="form-control-sm"
                             onChange={this.handleChange}
+                            value={this.state.last_name}
                           />
                         </FormGroup>
                       </Col>
                       <Col md={6}>
-                        {this.state.activeTab == 0 && (
+                        {this.state.email == "SMTP" && (
                           <>
                             <FormGroup className="mb-2">
                               <label
@@ -213,6 +223,7 @@ export class NewMailAccountModal extends Component {
                                 type="text"
                                 className="form-control-sm"
                                 onChange={this.handleChange}
+                                value={this.state.smtp_username}
                               />
                             </FormGroup>
 
@@ -229,6 +240,7 @@ export class NewMailAccountModal extends Component {
                                 type="text"
                                 className="form-control-sm"
                                 onChange={this.handleChange}
+                                value={this.state.smtp_password}
                               />
                             </FormGroup>
 
@@ -247,6 +259,7 @@ export class NewMailAccountModal extends Component {
                                     type="text"
                                     className="form-control-sm"
                                     onChange={this.handleChange}
+                                    value={this.state.smtp_host}
                                   />
                                 </FormGroup>
                               </Col>
@@ -264,6 +277,7 @@ export class NewMailAccountModal extends Component {
                                     type="text"
                                     className="form-control-sm"
                                     onChange={this.handleChange}
+                                    value={this.state.smtp_port}
                                   />
                                 </FormGroup>
                               </Col>
@@ -276,6 +290,7 @@ export class NewMailAccountModal extends Component {
                                 name="use_smtp_ssl"
                                 type="checkbox"
                                 onChange={this.handleChange}
+                                value={this.state.use_smtp_ssl}
                               />
                               <label
                                 className="custom-control-label"
@@ -288,16 +303,17 @@ export class NewMailAccountModal extends Component {
                             <FormGroup className="mb-2">
                               <label
                                 className="form-control-label"
-                                htmlFor="imap_user_name"
+                                htmlFor="imap_username"
                               >
                                 IMAP User Name
                               </label>
                               <Input
-                                id="imap_user_name"
-                                name="imap_user_name"
+                                id="imap_username"
+                                name="imap_username"
                                 type="text"
                                 className="form-control-sm"
                                 onChange={this.handleChange}
+                                value={this.state.imap_username}
                               />
                             </FormGroup>
 
@@ -314,6 +330,7 @@ export class NewMailAccountModal extends Component {
                                 type="text"
                                 className="form-control-sm"
                                 onChange={this.handleChange}
+                                value={this.state.imap_password}
                               />
                             </FormGroup>
 
@@ -332,6 +349,7 @@ export class NewMailAccountModal extends Component {
                                     type="text"
                                     className="form-control-sm"
                                     onChange={this.handleChange}
+                                    value={this.state.imap_host}
                                   />
                                 </FormGroup>
                               </Col>
@@ -349,6 +367,7 @@ export class NewMailAccountModal extends Component {
                                     type="text"
                                     className="form-control-sm"
                                     onChange={this.handleChange}
+                                    value={this.state.imap_port}
                                   />
                                 </FormGroup>
                               </Col>
@@ -361,6 +380,7 @@ export class NewMailAccountModal extends Component {
                                 name="use_imap_ssl"
                                 type="checkbox"
                                 onChange={this.handleChange}
+                                value={this.state.use_imap_ssl}
                               />
                               <label
                                 className="custom-control-label"
@@ -399,6 +419,4 @@ export class NewMailAccountModal extends Component {
 
 const mapStateToProps = (state) => ({});
 
-export default connect(mapStateToProps, { addMailAccount })(
-  NewMailAccountModal
-);
+export default connect(mapStateToProps, { addMailAccount })(DetailModal);

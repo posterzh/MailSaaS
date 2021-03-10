@@ -37,10 +37,6 @@ class Schedule(models.Model):
     #     ('friday', 'Friday'),
     #     ('saturday', 'Saturday')
     # )
-    STRATEGY_CHOICES =(
-        ("SPACE","Space out over the day"),
-        ("SEND","Send as fast as possible")
-    )
 
     TIMEZONE_CHOICES = res
     
@@ -52,7 +48,6 @@ class Schedule(models.Model):
     end_time = models.TimeField(auto_now=False)
     time_zone = models.CharField(choices=TIMEZONE_CHOICES,max_length=50)
     max_email= models.PositiveIntegerField()
-    strategy = models.CharField(choices=STRATEGY_CHOICES,max_length=20)
     mint_between_sends = models.PositiveIntegerField()
     min_email_send = models.PositiveIntegerField(blank=True, null=True)
     max_email_send = models.PositiveIntegerField()

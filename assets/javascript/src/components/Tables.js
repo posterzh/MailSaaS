@@ -402,7 +402,7 @@ function Tables({
                       return (
                         <tr key={"table-items" + index}>
                           {showSelect && (
-                            <th key={"header-select-" + index}>
+                            <td key={"header-select-" + index}>
                               <div className="custom-control custom-checkbox">
                                 <input
                                   className="custom-control-input"
@@ -416,19 +416,17 @@ function Tables({
                                   htmlFor={"table-check-all" + index}
                                 />
                               </div>
-                            </th>
+                            </td>
                           )}
                           {titles.map((item) => {
                             return (
-                              <th
+                              <td
                                 className="sort"
-                                onClick={() => sortData(item)}
                                 key={"header-" + item.key + index}
-                                data-sort="name"
                                 scope="col"
                               >
                                 {data[item.key]}
-                              </th>
+                              </td>
                             );
                           })}
                           {showAction && (
@@ -473,7 +471,7 @@ function Tables({
                               id={`edit${index}`}
                               onClick={(e) => {
                                 e.preventDefault();
-                                onEdit && onEdit(data, index);
+                                onEdit && onEdit(data);
                               }}
                             >
                               <i className="fas fa-edit" />
@@ -490,7 +488,7 @@ function Tables({
                               id={`delete${index}`}
                               onClick={(e) => {
                                 e.preventDefault();
-                                onDelete && onDelete(data, index);
+                                onDelete && onDelete(data);
                               }}
                             >
                               <i className="fas fa-trash" />
