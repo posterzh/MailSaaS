@@ -21,9 +21,9 @@ export const getMailAccounts = () => (dispatch) => {
     });
 };
 
-export const addMailAccount = (note) => (dispatch) => {
+export const addMailAccount = (mailAccount) => (dispatch) => {
   axios
-    .post("/mailaccounts/", note)
+    .post("/mailaccounts/", mailAccount)
     .then((response) => {
       dispatch({
         type: ADD_MAILACCOUNT,
@@ -49,9 +49,9 @@ export const deleteMailAccount = (id) => (dispatch) => {
     });
 };
 
-export const updateMailAccount = (id, note) => (dispatch) => {
+export const updateMailAccount = (id, mailAccount) => (dispatch) => {
   axios
-    .patch(`/mailaccounts/${id}/`, note)
+    .patch(`/mailaccounts/${id}/`, mailAccount)
     .then((response) => {
       dispatch({
         type: UPDATE_MAILACCOUNT,

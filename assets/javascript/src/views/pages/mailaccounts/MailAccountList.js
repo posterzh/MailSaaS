@@ -11,13 +11,14 @@ import {
 import { connect } from "react-redux";
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
-import Tables from "./components/TableContent";
+import Tables from "../../../components/Tables";
 import {
   getMailAccounts,
-  editMailAccount,
+  addMailAccount,
+  updateMailAccount,
   deleteMailAccount,
 } from "../../../redux/action/MailAccountsActions";
-import ConnectMailAccountModal from "./components/NewMailAccountModal";
+import DetailModal from "./components/DetailModal";
 import DeleteModal from "./components/DeleteModal";
 
 const tableTitle = [
@@ -30,10 +31,6 @@ const tableTitle = [
     value: "Email",
   },
   {
-    key: "password",
-    value: "Password",
-  },
-  {
     key: "first_name",
     value: "First Name",
   },
@@ -41,54 +38,16 @@ const tableTitle = [
     key: "last_name",
     value: "Last Name",
   },
-  {
-    key: "smtp_host",
-    value: "SMTP Host",
-  },
-  {
-    key: "smtp_port",
-    value: "SMTP Port",
-  },
-  {
-    key: "smtp_username",
-    value: "SMTP Username",
-  },
-  {
-    key: "smtp_password",
-    value: "SMTP Password",
-  },
-  {
-    key: "use_smtp_ssl",
-    value: "Use SMTP SSL",
-  },
-  {
-    key: "imap_host",
-    value: "IMAP Host",
-  },
-  {
-    key: "imap_port",
-    value: "IMAP Port",
-  },
-  {
-    key: "imap_username",
-    value: "IMAP Username",
-  },
-  {
-    key: "imap_password",
-    value: "IMAP Password",
-  },
-  {
-    key: "use_imap_ssl",
-    value: "Use IMAP SSL",
-  },
 ];
 
 class MailAccountList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newModal: false,
+      detailModal: false,
       deleteModal: false,
+      editItem: null,
+      deleteItem: null,
     };
   }
 
@@ -96,24 +55,53 @@ class MailAccountList extends Component {
     this.props.getMailAccounts();
   }
 
-  // Close
-  closeNewModal = () => {
-    this.setState({ newModal: false });
+  showDetailModal = (item) => {
+    // Save the item to edit
+    this.setState({ editItem: item });
+
+    // Show edit
+    this.setState({ detailModal: true });
   };
 
-  editMailAccount = (data, index) => {
-    // this.props.MailAccountDelete(index);
-    console.log("Edit mail account : ", data, index);
+  createMailAccount = (item) => {
+    this.props.addMailAccount(item);
+
+    this.closeDetailModal();
   };
 
-  deleteMailAccount = (data, index) => {
-    console.log("Delete mail account : ", data, index);
+  updateMailAccount = (item) => {
+    this.props.updateMailAccount(item.id, item);
 
-    this.props.deleteMailAccount(data.id);
+    this.closeDetailModal();
+  };
+
+  closeDetailModal = () => {
+    this.setState({ detailModal: false });
+
+    this.setState({ editItem: null });
+  };
+
+  showDeleteModal = (item) => {
+    // Save the item to delete
+    this.setState({ deleteItem: item });
+
+    // Show delete confirmation dialog
+    this.setState({ deleteModal: true });
+  };
+
+  deleteMailAccount = () => {
+    this.props.deleteMailAccount(this.state.deleteItem.id);
+
+    this.closeDeleteModal();
+  };
+
+  closeDeleteModal = () => {
+    this.setState({ deleteModal: false });
+    this.setState({ deleteItem: null });
   };
 
   render() {
-    const { newModal } = this.state;
+    const { detailModal, deleteModal } = this.state;
     const { mailAccounts } = this.props;
 
     return (
@@ -127,7 +115,8 @@ class MailAccountList extends Component {
           <Row className="justify-content-end">
             <Button
               onClick={(e) => {
-                e.preventDefault(), this.setState({ newModal: true });
+                e.preventDefault();
+                this.showDetailModal();
               }}
               className="btn-icon"
               color="danger"
@@ -144,14 +133,23 @@ class MailAccountList extends Component {
               titles={tableTitle} // required
               tablePropsData={mailAccounts} // required
               showPagination={true} // optional
-              onEdit={this.editMailAccount}
-              onDelete={this.deleteMailAccount}
+              onEdit={this.showDetailModal}
+              onDelete={this.showDeleteModal}
             />
           </Row>
 
-          <ConnectMailAccountModal
-            isOpen={newModal}
-            close={this.closeNewModal}
+          <DetailModal
+            isOpen={detailModal}
+            data={this.state.editItem}
+            close={this.closeDetailModal}
+            create={this.createMailAccount}
+            update={this.updateMailAccount}
+          />
+
+          <DeleteModal
+            isOpen={deleteModal}
+            close={this.closeDeleteModal}
+            delete={this.deleteMailAccount}
           />
         </PageContainer>
       </>
@@ -165,6 +163,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   getMailAccounts,
-  editMailAccount,
+  addMailAccount,
+  updateMailAccount,
   deleteMailAccount,
 })(MailAccountList);
