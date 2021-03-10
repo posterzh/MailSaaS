@@ -6,16 +6,17 @@ import {
 } from "../redux/actionType/actionType";
 
 export const toastOnError = (error) => {
-  console.log("error in API call!");
-
+  let errMessage = "";
   if (error.response) {
     // known error
-    toast.error(JSON.stringify(error.response.data));
+    errMessage = JSON.stringify(error.response.data);
   } else if (error.message) {
-    toast.error(JSON.stringify(error.message));
+    errMessage = JSON.stringify(error.message);
   } else {
-    toast.error(JSON.stringify(error));
+    errMessage = JSON.stringify(error);
   }
+
+  showNotification("warning", "API Call Error", errMessage);
 };
 
 export const showNotification = (notification_type, title, message) => {

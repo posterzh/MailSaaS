@@ -20,8 +20,6 @@ import { connect } from "react-redux";
 import { addMailAccount } from "../../../../redux/action/MailAccountsActions";
 
 const initialState = {
-  id: undefined,
-
   email_provider: "SMTP",
   email: "",
   password: "",

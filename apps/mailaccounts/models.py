@@ -24,15 +24,15 @@ EMAIL_PROVIDERS = (
 
 class EmailAccount(models.Model):
     # Common fields
-    email_provider = models.CharField(max_length=100, choices=EMAIL_PROVIDERS, default='Smtp', null=True, blank=True)
+    email_provider = models.CharField(max_length=100, choices=EMAIL_PROVIDERS, default='SMTP', null=True, blank=True)
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=200, default='')
-    last_name = models.CharField(max_length=200, default='')
+    first_name = models.CharField(max_length=200, default='', null=True, blank=True)
+    last_name = models.CharField(max_length=200, default='', null=True, blank=True)
 
     # Google, Microsoft fields
-    password = models.CharField(max_length=200, default='')
+    password = models.CharField(max_length=200, default='', null=True, blank=True)
 
     # SMTP fields
     smtp_host = models.CharField(max_length=200, blank=True, null=True)
