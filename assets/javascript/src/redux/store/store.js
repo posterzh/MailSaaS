@@ -28,6 +28,7 @@ import {
 
 import { AuthReducer } from "../reducer/AuthReducer";
 import { mailAccountsReducer } from "../reducer/MailAccountsReducer";
+import { notificationReducer } from "../reducer/CommonReducer";
 
 const composeEnhancers =
   (typeof window !== "undefined" &&
@@ -59,6 +60,7 @@ const rootReducer = combineReducers({
   LeadViewReducer,
 
   mailAccounts: mailAccountsReducer,
+  notification: notificationReducer,
 });
 
 const persistConfig = {
