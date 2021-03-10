@@ -1,12 +1,4 @@
 import {
-    SUCCESS_REGISTER,
-    FAILURE_REGISTER,
-    FAILURE_LOGIN,
-    REQUEST_FOR_LOGIN,
-    SUCCESS_LOGIN,
-    REQUEST_FOR_LOGOUT,
-    SUCCESS_LOGOUT,
-    FAILURE_LOGOUT,
     SUCCESS_START_CAMPAIGN,
     SUCCESS_RECIPIENT,
     SUCCESS_MAIL_SENDER,
@@ -49,8 +41,6 @@ import {
 } from "../actionType/actionType";
 
 const initialState = {
-    Loginuser: '',
-    user: '',
     startCampaignData: [],
     recipientData: '',
     mailGetData: null,
@@ -64,13 +54,9 @@ const initialState = {
     prospectOnclickData: [],
     mailAccountId: '',
     CampaignOverviewData: [],
-    isLogin: false,
     CampaignPreviewData: [],
     campaignPreviewUpdateData: [],
     CampaignTableData: [],
-    registerResponse: null,
-    loginResponse: null,
-    isRegisterSuccess: null,
     loading: false,
     ScheduleGetData: [],
     UpdateScheduleData: [],
@@ -79,53 +65,6 @@ const initialState = {
     campaignPeopleData: '',
     leadViewData:'',
     updateLeadData:''
-}
-export const RegisterReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case SUCCESS_REGISTER:
-            return {
-                ...state,
-                user: action.user,
-                isRegisterSuccess: true,
-                registerResponse: 'Register Successfully!'
-            }
-        case FAILURE_REGISTER:
-            return {
-                ...state,
-                registerResponse: action.payload,
-                isRegisterSuccess: true
-            }
-        default: return state
-            break;
-    }
-}
-export const LoginReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case REQUEST_FOR_LOGIN:
-            return {
-                ...state,
-                isLogin: false
-            }
-        case SUCCESS_LOGIN:
-            return {
-                ...state,
-                Loginuser: action.Loginuser,
-                isLogin: true,
-            }
-        case FAILURE_LOGIN:
-            return {
-                ...state,
-                isLogin: false,
-                loginResponse: action.payload
-
-            }
-        case SUCCESS_LOGOUT:
-            return {
-                ...initialState
-            }
-        default: return state
-            break;
-    }
 }
 export const StartCampaignReducer = (state = initialState, action) => {
     switch (action.type) {

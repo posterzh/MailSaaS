@@ -15,8 +15,7 @@ class RegisterSerializer(serializers.Serializer):
     first_name = serializers.CharField(required=True, write_only=True)
     last_name = serializers.CharField(required=True, write_only=True)
     full_name = serializers.CharField(required=True, write_only=True)
-    phone_number = serializers.CharField(required=True, write_only=True)
-    company_name = serializers.CharField(required=True, write_only=True)
+    company_name = serializers.CharField(required=False, write_only=True, allow_blank=True)
     mailsaas_type = serializers.CharField(required=True, write_only=True)
     avatar = serializers.ImageField(required=False, write_only=True)
     password1 = serializers.CharField(required=True, write_only=True)
@@ -46,8 +45,7 @@ class RegisterSerializer(serializers.Serializer):
             'first_name': self.validated_data.get('first_name', ''),
             'last_name': self.validated_data.get('last_name', ''),
             'full_name': self.validated_data.get('full_name', ''),
-            'phone_number': self.validated_data.get('phone_number', ''),
-            'company_name': self.validated_data.get('company_name',''),
+            #'company_name': self.validated_data.get('company_name',''),
             'mailsaas_type': self.validated_data.get('mailsaas_type', ''),
             'password1': self.validated_data.get('password1', ''),
         }
