@@ -24,6 +24,7 @@ const initialState = {
 
   email_provider: "SMTP",
   email: "",
+  password: "",
   first_name: "",
   last_name: "",
   smtp_host: "",
