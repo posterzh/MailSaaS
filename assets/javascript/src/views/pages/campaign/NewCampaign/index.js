@@ -65,8 +65,6 @@ class CampaignStart extends React.Component {
     this.setState((state) => ({
       activeTab: (state.activeTab + 1) % 6,
     }));
-
-    console.log(this.state.activeTab);
   };
 
   validateCustomStylesForm = () => {
@@ -144,22 +142,22 @@ class CampaignStart extends React.Component {
                   <Col>
                     <TabContent activeTab={activeTab}>
                       <TabPane tabId={0}>
-                        <TheStart />
+                        <TheStart hasFocus={activeTab == 0} />
                       </TabPane>
                       <TabPane tabId={1}>
-                        <TheRecipient />
+                        <TheRecipient hasFocus={activeTab == 1} />
                       </TabPane>
                       <TabPane tabId={2}>
-                        <TheCompose />
+                        <TheCompose hasFocus={activeTab == 2} />
                       </TabPane>
                       <TabPane tabId={3}>
-                        <ThePreview />
+                        <ThePreview hasFocus={activeTab == 3} />
                       </TabPane>
                       <TabPane tabId={4}>
-                        <TheOptions />
+                        <TheOptions hasFocus={activeTab == 4} />
                       </TabPane>
                       <TabPane tabId={5}>
-                        <TheSend />
+                        <TheSend hasFocus={activeTab == 5} />
                       </TabPane>
                     </TabContent>
                   </Col>

@@ -168,10 +168,6 @@ export class TheSend extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log(
-    "sendData",
-    state.CampaignCreateReducer && state.CampaignCreateReducer.sendData
-  );
   return {
     sendData:
       state.CampaignCreateReducer && state.CampaignCreateReducer.sendData,

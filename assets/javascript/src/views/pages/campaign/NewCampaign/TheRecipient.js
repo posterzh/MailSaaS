@@ -25,6 +25,10 @@ import {
 
 import Tables from "../../TableContent";
 import { showNotification } from "../../../../utils/Utils";
+import {
+  campaignStart,
+  campaignCompose,
+} from "../../../../redux/action/CampaignActions";
 
 Dropzone.autoDiscover = false;
 
@@ -160,6 +164,8 @@ class TheRecipient extends Component {
 
   render() {
     const { show, csvMappingContent } = this.state;
+    const { campaign } = this.props;
+
     return (
       <>
         <Row>
@@ -167,6 +173,8 @@ class TheRecipient extends Component {
             <h2 className="text-center my-4">
               Drop in your first list of recipients
             </h2>
+            <h2>{campaign.title}</h2>
+            <h2>{campaign.fromAddress}</h2>
           </Col>
         </Row>
         <Row>
@@ -282,16 +290,10 @@ class TheRecipient extends Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    campaignDetails: state.StartCampaignReducer.startCampaignData.id,
-    mailGetData: state.MailGetDataReducer.mailGetData,
-  };
-};
-const mapDispatchToProps = (dispatch) => ({
-  RecipientAction: (recipientData) => {
-    dispatch(RecipientAction(recipientData));
-  },
+const mapStateToProps = (state) => ({
+  campaign: state.campaign,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TheRecipient);
+export default connect(mapStateToProps, { campaignStart, campaignCompose })(
+  TheRecipient
+);

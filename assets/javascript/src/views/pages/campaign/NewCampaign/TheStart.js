@@ -9,8 +9,10 @@ import {
   Input,
   Button,
 } from "reactstrap";
-import { StartCampaignAction } from "../../../../redux/action/CampaignAction";
-import { MailGetDataAction } from "../../../../redux/action/MailSenderAction";
+import {
+  campaignStart,
+  campaignCompose,
+} from "../../../../redux/action/CampaignActions";
 
 class TheStart extends React.Component {
   constructor(props) {
@@ -60,7 +62,7 @@ class TheStart extends React.Component {
     });
   };
   componentDidMount() {
-    this.props.MailGetDataAction();
+    // this.props.MailGetDataAction();
   }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -100,9 +102,27 @@ class TheStart extends React.Component {
   //     nextProps,
   //   });
   // }
+
+  saveState = () => {
+    console.log("saving start state ...");
+
+    const payload = {
+      title: this.state.title,
+      fromAddress: this.state.from_address,
+    };
+
+    this.props.campaignStart(payload);
+  };
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.hasFocus && !this.props.hasFocus) {
+      this.saveState();
+    }
+  }
+
   render() {
     const { mailGetData } = this.props;
-    const { mailsExist } = this.state;
+
     return (
       <>
         <Row>
@@ -160,20 +180,9 @@ class TheStart extends React.Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  // console.log("------------------------->",state.MailGetDataReducer.mailGetData&&state.MailGetDataReducer.mailGetData.map((e,i)=> e.email[0].id))
-  return {
-    mailGetData:
-      state.MailGetDataReducer.mailGetData &&
-      state.MailGetDataReducer.mailGetData,
-  };
-};
-const mapDispatchToProps = (dispatch) => ({
-  StartCampaignAction: (data) => {
-    dispatch(StartCampaignAction(data));
-  },
-  MailGetDataAction: (mailGetData) => {
-    dispatch(MailGetDataAction(mailGetData));
-  },
+const mapStateToProps = (state) => ({
+  campaign: state.campaign,
 });
-export default connect(mapStateToProps, mapDispatchToProps)(TheStart);
+export default connect(mapStateToProps, { campaignStart, campaignCompose })(
+  TheStart
+);
