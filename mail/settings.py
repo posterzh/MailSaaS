@@ -332,7 +332,9 @@ cache_backend = 'django-cache'
 # }
 
 
-
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'apps.users.serializer.UserDetailsSerializer',
+}
 
 
 REST_AUTH_REGISTER_SERIALIZERS = {

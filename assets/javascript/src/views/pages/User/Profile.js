@@ -30,7 +30,7 @@ export class Profile extends Component {
         firstName: user.first_name,
         lastName: user.last_name,
         email: user.email,
-        userName: user.username || '',
+        companyName: user.company_name,
         profile_url: STATIC_FILES.team_4,
       },
     };
@@ -205,16 +205,16 @@ export class Profile extends Component {
                             <FormGroup>
                               <label
                                 className="form-control-label"
-                                htmlFor="username"
+                                htmlFor="companyName"
                               >
-                                Username
+                                Company name
                               </label>
                               <Input
-                                // id="username"
-                                placeholder="Username"
+                                id="company-name"
+                                placeholder="Company name"
                                 type="text"
-                                value={user.userName}
-                                // name="userName"
+                                value={user.companyName}
+                                name="companyName"
                                 autoComplete='off'
                                 onChange={setUser}
                               />
