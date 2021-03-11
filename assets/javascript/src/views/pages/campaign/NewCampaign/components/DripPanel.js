@@ -6,7 +6,7 @@ export default class DripPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      waitDays: 0,
+      waitDays: 1,
       subject: "",
       email_body: "",
     };

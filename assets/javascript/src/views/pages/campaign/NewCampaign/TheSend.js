@@ -182,15 +182,15 @@ export class TheSend extends Component {
 
         {/* Buttons */}
         <Row className="my-3">
-          <Col className="d-flex align-items-center justify-content-center">
+          <Col className="text-left">
             {onPrev && (
-              <Button color="primary" type="button" onClick={this.onPrev}>
+              <Button color="primary" type="button" outline onClick={this.onPrev}>
                 <i className="fa fa-arrow-left" aria-hidden="true"></i>
-                PREV{" "}
+                {" "}PREV
               </Button>
             )}
           </Col>
-          <Col className="d-flex align-items-center justify-content-center">
+          <Col className="text-right">
             {onNext && (
               <Button color="danger" type="button" onClick={this.onNext}>
                 NEXT <i className="fa fa-arrow-right" aria-hidden="true"></i>

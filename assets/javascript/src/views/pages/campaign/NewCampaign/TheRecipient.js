@@ -18,16 +18,15 @@ import {
 import Dropzone from "dropzone";
 import { CSVReader } from "react-papaparse";
 import { Link } from "react-router-dom";
-import {
-  RecipientAction,
-  StartCampaignAction,
-} from "../../../../redux/action/CampaignAction";
+// import {
+//   RecipientAction,
+//   StartCampaignAction,
+// } from "../../../../redux/action/CampaignAction";
 
 import Tables from "../../TableContent";
 import { showNotification } from "../../../../utils/Utils";
 import {
-  campaignStart,
-  campaignCompose,
+  campaignRecipient,
 } from "../../../../redux/action/CampaignActions";
 
 Dropzone.autoDiscover = false;
@@ -89,11 +88,11 @@ class TheRecipient extends Component {
       return false;
     }
     const recipientData = {
-      csvfile: this.state.csvFile,
-      campaign: this.state.campaign,
+      csvfile: this.state.csvFile
     };
     console.log(this.state.csvFile);
-    this.props.RecipientAction(recipientData);
+    this.props.campaignRecipient(recipientData);
+    this.props.onNext();
   };
 
   handleOnDrop = (data, file) => {
@@ -163,19 +162,17 @@ class TheRecipient extends Component {
   };
 
   onPrev = () => {
-    // some validation
-
     // call parent method
     this.props.onPrev();
   };
 
-  onNext = () => {
-    // some validation
-    console.log("Prev : validation success");
+  // onNext = () => {
+  //   // some validation
+  //   console.log("Prev : validation success");
 
-    // call parent method
-    this.props.onNext();
-  };
+  //   // call parent method
+  //   this.props.onNext();
+  // };
 
   render() {
     const { onPrev, onNext, campaign } = this.props;
@@ -301,20 +298,19 @@ class TheRecipient extends Component {
             </Card>
           </Col>
         </Row>
-
         {/* Buttons */}
         <Row className="my-3">
-          <Col className="d-flex align-items-center justify-content-center">
+          <Col className="text-left">
             {onPrev && (
-              <Button color="primary" type="button" onClick={this.onPrev}>
+              <Button color="primary" type="button" outline onClick={this.onPrev}>
                 <i className="fa fa-arrow-left" aria-hidden="true"></i>
-                PREV{" "}
+                {" "}PREV
               </Button>
             )}
           </Col>
-          <Col className="d-flex align-items-center justify-content-center">
+          <Col className="text-right">
             {onNext && (
-              <Button color="danger" type="button" onClick={this.onNext}>
+              <Button color="danger" type="button" onClick={this.handleSubmit}>
                 NEXT <i className="fa fa-arrow-right" aria-hidden="true"></i>
               </Button>
             )}
@@ -328,6 +324,6 @@ const mapStateToProps = (state) => ({
   campaign: state.campaign,
 });
 
-export default connect(mapStateToProps, { campaignStart, campaignCompose })(
+export default connect(mapStateToProps, { campaignRecipient })(
   TheRecipient
 );

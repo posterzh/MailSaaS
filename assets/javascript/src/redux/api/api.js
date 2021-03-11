@@ -405,7 +405,6 @@ Api.MailAccountDelete = (token, id) => {
 Api.MailAccountUpdateApi = (token, data, id) => {
   return axios({
     url: `${API_BASE_URL}/mail/updatedeletemailaccount/${id}/`,
-    data: {},
     method: "PUT",
     headers: {
       "Authorization": `Bearer ${token}`
