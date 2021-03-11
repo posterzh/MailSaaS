@@ -16,23 +16,19 @@ import {
   ListGroup,
 } from "reactstrap";
 import Dropzone from "dropzone";
-import { CSVReader } from 'react-papaparse';
+import { CSVReader } from "react-papaparse";
 import { Link } from "react-router-dom";
 import {
   RecipientAction,
   StartCampaignAction,
 } from "../../../../redux/action/CampaignAction";
 
-import PageHeader from "../../../../components/Headers/PageHeader";
-import PageContainer from "../../../../components/Containers/PageContainer";
-import CampaignsHeader from "./components/CampaignsHeader";
 import Tables from "../../TableContent";
 import { showNotification } from "../../../../utils/Utils";
 
-
 Dropzone.autoDiscover = false;
 
-class CampaignRecipient extends Component {
+class TheRecipient extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,20 +36,16 @@ class CampaignRecipient extends Component {
       csvFile: "",
       csvMappingContent: {
         title: [],
-        data: []
+        data: [],
       },
-      campaign:
-        this.props.history.location.state &&
-        this.props.history.location.state.id,
+      campaign: "",
     };
   }
 
   componentDidMount() {
     // this variable is to delete the previous image from the dropzone state
     // it is just to make the HTML DOM a bit better, and keep it light
-
     // let currentMultipleFile = undefined;
-    
     // new Dropzone(document.getElementById("dropzone-multiple"), {
     //   autoProcessQueue: false,
     //   url: "https://",
@@ -71,7 +63,6 @@ class CampaignRecipient extends Component {
     //     this.on("addedfile", function (file) {
     //       if (currentMultipleFile) {
     //         this.removeFile(currentMultipleFile);
-            
     //       }
     //       currentMultipleFile = file;
     //     });
@@ -90,7 +81,7 @@ class CampaignRecipient extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     if (!this.state.csvFile) {
-      showNotification("danger","Not uploaded CSV", "");
+      showNotification("danger", "Not uploaded CSV", "");
       return false;
     }
     const recipientData = {
@@ -101,11 +92,11 @@ class CampaignRecipient extends Component {
     this.props.RecipientAction(recipientData);
   };
 
-  handleOnDrop = (data, file) => { 
+  handleOnDrop = (data, file) => {
     if (!data || data.length == 0) {
       this.setState({
         csvFile: null,
-        show: true
+        show: true,
       });
       return;
     }
@@ -114,12 +105,16 @@ class CampaignRecipient extends Component {
     const tableHeaders = [];
     const tableBody = [];
     Object.keys(firstRow).forEach((key) => {
-      if (key && (key.toLowerCase().indexOf('name') > -1 || key.toLowerCase().indexOf('email') > -1)) {
+      if (
+        key &&
+        (key.toLowerCase().indexOf("name") > -1 ||
+          key.toLowerCase().indexOf("email") > -1)
+      ) {
         tableHeaders.push({
           key: key,
-          value: key
-        })
-      } 
+          value: key,
+        });
+      }
     });
 
     if (tableHeaders.length > 0) {
@@ -127,9 +122,9 @@ class CampaignRecipient extends Component {
         if (index > 10) return;
         let obj = {};
         const rowData = row.data;
-        tableHeaders.forEach((header) => {          
+        tableHeaders.forEach((header) => {
           obj[header.key] = rowData[header.key];
-        })
+        });
         tableBody.push(obj);
       });
     }
@@ -138,19 +133,19 @@ class CampaignRecipient extends Component {
       csvFile: file,
       csvMappingContent: {
         title: tableHeaders,
-        data: tableBody
+        data: tableBody,
       },
-      show: true
+      show: true,
     });
-  }
+  };
 
   handleOnError = (err, file, inputElem, reason) => {
     console.log(err);
     this.setState({
       csvFile: null,
-      show: true
+      show: true,
     });
-  }
+  };
 
   handleOnRemoveFile = (data) => {
     this.setState({
@@ -158,82 +153,72 @@ class CampaignRecipient extends Component {
       show: false,
       csvMappingContent: {
         title: [],
-        data: []
-      }
+        data: [],
+      },
     });
-  }
+  };
 
   render() {
     const { show, csvMappingContent } = this.state;
     return (
       <>
-        <PageHeader
-          current="New Campaign"
-          parent="Campaign"
-          showStatus={false}
-        />
-
-        <PageContainer title="New Campaign">
-          <Form onSubmit={this.handleSubmit}>
-            <Row>
-              <Col md={8} className="mx-auto">
-                <Row>
-                  <Col>
-                    <CampaignsHeader color="secondary" activeItem="RECIPIENT" />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <h2 className="text-center my-4">
-                      Drop in your first list of recipients
-                    </h2>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Card>
-                      <CardBody>
-                        <CSVReader
-                          onDrop={this.handleOnDrop}
-                          onError={this.handleOnError}
-                          addRemoveButton
-                          onRemoveFile={this.handleOnRemoveFile}
-                          config={{
-                            header: true
-                          }}
-                          style={{
-                            dropFile: {
-                              width: 300,
-                              height: 100,
-                              background: '#eeeeee',
-                            }
-                          }}
-                        >
-                          <span>Drop CSV file here or click to upload.</span>
-                        </CSVReader>
-                        {show && 
-                        <>
-                          <Row>
-                            <Col>
-                              <h3 className="text-left my-4">Map CSV Special Columns</h3>
-                              <span>(top 10 rows and special columns)</span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            {csvMappingContent.title.length > 0 && csvMappingContent.data.length > 0 ?
-                              <Tables
-                                titles={csvMappingContent.title} // required
-                                tablePropsData={csvMappingContent.data}   // required
-                              />
-                              :
-                              <Col>
-                                <h4 className="text-center text-warning">Invalid CSV File!</h4>
-                              </Col>
-                            }
-                          </Row>
-                        </>
-                        }
-                        {/* <Form onSubmit={this.handleSubmit} 
+        <Row>
+          <Col>
+            <h2 className="text-center my-4">
+              Drop in your first list of recipients
+            </h2>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Card>
+              <CardBody>
+                <CSVReader
+                  onDrop={this.handleOnDrop}
+                  onError={this.handleOnError}
+                  addRemoveButton
+                  onRemoveFile={this.handleOnRemoveFile}
+                  config={{
+                    header: true,
+                  }}
+                  style={{
+                    dropFile: {
+                      width: 300,
+                      height: 100,
+                      background: "#eeeeee",
+                    },
+                  }}
+                >
+                  <span>Drop CSV file here or click to upload.</span>
+                </CSVReader>
+                {show && (
+                  <>
+                    <Row>
+                      <Col>
+                        <h3 className="text-left my-4">
+                          Map CSV Special Columns
+                        </h3>
+                        <span>(top 10 rows and special columns)</span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      {csvMappingContent.title.length > 0 &&
+                      csvMappingContent.data.length > 0 ? (
+                        <Tables
+                          titles={csvMappingContent.title} // required
+                          tablePropsData={csvMappingContent.data} // required
+                        />
+                      ) : (
+                        <Col>
+                          <h4 className="text-center text-warning">
+                            Invalid CSV File!
+                          </h4>
+                        </Col>
+                      )}
+                    </Row>
+                  </>
+                )}
+                {/* <Form onSubmit={this.handleSubmit} 
                           className="dropzone dropzone-multiple"
                           id="dropzone-multiple"
                         >
@@ -289,23 +274,10 @@ class CampaignRecipient extends Component {
                             </ListGroupItem>
                           </ListGroup>
                         </Form> */}
-                      </CardBody>
-                    </Card>
-                  </Col>
-                </Row>
-
-                <Row className="my-3">
-                  <Col className="d-flex align-items-center justify-content-center">
-                    <Button color="danger" type="button" type="submit">
-                      NEXT{" "}
-                      <i className="fa fa-arrow-right" aria-hidden="true"></i>
-                    </Button>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </Form>
-        </PageContainer>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
       </>
     );
   }
@@ -322,4 +294,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CampaignRecipient);
+export default connect(mapStateToProps, mapDispatchToProps)(TheRecipient);
