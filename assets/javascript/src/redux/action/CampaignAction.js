@@ -239,7 +239,7 @@ export const RecipientAction = (recipientData) => {
     Api.RecipientApi(recipientData, token)
       .then((result) => {
         setTimeout(() => {
-          dispatch(StartCampaignSuccess(result.data));
+          dispatch(RecipientSuccess(result.data));
           history.push("/app/admin/CampaignCompose", {
             id: recipientData.campaign,
           });

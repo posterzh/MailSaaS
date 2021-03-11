@@ -30,10 +30,9 @@ Api.StartCampaignApi = (data, token) => {
 // for campaign_recipient 
 Api.RecipientApi = (recipientData, token) => {
   const formData = new FormData();
-  formData.append('csvfile_op1', recipientData.csvfile_op1);
-  formData.append('email', recipientData.email);
-  formData.append('option', recipientData.option);
-  formData.append('campaign', recipientData.campaign)
+  debugger;
+  formData.append('csvfile_op1', recipientData.csvfile);
+  formData.append('campaign', recipientData.campaign);
   console.log('rec api', formData);
   return axios({
     method: 'POST',
