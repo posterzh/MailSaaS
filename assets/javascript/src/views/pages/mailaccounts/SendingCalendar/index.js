@@ -54,7 +54,7 @@ export class SendingCalendar extends Component {
         />
         <PageContainer title="Sending Calendar">
           <Row>
-            <Col md={4}>
+            <Col md={5} className="mx-auto">
               {!isEditing && <ShowCalendar startEditing={this.startEditing} />}
               {isEditing && (
                 <EditCalendar

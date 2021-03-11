@@ -19,7 +19,7 @@ export default function WeekdayPicker({
 
   return (
     <>
-      <ButtonGroup>
+      <ButtonGroup className="mb-3 w-100">
         {WEEKDAYS_SHORT.map((item, index) => (
           <Button
             aria-pressed={isChecked(index)}
@@ -30,7 +30,7 @@ export default function WeekdayPicker({
               disabled: !isChecked(index) && readonly,
             })}
             style={{
-              padding: readonly ? "6px 8px" : "10px 12px",
+              padding: "8px 0px",
             }}
             onClick={() => {
               if (!readonly) toggleChecked(index);
