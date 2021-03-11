@@ -1460,9 +1460,7 @@ class ProspectsView(generics.ListAPIView):
 
     def get(self, request, *args,**kwargs):
 
-        
         params = list(dict(request.GET).keys())
-    
 
         if ("filter" in params) and ("choice" in params):
 
@@ -1476,7 +1474,7 @@ class ProspectsView(generics.ListAPIView):
                     choice = True
                 else:
                     choice = False
-                queryset = CampaignRecipient.objects.filter(reciepent_status=choice,campaign__assigned=request.user.id, is_delete=False)
+                queryset = CampaignRecipient.objects.filter(reciepent_status=choice, campaign__assigned=request.user.id, is_delete=False)
 
             elif tofilter == "do_not_contact":
                 if choice == 'yes':
@@ -1937,7 +1935,6 @@ class ProspectsView(generics.ListAPIView):
         recp_to_delete = CampaignRecipient.objects.filter(id__in=request.data["recp_ids"]).update(is_delete=True)
         return Response({"message":"Successfully Deleted","success":True})
         
-
 
 class ProspectsCampaignView(generics.ListAPIView):
 

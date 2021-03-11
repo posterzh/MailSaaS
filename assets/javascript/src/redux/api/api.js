@@ -13,6 +13,17 @@ Api.LoginApi = (loginuser) => {
 Api.LogoutApi = () => {
   return axios.post(`${API_BASE_URL}/rest-auth/logout/`)
 }
+// for prospects filter
+Api.FilterRecipients = (data, token) => {
+  return axios({
+    method: 'GET',
+    url: `${API_BASE_URL}/campaign/prospects/`,
+    data,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
 
 Api.StartCampaignApi = (data, token) => {
   return axios({
@@ -27,6 +38,7 @@ Api.StartCampaignApi = (data, token) => {
     }
   })
 }
+
 // for campaign_recipient 
 Api.RecipientApi = (recipientData, token) => {
   const formData = new FormData();
@@ -245,6 +257,8 @@ Api.CampaignMessage = (token) => {
   })
 }
 
+// Karl - Will remove later
+// ***************************************************
 // campaign prospects
 Api.CampaignProspects = (token) => {
   return axios({
@@ -255,7 +269,6 @@ Api.CampaignProspects = (token) => {
     }
   })
 }
-
 
 Api.deleteProspects = (data,token) => {
   console.log('gettttttttttttttttttttttt',data)
@@ -269,10 +282,6 @@ Api.deleteProspects = (data,token) => {
   })
 }
 
-
-
-
-
 // ONCLICK PRSPECT
 Api.CampaignOnclickProspects = (data, token) => {
   console.log('------------EL LAB----->',data);
@@ -284,6 +293,7 @@ Api.CampaignOnclickProspects = (data, token) => {
     }
   })
 }
+
 // ProspectsUnsubscribe
 Api.ProspectsUnsubscribe=(id,token)=>{
   return axios({
@@ -297,6 +307,8 @@ Api.ProspectsUnsubscribe=(id,token)=>{
     }
   })
 }
+// ***************************************************
+
 // user settings
 Api.UserSetting = (token) => {
   return axios({

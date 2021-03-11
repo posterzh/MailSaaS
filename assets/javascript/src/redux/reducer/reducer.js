@@ -5,12 +5,17 @@ import {
     SUCCESS_MAIL_GET_DATA,
     SUCCESS_FETCH_UNSUBSCRIPTION,
     SUCCESS_OPTION,
-    // SUCCESS_FETCH_PROSPECTS,
     // SUCCESS_SEND_CAMPAIGN,
     REQUEST_FOR_OPTION,
     FAILURE_OPTION,
+
+    // Karl - Will remove later
+    // ***************************************************
     FETCH_PROSPECTS,
     SUCCESS_FETCH_PROSPECTS,
+    SUCCESS_FETCH_ONCLICK_PROSPECTS,
+    // ***************************************************
+
     REQUEST_FOR_CAMPAIGN_CREATE_PREVIEW,
     SUCCESS_FETCH_CAMPAIGN_CREATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_CREATE_PREVIEW,
@@ -22,7 +27,6 @@ import {
     SUCCESS_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_UPDATE_PREVIEW,
     SUCCESS_SAVE_CAMPAIGN,
-    SUCCESS_FETCH_ONCLICK_PROSPECTS,
     SUCCESS_CAMPAIGN_TABLE_DATA,
     REQUEST_FOR_UNSUBSCRIBE_WITH_CSV,
     SUCCESS_UNSUBSCRIBE_WITH_CSV,
@@ -188,6 +192,8 @@ export const CampaignOptionReducer = (state = initialState, action) => {
     }
 }
 
+// Karl - Will remove later
+// ***************************************************
 // PROSPECT_TABLE_DATA
 export const ProspectsGetReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -217,6 +223,7 @@ export const OnclickProspectsReducer = (state = initialState, action) => {
             break;
     }
 }
+// ***************************************************
 
 // CAMPAIGN_PREVIEW_DATA
 export const CampaignPreviewGetReducer = (state = initialState, action) => {
