@@ -1,55 +1,71 @@
-import React, { Component } from 'react'
-import { Container, Row, Col, Form, Input, Button, Card, FormGroup, CardTitle, Modal, ModalHeader, InputGroup, InputGroupAddon } from 'reactstrap'
-import CardBody from 'reactstrap/lib/CardBody'
-import CardFooter from 'reactstrap/lib/CardFooter'
-import CardHeader from 'reactstrap/lib/CardHeader'
-import { connect } from 'react-redux'
-import { GetScheduleAction, ScheduleUpdateAction } from '../../../redux/action/ScheduleAction'
-import { MailGetDataAction } from '../../../redux/action/MailSenderAction'
+import React, { Component } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Input,
+  Button,
+  Card,
+  FormGroup,
+  CardTitle,
+  Modal,
+  ModalHeader,
+  InputGroup,
+  InputGroupAddon,
+} from "reactstrap";
+import CardBody from "reactstrap/lib/CardBody";
+import CardFooter from "reactstrap/lib/CardFooter";
+import CardHeader from "reactstrap/lib/CardHeader";
+import { connect } from "react-redux";
+import {
+  GetScheduleAction,
+  ScheduleUpdateAction,
+} from "../../../redux/action/ScheduleAction";
+import { MailGetDataAction } from "../../../redux/action/MailSenderAction";
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
 
-
-export class SendingCalender extends Component {
+export class SendingCalendar extends Component {
   constructor(props) {
-    super(props)
-    var days = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'St', 'Su'];
+    super(props);
+    var days = ["Mo", "Tu", "We", "Th", "Fr", "St", "Su"];
     this.state = {
       openModel: false,
       show: true,
       hide: false,
-      MailAccounts: '',
+      MailAccounts: "",
       BlockDays: [],
-      Date: '',
-      StartTime: '',
-      EndTime: '',
-      Timezone: '',
-      MaxEmails: '',
-      Strategy: '',
-      Minutes: '',
-      MaxEmailSend: '',
-      days: days
-    }
+      Date: "",
+      StartTime: "",
+      EndTime: "",
+      Timezone: "",
+      MaxEmails: "",
+      Strategy: "",
+      Minutes: "",
+      MaxEmailSend: "",
+      days: days,
+    };
     // console.log('))))))))))))===========>',this.state.BlockDaysssssssss)
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
-    this.props.GetScheduleAction()
-    this.props.MailGetDataAction()
+    this.props.GetScheduleAction();
+    this.props.MailGetDataAction();
   }
 
   handleChange = (e) => {
-    console.log("called", e)
+    console.log("called", e);
     this.setState({
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
   handleBlockDays = (data) => {
-    console.log(data)
-  }
+    console.log(data);
+  };
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(event)
+    console.log(event);
     const updatedataschedule = {
       mail_account: this.state.MailAccounts,
       block_days: this.state.BlockDays,
@@ -60,11 +76,11 @@ export class SendingCalender extends Component {
       max_email: this.state.MaxEmails,
       strategy: this.state.Strategy,
       mint_between_sends: this.state.Minutes,
-      max_email_send: this.state.MaxEmailSend
-    }
-    this.props.ScheduleUpdateAction(updatedataschedule)
-    this.setState({ hide: !this.state.hide, show: !this.state.show })
-  }
+      max_email_send: this.state.MaxEmailSend,
+    };
+    this.props.ScheduleUpdateAction(updatedataschedule);
+    this.setState({ hide: !this.state.hide, show: !this.state.show });
+  };
   edit = (ScheduleData) => {
     this.setState({
       MailAccounts: ScheduleData.mail_account,
@@ -78,12 +94,12 @@ export class SendingCalender extends Component {
       Minutes: ScheduleData.mint_between_sends,
       MaxEmailSend: ScheduleData.max_email_send,
       show: !this.state.show,
-      hide: !this.state.hide
-    })
-  }
+      hide: !this.state.hide,
+    });
+  };
   render() {
     const { ScheduleData, mailGetDat } = this.props;
-    console.log('ScheduleData', ScheduleData)
+    console.log("ScheduleData", ScheduleData);
     return (
       <div>
         <PageHeader
@@ -92,9 +108,14 @@ export class SendingCalender extends Component {
           showStatus={false}
         />
         <PageContainer title="Sending Calendar">
-          <i onClick={(e)=>{this.setState({openModel:true})}} class="far fa-question-circle fa-2x page-information"></i>
+          <i
+            onClick={(e) => {
+              this.setState({ openModel: true });
+            }}
+            class="far fa-question-circle fa-2x page-information"
+          ></i>
           <Container fluid>
-            {!this.state.hide &&
+            {!this.state.hide && (
               <Row>
                 <Col md="3" sm="0"></Col>
                 <Col md="6" sm="12">
@@ -107,9 +128,14 @@ export class SendingCalender extends Component {
                             htmlFor="exampleFormControlInput1"
                           >
                             Mail account
-                            </label>
-                          <Input type='select' name='selected_mail'>
-                            <option>{this.props.mailGetDat && this.props.mailGetDat.map((e, i) => { return e.email })}</option>
+                          </label>
+                          <Input type="select" name="selected_mail">
+                            <option>
+                              {this.props.mailGetDat &&
+                                this.props.mailGetDat.map((e, i) => {
+                                  return e.email;
+                                })}
+                            </option>
                           </Input>
                         </FormGroup>
                       </Form>
@@ -121,26 +147,32 @@ export class SendingCalender extends Component {
                             <Col className="days-col" key={index}>
                               <span>{item}</span>
                             </Col>
-                          )
+                          );
                         })}
                       </Row>
                       <Row>
                         <p className="text-muted mb-0">
-                          <span className='calendedata'>
+                          <span className="calendedata">
                             {ScheduleData && ScheduleData.start_time}
-                          </span> to
-                          <span className='calendedata'>
-                            {ScheduleData && ScheduleData.end_time} {ScheduleData && ScheduleData.time_zone}
-                          </span> Send no more than
-                          <span className='calendedata'>
+                          </span>{" "}
+                          to
+                          <span className="calendedata">
+                            {ScheduleData && ScheduleData.end_time}{" "}
+                            {ScheduleData && ScheduleData.time_zone}
+                          </span>{" "}
+                          Send no more than
+                          <span className="calendedata">
                             {ScheduleData && ScheduleData.max_email}
-                          </span> emails per day Space emails out over the day Pause
-                          <span className='calendedata'>
+                          </span>{" "}
+                          emails per day Space emails out over the day Pause
+                          <span className="calendedata">
                             {ScheduleData && ScheduleData.mint_between_sends}
-                          </span> minutes between sends  Send at least
-                          <span className='calendedata'>
+                          </span>{" "}
+                          minutes between sends Send at least
+                          <span className="calendedata">
                             {ScheduleData && ScheduleData.max_email_send}
-                          </span> emails at a time
+                          </span>{" "}
+                          emails at a time
                         </p>
                       </Row>
                       <Row>
@@ -150,15 +182,20 @@ export class SendingCalender extends Component {
                         </p>
                       </Row>
                     </CardBody>
-                    <CardFooter >
-                      <Button type="button" onClick={() => this.edit(ScheduleData)}>Edit Rules</Button>
+                    <CardFooter>
+                      <Button
+                        type="button"
+                        onClick={() => this.edit(ScheduleData)}
+                      >
+                        Edit Rules
+                      </Button>
                     </CardFooter>
                   </Card>
                 </Col>
                 <Col md="3" sm="0"></Col>
               </Row>
-            }
-            {!this.state.show &&
+            )}
+            {!this.state.show && (
               <Row>
                 <Col md="3" sm="0"></Col>
                 <Col md="6" sm="12">
@@ -171,9 +208,14 @@ export class SendingCalender extends Component {
                             htmlFor="exampleFormControlInput1"
                           >
                             Mail account
-                            </label>
-                          <Input type='select' name='selected_mail'>
-                            <option>{this.props.mailGetDat && this.props.mailGetDat.map((e, i) => { return e.email })}</option>
+                          </label>
+                          <Input type="select" name="selected_mail">
+                            <option>
+                              {this.props.mailGetDat &&
+                                this.props.mailGetDat.map((e, i) => {
+                                  return e.email;
+                                })}
+                            </option>
                           </Input>
                         </FormGroup>
                       </CardHeader>
@@ -196,7 +238,7 @@ export class SendingCalender extends Component {
                               <Col className="days-col" key={index}>
                                 <span>{item}</span>
                               </Col>
-                            )
+                            );
                           })}
                         </Row>
                         <Row>
@@ -234,22 +276,50 @@ export class SendingCalender extends Component {
                               >
                                 Timezone
                               </label>
-                              <Input name='timezone' type='select' defaultValue='US/Alaska'>
+                              <Input
+                                name="timezone"
+                                type="select"
+                                defaultValue="US/Alaska"
+                              >
                                 <option value="US/Alaska"> US/Alaska </option>
-                                <option value="US/Aleutian"> US/Aleutian </option>
+                                <option value="US/Aleutian">
+                                  {" "}
+                                  US/Aleutian{" "}
+                                </option>
                                 <option value="US/Arizona"> US/Arizona </option>
                                 <option value="US/Central"> US/Central </option>
-                                <option value="US/East-Indiana"> US/East-Indiana </option>
+                                <option value="US/East-Indiana">
+                                  {" "}
+                                  US/East-Indiana{" "}
+                                </option>
                                 <option value="US/Eastern"> US/Eastern </option>
                                 <option value="US/Hawaii"> US/Hawaii </option>
-                                <option value="US/Indiana-Starke"> US/Indiana-Starke </option>
-                                <option value="US/Michigan"> US/Michigan </option>
-                                <option value="US/Mountain"> US/Mountain </option>
-                                <option value="US/Pacific-New"> US/Pacific-New </option>
+                                <option value="US/Indiana-Starke">
+                                  {" "}
+                                  US/Indiana-Starke{" "}
+                                </option>
+                                <option value="US/Michigan">
+                                  {" "}
+                                  US/Michigan{" "}
+                                </option>
+                                <option value="US/Mountain">
+                                  {" "}
+                                  US/Mountain{" "}
+                                </option>
+                                <option value="US/Pacific-New">
+                                  {" "}
+                                  US/Pacific-New{" "}
+                                </option>
                                 <option value="US/Pacific"> US/Pacific </option>
                                 <option value="US/Samoa"> US/Samoa </option>
-                                <option value="Africa/Abidjan"> Africa/Abidjan </option>
-                                <option value="Africa/Accra"> Africa/Accra </option>
+                                <option value="Africa/Abidjan">
+                                  {" "}
+                                  Africa/Abidjan{" "}
+                                </option>
+                                <option value="Africa/Accra">
+                                  {" "}
+                                  Africa/Accra{" "}
+                                </option>
                               </Input>
                             </FormGroup>
                             <FormGroup className="row">
@@ -273,9 +343,19 @@ export class SendingCalender extends Component {
                               >
                                 Strategy
                               </label>
-                              <Input name='strategy' type='select' defaultValue='0'>
-                                <option value="0"> Space out over the day </option>
-                                <option value="1"> Send as fast as possible </option>
+                              <Input
+                                name="strategy"
+                                type="select"
+                                defaultValue="0"
+                              >
+                                <option value="0">
+                                  {" "}
+                                  Space out over the day{" "}
+                                </option>
+                                <option value="1">
+                                  {" "}
+                                  Send as fast as possible{" "}
+                                </option>
                               </Input>
                             </FormGroup>
                             <FormGroup className="row">
@@ -330,15 +410,32 @@ export class SendingCalender extends Component {
                         </Row>
                       </CardBody>
                       <CardFooter>
-                        <Button type='submit' color="success" onSubmit={this.handleSubmit}>Save<i className='fa fa-right-arrow '></i></Button>
-                        <Button type="button" onClick={(e) => { e.preventDefault(), this.setState({ hide: !this.state.hide, show: !this.state.show }) }}>CANCEL</Button>
+                        <Button
+                          type="submit"
+                          color="success"
+                          onSubmit={this.handleSubmit}
+                        >
+                          Save<i className="fa fa-right-arrow "></i>
+                        </Button>
+                        <Button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault(),
+                              this.setState({
+                                hide: !this.state.hide,
+                                show: !this.state.show,
+                              });
+                          }}
+                        >
+                          CANCEL
+                        </Button>
                       </CardFooter>
                     </Card>
                   </Form>
                 </Col>
                 <Col md="3" sm="0"></Col>
               </Row>
-            }
+            )}
           </Container>
           <Modal isOpen={this.state.openModel} size="lg">
             <Card className="mb-0 pb-2">
@@ -353,7 +450,12 @@ export class SendingCalender extends Component {
                       <Button color="success">Search</Button>
                     </InputGroupAddon>
                   </InputGroup>
-                  <p className="pt-4">Not sure exactly what you are looking for? <span className="text-info mb-0">Browse our library for help.</span></p>
+                  <p className="pt-4">
+                    Not sure exactly what you are looking for?{" "}
+                    <span className="text-info mb-0">
+                      Browse our library for help.
+                    </span>
+                  </p>
                 </div>
                 <div className="bg-info pt-4 pl-4 pr-4 pb-0">
                   <Row>
@@ -361,9 +463,7 @@ export class SendingCalender extends Component {
                       <Card>
                         <CardBody className="text-center">
                           <i className="fa fa-tv fa-5x"></i>
-                          <h3 className="text-info mb-0">
-                            Live Training
-                          </h3>
+                          <h3 className="text-info mb-0">Live Training</h3>
                         </CardBody>
                       </Card>
                     </Col>
@@ -371,9 +471,7 @@ export class SendingCalender extends Component {
                       <Card>
                         <CardBody className="text-center">
                           <i className="fa fa-play fa-5x"></i>
-                          <h3 className="text-info mb-0">
-                            Video Guides
-                          </h3>
+                          <h3 className="text-info mb-0">Video Guides</h3>
                         </CardBody>
                       </Card>
                     </Col>
@@ -381,9 +479,7 @@ export class SendingCalender extends Component {
                       <Card>
                         <CardBody className="text-center">
                           <i className="fa fa-file-word fa-5x"></i>
-                          <h3 className="text-info mb-0">
-                            Getting Started
-                          </h3>
+                          <h3 className="text-info mb-0">Getting Started</h3>
                         </CardBody>
                       </Card>
                     </Col>
@@ -391,25 +487,49 @@ export class SendingCalender extends Component {
                 </div>
               </CardBody>
               <CardFooter className="text-right">
-                <p>Still need help? <a hhef="#" className="pr-4">Ask an expert</a><Button onClick={(e) => {this.setState({openModel:false})}}>Cancle</Button></p>
+                <p>
+                  Still need help?{" "}
+                  <a hhef="#" className="pr-4">
+                    Ask an expert
+                  </a>
+                  <Button
+                    onClick={(e) => {
+                      this.setState({ openModel: false });
+                    }}
+                  >
+                    Cancle
+                  </Button>
+                </p>
               </CardFooter>
             </Card>
           </Modal>
         </PageContainer>
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
-  console.log('checking mail data', state.MailGetDataReducer.mailGetData && state.MailGetDataReducer.mailGetData.map((e, i) => { return e.email }))
+  console.log(
+    "checking mail data",
+    state.MailGetDataReducer.mailGetData &&
+      state.MailGetDataReducer.mailGetData.map((e, i) => {
+        return e.email;
+      })
+  );
   return {
     ScheduleData: state.ScheduleGetDataReducer.ScheduleGetData,
-    mailGetDat: state.MailGetDataReducer.mailGetData
-  }
-}
-const mapDispatchToProps = dispatch => ({
-  GetScheduleAction: ScheduleGetData => { dispatch(GetScheduleAction(ScheduleGetData)) },
-  ScheduleUpdateAction: updatedataschedule => { dispatch(ScheduleUpdateAction(updatedataschedule)) },
-  MailGetDataAction: () => { dispatch(MailGetDataAction()) }
-})
-export default connect(mapStateToProps, mapDispatchToProps)(SendingCalender)
+    mailGetDat: state.MailGetDataReducer.mailGetData,
+  };
+};
+const mapDispatchToProps = (dispatch) => ({
+  GetScheduleAction: (ScheduleGetData) => {
+    dispatch(GetScheduleAction(ScheduleGetData));
+  },
+  ScheduleUpdateAction: (updatedataschedule) => {
+    dispatch(ScheduleUpdateAction(updatedataschedule));
+  },
+  MailGetDataAction: () => {
+    dispatch(MailGetDataAction());
+  },
+});
+export default connect(mapStateToProps, mapDispatchToProps)(SendingCalendar);

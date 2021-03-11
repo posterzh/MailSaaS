@@ -32,7 +32,7 @@ import Profile from "./views/pages/User/Profile";
 
 // Mail Account
 import MailAccountList from "./views/pages/mailaccounts/MailAccountList";
-import SendingCalender from "./views/pages/mailaccounts/SedingCalender";
+import SendingCalendar from "./views/pages/mailaccounts/SedingCalendar";
 
 // New Campaign pages
 import CampaignCompose from "./views/pages/campaign/NewCampaign/CampaignCompose";
@@ -199,10 +199,10 @@ const routes = [
         layout: "/app/admin",
       },
       {
-        path: "/sending-calender",
-        name: "Sending Calender",
+        path: "/sending-calendar",
+        name: "Sending Calendar",
         miniName: " ",
-        component: SendingCalender,
+        component: SendingCalendar,
         layout: "/app/admin",
       },
     ],

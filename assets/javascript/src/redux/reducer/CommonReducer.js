@@ -8,8 +8,6 @@ const initialState = {
 };
 
 export const notificationReducer = (state = initialState, action) => {
-  console.log(action);
-
   switch (action.type) {
     case SHOW_NOTIFICATION:
       return {
