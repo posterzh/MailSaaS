@@ -206,7 +206,7 @@ export class DetailModal extends Component {
                         </FormGroup>
                       </Col>
                       <Col md={6}>
-                        {this.state.email == "SMTP" && (
+                        {this.state.email_provider == "SMTP" && (
                           <>
                             <FormGroup className="mb-2">
                               <label
