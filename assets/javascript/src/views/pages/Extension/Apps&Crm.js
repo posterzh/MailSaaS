@@ -15,6 +15,35 @@ export class AppsandCrm extends Component {
         />
 
         <PageContainer title="Apps & CRMs">
+          <span className="display-4">INSTALLED APPS</span>
+          <hr className="mt-2 mb-2" />
+          <Container fluid>
+            <Row className="mt-5 mb-5">
+              <Col lg={3} md={4} sm={12}>
+                <Card>
+                  <CardBody>
+                    <img
+                      alt="..."
+                      className="img-center img-fluid rounded-center-img"
+                      src={STATIC_FILES.slack}
+                    />
+                    <div className="pt-4 text-center">
+                      <h5 className="h3 title">
+                        <span className="d-block mb-1">SALESFORCE</span>
+                        <small className="h4 font-weight-light text-muted">
+                          Track activities and update lead statuses when actions
+                          are taken in MailSaaS.
+                        </small>
+                      </h5>
+                      <div className="mt-3">
+                        <Button>ADD</Button>
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
           <span className="display-4">NATIVE INTEGRATIONS</span>
           <hr className="mt-2 mb-2" />
           <Container fluid>
