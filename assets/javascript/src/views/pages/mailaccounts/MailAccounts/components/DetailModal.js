@@ -16,12 +16,8 @@ import {
   NavLink,
 } from "reactstrap";
 import classnames from "classnames";
-import { connect } from "react-redux";
-import { addMailAccount } from "../../../../redux/action/MailAccountsActions";
 
 const initialState = {
-  id: undefined,
-
   email_provider: "SMTP",
   email: "",
   password: "",
@@ -39,7 +35,7 @@ const initialState = {
   use_imap_ssl: false,
 };
 
-export class DetailModal extends Component {
+export default class DetailModal extends Component {
   constructor(props) {
     super(props);
     this.state = initialState;
@@ -208,7 +204,7 @@ export class DetailModal extends Component {
                         </FormGroup>
                       </Col>
                       <Col md={6}>
-                        {this.state.email == "SMTP" && (
+                        {this.state.email_provider == "SMTP" && (
                           <>
                             <FormGroup className="mb-2">
                               <label
@@ -416,7 +412,3 @@ export class DetailModal extends Component {
     );
   }
 }
-
-const mapStateToProps = (state) => ({});
-
-export default connect(mapStateToProps, { addMailAccount })(DetailModal);

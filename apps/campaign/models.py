@@ -31,7 +31,7 @@ class Campaign(models.Model):
     schedule_time = models.TimeField(blank=True, null=True)
     terms_and_laws = models.BooleanField(default=False)
     campaign_status = models.BooleanField(default=False)  # Start Campaign or Pause Campaign
-    label_name = models.ForeignKey(CampaignLabel, on_delete=models.SET_DEFAULT, default=0)
+    label_name = models.ForeignKey(CampaignLabel, on_delete=models.SET_DEFAULT, default=1)
 
     def __str__(self):
         return self.title

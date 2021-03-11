@@ -9,15 +9,15 @@ import {
   Button,
 } from "reactstrap";
 import { connect } from "react-redux";
-import PageHeader from "../../../components/Headers/PageHeader";
-import PageContainer from "../../../components/Containers/PageContainer";
-import Tables from "../../../components/Tables";
+import PageHeader from "../../../../components/Headers/PageHeader";
+import PageContainer from "../../../../components/Containers/PageContainer";
+import Tables from "../../../../components/Tables";
 import {
   getMailAccounts,
   addMailAccount,
   updateMailAccount,
   deleteMailAccount,
-} from "../../../redux/action/MailAccountsActions";
+} from "../../../../redux/action/MailAccountsActions";
 import DetailModal from "./components/DetailModal";
 import DeleteModal from "./components/DeleteModal";
 
@@ -57,6 +57,9 @@ class MailAccountList extends Component {
 
   showDetailModal = (item) => {
     // Save the item to edit
+    if (!item) {
+      item = {};
+    }
     this.setState({ editItem: item });
 
     // Show edit
