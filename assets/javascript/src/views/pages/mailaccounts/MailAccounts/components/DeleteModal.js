@@ -16,7 +16,7 @@ import {
   Col,
 } from "reactstrap";
 
-class MessageBox extends React.Component {
+export default class DeleteModal extends React.Component {
   render() {
     return (
       <>
@@ -58,5 +58,3 @@ class MessageBox extends React.Component {
     );
   }
 }
-
-export default MessageBox;
