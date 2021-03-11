@@ -73,7 +73,23 @@ class TheOptions extends Component {
     };
     this.props.CampaignOptionAction(optionData);
   };
+
+  onPrev = () => {
+    // some validation
+
+    // call parent method
+    this.props.onPrev();
+  };
+
+  onNext = () => {
+    // some validation
+
+    // call parent method
+    this.props.onNext();
+  };
+
   render() {
+    const { onPrev, onNext } = this.props;
     return (
       <>
         <Row>
@@ -114,6 +130,25 @@ class TheOptions extends Component {
                 <a href="www.google.com"> important notes.</a>
               </label>
             </div>
+          </Col>
+        </Row>
+
+        {/* Buttons */}
+        <Row className="my-3">
+          <Col className="d-flex align-items-center justify-content-center">
+            {onPrev && (
+              <Button color="primary" type="button" onClick={this.onPrev}>
+                <i className="fa fa-arrow-left" aria-hidden="true"></i>
+                PREV{" "}
+              </Button>
+            )}
+          </Col>
+          <Col className="d-flex align-items-center justify-content-center">
+            {onNext && (
+              <Button color="danger" type="button" onClick={this.onNext}>
+                NEXT <i className="fa fa-arrow-right" aria-hidden="true"></i>
+              </Button>
+            )}
           </Col>
         </Row>
       </>

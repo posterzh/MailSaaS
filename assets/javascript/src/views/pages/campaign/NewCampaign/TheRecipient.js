@@ -162,9 +162,24 @@ class TheRecipient extends Component {
     });
   };
 
+  onPrev = () => {
+    // some validation
+
+    // call parent method
+    this.props.onPrev();
+  };
+
+  onNext = () => {
+    // some validation
+    console.log("Prev : validation success");
+
+    // call parent method
+    this.props.onNext();
+  };
+
   render() {
+    const { onPrev, onNext, campaign } = this.props;
     const { show, csvMappingContent } = this.state;
-    const { campaign } = this.props;
 
     return (
       <>
@@ -284,6 +299,25 @@ class TheRecipient extends Component {
                         </Form> */}
               </CardBody>
             </Card>
+          </Col>
+        </Row>
+
+        {/* Buttons */}
+        <Row className="my-3">
+          <Col className="d-flex align-items-center justify-content-center">
+            {onPrev && (
+              <Button color="primary" type="button" onClick={this.onPrev}>
+                <i className="fa fa-arrow-left" aria-hidden="true"></i>
+                PREV{" "}
+              </Button>
+            )}
+          </Col>
+          <Col className="d-flex align-items-center justify-content-center">
+            {onNext && (
+              <Button color="danger" type="button" onClick={this.onNext}>
+                NEXT <i className="fa fa-arrow-right" aria-hidden="true"></i>
+              </Button>
+            )}
           </Col>
         </Row>
       </>

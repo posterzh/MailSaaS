@@ -61,11 +61,11 @@ class CampaignStart extends React.Component {
     this.setState({ activeTab: tabId });
   };
 
-  onClickNext = () => {
-    this.setState((state) => ({
-      activeTab: (state.activeTab + 1) % 6,
-    }));
-  };
+  // onClickNext = () => {
+  //   this.setState((state) => ({
+  //     activeTab: (state.activeTab + 1) % 6,
+  //   }));
+  // };
 
   validateCustomStylesForm = () => {
     if (this.state.title) {
@@ -113,8 +113,19 @@ class CampaignStart extends React.Component {
     return null;
   }
 
+  onPrev = () => {
+    this.setState((state) => ({
+      activeTab: (state.activeTab - 1) % 6,
+    }));
+  };
+
+  onNext = () => {
+    this.setState((state) => ({
+      activeTab: (state.activeTab + 1) % 6,
+    }));
+  };
+
   render() {
-    const { mailGetData } = this.props;
     const { activeTab } = this.state;
     return (
       <>
@@ -130,11 +141,7 @@ class CampaignStart extends React.Component {
               <Form className="needs-validation" noValidate>
                 <Row>
                   <Col>
-                    <CampaignTabs
-                      tabs={this.tabs}
-                      activeTab={activeTab}
-                      onChangeTab={this.onChangeTab}
-                    />
+                    <CampaignTabs tabs={this.tabs} activeTab={activeTab} />
                   </Col>
                 </Row>
 
@@ -142,37 +149,27 @@ class CampaignStart extends React.Component {
                   <Col>
                     <TabContent activeTab={activeTab}>
                       <TabPane tabId={0}>
-                        <TheStart hasFocus={activeTab == 0} />
+                        <TheStart onNext={this.onNext} />
                       </TabPane>
                       <TabPane tabId={1}>
-                        <TheRecipient hasFocus={activeTab == 1} />
+                        <TheRecipient
+                          onPrev={this.onPrev}
+                          onNext={this.onNext}
+                        />
                       </TabPane>
                       <TabPane tabId={2}>
-                        <TheCompose hasFocus={activeTab == 2} />
+                        <TheCompose onPrev={this.onPrev} onNext={this.onNext} />
                       </TabPane>
                       <TabPane tabId={3}>
-                        <ThePreview hasFocus={activeTab == 3} />
+                        <ThePreview onPrev={this.onPrev} onNext={this.onNext} />
                       </TabPane>
                       <TabPane tabId={4}>
-                        <TheOptions hasFocus={activeTab == 4} />
+                        <TheOptions onPrev={this.onPrev} onNext={this.onNext} />
                       </TabPane>
                       <TabPane tabId={5}>
-                        <TheSend hasFocus={activeTab == 5} />
+                        <TheSend onPrev={this.onPrev} />
                       </TabPane>
                     </TabContent>
-                  </Col>
-                </Row>
-
-                <Row className="my-3">
-                  <Col className="d-flex align-items-center justify-content-center">
-                    <Button
-                      color="danger"
-                      type="button"
-                      onClick={this.onClickNext}
-                    >
-                      NEXT{" "}
-                      <i className="fa fa-arrow-right" aria-hidden="true"></i>
-                    </Button>
                   </Col>
                 </Row>
               </Form>

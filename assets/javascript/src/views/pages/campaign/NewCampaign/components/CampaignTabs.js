@@ -3,7 +3,7 @@ import { Button, ButtonGroup } from "reactstrap";
 import classnames from "classnames";
 
 export default function CampaignTabs(props) {
-  const { tabs, activeTab, onChangeTab } = props;
+  const { tabs, activeTab } = props;
 
   return (
     <>
@@ -17,9 +17,7 @@ export default function CampaignTabs(props) {
                 className={classnames({
                   active: activeTab == index,
                 })}
-                onClick={() => {
-                  onChangeTab(index);
-                }}
+                onClick={() => {}}
                 key={index}
               >
                 {item}
