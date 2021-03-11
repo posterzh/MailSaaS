@@ -20,8 +20,6 @@ import { connect } from "react-redux";
 import { addMailAccount } from "../../../../redux/action/MailAccountsActions";
 
 const initialState = {
-  id: undefined,
-
   email_provider: "SMTP",
   email: "",
   password: "",
@@ -208,7 +206,7 @@ export class DetailModal extends Component {
                         </FormGroup>
                       </Col>
                       <Col md={6}>
-                        {this.state.email == "SMTP" && (
+                        {this.state.email_provider == "SMTP" && (
                           <>
                             <FormGroup className="mb-2">
                               <label

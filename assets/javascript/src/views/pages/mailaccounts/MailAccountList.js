@@ -57,6 +57,9 @@ class MailAccountList extends Component {
 
   showDetailModal = (item) => {
     // Save the item to edit
+    if (!item) {
+      item = {};
+    }
     this.setState({ editItem: item });
 
     // Show edit

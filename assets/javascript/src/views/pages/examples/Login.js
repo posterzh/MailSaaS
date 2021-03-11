@@ -89,7 +89,7 @@ class Login extends React.Component {
 
         this.props.LoginFailure(
           err.response.data.non_field_errors &&
-            err.response.data.non_field_errors[0]
+          err.response.data.non_field_errors[0]
         );
       });
   };
@@ -107,7 +107,7 @@ class Login extends React.Component {
               <Card className="bg-secondary border-0 mb-0">
                 <CardHeader className="bg-transparent pb-5">
                   <div className="text-muted text-center mt-2 mb-3">
-                    <small style={{fontSize: 18}}>Sign in with</small>
+                    <small style={{ fontSize: 18 }}>Sign in with</small>
                   </div>
                   <div className="btn-wrapper text-center">
                     <Button
@@ -136,7 +136,7 @@ class Login extends React.Component {
                 </CardHeader>
                 <CardBody className="px-lg-5 py-lg-5">
                   <div className="text-center text-muted mb-4">
-                    <small style={{fontSize: 18}}>Or sign in with credentials</small>
+                    <small style={{ fontSize: 18 }}>Or sign in with credentials</small>
                   </div>
                   <Form onSubmit={this.handleSubmit} role="form">
                     <FormGroup

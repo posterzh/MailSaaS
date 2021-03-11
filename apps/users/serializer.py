@@ -37,7 +37,6 @@ class RegisterSerializer(serializers.Serializer):
         #         _("The two password fields didn't match."))
         return data
 
-
     def get_cleaned_data(self):
         return {
             'email': self.validated_data.get('email', ''),
@@ -45,15 +44,15 @@ class RegisterSerializer(serializers.Serializer):
             'first_name': self.validated_data.get('first_name', ''),
             'last_name': self.validated_data.get('last_name', ''),
             'full_name': self.validated_data.get('full_name', ''),
-            #'company_name': self.validated_data.get('company_name',''),
+            # 'company_name': self.validated_data.get('company_name',''),
             'mailsaas_type': self.validated_data.get('mailsaas_type', ''),
             'password1': self.validated_data.get('password1', ''),
         }
-    
+
     def custom_signup(self, request, user):
         pass
 
-    def save(self, request,*args,**kwargs):
+    def save(self, request, *args, **kwargs):
         adapter = get_adapter()
         user = adapter.new_user(request)
         self.cleaned_data = self.get_cleaned_data()
@@ -64,36 +63,45 @@ class RegisterSerializer(serializers.Serializer):
         return user
 
 
+class UserDetailsSerializer(serializers.ModelSerializer):
+    """
+    User model w/o password
+    """
+
+    class Meta:
+        model = CustomUser
+        fields = ('pk', 'username', 'email', 'first_name', 'last_name', 'company_name')
+        read_only_fields = ('email',)
+
+
 class TokenSerializer(serializers.Serializer):
-    
     """ Token Serializer """
 
     token = serializers.CharField(max_length=255)
 
 
 class UserSettingSerilizer(serializers.ModelSerializer):
-
     class Meta:
         model = CustomUser
-        fields = ('full_name','email')
-    
+        fields = ('full_name', 'email')
+
+
 class ChangePasswordSerializer(serializers.ModelSerializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
     new_confirm_password = serializers.CharField(required=True)
+
     class Meta:
         model = CustomUser
-        fields = ['old_password','new_password','new_confirm_password']
-        
+        fields = ['old_password', 'new_password', 'new_confirm_password']
+
 
 class ResetPasswordSerializer(serializers.Serializer):
     new_password = serializers.CharField(required=True)
     confirm_new_password = serializers.CharField(required=True)
-  
 
 
 class GetEmailSerializer(serializers.Serializer):
-
     """ Serializer for Get Email """
 
     email = serializers.CharField(required=True)

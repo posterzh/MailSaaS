@@ -56,3 +56,51 @@ class EmailAccountView(generics.UpdateAPIView):
             raise HttpResponseBadRequest(str(ex))
         queryset.delete()
         return Response({"message": "Connection Delete successfully", "success": True})
+
+
+class SendingCalendarListView(generics.ListCreateAPIView):
+    # serializer_class = EmailAccountSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = EmailAccount.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        request.data["user"] = request.user.id
+        serializer = EmailAccountSerializer(data=request.data)
+        if not serializer.is_valid():
+            return HttpResponseBadRequest(serializer.default_error_messages)
+
+        saved = serializer.save()
+        return Response(serializer.data)
+
+    def get(self, request, *args, **kwargs):
+        try:
+            queryset = EmailAccount.objects.filter(user=request.user.id)
+            serializer = EmailAccountSerializer(queryset, many=True)
+        except Exception as ex:
+            raise HttpResponseBadRequest(str(ex))
+
+        return Response(serializer.data)
+
+
+class SendingCalendarView(generics.UpdateAPIView):
+    serializer_class = EmailAccountSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = EmailAccount.objects.all()
+
+    def put(self, request, pk, format=None):
+        queryset = EmailAccount.objects.get(id=pk)
+        request.data["user"] = request.user.id
+        serializer = EmailAccountSerializer(queryset, data=request.data)
+        if not serializer.is_valid():
+            raise HttpResponseBadRequest(serializer.default_error_messages)
+
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, pk, format=None):
+        try:
+            queryset = EmailAccount.objects.get(id=pk)
+        except Exception as ex:
+            raise HttpResponseBadRequest(str(ex))
+        queryset.delete()
+        return Response({"message": "Connection Delete successfully", "success": True})

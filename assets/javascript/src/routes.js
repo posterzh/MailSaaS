@@ -32,15 +32,10 @@ import Profile from "./views/pages/User/Profile";
 
 // Mail Account
 import MailAccountList from "./views/pages/mailaccounts/MailAccountList";
-import SendingCalender from "./views/pages/mailaccounts/SedingCalender";
+import SendingCalendar from "./views/pages/mailaccounts/SedingCalendar";
 
 // New Campaign pages
-import CampaignCompose from "./views/pages/campaign/NewCampaign/CampaignCompose";
-import CampaignPreview from "./views/pages/campaign/NewCampaign/CampaignPreview";
-import CampaignRecipient from "./views/pages/campaign/NewCampaign/CampaignRecipient";
-import CampaignSend from "./views/pages/campaign/NewCampaign/CampaignSend";
-import CampaignStart from "./views/pages/campaign/NewCampaign/CampaignStart";
-import CampaignOptions from "./views/pages/campaign/NewCampaign/CampaignOptions";
+import NewCampaign from "./views/pages/campaign/NewCampaign";
 
 // Campaign List page
 import CampaignList from "./views/pages/campaign/CampaignList";
@@ -73,10 +68,10 @@ const routes = [
     state: "campaign",
     views: [
       {
-        path: "/CampaignStart",
+        path: "/NewCampaign",
         name: "New Campaign",
         miniName: " ",
-        component: CampaignStart,
+        component: NewCampaign,
         layout: "/app/admin",
       },
       {
@@ -99,37 +94,6 @@ const routes = [
         miniName: " ",
         component: LeadCatcher,
         layout: "/app/admin",
-      },
-      // New Campaign Redirects
-      {
-        path: "/CampaignRecipient",
-        component: CampaignRecipient,
-        layout: "/app/admin",
-        redirect: true,
-      },
-      {
-        path: "/CampaignCompose",
-        component: CampaignCompose,
-        layout: "/app/admin",
-        redirect: true,
-      },
-      {
-        path: "/CampaignPreview",
-        component: CampaignPreview,
-        layout: "/app/admin",
-        redirect: true,
-      },
-      {
-        path: "/CampaignOptions",
-        component: CampaignOptions,
-        layout: "/app/admin",
-        redirect: true,
-      },
-      {
-        path: "/CampaignSend",
-        component: CampaignSend,
-        layout: "/app/admin",
-        redirect: true,
       },
 
       // Campaign Detail Redirects
@@ -199,10 +163,10 @@ const routes = [
         layout: "/app/admin",
       },
       {
-        path: "/sending-calender",
-        name: "Sending Calender",
+        path: "/sending-calendar",
+        name: "Sending Calendar",
         miniName: " ",
-        component: SendingCalender,
+        component: SendingCalendar,
         layout: "/app/admin",
       },
     ],

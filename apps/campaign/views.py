@@ -43,9 +43,6 @@ class CreateCampaignStartView(APIView):
             postdata["assigned"] = request.user.id
             # postdata._mutable = False
             serializer = CampaignSerializer(data = postdata)
-            # postdata["campaign_label"] = 1
-            # postdata["from_address"] = 1
-
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -65,53 +62,74 @@ class CreateCampaignRecipientsView(APIView):
         postdata._mutable = True
         # postdata["option"] = option_list
         # postdata["email"] = email_list
-        postdata["option"] = ast.literal_eval(postdata["option"])
-        postdata["email"] = ast.literal_eval(postdata["email"])
+        # postdata["option"] = ast.literal_eval(postdata["option"])
+        # postdata["email"] = ast.literal_eval(postdata["email"])
         postdata._mutable = False
 
         resp = []
-        # if 'campaign.add_campaign' in request.user.get_group_permissions():
-        if 1 in postdata["option"]:
-            
-            try:
-                camp = Campaign.objects.get(id=postdata['campaign'])
-            except:
-                return Response({"message":"No campiagn availabe for this id", "success":"false"})
+
+        try:
+            camp = Campaign.objects.get(id=postdata['campaign'])
+
+        except:
+            return Response({"message": "No campiagn availabe for this id", "success": "false"})
+
+        try:
             camp.csvfile_op1 = postdata['csvfile_op1']
             camp.save()
-            with open('media/'+str(camp.csvfile_op1)) as csv_file:
-                csv_reader = csv.reader(csv_file, delimiter=',')
-                line_count = 0
-                
-                for row in csv_reader:
-                    if line_count == 0:
-                        line_count += 1
-                        # return Response({"message":"No Rows in file", "success":False})
-                    else:
-                        data = {'email':row[0], 'full_name':row[1], 'company_name':row[2], 'role':row[3], 'campaign':postdata['campaign']}
-                        serializer = CampaignEmailSerializer(data = data)
-                        if serializer.is_valid():
-                            line_count += 1
-                            serializer.save()
-                            resp.append(serializer.data)
-                resp.append({"success":True})
-                if 2 not in postdata["option"]:
-                    return Response({"resp":resp, "success":True})
-        if 2 in postdata["option"]:
-            
-            postdata._mutable = True
-            
-            print(postdata["email"])
-            postdata._mutable = False
-            for email in postdata["email"]:
-                print("email = ",email)
-                camp = Campaign.objects.get(id=postdata['campaign'])
-                CampaignEmail = CampaignRecipient(campaign=camp, email=email)
-                CampaignEmail.save()
-                campData = CampaignEmailSerializer(CampaignEmail)
-                resp.append(campData.data)
-            return Response({"resp":resp,"message":"Saved Successfully","success":True})
-        return Response({"message":"error","success":False})
+            return Response({"resp": resp, "success": True})
+        except:
+            return Response({"message": "error", "success": False})
+
+        # if 'campaign.add_campaign' in request.user.get_group_permissions():
+        # if 1 in postdata["option"]:
+        #
+        #     try:
+        #         camp = Campaign.objects.get(id=postdata['campaign'])
+        #
+        #     except:
+        #         return Response({"message":"No campiagn availabe for this id", "success":"false"})
+        #
+        #     try:
+        #         camp.csvfile = postdata['csvfile']
+        #         camp.save()
+        #         resp.append({"success": True})
+        #     except:
+        #         return Response({"message": "error", "success": False})
+        #
+        #     with open('media/'+str(camp.csvfile_op1)) as csv_file:
+        #         csv_reader = csv.reader(csv_file, delimiter=',')
+        #         line_count = 0
+        #
+        #         for row in csv_reader:
+        #             if line_count == 0:
+        #                 line_count += 1
+        #                 # return Response({"message":"No Rows in file", "success":False})
+        #             else:
+        #                 data = {'email':row[0], 'full_name':row[1], 'company_name':row[2], 'role':row[3], 'campaign':postdata['campaign']}
+        #                 serializer = CampaignEmailSerializer(data = data)
+        #                 if serializer.is_valid():
+        #                     line_count += 1
+        #                     serializer.save()
+        #                     resp.append(serializer.data)
+        #         resp.append({"success":True})
+        #         if 2 not in postdata["option"]:
+        #             return Response({"resp":resp, "success":True})
+        # if 2 in postdata["option"]:
+        #
+        #     postdata._mutable = True
+        #
+        #     print(postdata["email"])
+        #     postdata._mutable = False
+        #     for email in postdata["email"]:
+        #         print("email = ",email)
+        #         camp = Campaign.objects.get(id=postdata['campaign'])
+        #         CampaignEmail = CampaignRecipient(campaign=camp, email=email)
+        #         CampaignEmail.save()
+        #         campData = CampaignEmailSerializer(CampaignEmail)
+        #         resp.append(campData.data)
+        #     return Response({"resp":resp,"message":"Saved Successfully","success":True})
+        # return Response({"message":"error","success":False})
 
 
 class CreateCampaignMessageView(APIView):

@@ -26,8 +26,6 @@ function PageContainer(props) {
   const notificationRef = useRef(null);
 
   useEffect(() => {
-    console.log(notification);
-
     if (notification.showNotification) {
       let options = {
         place: "tr",

@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 import datetime 
 # from decouple import config
-from decouple import config
+# from decouple import config
 from pathlib import Path  # Python 3.6+ only
 env_path = Path('.') / '.env'
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -332,7 +332,9 @@ cache_backend = 'django-cache'
 # }
 
 
-
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'apps.users.serializer.UserDetailsSerializer',
+}
 
 
 REST_AUTH_REGISTER_SERIALIZERS = {

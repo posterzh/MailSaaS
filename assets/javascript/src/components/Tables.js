@@ -121,6 +121,7 @@ function Tables({
   totalPages = null,
   filters = [],
   searchKeys = [],
+  onDetail = null,
   onEdit = null,
   onDelete = null,
 }) {
@@ -465,40 +466,72 @@ function Tables({
                           )}
 
                           <td className="table-actions">
-                            <a
-                              className="table-action"
-                              href="#pablo"
-                              id={`edit${index}`}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                onEdit && onEdit(data);
-                              }}
-                            >
-                              <i className="fas fa-edit" />
-                            </a>
-                            <UncontrolledTooltip
-                              delay={0}
-                              target={`edit${index}`}
-                            >
-                              Edit
-                            </UncontrolledTooltip>
-                            <a
-                              className="table-action table-action-delete"
-                              href="#pablo"
-                              id={`delete${index}`}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                onDelete && onDelete(data);
-                              }}
-                            >
-                              <i className="fas fa-trash" />
-                            </a>
-                            <UncontrolledTooltip
-                              delay={0}
-                              target={`delete${index}`}
-                            >
-                              Delete
-                            </UncontrolledTooltip>
+                            {
+                              onEdit && 
+                              <>
+                                <a
+                                  className="table-action"
+                                  href="#pablo"
+                                  id={`edit${index}`}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    onEdit(data);
+                                  }}
+                                >
+                                  <i className="fas fa-edit" />
+                                </a>
+                                <UncontrolledTooltip
+                                  delay={0}
+                                  target={`edit${index}`}
+                                >
+                                  Edit
+                                </UncontrolledTooltip>
+                              </>
+                            }
+                            {
+                              onDelete &&
+                              <>
+                                <a
+                                  className="table-action table-action-delete"
+                                  href="#pablo"
+                                  id={`delete${index}`}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    onDelete(data);
+                                  }}
+                                >
+                                  <i className="fas fa-trash" />
+                                </a>
+                                <UncontrolledTooltip
+                                  delay={0}
+                                  target={`delete${index}`}
+                                >
+                                  Delete
+                                </UncontrolledTooltip>
+                              </>
+                            }
+                            {
+                              onDetail &&
+                              <>
+                                <a
+                                  className="table-action table-action-detail"
+                                  href="#pablo"
+                                  id={`detail${index}`}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    onDetail(data);
+                                  }}
+                                >
+                                  <i className="fas fa-info-circle" />
+                                </a>
+                                <UncontrolledTooltip
+                                  delay={0}
+                                  target={`detail${index}`}
+                                >
+                                  Detail
+                                </UncontrolledTooltip>
+                              </>
+                            }
                           </td>
                         </tr>
                       );
