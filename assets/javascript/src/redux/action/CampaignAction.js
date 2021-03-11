@@ -218,21 +218,6 @@ export const StartCampaignAction = (data) => {
   };
 };
 
-export const CampaignOptionAction = (optionData) => {
-  return function (dispatch) {
-    const token = localStorage.getItem("access_token");
-    Api.OptionApi(optionData, token)
-      .then((result) => {
-        setTimeout(() => {
-          dispatch(OptionSuccess(result.data));
-          history.push("/app/admin/CampaignSend", { id: result.data.id });
-        }, 1000);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-};
 export const RecipientAction = (recipientData) => {
   return function (dispatch) {
     const token = localStorage.getItem("access_token");
@@ -250,6 +235,42 @@ export const RecipientAction = (recipientData) => {
       });
   };
 };
+
+export const CampaignComposeAction = (data) => {
+  return function (dispatch) {
+    const token = localStorage.getItem("access_token");
+    // dispatch(requestForCampaignCompose())
+    Api.CampaignComposeApi(token, data)
+      .then((result) => {
+        setTimeout(() => {
+          dispatch(requestForCampaignCompose(result.data));
+          history.push("/app/admin/CampaignPreview", {
+            id: data.normal.campaign,
+          });
+        }, 1000);
+      })
+      .catch((err) => {
+        console.log(err, "error-");
+      });
+  };
+};
+
+export const CampaignOptionAction = (optionData) => {
+  return function (dispatch) {
+    const token = localStorage.getItem("access_token");
+    Api.OptionApi(optionData, token)
+      .then((result) => {
+        setTimeout(() => {
+          dispatch(OptionSuccess(result.data));
+          history.push("/app/admin/CampaignSend", { id: result.data.id });
+        }, 1000);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
 // CAMPAIGN_CREATE_PREVIEW MIDDLEWARE
 export const PreviewCampaignAction = (id) => {
   return function (dispatch) {
@@ -323,24 +344,7 @@ export const PreviewUpdateCampaignAction = (id) => {
       });
   };
 };
-export const CampaignComposeAction = (data) => {
-  return function (dispatch) {
-    const token = localStorage.getItem("access_token");
-    // dispatch(requestForCampaignCompose())
-    Api.CampaignComposeApi(token, data)
-      .then((result) => {
-        setTimeout(() => {
-          dispatch(requestForCampaignCompose(result.data));
-          history.push("/app/admin/CampaignPreview", {
-            id: data.normal.campaign,
-          });
-        }, 1000);
-      })
-      .catch((err) => {
-        console.log(err, "error-");
-      });
-  };
-};
+
 
 // CAMPAIGN PEOPLE DATA
 export const CampaignPeopleAction = (id) => {
