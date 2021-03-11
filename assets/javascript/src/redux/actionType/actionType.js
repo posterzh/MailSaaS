@@ -66,6 +66,12 @@ export const SUCCESS_MAIL_ACCOUNT_DELETE = "SUCCESS_MAIL_ACCOUNT_DELETE";
 // update Mail Account
 export const SUCCESS_MAIL_ACCOUNT_UPDATE = "SUCCESS_MAIL_ACCOUNT_UPDATE";
 export const FAILURE_MAIL_ACCOUNT_UPDATE = "FAILURE_MAIL_ACCOUNT_UPDATE";
+
+// Filter Recipients
+export const FILTER_RECIPIENTS = "FILTER_RECIPIENTS"
+
+// Karl - Will remove later
+// ****************************************************************
 // GET PROSPECT
 export const FETCH_PROSPECTS = "FETCH_PROSPECTS";
 export const SUCCESS_FETCH_PROSPECTS = "SUCCESS_FETCH_PROSPECTS";
@@ -77,6 +83,7 @@ export const SUCCESS_FETCH_ONCLICK_PROSPECTS =
 
 // DELETE PROSPECTS
 export const DELETE_PROSPECT = "DELETE_PROSPECT";
+// *****************************************************************
 
 //CAMPAIGN_CREATE_PREVIEW GET DATA
 export const REQUEST_FOR_CAMPAIGN_CREATE_PREVIEW =

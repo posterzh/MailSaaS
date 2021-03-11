@@ -50,7 +50,7 @@ export class ImportContactsModal extends Component {
                 <Row>
                   <Col>
                     <Row className="mt-3">
-                      <Col md={6}>
+                      <Col>
                         <FormGroup className="mb-2">
                           <label className="form-control-label" htmlFor="email">
                             Option 1

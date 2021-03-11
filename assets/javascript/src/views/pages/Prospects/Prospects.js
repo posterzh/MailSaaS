@@ -26,6 +26,44 @@ import PageContainer from "../../../components/Containers/PageContainer";
 import Tables from "../../../components/Tables";
 import ImportContactsModal from "./components/ImportContactsModal"
 import DetailModal from "./components/DetailModal"
+import {
+	filterRecipients
+} from "../../../redux/action/ProspectsAction";
+
+const tableTitle = [
+	{
+		key: 'email',
+		value: 'Email',
+	},
+	{
+		key: 'name',
+		value: 'Name',
+	},
+	{
+		key: 'created',
+		value: 'Created',
+	},
+	{
+		key: 'status',
+		value: 'Status',
+	},
+	{
+		key: 'campaign_count',
+		value: 'Campaign',
+	},
+	{
+		key: 'sent',
+		value: 'Sent',
+	},
+	{
+		key: 'engaged',
+		value: 'Engaged',
+	},
+	{
+		key: 'tasks',
+		value: 'Tasks',
+	},
+];
 
 class Prospects extends Component {
 	constructor(props) {
@@ -38,7 +76,7 @@ class Prospects extends Component {
 	}
 
 	componentDidMount() {
-
+		this.props.filterRecipients();
 	}
 
 	paginationCallback = (value) => {
@@ -70,75 +108,9 @@ class Prospects extends Component {
 	}
 
 	render() {
-		const tableTitle = [
-			{
-				key: 'email',
-				value: 'Email',
-			},
-			{
-				key: 'name',
-				value: 'Name',
-			},
-			{
-				key: 'created',
-				value: 'Created',
-			},
-			{
-				key: 'status',
-				value: 'Status',
-			},
-			{
-				key: 'campaign',
-				value: 'Campaign',
-			},
-			{
-				key: 'sent',
-				value: 'Sent',
-			},
-			{
-				key: 'engaged',
-				value: 'Engaged',
-			},
-			{
-				key: 'tasks',
-				value: 'Tasks',
-			},
-		];
-		const tableData = [
-			{
-				email: 'ajju@gmail.com',
-				name: 'Azazul',
-				created: '10-10-2020',
-				status: 'Passed',
-				campaign: '1458',
-				sent: '10',
-				engaged: '9',
-				tasks: '8'
-			},
-			{
-				email: 'janak@gmail.com',
-				name: 'Azazul',
-				created: '10-10-2020',
-				status: 'Passed',
-				campaign: '1458',
-				sent: '10',
-				engaged: '2',
-				tasks: '8'
-			},
-			{
-				email: 'ajju@gmail.com',
-				name: 'janak',
-				created: '10-10-2020',
-				status: 'Passed',
-				campaign: '1458',
-				sent: '10',
-				engaged: '2',
-				tasks: '8'
-			}
-		];
 		const filters = [
 			{
-				key: 'email',
+				key: 'Teammate',
 				options: ['janak@gmail.com', 'ajajul@gmail.com', 'mikin@gmail.com', 'ajju@gmail.com']
 			},
 			{
@@ -148,6 +120,7 @@ class Prospects extends Component {
 		];
 
 		const { importContactsModal, detailModal } = this.state;
+		const { counts, recipients } = this.props;
 
 		return (
 			<div className="prospect-main-container">
@@ -156,32 +129,14 @@ class Prospects extends Component {
 					parent="Prospects"
 					showStatus={false}
 				/>
-				<PageContainer title={false} showHelper={false}>
-					<Row>
-						<Col sm="12" md="3">
-							<Form>
-								<FormGroup>
-									<label
-										className="form-control-label"
-										htmlFor="exampleFormControlSelect1"
-									>
-										Teammate
-                                    </label>
-									<Input id="exampleFormControlSelect1" className="form-control-sm" type="select" defaultValue="any">
-										<option value="any">Any</option>
-									</Input>
-								</FormGroup>
-							</Form>
-						</Col>
-					</Row>
-					
+				<PageContainer title={"Prospect"} showHelper={false}>
 					<Row>
 						<Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'total' }) }}>
 							<Card className={this.state.selected === 'total' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>120</div>
+											<div>{counts && counts.total_count}</div>
 											<div>Total</div>
 										</h3>
 									</CardTitle>
@@ -193,7 +148,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>94</div>
+											<div>{counts && counts.in_campaign_count}</div>
 											<div>In Campaign</div>
 										</h3>
 									</CardTitle>
@@ -205,7 +160,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>9</div>
+											<div>{counts && counts.engaged}</div>
 											<div>Engaged</div>
 										</h3>
 									</CardTitle>
@@ -217,7 +172,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>13</div>
+											<div>{counts && counts.leads_count}</div>
 											<div>Leads</div>
 										</h3>
 									</CardTitle>
@@ -229,7 +184,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>2</div>
+											<div>{counts && counts.bounced}</div>
 											<div>Bounces</div>
 										</h3>
 									</CardTitle>
@@ -241,7 +196,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>18</div>
+											<div>{counts && counts.unsubscribe}</div>
 											<div>Unsubscribes</div>
 										</h3>
 									</CardTitle>
@@ -269,7 +224,7 @@ class Prospects extends Component {
 					<Row>
 						<Tables
 							titles={tableTitle} // required
-							tablePropsData={tableData}   // required
+							tablePropsData={recipients}   // required
 							showSelect={true}    // optional
 							showPagination={true}   // optional
 							selectedCallback={this.selectedCallback}      // get call back for select object.
@@ -281,24 +236,31 @@ class Prospects extends Component {
 					</Row>
 
 					<ImportContactsModal
-            isOpen={importContactsModal}
-            // data={this.state.editItem}
-            close={this.closeImportContactsModal}
-            // create={this.createMailAccount}
-            // update={this.updateMailAccount}
-          />
+						isOpen={importContactsModal}
+						// data={this.state.editItem}
+						close={this.closeImportContactsModal}
+						// create={this.createMailAccount}
+						// update={this.updateMailAccount}
+					/>
 
 					<DetailModal
-            isOpen={detailModal}
-            // data={this.state.editItem}
-            close={this.closeDetailModal}
-            // create={this.createMailAccount}
-            // update={this.updateMailAccount}
-          />
+						isOpen={detailModal}
+						// data={this.state.editItem}
+						close={this.closeDetailModal}
+						// create={this.createMailAccount}
+						// update={this.updateMailAccount}
+					/>
 				</PageContainer>
 			</div>
 		)
 	}
 }
 
-export default Prospects
+const mapStateToProps = (state) => ({
+	counts: state.prospects.counts,
+	recipients: state.prospects.recipients,
+});
+
+export default connect(mapStateToProps, {
+	filterRecipients
+})(Prospects);
