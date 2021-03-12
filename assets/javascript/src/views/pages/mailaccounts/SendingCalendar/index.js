@@ -17,24 +17,34 @@ import {
 import { connect } from "react-redux";
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
-import CalendarCard from "./components/CalendarCard";
-
-const calendars = [1, 2, 3, 4];
-
+import ShowCalendar from "./components/ShowCalendar";
+import EditCalendar from "./components/EditCalendar";
 export class SendingCalendar extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isEditing: false,
+    };
   }
-  componentDidMount() {}
 
-  handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
+  startEditing = () => {
+    this.setState({ isEditing: true });
+  };
+
+  saveEditing = (calendar) => {
+    // save
+
+    // Close editing
+    this.setState({ isEditing: false });
+  };
+
+  cancelEditing = () => {
+    this.setState({ isEditing: false });
   };
 
   render() {
+    const { isEditing } = this.state;
+
     return (
       <>
         <PageHeader
@@ -44,13 +54,15 @@ export class SendingCalendar extends Component {
         />
         <PageContainer title="Sending Calendar">
           <Row>
-            {calendars.map((item, index) => {
-              return (
-                <Col sm={4} md={4} lg={4}>
-                  <CalendarCard key={index} />
-                </Col>
-              );
-            })}
+            <Col md={5} className="mx-auto">
+              {!isEditing && <ShowCalendar startEditing={this.startEditing} />}
+              {isEditing && (
+                <EditCalendar
+                  saveEditing={this.saveEditing}
+                  cancelEditing={this.cancelEditing}
+                />
+              )}
+            </Col>
           </Row>
         </PageContainer>
       </>

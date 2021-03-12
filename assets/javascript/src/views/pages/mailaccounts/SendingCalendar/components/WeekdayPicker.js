@@ -2,23 +2,24 @@ import React, { useState } from "react";
 import { Button, ButtonGroup } from "reactstrap";
 import classnames from "classnames";
 
-export default function WeekdayPicker({ checkState, setCheckState, readonly }) {
+export default function WeekdayPicker({
+  check_state,
+  setcheck_state,
+  readonly,
+}) {
   const WEEKDAYS_SHORT = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
-  // const [readonly, setReadonly] = useState(false);
-  // const [checkState, setCheckState] = useState(5);
-
   const isChecked = (index) => {
-    return checkState & (1 << index);
+    return check_state & (1 << index);
   };
 
   const toggleChecked = (index) => {
-    setCheckState(checkState ^ (1 << index));
+    setcheck_state(check_state ^ (1 << index));
   };
 
   return (
     <>
-      <ButtonGroup>
+      <ButtonGroup className="mb-3 w-100">
         {WEEKDAYS_SHORT.map((item, index) => (
           <Button
             aria-pressed={isChecked(index)}
@@ -29,11 +30,12 @@ export default function WeekdayPicker({ checkState, setCheckState, readonly }) {
               disabled: !isChecked(index) && readonly,
             })}
             style={{
-              padding: readonly ? "6px 8px" : "10px 12px",
+              padding: "8px 0px",
             }}
             onClick={() => {
               if (!readonly) toggleChecked(index);
             }}
+            key={index}
           >
             {item}
           </Button>
