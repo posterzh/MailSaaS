@@ -14,9 +14,11 @@ import {
 import { connect } from "react-redux";
 import { CampaignComposeAction } from "../../../../redux/action/CampaignAction";
 import ReactQuill from "react-quill";
-
 import FollowUpPanel from "./components/FollowUpPanel";
 import DripPanel from "./components/DripPanel";
+import {
+  campaignCompose,
+} from "../../../../redux/action/CampaignActions";
 
 class TheCompose extends Component {
   constructor(props) {
@@ -90,159 +92,156 @@ class TheCompose extends Component {
 
     console.log(data);
 
-    this.props.CampaignComposeAction(data);
+    this.props.campaignCompose(data);
+    // call parent method
+    this.props.onNext();
   };
 
   onPrev = () => {
-    // some validation
-
     // call parent method
     this.props.onPrev();
   };
 
-  onNext = () => {
-    // some validation
-    console.log("Compose : validation success");
-
-    // call parent method
-    this.props.onNext();
-  };
+  // onNext = () => {
+  //   // call parent method
+  //   this.props.onNext();
+  // };
 
   render() {
     const { onPrev, onNext } = this.props;
     return (
       <>
-        <Row>
-          <Col>
-            <h2 className="text-center my-4">
-              Compose the emails in this campaign
-            </h2>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Input
-              type="text"
-              className="in"
-              name="subject"
-              value={this.state.subject}
-              onChange={(e) => {
-                this.setState({ subject: e.target.value });
-              }}
-              placeholder="Subject"
-              required
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <ReactQuill
-              onChange={(value) => {
-                this.setState({ email_body: value });
-              }}
-              theme="snow"
-              className="Quill_div"
-              modules={{
-                toolbar: [
-                  ["bold", "italic"],
-                  ["link", "blockquote", "code", "image"],
-                  [
-                    {
-                      list: "ordered",
-                    },
-                    {
-                      list: "bullet",
-                    },
+        <Form onSubmit={this.handleSubmit}>
+          <Row>
+            <Col>
+              <h2 className="text-center my-4">
+                Compose the emails in this campaign
+              </h2>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Input
+                type="text"
+                className="in"
+                name="subject"
+                value={this.state.subject}
+                onChange={(e) => {
+                  this.setState({ subject: e.target.value });
+                }}
+                placeholder="Subject"
+                required
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <ReactQuill
+                onChange={(value) => {
+                  this.setState({ email_body: value });
+                }}
+                theme="snow"
+                className="Quill_div"
+                modules={{
+                  toolbar: [
+                    ["bold", "italic"],
+                    ["link", "blockquote", "code", "image"],
+                    [
+                      {
+                        list: "ordered",
+                      },
+                      {
+                        list: "bullet",
+                      },
+                    ],
                   ],
-                ],
-              }}
-            />
-          </Col>
-        </Row>
-
-        <Row className="mt-5">
-          <Col>
-            {this.state.followUpList.map((followUp, index) => (
-              <FollowUpPanel
-                index={index}
-                onDelete={this.onDeleteFollowUp}
-                data={followUp}
-                key={index}
+                }}
               />
-            ))}
-          </Col>
-        </Row>
+            </Col>
+          </Row>
 
-        <Row>
-          <Col className="mt-3">
-            <Button
-              color="default"
-              outline
-              type="button"
-              block
-              onClick={this.onAddFollowUp}
-            >
-              <i className="fa fa-plus"></i> &nbsp;ADD FOLLOW-UP
-            </Button>
-          </Col>
-        </Row>
+          <Row className="mt-5">
+            <Col>
+              {this.state.followUpList.map((followUp, index) => (
+                <FollowUpPanel
+                  index={index}
+                  onDelete={this.onDeleteFollowUp}
+                  data={followUp}
+                  key={index}
+                />
+              ))}
+            </Col>
+          </Row>
 
-        <Row>
-          <Col>
-            {this.state.dripList.map((drip, index) => (
-              <DripPanel
-                index={index}
-                onDelete={this.onDeleteDrip}
-                data={drip}
-                key={index}
-              />
-            ))}
-          </Col>
-        </Row>
-
-        <Row>
-          <Col className="mt-3">
-            <Button
-              color="default"
-              outline
-              type="button"
-              block
-              onClick={this.onAddDrip}
-            >
-              <i className="fa fa-plus"></i> &nbsp;ADD DRIP
-            </Button>
-          </Col>
-        </Row>
-
-        {/* Buttons */}
-        <Row className="my-3">
-          <Col className="d-flex align-items-center justify-content-center">
-            {onPrev && (
-              <Button color="primary" type="button" onClick={this.onPrev}>
-                <i className="fa fa-arrow-left" aria-hidden="true"></i>
-                PREV{" "}
+          <Row>
+            <Col className="mt-3">
+              <Button
+                color="default"
+                outline
+                type="button"
+                block
+                onClick={this.onAddFollowUp}
+              >
+                <i className="fa fa-plus"></i> &nbsp;ADD FOLLOW-UP
               </Button>
-            )}
-          </Col>
-          <Col className="d-flex align-items-center justify-content-center">
-            {onNext && (
-              <Button color="danger" type="button" onClick={this.onNext}>
-                NEXT <i className="fa fa-arrow-right" aria-hidden="true"></i>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col>
+              {this.state.dripList.map((drip, index) => (
+                <DripPanel
+                  index={index}
+                  onDelete={this.onDeleteDrip}
+                  data={drip}
+                  key={index}
+                />
+              ))}
+            </Col>
+          </Row>
+
+          <Row>
+            <Col className="mt-3">
+              <Button
+                color="default"
+                outline
+                type="button"
+                block
+                onClick={this.onAddDrip}
+              >
+                <i className="fa fa-plus"></i> &nbsp;ADD DRIP
               </Button>
-            )}
-          </Col>
-        </Row>
+            </Col>
+          </Row>
+
+          {/* Buttons */}
+          <Row className="my-3">
+            <Col className="text-left">
+              {onPrev && (
+                <Button color="primary" type="button" outline onClick={this.onPrev}>
+                  <i className="fa fa-arrow-left" aria-hidden="true"></i>
+                  {" "}PREV
+                </Button>
+              )}
+            </Col>
+            <Col className="text-right">
+              {onNext && (
+                <Button color="danger" type="submit">
+                  NEXT <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                </Button>
+              )}
+            </Col>
+          </Row>
+        </Form>
       </>
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    // campaign: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id,
-    // mailGetData: state.MailGetDataReducer.mailGetData
-  };
-};
-const mapDispatchToProps = (dispatch) => ({
-  CampaignComposeAction: (data) => dispatch(CampaignComposeAction(data)),
+
+const mapStateToProps = (state) => ({
+  campaign: state.campaign,
 });
-export default connect(mapStateToProps, mapDispatchToProps)(TheCompose);
+
+export default connect(mapStateToProps, { campaignCompose })(
+  TheCompose
+);

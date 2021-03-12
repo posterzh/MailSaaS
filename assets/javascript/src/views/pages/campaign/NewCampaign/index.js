@@ -28,29 +28,7 @@ import TabPane from "reactstrap/lib/TabPane";
 class CampaignStart extends React.Component {
   constructor(props) {
     super(props);
-    var months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    var now = new Date();
-    var thisMonth = months[now.getMonth()];
-    const title = thisMonth + " " + now.getDate() + " Outreach";
     this.state = {
-      title: title,
-      titleState: "",
-      addressState: "",
-      from_address: "",
-      mailsExist: null,
       activeTab: 0,
     };
 
@@ -60,58 +38,6 @@ class CampaignStart extends React.Component {
   onChangeTab = (tabId) => {
     this.setState({ activeTab: tabId });
   };
-
-  // onClickNext = () => {
-  //   this.setState((state) => ({
-  //     activeTab: (state.activeTab + 1) % 6,
-  //   }));
-  // };
-
-  validateCustomStylesForm = () => {
-    if (this.state.title) {
-      this.setState({ titleState: "valid" });
-    } else {
-      this.setState({ titleState: "invalid" });
-    }
-
-    if (this.state.from_address) {
-      this.setState({ addressState: "valid" });
-    } else {
-      this.setState({ addressState: "invalid" });
-    }
-  };
-  handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  };
-  componentDidMount() {
-    this.props.MailGetDataAction();
-  }
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const data = {
-      title: this.state.title,
-      from_address: this.state.from_address,
-    };
-    console.log(data);
-    this.props.StartCampaignAction(data);
-  };
-
-  static getDerivedStateFromProps(props, state) {
-    if (
-      props.mailGetData &&
-      props.mailGetData[0] &&
-      props.mailGetData[0].id &&
-      !state.mailsExist
-    ) {
-      return {
-        from_address: props.mailGetData && props.mailGetData[0].id,
-        mailsExist: true,
-      };
-    }
-    return null;
-  }
 
   onPrev = () => {
     this.setState((state) => ({
@@ -138,41 +64,38 @@ class CampaignStart extends React.Component {
         <PageContainer title="New Campaign">
           <Row>
             <Col md={8} className="mx-auto">
-              <Form className="needs-validation" noValidate>
-                <Row>
-                  <Col>
-                    <CampaignTabs tabs={this.tabs} activeTab={activeTab} />
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col>
-                    <TabContent activeTab={activeTab}>
-                      <TabPane tabId={0}>
-                        <TheStart onNext={this.onNext} />
-                      </TabPane>
-                      <TabPane tabId={1}>
-                        <TheRecipient
-                          onPrev={this.onPrev}
-                          onNext={this.onNext}
-                        />
-                      </TabPane>
-                      <TabPane tabId={2}>
-                        <TheCompose onPrev={this.onPrev} onNext={this.onNext} />
-                      </TabPane>
-                      <TabPane tabId={3}>
-                        <ThePreview onPrev={this.onPrev} onNext={this.onNext} />
-                      </TabPane>
-                      <TabPane tabId={4}>
-                        <TheOptions onPrev={this.onPrev} onNext={this.onNext} />
-                      </TabPane>
-                      <TabPane tabId={5}>
-                        <TheSend onPrev={this.onPrev} />
-                      </TabPane>
-                    </TabContent>
-                  </Col>
-                </Row>
-              </Form>
+              <Row>
+                <Col>
+                  <CampaignTabs tabs={this.tabs} activeTab={activeTab} />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <TabContent activeTab={activeTab}>
+                    <TabPane tabId={0}>
+                      <TheStart onNext={this.onNext} />
+                    </TabPane>
+                    <TabPane tabId={1}>
+                      <TheRecipient
+                        onPrev={this.onPrev}
+                        onNext={this.onNext}
+                      />
+                    </TabPane>
+                    <TabPane tabId={2}>
+                      <TheCompose onPrev={this.onPrev} onNext={this.onNext} />
+                    </TabPane>
+                    <TabPane tabId={3}>
+                      <ThePreview onPrev={this.onPrev} onNext={this.onNext} />
+                    </TabPane>
+                    <TabPane tabId={4}>
+                      <TheOptions onPrev={this.onPrev} onNext={this.onNext} />
+                    </TabPane>
+                    <TabPane tabId={5}>
+                      <TheSend onPrev={this.onPrev} />
+                    </TabPane>
+                  </TabContent>
+                </Col>
+              </Row>
             </Col>
           </Row>
         </PageContainer>
@@ -180,19 +103,5 @@ class CampaignStart extends React.Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    mailGetData:
-      state.MailGetDataReducer.mailGetData &&
-      state.MailGetDataReducer.mailGetData,
-  };
-};
-const mapDispatchToProps = (dispatch) => ({
-  StartCampaignAction: (data) => {
-    dispatch(StartCampaignAction(data));
-  },
-  MailGetDataAction: (mailGetData) => {
-    dispatch(MailGetDataAction(mailGetData));
-  },
-});
-export default connect(mapStateToProps, mapDispatchToProps)(CampaignStart);
+
+export default connect()(CampaignStart);

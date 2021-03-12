@@ -1,4 +1,4 @@
-import { CAMPAIGN_START, CAMPAIGN_COMPOSE } from "../actionType/actionType";
+import { CAMPAIGN_START, CAMPAIGN_RECIPIENT, CAMPAIGN_COMPOSE } from "../actionType/actionType";
 
 const initialState = {
   title: "",
@@ -13,9 +13,17 @@ export const campaignReducer = (state = initialState, action) => {
         title: action.payload.title,
         fromAddress: action.payload.fromAddress,
       };
+    case CAMPAIGN_RECIPIENT:
+      return {
+        ...state,
+        csvfile: action.payload.csvfile,
+      };
     case CAMPAIGN_COMPOSE:
       return {
         ...state,
+        normal: action.payload.normal,
+        follow_up: action.payload.followUpList,
+        drips: action.payload.dripList
       };
     default:
       return state;
