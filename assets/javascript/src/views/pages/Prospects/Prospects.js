@@ -62,6 +62,21 @@ const tableTitle = [
 	},
 ];
 
+let filters = [
+	{
+		key: 'Teammate',
+		options: ['janak@gmail.com', 'ajajul@gmail.com', 'mikin@gmail.com', 'ajju@gmail.com']
+	},
+	{
+		key: 'email',
+		options: []
+	},
+	{
+		key: 'name',
+		options: []
+	}
+];
+
 class Prospects extends Component {
 	constructor(props) {
 		super(props);
@@ -75,6 +90,14 @@ class Prospects extends Component {
 	componentDidMount() {
 		this.props.filterRecipients();
 		this.props.countRecipients();
+	}
+
+	componentWillReceiveProps = (nextProps) => {
+		if (nextProps.recipients !== this.props.recipients) {
+      const getUniqueArray = (array, field) => array.map(x => x[field]).filter((v, i, a) => a.indexOf(v) === i);
+			filters[1].options = getUniqueArray(nextProps.recipients, 'email')
+			filters[2].options = getUniqueArray(nextProps.recipients, 'name')
+		}
 	}
 
 	paginationCallback = (value) => {
@@ -117,36 +140,25 @@ class Prospects extends Component {
 
 	onEngagedClick = () => {
 		this.setState({ selected: 'engaged' })
-		this.props.filterRecipients({engaged: true});
+		this.props.filterRecipients({ engaged: true });
 	}
 
 	onLeadsClick = () => {
 		this.setState({ selected: 'leads' })
-		this.props.filterRecipients({leads: true});
+		this.props.filterRecipients({ leads: true });
 	}
 
 	onBouncesClick = () => {
 		this.setState({ selected: 'bounces' })
-		this.props.filterRecipients({bounces: true});
+		this.props.filterRecipients({ bounces: true });
 	}
 
 	onUnsubscribesClick = () => {
 		this.setState({ selected: 'unsubscribes' })
-		this.props.filterRecipients({unsubscribe: true});
+		this.props.filterRecipients({ unsubscribe: true });
 	}
 
 	render() {
-		const filters = [
-			{
-				key: 'Teammate',
-				options: ['janak@gmail.com', 'ajajul@gmail.com', 'mikin@gmail.com', 'ajju@gmail.com']
-			},
-			{
-				key: 'name',
-				options: ['janak', 'ajajul', 'mikin']
-			}
-		];
-
 		const { importContactsModal, detailModal } = this.state;
 		const { recipients, counts } = this.props;
 
@@ -159,7 +171,7 @@ class Prospects extends Component {
 				/>
 				<PageContainer title={"Prospect"} showHelper={false}>
 					<Row>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={ this.onTotalClick }>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={this.onTotalClick}>
 							<Card className={this.state.selected === 'total' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
@@ -171,7 +183,7 @@ class Prospects extends Component {
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={ this.onInCampaignClick }>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={this.onInCampaignClick}>
 							<Card className={this.state.selected === 'in-campaign' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
@@ -195,7 +207,7 @@ class Prospects extends Component {
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={ this.onLeadsClick }>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={this.onLeadsClick}>
 							<Card className={this.state.selected === 'leads' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
@@ -207,7 +219,7 @@ class Prospects extends Component {
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={ this.onBouncesClick }>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={this.onBouncesClick}>
 							<Card className={this.state.selected === 'bounces' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
@@ -219,7 +231,7 @@ class Prospects extends Component {
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={ this.onUnsubscribesClick }>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={this.onUnsubscribesClick}>
 							<Card className={this.state.selected === 'unsubscribes' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
@@ -267,16 +279,16 @@ class Prospects extends Component {
 						isOpen={importContactsModal}
 						// data={this.state.editItem}
 						close={this.closeImportContactsModal}
-						// create={this.createMailAccount}
-						// update={this.updateMailAccount}
+					// create={this.createMailAccount}
+					// update={this.updateMailAccount}
 					/>
 
 					<DetailModal
 						isOpen={detailModal}
 						// data={this.state.editItem}
 						close={this.closeDetailModal}
-						// create={this.createMailAccount}
-						// update={this.updateMailAccount}
+					// create={this.createMailAccount}
+					// update={this.updateMailAccount}
 					/>
 				</PageContainer>
 			</div>
