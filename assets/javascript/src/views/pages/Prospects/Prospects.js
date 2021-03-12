@@ -27,7 +27,8 @@ import Tables from "../../../components/Tables";
 import ImportContactsModal from "./components/ImportContactsModal"
 import DetailModal from "./components/DetailModal"
 import {
-	filterRecipients
+	filterRecipients,
+	countRecipients,
 } from "../../../redux/action/ProspectsAction";
 
 const tableTitle = [
@@ -44,7 +45,7 @@ const tableTitle = [
 		value: 'Created',
 	},
 	{
-		key: 'status',
+		key: 'lead_status',
 		value: 'Status',
 	},
 	{
@@ -52,16 +53,12 @@ const tableTitle = [
 		value: 'Campaign',
 	},
 	{
-		key: 'sent',
+		key: 'sent_count',
 		value: 'Sent',
 	},
 	{
-		key: 'engaged',
+		key: 'engaged_count',
 		value: 'Engaged',
-	},
-	{
-		key: 'tasks',
-		value: 'Tasks',
 	},
 ];
 
@@ -77,6 +74,7 @@ class Prospects extends Component {
 
 	componentDidMount() {
 		this.props.filterRecipients();
+		this.props.countRecipients();
 	}
 
 	paginationCallback = (value) => {
@@ -120,7 +118,7 @@ class Prospects extends Component {
 		];
 
 		const { importContactsModal, detailModal } = this.state;
-		const { counts, recipients } = this.props;
+		const { recipients, counts } = this.props;
 
 		return (
 			<div className="prospect-main-container">
@@ -136,7 +134,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.total_count}</div>
+											<div>{counts && counts.total}</div>
 											<div>Total</div>
 										</h3>
 									</CardTitle>
@@ -148,7 +146,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.in_campaign_count}</div>
+											<div>{counts && counts.in_campaign}</div>
 											<div>In Campaign</div>
 										</h3>
 									</CardTitle>
@@ -172,7 +170,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.leads_count}</div>
+											<div>{counts && counts.leads}</div>
 											<div>Leads</div>
 										</h3>
 									</CardTitle>
@@ -184,7 +182,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.bounced}</div>
+											<div>{counts && counts.bounces}</div>
 											<div>Bounces</div>
 										</h3>
 									</CardTitle>
@@ -196,7 +194,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.unsubscribe}</div>
+											<div>{counts && counts.unsubscribes}</div>
 											<div>Unsubscribes</div>
 										</h3>
 									</CardTitle>
@@ -257,10 +255,11 @@ class Prospects extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	counts: state.prospects.counts,
 	recipients: state.prospects.recipients,
+	counts: state.prospects.counts,
 });
 
 export default connect(mapStateToProps, {
-	filterRecipients
+	filterRecipients,
+	countRecipients,
 })(Prospects);
