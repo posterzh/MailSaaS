@@ -13,156 +13,142 @@ import {
 } from "reactstrap";
 import { CampaignOptionAction } from "../../../../redux/action/CampaignAction";
 import { connect } from "react-redux";
+import { campaignOptions } from "../../../../redux/action/CampaignActions";
 
 class TheOptions extends Component {
   constructor() {
     super();
     this.state = {
       trackopen: true,
-      tracklinkclicks: true,
-      schedulesend: false,
       termsandlaws: false,
-      date: "",
-      time: "",
-      show: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
   handleChange = (event) => {
     this.setState(
       {
-        [event.target.name]: !event.target.defaultChecked,
-      },
-      () => {
-        console.log(this.state);
+        [event.target.name]: event.target.checked,
       }
     );
   };
-  handleDate = (event) => {
-    this.setState(
-      {
-        date: event.target.value,
-      },
-      () => {
-        console.log(this.state.date, "date");
-      }
-    );
-  };
-  handleTime = (event) => {
-    this.setState(
-      {
-        time: event.target.value,
-      },
-      () => {
-        console.log(this.state.time, "time");
-      }
-    );
-  };
+
+  // handleDate = (event) => {
+  //   this.setState(
+  //     {
+  //       date: event.target.value,
+  //     },
+  //     () => {
+  //       console.log(this.state.date, "date");
+  //     }
+  //   );
+  // };
+  // handleTime = (event) => {
+  //   this.setState(
+  //     {
+  //       time: event.target.value,
+  //     },
+  //     () => {
+  //       console.log(this.state.time, "time");
+  //     }
+  //   );
+  // };
+
   handleSubmit = (event) => {
-    console.log("option.js");
     event.preventDefault();
-    console.log(this.state);
+    
     const optionData = {
-      campaign: "",
       track_Opens: this.state.trackopen,
-      track_LinkClick: this.state.tracklinkclicks,
-      schedule_send: this.state.schedulesend,
-      schedule_date: this.state.date,
-      schedule_time: `${this.state.time}${":00"}`,
-      terms_and_laws: this.state.termsandlaws,
+      terms_and_laws: this.state.termsandlaws
     };
-    this.props.CampaignOptionAction(optionData);
+    this.props.campaignOptions(optionData);
+    this.props.onNext();
   };
 
   onPrev = () => {
-    // some validation
-
-    // call parent method
     this.props.onPrev();
-  };
-
-  onNext = () => {
-    // some validation
-
-    // call parent method
-    this.props.onNext();
   };
 
   render() {
     const { onPrev, onNext } = this.props;
     return (
       <>
-        <Row>
-          <Col>
-            <h2 className="text-center my-4">
-              Tweak how your campaign will be sent
-            </h2>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={8} className="mx-auto">
-            <div className="custom-control custom-checkbox mb-3">
-              <input
-                className="custom-control-input"
-                id="1"
-                type="checkbox"
-                value={this.state.trackopen}
-                name="trackopen"
-                onChange={this.handleChange}
-              />
-              <label className="custom-control-label" htmlFor="1">
-                Track opens
-              </label>
-            </div>
+        <Form onSubmit={this.handleSubmit}>
+          <Row>
+            <Col>
+              <h3 className="text-center my-4">
+                Tweak how your campaign will be sent
+              </h3>
+            </Col>
+          </Row>
+          <Row>
+            <Col className="mx-auto">
+              <div className="custom-control custom-checkbox mb-3">
+                <input
+                  className="custom-control-input"
+                  id="check1"
+                  type="checkbox"
+                  defaultChecked={this.state.trackopen}
+                  name="trackopen"
+                  onChange={this.handleChange}
+                />
+                <label className="custom-control-label" htmlFor="check1">
+                  Track opens
+                </label>
+                {!this.state.trackopen &&
+                  <Card className="pt-3 pl-3 mt-3" style={{ backgroundColor: "#e9e9e9" }}>
+                    <span><i className="ni ni-air-baloon text-warning"></i>&nbsp;&nbsp;<b>Friendly remember</b></span>
+                    <p>Disabling tracking may affect your rules for follow-ups or lead-catcher and may prevent click-triggered messages from sending.</p>
+                  </Card>
+                }
+              </div>
 
-            <div className="custom-control custom-checkbox mb-3">
-              <input
-                className="custom-control-input"
-                id="4"
-                type="checkbox"
-                value={this.state.schedulesend}
-                name="schedulesend"
-                onChange={this.handleChange}
-                required
-              />
-              <label className="custom-control-label" htmlFor="4">
-                I'll obey pertinent laws and I've read the
-                <a href="www.google.com"> important notes.</a>
-              </label>
-            </div>
-          </Col>
-        </Row>
+              <div className="custom-control custom-checkbox mb-3">
+                <input
+                  className="custom-control-input"
+                  id="check2"
+                  type="checkbox"
+                  checked={this.state.termsandlaws}
+                  name="termsandlaws"
+                  onChange={this.handleChange}
+                  required
+                />
+                <label className="custom-control-label" htmlFor="check2">
+                  I'll obey pertinent laws and I've read the
+                  <a href="www.google.com"> important notes.</a>
+                </label>
+              </div>
+            </Col>
+          </Row>
 
-        {/* Buttons */}
-        <Row className="my-3">
-          <Col className="text-left">
-            {onPrev && (
-              <Button color="primary" type="button" outline onClick={this.onPrev}>
-                <i className="fa fa-arrow-left" aria-hidden="true"></i>
-                {" "}PREV
-              </Button>
-            )}
-          </Col>
-          <Col className="text-right">
-            {onNext && (
-              <Button color="danger" type="button" onClick={this.onNext}>
-                NEXT <i className="fa fa-arrow-right" aria-hidden="true"></i>
-              </Button>
-            )}
-          </Col>
-        </Row>
+          {/* Buttons */}
+          <Row className="my-3">
+            <Col className="text-left">
+              {onPrev && (
+                <Button color="primary" type="button" outline onClick={this.onPrev}>
+                  <i className="fa fa-arrow-left" aria-hidden="true"></i>
+                  {" "}PREV
+                </Button>
+              )}
+            </Col>
+            <Col className="text-right">
+              {onNext && (
+                <Button color="danger" type="submit">
+                  NEXT <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                </Button>
+              )}
+            </Col>
+          </Row>
+        </Form>
       </>
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    // startCampaignId: state.StartCampaignReducer.startCampaignData && state.StartCampaignReducer.startCampaignData.id
-  };
-};
-const mapDispatchToProps = (dispatch) => ({
-  CampaignOptionAction: (optionData) => {
-    dispatch(CampaignOptionAction(optionData));
-  },
+
+const mapStateToProps = (state) => ({
+  campaign: state.campaign,
 });
-export default connect(mapStateToProps, mapDispatchToProps)(TheOptions);
+
+export default connect(mapStateToProps, { campaignOptions })(
+  TheOptions
+);

@@ -27,7 +27,8 @@ import Tables from "../../../components/Tables";
 import ImportContactsModal from "./components/ImportContactsModal"
 import DetailModal from "./components/DetailModal"
 import {
-	filterRecipients
+	filterRecipients,
+	countRecipients,
 } from "../../../redux/action/ProspectsAction";
 
 const tableTitle = [
@@ -44,7 +45,7 @@ const tableTitle = [
 		value: 'Created',
 	},
 	{
-		key: 'status',
+		key: 'lead_status',
 		value: 'Status',
 	},
 	{
@@ -52,16 +53,12 @@ const tableTitle = [
 		value: 'Campaign',
 	},
 	{
-		key: 'sent',
+		key: 'sent_count',
 		value: 'Sent',
 	},
 	{
-		key: 'engaged',
+		key: 'engaged_count',
 		value: 'Engaged',
-	},
-	{
-		key: 'tasks',
-		value: 'Tasks',
 	},
 ];
 
@@ -77,6 +74,7 @@ class Prospects extends Component {
 
 	componentDidMount() {
 		this.props.filterRecipients();
+		this.props.countRecipients();
 	}
 
 	paginationCallback = (value) => {
@@ -107,6 +105,36 @@ class Prospects extends Component {
 		this.setState({ detailModal: false });
 	}
 
+	onTotalClick = () => {
+		this.setState({ selected: 'total' })
+		this.props.filterRecipients();
+	}
+
+	onInCampaignClick = () => {
+		this.setState({ selected: 'in-campaign' })
+		this.props.filterRecipients();
+	}
+
+	onEngagedClick = () => {
+		this.setState({ selected: 'engaged' })
+		this.props.filterRecipients({engaged: true});
+	}
+
+	onLeadsClick = () => {
+		this.setState({ selected: 'leads' })
+		this.props.filterRecipients({leads: true});
+	}
+
+	onBouncesClick = () => {
+		this.setState({ selected: 'bounces' })
+		this.props.filterRecipients({bounces: true});
+	}
+
+	onUnsubscribesClick = () => {
+		this.setState({ selected: 'unsubscribes' })
+		this.props.filterRecipients({unsubscribe: true});
+	}
+
 	render() {
 		const filters = [
 			{
@@ -120,7 +148,7 @@ class Prospects extends Component {
 		];
 
 		const { importContactsModal, detailModal } = this.state;
-		const { counts, recipients } = this.props;
+		const { recipients, counts } = this.props;
 
 		return (
 			<div className="prospect-main-container">
@@ -131,31 +159,31 @@ class Prospects extends Component {
 				/>
 				<PageContainer title={"Prospect"} showHelper={false}>
 					<Row>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'total' }) }}>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={ this.onTotalClick }>
 							<Card className={this.state.selected === 'total' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.total_count}</div>
+											<div>{counts && counts.total}</div>
 											<div>Total</div>
 										</h3>
 									</CardTitle>
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'in-campaign' }) }}>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={ this.onInCampaignClick }>
 							<Card className={this.state.selected === 'in-campaign' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.in_campaign_count}</div>
+											<div>{counts && counts.in_campaign}</div>
 											<div>In Campaign</div>
 										</h3>
 									</CardTitle>
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'engaged' }) }}>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={this.onEngagedClick}>
 							<Card className={this.state.selected === 'engaged' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
@@ -167,36 +195,36 @@ class Prospects extends Component {
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'leads' }) }}>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={ this.onLeadsClick }>
 							<Card className={this.state.selected === 'leads' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.leads_count}</div>
+											<div>{counts && counts.leads}</div>
 											<div>Leads</div>
 										</h3>
 									</CardTitle>
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'bounces' }) }}>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={ this.onBouncesClick }>
 							<Card className={this.state.selected === 'bounces' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.bounced}</div>
+											<div>{counts && counts.bounces}</div>
 											<div>Bounces</div>
 										</h3>
 									</CardTitle>
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'unsubscribes' }) }}>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={ this.onUnsubscribesClick }>
 							<Card className={this.state.selected === 'unsubscribes' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.unsubscribe}</div>
+											<div>{counts && counts.unsubscribes}</div>
 											<div>Unsubscribes</div>
 										</h3>
 									</CardTitle>
@@ -257,10 +285,11 @@ class Prospects extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	counts: state.prospects.counts,
 	recipients: state.prospects.recipients,
+	counts: state.prospects.counts,
 });
 
 export default connect(mapStateToProps, {
-	filterRecipients
+	filterRecipients,
+	countRecipients,
 })(Prospects);

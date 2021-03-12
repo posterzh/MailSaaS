@@ -69,6 +69,7 @@ export const FAILURE_MAIL_ACCOUNT_UPDATE = "FAILURE_MAIL_ACCOUNT_UPDATE";
 
 // Filter Recipients
 export const FILTER_RECIPIENTS = "FILTER_RECIPIENTS"
+export const COUNT_RECIPIENTS = "COUNT_RECIPIENTS"
 
 // Karl - Will remove later
 // ****************************************************************
@@ -158,3 +159,4 @@ export const DELETE_SENDING_CALENDAR = "DELETE_SENDING_CALENDAR";
 export const CAMPAIGN_START = "CAMPAIGN_START";
 export const CAMPAIGN_COMPOSE = "CAMPAIGN_COMPOSE";
 export const CAMPAIGN_RECIPIENT = "CAMPAIGN_RECIPIENT";
+export const CAMPAIGN_OPTIONS = "CAMPAIGN_OPTIONS";

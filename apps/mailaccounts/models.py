@@ -1,3 +1,4 @@
+import pytz
 from django.db import models
 
 from apps.users.models import CustomUser
@@ -87,5 +88,19 @@ class MicrosoftAccount(EmailAccount):
         proxy = True
 
 
+# Sending calendar
+class SendingCalendar(models.Model):
+    TIMEZONE_CHOICES = zip(pytz.all_timezones, pytz.all_timezones)
 
+    mail_account = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
+    block_days = models.PositiveIntegerField()
+    start_time = models.TimeField(auto_now=False)
+    end_time = models.TimeField(auto_now=False)
+    time_zone = models.CharField(choices=TIMEZONE_CHOICES, blank=True, default='', max_length=50)
+    max_emails_per_day = models.PositiveIntegerField(default=20)
+    minutes_between_sends = models.PositiveIntegerField(default=12)
+    min_emails_to_send = models.PositiveIntegerField(default=1)
+    max_emails_to_send = models.PositiveIntegerField(default=1)
 
+    def __str__(self):
+        return str(self.user.email)

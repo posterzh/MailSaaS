@@ -1,4 +1,4 @@
-import { CAMPAIGN_START, CAMPAIGN_RECIPIENT, CAMPAIGN_COMPOSE } from "../actionType/actionType";
+import { CAMPAIGN_START, CAMPAIGN_RECIPIENT, CAMPAIGN_COMPOSE, CAMPAIGN_OPTIONS } from "../actionType/actionType";
 
 export const campaignStart = (payload) => ({
   type: CAMPAIGN_START,
@@ -12,5 +12,10 @@ export const campaignRecipient = (payload) => ({
 
 export const campaignCompose = (payload) => ({
   type: CAMPAIGN_COMPOSE,
+  payload,
+});
+
+export const campaignOptions = (payload) => ({
+  type: CAMPAIGN_OPTIONS,
   payload,
 });

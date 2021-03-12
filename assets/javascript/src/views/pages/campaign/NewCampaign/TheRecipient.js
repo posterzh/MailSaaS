@@ -36,12 +36,12 @@ class TheRecipient extends Component {
     super(props);
     this.state = {
       show: false,
-      csvFile: "",
+      csvFile: null,
+      first_row: null,
       csvMappingContent: {
         title: [],
         data: [],
-      },
-      campaign: "",
+      }
     };
   }
 
@@ -74,13 +74,6 @@ class TheRecipient extends Component {
     // document.getElementsByClassName("dz-preview-multiple")[0].innerHTML = "";
   }
 
-  handleChange = (e) => {
-    this.setState({
-      csvFile: e.target.files[0],
-      show: true,
-    });
-  };
-
   handleSubmit = (e) => {
     e.preventDefault();
     if (!this.state.csvFile) {
@@ -88,7 +81,8 @@ class TheRecipient extends Component {
       return false;
     }
     const recipientData = {
-      csvfile: this.state.csvFile
+      csvfile: this.state.csvFile,
+      first_row: this.state.first_row
     };
     console.log(this.state.csvFile);
     this.props.campaignRecipient(recipientData);
@@ -100,6 +94,7 @@ class TheRecipient extends Component {
       this.setState({
         csvFile: null,
         show: true,
+        first_row: null
       });
       return;
     }
@@ -138,6 +133,7 @@ class TheRecipient extends Component {
         title: tableHeaders,
         data: tableBody,
       },
+      first_row: firstRow,
       show: true,
     });
   };
@@ -147,6 +143,10 @@ class TheRecipient extends Component {
     this.setState({
       csvFile: null,
       show: true,
+      csvMappingContent: {
+        title: [],
+        data: [],
+      }
     });
   };
 
@@ -175,7 +175,7 @@ class TheRecipient extends Component {
   // };
 
   render() {
-    const { onPrev, onNext, campaign } = this.props;
+    const { onPrev, onNext } = this.props;
     const { show, csvMappingContent } = this.state;
 
     return (
@@ -185,8 +185,6 @@ class TheRecipient extends Component {
             <h2 className="text-center my-4">
               Drop in your first list of recipients
             </h2>
-            <h2>{campaign.title}</h2>
-            <h2>{campaign.fromAddress}</h2>
           </Col>
         </Row>
         <Row>
