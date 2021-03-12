@@ -29,7 +29,7 @@ class CampaignStart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: 3,
+      activeTab: 0,
     };
 
     this.tabs = ["START", "RECIPIENT", "COMPOSE", "PREVIEW", "OPTIONS", "SEND"];
