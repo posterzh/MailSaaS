@@ -11,19 +11,20 @@ export const campaignReducer = (state = initialState, action) => {
       return {
         ...state,
         title: action.payload.title,
-        fromAddress: action.payload.fromAddress,
+        from_address: action.payload.from_address,
       };
     case CAMPAIGN_RECIPIENT:
       return {
         ...state,
         csvfile: action.payload.csvfile,
+        first_row: action.payload.first_row
       };
     case CAMPAIGN_COMPOSE:
       return {
         ...state,
         normal: action.payload.normal,
-        follow_up: action.payload.followUpList,
-        drips: action.payload.dripList
+        follow_up: action.payload.follow_up,
+        drips: action.payload.drips
       };
     default:
       return state;
