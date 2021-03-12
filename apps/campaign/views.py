@@ -2,8 +2,8 @@ import csv
 import datetime
 import json
 import re
-import ast 
-from datetime import date, datetime, time,timedelta
+import ast
+from datetime import date, datetime, time, timedelta
 import pytracking
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -24,15 +24,15 @@ from apps.unsubscribes.models import UnsubscribeEmail
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
-                     DripEmailModel, EmailOnLinkClick, FollowUpEmail,CampaignLabel)
+                     DripEmailModel, EmailOnLinkClick, FollowUpEmail, CampaignLabel)
 from .serializers import (CampaignEmailSerializer,
                           CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer,
-                          OnclickSerializer,CampaignLabelSerilizer)
+                          OnclickSerializer, CampaignLabelSerializer, ProspectsSerializer)
 from apps.mailaccounts.models import EmailAccount
 
-class CreateCampaignStartView(APIView):
 
+class CreateCampaignStartView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
@@ -42,17 +42,16 @@ class CreateCampaignStartView(APIView):
             # postdata._mutable = True
             postdata["assigned"] = request.user.id
             # postdata._mutable = False
-            serializer = CampaignSerializer(data = postdata)
+            serializer = CampaignSerializer(data=postdata)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             # return Response({'message':"Has No Permissions",'status':401})
-        return Response({'message':"Your account is not active",'status':status.HTTP_200_OK})
+        return Response({'message': "Your account is not active", 'status': status.HTTP_200_OK})
 
 
 class CreateCampaignRecipientsView(APIView):
-
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
@@ -133,7 +132,6 @@ class CreateCampaignRecipientsView(APIView):
 
 
 class CreateCampaignMessageView(APIView):
-
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
@@ -145,32 +143,33 @@ class CreateCampaignMessageView(APIView):
             serializer_data = campEmailserializer.data
             serializer_data["subject"] = postdata["normal"]['subject']
             serializer_data["email_body"] = postdata["normal"]['email_body']
-            CampEmailData = CampaignEmailSerializer(campemail, data = serializer_data)
+            CampEmailData = CampaignEmailSerializer(campemail, data=serializer_data)
             if CampEmailData.is_valid():
                 CampEmailData.save()
 
         for follow_up in postdata["follow_up"]:
-            FollowupEmail = FollowUpEmail(campaign=camp, waitDays=follow_up["waitDays"], subject=follow_up["subject"], email_body=follow_up["email_body"])
+            FollowupEmail = FollowUpEmail(campaign=camp, waitDays=follow_up["waitDays"], subject=follow_up["subject"],
+                                          email_body=follow_up["email_body"])
             FollowupEmail.save()
 
         for drips in postdata["drips"]:
-            DripEmail = DripEmailModel(campaign=camp, waitDays=drips["waitDays"], subject=drips["subject"], email_body=drips["email_body"])
+            DripEmail = DripEmailModel(campaign=camp, waitDays=drips["waitDays"], subject=drips["subject"],
+                                       email_body=drips["email_body"])
             DripEmail.save()
 
-        return Response({"message":"Saved Successfully"})
+        return Response({"message": "Saved Successfully"})
 
 
 class CampaignGetAllEmailsPreview(generics.ListAPIView):
-
     permission_classes = (permissions.IsAuthenticated,)
 
-    def get(self, request, pk, *args,**kwargs):
+    def get(self, request, pk, *args, **kwargs):
 
         getData = request.data
         try:
             camp = Campaign.objects.get(id=pk)
         except:
-            return Response({"message":"No campiagn availabe for this id", "success":"false"})
+            return Response({"message": "No campiagn availabe for this id", "success": "false"})
 
         serializercamp = CampaignSerializer(camp)
 
@@ -206,50 +205,50 @@ class CampaignGetAllEmailsPreview(generics.ListAPIView):
         resp["onLinkClick"] = onclickdatalist
 
         return Response(resp)
-        
-    def put(self, request, pk, *args,**kwargs):
+
+    def put(self, request, pk, *args, **kwargs):
         for campemail in request.data["campEmail"]:
             campEmalOb = CampaignRecipient.objects.get(id=campemail["id"])
             campEmailSave = CampaignEmailSerializer(campEmalOb, data=campemail)
             if campEmailSave.is_valid():
                 campEmailSave.save()
             else:
-                return Response({"message":"Campain Email Error"})
+                return Response({"message": "Campain Email Error"})
         for followup in request.data["follow_up"]:
             followUpOb = FollowUpEmail.objects.get(id=followup["id"])
             followUpSave = FollowUpSerializer(followUpOb, data=followup)
             if followUpSave.is_valid():
                 followUpSave.save()
             else:
-                return Response({"message":"Follow Up Email Error"})
+                return Response({"message": "Follow Up Email Error"})
         for drip in request.data["drip"]:
             dripEmailOb = DripEmailModel.objects.get(id=drip["id"])
             dripEmailSave = DripEmailSerilizer(dripEmailOb, data=drip)
             if dripEmailSave.is_valid():
                 dripEmailSave.save()
             else:
-                return Response({"message":"Drip Email Error"})
+                return Response({"message": "Drip Email Error"})
         for onLinkClick in request.data["onLinkClick"]:
             onLinkClickOb = EmailOnLinkClick.objects.get(id=onLinkClick["id"])
             onLinkClickSave = OnclickSerializer(onLinkClickOb, data=onLinkClick)
             if onLinkClickSave.is_valid():
                 onLinkClickSave.save()
             else:
-                return Response({"message":"On Link Click Email Error"})
+                return Response({"message": "On Link Click Email Error"})
 
-        return Response({"message":"Updated Successfully", "success":"True"})
+        return Response({"message": "Updated Successfully", "success": "True"})
+
 
 class CreateCampaignOptionView(APIView):
-
     permission_classes = (permissions.IsAuthenticated,)
 
     def put(self, request, format=None):
-    
+
         if request.data['terms_and_laws'] == True:
             try:
-                queryset = Campaign.objects.get(id = request.data['campaign'])
+                queryset = Campaign.objects.get(id=request.data['campaign'])
             except:
-                return Response({"message":"No campiagn availabe for this id", "success":"false"})
+                return Response({"message": "No campiagn availabe for this id", "success": "false"})
             if queryset.csvfile_op1 == "":
                 csvfile_op1 = None
             else:
@@ -261,14 +260,16 @@ class CreateCampaignOptionView(APIView):
             request.data["assigned"] = request.user.id
             request.data["update_date_time"] = datetime.now()
             request.data["created_date_time"] = queryset.created_date_time
-            
+
             if request.data["schedule_send"] and not (request.data["schedule_date"] or request.data["schedule_time"]):
-                return Response({"message":"Please Enter Date Time", "success":"false"})
+                return Response({"message": "Please Enter Date Time", "success": "false"})
             if request.data["schedule_send"]:
                 req_date_list = request.data["schedule_date"].split("-")
                 req_time_list = request.data["schedule_time"].split(":")
-                request.data["schedule_date"] = date(int(req_date_list[0]), int(req_date_list[1]), int(req_date_list[2]))
-                request.data["schedule_time"] = time(int(req_time_list[0]), int(req_time_list[1]), int(req_time_list[2]))
+                request.data["schedule_date"] = date(int(req_date_list[0]), int(req_date_list[1]),
+                                                     int(req_date_list[2]))
+                request.data["schedule_time"] = time(int(req_time_list[0]), int(req_time_list[1]),
+                                                     int(req_time_list[2]))
 
             else:
                 request.data["schedule_date"] = None
@@ -277,30 +278,28 @@ class CreateCampaignOptionView(APIView):
             if serilizer.is_valid():
                 serilizer.save()
                 return Response(serilizer.data)
-            return Response({'message':'invalid serilizer', "success":"false"})
-        return Response({"message":"Please agree to the terms.", "success":"false"})
+            return Response({'message': 'invalid serilizer', "success": "false"})
+        return Response({"message": "Please agree to the terms.", "success": "false"})
 
 
 class CreateCampaignSendView(APIView):
-
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, pk, format=None):
         resp = {}
         try:
-            camp = Campaign.objects.get(id = pk)
+            camp = Campaign.objects.get(id=pk)
         except:
-            return Response({"message":"No Campaign with this id", "success":False})
+            return Response({"message": "No Campaign with this id", "success": False})
         # campSerializer = CampaignSerializer(camp)
         resp["from_address"] = camp.from_address.email
         resp["full_name"] = camp.from_address.full_name
         campEmailrecipientsList = []
-        campEmail = CampaignRecipient.objects.filter(campaign = pk)
+        campEmail = CampaignRecipient.objects.filter(campaign=pk)
         for campemail in campEmail:
             campEmailSerialiser = CampaignEmailSerializer(campemail)
             campEmailrecipientsList.append(campEmailSerialiser.data["email"])
         resp["recipients"] = campEmailrecipientsList
-
 
         campEmaildatalist = []
         campEmail = CampaignRecipient.objects.filter(campaign=pk).distinct('subject')
@@ -333,28 +332,26 @@ class CreateCampaignSendView(APIView):
 
     def put(self, request, pk, format=None):
         try:
-            camp = Campaign.objects.get(id = pk)
-            
+            camp = Campaign.objects.get(id=pk)
+
         except:
-            return Response({"message":"No Campaign with this id", "success":False})
+            return Response({"message": "No Campaign with this id", "success": False})
 
         try:
             if request.data["startCampaign"]:
                 pass
         except:
-            return Response({"message":"please provide startCampaign", "success":False})
+            return Response({"message": "please provide startCampaign", "success": False})
 
-        
         getCampData = CampaignSerializer(camp)
         campData = dict(getCampData.data)
         campData["campaign_status"] = request.data["startCampaign"]
         if camp.csvfile_op1 != "":
             campData["csvfile_op1"] = camp.csvfile_op1
-        
+
         CampSerializer = CampaignSerializer(camp, data=campData)
         if request.data["startCampaign"]:
             camp.campaign_status = True
-
 
         camp.save()
         if CampSerializer.is_valid():
@@ -362,29 +359,28 @@ class CreateCampaignSendView(APIView):
             if (not camp.schedule_send) and camp.campaign_status:
                 campEmail = CampaignRecipient.objects.filter(campaign=pk)
                 for campemail in campEmail:
-                    
-                    
+
                     open_tracking_url = pytracking.get_open_tracking_url(
-                        {"campEmailId": campemail.id, "campaign": campemail.campaign.id}, 
+                        {"campEmailId": campemail.id, "campaign": campemail.campaign.id},
                         base_open_tracking_url="http://localhost:8000/campaign/email/open/",
-                        webhook_url="http://localhost:8000/campaign/email/open/", 
+                        webhook_url="http://localhost:8000/campaign/email/open/",
                         include_webhook_url=True
-                        )
-                    
+                    )
+
                     email_body_links = re.findall(r'(https?://\S+)', campemail.email_body)
                     if email_body_links:
-                        #URL is Present
+                        # URL is Present
                         emailData = campemail.email_body
                         # for link in email_body_links:
-                            # new_link = pytracking.get_click_tracking_url(
-                            #     link, {"campEmailId": campemail.id, "campaign": campemail.campaign.id},
-                            #     base_click_tracking_url=campemail.email_body,
-                            #     webhook_url=campemail.email_body, include_webhook_url=True)
-                            # emailData = emailData.replace(link, new_link)
-                        emailData += " <img width=0 height=0 src='"+open_tracking_url+"' />"
+                        # new_link = pytracking.get_click_tracking_url(
+                        #     link, {"campEmailId": campemail.id, "campaign": campemail.campaign.id},
+                        #     base_click_tracking_url=campemail.email_body,
+                        #     webhook_url=campemail.email_body, include_webhook_url=True)
+                        # emailData = emailData.replace(link, new_link)
+                        emailData += " <img width=0 height=0 src='" + open_tracking_url + "' />"
                     else:
-                        #No URL Present
-                        emailData = campemail.email_body + " <img width=0 height=0 src='"+open_tracking_url+"' />"
+                        # No URL Present
+                        emailData = campemail.email_body + " <img width=0 height=0 src='" + open_tracking_url + "' />"
                     subject = campemail.subject
                     text_content = 'plain text body message.'
                     html_content = emailData
@@ -401,41 +397,39 @@ class CreateCampaignSendView(APIView):
                         # server = smtplib.SMTP(email_account_ob.smtp_host)
                         msg = email.message.Message()
                         msg['Subject'] = campemail.subject
-                        
-                        
+
                         msg['From'] = email_account_ob.smtp_username
                         msg['To'] = campemail.email
                         password = email_account_ob.smtp_password
                         msg.add_header('Content-Type', 'text/html')
                         msg.set_payload(emailData)
-                        
-                        s = smtplib.SMTP(email_account_ob.smtp_host+ ':' + email_account_ob.smtp_port)
+
+                        s = smtplib.SMTP(email_account_ob.smtp_host + ':' + email_account_ob.smtp_port)
                         s.starttls()
-                        
+
                         # Login Credentials for sending the mail
                         s.login(msg['From'], password)
-                        
-                        s.sendmail(msg['From'], [msg['To']], msg.as_string())
 
+                        s.sendmail(msg['From'], [msg['To']], msg.as_string())
 
                         campemail.sent = True
                     campemail.reciepent_status = True
                     campemail.save()
-                   
+
             elif camp.schedule_send and camp.campaign_status:
                 campEmail = CampaignRecipient.objects.filter(campaign=pk)
                 for campemail in campEmail:
 
                     open_tracking_url = pytracking.get_open_tracking_url(
-                        {"campEmailId": campemail.id, "campaign": campemail.campaign.id}, 
+                        {"campEmailId": campemail.id, "campaign": campemail.campaign.id},
                         base_open_tracking_url="http://localhost:8000/campaign/email/open/",
-                        webhook_url="http://localhost:8000/campaign/email/open/", 
+                        webhook_url="http://localhost:8000/campaign/email/open/",
                         include_webhook_url=True
-                        )
-                    
+                    )
+
                     email_body_links = re.findall(r'(https?://\S+)', campemail.email_body)
                     if email_body_links:
-                        #URL is Present
+                        # URL is Present
                         emailData = campemail.email_body
                         for link in email_body_links:
                             new_link = pytracking.get_click_tracking_url(
@@ -444,48 +438,48 @@ class CreateCampaignSendView(APIView):
                                 webhook_url="http://localhost:8000/campaign/email/click/", include_webhook_url=True)
                             emailData = emailData.replace(link, new_link)
                     else:
-                        #No URL Present
-                        emailData = campemail.email_body + "<img width=0 height=0 src='"+open_tracking_url+"' />"
+                        # No URL Present
+                        emailData = campemail.email_body + "<img width=0 height=0 src='" + open_tracking_url + "' />"
 
-
-                    email_schedule_ob = Email_schedule(time=camp.schedule_time, date=camp.schedule_date, user_id=camp.assigned, mail_account=camp.from_address, recipient_email=campemail.email , subject=campemail.subject , email_body=emailData)
+                    email_schedule_ob = Email_schedule(time=camp.schedule_time, date=camp.schedule_date,
+                                                       user_id=camp.assigned, mail_account=camp.from_address,
+                                                       recipient_email=campemail.email, subject=campemail.subject,
+                                                       email_body=emailData)
                     email_schedule_ob.save()
-                    
-            return Response({"message":"Updated Successfully", "success":True})
-        else:
-            return Response({"message":CampSerializer.errors, "success":True})
 
+            return Response({"message": "Updated Successfully", "success": True})
+        else:
+            return Response({"message": CampSerializer.errors, "success": True})
 
 
 class CampaignView(generics.ListAPIView):
-
     """
         For Get all Campaign by user 
     """
     permission_classes = (permissions.IsAuthenticated,)
 
-    def get(self, request, *args,**kwargs):
-        campaigns = Campaign.objects.filter(assigned = request.user.id)
+    def get(self, request, *args, **kwargs):
+        campaigns = Campaign.objects.filter(assigned=request.user.id)
         allData = []
         for camp in campaigns:
             campEmail = CampaignRecipient.objects.filter(campaign=camp.id)
-            campEmailserializer = CampaignEmailSerializer(campEmail, many = True)
+            campEmailserializer = CampaignEmailSerializer(campEmail, many=True)
             resp = {
-                "id":camp.pk,
+                "id": camp.pk,
                 "camp_title": camp.title,
                 "camp_created_date_time": camp.created_date_time.strftime("%B %d"),
                 "assigned": camp.assigned.full_name,
                 "recipientCount": campEmail.count(),
-                "sentCount":0,
+                "sentCount": 0,
                 "leadCount": 0,
                 "opensCount": 0,
                 "openLeadCount": 0,
                 "wonLeadCount": 0,
                 "lostLeadCount": 0,
                 "ignoredLeadCount": 0,
-                "forwardedLeadCount":0,
+                "forwardedLeadCount": 0,
 
-                }
+            }
             for campData in campEmailserializer.data:
                 if campData["sent"]:
                     resp["sentCount"] = resp["sentCount"] + 1
@@ -496,50 +490,49 @@ class CampaignView(generics.ListAPIView):
                 if campData["leads"]:
                     resp["leadCount"] = resp["leadCount"] + 1
 
-                    if campData["lead_status"]=="openLead":
-                        resp["openLeadCount"] = resp["openLeadCount"] + 1                    
-                    if campData["lead_status"]=="wonLead":
+                    if campData["lead_status"] == "openLead":
+                        resp["openLeadCount"] = resp["openLeadCount"] + 1
+                    if campData["lead_status"] == "wonLead":
                         resp["wonLeadCount"] = resp["wonLeadCount"] + 1
-                    if campData["lead_status"]=="lostLead":
+                    if campData["lead_status"] == "lostLead":
                         resp["lostLeadCount"] = resp["lostLeadCount"] + 1
-                    if campData["lead_status"]=="ignoredLead":
+                    if campData["lead_status"] == "ignoredLead":
                         resp["ignoredLeadCount"] = resp["ignoredLeadCount"] + 1
-                    if campData["lead_status"]=="forwardedLead":
+                    if campData["lead_status"] == "forwardedLead":
                         resp["forwardedLeadCount"] = resp["forwardedLeadCount"] + 1
-                          
+
             allData.append(resp)
         return Response(allData)
-        
 
 
 class LeadsCatcherView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    
-    def get(self, request, *args,**kwargs):
+
+    def get(self, request, *args, **kwargs):
         params = list(dict(request.GET).keys())
         if len(params) == 4:
             toSearch = request.GET['search']
             title = request.GET['title']
-            
+
             if request.GET['date'] == "last14days":
                 to_date = datetime.today()
-                from_date = to_date-timedelta(days=14)
+                from_date = to_date - timedelta(days=14)
 
             elif request.GET['date'] == "last30days":
                 to_date = datetime.today()
-                from_date = to_date-timedelta(days=30)
+                from_date = to_date - timedelta(days=30)
 
             elif request.GET['date'] == "last90days":
                 to_date = datetime.today()
-                from_date = to_date-timedelta(days=90)
+                from_date = to_date - timedelta(days=90)
 
             elif request.GET['date'] == "last6weeks":
                 to_date = datetime.today()
-                from_date = to_date-timedelta(weeks=6)
+                from_date = to_date - timedelta(weeks=6)
 
             elif request.GET['date'] == "last3months":
                 to_date = datetime.today()
-                month_3_ago = to_date.month-3 if to_date.month > 3 else 12
+                month_3_ago = to_date.month - 3 if to_date.month > 3 else 12
                 last_year = to_date.year - 1
                 from_date = to_date.replace(month=month_3_ago)
                 if from_date > to_date:
@@ -547,7 +540,7 @@ class LeadsCatcherView(generics.ListAPIView):
 
             elif request.GET['date'] == "last6months":
                 to_date = datetime.today()
-                month_6_ago = to_date.month-6 if to_date.month > 6 else 12
+                month_6_ago = to_date.month - 6 if to_date.month > 6 else 12
                 last_year = to_date.year - 1
                 from_date = to_date.replace(month=month_6_ago)
                 if from_date > to_date:
@@ -555,20 +548,18 @@ class LeadsCatcherView(generics.ListAPIView):
 
             elif request.GET['date'] == "last12months":
                 to_date = datetime.today()
-                month_12_ago = to_date.month-12 if to_date.month > 12 else 12
+                month_12_ago = to_date.month - 12 if to_date.month > 12 else 12
                 last_year = to_date.year - 1
                 from_date = to_date.replace(month=month_12_ago)
                 if from_date > to_date:
                     from_date = from_date.replace(year=last_year)
-            elif request.GET['date']== "monthtodate":
+            elif request.GET['date'] == "monthtodate":
                 to_date = datetime.today()
                 from_date = to_date.replace(day=1)
 
-            elif request.GET['date']== "yeartodate":
+            elif request.GET['date'] == "yeartodate":
                 to_date = datetime.today()
-                from_date = to_date.replace(month=1,day=1)
-
-
+                from_date = to_date.replace(month=1, day=1)
 
             if request.GET['leadstatus'] == "openlead":
                 leadstatus = "openLead"
@@ -582,10 +573,13 @@ class LeadsCatcherView(generics.ListAPIView):
                 leadstatus = "forwardedLead"
             else:
                 leadstatus = "openLead"
-            queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__title__contains=title, lead_status=leadstatus,created_date_time__range=(from_date, to_date), campaign__assigned=request.user.id, leads=True)
-          
+            queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch) | Q(full_name__contains=toSearch),
+                                                        campaign__title__contains=title, lead_status=leadstatus,
+                                                        created_date_time__range=(from_date, to_date),
+                                                        campaign__assigned=request.user.id, leads=True)
 
-        elif len(params)==3:
+
+        elif len(params) == 3:
             if 'search' and 'leadstatus' and 'date' in params:
                 toSearch = request.GET['search']
 
@@ -604,23 +598,23 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 if request.GET['date'] == "last14days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=14)
+                    from_date = to_date - timedelta(days=14)
 
                 elif request.GET['date'] == "last30days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=30)
+                    from_date = to_date - timedelta(days=30)
 
                 elif request.GET['date'] == "last90days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=90)
+                    from_date = to_date - timedelta(days=90)
 
                 elif request.GET['date'] == "last6weeks":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(weeks=6)
+                    from_date = to_date - timedelta(weeks=6)
 
                 elif request.GET['date'] == "last3months":
                     to_date = datetime.today()
-                    month_3_ago = to_date.month-3 if to_date.month > 3 else 12
+                    month_3_ago = to_date.month - 3 if to_date.month > 3 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_3_ago)
                     if from_date > to_date:
@@ -628,7 +622,7 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 elif request.GET['date'] == "last6months":
                     to_date = datetime.today()
-                    month_6_ago = to_date.month-6 if to_date.month > 6 else 12
+                    month_6_ago = to_date.month - 6 if to_date.month > 6 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_6_ago)
                     if from_date > to_date:
@@ -636,20 +630,22 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 elif request.GET['date'] == "last12months":
                     to_date = datetime.today()
-                    month_12_ago = to_date.month-12 if to_date.month > 12 else 12
+                    month_12_ago = to_date.month - 12 if to_date.month > 12 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_12_ago)
                     if from_date > to_date:
                         from_date = from_date.replace(year=last_year)
-                elif request.GET['date']== "monthtodate":
+                elif request.GET['date'] == "monthtodate":
                     to_date = datetime.today()
                     from_date = to_date.replace(day=1)
 
-                elif request.GET['date']== "yeartodate":
+                elif request.GET['date'] == "yeartodate":
                     to_date = datetime.today()
-                    from_date = to_date.replace(month=1,day=1)
+                    from_date = to_date.replace(month=1, day=1)
 
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),lead_status=leadstatus,created_date_time__range=(from_date, to_date), campaign__assigned=request.user.id, leads=True)
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), lead_status=leadstatus,
+                    created_date_time__range=(from_date, to_date), campaign__assigned=request.user.id, leads=True)
 
             elif 'search' and 'date' and 'title' in params:
                 toSearch = request.GET['search']
@@ -657,23 +653,23 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 if request.GET['date'] == "last14days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=14)
+                    from_date = to_date - timedelta(days=14)
 
                 elif request.GET['date'] == "last30days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=30)
+                    from_date = to_date - timedelta(days=30)
 
                 elif request.GET['date'] == "last90days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=90)
+                    from_date = to_date - timedelta(days=90)
 
                 elif request.GET['date'] == "last6weeks":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(weeks=6)
+                    from_date = to_date - timedelta(weeks=6)
 
                 elif request.GET['date'] == "last3months":
                     to_date = datetime.today()
-                    month_3_ago = to_date.month-3 if to_date.month > 3 else 12
+                    month_3_ago = to_date.month - 3 if to_date.month > 3 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_3_ago)
                     if from_date > to_date:
@@ -681,7 +677,7 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 elif request.GET['date'] == "last6months":
                     to_date = datetime.today()
-                    month_6_ago = to_date.month-6 if to_date.month > 6 else 12
+                    month_6_ago = to_date.month - 6 if to_date.month > 6 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_6_ago)
                     if from_date > to_date:
@@ -689,20 +685,22 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 elif request.GET['date'] == "last12months":
                     to_date = datetime.today()
-                    month_12_ago = to_date.month-12 if to_date.month > 12 else 12
+                    month_12_ago = to_date.month - 12 if to_date.month > 12 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_12_ago)
                     if from_date > to_date:
                         from_date = from_date.replace(year=last_year)
-                elif request.GET['date']== "monthtodate":
+                elif request.GET['date'] == "monthtodate":
                     to_date = datetime.today()
                     from_date = to_date.replace(day=1)
 
-                elif request.GET['date']== "yeartodate":
+                elif request.GET['date'] == "yeartodate":
                     to_date = datetime.today()
-                    from_date = to_date.replace(month=1,day=1)
+                    from_date = to_date.replace(month=1, day=1)
 
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__title__contains=title,created_date_time__range=(from_date, to_date), campaign__assigned=request.user.id, leads=True)
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign__title__contains=title,
+                    created_date_time__range=(from_date, to_date), campaign__assigned=request.user.id, leads=True)
 
             elif 'search' and 'leadstatus' and 'title' in params:
                 toSearch = request.GET['search']
@@ -720,9 +718,11 @@ class LeadsCatcherView(generics.ListAPIView):
                     leadstatus = "forwardedLead"
                 else:
                     leadstatus = "openLead"
-    
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__title__contains=title,lead_status=leadstatus, campaign__assigned=request.user.id, leads=True)
-            
+
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign__title__contains=title,
+                    lead_status=leadstatus, campaign__assigned=request.user.id, leads=True)
+
             elif 'leadstatus' and 'date' and 'title' in params:
                 title = request.GET['title']
 
@@ -739,26 +739,25 @@ class LeadsCatcherView(generics.ListAPIView):
                 else:
                     leadstatus = "openLead"
 
-
                 if request.GET['date'] == "last14days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=14)
+                    from_date = to_date - timedelta(days=14)
 
                 elif request.GET['date'] == "last30days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=30)
+                    from_date = to_date - timedelta(days=30)
 
                 elif request.GET['date'] == "last90days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=90)
+                    from_date = to_date - timedelta(days=90)
 
                 elif request.GET['date'] == "last6weeks":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(weeks=6)
+                    from_date = to_date - timedelta(weeks=6)
 
                 elif request.GET['date'] == "last3months":
                     to_date = datetime.today()
-                    month_3_ago = to_date.month-3 if to_date.month > 3 else 12
+                    month_3_ago = to_date.month - 3 if to_date.month > 3 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_3_ago)
                     if from_date > to_date:
@@ -766,7 +765,7 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 elif request.GET['date'] == "last6months":
                     to_date = datetime.today()
-                    month_6_ago = to_date.month-6 if to_date.month > 6 else 12
+                    month_6_ago = to_date.month - 6 if to_date.month > 6 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_6_ago)
                     if from_date > to_date:
@@ -774,20 +773,22 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 elif request.GET['date'] == "last12months":
                     to_date = datetime.today()
-                    month_12_ago = to_date.month-12 if to_date.month > 12 else 12
+                    month_12_ago = to_date.month - 12 if to_date.month > 12 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_12_ago)
                     if from_date > to_date:
                         from_date = from_date.replace(year=last_year)
-                elif request.GET['date']== "monthtodate":
+                elif request.GET['date'] == "monthtodate":
                     to_date = datetime.today()
                     from_date = to_date.replace(day=1)
 
-                elif request.GET['date']== "yeartodate":
+                elif request.GET['date'] == "yeartodate":
                     to_date = datetime.today()
-                    from_date = to_date.replace(month=1,day=1)
+                    from_date = to_date.replace(month=1, day=1)
 
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=title,lead_status=leadstatus, created_date_time__range=(from_date, to_date),campaign__assigned=request.user.id, leads=True)
+                queryset = CampaignRecipient.objects.filter(campaign__title__contains=title, lead_status=leadstatus,
+                                                            created_date_time__range=(from_date, to_date),
+                                                            campaign__assigned=request.user.id, leads=True)
 
 
         elif len(params) == 2:
@@ -795,8 +796,10 @@ class LeadsCatcherView(generics.ListAPIView):
                 toSearch = request.GET['search']
                 title = request.GET['title']
 
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__title__contains=title, campaign__assigned=request.user.id, leads=True)
-            
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign__title__contains=title,
+                    campaign__assigned=request.user.id, leads=True)
+
             elif 'search' and "leadstatus" in params:
                 toSearch = request.GET['search']
                 if request.GET['leadstatus'] == "openlead":
@@ -812,9 +815,11 @@ class LeadsCatcherView(generics.ListAPIView):
                 else:
                     leadstatus = "openLead"
 
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch), lead_status=leadstatus, campaign__assigned=request.user.id, leads=True)
-            
-            
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), lead_status=leadstatus,
+                    campaign__assigned=request.user.id, leads=True)
+
+
             elif "title" and "leadstatus" in params:
 
                 title = request.GET['title']
@@ -830,31 +835,32 @@ class LeadsCatcherView(generics.ListAPIView):
                     leadstatus = "forwardedLead"
                 else:
                     leadstatus = "openLead"
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=title, lead_status=leadstatus, campaign__assigned=request.user.id, leads=True)
-                
+                queryset = CampaignRecipient.objects.filter(campaign__title__contains=title, lead_status=leadstatus,
+                                                            campaign__assigned=request.user.id, leads=True)
+
             elif "search" and "date" in params:
 
                 toSearch = request.GET['search']
 
                 if request.GET['date'] == "last14days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=14)
+                    from_date = to_date - timedelta(days=14)
 
                 elif request.GET['date'] == "last30days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=30)
+                    from_date = to_date - timedelta(days=30)
 
                 elif request.GET['date'] == "last90days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=90)
+                    from_date = to_date - timedelta(days=90)
 
                 elif request.GET['date'] == "last6weeks":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(weeks=6)
+                    from_date = to_date - timedelta(weeks=6)
 
                 elif request.GET['date'] == "last3months":
                     to_date = datetime.today()
-                    month_3_ago = to_date.month-3 if to_date.month > 3 else 12
+                    month_3_ago = to_date.month - 3 if to_date.month > 3 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_3_ago)
                     if from_date > to_date:
@@ -862,7 +868,7 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 elif request.GET['date'] == "last6months":
                     to_date = datetime.today()
-                    month_6_ago = to_date.month-6 if to_date.month > 6 else 12
+                    month_6_ago = to_date.month - 6 if to_date.month > 6 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_6_ago)
                     if from_date > to_date:
@@ -870,20 +876,22 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 elif request.GET['date'] == "last12months":
                     to_date = datetime.today()
-                    month_12_ago = to_date.month-12 if to_date.month > 12 else 12
+                    month_12_ago = to_date.month - 12 if to_date.month > 12 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_12_ago)
                     if from_date > to_date:
                         from_date = from_date.replace(year=last_year)
-                elif request.GET['date']== "monthtodate":
+                elif request.GET['date'] == "monthtodate":
                     to_date = datetime.today()
                     from_date = to_date.replace(day=1)
 
-                elif request.GET['date']== "yeartodate":
+                elif request.GET['date'] == "yeartodate":
                     to_date = datetime.today()
-                    from_date = to_date.replace(month=1,day=1)
+                    from_date = to_date.replace(month=1, day=1)
 
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),created_date_time__range=(from_date, to_date), campaign__assigned=request.user.id, leads=True)
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch),
+                    created_date_time__range=(from_date, to_date), campaign__assigned=request.user.id, leads=True)
 
             elif "title" and "date" in params:
 
@@ -891,23 +899,23 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 if request.GET['date'] == "last14days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=14)
+                    from_date = to_date - timedelta(days=14)
 
                 elif request.GET['date'] == "last30days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=30)
+                    from_date = to_date - timedelta(days=30)
 
                 elif request.GET['date'] == "last90days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=90)
+                    from_date = to_date - timedelta(days=90)
 
                 elif request.GET['date'] == "last6weeks":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(weeks=6)
+                    from_date = to_date - timedelta(weeks=6)
 
                 elif request.GET['date'] == "last3months":
                     to_date = datetime.today()
-                    month_3_ago = to_date.month-3 if to_date.month > 3 else 12
+                    month_3_ago = to_date.month - 3 if to_date.month > 3 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_3_ago)
                     if from_date > to_date:
@@ -915,7 +923,7 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 elif request.GET['date'] == "last6months":
                     to_date = datetime.today()
-                    month_6_ago = to_date.month-6 if to_date.month > 6 else 12
+                    month_6_ago = to_date.month - 6 if to_date.month > 6 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_6_ago)
                     if from_date > to_date:
@@ -923,24 +931,26 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 elif request.GET['date'] == "last12months":
                     to_date = datetime.today()
-                    month_12_ago = to_date.month-12 if to_date.month > 12 else 12
+                    month_12_ago = to_date.month - 12 if to_date.month > 12 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_12_ago)
                     if from_date > to_date:
                         from_date = from_date.replace(year=last_year)
-                elif request.GET['date']== "monthtodate":
+                elif request.GET['date'] == "monthtodate":
                     to_date = datetime.today()
                     from_date = to_date.replace(day=1)
 
-                elif request.GET['date']== "yeartodate":
+                elif request.GET['date'] == "yeartodate":
                     to_date = datetime.today()
-                    from_date = to_date.replace(month=1,day=1)
+                    from_date = to_date.replace(month=1, day=1)
 
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=title,created_date_time__range=(from_date, to_date), campaign__assigned=request.user.id, leads=True)
+                queryset = CampaignRecipient.objects.filter(campaign__title__contains=title,
+                                                            created_date_time__range=(from_date, to_date),
+                                                            campaign__assigned=request.user.id, leads=True)
 
             elif "leadstatus" and "date" in params:
                 if request.GET['leadstatus'] == "openlead":
-                        leadstatus = "openLead"
+                    leadstatus = "openLead"
                 elif request.GET['leadstatus'] == "wonlead":
                     leadstatus = "wonLead"
                 elif request.GET['leadstatus'] == "lostlead":
@@ -954,23 +964,23 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 if request.GET['date'] == "last14days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=14)
+                    from_date = to_date - timedelta(days=14)
 
                 elif request.GET['date'] == "last30days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=30)
+                    from_date = to_date - timedelta(days=30)
 
                 elif request.GET['date'] == "last90days":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(days=90)
+                    from_date = to_date - timedelta(days=90)
 
                 elif request.GET['date'] == "last6weeks":
                     to_date = datetime.today()
-                    from_date = to_date-timedelta(weeks=6)
+                    from_date = to_date - timedelta(weeks=6)
 
                 elif request.GET['date'] == "last3months":
                     to_date = datetime.today()
-                    month_3_ago = to_date.month-3 if to_date.month > 3 else 12
+                    month_3_ago = to_date.month - 3 if to_date.month > 3 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_3_ago)
                     if from_date > to_date:
@@ -978,7 +988,7 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 elif request.GET['date'] == "last6months":
                     to_date = datetime.today()
-                    month_6_ago = to_date.month-6 if to_date.month > 6 else 12
+                    month_6_ago = to_date.month - 6 if to_date.month > 6 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_6_ago)
                     if from_date > to_date:
@@ -986,31 +996,36 @@ class LeadsCatcherView(generics.ListAPIView):
 
                 elif request.GET['date'] == "last12months":
                     to_date = datetime.today()
-                    month_12_ago = to_date.month-12 if to_date.month > 12 else 12
+                    month_12_ago = to_date.month - 12 if to_date.month > 12 else 12
                     last_year = to_date.year - 1
                     from_date = to_date.replace(month=month_12_ago)
                     if from_date > to_date:
                         from_date = from_date.replace(year=last_year)
-                elif request.GET['date']== "monthtodate":
+                elif request.GET['date'] == "monthtodate":
                     to_date = datetime.today()
                     from_date = to_date.replace(day=1)
 
-                elif request.GET['date']== "yeartodate":
+                elif request.GET['date'] == "yeartodate":
                     to_date = datetime.today()
-                    from_date = to_date.replace(month=1,day=1)
+                    from_date = to_date.replace(month=1, day=1)
 
-                queryset = CampaignRecipient.objects.filter(lead_status=leadstatus,created_date_time__range=(from_date, to_date), campaign__assigned=request.user.id, leads=True)
+                queryset = CampaignRecipient.objects.filter(lead_status=leadstatus,
+                                                            created_date_time__range=(from_date, to_date),
+                                                            campaign__assigned=request.user.id, leads=True)
 
         elif len(params) == 1:
             if "search" in params:
                 toSearch = request.GET['search']
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch), campaign__assigned=request.user.id, leads=True)
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign__assigned=request.user.id,
+                    leads=True)
             elif "title" in params:
                 title = request.GET['title']
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=title, campaign__assigned=request.user.id, leads=True) 
-            elif  "leadstatus" in params:
+                queryset = CampaignRecipient.objects.filter(campaign__title__contains=title,
+                                                            campaign__assigned=request.user.id, leads=True)
+            elif "leadstatus" in params:
                 if request.GET['leadstatus'] == "openlead":
-                        leadstatus = "openLead"
+                    leadstatus = "openLead"
                 elif request.GET['leadstatus'] == "wonlead":
                     leadstatus = "wonLead"
                 elif request.GET['leadstatus'] == "lostlead":
@@ -1021,95 +1036,97 @@ class LeadsCatcherView(generics.ListAPIView):
                     leadstatus = "forwardedLead"
                 else:
                     leadstatus = "openLead"
-                queryset = CampaignRecipient.objects.filter(lead_status=leadstatus,campaign__assigned=request.user.id, leads=True)     
+                queryset = CampaignRecipient.objects.filter(lead_status=leadstatus, campaign__assigned=request.user.id,
+                                                            leads=True)
 
             elif "date" in params:
-                try: 
+                try:
                     if request.GET['date'] == "last14days":
                         to_date = datetime.today()
-                        from_date = to_date-timedelta(days=14)
+                        from_date = to_date - timedelta(days=14)
 
                     elif request.GET['date'] == "last30days":
                         to_date = datetime.today()
-                        from_date = to_date-timedelta(days=30)
+                        from_date = to_date - timedelta(days=30)
 
                     elif request.GET['date'] == "last90days":
                         to_date = datetime.today()
-                        from_date = to_date-timedelta(days=90)
+                        from_date = to_date - timedelta(days=90)
 
                     elif request.GET['date'] == "last6weeks":
                         to_date = datetime.today()
-                        from_date = to_date-timedelta(weeks=6)
+                        from_date = to_date - timedelta(weeks=6)
 
                     elif request.GET['date'] == "last3months":
                         to_date = datetime.today()
-                        month_3_ago = to_date.month-3 if to_date.month > 3 else 12
+                        month_3_ago = to_date.month - 3 if to_date.month > 3 else 12
                         last_year = to_date.year - 1
                         from_date = to_date.replace(month=month_3_ago)
                         if from_date > to_date:
                             from_date = from_date.replace(year=last_year)
 
                     elif request.GET['date'] == "last6months":
-                       to_date = datetime.today()
-                       month_6_ago = to_date.month-6 if to_date.month > 6 else 12
-                       last_year = to_date.year - 1
-                       from_date = to_date.replace(month=month_6_ago)
-                       if from_date > to_date:
-                           from_date = from_date.replace(year=last_year)
+                        to_date = datetime.today()
+                        month_6_ago = to_date.month - 6 if to_date.month > 6 else 12
+                        last_year = to_date.year - 1
+                        from_date = to_date.replace(month=month_6_ago)
+                        if from_date > to_date:
+                            from_date = from_date.replace(year=last_year)
 
                     elif request.GET['date'] == "last12months":
                         to_date = datetime.today()
-                        month_12_ago = to_date.month-12 if to_date.month > 12 else 12
+                        month_12_ago = to_date.month - 12 if to_date.month > 12 else 12
                         last_year = to_date.year - 1
                         from_date = to_date.replace(month=month_12_ago)
                         if from_date > to_date:
                             from_date = from_date.replace(year=last_year)
-                    elif request.GET['date']== "monthtodate":
+                    elif request.GET['date'] == "monthtodate":
                         to_date = datetime.today()
                         from_date = to_date.replace(day=1)
 
-                    elif request.GET['date']== "yeartodate":
+                    elif request.GET['date'] == "yeartodate":
                         to_date = datetime.today()
-                        from_date = to_date.replace(month=1,day=1) 
-                        
-                    queryset = CampaignRecipient.objects.filter(created_date_time__range=(from_date, to_date),campaign__assigned=request.user.id, leads=True)     
+                        from_date = to_date.replace(month=1, day=1)
+
+                    queryset = CampaignRecipient.objects.filter(created_date_time__range=(from_date, to_date),
+                                                                campaign__assigned=request.user.id, leads=True)
                 except Exception as E:
                     print('E', E)
         else:
-            queryset = CampaignRecipient.objects.filter(leads=True,campaign__assigned=request.user.id)
-        campEmailserializer = CampaignEmailSerializer(queryset, many = True)
+            queryset = CampaignRecipient.objects.filter(leads=True, campaign__assigned=request.user.id)
+        campEmailserializer = CampaignEmailSerializer(queryset, many=True)
         return Response(campEmailserializer.data)
-
 
 
 class TrackEmailOpen(APIView):
     permission_classes = (permissions.AllowAny,)
+
     def get(self, request, format=None, id=None):
         full_url = settings.SITE_URL + request.get_full_path()
         tracking_result = pytracking.get_open_tracking_result(
-            full_url, base_open_tracking_url = settings.SITE_URL + "/campaign/email/open/")
+            full_url, base_open_tracking_url=settings.SITE_URL + "/campaign/email/open/")
 
         trackData = tracking_result.metadata
 
-        camp = Campaign.objects.get(id = trackData["campaign"])
+        camp = Campaign.objects.get(id=trackData["campaign"])
 
-        campEmail = CampaignRecipient.objects.get(id = trackData["campEmailId"])
+        campEmail = CampaignRecipient.objects.get(id=trackData["campEmailId"])
         campEmail.opens = True
         campEmail.leads = True
         campEmail.save()
-        return Response({"message":"Saved Successfully"})
+        return Response({"message": "Saved Successfully"})
 
 
 class TrackEmailClick(APIView):
     permission_classes = (permissions.IsAuthenticated,)
+
     def get(self, request, format=None, id=None):
-        
         tracking_result = pytracking.get_open_tracking_result(
             full_url, base_click_tracking_url="https://trackingdomain.com/path/")
         full_url = settings.SITE_URL + request.get_full_path()
 
         tracking_result = pytracking.get_open_tracking_result(
-            full_url, base_click_tracking_url= settings.SITE_URL + "/campaign/email/click/")
+            full_url, base_click_tracking_url=settings.SITE_URL + "/campaign/email/click/")
 
         # full_url = settings.SITE_URL + request.get_full_path()
 
@@ -1130,19 +1147,17 @@ class TrackEmailClick(APIView):
         # if camp.trackOpens:
         #     counttracking = countTracking + 1
 
-     
-        return Response({"message":"Saved Successfully"})
+        return Response({"message": "Saved Successfully"})
 
 
 class GetCampaignOverview(APIView):
-
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, pk, format=None):
         postdata = request.data
 
         campEmail = CampaignRecipient.objects.filter(campaign=pk)
-        campEmailserializer = CampaignEmailSerializer(campEmail, many = True)
+        campEmailserializer = CampaignEmailSerializer(campEmail, many=True)
         resp = {
             "recipientCount": campEmail.count(),
             "leadCount": 0,
@@ -1162,61 +1177,61 @@ class GetCampaignOverview(APIView):
             "replyPer": 0,
             "unsubscribeCount": 0,
             "unsubscribePer": 0,
-            }
+        }
         for campData in campEmailserializer.data:
             if campData["leads"]:
                 resp["leadCount"] = resp["leadCount"] + 1
 
-                if campData["lead_status"]=="openLead":
-                    resp["openLeadCount"] = resp["openLeadCount"] + 1                 
-                if campData["lead_status"]=="wonLead":
+                if campData["lead_status"] == "openLead":
+                    resp["openLeadCount"] = resp["openLeadCount"] + 1
+                if campData["lead_status"] == "wonLead":
                     resp["wonLeadCount"] = resp["wonLeadCount"] + 1
-                if campData["lead_status"]=="lostLead":
+                if campData["lead_status"] == "lostLead":
                     resp["lostLeadCount"] = resp["lostLeadCount"] + 1
-                if campData["lead_status"]=="ignoredLead":
+                if campData["lead_status"] == "ignoredLead":
                     resp["ignoredLeadCount"] = resp["ignoredLeadCount"] + 1
-                
-                resp["openLeadPer"] = round((resp["openLeadCount"]*100)/resp["leadCount"], 2)
-                resp["wonLeadPer"] = round((resp["wonLeadCount"]*100)/resp["leadCount"], 2)
-                resp["lostLeadPer"] = round((resp["lostLeadCount"]*100)/resp["leadCount"], 2)
-                resp["ignoredLeadPer"] = round((resp["ignoredLeadCount"]*100)/resp["leadCount"], 2)
+
+                resp["openLeadPer"] = round((resp["openLeadCount"] * 100) / resp["leadCount"], 2)
+                resp["wonLeadPer"] = round((resp["wonLeadCount"] * 100) / resp["leadCount"], 2)
+                resp["lostLeadPer"] = round((resp["lostLeadCount"] * 100) / resp["leadCount"], 2)
+                resp["ignoredLeadPer"] = round((resp["ignoredLeadCount"] * 100) / resp["leadCount"], 2)
             if campData["sent"]:
                 resp["sentCount"] += 1
-            resp["sentPer"] = round((resp["sentCount"]*100)/resp["recipientCount"], 2)
+            resp["sentPer"] = round((resp["sentCount"] * 100) / resp["recipientCount"], 2)
             if campData["opens"]:
                 resp["openCount"] += 1
-            resp["openPer"] = round((resp["openCount"]*100)/resp["recipientCount"], 2)
+            resp["openPer"] = round((resp["openCount"] * 100) / resp["recipientCount"], 2)
             if campData["replies"]:
                 resp["replyCount"] += 1
-            resp["replyPer"] = round((resp["replyCount"]*100)/resp["recipientCount"], 2)
+            resp["replyPer"] = round((resp["replyCount"] * 100) / resp["recipientCount"], 2)
             if campData["unsubscribe"]:
                 resp["unsubscribeCount"] += 1
-            resp["unsubscribePer"] = round((resp["unsubscribeCount"]*100)/resp["recipientCount"], 2)
+            resp["unsubscribePer"] = round((resp["unsubscribeCount"] * 100) / resp["recipientCount"], 2)
         return Response(resp)
-    
+
 
 class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
-
     """  For View  all Recipients """
 
     permission_classes = (permissions.IsAuthenticated,)
 
-    def get(self, request, pk, *args,**kwargs):
+    def get(self, request, pk, *args, **kwargs):
         params = list(dict(request.GET).keys())
         """
         These filter are pending
         Recipients with problem, customized message, has clicked,
         has out-of-office reply, you replied,has not clicked, you have not replied 
         """
-        if ['search','tofilter'] in params:
+        if ['search', 'tofilter'] in params:
             toSearch = request.GET['search']
-            tofilter=request.GET['tofilter']
+            tofilter = request.GET['tofilter']
             if request.GET['tofilter'] == 'paused_reciepent':
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,reciepent_status=False)    
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, reciepent_status=False)
             elif request.GET['tofilter'] == 'leads':
-                choice=request.GET['choice']
+                choice = request.GET['choice']
                 if request.GET['choice'] == "openlead":
-                        choice = "openLead"
+                    choice = "openLead"
                 elif request.GET['choice'] == "wonlead":
                     choice = "wonLead"
                 elif request.GET['choice'] == "lostlead":
@@ -1225,35 +1240,45 @@ class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
                     choice = "ignoreLead"
                 else:
                     choice = "none"
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,leads=True,lead_status=choice) 
-            elif request.GET['tofilter']  == 'was_sent_message':
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,sent=True) 
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, leads=True,
+                    lead_status=choice)
+            elif request.GET['tofilter'] == 'was_sent_message':
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, sent=True)
             elif request.GET['tofilter'] == 'has_opened':
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,opens=True) 
-            # elif request.GET['tofilter'] == 'has_clicked':
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, opens=True)
+                # elif request.GET['tofilter'] == 'has_clicked':
             #     queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,opens=True) 
             elif request.GET['tofilter'] == 'has_replied':
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,replies=True)
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, replies=True)
             elif request.GET['tofilter'] == 'has_bounced':
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,bounces=True)
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, bounces=True)
             elif request.GET['tofilter'] == 'has_unsubscribed':
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,unsubscribe=True)
-            elif request.GET['tofilter']  == 'was_not_sent_messagese':
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,sent=False) 
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, unsubscribe=True)
+            elif request.GET['tofilter'] == 'was_not_sent_messagese':
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, sent=False)
             elif request.GET['tofilter'] == 'has_not_opened':
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,opens=False) 
-            # elif request.GET['tofilter'] == 'has_not_clicked':
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, opens=False)
+                # elif request.GET['tofilter'] == 'has_not_clicked':
             #     queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,opens=False) 
             elif request.GET['tofilter'] == 'has_not_replied':
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,replies=False)
+                queryset = CampaignRecipient.objects.filter(
+                    Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, replies=False)
         elif 'tofilter' in params:
-            tofilter=request.GET['tofilter']
+            tofilter = request.GET['tofilter']
             if request.GET['tofilter'] == 'paused_reciepent':
-                queryset = CampaignRecipient.objects.filter(campaign=pk,reciepent_status=False)    
+                queryset = CampaignRecipient.objects.filter(campaign=pk, reciepent_status=False)
             elif request.GET['tofilter'] == 'leads':
-                choice=request.GET['choice']
+                choice = request.GET['choice']
                 if request.GET['choice'] == "openlead":
-                        choice = "openLead"
+                    choice = "openLead"
                 elif request.GET['choice'] == "wonlead":
                     choice = "wonLead"
                 elif request.GET['choice'] == "lostlead":
@@ -1262,88 +1287,86 @@ class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
                     choice = "ignoreLead"
                 else:
                     choice = "none"
-                queryset = CampaignRecipient.objects.filter(campaign=pk,leads=True,lead_status=choice) 
-            elif request.GET['tofilter']  == 'was_sent_message':
-                queryset = CampaignRecipient.objects.filter(campaign=pk,sent=True) 
+                queryset = CampaignRecipient.objects.filter(campaign=pk, leads=True, lead_status=choice)
+            elif request.GET['tofilter'] == 'was_sent_message':
+                queryset = CampaignRecipient.objects.filter(campaign=pk, sent=True)
             elif request.GET['tofilter'] == 'has_opened':
-                queryset = CampaignRecipient.objects.filter(campaign=pk,opens=True) 
-            # elif request.GET['tofilter'] == 'has_clicked':
+                queryset = CampaignRecipient.objects.filter(campaign=pk, opens=True)
+                # elif request.GET['tofilter'] == 'has_clicked':
             #     queryset = CampaignRecipient.objects.filter(campaign=pk,opens=True) 
             elif request.GET['tofilter'] == 'has_replied':
-                queryset = CampaignRecipient.objects.filter(campaign=pk,replies=True)
+                queryset = CampaignRecipient.objects.filter(campaign=pk, replies=True)
             elif request.GET['tofilter'] == 'has_bounced':
-                queryset = CampaignRecipient.objects.filter(campaign=pk,bounces=True)
+                queryset = CampaignRecipient.objects.filter(campaign=pk, bounces=True)
             elif request.GET['tofilter'] == 'has_unsubscribed':
-                queryset = CampaignRecipient.objects.filter(campaign=pk,unsubscribe=True)
-            elif request.GET['tofilter']  == 'was_not_sent_messagese':
-                queryset = CampaignRecipient.objects.filter(campaign=pk,sent=False) 
+                queryset = CampaignRecipient.objects.filter(campaign=pk, unsubscribe=True)
+            elif request.GET['tofilter'] == 'was_not_sent_messagese':
+                queryset = CampaignRecipient.objects.filter(campaign=pk, sent=False)
             elif request.GET['tofilter'] == 'has_not_opened':
-                queryset = CampaignRecipient.objects.filter(campaign=pk,opens=False) 
-            # elif request.GET['tofilter'] == 'has_not_clicked':
+                queryset = CampaignRecipient.objects.filter(campaign=pk, opens=False)
+                # elif request.GET['tofilter'] == 'has_not_clicked':
             #     queryset = CampaignRecipient.objects.filter(campaign=pk,opens=False) 
             elif request.GET['tofilter'] == 'has_not_replied':
-                queryset = CampaignRecipient.objects.filter(campaign=pk,replies=False)    
+                queryset = CampaignRecipient.objects.filter(campaign=pk, replies=False)
 
         elif 'search' in params:
             toSearch = request.GET['search']
-            queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk)
+            queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch) | Q(full_name__contains=toSearch),
+                                                        campaign=pk)
 
         else:
             queryset = CampaignRecipient.objects.filter(campaign=pk)
-        campEmailserializer = CampaignEmailSerializer(queryset, many = True)
+        campEmailserializer = CampaignEmailSerializer(queryset, many=True)
         return Response(campEmailserializer.data)
 
 
 class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
-
     permission_classes = (permissions.IsAuthenticated,)
     queryset = ""
     serializer_class = CampaignEmailSerializer
 
-    def get_object(self,request,pk):
+    def get_object(self, request, pk):
 
-        try:        
-            return CampaignRecipient.objects.get(id = pk)
+        try:
+            return CampaignRecipient.objects.get(id=pk)
         except CampaignRecipient.DoesNotExist:
-            return Response({'message':'Reciepent does not exist',"success":False})
+            return Response({'message': 'Reciepent does not exist', "success": False})
 
     def put(self, request, pk, format=None):
 
-        queryset = self.get_object(request,pk)
+        queryset = self.get_object(request, pk)
         queryset.leads = True
         queryset.save()
         data_serializer = CampaignEmailSerializer(queryset)
         SendSlackMessage(data_serializer.data)
-        return Response({"message":"Lead Updated successfully","success":True})
-
+        return Response({"message": "Lead Updated successfully", "success": True})
 
     def delete(self, request, pk, format=None):
         queryset = self.get_object(request, pk)
         queryset.delete()
-        return Response({'success':True,"status":status.HTTP_200_OK})
+        return Response({'success': True, "status": status.HTTP_200_OK})
 
 
 class CampaignleadCatcher(generics.CreateAPIView):
-
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = CampaignLeadCatcherSerializer
 
     def post(self, request, format=None):
-        
+
         # for data in request.data:
         try:
-            already_exist_lead_catcher = CampaignLeadCatcher.objects.get(campaign = request.data['campaign'])
+            already_exist_lead_catcher = CampaignLeadCatcher.objects.get(campaign=request.data['campaign'])
         # if not already_exist_lead_catcher:
         except:
             request.data['assigned'] = request.user.id
-            serializer = CampaignLeadCatcherSerializer(data = request.data)
+            serializer = CampaignLeadCatcherSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response({"success":True,"message":"leadcatcher settings created"})
+                return Response({"success": True, "message": "leadcatcher settings created"})
             else:
-                return Response({"success":False, "status":serializer.errors})
-        return Response({"success":False,"message":"leadcatcher for this campaign already exist"})
-        
+                return Response({"success": False, "status": serializer.errors})
+        return Response({"success": False, "message": "leadcatcher for this campaign already exist"})
+
 
 class LeadCatcherView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -1355,32 +1378,29 @@ class LeadCatcherView(generics.ListAPIView):
             serializer = CampaignLeadCatcherSerializer(queryset)
             return Response(serializer.data)
         except:
-            return Response({"message":"lead catcher not available "})
+            return Response({"message": "lead catcher not available "})
 
 
 class LeadCatcherUpdateView(generics.RetrieveUpdateDestroyAPIView):
-    
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = CampaignLeadCatcherSerializer
-        
-    
-    def put(self, request,pk,format=None):
+
+    def put(self, request, pk, format=None):
         queryset = CampaignLeadCatcher.objects.get(id=pk)
         request.data['assigned'] = request.user.id
         serializer = CampaignLeadCatcherSerializer(queryset, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({"message":"Data Updated successful","success":True})
+            return Response({"message": "Data Updated successful", "success": True})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request,pk,format=None):
+    def delete(self, request, pk, format=None):
         queryset = CampaignLeadCatcher.objects.get(id=pk)
         queryset.delete()
-        return Response({"success":True,"status":status.HTTP_200_OK})
-        
+        return Response({"success": True, "status": status.HTTP_200_OK})
+
 
 class CampaignMessages(generics.RetrieveUpdateAPIView):
-
     permission_classes = (permissions.IsAuthenticated,)
     queryset = CampaignRecipient.objects.all()
     serializer_class = CampaignEmailSerializer
@@ -1393,28 +1413,32 @@ class CampaignMessages(generics.RetrieveUpdateAPIView):
         normal = CampaignRecipient.objects.filter(campaign=pk)
         for nrml in normal:
             serilizer = CampaignEmailSerializer(nrml)
-            normallist.append({'id':serilizer.data['id'],'subject':serilizer.data['subject'],'email_body':serilizer.data['email_body']})
+            normallist.append({'id': serilizer.data['id'], 'subject': serilizer.data['subject'],
+                               'email_body': serilizer.data['email_body']})
         alldata['normal'] = normallist[0]
 
         follow_up_list = []
         followup = FollowUpEmail.objects.filter(campaign=pk)
         for follow_up in followup:
             serilizer = FollowUpSerializer(follow_up)
-            follow_up_list.append({'id':serilizer.data['id'],'subject':serilizer.data['subject'],'email_body':serilizer.data['email_body']})
+            follow_up_list.append({'id': serilizer.data['id'], 'subject': serilizer.data['subject'],
+                                   'email_body': serilizer.data['email_body']})
         alldata['followup'] = follow_up_list[0]
 
         drip_list = []
         drip = DripEmailModel.objects.filter(campaign=pk)
         for drip_mail in drip:
             serilizer = DripEmailSerilizer(drip_mail)
-            drip_list.append({'id':serilizer.data['id'],'subject':serilizer.data['subject'],'email_body':serilizer.data['email_body']})
+            drip_list.append({'id': serilizer.data['id'], 'subject': serilizer.data['subject'],
+                              'email_body': serilizer.data['email_body']})
         alldata['drip'] = drip_list[0]
 
         onclick_list = []
         on_click = EmailOnLinkClick.objects.filter(campaign=pk)
         for onclick in on_click:
             serilizer = OnclickSerializer(onclick)
-            onclick_list.append({'id':serilizer.data['id'],'subject':serilizer.data['subject'],'email_body':serilizer.data['email_body']})
+            onclick_list.append({'id': serilizer.data['id'], 'subject': serilizer.data['subject'],
+                                 'email_body': serilizer.data['email_body']})
         alldata['on_click'] = onclick_list[0]
 
         return Response(alldata)
@@ -1433,7 +1457,7 @@ class CampaignMessages(generics.RetrieveUpdateAPIView):
             if normalemailserilize.is_valid():
                 normalemailserilize.save()
             else:
-                return Response({"error":campEmailSave.errors})
+                return Response({"error": campEmailSave.errors})
 
         followup = FollowUpEmail.objects.filter(id=request.data['followup']['id'])
         for follow_up in followup:
@@ -1445,7 +1469,7 @@ class CampaignMessages(generics.RetrieveUpdateAPIView):
             if followupserilize.is_valid():
                 followupserilize.save()
             else:
-                return Response({"error2":followupserilize.errors})
+                return Response({"error2": followupserilize.errors})
 
         dripmail = DripEmailModel.objects.filter(id=request.data['drip']['id'])
         for drip_mail in dripmail:
@@ -1457,7 +1481,7 @@ class CampaignMessages(generics.RetrieveUpdateAPIView):
             if dripmailserilize.is_valid():
                 dripmailserilize.save()
             else:
-                return Response({"error2":dripmailserilize.errors})
+                return Response({"error2": dripmailserilize.errors})
 
         onlinkclickmail = EmailOnLinkClick.objects.filter(id=request.data['on_click']['id'])
         for on_click in onlinkclickmail:
@@ -1468,494 +1492,73 @@ class CampaignMessages(generics.RetrieveUpdateAPIView):
             onlinkclickserilize = OnclickSerializer(on_click, data=onlinkclickmaildata)
             if onlinkclickserilize.is_valid():
                 onlinkclickserilize.save()
-                return Response({"message":"Data updated successfully"})
+                return Response({"message": "Data updated successfully"})
             else:
-                return Response({"error2":onlinkclickserilize.errors})
+                return Response({"error2": onlinkclickserilize.errors})
+
 
 class ProspectsView(generics.ListAPIView):
-
     permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = ProspectsSerializer
 
-    def get(self, request, *args,**kwargs):
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        return CampaignRecipient.objects.filter(campaign__assigned=user.id, is_delete=False)
 
-        params = list(dict(request.GET).keys())
+    # def get(self, request, *args, **kwargs):
+    #
+    #     params = list(dict(request.GET).keys())
+    #
+    #     queryset = CampaignRecipient.objects.filter(campaign__assigned=request.user.id, is_delete=False)
+    #
+    #     counts_data = {
+    #         "total_count": 0,
+    #         "in_campaign_count": 0,
+    #         "leads_count": 0,
+    #         "unsubscribe": 0,
+    #         'bounced': 0,
+    #         "engaged": 0,
+    #     }
+    #     resp = [counts_data]
+    #
+    #     for recep in queryset:
+    #         counts_data["total_count"] += 1
+    #         counts_data["in_campaign_count"] += 1
+    #         if recep.leads:
+    #             counts_data["leads_count"] += 1
+    #         if recep.unsubscribe:
+    #             counts_data["unsubscribe"] += 1
+    #         if recep.bounces:
+    #             counts_data["bounced"] += 1
+    #         if recep.bounces:
+    #             counts_data["engaged"] += 1
+    #
+    #         data = {
+    #             "id": recep.id,
+    #             "email": recep.email,
+    #             "name": recep.full_name,
+    #             "created": recep.created_date_time.strftime("%B %d, %Y"),
+    #             "status": recep.lead_status,
+    #             "campaign_count": CampaignRecipient.objects.filter(email=recep.email).distinct('campaign').count(),
+    #             "sent": CampaignRecipient.objects.filter(campaign__in=Campaign.objects.filter(
+    #                 id__in=CampaignRecipient.objects.filter(email=recep.email).values_list('campaign').distinct(
+    #                     'campaign')), sent=True).count()
+    #         }
+    #
+    #         resp.append(data)
+    #
+    #     return Response(resp)
 
-        if ("filter" in params) and ("choice" in params):
-
-            tofilter = request.GET['filter']
-            choice = request.GET["choice"]
-
-            if tofilter == "is_paused":
-                if choice == 'yes':
-                    choice = False
-                elif choice == 'no':
-                    choice = True
-                else:
-                    choice = False
-                queryset = CampaignRecipient.objects.filter(reciepent_status=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "do_not_contact":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(unsubscribe=choice, campaign__assigned=request.user.id, is_delete=False)
-            
-            elif tofilter == "has_opened":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(opens=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "has_clicked":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(has_link_clicked=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "has_replied":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(replies=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "status":
-                if choice == "lead":
-                    queryset = CampaignRecipient.objects.filter(leads = True, campaign__assigned=request.user.id, is_delete=False)
-
-                elif choice == "openlead" or choice == "wonlead" or choice == "lostlead" or choice == "ignoredlead":
-                    queryset = CampaignRecipient.objects.filter(leads = True, campaign__assigned=request.user.id, is_delete=False)
-            else:
-                queryset = CampaignRecipient.objects.filter(campaign__assigned=request.user.id, is_delete=False)
-        elif "search" in params:
-            toSearch = request.GET['search']
-            queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__assigned=request.user.id, is_delete=False)
-        
-        elif "bycompany" in params:
-            ByCompany = request.GET["bycompany"]
-            queryset = CampaignRecipient.objects.filter(company_name=ByCompany,campaign__assigned=request.user.id, is_delete=False)
-        
-        elif "bycampaign" in params:
-            ByCampaign = request.GET['bycampaign']
-            queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,campaign__assigned=request.user.id, is_delete=False)
-
-        elif ("search" in params) and ("filter" in params):
-            toSearch = request.GET['search']
-            tofilter = request.GET['filter']
-            choice = request.GET["choice"]
-            if tofilter == "is_paused":
-                if choice == 'yes':
-                    choice = False
-                elif choice == 'no':
-                    choice = True
-                else:
-                    choice = False
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),reciepent_status=choice,campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "do_not_contact":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),unsubscribe=choice, campaign__assigned=request.user.id, is_delete=False)
-            
-            elif tofilter == "has_opened":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),opens=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "has_clicked":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),has_link_clicked=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "has_replied":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),replies=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "status":
-                if choice == "lead":
-                    queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),leads = True, campaign__assigned=request.user.id, is_delete=False)
-                elif choice == "openlead" or choice == "wonlead" or choice == "lostlead" or choice == "ignoredlead":
-                    queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),leads = True, campaign__assigned=request.user.id, is_delete=False)
-            
-            else:
-                queryset = CampaignRecipient.objects.filter(campaign__assigned=request.user.id, is_delete=False)
-
-        elif ("bycampaign" in params) and ("bycompany" in params):
-            ByCampaign = request.GET['bycampaign']
-            ByCompany = request.GET["bycompany"]
-            queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,company_name=ByCompany,campaign__assigned=request.user.id, is_delete=False)
-
-        elif ("filter" in params) and ("bycompany" in params):
-            ByCompany = request.GET["bycompany"]
-            tofilter = request.GET['filter']
-            choice = request.GET["choice"]
-            if tofilter == "is_paused":
-                if choice == 'yes':
-                    choice = False
-                elif choice == 'no':
-                    choice = True
-                else:
-                    choice = False
-                queryset = CampaignRecipient.objects.filter(company_name=ByCompany,reciepent_status=choice,campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "do_not_contact":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(company_name=ByCompany,unsubscribe=choice, campaign__assigned=request.user.id, is_delete=False)
-            
-            elif tofilter == "has_opened":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(company_name=ByCompany,opens=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "has_clicked":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(company_name=ByCompany,has_link_clicked=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "has_replied":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(company_name=ByCompany,replies=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "status":
-                if choice == "lead":
-                    queryset = CampaignRecipient.objects.filter(company_name=ByCompany,leads = True, campaign__assigned=request.user.id, is_delete=False)
-                elif choice == "openlead" or choice == "wonlead" or choice == "lostlead" or choice == "ignoredlead":
-                    queryset = CampaignRecipient.objects.filter(company_name=ByCompany,leads = True, campaign__assigned=request.user.id, is_delete=False)
-
-        elif ("filter" in params) and ("bycampaign" in params):
-            ByCampaign = request.GET['bycampaign']
-            tofilter = request.GET['filter']
-            choice = request.GET["choice"]
-            if tofilter == "is_paused":
-                if choice == 'yes':
-                    choice = False
-                elif choice == 'no':
-                    choice = True
-                else:
-                    choice = False
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,reciepent_status=choice,campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "do_not_contact":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,unsubscribe=choice, campaign__assigned=request.user.id, is_delete=False)
-            
-            elif tofilter == "has_opened":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,opens=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "has_clicked":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,has_link_clicked=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "has_replied":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,replies=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "status":
-                if choice == "lead":
-                    queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,leads = True, campaign__assigned=request.user.id, is_delete=False)
-                elif choice == "openlead" or choice == "wonlead" or choice == "lostlead" or choice == "ignoredlead":
-                    queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,leads = True, campaign__assigned=request.user.id, is_delete=False)
-
-        elif ("search" in params) and ("bycompany" in params):
-            toSearch = request.GET['search']
-            ByCompany = request.GET['bycompany']
-            queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),company_name=ByCompany,campaign__assigned=request.user.id, is_delete=False)
-
-        elif ("search" in params) and ("bycampaign" in params):
-            ByCampaign = request.GET['bycampaign']
-            toSearch = request.GET['search']
-            queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__title__contains=ByCampaign,campaign__assigned=request.user.id, is_delete=False)
-
-        elif ("search" in params) and ("bycampaign" in params) and ("bycompany" in params):
-            toSearch = request.GET['search']
-            ByCampaign = request.GET['bycampaign']
-            ByCompany = request.GET["bycompany"]
-            queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign__title__contains=ByCampaign,company_name=ByCompany,campaign__assigned=request.user.id, is_delete=False)
-
-        elif ("filter" in params) and ("bycampaign" in params) and ("bycompany" in params):
-            ByCampaign = request.GET['bycampaign']
-            ByCompany = request.GET["bycompany"]
-            tofilter = request.GET['filter']
-            choice = request.GET["choice"]
-            if tofilter == "is_paused":
-                if choice == 'yes':
-                    choice = False
-                elif choice == 'no':
-                    choice = True
-                else:
-                    choice = False
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,company_name=ByCompany,reciepent_status=choice,campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "do_not_contact":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,company_name=ByCompany,unsubscribe=choice, campaign__assigned=request.user.id, is_delete=False)
-            
-            elif tofilter == "has_opened":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,company_name=ByCompany,opens=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "has_clicked":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,company_name=ByCompany,has_link_clicked=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "has_replied":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,company_name=ByCompany,replies=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "status":
-                if choice == "lead":
-                    queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,company_name=ByCompany,leads = True, campaign__assigned=request.user.id, is_delete=False)
-                elif choice == "openlead" or choice == "wonlead" or choice == "lostlead" or choice == "ignoredlead":
-                    queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,company_name=ByCompany,leads = True, campaign__assigned=request.user.id, is_delete=False)
-        
-        elif ("search" in params) and ("filter" in params) and ("bycompany" in params):  
-            toSearch = request.GET['search']
-            ByCompany = request.GET["bycompany"]
-            tofilter = request.GET['filter']
-            choice = request.GET["choice"]  
-            if tofilter == "is_paused":
-                if choice == 'yes':
-                    choice = False
-                elif choice == 'no':
-                    choice = True
-                else:
-                    choice = False
-                queryset = CampaignRecipient.objects.filter(company_name=ByCompany,reciepent_status=choice,campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "do_not_contact":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(company_name=ByCompany,unsubscribe=choice, campaign__assigned=request.user.id, is_delete=False)
-            
-            elif tofilter == "has_opened":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(company_name=ByCompany,opens=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "has_clicked":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(company_name=ByCompany,has_link_clicked=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "has_replied":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(company_name=ByCompany,replies=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "status":
-                if choice == "lead":
-                    queryset = CampaignRecipient.objects.filter(company_name=ByCompany,leads = True, campaign__assigned=request.user.id, is_delete=False)
-                elif choice == "openlead" or choice == "wonlead" or choice == "lostlead" or choice == "ignoredlead":
-                    queryset = CampaignRecipient.objects.filter(company_name=ByCompany,leads = True, campaign__assigned=request.user.id, is_delete=False)
-
-        elif ("search" in params) and ("filter" in params) and ("bycampaign" in params):  
-            toSearch = request.GET['search']
-            ByCampaign = request.GET['bycampaign']
-            tofilter = request.GET['filter']
-            choice = request.GET["choice"]  
-            if tofilter == "is_paused":
-                if choice == 'yes':
-                    choice = False
-                elif choice == 'no':
-                    choice = True
-                else:
-                    choice = False
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,reciepent_status=choice,campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "do_not_contact":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,unsubscribe=choice, campaign__assigned=request.user.id, is_delete=False)
-            
-            elif tofilter == "has_opened":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,opens=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "has_clicked":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,has_link_clicked=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "has_replied":
-                if choice == 'yes':
-                    choice = True
-                elif choice == 'no':
-                    choice = False
-                else:
-                    choice = True
-                queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,replies=choice, campaign__assigned=request.user.id, is_delete=False)
-
-            elif tofilter == "status":
-                if choice == "lead":
-                    queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,leads = True, campaign__assigned=request.user.id, is_delete=False)
-                elif choice == "openlead" or choice == "wonlead" or choice == "lostlead" or choice == "ignoredlead":
-                    queryset = CampaignRecipient.objects.filter(campaign__title__contains=ByCampaign,leads = True, campaign__assigned=request.user.id, is_delete=False)
-
-        else:
-            queryset = CampaignRecipient.objects.filter(campaign__assigned=request.user.id, is_delete=False)
-        
-
-        counts_data = {
-            "total_count": 0,
-            "in_campaign_count": 0,
-            "leads_count": 0,
-            "unsubscribe": 0,
-            'bounced':0,
-            "engaged":0,
-        }
-        resp = [counts_data]
-
-        for recep in queryset:
-            counts_data["total_count"] += 1
-            counts_data["in_campaign_count"] += 1
-            if recep.leads:
-                counts_data["leads_count"] += 1
-            if recep.unsubscribe:
-                counts_data["unsubscribe"] += 1
-            if recep.bounces:
-                counts_data["bounced"] += 1
-            if recep.bounces:
-                counts_data["engaged"] += 1
-
-
-            data = {
-                "id": recep.id,
-                "email": recep.email,
-                "name": recep.full_name,
-                "created": recep.created_date_time.strftime("%B %d, %Y"),
-                "status": recep.lead_status,
-                "campaign_count": CampaignRecipient.objects.filter(email=recep.email).distinct('campaign').count(),
-                "sent": CampaignRecipient.objects.filter(campaign__in = Campaign.objects.filter(id__in = CampaignRecipient.objects.filter(email=recep.email).values_list('campaign').distinct('campaign')), sent=True).count()
-            }
-            
-            resp.append(data)
-
-        return Response(resp)
-
-
-    def delete(self, request, format=None):
+    def delete(self, request):
         recp_to_delete = CampaignRecipient.objects.filter(id__in=request.data["recp_ids"]).update(is_delete=True)
-        return Response({"message":"Successfully Deleted","success":True})
-        
+        return Response({"message": "Successfully Deleted", "success": True})
+
 
 class ProspectsCampaignView(generics.ListAPIView):
-
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, pk, *args, **kwargs):
@@ -1963,42 +1566,41 @@ class ProspectsCampaignView(generics.ListAPIView):
 
         queryset = CampaignRecipient.objects.filter(email=email_for_campaigns.email, is_delete=False)
         resp = []
-        
+
         for queryset in queryset:
             data = {
                 'campaign_id': queryset.campaign.id,
                 'reciepent_email': queryset.email,
-                'campaign_title':queryset.campaign.title,
-                'added': Campaign.objects.filter(id=queryset.campaign.id).values_list("created_date_time")[0][0].strftime("%B %d, %Y"),
+                'campaign_title': queryset.campaign.title,
+                'added': Campaign.objects.filter(id=queryset.campaign.id).values_list("created_date_time")[0][
+                    0].strftime("%B %d, %Y"),
                 'sent_in_a_camp': CampaignRecipient.objects.filter(campaign=queryset.campaign.id, sent=True).count(),
-                'lead_status':queryset.lead_status,
-                'opens':CampaignRecipient.objects.filter(campaign=queryset.campaign.id, opens=True).count(),
-                'replies':CampaignRecipient.objects.filter(campaign=queryset.campaign.id, replies=True).count(),
+                'lead_status': queryset.lead_status,
+                'opens': CampaignRecipient.objects.filter(campaign=queryset.campaign.id, opens=True).count(),
+                'replies': CampaignRecipient.objects.filter(campaign=queryset.campaign.id, replies=True).count(),
             }
-       
+
             resp.append(data)
 
         return Response(resp)
 
-    
-
 
 class RecipientUnsubcribe(generics.UpdateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = UnsubscribeEmailSerializers     
+    serializer_class = UnsubscribeEmailSerializers
 
     def put(self, request, format=None):
-        recipient_id =request.data["recipient_id"]
+        recipient_id = request.data["recipient_id"]
         for id in recipient_id:
-            recipient = CampaignRecipient.objects.get(id = id)
-            recipient.unsubscribe=True
+            recipient = CampaignRecipient.objects.get(id=id)
+            recipient.unsubscribe = True
             recipient.save()
             print(recipient.email)
             data = {
-                "email" : recipient.email,
-                "full_name" : recipient.full_name,
+                "email": recipient.email,
+                "full_name": recipient.full_name,
                 "mail_account": recipient.campaign.from_address.email,
-                'user':request.user.id
+                'user': request.user.id
             }
             print(data)
             serializer = UnsubscribeEmailSerializers(data=data)
@@ -2006,51 +1608,49 @@ class RecipientUnsubcribe(generics.UpdateAPIView):
                 serializer.save()
             else:
                 return Response(serializer.errors)
-        return Response({"message":"unsubscribe update successfully","status":True})
-     
+        return Response({"message": "unsubscribe update successfully", "status": True})
+
+
 class RecipientUnassignedView(generics.UpdateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = CampaignEmailSerializer     
+    serializer_class = CampaignEmailSerializer
 
     def put(self, request, format=None):
         recipient_id = request.data["recipient_id"]
         for id in recipient_id:
-            recipient = CampaignRecipient.objects.get(id = id)
-            recipient.assigned=False
+            recipient = CampaignRecipient.objects.get(id=id)
+            recipient.assigned = False
             recipient.save()
             serializer = CampaignEmailSerializer(data=recipient)
             if serializer.is_valid():
                 serializer.save()
-        return Response({"message":"recipient unassigned successfully"})
-
-
+        return Response({"message": "recipient unassigned successfully"})
 
 
 class AddLabelView(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = CampaignLabelSerilizer
+    serializer_class = CampaignLabelSerializer
 
-    def post(self,request,*args,**kwargs):
+    def post(self, request, *args, **kwargs):
         request.data['user'] = request.user.id
-        serializer = CampaignLabelSerilizer(data = request.data)
+        serializer = CampaignLabelSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({"message":"label added successfully","success":True})
-        return Response({"message":serializer.errors,"success":False})
-    
-    def get(self,request,*args,**kwargs):
+            return Response({"message": "label added successfully", "success": True})
+        return Response({"message": serializer.errors, "success": False})
+
+    def get(self, request, *args, **kwargs):
         queryset = CampaignLabel.objects.all()
-        serializer = CampaignLabelSerilizer(queryset, many=True)
-        return Response({"data":serializer.data,"success":True})
+        serializer = CampaignLabelSerializer(queryset, many=True)
+        return Response({"data": serializer.data, "success": True})
+
 
 class LeadCatcherStatusUpdateView(generics.RetrieveUpdateAPIView):
-
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = CampaignEmailSerializer
 
-
-    def put(self, request,*args,**kwargs):
-        eamil_ids =  request.data["eamil_ids"]
+    def put(self, request, *args, **kwargs):
+        eamil_ids = request.data["eamil_ids"]
         lead_status = request.data['lead_status']
         recipient = CampaignRecipient.objects.filter(id__in=eamil_ids).update(lead_status=lead_status)
-        return Response({"message":"Lead Updated successfully","success":True})
+        return Response({"message": "Lead Updated successfully", "success": True})

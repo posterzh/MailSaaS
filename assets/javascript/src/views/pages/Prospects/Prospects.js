@@ -44,7 +44,7 @@ const tableTitle = [
 		value: 'Created',
 	},
 	{
-		key: 'status',
+		key: 'lead_status',
 		value: 'Status',
 	},
 	{
@@ -58,10 +58,6 @@ const tableTitle = [
 	{
 		key: 'engaged',
 		value: 'Engaged',
-	},
-	{
-		key: 'tasks',
-		value: 'Tasks',
 	},
 ];
 
@@ -120,7 +116,9 @@ class Prospects extends Component {
 		];
 
 		const { importContactsModal, detailModal } = this.state;
-		const { counts, recipients } = this.props;
+		const { recipients } = this.props;
+
+		const counts = {}
 
 		return (
 			<div className="prospect-main-container">
@@ -257,7 +255,6 @@ class Prospects extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	counts: state.prospects.counts,
 	recipients: state.prospects.recipients,
 });
 

@@ -1,19 +1,19 @@
 import {
-    FILTER_RECIPIENTS
+  FILTER_RECIPIENTS
 } from "../../redux/actionType/actionType"
 import Api from "../api/api"
 
 export const filterRecipients = (filter) => (dispatch) => {
-    const token = localStorage.getItem("access_token");
-    Api.FilterRecipients(filter, token)
+  const token = localStorage.getItem("access_token");
+  Api.FilterRecipients(filter, token)
     .then((response) => {
-        dispatch({
-            type: FILTER_RECIPIENTS,
-            payload: response.data,
-        });
+      dispatch({
+        type: FILTER_RECIPIENTS,
+        payload: response.data,
+      });
     })
     .catch((error) => {
-        toastOnError(error);
+      toastOnError(error);
     });
 };
 
