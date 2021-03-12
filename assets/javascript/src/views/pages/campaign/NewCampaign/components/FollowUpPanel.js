@@ -31,7 +31,7 @@ export default class FollowUpPanel extends React.Component {
               <Col md={2} className="WaitDiv">
                 <label className="filter_app_new">Wait X days</label>
                 <br></br>
-                <input
+                <Input
                   value={this.state.waitDays}
                   onChange={(e) => {
                     this.setState({ waitDays: e.target.value });
@@ -39,7 +39,7 @@ export default class FollowUpPanel extends React.Component {
                   }}
                   type="number"
                   className="WaitInput"
-                ></input>
+                ></Input>
               </Col>
             </Row>
             <Row className="mt-3">
@@ -53,6 +53,7 @@ export default class FollowUpPanel extends React.Component {
                 className="in"
                 name="subject"
                 placeholder="Subject"
+                required
               />
             </Row>
             <Row className="mt-3">

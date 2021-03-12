@@ -29,7 +29,7 @@ class CampaignStart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: 0,
+      activeTab: 3,
     };
 
     this.tabs = ["START", "RECIPIENT", "COMPOSE", "PREVIEW", "OPTIONS", "SEND"];
@@ -53,6 +53,7 @@ class CampaignStart extends React.Component {
 
   render() {
     const { activeTab } = this.state;
+    const { campaign } = this.props;
     return (
       <>
         <PageHeader
@@ -61,7 +62,7 @@ class CampaignStart extends React.Component {
           showStatus={false}
         />
 
-        <PageContainer title="New Campaign">
+        <PageContainer title={activeTab == 0? "New Campaign": campaign.title}>
           <Row>
             <Col md={8} className="mx-auto">
               <Row>
@@ -104,4 +105,8 @@ class CampaignStart extends React.Component {
   }
 }
 
-export default connect()(CampaignStart);
+const mapStateToProps = (state) => ({
+  campaign: state.campaign,
+});
+
+export default connect(mapStateToProps)(CampaignStart);

@@ -34,7 +34,7 @@ class TheCompose extends Component {
   onAddFollowUp = () => {
     this.setState((state) => {
       const index = state.followUpList.length;
-      let newFollowUp = { index, subject: "", email_body: "" };
+      let newFollowUp = { index, subject: "", email_body: "<p>Hi</p>" };
       const followUpList = state.followUpList.concat(newFollowUp);
       return {
         ...state,
@@ -56,7 +56,7 @@ class TheCompose extends Component {
   onAddDrip = () => {
     this.setState((state) => {
       const index = state.dripList.length;
-      let newFollowUp = { index, subject: "", email_body: "" };
+      let newFollowUp = { index, subject: "", email_body: "<p>Hi</p>" };
       const dripList = state.dripList.concat(newFollowUp);
       return {
         ...state,
