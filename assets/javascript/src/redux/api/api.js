@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../../Constants'
+
 const Api = {}
 // for register
 Api.RegisterApi = (user) => {
@@ -14,15 +15,21 @@ Api.LogoutApi = () => {
   return axios.post(`${API_BASE_URL}/rest-auth/logout/`)
 }
 // for prospects filter
-Api.FilterRecipients = (data, token) => {
-  return axios({
-    method: 'GET',
-    url: `${API_BASE_URL}/campaign/prospects/`,
-    data,
+Api.FilterRecipients = (params, token) => {
+  return axios.get(`${API_BASE_URL}/campaign/prospects/`, { 
+    params,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
   })
+  // return axios({
+  //   method: 'GET',
+  //   url: `${API_BASE_URL}/campaign/prospects/`,
+  //   params,
+  //   headers: {
+  //     "Authorization": `Bearer ${token}`,
+  //   }
+  // })
 }
 
 // for prospects count

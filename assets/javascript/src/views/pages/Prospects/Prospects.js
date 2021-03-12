@@ -105,6 +105,36 @@ class Prospects extends Component {
 		this.setState({ detailModal: false });
 	}
 
+	onTotalClick = () => {
+		this.setState({ selected: 'total' })
+		this.props.filterRecipients();
+	}
+
+	onInCampaignClick = () => {
+		this.setState({ selected: 'in-campaign' })
+		this.props.filterRecipients();
+	}
+
+	onEngagedClick = () => {
+		this.setState({ selected: 'engaged' })
+		this.props.filterRecipients({engaged: true});
+	}
+
+	onLeadsClick = () => {
+		this.setState({ selected: 'leads' })
+		this.props.filterRecipients({leads: true});
+	}
+
+	onBouncesClick = () => {
+		this.setState({ selected: 'bounces' })
+		this.props.filterRecipients({bounces: true});
+	}
+
+	onUnsubscribesClick = () => {
+		this.setState({ selected: 'unsubscribes' })
+		this.props.filterRecipients({unsubscribe: true});
+	}
+
 	render() {
 		const filters = [
 			{
@@ -129,7 +159,7 @@ class Prospects extends Component {
 				/>
 				<PageContainer title={"Prospect"} showHelper={false}>
 					<Row>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'total' }) }}>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={ this.onTotalClick }>
 							<Card className={this.state.selected === 'total' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
@@ -141,7 +171,7 @@ class Prospects extends Component {
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'in-campaign' }) }}>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={ this.onInCampaignClick }>
 							<Card className={this.state.selected === 'in-campaign' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
@@ -153,7 +183,7 @@ class Prospects extends Component {
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'engaged' }) }}>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={this.onEngagedClick}>
 							<Card className={this.state.selected === 'engaged' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
@@ -165,7 +195,7 @@ class Prospects extends Component {
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'leads' }) }}>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={ this.onLeadsClick }>
 							<Card className={this.state.selected === 'leads' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
@@ -177,7 +207,7 @@ class Prospects extends Component {
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'bounces' }) }}>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={ this.onBouncesClick }>
 							<Card className={this.state.selected === 'bounces' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
@@ -189,7 +219,7 @@ class Prospects extends Component {
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={() => { this.setState({ selected: 'unsubscribes' }) }}>
+						<Col md="2" sm="4" className="sidenav-toggler" onClick={ this.onUnsubscribesClick }>
 							<Card className={this.state.selected === 'unsubscribes' ? "bg-info" : "bg-light"}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
