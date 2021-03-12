@@ -69,6 +69,7 @@ export const FAILURE_MAIL_ACCOUNT_UPDATE = "FAILURE_MAIL_ACCOUNT_UPDATE";
 
 // Filter Recipients
 export const FILTER_RECIPIENTS = "FILTER_RECIPIENTS"
+export const COUNT_RECIPIENTS = "COUNT_RECIPIENTS"
 
 // Karl - Will remove later
 // ****************************************************************

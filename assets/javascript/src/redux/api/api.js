@@ -25,6 +25,17 @@ Api.FilterRecipients = (data, token) => {
   })
 }
 
+// for prospects count
+Api.CountRecipients = (token) => {
+  return axios({
+    method: 'GET',
+    url: `${API_BASE_URL}/campaign/prospects/count`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+
 Api.StartCampaignApi = (data, token) => {
   return axios({
     method: 'POST',

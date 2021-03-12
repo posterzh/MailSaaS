@@ -51,27 +51,25 @@ class ProspectsSerializer(serializers.ModelSerializer):
     created = serializers.SerializerMethodField()
     status = serializers.CharField(source='lead_status')
     campaign_count = serializers.SerializerMethodField()
-    sent = serializers.SerializerMethodField()
-    engaged = serializers.SerializerMethodField()
+    sent_count = serializers.SerializerMethodField()
+    engaged_count = serializers.SerializerMethodField()
 
     class Meta:
         model = CampaignRecipient
-        fields = ('email', 'name', 'created', 'status', 'campaign_count', 'sent')
+        fields = '__all__'
+        # fields = ('email', 'name', 'created', 'status', 'campaign_count', 'sent', 'engaged')
 
     def get_created(self, obj):
         return obj.created_date_time.strftime("%B %d, %Y")
 
     def get_campaign_count(self, obj):
-        model = self.Meta.model
-        campaign_count = model.objects.filter(email=obj.email).distinct('campaign').count()
+        campaign_count = CampaignRecipient.objects.filter(email=obj.email).distinct('campaign').count()
         return campaign_count
 
-    def get_sent(self, obj):
-        model = self.Meta.model
-        sent = model.objects.filter(email=obj.email, sent=True).count()
+    def get_sent_count(self, obj):
+        sent = CampaignRecipient.objects.filter(email=obj.email, sent=True).count()
         return sent
 
-    def get_engaged(self, obj):
-        model = self.Meta.model
-        engaged = model.objects.filter(email=obj.email, engaged=True).count()
+    def get_engaged_count(self, obj):
+        engaged = CampaignRecipient.objects.filter(email=obj.email, engaged=True).count()
         return engaged

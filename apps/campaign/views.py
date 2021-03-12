@@ -13,7 +13,7 @@ from django.core.mail import EmailMultiAlternatives, send_mail
 from django.db.models import Q
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-# from django_filters import rest_framework as filters
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -1500,6 +1500,8 @@ class CampaignMessages(generics.RetrieveUpdateAPIView):
 class ProspectsView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ProspectsSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['engaged', 'leads', 'bounces', 'unsubscribe']
 
     def get_queryset(self):
         """
@@ -1509,53 +1511,31 @@ class ProspectsView(generics.ListAPIView):
         user = self.request.user
         return CampaignRecipient.objects.filter(campaign__assigned=user.id, is_delete=False)
 
-    # def get(self, request, *args, **kwargs):
-    #
-    #     params = list(dict(request.GET).keys())
-    #
-    #     queryset = CampaignRecipient.objects.filter(campaign__assigned=request.user.id, is_delete=False)
-    #
-    #     counts_data = {
-    #         "total_count": 0,
-    #         "in_campaign_count": 0,
-    #         "leads_count": 0,
-    #         "unsubscribe": 0,
-    #         'bounced': 0,
-    #         "engaged": 0,
-    #     }
-    #     resp = [counts_data]
-    #
-    #     for recep in queryset:
-    #         counts_data["total_count"] += 1
-    #         counts_data["in_campaign_count"] += 1
-    #         if recep.leads:
-    #             counts_data["leads_count"] += 1
-    #         if recep.unsubscribe:
-    #             counts_data["unsubscribe"] += 1
-    #         if recep.bounces:
-    #             counts_data["bounced"] += 1
-    #         if recep.bounces:
-    #             counts_data["engaged"] += 1
-    #
-    #         data = {
-    #             "id": recep.id,
-    #             "email": recep.email,
-    #             "name": recep.full_name,
-    #             "created": recep.created_date_time.strftime("%B %d, %Y"),
-    #             "status": recep.lead_status,
-    #             "campaign_count": CampaignRecipient.objects.filter(email=recep.email).distinct('campaign').count(),
-    #             "sent": CampaignRecipient.objects.filter(campaign__in=Campaign.objects.filter(
-    #                 id__in=CampaignRecipient.objects.filter(email=recep.email).values_list('campaign').distinct(
-    #                     'campaign')), sent=True).count()
-    #         }
-    #
-    #         resp.append(data)
-    #
-    #     return Response(resp)
-
     def delete(self, request):
-        recp_to_delete = CampaignRecipient.objects.filter(id__in=request.data["recp_ids"]).update(is_delete=True)
+        CampaignRecipient.objects.filter(id__in=request.data["recp_ids"]).update(is_delete=True)
         return Response({"message": "Successfully Deleted", "success": True})
+
+
+class ProspectsCountView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        user = self.request.user
+        total = CampaignRecipient.objects.filter(campaign__assigned=user.id, is_delete=False).count()
+        in_campaign = CampaignRecipient.objects.filter(campaign__assigned=user.id, is_delete=False).count()
+        engaged = CampaignRecipient.objects.filter(campaign__assigned=user.id, engaged=True, is_delete=False).count()
+        leads = CampaignRecipient.objects.filter(campaign__assigned=user.id, leads=True, is_delete=False).count()
+        bounces = CampaignRecipient.objects.filter(campaign__assigned=user.id, bounces=True, is_delete=False).count()
+        unsubscribes = CampaignRecipient.objects.filter(campaign__assigned=user.id, unsubscribe=True, is_delete=False).count()
+
+        return Response({
+            'total': total,
+            'in_campaign': in_campaign,
+            'engaged': engaged,
+            'leads': leads,
+            'bounces': bounces,
+            'unsubscribes': unsubscribes
+        })
 
 
 class ProspectsCampaignView(generics.ListAPIView):

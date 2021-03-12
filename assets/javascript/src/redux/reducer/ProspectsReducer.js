@@ -1,9 +1,11 @@
 import {
-  FILTER_RECIPIENTS
+  FILTER_RECIPIENTS,
+  COUNT_RECIPIENTS,
 } from "../actionType/actionType";
 
 const initialState = {
   recipients: [],
+  counts: [],
 };
 
 export const prospectsReducer = (state = initialState, action) => {
@@ -13,6 +15,11 @@ export const prospectsReducer = (state = initialState, action) => {
         ...state,
         recipients: action.payload.results,
       };
+    case COUNT_RECIPIENTS:
+      return {
+        ...state,
+        counts: action.payload
+      }
     default:
       return state;
   }
