@@ -20,6 +20,18 @@ export default class FollowUpPanel extends React.Component {
           <Col md={12} className="alignRight">
             <Row>
               <h1 className="display-6">Follow-ups</h1>
+              {onDelete && 
+                <div
+                  className="btn btn-outline-warning btn-sm"
+                  style={{position: 'absolute', right: 0, top: 10}}
+                  onClick={() => onDelete(index)}
+                >
+                  <i style={{ padding: 5 }} className="fa">
+                    &#xf014;
+                  </i>
+                  DELETE
+                </div>
+              }
             </Row>
             <Row>
               <p style={{ fontSize: "14px" }}>
@@ -30,9 +42,8 @@ export default class FollowUpPanel extends React.Component {
             <Row>
               <Col md={2} className="WaitDiv">
                 <label className="filter_app_new">Wait X days</label>
-                <br></br>
                 <Input
-                  value={this.state.waitDays}
+                  defaultValue={data.waitDays}
                   onChange={(e) => {
                     this.setState({ waitDays: e.target.value });
                     data.waitDays = e.target.value;
@@ -44,7 +55,7 @@ export default class FollowUpPanel extends React.Component {
             </Row>
             <Row className="mt-3">
               <Input
-                value={this.state.subject}
+                value={data.subject}
                 onChange={(e) => {
                   this.setState({ subject: e.target.value });
                   data.subject = e.target.value;
@@ -56,19 +67,10 @@ export default class FollowUpPanel extends React.Component {
                 required
               />
             </Row>
-            <Row className="mt-3">
+            <Row>
               <Col className="p-0">
-                <div
-                  className="btn btn-outline-warning btn-sm "
-                  onClick={() => onDelete(index)}
-                >
-                  <i style={{ padding: 5 }} className="fa">
-                    &#xf014;
-                  </i>
-                  DELETE
-                </div>
                 <ReactQuill
-                  value={this.state.email_body}
+                  value={data.email_body}
                   onChange={(value) => {
                     this.setState({ email_body: value });
                     data.email_body = value;
