@@ -1,8 +1,8 @@
-import { CAMPAIGN_START, CAMPAIGN_RECIPIENT, CAMPAIGN_COMPOSE } from "../actionType/actionType";
+import { CAMPAIGN_START, CAMPAIGN_RECIPIENT, CAMPAIGN_COMPOSE, CAMPAIGN_OPTIONS } from "../actionType/actionType";
 
 const initialState = {
   title: "",
-  fromAddress: "",
+  from_address: "",
 };
 
 export const campaignReducer = (state = initialState, action) => {
@@ -25,6 +25,12 @@ export const campaignReducer = (state = initialState, action) => {
         normal: action.payload.normal,
         follow_up: action.payload.follow_up,
         drips: action.payload.drips
+      };
+    case CAMPAIGN_OPTIONS:
+      return {
+        ...state,
+        track_Opens: action.payload.track_Opens,
+        terms_and_laws: action.payload.terms_and_laws
       };
     default:
       return state;
