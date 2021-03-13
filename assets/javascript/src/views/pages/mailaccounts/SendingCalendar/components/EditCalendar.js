@@ -22,7 +22,6 @@ export default class EditCalendar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mail_account: "",
       check_state: 0,
       start_time: "",
       end_time: "",
@@ -47,22 +46,7 @@ export default class EditCalendar extends Component {
 
     return (
       <>
-        <FormGroup>
-          <label className="form-control-label" htmlFor="mail_account">
-            Mail account
-          </label>
-          <Input
-            id="mail_account"
-            name="mail_account"
-            type="select"
-            onChange={this.handleChange}
-          >
-            <option>test1@gmail.com</option>
-            <option>test2@gmail.com</option>
-          </Input>
-        </FormGroup>
-
-        <FormGroup className="mb-2">
+        <FormGroup className="mt-4 mb-2">
           <div>
             <label className="form-control-label">Blocked out days</label>
           </div>
