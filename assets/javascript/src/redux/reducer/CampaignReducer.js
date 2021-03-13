@@ -1,4 +1,4 @@
-import { CAMPAIGN_START, CAMPAIGN_RECIPIENT, CAMPAIGN_COMPOSE, CAMPAIGN_OPTIONS } from "../actionType/actionType";
+import { CAMPAIGN_START, CAMPAIGN_RECIPIENT, CAMPAIGN_COMPOSE, CAMPAIGN_OPTIONS, CAMPAIGN_SEND } from "../actionType/actionType";
 
 const initialState = {
   title: "",
@@ -31,6 +31,10 @@ export const campaignReducer = (state = initialState, action) => {
         ...state,
         track_Opens: action.payload.track_Opens,
         terms_and_laws: action.payload.terms_and_laws
+      };
+    case CAMPAIGN_SEND:
+      return {
+        ...state
       };
     default:
       return state;

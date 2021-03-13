@@ -17,36 +17,26 @@ import {
   CampaignSaveAction,
 } from "../../../../redux/action/CampaignAction";
 
+import { parseCSVRow } from './components/csvfile';
+
+import { campaignSend } from "../../../../redux/action/CampaignActions";
+
 export class TheSend extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
-  componentDidMount() {}
   createCampaign = (e) => {
-    e.preventDefault();
-  };
-  campaignPause = (e) => {
     e.preventDefault();
   };
 
   onPrev = () => {
-    // some validation
-
     // call parent method
     this.props.onPrev();
   };
 
-  onNext = () => {
-    // some validation
-
-    // call parent method
-    this.props.onNext();
-  };
-
   render() {
-    const { onPrev, onNext } = this.props;
-    const { sendData } = this.props;
+    const { onPrev, campaign } = this.props;
     return (
       <>
         <Row>
@@ -58,7 +48,7 @@ export class TheSend extends Component {
         </Row>
 
         <Row className="my-3">
-          <Col md={2} className="d-flex flex-column mx-auto">
+          <Col md={4} className="d-flex flex-column mx-auto">
             <div className="my-2">
               <Button
                 color="danger"
@@ -69,22 +59,11 @@ export class TheSend extends Component {
                 Create Campaign
               </Button>
             </div>
-
-            <div className="my-2">
-              <Button
-                color="default"
-                type="button"
-                className="w-100"
-                onClick={this.campaignPause}
-              >
-                Pause Campaign
-              </Button>
-            </div>
           </Col>
         </Row>
 
         <Row>
-          <Col md={7} className="mx-auto">
+          <Col className="mx-auto">
             <Card>
               <CardHeader>
                 <h2 className="mb-0">From address</h2>
@@ -95,7 +74,7 @@ export class TheSend extends Component {
                     <h4>Sending account :</h4>
                   </Col>
                   <Col md={9}>
-                    <h4>{sendData && sendData.from_address}</h4>
+                    <h4>{campaign.from_address}</h4>
                   </Col>
                 </Row>
                 <Row>
@@ -103,37 +82,34 @@ export class TheSend extends Component {
                     <h4>Full name :</h4>
                   </Col>
                   <Col md={9}>
-                    <h4>{sendData && sendData.full_name}</h4>
+                    <h4>{campaign.full_name}</h4>
                   </Col>
                 </Row>
               </CardBody>
             </Card>
           </Col>
         </Row>
-
         <Row>
-          <Col md={7} className="mx-auto">
+          <Col className="mx-auto p-0">
             <Card>
               <CardHeader>
                 <h2 className="mb-0">Recipients</h2>
               </CardHeader>
               <CardBody>
-                <span>1 recipient will be sent this campaign immediately</span>
-                <Row>
+                {
                   <ul>
-                    {sendData &&
-                      sendData.recipients.map((item, index) => {
-                        return <li key={index}>{item}</li>;
-                      })}
+                    {campaign.first_row && parseCSVRow(campaign.first_row).map((e, i) => (
+                        <li key={i}>{e.value}: {campaign.first_row[e.key]}</li>
+                      ))}
                   </ul>
-                </Row>
+                }
               </CardBody>
             </Card>
           </Col>
         </Row>
 
         <Row>
-          <Col md={7} className="mx-auto">
+          <Col className="mx-auto">
             <Card>
               <CardHeader>
                 <h2 className="mb-0">Messages</h2>
@@ -142,36 +118,31 @@ export class TheSend extends Component {
                 <span>Initial campaign email :</span>
                 <Row style={{ fontSize: 14 }}>
                   <ul>
-                    {sendData &&
-                      sendData.campEamil.map((item, index) => {
-                        return <li key={index}>{item}</li>;
+                    {campaign.normal &&
+                      Object.keys(campaign.normal).map((key, index) => {
+                        return <li key={index}>{campaign.normal[key]}</li>;
                       })}
                   </ul>
                 </Row>
                 <span>Follow-up campaign email :</span>
                 <Row style={{ fontSize: 14 }}>
                   <ul>
-                    {sendData &&
-                      sendData.follow_up.map((item, index) => {
-                        return <li key={index}>{item}</li>;
+                    {campaign.follow_up &&
+                      campaign.follow_up.map((item) => {
+                        return Object.keys(item).map((key, index) => {
+                          return <li key={index}>{item[key]}</li>;
+                        });
                       })}
                   </ul>
                 </Row>
                 <span>Drip campaign email :</span>
                 <Row style={{ fontSize: 14 }}>
                   <ul>
-                    {sendData &&
-                      sendData.drip.map((item, index) => {
-                        return <li key={index}>{item}</li>;
-                      })}
-                  </ul>
-                </Row>
-                <span>OnLinkClick campaign email :</span>
-                <Row style={{ fontSize: 14 }}>
-                  <ul>
-                    {sendData &&
-                      sendData.onLinkClick.map((item, index) => {
-                        return <li key={index}>{item}</li>;
+                    {campaign.drips &&
+                      campaign.drips.map((item) => {
+                        Object.keys(item).map((key, index) => {
+                          return <li key={index}>{item[key]}</li>;
+                        });
                       })}
                   </ul>
                 </Row>
@@ -190,30 +161,14 @@ export class TheSend extends Component {
               </Button>
             )}
           </Col>
-          <Col className="text-right">
-            {onNext && (
-              <Button color="danger" type="button" onClick={this.onNext}>
-                NEXT <i className="fa fa-arrow-right" aria-hidden="true"></i>
-              </Button>
-            )}
-          </Col>
         </Row>
       </>
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    sendData:
-      state.CampaignCreateReducer && state.CampaignCreateReducer.sendData,
-  };
-};
-const mapDispatchToProps = (dispatch) => ({
-  CampaignCreateAction: (CampId) => {
-    dispatch(CampaignCreateAction(CampId));
-  },
-  CampaignSaveAction: (saveData, CampId) => {
-    dispatch(CampaignSaveAction(saveData, CampId));
-  },
+
+const mapStateToProps = (state) => ({
+  campaign: state.campaign,
 });
-export default connect(mapStateToProps, mapDispatchToProps)(TheSend);
+
+export default connect(mapStateToProps, campaignSend)(TheSend);
