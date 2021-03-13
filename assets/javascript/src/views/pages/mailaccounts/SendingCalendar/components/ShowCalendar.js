@@ -22,7 +22,6 @@ export default class ShowCalendar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mail_account: "test@gmail.com",
       check_state: 5,
       start_time: "9:00 AM",
       end_time: "5:00 PM",
@@ -47,21 +46,6 @@ export default class ShowCalendar extends Component {
 
     return (
       <>
-        <FormGroup className="mb-2">
-          <label className="form-control-label" htmlFor="mail_account">
-            Mail account
-          </label>
-          <Input
-            id="mail_account"
-            name="mail_account"
-            type="select"
-            onChange={this.handleChange}
-          >
-            <option>test1@gmail.com</option>
-            <option>test2@gmail.com</option>
-          </Input>
-        </FormGroup>
-
         <FormGroup className="mt-4 mb-1">
           <WeekdayPicker
             check_state={this.state.check_state}
