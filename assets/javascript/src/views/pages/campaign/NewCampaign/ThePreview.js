@@ -19,6 +19,7 @@ import ReactQuill from "react-quill";
 import FollowUpPanel from "./components/FollowUpPanel";
 import DripPanel from "./components/DripPanel";
 import { connect } from "react-redux";
+import { parseCSVRow } from './components/csvfile';
 
 class ThePreview extends Component {
   constructor() {
@@ -35,34 +36,34 @@ class ThePreview extends Component {
     this.props.onNext();
   };
 
-  parseCSVRow (row) {
-    const tableHeaders = [];
-    Object.keys(row).forEach((key) => {
-      if (
-        key &&
-        (key.toLowerCase().indexOf("name") > -1 ||
-          key.toLowerCase().indexOf("email") > -1)
-      ) {
-        tableHeaders.push({
-          key: key,
-          value: this.formatHeader(key),
-        });
-      }
-    });
-    return tableHeaders;
-  }
+  // parseCSVRow (row) {
+  //   const tableHeaders = [];
+  //   Object.keys(row).forEach((key) => {
+  //     if (
+  //       key &&
+  //       (key.toLowerCase().indexOf("name") > -1 ||
+  //         key.toLowerCase().indexOf("email") > -1)
+  //     ) {
+  //       tableHeaders.push({
+  //         key: key,
+  //         value: this.formatHeader(key),
+  //       });
+  //     }
+  //   });
+  //   return tableHeaders;
+  // }
 
-  formatHeader(str) {
-    let strArr = str.split(/[\-\_]+/);
-    let formatStrArr = strArr.map((s) => {
-      if (s) {
-        return s.charAt(0).toUpperCase() + s.slice(1);
-      } else {
-        return '';
-      }
-    });
-    return formatStrArr.join(" ");
-  }
+  // formatHeader(str) {
+  //   let strArr = str.split(/[\-\_]+/);
+  //   let formatStrArr = strArr.map((s) => {
+  //     if (s) {
+  //       return s.charAt(0).toUpperCase() + s.slice(1);
+  //     } else {
+  //       return '';
+  //     }
+  //   });
+  //   return formatStrArr.join(" ");
+  // }
 
   render() {
     const { onPrev, onNext, campaign } = this.props;
@@ -76,18 +77,12 @@ class ThePreview extends Component {
             </h3>
           </Col>
         </Row>
-        
-        <Row>
-          <Col>
-            <h3 className="text-warning"></h3>
-          </Col>
-        </Row>
         <Row className="mt-3">
           <Col md={12} className="mx-auto">
             <Card style={{ backgroundColor: "#005aac", color: "white" }} className="pt-3">
               {
                 <ul>
-                  {campaign.first_row && this.parseCSVRow(campaign.first_row).map((e, i) => (
+                  {campaign.first_row && parseCSVRow(campaign.first_row).map((e, i) => (
                       <li key={i}>{e.value}: {campaign.first_row[e.key]}</li>
                     ))}
                 </ul>
@@ -97,36 +92,40 @@ class ThePreview extends Component {
         </Row>
         <Row>
           <Col>
-            <Input
-              type="text"
-              className="in"
-              name="subject"
-              defaultValue={campaign.normal.subject}
-              placeholder="Subject"
-            />
+            {campaign.normal && 
+              <Input
+                type="text"
+                className="in"
+                name="subject"
+                defaultValue={campaign.normal.subject}
+                placeholder="Subject"
+              />
+            }
           </Col>
         </Row>
         <Row>
           <Col>
-            <ReactQuill
-              theme="snow"
-              className="Quill_div"
-              value={campaign.normal.email_body}
-              modules={{
-                toolbar: [
-                  ["bold", "italic"],
-                  ["link", "blockquote", "code", "image"],
-                  [
-                    {
-                      list: "ordered",
-                    },
-                    {
-                      list: "bullet",
-                    },
+            {campaign.normal && 
+              <ReactQuill
+                theme="snow"
+                className="Quill_div"
+                value={campaign.normal.email_body}
+                modules={{
+                  toolbar: [
+                    ["bold", "italic"],
+                    ["link", "blockquote", "code", "image"],
+                    [
+                      {
+                        list: "ordered",
+                      },
+                      {
+                        list: "bullet",
+                      },
+                    ],
                   ],
-                ],
-              }}
-            />
+                }}
+              />
+            } 
           </Col>
         </Row>
 

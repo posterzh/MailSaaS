@@ -340,9 +340,9 @@ function Tables({
                                       defaultValue=""
                                     >
                                       <option value="">All</option>
-                                      {item.options.map((option) => {
+                                      {item.options.map((option, index) => {
                                         return (
-                                          <option value={option}>
+                                          <option value={option} key={'option-' + index}>
                                             {option}
                                           </option>
                                         );
@@ -370,7 +370,7 @@ function Tables({
                               id="table-check-all"
                               type="checkbox"
                               checked={selectAll}
-                              onClick={(e) => {
+                              onChange={(e) => {
                                 selectAllRecord(e);
                               }}
                             />
