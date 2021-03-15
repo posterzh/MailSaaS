@@ -3,10 +3,12 @@ import {
   ADD_SENDING_CALENDAR,
   UPDATE_SENDING_CALENDAR,
   DELETE_SENDING_CALENDAR,
+  GET_AVAILABLE_TIME_ZONES,
 } from "../actionType/actionType";
 
 const initialState = {
   sendingCalendars: [],
+  availableTimezones: [],
 };
 
 export const sendingCalendarsReducer = (state = initialState, action) => {
@@ -38,6 +40,11 @@ export const sendingCalendarsReducer = (state = initialState, action) => {
       return {
         ...state,
         sendingCalendars: sendingCalendars,
+      };
+    case GET_AVAILABLE_TIME_ZONES:
+      return {
+        ...state,
+        availableTimezones: action.payload,
       };
     default:
       return state;

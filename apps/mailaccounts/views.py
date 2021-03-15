@@ -1,6 +1,8 @@
+import pytz
 from django.http import Http404, HttpResponseServerError, HttpResponseBadRequest
 from rest_framework import generics, permissions
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from apps.campaignschedule.models import Schedule
 from apps.users.models import CustomUser
@@ -96,5 +98,9 @@ class SendingCalendarView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
 
+class AvailableTimezonesView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    def get(self, request, format=None):
+        return Response(pytz.all_timezones)
 
 

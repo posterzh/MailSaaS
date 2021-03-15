@@ -10,7 +10,7 @@ import {
   getSendingCalendars,
   addSendingCalendar,
   updateSendingCalendar,
-  deleteSendingCalendar,
+  getAvailableTimezones,
 } from "../../../../redux/action/SendingCalendarActions";
 import { initial } from "lodash";
 
@@ -28,11 +28,12 @@ const initialCalendar = {
 function SendingCalendar({
   mailAccounts,
   sendingCalendars,
+  availableTimezones,
   getMailAccounts,
   getSendingCalendars,
   addSendingCalendar,
   updateSendingCalendar,
-  deleteSendingCalendar,
+  getAvailableTimezones,
 }) {
   const [currentCalendar, setCurrentCalendar] = useState(null);
   const [currentMailAccount, setCurrentMailAccount] = useState(null);
@@ -41,6 +42,7 @@ function SendingCalendar({
   useEffect(() => {
     getMailAccounts();
     getSendingCalendars();
+    getAvailableTimezones();
   }, []);
 
   useEffect(() => {
@@ -64,7 +66,13 @@ function SendingCalendar({
 
   const saveCalendar = (calendar) => {
     // save
-    setCurrentCalendar(calendar);
+    // setCurrentCalendar(calendar);
+
+    if (calendar.id) {
+      updateSendingCalendar(calendar.id, calendar);
+    } else {
+      addSendingCalendar(calendar);
+    }
 
     //
     setIsEditing(false);
@@ -108,6 +116,7 @@ function SendingCalendar({
             {isEditing && (
               <EditCalendar
                 calendar={currentCalendar}
+                availableTimezones={availableTimezones}
                 saveEditing={saveCalendar}
                 cancelEditing={() => setIsEditing(false)}
               />
@@ -122,6 +131,7 @@ function SendingCalendar({
 const mapStateToProps = (state) => ({
   mailAccounts: state.mailAccounts.mailAccounts,
   sendingCalendars: state.sendingCalendars.sendingCalendars,
+  availableTimezones: state.sendingCalendars.availableTimezones,
 });
 
 export default connect(mapStateToProps, {
@@ -130,5 +140,6 @@ export default connect(mapStateToProps, {
   getSendingCalendars,
   addSendingCalendar,
   updateSendingCalendar,
-  deleteSendingCalendar,
+
+  getAvailableTimezones,
 })(SendingCalendar);
