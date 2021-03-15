@@ -18,7 +18,12 @@ import {
 import { isConstructorDeclaration } from "typescript";
 import WeekdayPicker from "./WeekdayPicker";
 
-export default function ({ calendar, saveEditing, cancelEditing }) {
+export default function ({
+  calendar,
+  availableTimezones,
+  saveEditing,
+  cancelEditing,
+}) {
   const [currentCalendar, setCurrentCalendar] = useState(calendar);
 
   if (!currentCalendar) {
@@ -95,8 +100,11 @@ export default function ({ calendar, saveEditing, cancelEditing }) {
               })
             }
           >
-            <option>America/Los_Angles</option>
-            <option>America/New_York</option>
+            {availableTimezones.map((item, index) => (
+              <option value={item} key={index}>
+                {item}
+              </option>
+            ))}
           </Input>
         </FormGroup>
 
