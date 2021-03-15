@@ -29,6 +29,9 @@ import UnsubscribesModal from "./UnsubscribesModal";
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
 
+import {
+	getUnsubscribes
+} from "../../../redux/action/UnsubscribeActions";
 
 class Unsubscribes extends Component {
   constructor(props) {
@@ -41,18 +44,21 @@ class Unsubscribes extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.getUnsubscribes();
+  }
+
   handleClose = () => {
     this.setState({
       modal: false,
     });
   };
+
   toggle = (tab) => {
     if (this.state.activeTab !== tab)
       this.setState({ activeTab: tab, selectedId: [] });
   };
-  componentDidMount() {
-    this.props.fetchUnsbcribed();
-  }
+
   UnsubscribeDelete = () => {
     let data = this.state.selectedId;
     this.props.deleteUnsubscribeUsers(data);
@@ -60,6 +66,7 @@ class Unsubscribes extends Component {
       selectedId: [],
     });
   };
+
   selectRecored = (id, e) => {
     const { selectedId } = this.state;
     let newSelectedId = [...selectedId];
@@ -72,10 +79,11 @@ class Unsubscribes extends Component {
       selectedId: newSelectedId,
     });
   };
+
   selectAll = (e) => {
     let newSelectedId = [];
     if (e.target.checked) {
-      newSelectedId = this.props.data.map((item) => {
+      newSelectedId = this.props.unsubscribes.map((item) => {
         return item.id;
       });
     }
@@ -84,12 +92,14 @@ class Unsubscribes extends Component {
       selectedId: newSelectedId,
     });
   };
+
   unsubscribeWithEmail = (e) => {
     console.log(e.target.value);
     this.setState({
       email: e.target.value,
     });
   };
+
   unsubscribeWithCsv = (e) => {
     let fileData = new FormData();
     fileData.append("csv_file", e.target.files[0]);
@@ -100,12 +110,15 @@ class Unsubscribes extends Component {
       modal: false,
     });
   };
+
   handleSubmit = () => {
     this.setState({ modal: false });
     this.props.unsubscribeUsersWithEmailAction(this.state.email);
   };
+
   render() {
     const { selectedId } = this.state;
+    const { unsubscribes } = this.props;
 
     return (
       <>
@@ -206,7 +219,7 @@ class Unsubscribes extends Component {
               <Addresstable
                 selectAll={this.selectAll}
                 selectRecored={this.selectRecored}
-                data={this.props.data}
+                data={this.props.unsubscribes}
                 selectedId={selectedId}
               />
             </TabPane>
@@ -248,22 +261,32 @@ class Unsubscribes extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    data: state.UnsubscribeReducer.unsubscribeData,
-    loading: state.UnsubscribeReducer.loading,
+    unsubscribes: state.unsubscribes.unsubscribes
   };
 };
-const mapDispatchToProps = (dispatch) => ({
-  fetchUnsbcribed: () => {
-    dispatch(fetchUnsubscribeAction());
-  },
-  deleteUnsubscribeUsers: (data) => {
-    dispatch(deleteUnsubscribeUsersAction(data));
-  },
-  unsubscribeUsersWithCsvAction: (data) => {
-    dispatch(unsubscribeUsersWithCsvAction(data));
-  },
-  unsubscribeUsersWithEmailAction: (data) => {
-    dispatch(unsubscribeUsersWithEmailAction(data));
-  },
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Unsubscribes);
+
+export default connect(mapStateToProps, {
+  getUnsubscribes
+})(Unsubscribes);
+
+// const mapStateToProps = (state) => {
+//   return {
+//     data: state.UnsubscribeReducer.unsubscribeData,
+//     loading: state.UnsubscribeReducer.loading,
+//   };
+// };
+
+// const mapDispatchToProps = (dispatch) => ({
+//   fetchUnsbcribed: () => {
+//     dispatch(fetchUnsubscribeAction());
+//   },
+//   deleteUnsubscribeUsers: (data) => {
+//     dispatch(deleteUnsubscribeUsersAction(data));
+//   },
+//   unsubscribeUsersWithCsvAction: (data) => {
+//     dispatch(unsubscribeUsersWithCsvAction(data));
+//   },
+//   unsubscribeUsersWithEmailAction: (data) => {
+//     dispatch(unsubscribeUsersWithEmailAction(data));
+//   },
+// });

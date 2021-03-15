@@ -2,18 +2,22 @@ import axios from 'axios';
 import { API_BASE_URL } from '../../Constants'
 
 const Api = {}
+
 // for register
 Api.RegisterApi = (user) => {
   return axios.post(`${API_BASE_URL}/rest-auth/registration/`, user)
 }
+
 // for login
 Api.LoginApi = (loginuser) => {
   return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser)
 }
+
 // for logout
 Api.LogoutApi = () => {
   return axios.post(`${API_BASE_URL}/rest-auth/logout/`)
 }
+
 // for prospects filter
 Api.FilterRecipients = (params, token) => {
   return axios.get(`${API_BASE_URL}/campaign/prospects/`, { 
@@ -22,14 +26,6 @@ Api.FilterRecipients = (params, token) => {
       "Authorization": `Bearer ${token}`,
     }
   })
-  // return axios({
-  //   method: 'GET',
-  //   url: `${API_BASE_URL}/campaign/prospects/`,
-  //   params,
-  //   headers: {
-  //     "Authorization": `Bearer ${token}`,
-  //   }
-  // })
 }
 
 // for prospects count
@@ -37,6 +33,16 @@ Api.CountRecipients = (token) => {
   return axios({
     method: 'GET',
     url: `${API_BASE_URL}/campaign/prospects/count`,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+
+// for unsubscribe list
+Api.GetUnsubscribes = (params, token) => {
+  return axios.get(`${API_BASE_URL}/unsubscribes/unsubcribes`, { 
+    params,
     headers: {
       "Authorization": `Bearer ${token}`,
     }

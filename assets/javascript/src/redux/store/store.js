@@ -35,6 +35,7 @@ import { AuthReducer } from "../reducer/AuthReducer";
 import { mailAccountsReducer } from "../reducer/MailAccountsReducer";
 import { notificationReducer } from "../reducer/CommonReducer";
 import { prospectsReducer } from "../reducer/ProspectsReducer";
+import { unsubscribesReducer } from "../reducer/UnsubscribeReducer";
 import { sendingCalendarsReducer } from "../reducer/SendingCalendarReducer";
 import { campaignReducer } from "../reducer/CampaignReducer";
 
@@ -76,6 +77,7 @@ const rootReducer = combineReducers({
   notification: notificationReducer,
 
   prospects: prospectsReducer,
+  unsubscribes: unsubscribesReducer,
   sendingCalendars: sendingCalendarsReducer,
   campaign: campaignReducer,
 });
