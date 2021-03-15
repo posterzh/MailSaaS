@@ -9,7 +9,9 @@ class UnsubscribeEmailSerializers(serializers.ModelSerializer):
         model = UnsubscribeEmail
         fields = '__all__'
 
+
 class UnsubcribeCsvEmailSerializers(serializers.ModelSerializer):
+
     class Meta:
         model = UnsubcribeCsv
         fields = '__all__'
