@@ -82,6 +82,7 @@ class Prospects extends Component {
 		super(props);
 		this.state = {
 			selected: 'total',
+			detailItem: null,
 			importContactsModal: false,
 			detailModal: false,
 		};
@@ -120,7 +121,9 @@ class Prospects extends Component {
 		this.setState({ importContactsModal: false });
 	}
 
-	showDetailModal = () => {
+	showDetailModal = (item) => {
+		this.setState({ detailItem: item });
+
 		this.setState({ detailModal: true });
 	}
 
@@ -285,7 +288,7 @@ class Prospects extends Component {
 
 					<DetailModal
 						isOpen={detailModal}
-						// data={this.state.editItem}
+						data={this.state.detailItem}
 						close={this.closeDetailModal}
 					// create={this.createMailAccount}
 					// update={this.updateMailAccount}

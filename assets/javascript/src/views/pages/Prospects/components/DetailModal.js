@@ -30,23 +30,25 @@ export class ImportContactsModal extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // if (this.props.data != prevProps.data) {
-    //   if (this.props.data) {
-    //     this.setState({ ...this.props.data });
-    //   } else {
-    //     this.setState({ ...initialState });
-    //   }
-    // }
+    if (this.props.data != prevProps.data) {
+      if (this.props.data) {
+        this.setState({ ...this.props.data });
+      } else {
+        this.setState({ ...initialState });
+      }
+
+      console.log(this.props.data);
+    }
   }
 
   render() {
     const tableTitle = [
 			{
-				key: 'campaign',
+				key: 'campaign_title',
 				value: 'CAMPAIGN',
 			},
 			{
-				key: 'added',
+				key: 'created',
 				value: 'ADDED',
 			},
 			{
@@ -54,31 +56,20 @@ export class ImportContactsModal extends Component {
 				value: 'STATUS',
 			},
 			{
-				key: 'sent',
+				key: 'sent_count',
 				value: 'SENT',
 			},
 			{
-				key: 'opens',
+				key: 'open_count',
 				value: 'OPENS',
 			},
 			{
-				key: 'clicks',
+				key: 'click_count',
 				value: 'CLICKS',
 			},
 			{
-				key: 'replies',
+				key: 'reply_count',
 				value: 'REPLIES',
-			},
-		];
-		const tableData = [
-			{
-				campaign: 'January 20 Outreach',
-				added: 'Jan 20, 2021',
-				status: 'Unsubscribed',
-				sent: '0',
-				opens: '0',
-				clicks: '0',
-				replies: '0',
 			},
 		];
 
@@ -97,7 +88,7 @@ export class ImportContactsModal extends Component {
                       <CardBody className="text-center p-3">
                         <CardTitle className="m-0">
                           <h3 className="text-white heading m-0">
-                            <div>1</div>
+                            <div>{this.state.campaign_count}</div>
                             <div>CAMPS</div>
                           </h3>
                         </CardTitle>
@@ -109,7 +100,7 @@ export class ImportContactsModal extends Component {
                       <CardBody className="text-center p-3">
                         <CardTitle className="m-0">
                           <h3 className="text-white heading m-0">
-                            <div>0</div>
+                            <div>{this.state.sent_count}</div>
                             <div>SENDS</div>
                           </h3>
                         </CardTitle>
@@ -121,7 +112,7 @@ export class ImportContactsModal extends Component {
                       <CardBody className="text-center p-3">
                         <CardTitle className="m-0">
                           <h3 className="text-white heading m-0">
-                            <div>0</div>
+                            <div>{this.state.open_count}</div>
                             <div>OPENS</div>
                           </h3>
                         </CardTitle>
@@ -133,7 +124,7 @@ export class ImportContactsModal extends Component {
                       <CardBody className="text-center p-3">
                         <CardTitle className="m-0">
                           <h3 className="text-white heading m-0">
-                            <div>0</div>
+                            <div>{this.state.click_count}</div>
                             <div>CLICKS</div>
                           </h3>
                         </CardTitle>
@@ -145,7 +136,7 @@ export class ImportContactsModal extends Component {
                       <CardBody className="text-center p-3">
                         <CardTitle className="m-0">
                           <h3 className="text-white heading m-0">
-                            <div>0</div>
+                            <div>{this.state.reply_count}</div>
                             <div>REPLIES</div>
                           </h3>
                         </CardTitle>
@@ -157,7 +148,7 @@ export class ImportContactsModal extends Component {
                       <CardBody className="text-center p-3">
                         <CardTitle className="m-0">
                           <h3 className="text-white heading m-0">
-                            <div>0</div>
+                            <div>{this.state.lead_count}</div>
                             <div>LEADS</div>
                           </h3>
                         </CardTitle>
@@ -169,7 +160,7 @@ export class ImportContactsModal extends Component {
                 <Row>
                   <Tables
                     titles={tableTitle} // required
-                    tablePropsData={tableData}   // required
+                    tablePropsData={[this.state]}   // required
                   />
                 </Row>
               </CardBody>
