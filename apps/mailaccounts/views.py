@@ -84,10 +84,9 @@ class SendingCalendarListView(generics.ListCreateAPIView):
     pagination_class = None
 
     def get_queryset(self):
-        return super().get_queryset().filter(user=self.request.user.id)
+        return SendingCalendar.objects.filter(mail_account__user_id__exact=self.request.user.id)
 
     def post(self, request, *args, **kwargs):
-        request.data['user'] = request.user.id
         return self.create(request, *args, **kwargs)
 
 
