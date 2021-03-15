@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Text, FormGroup, Input } from "reactstrap";
 import { connect } from "react-redux";
 import PageHeader from "../../../../components/Headers/PageHeader";
@@ -12,90 +12,113 @@ import {
   updateSendingCalendar,
   deleteSendingCalendar,
 } from "../../../../redux/action/SendingCalendarActions";
-import MailAccounts from "../MailAccounts";
+import { initial } from "lodash";
 
-export class SendingCalendar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isEditing: false,
-      mail_account: null,
-    };
-  }
+const initialCalendar = {
+  check_state: 5,
+  start_time: "09:00",
+  end_time: "17:00",
+  time_zone: "NewYork",
+  max_emails_per_day: 20,
+  minutes_between_sends: 12,
+  min_emails_to_send: 1,
+  max_emails_to_send: 1,
+};
 
-  componentDidMount() {
-    this.props.getMailAccounts();
-    // this.props.getSendingCalendars();
-  }
+function SendingCalendar({
+  mailAccounts,
+  sendingCalendars,
+  getMailAccounts,
+  getSendingCalendars,
+  addSendingCalendar,
+  updateSendingCalendar,
+  deleteSendingCalendar,
+}) {
+  const [currentCalendar, setCurrentCalendar] = useState(null);
+  const [currentMailAccount, setCurrentMailAccount] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
-  handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+  useEffect(() => {
+    getMailAccounts();
+    getSendingCalendars();
+  }, []);
 
-  startEditing = () => {
-    this.setState({ isEditing: true });
-  };
+  useEffect(() => {
+    if (mailAccounts.length > 0) {
+      setCurrentMailAccount(mailAccounts[0].id);
+    }
+  }, [mailAccounts]);
 
-  saveEditing = (calendar) => {
+  useEffect(() => {
+    if (currentMailAccount) {
+      let calendar = sendingCalendars.find(
+        (item) => item.mail_account == currentMailAccount
+      );
+      if (!calendar) {
+        calendar = initialCalendar;
+      }
+
+      setCurrentCalendar(calendar);
+    }
+  }, [currentMailAccount, sendingCalendars]);
+
+  const saveCalendar = (calendar) => {
     // save
+    setCurrentCalendar(calendar);
 
-    // Close editing
-    this.setState({ isEditing: false });
+    //
+    setIsEditing(false);
   };
 
-  cancelEditing = () => {
-    this.setState({ isEditing: false });
-  };
+  // console.log("current mail account : ", currentMailAccount);
+  // console.log("current calendar : ", currentCalendar);
 
-  render() {
-    const { isEditing } = this.state;
-    const { mailAccounts, sendingCalendars } = this.props;
+  return (
+    <>
+      <PageHeader
+        current="Sending Calendar"
+        parent="Mail Accounts"
+        showStatus={false}
+      />
+      <PageContainer title="Sending Calendar">
+        <Row>
+          <Col md={5} className="mx-auto">
+            <FormGroup className="mb-2">
+              <label className="form-control-label" htmlFor="mail_account_id">
+                Mail account
+              </label>
+              <Input
+                type="select"
+                onChange={(e) => setCurrentMailAccount(e.target.value)}
+              >
+                {mailAccounts.map((item, index) => (
+                  <option value={item.id} key={index}>
+                    {item.email}
+                  </option>
+                ))}
+              </Input>
+            </FormGroup>
 
-    console.log("mailAccounts : ", mailAccounts);
-    console.log("sendingCalendars : ", sendingCalendars);
-
-    return (
-      <>
-        <PageHeader
-          current="Sending Calendar"
-          parent="Mail Accounts"
-          showStatus={false}
-        />
-        <PageContainer title="Sending Calendar">
-          <Row>
-            <Col md={5} className="mx-auto">
-              <FormGroup className="mb-2">
-                <label className="form-control-label" htmlFor="mail_account">
-                  Mail account
-                </label>
-                <Input
-                  id="mail_account"
-                  name="mail_account"
-                  type="select"
-                  onChange={this.handleChange}
-                >
-                  {mailAccounts.map((item, index) => (
-                    <option value={item.id} key={index}>
-                      {item.email}
-                    </option>
-                  ))}
-                </Input>
-              </FormGroup>
-
-              {!isEditing && <ShowCalendar startEditing={this.startEditing} />}
-              {isEditing && (
-                <EditCalendar
-                  saveEditing={this.saveEditing}
-                  cancelEditing={this.cancelEditing}
-                />
-              )}
-            </Col>
-          </Row>
-        </PageContainer>
-      </>
-    );
-  }
+            {!isEditing && (
+              <ShowCalendar
+                calendar={currentCalendar}
+                startEditing={() => setIsEditing(true)}
+              />
+            )}
+            {isEditing && (
+              <EditCalendar
+                calendar={currentCalendar}
+                saveEditing={saveCalendar}
+                cancelEditing={() => setIsEditing(false)}
+              />
+            )}
+          </Col>
+        </Row>
+      </PageContainer>
+    </>
+  );
 }
+
 const mapStateToProps = (state) => ({
   mailAccounts: state.mailAccounts.mailAccounts,
   sendingCalendars: state.sendingCalendars.sendingCalendars,
