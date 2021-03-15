@@ -3,8 +3,9 @@ import { toastOnError } from "../../utils/Utils";
 import {
   GET_SENDING_CALENDARS,
   ADD_SENDING_CALENDAR,
-  DELETE_SENDING_CALENDAR,
   UPDATE_SENDING_CALENDAR,
+  DELETE_SENDING_CALENDAR,
+  GET_AVAILABLE_TIME_ZONES,
 } from "../actionType/actionType";
 
 export const getSendingCalendars = () => (dispatch) => {
@@ -55,6 +56,20 @@ export const updateSendingCalendar = (id, sendingCalendar) => (dispatch) => {
     .then((response) => {
       dispatch({
         type: UPDATE_SENDING_CALENDAR,
+        payload: response.data,
+      });
+    })
+    .catch((error) => {
+      toastOnError(error);
+    });
+};
+
+export const getAvailableTimezones = () => (dispatch) => {
+  axios
+    .get("/mailaccounts/available-timezones/")
+    .then((response) => {
+      dispatch({
+        type: GET_AVAILABLE_TIME_ZONES,
         payload: response.data,
       });
     })

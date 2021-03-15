@@ -8,4 +8,6 @@ urlpatterns = [
 
     path('sending-calendars/', views.SendingCalendarListView.as_view(), name="sending-calendar-list"),
     path('sending-calendars/<int:pk>/', views.SendingCalendarView.as_view(), name='sending-calendar'),
+
+    path('available-timezones/', views.AvailableTimezonesView.as_view(), name="available-timezones"),
 ]

@@ -23,7 +23,7 @@ urlpatterns = [
     path('sequence/<int:pk>/', views.CampaignMessages.as_view(),name = 'campaignmessage'),
     path('prospects/', views.ProspectsView.as_view(),name = 'procpects'),
     path('prospects/count', views.ProspectsCountView.as_view(),name = 'procpects_count'),
-    path('prospects/<int:pk>/', views.ProspectsCampaignView.as_view(),name = 'procpects_campaign'),
+    path('prospects/<int:pk>/', views.ProspectsDetailView.as_view(),name = 'procpects_detail'),
     path('recipientunsubcribe/', views.RecipientUnsubcribe.as_view(), name='recipient_unsubcribe'),
     path('recipientunassigned/', views.RecipientUnassignedView.as_view(), name='recipientunassigned'),
 

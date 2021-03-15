@@ -1,6 +1,8 @@
+import pytz
 from django.http import Http404, HttpResponseServerError, HttpResponseBadRequest
 from rest_framework import generics, permissions
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from apps.campaignschedule.models import Schedule
 from apps.users.models import CustomUser
@@ -84,10 +86,9 @@ class SendingCalendarListView(generics.ListCreateAPIView):
     pagination_class = None
 
     def get_queryset(self):
-        return super().get_queryset().filter(user=self.request.user.id)
+        return SendingCalendar.objects.filter(mail_account__user_id__exact=self.request.user.id)
 
     def post(self, request, *args, **kwargs):
-        request.data['user'] = request.user.id
         return self.create(request, *args, **kwargs)
 
 
@@ -97,5 +98,9 @@ class SendingCalendarView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
 
+class AvailableTimezonesView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    def get(self, request, format=None):
+        return Response(pytz.all_timezones)
 
 

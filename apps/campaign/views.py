@@ -1516,6 +1516,19 @@ class ProspectsView(generics.ListAPIView):
         return Response({"message": "Successfully Deleted", "success": True})
 
 
+class ProspectsDetailView(generics.RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = ProspectsSerializer
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        return CampaignRecipient.objects.filter(campaign__assigned=user.id, is_delete=False)
+
+
 class ProspectsCountView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 

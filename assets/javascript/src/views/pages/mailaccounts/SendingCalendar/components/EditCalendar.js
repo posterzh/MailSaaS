@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -18,32 +18,17 @@ import {
 import { isConstructorDeclaration } from "typescript";
 import WeekdayPicker from "./WeekdayPicker";
 
-export default class EditCalendar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      check_state: 0,
-      start_time: "",
-      end_time: "",
-      time_zone: "",
-      max_emails_per_day: 20,
-      minutes_between_sends: 12,
-      min_emails_to_send: 1,
-      max_emails_to_send: 1,
-    };
-  }
+export default function ({
+  calendar,
+  availableTimezones,
+  saveEditing,
+  cancelEditing,
+}) {
+  const [currentCalendar, setCurrentCalendar] = useState(calendar);
 
-  setcheck_state = (check_state) => {
-    this.setState({ check_state });
-  };
-
-  handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  render() {
-    const { saveEditing, cancelEditing } = this.props;
-
+  if (!currentCalendar) {
+    return <h5>Loading...</h5>;
+  } else {
     return (
       <>
         <FormGroup className="mt-4 mb-2">
@@ -51,8 +36,13 @@ export default class EditCalendar extends Component {
             <label className="form-control-label">Blocked out days</label>
           </div>
           <WeekdayPicker
-            check_state={this.state.check_state}
-            setcheck_state={this.setcheck_state}
+            block_days={currentCalendar.block_days}
+            setBlock_days={(value) =>
+              setCurrentCalendar({
+                ...currentCalendar,
+                block_days: value,
+              })
+            }
             readonly={false}
           />
         </FormGroup>
@@ -62,12 +52,16 @@ export default class EditCalendar extends Component {
             Start time
           </label>
           <Input
-            defaultValue="10:30:00"
             id="start_time"
-            name="start_time"
             className="form-control-sm"
             type="time"
-            onChange={this.handleChange}
+            value={currentCalendar.start_time}
+            onChange={(e) =>
+              setCurrentCalendar({
+                ...currentCalendar,
+                start_time: e.target.value,
+              })
+            }
           />
         </FormGroup>
 
@@ -76,29 +70,41 @@ export default class EditCalendar extends Component {
             End time
           </label>
           <Input
-            defaultValue="10:30:00"
             id="end_time"
-            name="end_time"
             className="form-control-sm"
             type="time"
-            onChange={this.handleChange}
+            value={currentCalendar.end_time}
+            onChange={(e) =>
+              setCurrentCalendar({
+                ...currentCalendar,
+                end_time: e.target.value,
+              })
+            }
           />
         </FormGroup>
 
         <FormGroup className="mb-2">
-          <label className="form-control-label" htmlFor="mail_account">
+          <label className="form-control-label" htmlFor="time_zone">
             Timezone
           </label>
           <Input
-            id="mail_account"
-            name="mail_account"
+            id="time_zone"
             className="form-control-sm"
             type="select"
             className="form-control-sm"
-            onChange={this.handleChange}
+            value={currentCalendar.time_zone}
+            onChange={(e) =>
+              setCurrentCalendar({
+                ...currentCalendar,
+                time_zone: e.target.value,
+              })
+            }
           >
-            <option>America/Los_Angles</option>
-            <option>America/New_York</option>
+            {availableTimezones.map((item, index) => (
+              <option value={item} key={index}>
+                {item}
+              </option>
+            ))}
           </Input>
         </FormGroup>
 
@@ -108,11 +114,15 @@ export default class EditCalendar extends Component {
           </label>
           <Input
             id="max_emails_per_day"
-            name="max_emails_per_day"
             className="form-control-sm"
             type="number"
-            value={this.state.max_emails_per_day}
-            onChange={this.handleChange}
+            value={currentCalendar.max_emails_per_day}
+            onChange={(e) =>
+              setCurrentCalendar({
+                ...currentCalendar,
+                max_emails_per_day: e.target.value,
+              })
+            }
           />
         </FormGroup>
 
@@ -122,11 +132,15 @@ export default class EditCalendar extends Component {
           </label>
           <Input
             id="minutes_between_sends"
-            name="minutes_between_sends"
             className="form-control-sm"
             type="number"
-            value={this.state.minutes_between_sends}
-            onChange={this.handleChange}
+            value={currentCalendar.minutes_between_sends}
+            onChange={(e) =>
+              setCurrentCalendar({
+                ...currentCalendar,
+                minutes_between_sends: e.target.value,
+              })
+            }
           />
         </FormGroup>
 
@@ -136,11 +150,15 @@ export default class EditCalendar extends Component {
           </label>
           <Input
             id="min_emails_to_send"
-            name="min_emails_to_send"
             className="form-control-sm"
             type="number"
-            value={this.state.min_emails_to_send}
-            onChange={this.handleChange}
+            value={currentCalendar.min_emails_to_send}
+            onChange={(e) =>
+              setCurrentCalendar({
+                ...currentCalendar,
+                min_emails_to_send: e.target.value,
+              })
+            }
           />
         </FormGroup>
 
@@ -150,11 +168,15 @@ export default class EditCalendar extends Component {
           </label>
           <Input
             id="max_emails_to_send"
-            name="max_emails_to_send"
             className="form-control-sm"
             type="number"
-            value={this.state.max_emails_to_send}
-            onChange={this.handleChange}
+            value={currentCalendar.max_emails_to_send}
+            onChange={(e) =>
+              setCurrentCalendar({
+                ...currentCalendar,
+                max_emails_to_send: e.target.value,
+              })
+            }
           />
         </FormGroup>
 
@@ -163,7 +185,7 @@ export default class EditCalendar extends Component {
             color="danger"
             type="button"
             className="px-4"
-            onClick={saveEditing}
+            onClick={() => saveEditing(currentCalendar)}
           >
             SAVE
           </Button>
