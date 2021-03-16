@@ -38,7 +38,7 @@ function Addresstable(props) {
                       props.selectedId.filter((id) => id === row.id).length
                     }
                     onChange={(event) => {
-                      props.selectRecored(row.id, event);
+                      props.selectRow(row.id, event);
                     }}
                   />
                 </td>

@@ -30,7 +30,9 @@ import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
 
 import {
-  getUnsubscribes
+  getUnsubscribes,
+  addUnsubscribeEmails,
+  addUnsubscribeCSV
 } from "../../../redux/action/UnsubscribeActions";
 
 class Unsubscribes extends Component {
@@ -53,22 +55,28 @@ class Unsubscribes extends Component {
     this.props.getUnsubscribes(this.state.search);
   }
 
-  handleSubmit = () => {
-    this.setState({ modal: false });
-    this.props.unsubscribeUsersWithEmailAction(this.state.email);
+  unsubscribeEmail = (emailList) => {
+    const user = this.props.user;
+    this.props.addUnsubscribeEmails(emailList, user);
   };
 
-  handleClose = () => {
-    this.setState({
-      modal: false,
-    });
+  unsubscribeCSV = () => {
+    this.props.addUnsubscribeCSV();
+  }
+
+  deleteUnsubscribes = (selectedId) => {
+    console.log("Email Ids", selectedId);
+    this.setState({ selectedId: [] });
+  };
+
+  closeUnsubscribeModal = () => {
+    this.setState({ modal: false });
   };
 
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
     });
-    // this.setState({show:!this.state.show})
   }
 
   switchTab = (tab) => {
@@ -76,15 +84,7 @@ class Unsubscribes extends Component {
       this.setState({ activeTab: tab, selectedId: [] });
   };
 
-  deleteUnsubscribes = () => {
-    let data = this.state.selectedId;
-    this.props.deleteUnsubscribeUsers(data);
-    this.setState({
-      selectedId: [],
-    });
-  };
-
-  selectRecored = (id, e) => {
+  selectRow = (id, e) => {
     const { selectedId } = this.state;
     let newSelectedId = [...selectedId];
     if (e.target.checked) {
@@ -92,9 +92,7 @@ class Unsubscribes extends Component {
     } else {
       newSelectedId = newSelectedId.filter((item) => item != id);
     }
-    this.setState({
-      selectedId: newSelectedId,
-    });
+    this.setState({ selectedId: newSelectedId });
   };
 
   selectAll = (e) => {
@@ -104,28 +102,7 @@ class Unsubscribes extends Component {
         return item.id;
       });
     }
-    console.log(newSelectedId);
-    this.setState({
-      selectedId: newSelectedId,
-    });
-  };
-
-  unsubscribeWithEmail = (e) => {
-    console.log(e.target.value);
-    this.setState({
-      email: e.target.value,
-    });
-  };
-
-  unsubscribeWithCsv = (e) => {
-    let fileData = new FormData();
-    fileData.append("csv_file", e.target.files[0]);
-    if (e.target.files[0]) {
-      this.props.unsubscribeUsersWithCsvAction(fileData);
-    }
-    this.setState({
-      modal: false,
-    });
+    this.setState({ selectedId: newSelectedId });
   };
 
   render() {
@@ -157,7 +134,7 @@ class Unsubscribes extends Component {
           <span className="pl-3 pr-3" style={{ borderRight: "1px dashed" }}>
             {selectedId.length} selected
           </span>
-          <label className="m-0 pointer" onClick={this.deleteUnsubscribes}>
+          <label className="m-0 pointer" onClick={() => this.deleteUnsubscribes(this.state.selectedId)}>
             <i className="fas fa-minus-circle pl-3 pr-2"></i>
             Delete
           </label>
@@ -235,7 +212,7 @@ class Unsubscribes extends Component {
             <TabPane tabId="addressTab">
               <Addresstable
                 selectAll={this.selectAll}
-                selectRecored={this.selectRecored}
+                selectRow={this.selectRow}
                 data={unsubscribes}
                 selectedId={selectedId}
               />
@@ -243,7 +220,7 @@ class Unsubscribes extends Component {
             <TabPane tabId="domainTab">
               <Domainpage
                 selectAll={this.selectAll}
-                selectRecored={this.selectRecored}
+                selectRow={this.selectRow}
                 data={unsubscribes}
                 selectedId={selectedId}
               />
@@ -264,11 +241,8 @@ class Unsubscribes extends Component {
           </Button>
           <UnsubscribesModal
             isOpen={this.state.modal}
-            handleSubmit={this.handleSubmit}
-            handleClose={this.handleClose}
-            unsubscribeWithEmail={this.unsubscribeWithEmail}
-            unsubscribeWithCsv={this.unsubscribeWithCsv}
-            loading={this.props.loading}
+            unsubscribeEmail={this.unsubscribeEmail}
+            close={this.closeUnsubscribeModal}
           />
         </PageContainer>
       </>
@@ -278,12 +252,15 @@ class Unsubscribes extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    user: state.AuthReducer.user,
     unsubscribes: state.unsubscribes.unsubscribes
   };
 };
 
 export default connect(mapStateToProps, {
-  getUnsubscribes
+  getUnsubscribes,
+  addUnsubscribeEmails,
+  addUnsubscribeCSV,
 })(Unsubscribes);
 
 // const mapStateToProps = (state) => {

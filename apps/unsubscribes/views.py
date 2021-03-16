@@ -9,12 +9,14 @@ from django.http import Http404, HttpResponse, JsonResponse, request
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions, serializers, status
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import filters
+from rest_framework.settings import api_settings
 from .models import UnsubcribeCsv, UnsubscribeEmail
 from .serializers import UnsubscribeEmailSerializers
+from .mixins import CreateListModelMixin
 from apps.campaign.models import CampaignRecipient
 
 
@@ -98,7 +100,7 @@ class UnsubcribeCsvEmailAdd(CreateAPIView):
 #         return Response(serializer.data)
 
 
-class UnsubcribeEmailView(ListAPIView):
+class UnsubscribeEmailListView(ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UnsubscribeEmailSerializers
     filter_backends = [filters.SearchFilter]
@@ -107,6 +109,13 @@ class UnsubcribeEmailView(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return UnsubscribeEmail.objects.filter(user=user.id, on_delete=False)
+
+
+class AddUnsubscribeEmailView(CreateListModelMixin,
+                              CreateAPIView, ):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = UnsubscribeEmailSerializers
+    queryset = UnsubscribeEmail.objects.all()
 
 
 class UnsubcribeEmailDelete(APIView):

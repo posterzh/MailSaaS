@@ -1,5 +1,6 @@
 import {
-    GET_UNSUBSCRIBES
+    GET_UNSUBSCRIBES,
+    ADD_UNSUBSCRIBE_EMAILS,
   } from "../actionType/actionType";
   
   const initialState = {
@@ -11,7 +12,12 @@ import {
       case GET_UNSUBSCRIBES:
         return {
           ...state,
-          unsubscribes: action.payload.results,
+          unsubscribes: action.payload,
+        };
+      case ADD_UNSUBSCRIBE_EMAILS:
+        return {
+          ...state,
+          unsubscribes: [...state.unsubscribes, ...action.payload],
         };
       default:
         return state;
