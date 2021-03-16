@@ -1,6 +1,7 @@
 import {
   GET_UNSUBSCRIBES,
   ADD_UNSUBSCRIBE_EMAILS,
+  ADD_UNSUBSCRIBE_CSV,
   DELETE_UNSUBSCRIBE_EMAILS,
 } from "../actionType/actionType"
 import { toastOnError } from "../../utils/Utils";
@@ -27,7 +28,7 @@ export const addUnsubscribeEmails = (emailList, user) => (dispatch) => {
     user: user.pk    
   }))
   const token = localStorage.getItem("access_token");
-  Api.AddUnsubscribes(data, token)
+  Api.AddUnsubscribeEmails(data, token)
     .then((response) => {
       dispatch({
         type: ADD_UNSUBSCRIBE_EMAILS,
@@ -39,8 +40,20 @@ export const addUnsubscribeEmails = (emailList, user) => (dispatch) => {
     });
 }
 
-export const addUnsubscribeCSV = () => (dispatch) => {
-
+export const addUnsubscribeCSV = (file) => (dispatch) => {
+  const token = localStorage.getItem("access_token");
+  let fileData = new FormData();
+  fileData.append("file", file);
+  Api.AddUnsubscribeCSV(fileData, token)
+    .then((response) => {
+      // dispatch({
+      //   type: ADD_UNSUBSCRIBE_CSV,
+      //   payload: response.data
+      // });
+    })
+    .catch((error) => {
+      toastOnError(error);
+    });
 }
 
 export const deleteUnsubscribeEmails = (ids) => (dispatch) => {

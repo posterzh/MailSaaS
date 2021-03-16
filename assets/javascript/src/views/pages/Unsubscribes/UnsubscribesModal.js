@@ -37,7 +37,10 @@ class UnsubscribesModal extends Component {
 
   onUpload = async (e) => {
     e.preventDefault();
-    
+    const file = e.target.files[0];
+    if (file) {
+      this.props.unsubscribeCSV(file)
+    }
   }
 
   render() {

@@ -49,9 +49,18 @@ Api.GetUnsubscribes = (params, token) => {
   });
 }
 
-// for add unsubscribes
-Api.AddUnsubscribes = (data, token) => {
+// for add unsubscribe emails
+Api.AddUnsubscribeEmails = (data, token) => {
   return axios.post(`${API_BASE_URL}/unsubscribes/add-emails`, data, {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  });
+}
+
+// for add unsubscribe csv
+Api.AddUnsubscribeCSV = (fileData, token) => {
+  return axios.post(`${API_BASE_URL}/unsubscribes/add-csv`, fileData, {
     headers: {
       "Authorization": `Bearer ${token}`,
     }

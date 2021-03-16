@@ -61,8 +61,8 @@ class Unsubscribes extends Component {
     this.props.addUnsubscribeEmails(emailList, user);
   };
 
-  unsubscribeCSV = () => {
-    this.props.addUnsubscribeCSV();
+  unsubscribeCSV = (file) => {
+    this.props.addUnsubscribeCSV(file);
   }
 
   deleteUnsubscribes = (selectedId) => {
@@ -243,6 +243,7 @@ class Unsubscribes extends Component {
           <UnsubscribesModal
             isOpen={this.state.modal}
             unsubscribeEmail={this.unsubscribeEmail}
+            unsubscribeCSV={this.unsubscribeCSV}
             close={this.closeUnsubscribeModal}
           />
         </PageContainer>

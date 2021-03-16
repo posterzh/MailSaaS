@@ -33,8 +33,8 @@ class UnsubscribeEmailListView(ListAPIView):
         return UnsubscribeEmail.objects.filter(user=user.id, on_delete=False)
 
 
-class AddUnsubscribeEmailView(CreateListModelMixin,
-                              CreateAPIView, ):
+class AddUnsubscribeEmailsView(CreateListModelMixin,
+                               CreateAPIView, ):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UnsubscribeEmailSerializers
     queryset = UnsubscribeEmail.objects.all()
@@ -48,6 +48,15 @@ class AddUnsubscribeEmailView(CreateListModelMixin,
                     recipient.unsubscribe = True
                     recipient.save()
         return self.create(_request, args, kwargs)
+
+
+class AddUnsubscribeCSVView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, _request, *args, **kwargs):
+        csv_file = _request.data['file']
+        csv_obj = UnsubcribeCsv(unscribe_emails=csv_file)
+        csv_obj.save()
 
 
 class DeleteUnsubscribeEmailView(APIView):
