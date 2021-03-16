@@ -107,8 +107,6 @@ class MailAccountList extends Component {
     const { detailModal, deleteModal } = this.state;
     const { mailAccounts } = this.props;
 
-    console.log("mailAccounts : ", mailAccounts);
-
     return (
       <>
         <PageHeader
