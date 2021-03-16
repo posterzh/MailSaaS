@@ -13,12 +13,15 @@ export default class DripPanel extends React.Component {
   }
 
   getPlural = (val, unit) => {
+    if (!val) return unit;
+    
     if (val > 1) {
       return val + ' ' + unit + 's';
     } else {
       return val + ' ' + unit;
     }
   }
+
   render() {
     const { index, onDelete, data, preview} = this.props;
 
