@@ -1,15 +1,11 @@
 // file for option pick in campaign
 import React, { Component } from "react";
 import {
-  Container,
   Row,
   Col,
   Form,
-  Nav,
   Button,
-  Card,
-  CardHeader,
-  CardBody,
+  Card
 } from "reactstrap";
 import { CampaignOptionAction } from "../../../../redux/action/CampaignAction";
 import { connect } from "react-redux";
@@ -32,27 +28,6 @@ class TheOptions extends Component {
       }
     );
   };
-
-  // handleDate = (event) => {
-  //   this.setState(
-  //     {
-  //       date: event.target.value,
-  //     },
-  //     () => {
-  //       console.log(this.state.date, "date");
-  //     }
-  //   );
-  // };
-  // handleTime = (event) => {
-  //   this.setState(
-  //     {
-  //       time: event.target.value,
-  //     },
-  //     () => {
-  //       console.log(this.state.time, "time");
-  //     }
-  //   );
-  // };
 
   handleSubmit = (event) => {
     event.preventDefault();

@@ -1,24 +1,17 @@
 import React, { Component } from "react";
 import {
-  Container,
   Row,
   Button,
   Input,
   Col,
   Form,
-  Nav,
-  Card,
-  CardHeader,
-  CardBody,
 } from "reactstrap";
 import { connect } from "react-redux";
 import { CampaignComposeAction } from "../../../../redux/action/CampaignAction";
 import ReactQuill from "react-quill";
 import FollowUpPanel from "./components/FollowUpPanel";
 import DripPanel from "./components/DripPanel";
-import {
-  campaignCompose,
-} from "../../../../redux/action/CampaignActions";
+import { campaignCompose } from "../../../../redux/action/CampaignActions";
 
 class TheCompose extends Component {
   constructor(props) {
@@ -99,11 +92,6 @@ class TheCompose extends Component {
     // call parent method
     this.props.onPrev();
   };
-
-  // onNext = () => {
-  //   // call parent method
-  //   this.props.onNext();
-  // };
 
   render() {
     const { onPrev, onNext } = this.props;

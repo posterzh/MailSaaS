@@ -1,12 +1,8 @@
 import React, { Component } from "react";
 import {
-  Form,
-  FormGroup,
   Row,
   Col,
   Button,
-  ButtonGroup,
-  Input,
   Card,
   CardHeader,
   CardBody,
@@ -16,8 +12,7 @@ import {
   CampaignCreateAction,
   CampaignSaveAction,
 } from "../../../../redux/action/CampaignAction";
-
-import { parseCSVRow } from './components/csvfile';
+import ThePreview from "./ThePreview";
 
 import { campaignSend } from "../../../../redux/action/CampaignActions";
 
@@ -28,6 +23,7 @@ export class TheSend extends Component {
   }
   createCampaign = (e) => {
     e.preventDefault();
+    this.props.campaignSend({});
   };
 
   onPrev = () => {
@@ -36,7 +32,10 @@ export class TheSend extends Component {
   };
 
   render() {
-    const { onPrev, campaign } = this.props;
+    const { onPrev, campaign, mailAccounts } = this.props;
+    const activeMailaccount = mailAccounts.find((m) => m.id == campaign.from_address);
+
+    console.log(activeMailaccount);
     return (
       <>
         <Row>
@@ -63,94 +62,52 @@ export class TheSend extends Component {
         </Row>
 
         <Row>
-          <Col className="mx-auto">
+          <Col className="mx-auto p-0">
             <Card>
               <CardHeader>
                 <h2 className="mb-0">From address</h2>
               </CardHeader>
               <CardBody>
-                <Row>
-                  <Col md={3}>
-                    <h4>Sending account :</h4>
-                  </Col>
-                  <Col md={9}>
-                    <h4>{campaign.from_address}</h4>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={3}>
-                    <h4>Full name :</h4>
-                  </Col>
-                  <Col md={9}>
-                    <h4>{campaign.full_name}</h4>
-                  </Col>
-                </Row>
+                {activeMailaccount &&
+                <>
+                  <Row>
+                    <Col md={3}>
+                      <h4>Sending account :</h4>
+                    </Col>
+                    <Col md={9}>
+                      <h5>{activeMailaccount.email}</h5>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={3}>
+                      <h4>Full name :</h4>
+                    </Col>
+                    <Col md={9}>
+                      <h5>{activeMailaccount.first_name} {activeMailaccount.last_name}</h5>
+                    </Col>
+                  </Row>
+                </>
+              }
               </CardBody>
             </Card>
           </Col>
         </Row>
         <Row>
           <Col className="mx-auto p-0">
-            <Card>
+            <Card className="mb-0">
               <CardHeader>
                 <h2 className="mb-0">Recipients</h2>
               </CardHeader>
-              <CardBody>
-                {
-                  <ul>
-                    {campaign.first_row && parseCSVRow(campaign.first_row).map((e, i) => (
-                        <li key={i}>{e.value}: {campaign.first_row[e.key]}</li>
-                      ))}
-                  </ul>
+              <CardBody className="pb-0">
+                { campaign.csvfile && 
+                  <p>{campaign.csvfile.name}</p>
                 }
               </CardBody>
             </Card>
           </Col>
         </Row>
-
-        <Row>
-          <Col className="mx-auto">
-            <Card>
-              <CardHeader>
-                <h2 className="mb-0">Messages</h2>
-              </CardHeader>
-              <CardBody>
-                <span>Initial campaign email :</span>
-                <Row style={{ fontSize: 14 }}>
-                  <ul>
-                    {campaign.normal &&
-                      Object.keys(campaign.normal).map((key, index) => {
-                        return <li key={index}>{campaign.normal[key]}</li>;
-                      })}
-                  </ul>
-                </Row>
-                <span>Follow-up campaign email :</span>
-                <Row style={{ fontSize: 14 }}>
-                  <ul>
-                    {campaign.follow_up &&
-                      campaign.follow_up.map((item) => {
-                        return Object.keys(item).map((key, index) => {
-                          return <li key={index}>{item[key]}</li>;
-                        });
-                      })}
-                  </ul>
-                </Row>
-                <span>Drip campaign email :</span>
-                <Row style={{ fontSize: 14 }}>
-                  <ul>
-                    {campaign.drips &&
-                      campaign.drips.map((item) => {
-                        Object.keys(item).map((key, index) => {
-                          return <li key={index}>{item[key]}</li>;
-                        });
-                      })}
-                  </ul>
-                </Row>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-
+        <ThePreview sendPreview={true} />
+        
         {/* Buttons */}
         <Row className="my-3">
           <Col className="text-left">
@@ -169,6 +126,7 @@ export class TheSend extends Component {
 
 const mapStateToProps = (state) => ({
   campaign: state.campaign,
+  mailAccounts: state.mailAccounts.mailAccounts,
 });
 
 export default connect(mapStateToProps, campaignSend)(TheSend);

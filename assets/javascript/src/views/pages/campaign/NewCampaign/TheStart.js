@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-  Container,
   Row,
   Col,
   Form,
@@ -9,9 +8,7 @@ import {
   Input,
   Button,
 } from "reactstrap";
-import {
-  campaignStart
-} from "../../../../redux/action/CampaignActions";
+import { campaignStart } from "../../../../redux/action/CampaignActions";
 
 class TheStart extends React.Component {
   constructor(props) {
@@ -45,73 +42,21 @@ class TheStart extends React.Component {
       [e.target.name]: e.target.value,
     });
   };
-  componentDidMount() {
-    // this.props.MailGetDataAction();
-  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     const data = {
       title: this.state.title,
       from_address: this.state.from_address,
     };
-    console.log(data);
+
     this.props.campaignStart(data);
     this.props.onNext();
   };
 
-  static getDerivedStateFromProps(props, state) {
-    if (
-      props.mailGetData &&
-      props.mailGetData[0] &&
-      props.mailGetData[0].id &&
-      !state.mailsExist
-    ) {
-      console.log("Call");
-      return {
-        from_address: props.mailGetData && props.mailGetData[0].id,
-        mailsExist: true,
-      };
-    }
-    // if (props.mailGetData && !props.mailGetData.length) {
-    //   alert("Please go to create mail account");
-    //   return {
-    //     mailsExist: false,
-    //   };
-    // }
-    return null;
-  }
-
-  // componentWillReceiveProps(preProps, nextProps) {
-  //   console.log({
-  //     preProps,
-  //     nextProps,
-  //   });
-  // }
-
-  // saveState = () => {
-  //   console.log("saving start state ...");
-
-  //   const payload = {
-  //     title: this.state.title,
-  //     fromAddress: this.state.from_address,
-  //   };
-
-  //   this.props.campaignStart(payload);
-  // };
-
-  // onPrev = () => {
-  //   this.props.onPrev();
-  // };
-
-  // onNext = () => {
-  //   this.saveState();
-  //   // call parent method
-  //   this.props.onNext();
-  // };
-
   render() {
-    const { onPrev, onNext } = this.props;
-
+    const { onPrev, onNext, mailAccounts } = this.props;
+    console.log(mailAccounts);
     return (
       <>
         <Form onSubmit={this.handleSubmit}>
@@ -143,23 +88,17 @@ class TheStart extends React.Component {
                 </label>
                 <Input
                   id="selectFromAddress"
-                  type="select"
                   name="from_address"
-                  value={this.state.from_address}
+                  type="select"
                   onChange={this.handleChange}
                   required
                 >
                   <option value="">Select</option>
-                  <option value="1">alextest123@gmail.com</option>
-
-                  {/* {mailGetData &&
-                            mailGetData.map((item, index) => {
-                              return (
-                                <option key={index} value={item.id}>
-                                  {item.email}
-                                </option>
-                              );
-                            })} */}
+                  {mailAccounts && mailAccounts.map((item, index) => (
+                    <option value={item.id} key={index}>
+                      {item.email}
+                    </option>
+                  ))}
                 </Input>
               </FormGroup>
             </Col>
@@ -190,6 +129,7 @@ class TheStart extends React.Component {
 }
 const mapStateToProps = (state) => ({
   campaign: state.campaign,
+  mailAccounts: state.mailAccounts.mailAccounts,
 });
 export default connect(mapStateToProps, { campaignStart })(
   TheStart

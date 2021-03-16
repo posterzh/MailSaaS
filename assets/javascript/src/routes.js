@@ -81,13 +81,13 @@ const routes = [
         component: CampaignList,
         layout: "/app/admin",
       },
-      {
-        path: "/CampaignDetailOverview",
-        name: "Campaign Detail",
-        miniName: " ",
-        component: CampaignDetailOverview,
-        layout: "/app/admin",
-      },
+      // {
+      //   path: "/CampaignDetailOverview",
+      //   name: "Campaign Detail",
+      //   miniName: " ",
+      //   component: CampaignDetailOverview,
+      //   layout: "/app/admin",
+      // },
       {
         path: "/lead-catcher",
         name: "Lead Catcher",
