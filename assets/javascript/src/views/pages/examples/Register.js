@@ -70,6 +70,7 @@ class Register extends React.Component {
     });
     // this.setState({show:!this.state.show})
   }
+  
   handleSubmit = (e) => {
     e.preventDefault();
     
