@@ -15,10 +15,10 @@ import {
 import { initial } from "lodash";
 
 const initialCalendar = {
-  check_state: 5,
-  start_time: "09:00",
-  end_time: "17:00",
-  time_zone: "NewYork",
+  block_days: 65,
+  start_time: "09:00:00",
+  end_time: "17:00:00",
+  time_zone: "US/Eastern",
   max_emails_per_day: 20,
   minutes_between_sends: 12,
   min_emails_to_send: 1,
@@ -58,28 +58,22 @@ function SendingCalendar({
       );
       if (!calendar) {
         calendar = initialCalendar;
+        calendar.mail_account = currentMailAccount;
       }
 
       setCurrentCalendar(calendar);
     }
   }, [currentMailAccount, sendingCalendars]);
 
-  const saveCalendar = (calendar) => {
-    // save
-    // setCurrentCalendar(calendar);
-
-    if (calendar.id) {
-      updateSendingCalendar(calendar.id, calendar);
+  const saveCalendar = () => {
+    if (currentCalendar.id) {
+      updateSendingCalendar(currentCalendar.id, currentCalendar);
     } else {
-      addSendingCalendar(calendar);
+      addSendingCalendar(currentCalendar);
     }
 
-    //
     setIsEditing(false);
   };
-
-  // console.log("current mail account : ", currentMailAccount);
-  // console.log("current calendar : ", currentCalendar);
 
   return (
     <>
@@ -115,7 +109,8 @@ function SendingCalendar({
             )}
             {isEditing && (
               <EditCalendar
-                calendar={currentCalendar}
+                currentCalendar={currentCalendar}
+                setCurrentCalendar={(value) => setCurrentCalendar(value)}
                 availableTimezones={availableTimezones}
                 saveEditing={saveCalendar}
                 cancelEditing={() => setIsEditing(false)}

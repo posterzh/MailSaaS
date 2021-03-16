@@ -19,13 +19,12 @@ import { isConstructorDeclaration } from "typescript";
 import WeekdayPicker from "./WeekdayPicker";
 
 export default function ({
-  calendar,
+  currentCalendar,
+  setCurrentCalendar,
   availableTimezones,
   saveEditing,
   cancelEditing,
 }) {
-  const [currentCalendar, setCurrentCalendar] = useState(calendar);
-
   if (!currentCalendar) {
     return <h5>Loading...</h5>;
   } else {

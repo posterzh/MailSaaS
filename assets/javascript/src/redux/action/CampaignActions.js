@@ -20,7 +20,6 @@ export const campaignOptions = (payload) => ({
   payload,
 });
 
-export const campaignSend = (payload) => ({
-  type: CAMPAIGN_SEND,
-  payload,
+export const campaignSend = () => ({
+  type: CAMPAIGN_SEND
 });

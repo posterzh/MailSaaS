@@ -1,20 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  FormGroup,
-  Input,
-  Button,
-} from "reactstrap";
-import { Link } from "react-router-dom";
-import { StartCampaignAction } from "../../../../redux/action/CampaignAction";
-import { MailGetDataAction } from "../../../../redux/action/MailSenderAction";
+import { Row, Col } from "reactstrap";
+// import { StartCampaignAction } from "../../../../redux/action/CampaignAction";
+// import { MailGetDataAction } from "../../../../redux/action/MailSenderAction";
+
+import { getMailAccounts } from "../../../../redux/action/MailAccountsActions";
+
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import CampaignTabs from "./components/CampaignTabs";
+
 // Page Components
 import TheStart from "./TheStart";
 import TheRecipient from "./TheRecipient";
@@ -33,6 +28,10 @@ class CampaignStart extends React.Component {
     };
 
     this.tabs = ["START", "RECIPIENT", "COMPOSE", "PREVIEW", "OPTIONS", "SEND"];
+  }
+
+  componentDidMount() {
+    this.props.getMailAccounts();
   }
 
   onChangeTab = (tabId) => {
@@ -106,7 +105,7 @@ class CampaignStart extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  campaign: state.campaign,
+  campaign: state.campaign
 });
 
-export default connect(mapStateToProps)(CampaignStart);
+export default connect(mapStateToProps, {getMailAccounts})(CampaignStart);

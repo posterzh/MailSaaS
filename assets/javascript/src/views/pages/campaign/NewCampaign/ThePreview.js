@@ -35,48 +35,21 @@ class ThePreview extends Component {
     // call parent method
     this.props.onNext();
   };
-
-  // parseCSVRow (row) {
-  //   const tableHeaders = [];
-  //   Object.keys(row).forEach((key) => {
-  //     if (
-  //       key &&
-  //       (key.toLowerCase().indexOf("name") > -1 ||
-  //         key.toLowerCase().indexOf("email") > -1)
-  //     ) {
-  //       tableHeaders.push({
-  //         key: key,
-  //         value: this.formatHeader(key),
-  //       });
-  //     }
-  //   });
-  //   return tableHeaders;
-  // }
-
-  // formatHeader(str) {
-  //   let strArr = str.split(/[\-\_]+/);
-  //   let formatStrArr = strArr.map((s) => {
-  //     if (s) {
-  //       return s.charAt(0).toUpperCase() + s.slice(1);
-  //     } else {
-  //       return '';
-  //     }
-  //   });
-  //   return formatStrArr.join(" ");
-  // }
-
+  
   render() {
-    const { onPrev, onNext, campaign } = this.props;
+    const { onPrev, onNext, campaign, sendPreview } = this.props;
     console.log(campaign);
     return (
       <>
-        <Row>
-          <Col>
-            <h3 className="text-center my-4">
-              Preview and personalize each email
-            </h3>
-          </Col>
-        </Row>
+        {!sendPreview && 
+          <Row>
+            <Col>
+              <h3 className="text-center my-4">
+                Preview and personalize each email
+              </h3>
+            </Col>
+          </Row>
+        }
         <Row className="mt-3">
           <Col md={12} className="mx-auto">
             <Card style={{ backgroundColor: "#005aac", color: "white" }} className="pt-3">
@@ -90,6 +63,13 @@ class ThePreview extends Component {
             </Card>
           </Col>
         </Row>
+        <Row>
+            <Col>
+              <h3 className="text-left my-4">
+                Messages
+              </h3>
+            </Col>
+          </Row>
         <Row>
           <Col>
             {campaign.normal && 
@@ -136,6 +116,7 @@ class ThePreview extends Component {
                 index={index}
                 data={followUp}
                 key={index}
+                preview={true}
               />
             ))}
           </Col>
@@ -147,6 +128,7 @@ class ThePreview extends Component {
                 index={index}
                 data={drip}
                 key={index}
+                preview={true}
               />
             ))}
           </Col>

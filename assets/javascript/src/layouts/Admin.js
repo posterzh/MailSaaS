@@ -14,16 +14,39 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useRef, useEffect } from "react";
 // react library for routing
 import { Route, Switch, Redirect } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import LoadingBar from 'react-top-loading-bar'
 // core components
 import AdminNavbar from "../components/Navbars/AdminNavbar.js";
 import Sidebar from "../components/Sidebar/Sidebar.js";
 import Api from "../redux/api/api";
+import { toggleTopLoader } from "../utils/Utils";
 
 // import routes from "routes.js";
 import routes from "./../routes";
+
+function TopLoader() {
+  const { topLoader } = useSelector(state => state.notification)
+  const ref = useRef(null);
+
+  useEffect(() => {
+  }, [])
+
+  useEffect(() => {
+    if (topLoader) {
+      !ref.current || ref.current.continuousStart();
+    } else {
+      !ref.current || ref.current.complete();
+    }
+  }, [topLoader])
+
+  return (
+    <LoadingBar color={"#c3092e"} ref={ref} />
+  )
+}
 
 class Admin extends React.Component {
   state = {
@@ -103,6 +126,7 @@ class Admin extends React.Component {
           ref="mainContent"
           onClick={this.closeSidenav}
         >
+          <TopLoader />
           <AdminNavbar
             toggleSidenav={this.toggleSidenav}
             sidenavOpen={this.state.sidenavOpen}
