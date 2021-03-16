@@ -3,6 +3,7 @@ import { store } from "../redux/store/store";
 import {
   SHOW_NOTIFICATION,
   HIDE_NOTIFICATION,
+  TOP_LOADER
 } from "../redux/actionType/actionType";
 
 export const toastOnError = (error) => {
@@ -33,5 +34,14 @@ export const showNotification = (notification_type, title, message) => {
 export const hideNotification = () => {
   store.dispatch({
     type: HIDE_NOTIFICATION,
+  });
+};
+
+export const toggleTopLoader = (visible) => {
+  store.dispatch({
+    type: TOP_LOADER,
+    payload: {
+      visible
+    },
   });
 };
