@@ -71,7 +71,7 @@ class TheRecipient extends Component {
     }
     const recipientData = {
       csvfile: this.state.csvFile,
-      first_row: this.state.first_row
+      first_row: this.state.first_row,
     };
     console.log(this.state.csvFile);
     this.props.campaignRecipient(recipientData);
@@ -170,113 +170,109 @@ class TheRecipient extends Component {
         </Row>
         <Row>
           <Col>
-            <Card>
-              <CardBody>
-                <CSVReader
-                  onDrop={this.handleOnDrop}
-                  onError={this.handleOnError}
-                  addRemoveButton
-                  onRemoveFile={this.handleOnRemoveFile}
-                  config={{
-                    header: true,
-                  }}
-                  style={{
-                    dropFile: {
-                      width: 300,
-                      height: 100,
-                      background: "#eeeeee",
-                    },
-                  }}
-                >
-                  <span>Drop CSV file here or click to upload.</span>
-                </CSVReader>
-                {show && (
-                  <>
-                    <Row>
-                      <Col>
-                        <h3 className="text-left my-4">
-                          Map CSV Special Columns
-                        </h3>
-                        <span>(top 10 rows and special columns)</span>
-                      </Col>
-                    </Row>
-                    <Row>
-                      {csvMappingContent.title.length > 0 &&
-                      csvMappingContent.data.length > 0 ? (
-                        <Tables
-                          titles={csvMappingContent.title} // required
-                          tablePropsData={csvMappingContent.data} // required
-                        />
-                      ) : (
-                        <Col>
-                          <h4 className="text-center text-warning">
-                            Invalid CSV File!
-                          </h4>
-                        </Col>
-                      )}
-                    </Row>
-                  </>
-                )}
-                {/* <Form onSubmit={this.handleSubmit} 
-                          className="dropzone dropzone-multiple"
-                          id="dropzone-multiple"
-                        >
-                          <div className="fallback">
-                            <div className="custom-file">
-                              <input
-                                className="custom-file-input"
-                                id="customFileUploadMultiple"
-                                multiple="multiple"
-                                type="file"
-                              />
-                              <label
-                                className="custom-file-label"
-                                htmlFor="customFileUploadMultiple"
-                              >
-                                Choose file
-                              </label>
-                            </div>
-                          </div>
-                          <ListGroup
-                            className=" dz-preview dz-preview-multiple list-group-lg"
-                            flush
-                          >
-                            <ListGroupItem className=" px-0">
-                              <Row className=" align-items-center">
-                                <Col className=" col-auto">
-                                  <div className=" avatar">
-                                    <img
-                                      alt=""
-                                      className=" avatar-img rounded"
-                                      data-dz-thumbnail
-                                      src="/static/images/img/csv_icon.jpg"
-                                    />
-                                  </div>
-                                </Col>
-                                <div className=" col ml--3">
-                                  <h4 className=" mb-1" data-dz-name></h4>
-                                  <p
-                                    className=" small text-muted mb-0"
-                                    data-dz-size
-                                  ></p>
-                                </div>
-                                <Col className=" col-auto">
-                                  <Button
-                                    size="sm"
-                                    color="danger"
-                                    data-dz-remove
-                                  >
-                                    <i className="fas fa-trash" />
-                                  </Button>
-                                </Col>
-                              </Row>
-                            </ListGroupItem>
-                          </ListGroup>
-                        </Form> */}
-              </CardBody>
-            </Card>
+            <CSVReader
+              onDrop={this.handleOnDrop}
+              onError={this.handleOnError}
+              addRemoveButton
+              onRemoveFile={this.handleOnRemoveFile}
+              config={{
+                header: true,
+              }}
+              style={{
+                dropFile: {
+                  width: 300,
+                  height: 100,
+                  background: "#eeeeee",
+                },
+              }}
+            >
+              <span>Drop CSV file here or click to upload.</span>
+            </CSVReader>
           </Col>
         </Row>
+        {show && (
+          <>
+            <Row>
+              <Col>
+                <h3 className="text-left my-4">
+                  Map CSV Special Columns
+                </h3>
+                <span>(top 10 rows and special columns)</span>
+              </Col>
+            </Row>
+            <Row>
+              {csvMappingContent.title.length > 0 &&
+              csvMappingContent.data.length > 0 ? (
+                <Tables
+                  titles={csvMappingContent.title} // required
+                  tablePropsData={csvMappingContent.data} // required
+                />
+              ) : (
+                <Col>
+                  <h4 className="text-center text-warning">
+                    Invalid CSV File!
+                  </h4>
+                </Col>
+              )}
+            </Row>
+          </>
+        )}
+        {/* <Form onSubmit={this.handleSubmit} 
+          className="dropzone dropzone-multiple"
+          id="dropzone-multiple"
+        >
+          <div className="fallback">
+            <div className="custom-file">
+              <input
+                className="custom-file-input"
+                id="customFileUploadMultiple"
+                multiple="multiple"
+                type="file"
+              />
+              <label
+                className="custom-file-label"
+                htmlFor="customFileUploadMultiple"
+              >
+                Choose file
+              </label>
+            </div>
+          </div>
+          <ListGroup
+            className=" dz-preview dz-preview-multiple list-group-lg"
+            flush
+          >
+            <ListGroupItem className=" px-0">
+              <Row className=" align-items-center">
+                <Col className=" col-auto">
+                  <div className=" avatar">
+                    <img
+                      alt=""
+                      className=" avatar-img rounded"
+                      data-dz-thumbnail
+                      src="/static/images/img/csv_icon.jpg"
+                    />
+                  </div>
+                </Col>
+                <div className=" col ml--3">
+                  <h4 className=" mb-1" data-dz-name></h4>
+                  <p
+                    className=" small text-muted mb-0"
+                    data-dz-size
+                  ></p>
+                </div>
+                <Col className=" col-auto">
+                  <Button
+                    size="sm"
+                    color="danger"
+                    data-dz-remove
+                  >
+                    <i className="fas fa-trash" />
+                  </Button>
+                </Col>
+              </Row>
+            </ListGroupItem>
+          </ListGroup>
+        </Form> */}
         {/* Buttons */}
         <Row className="my-3">
           <Col className="text-left">

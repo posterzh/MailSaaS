@@ -1,68 +1,112 @@
+import imaplib
+import re
+import smtplib
+import sys
+import time
 
 from django.core import mail
 from django.core.mail.backends.smtp import EmailBackend
 
 
-def check_smtp_email(server, port, email, password):
-    import smtplib
-    import ssl
 
-    smtp_server = server
-    port = port  # For starttls
-    sender_email = email
-    password = password
 
-    # Create a secure SSL context
-    context = ssl.create_default_context()
-
-    # Try to log in to server and send email
+def check_smtp_send(ident, smtp_config):
     try:
-        server = smtplib.SMTP(smtp_server,port)
-        server.ehlo() # Can be omitted
-        server.starttls(context=context) # Secure the connection
-        server.ehlo() # Can be omitted
-        # server.login(sender_email, password)
-        login_status = server.login(sender_email, password)
-        return login_status
-        # TODO: Send email here
+        fromaddr = smtp_config["from"]
+        toaddr = smtp_config["to"]
+        server_name = smtp_config["server"]
+        port = smtp_config["port"]
+        login = smtp_config["login"]
+        password = smtp_config["password"]
+    except:
+        sys.stderr.write("missing parameters in ")
+        sys.stdout.write("0\n")
+
+    id_nr = int(time.time())
+    subject = "MAIL ROUNDTRIP TESTMAIL %s :: %s\r\n" % (ident, id_nr)
+    msg = ("From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n" % (fromaddr, toaddr, subject))
+
+    try:
+        server = smtplib.SMTP(server_name, port)
+
+        server.set_debuglevel(1)
+
+        server.starttls()
+        server.ehlo()
+        server.login(login, password)
+        server.sendmail(fromaddr, toaddr, msg)
+        server.quit()
     except Exception as e:
-        # Print any error messages to stdout
-        print("error = ",e)
-        return str(e)
-    # finally:
-    #     server.quit()
+        sys.stdout.write("0\n")
+        sys.stderr.write("Exception happened:\n")
+        sys.stderr.write('*' * 60 + "\n")
+        sys.stderr.write("*** " + str(e) + "\n")
+        sys.stderr.write('*' * 60 + "\n")
+        sys.stderr.write("\n")
+        sys.stderr.write('-' * 60 + "\n")
+        sys.exit(0)
+    sys.stdout.write("1\n")
+    sys.exit(0)
 
 
-def send_mail_with_smtp(host, host_port, host_user, host_pass, send_to, subject, msg):
+def check_imap_receive(ident, imap_config):
     try:
-        con = mail.get_connection()
-        con.open()
-        mail_obj = EmailBackend(
-            host=host,
-            port=host_port,
-            password=host_pass,
-            username=host_user,
-            use_tls=False,
-            use_ssl=False,
-            timeout=10
-        )
-        msg = mail.EmailMessage(
-            subject=subject,
-            body=msg,
-            from_email=host_user,
+        fromaddr = imap_config["from"]
+        server_name = imap_config["server"]
+        folder = imap_config["folder"]
+        port = imap_config["port"]
+        login = imap_config["login"]
+        password = imap_config["password"]
+    except:
+        sys.stderr.write("missing parameters in ")
+        sys.stdout.write("0\n")
 
-            to=send_to,
-            connection=con,
-        )
-        mail_obj.send_messages([msg])
+    imaplib.Debug = 4
+    imap = imaplib.IMAP4_SSL(server_name)
 
-        print('Message has been sent.')
+    try:
+        rv, data = imap.login(login, password)
+    except Exception as e:
+        print("Exception happened:")
+        sys.stderr.write('*' * 60 + "\n")
+        sys.stderr.write("*** " + str(e) + "\n")
+        sys.stderr.write('*' * 60 + "\n")
+        sys.stderr.write("\n")
+        sys.stderr.write('-' * 60 + "\n")
+        sys.exit(0)
 
-        mail_obj.close()
-        con.close()
-        print('SMTP server closed')
-        return True
+    rv, mailboxes = imap.list()
+    if rv == 'OK':
+        mailboxes = [mailbox.decode("utf-8") for mailbox in mailboxes]
+        sys.stderr.write("Mailboxes:")
+        for mailbox in mailboxes:
+            sys.stderr.write(mailbox + "\n")
 
-    except Exception as _error:
-        print('Error in sending mail >> {}'.format(_error))
-        return False
+    timestamp = 0
+    try:
+        imap.select(folder, readonly=False)
+        typ, msg_ids = imap.search(None, '(FROM "%s")' % fromaddr)
+        whites = re.compile(r'\s+')
+        msg_ids = whites.split(msg_ids[0].decode("utf-8"))
+
+        delete_ids = []
+        for imap_id in msg_ids:
+            if imap_id == '':
+                continue
+            typ, msg_data = imap.fetch(imap_id, '(RFC822)')
+
+        if len(delete_ids) > 0:
+            imap.store(",".join(delete_ids), '+FLAGS', r'(\Deleted)')
+            typ, response = imap.expunge()
+            sys.stderr.write("Expunged: %s\n" % response)
+    finally:
+        try:
+            imap.close()
+        except:
+            pass
+        imap.logout()
+    if timestamp != 0:
+        print(int(time.time()) - int(timestamp))
+    else:
+        print("0")
+    sys.exit(0)
