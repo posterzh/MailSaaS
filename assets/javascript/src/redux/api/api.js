@@ -58,6 +58,15 @@ Api.AddUnsubscribes = (data, token) => {
   });
 }
 
+// for delete unsubscribes
+Api.DeleteUnsubscribes = (data, token) => {
+  return axios.post(`${API_BASE_URL}/unsubscribes/delete-emails`, data, {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  });
+}
+
 Api.StartCampaignApi = (data, token) => {
   return axios({
     method: 'POST',
