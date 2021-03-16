@@ -32,7 +32,8 @@ import PageContainer from "../../../components/Containers/PageContainer";
 import {
   getUnsubscribes,
   addUnsubscribeEmails,
-  addUnsubscribeCSV
+  addUnsubscribeCSV,
+  deleteUnsubscribeEmails,
 } from "../../../redux/action/UnsubscribeActions";
 
 class Unsubscribes extends Component {
@@ -65,7 +66,7 @@ class Unsubscribes extends Component {
   }
 
   deleteUnsubscribes = (selectedId) => {
-    console.log("Email Ids", selectedId);
+    this.props.deleteUnsubscribeEmails(selectedId);
     this.setState({ selectedId: [] });
   };
 
@@ -261,6 +262,7 @@ export default connect(mapStateToProps, {
   getUnsubscribes,
   addUnsubscribeEmails,
   addUnsubscribeCSV,
+  deleteUnsubscribeEmails,
 })(Unsubscribes);
 
 // const mapStateToProps = (state) => {
