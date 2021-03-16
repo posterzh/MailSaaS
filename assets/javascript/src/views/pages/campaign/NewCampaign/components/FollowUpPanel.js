@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Row, Col, Input } from "reactstrap";
 import ReactQuill from "react-quill";
+import { parseCSVRow, parseTemplate } from '../../../../../utils/Utils';
 
 export default class FollowUpPanel extends React.Component {
   constructor(props) {
@@ -22,7 +23,7 @@ export default class FollowUpPanel extends React.Component {
     }
   }
   render() {
-    const { index, onDelete, data, preview } = this.props;
+    const { index, onDelete, data, preview, replacement } = this.props;
 
     return (
       <Container fluid>
@@ -75,7 +76,7 @@ export default class FollowUpPanel extends React.Component {
             }
             <Row className="mt-3">
               <Input
-                value={data.subject}
+                value={preview && replacement ? parseTemplate(data.subject, replacement) : data.subject}
                 onChange={(e) => {
                   this.setState({ subject: e.target.value });
                   data.subject = e.target.value;
@@ -91,7 +92,7 @@ export default class FollowUpPanel extends React.Component {
             <Row>
               <Col className="p-0">
                 <ReactQuill
-                  defaultValue={data.email_body}
+                  defaultValue={preview && replacement ? parseTemplate(data.email_body, replacement) : data.email_body}
                   onChange={(value) => {
                     this.setState({ email_body: value });
                     data.email_body = value;
