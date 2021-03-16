@@ -32,10 +32,11 @@ export const campaignReducer = (state = initialState, action) => {
         track_Opens: action.payload.track_Opens,
         terms_and_laws: action.payload.terms_and_laws
       };
-    case CAMPAIGN_SEND:
+    case CAMPAIGN_SEND: {
       return {
         ...state
       };
+    }
     default:
       return state;
   }

@@ -19,8 +19,6 @@ import { isConstructorDeclaration } from "typescript";
 import WeekdayPicker from "./WeekdayPicker";
 
 export default function ShowCalendar({ calendar, startEditing }) {
-  // console.log("calendar : ", calendar);
-
   if (!calendar) {
     return <h5>Loading...</h5>;
   } else {

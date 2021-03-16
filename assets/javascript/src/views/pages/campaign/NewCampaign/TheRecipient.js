@@ -1,33 +1,22 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
-  Container,
   Row,
   Col,
   Button,
-  Input,
-  Nav,
-  Form,
-  FormGroup,
   Card,
-  CardHeader,
   CardBody,
-  ListGroupItem,
-  ListGroup,
 } from "reactstrap";
 import Dropzone from "dropzone";
 import { CSVReader } from "react-papaparse";
-import { Link } from "react-router-dom";
 // import {
 //   RecipientAction,
 //   StartCampaignAction,
 // } from "../../../../redux/action/CampaignAction";
 
-import Tables from "../../TableContent";
+import Tables from "../../../../components/Tables";
 import { showNotification } from "../../../../utils/Utils";
-import {
-  campaignRecipient,
-} from "../../../../redux/action/CampaignActions";
+import { campaignRecipient } from "../../../../redux/action/CampaignActions";
 
 Dropzone.autoDiscover = false;
 
@@ -165,14 +154,6 @@ class TheRecipient extends Component {
     // call parent method
     this.props.onPrev();
   };
-
-  // onNext = () => {
-  //   // some validation
-  //   console.log("Prev : validation success");
-
-  //   // call parent method
-  //   this.props.onNext();
-  // };
 
   render() {
     const { onPrev, onNext } = this.props;
