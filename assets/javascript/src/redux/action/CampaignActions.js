@@ -1,4 +1,6 @@
-import { CAMPAIGN_START, CAMPAIGN_RECIPIENT, CAMPAIGN_COMPOSE, CAMPAIGN_OPTIONS, CAMPAIGN_SEND } from "../actionType/actionType";
+import { CAMPAIGN_START, CAMPAIGN_RECIPIENT, CAMPAIGN_COMPOSE, CAMPAIGN_OPTIONS } from "../actionType/actionType";
+import { history } from "../..";
+import axios from "../../utils/axios";
 
 export const campaignStart = (payload) => ({
   type: CAMPAIGN_START,
@@ -20,6 +22,17 @@ export const campaignOptions = (payload) => ({
   payload,
 });
 
-export const campaignSend = () => ({
-  type: CAMPAIGN_SEND
-});
+export const campaignSend = (payload) => (dispatch) => {
+  const formData = new FormData();
+  formData.append('csvfile_op1', payload.csvfile);
+  formData.append('campaign', payload);
+  axios
+    .post("/campaign/createcamp/", formData)
+    .then((response) => {
+      history.push("/app/admin/CampaignList");
+    })
+    .catch((error) => {
+      toastOnError(error);
+    });
+};
+

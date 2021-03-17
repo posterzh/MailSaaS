@@ -23,7 +23,7 @@ export class TheSend extends Component {
   }
   createCampaign = (e) => {
     e.preventDefault();
-    this.props.campaignSend({});
+    this.props.campaignSend(this.props.campaign);
   };
 
   onPrev = () => {
@@ -129,4 +129,4 @@ const mapStateToProps = (state) => ({
   mailAccounts: state.mailAccounts.mailAccounts,
 });
 
-export default connect(mapStateToProps, campaignSend)(TheSend);
+export default connect(mapStateToProps, {campaignSend})(TheSend);

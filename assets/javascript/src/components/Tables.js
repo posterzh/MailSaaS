@@ -430,7 +430,7 @@ function Tables({
                               </td>
                             );
                           })}
-                          {showAction && (
+                          {/* {showAction && (
                             <td
                               className="text-right"
                               key={"header-actions" + index}
@@ -463,7 +463,7 @@ function Tables({
                                 </DropdownMenu>
                               </UncontrolledDropdown>
                             </td>
-                          )}
+                          )} */}
 
                           <td className="table-actions">
                             {
