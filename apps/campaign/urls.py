@@ -26,5 +26,5 @@ urlpatterns = [
     path('prospects/<int:pk>/', views.ProspectsDetailView.as_view(),name = 'procpects_detail'),
     path('recipientunsubcribe/', views.RecipientUnsubcribe.as_view(), name='recipient_unsubcribe'),
     path('recipientunassigned/', views.RecipientUnassignedView.as_view(), name='recipientunassigned'),
-
+    path('createcamp/', views.CreateCampaignView.as_view(), name='create_campaign'),
 ]

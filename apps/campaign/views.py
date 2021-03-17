@@ -451,6 +451,12 @@ class CreateCampaignSendView(APIView):
         else:
             return Response({"message": CampSerializer.errors, "success": True})
 
+class CreateCampaignView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, format=None):
+        return Response({"message": "Updated Successfully", "success": True})
+
 
 class CampaignView(generics.ListAPIView):
     """
