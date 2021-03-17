@@ -575,4 +575,18 @@ Api.UpdateScheduleApi=(updatedataschedule,token)=>{
   })
 }
 
+Api.CreateCampaign = (campaign, token) => {
+  const formData = new FormData();
+  formData.append('csvfile_op1', campaign.csvfile);
+  formData.append('campaign', campaign);
+  return axios({
+    method: 'POST',
+    url: `${API_BASE_URL}/campaign/createcamp/`,
+    data: formData,
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  })
+}
+
 export default Api;

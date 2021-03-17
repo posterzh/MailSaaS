@@ -8,7 +8,7 @@ import {
   Input,
   Button,
 } from "reactstrap";
-import { campaignStart } from "../../../../redux/action/CampaignActions";
+import { campaignStart, campaignSend } from "../../../../redux/action/CampaignActions";
 
 class TheStart extends React.Component {
   constructor(props) {
@@ -50,8 +50,9 @@ class TheStart extends React.Component {
       from_address: this.state.from_address,
     };
 
-    this.props.campaignStart(data);
-    this.props.onNext();
+    // this.props.campaignSend(data);
+    // this.props.onNext();
+    this.props.campaignSend({})
   };
 
   render() {
@@ -131,6 +132,6 @@ const mapStateToProps = (state) => ({
   campaign: state.campaign,
   mailAccounts: state.mailAccounts.mailAccounts,
 });
-export default connect(mapStateToProps, { campaignStart })(
+export default connect(mapStateToProps, { campaignStart, campaignSend })(
   TheStart
 );

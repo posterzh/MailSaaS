@@ -28,7 +28,7 @@ import {
 
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
-import Tables from "../../TableContent";
+import Tables from "../../../../components/Tables";
 
 class CampaignList extends Component {
   constructor(props) {
@@ -122,7 +122,7 @@ class CampaignList extends Component {
     ];
     const tableData = [
       {
-        title: 'March 8 Outreach',
+        title: 'March 18 Outreach',
         created: 'Mar 8',
         assigned: 'tester1',
         recipients: '1',
@@ -228,7 +228,8 @@ class CampaignList extends Component {
             <Tables
               titles={tableTitle} // required
               tablePropsData={tableData}   // required
-              showAction={true}    // optional
+              onEdit={() => {}}
+              onDelete={() => {}}
               actionMenus={actionMenus}   // optional for showing menus of row.
               actionCallback={this.actionCallback}        // get call back for action select of row.
               showSelect={true}    // optional
