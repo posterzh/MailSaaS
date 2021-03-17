@@ -25,6 +25,7 @@ import {
 import { Component } from "react";
 import { connect } from "react-redux";
 import UnsubscribesModal from "./UnsubscribesModal";
+import CSVDownloadModal from "./CSVDownloadModal";
 
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
@@ -43,7 +44,8 @@ class Unsubscribes extends Component {
       search: undefined,
       activeTab: "addressTab",
       selectedId: [],
-      modal: false,
+      unsubscribeModal: false,
+      downloadCSVModal: false,
       email: "",
     };
   }
@@ -71,8 +73,12 @@ class Unsubscribes extends Component {
   };
 
   closeUnsubscribeModal = () => {
-    this.setState({ modal: false });
+    this.setState({ unsubscribeModal: false });
   };
+
+  closeDownloadCSVModal = () => {
+    this.setState({ downloadCSVModal: false });
+  }
 
   handleChange = (e) => {
     this.setState({
@@ -99,9 +105,15 @@ class Unsubscribes extends Component {
   selectAll = (e) => {
     let newSelectedId = [];
     if (e.target.checked) {
-      newSelectedId = this.props.unsubscribes.map((item) => {
-        return item.id;
-      });
+      if (this.state.activeTab === 'addressTab') {
+        newSelectedId = this.props.unsubscribes
+          .filter(e => !e['email'].startsWith('*@'))
+          .map((item) => item.id);
+      } else if (this.state.activeTab === 'domainTab') {
+        newSelectedId = this.props.unsubscribes
+          .filter(e => e['email'].startsWith('*@'))
+          .map((item) => item.id);
+      }
     }
     this.setState({ selectedId: newSelectedId });
   };
@@ -114,8 +126,10 @@ class Unsubscribes extends Component {
       .filter(e => !e['email'].startsWith('*@'));
     const unsubscribesDomain = unsubscribes
       .filter(e => e['email'].startsWith('*@'))
-      .map(e => ({...e, 'domain': e['email'].substring(2)}));
-
+      .map(e => ({ ...e, 'domain': e['email'].substring(2) }));
+    const selectedUnsubscribes = unsubscribes
+      .filter(e => selectedId.includes(e.id));
+console.log(selectedUnsubscribes);
     return (
       <>
         <PageHeader
@@ -155,7 +169,6 @@ class Unsubscribes extends Component {
                   placeholder="Search"
                   name="search"
                   type="search"
-                  value={this.state.search}
                   onChange={this.handleChange} />
                 <InputGroupAddon onClick={this.onSearch} addonType="append">
                   <InputGroupText>
@@ -178,6 +191,10 @@ class Unsubscribes extends Component {
               <Button
                 className="btn-icon btn-2 ml-xs-0 mt-xs-1"
                 type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.setState({ downloadCSVModal: !this.state.downloadCSVModal });
+                }}
               >
                 <span className="btn-inner--icon">
                   <i className="fa fa-save" />
@@ -239,7 +256,7 @@ class Unsubscribes extends Component {
             type="button"
             onClick={(e) => {
               e.preventDefault();
-              this.setState({ modal: !this.state.modal });
+              this.setState({ unsubscribeModal: !this.state.unsubscribeModal });
             }}
           >
             <span className="btn-inner--icon">
@@ -247,10 +264,15 @@ class Unsubscribes extends Component {
             </span>
           </Button>
           <UnsubscribesModal
-            isOpen={this.state.modal}
+            isOpen={this.state.unsubscribeModal}
             unsubscribeEmail={this.unsubscribeEmail}
             unsubscribeCSV={this.unsubscribeCSV}
             close={this.closeUnsubscribeModal}
+          />
+          <CSVDownloadModal
+            data={selectedUnsubscribes}
+            isOpen={this.state.downloadCSVModal}
+            close={this.closeDownloadCSVModal}
           />
         </PageContainer>
       </>
