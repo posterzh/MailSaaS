@@ -29,7 +29,7 @@ def check_email(request):
 def check_smtp(server, port, use_tls, user, password):
     try:
         server = smtplib.SMTP(server, port)
-        server.set_debuglevel(1)
+        # server.set_debuglevel(1)
         if use_tls:
             server.starttls()
         server.ehlo()
@@ -41,7 +41,8 @@ def check_smtp(server, port, use_tls, user, password):
 
 
 def check_imap(server, port, use_tls, user, password):
-    imaplib.Debug = 4
+    # imaplib.Debug = 4
+    
     # 1)
     # server = imaplib.IMAP4_SSL(server, port)
     # if use_tls:
