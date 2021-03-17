@@ -285,8 +285,15 @@ export default class DetailModal extends Component {
                                 id="use_smtp_ssl"
                                 name="use_smtp_ssl"
                                 type="checkbox"
-                                onChange={this.handleChange}
-                                value={this.state.use_smtp_ssl}
+                                checked={this.state.use_smtp_ssl}
+                                onChange={(e) => {
+                                  this.handleChange({
+                                    target: {
+                                      name: e.target.name,
+                                      value: e.target.checked,
+                                    },
+                                  });
+                                }}
                               />
                               <label
                                 className="custom-control-label"
@@ -375,8 +382,15 @@ export default class DetailModal extends Component {
                                 id="use_imap_ssl"
                                 name="use_imap_ssl"
                                 type="checkbox"
-                                onChange={this.handleChange}
-                                value={this.state.use_imap_ssl}
+                                checked={this.state.use_imap_ssl}
+                                onChange={(e) => {
+                                  this.handleChange({
+                                    target: {
+                                      name: e.target.name,
+                                      value: e.target.checked,
+                                    },
+                                  });
+                                }}
                               />
                               <label
                                 className="custom-control-label"
