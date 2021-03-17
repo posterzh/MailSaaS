@@ -110,6 +110,12 @@ class Unsubscribes extends Component {
     const { selectedId } = this.state;
     const { unsubscribes } = this.props;
 
+    const unsubscribesAddress = unsubscribes
+      .filter(e => !e['email'].startsWith('*@'));
+    const unsubscribesDomain = unsubscribes
+      .filter(e => e['email'].startsWith('*@'))
+      .map(e => ({...e, 'domain': e['email'].substring(2)}));
+
     return (
       <>
         <PageHeader
@@ -214,7 +220,7 @@ class Unsubscribes extends Component {
               <Addresstable
                 selectAll={this.selectAll}
                 selectRow={this.selectRow}
-                data={unsubscribes}
+                data={unsubscribesAddress}
                 selectedId={selectedId}
               />
             </TabPane>
@@ -222,7 +228,7 @@ class Unsubscribes extends Component {
               <Domainpage
                 selectAll={this.selectAll}
                 selectRow={this.selectRow}
-                data={unsubscribes}
+                data={unsubscribesDomain}
                 selectedId={selectedId}
               />
             </TabPane>
