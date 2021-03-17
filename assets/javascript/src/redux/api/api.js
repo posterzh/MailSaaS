@@ -5,17 +5,17 @@ const Api = {}
 
 // for register
 Api.RegisterApi = (user) => {
-  return axios.post(`${API_BASE_URL}/rest-auth/registration/`, user)
+  return axios.post(`${API_BASE_URL}/rest-auth/registration/`, user);
 }
 
 // for login
 Api.LoginApi = (loginuser) => {
-  return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser)
+  return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser);
 }
 
 // for logout
 Api.LogoutApi = () => {
-  return axios.post(`${API_BASE_URL}/rest-auth/logout/`)
+  return axios.post(`${API_BASE_URL}/rest-auth/logout/`);
 }
 
 // for prospects filter
@@ -25,7 +25,7 @@ Api.FilterRecipients = (params, token) => {
     headers: {
       "Authorization": `Bearer ${token}`,
     }
-  })
+  });
 }
 
 // for prospects count
@@ -36,17 +36,44 @@ Api.CountRecipients = (token) => {
     headers: {
       "Authorization": `Bearer ${token}`,
     }
-  })
+  });
 }
 
 // for unsubscribe list
 Api.GetUnsubscribes = (params, token) => {
-  return axios.get(`${API_BASE_URL}/unsubscribes/unsubcribes`, { 
+  return axios.get(`${API_BASE_URL}/unsubscribes/`, { 
     params,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
-  })
+  });
+}
+
+// for add unsubscribe emails
+Api.AddUnsubscribeEmails = (data, token) => {
+  return axios.post(`${API_BASE_URL}/unsubscribes/add-emails`, data, {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  });
+}
+
+// for add unsubscribe csv
+Api.AddUnsubscribeCSV = (fileData, token) => {
+  return axios.post(`${API_BASE_URL}/unsubscribes/add-csv`, fileData, {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  });
+}
+
+// for delete unsubscribes
+Api.DeleteUnsubscribes = (data, token) => {
+  return axios.post(`${API_BASE_URL}/unsubscribes/delete-emails`, data, {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    }
+  });
 }
 
 Api.StartCampaignApi = (data, token) => {

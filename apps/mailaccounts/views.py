@@ -9,8 +9,6 @@ from apps.users.models import CustomUser
 
 from .models import EmailAccount, SendingCalendar
 from .serializers import EmailAccountSerializer, SendingCalendarSerializer
-from .utils import check_smtp_email
-
 
 # class EmailAccountListView(generics.ListCreateAPIView):
 #     queryset = EmailAccount.objects.all()

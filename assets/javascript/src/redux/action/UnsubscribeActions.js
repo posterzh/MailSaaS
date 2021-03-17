@@ -1,5 +1,8 @@
 import {
-  GET_UNSUBSCRIBES
+  GET_UNSUBSCRIBES,
+  ADD_UNSUBSCRIBE_EMAILS,
+  ADD_UNSUBSCRIBE_CSV,
+  DELETE_UNSUBSCRIBE_EMAILS,
 } from "../actionType/actionType"
 import { toastOnError } from "../../utils/Utils";
 
@@ -9,7 +12,7 @@ export const getUnsubscribes = (search) => (dispatch) => {
     .then((response) => {
       dispatch({
         type: GET_UNSUBSCRIBES,
-        payload: response.data,
+        payload: response.data.results,
       });
     })
     .catch((error) => {
@@ -17,6 +20,55 @@ export const getUnsubscribes = (search) => (dispatch) => {
     });
 };
 
+export const addUnsubscribeEmails = (emailList, user) => (dispatch) => {
+  const data = emailList.map(email => ({
+    email: email,
+    mail_account: user.email,
+    name: user.first_name,
+    user: user.pk    
+  }))
+  const token = localStorage.getItem("access_token");
+  Api.AddUnsubscribeEmails(data, token)
+    .then((response) => {
+      dispatch({
+        type: ADD_UNSUBSCRIBE_EMAILS,
+        payload: response.data
+      });
+    })
+    .catch((error) => {
+      toastOnError(error);
+    });
+}
+
+export const addUnsubscribeCSV = (file) => (dispatch) => {
+  const token = localStorage.getItem("access_token");
+  let fileData = new FormData();
+  fileData.append("file", file);
+  Api.AddUnsubscribeCSV(fileData, token)
+    .then((response) => {
+      // dispatch({
+      //   type: ADD_UNSUBSCRIBE_CSV,
+      //   payload: response.data
+      // });
+    })
+    .catch((error) => {
+      toastOnError(error);
+    });
+}
+
+export const deleteUnsubscribeEmails = (ids) => (dispatch) => {
+  const token = localStorage.getItem("access_token");
+  Api.DeleteUnsubscribes(ids, token)
+    .then((response) => {
+      dispatch({
+        type: DELETE_UNSUBSCRIBE_EMAILS,
+        payload: ids,
+      });
+    })
+    .catch((error) => {
+      toastOnError(error);
+    });
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Karl - Will remove later

@@ -39,41 +39,32 @@ class Login extends React.Component {
                   </a>
                 </div>
               </Col>
-              <Col xl="6">
-                <Nav className="nav-footer justify-content-center justify-content-xl-end">
+              <Col xl="6" className="justify-content-end">
+                <div className="copyright text-center text-xl-right text-muted">
+                  <a
+                    href="/terms"
+                    target="_blank"
+                  >
+                    Terms
+                  </a>
+                  &nbsp;and&nbsp;
+                  <a
+                    href="/terms"
+                    target="_blank"
+                  >
+                    Condition
+                  </a>
+                </div>
+                {/* <Nav className="nav-footer justify-content-center justify-content-xl-end">
                   <NavItem>
                     <NavLink
                       href="https://www.creative-tim.com?ref=adpr-auth-footer"
                       target="_blank"
                     >
-                      {/* Creative Tim */}
+                      Terms
                     </NavLink>
                   </NavItem>
-                  <NavItem>
-                    <NavLink
-                      href="https://www.creative-tim.com/presentation?ref=adpr-auth-footer"
-                      target="_blank"
-                    >
-                      {/* About Us */}
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      href="http://blog.creative-tim.com?ref=adpr-auth-footer"
-                      target="_blank"
-                    >
-                      {/* Blog */}
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      href="https://www.creative-tim.com/license?ref=adpr-auth-footer"
-                      target="_blank"
-                    >
-                      {/* License */}
-                    </NavLink>
-                  </NavItem>
-                </Nav>
+                </Nav> */}
               </Col>
             </Row>
           </Container>

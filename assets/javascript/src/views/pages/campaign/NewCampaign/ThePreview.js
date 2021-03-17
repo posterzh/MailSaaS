@@ -1,25 +1,17 @@
 import React, { Component } from "react";
 import {
-  Form,
-  Container,
   Row,
-  Nav,
   Input,
   Col,
   Button,
   Card,
-  CardHeader,
-  CardBody,
 } from "reactstrap";
-import { Editor } from "react-draft-wysiwyg";
-import { Link, Route } from "react-router-dom";
-import { EditorState, convertToRaw, ContentState } from "draft-js";
 import { PreviewCampaignAction } from "../../../../redux/action/CampaignAction";
 import ReactQuill from "react-quill";
 import FollowUpPanel from "./components/FollowUpPanel";
 import DripPanel from "./components/DripPanel";
 import { connect } from "react-redux";
-import { parseCSVRow } from './components/csvfile';
+import { parseCSVRow, parseTemplate } from '../../../../utils/Utils';
 
 class ThePreview extends Component {
   constructor() {
@@ -35,6 +27,10 @@ class ThePreview extends Component {
     // call parent method
     this.props.onNext();
   };
+
+  parseTemplate = () => {
+
+  }
   
   render() {
     const { onPrev, onNext, campaign, sendPreview } = this.props;
@@ -77,7 +73,7 @@ class ThePreview extends Component {
                 type="text"
                 className="in"
                 name="subject"
-                defaultValue={campaign.normal.subject}
+                defaultValue={parseTemplate(campaign.normal.subject, campaign.first_row)}
                 placeholder="Subject"
               />
             }
@@ -87,9 +83,10 @@ class ThePreview extends Component {
           <Col>
             {campaign.normal && 
               <ReactQuill
-                theme="snow"
+                theme="bubble"
+                readOnly
                 className="Quill_div"
-                value={campaign.normal.email_body}
+                value={parseTemplate(campaign.normal.email_body, campaign.first_row)}
                 modules={{
                   toolbar: [
                     ["bold", "italic"],
@@ -117,6 +114,7 @@ class ThePreview extends Component {
                 data={followUp}
                 key={index}
                 preview={true}
+                replacement={campaign.first_row}
               />
             ))}
           </Col>
@@ -129,6 +127,7 @@ class ThePreview extends Component {
                 data={drip}
                 key={index}
                 preview={true}
+                replacement={campaign.first_row}
               />
             ))}
           </Col>

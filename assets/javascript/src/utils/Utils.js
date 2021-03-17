@@ -45,3 +45,49 @@ export const toggleTopLoader = (visible) => {
     },
   });
 };
+
+export const formatHeader = (str) => {
+  let strArr = str.split(/[\-\_]+/);
+  let formatStrArr = strArr.map((s) => {
+      if (s) {
+          return s.charAt(0).toUpperCase() + s.slice(1);
+      } else {
+          return '';
+      }
+  });
+  return formatStrArr.join(" ");
+}
+
+export const parseCSVRow = (row) => {
+ 
+  const tableHeaders = [];
+  Object.keys(row).forEach((key) => {
+      if (
+          key &&
+          (key.toLowerCase().indexOf("name") > -1 ||
+              key.toLowerCase().indexOf("email") > -1)
+      ) {
+          tableHeaders.push({
+              key: key,
+              value: formatHeader(key),
+          });
+      }
+  });
+  return tableHeaders;
+}
+
+export const parseTemplate = (str, row) => {
+
+  // extract matches {{...}}
+  const matches = str.match(/\{\{([^{}]*)\}\}/g);
+  if (matches && matches.length > 0) {
+      matches.forEach((m) => {
+          const key = m.slice(2, -2).trim();
+          if (key && (key in row)) {
+              str = str.replaceAll(m, row[key]);
+          }
+      });
+  }
+  return str;
+}
+
