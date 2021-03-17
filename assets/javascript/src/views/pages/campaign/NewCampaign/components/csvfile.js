@@ -81,35 +81,3 @@ export function Csvfile() {
     );
 }
 
-
-function formatHeader(str) {
-    let strArr = str.split(/[\-\_]+/);
-    let formatStrArr = strArr.map((s) => {
-        if (s) {
-            return s.charAt(0).toUpperCase() + s.slice(1);
-        } else {
-            return '';
-        }
-    });
-    return formatStrArr.join(" ");
-}
-
-export function parseCSVRow(row) {
-    console.log('parse csv : ', row);
-    
-    const tableHeaders = [];
-    Object.keys(row).forEach((key) => {
-        if (
-            key &&
-            (key.toLowerCase().indexOf("name") > -1 ||
-                key.toLowerCase().indexOf("email") > -1)
-        ) {
-            tableHeaders.push({
-                key: key,
-                value: formatHeader(key),
-            });
-        }
-    });
-    return tableHeaders;
-}
-
