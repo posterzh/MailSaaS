@@ -29,6 +29,47 @@ import {
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import Tables from "../../../../components/Tables";
+import { toggleTopLoader } from '../../../../utils/Utils';
+import axios from '../../../../utils/axios';
+
+const tableTitle = [
+  {
+    key: 'title',
+    value: 'Title',
+  },
+  {
+    key: 'created',
+    value: 'CREATED',
+  },
+  {
+    key: 'assigned',
+    value: 'ASSIGNED',
+  },
+  {
+    key: 'recipients',
+    value: 'RECIPIENTS',
+  },
+  {
+    key: 'sent',
+    value: 'SENT',
+  },
+  {
+    key: 'leads',
+    value: 'LEADS',
+  },
+  {
+    key: 'replies',
+    value: 'REPLIES',
+  },
+  {
+    key: 'opens',
+    value: 'OPENS',
+  },
+  {
+    key: 'bounces',
+    value: 'BOUNCES',
+  }
+];
 
 class CampaignList extends Component {
   constructor(props) {
@@ -36,18 +77,46 @@ class CampaignList extends Component {
     this.state = {
       show: true,
       hide: true,
-      data: [],
       checked: false,
       exampleModal: false,
 
       phoneNumber: "123", // Example
+
+      data: [],
+      filters: [{
+        key: 'assigned',
+        options: []
+      }]
     };
   }
-  componentDidMount() {
+  async componentDidMount() {
     const CampId =
       this.props.history.location.state && this.props.history.location.state;
     console.log("campID", CampId);
     this.props.CampaignTableAction();
+
+    // Get API data
+    try {
+      toggleTopLoader(true);
+      const { data } = await axios.get("/campaign/listcamp/");
+
+      const assigned = data.map(item => item.assigned);
+      const { filters } = this.state;
+      filters.forEach(item => {
+        if (item.key === 'assigned') {
+          item.options = [...assigned];
+        }
+      })
+
+      this.setState({
+        data,
+        filters: filters
+      })
+    } catch (e) {
+      console.log(e);
+    } finally {
+      toggleTopLoader(false);
+    }
   }
   allCheck = (e) => {
     const table = this.props.Tables.CampaignTableData;
@@ -80,87 +149,8 @@ class CampaignList extends Component {
   // };
 
   render() {
-    const { show, hide, checked, exampleModal } = this.state;
+    const { show, hide, checked, exampleModal, data, filters } = this.state;
     const { CampaignOverviewAction } = this.props;
-    const tableTitle = [
-      {
-        key: 'title',
-        value: 'Title',
-      },
-      {
-        key: 'created',
-        value: 'CREATED',
-      },
-      {
-        key: 'assigned',
-        value: 'ASSIGNED',
-      },
-      {
-        key: 'recipients',
-        value: 'RECIPIENTS',
-      },
-      {
-        key: 'sent',
-        value: 'SENT',
-      },
-      {
-        key: 'leads',
-        value: 'LEADS',
-      },
-      {
-        key: 'replies',
-        value: 'REPLIES',
-      },
-      {
-        key: 'opens',
-        value: 'OPENS',
-      },
-      {
-        key: 'bounces',
-        value: 'BOUNCES',
-      }
-    ];
-    const tableData = [
-      {
-        title: 'March 18 Outreach',
-        created: 'Mar 8',
-        assigned: 'tester1',
-        recipients: '1',
-        sent: '2',
-        leads: '1',
-        replies: '0',
-        opens: '1',
-        bounces: '1'
-      },
-      {
-        title: 'March 4 Outreach',
-        created: 'Mar 4',
-        assigned: 'tester1',
-        recipients: '2',
-        sent: '1',
-        leads: '0',
-        replies: '0',
-        opens: '0',
-        bounces: '0'
-      },
-      {
-        title: 'March 1 Outreach',
-        created: 'Mar 1',
-        assigned: 'tester2',
-        recipients: '1',
-        sent: '1',
-        leads: '1',
-        replies: '1',
-        opens: '1',
-        bounces: '1'
-      },
-    ];
-    const filters = [
-      {
-        key: 'assigned',
-        options: ['tester1', 'tester2']
-      }
-    ];
     const actionMenus = [
       {
         key: 'view',
@@ -227,9 +217,10 @@ class CampaignList extends Component {
           <Row>
             <Tables
               titles={tableTitle} // required
-              tablePropsData={tableData}   // required
-              onEdit={() => {}}
+              tablePropsData={data}   // required
+              // onEdit={() => {}}
               onDelete={() => {}}
+              onDetail={() => { this.props.history.push("CampaignDetailOverview") }}
               actionMenus={actionMenus}   // optional for showing menus of row.
               actionCallback={this.actionCallback}        // get call back for action select of row.
               showSelect={true}    // optional

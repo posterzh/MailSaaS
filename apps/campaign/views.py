@@ -458,6 +458,45 @@ class CreateCampaignView(APIView):
         return Response({"message": "Updated Successfully", "success": True})
 
 
+class ListCampaignView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        return Response([{
+            "title": 'March 18 Outreach',
+            "created": 'Mar 8',
+            "assigned": 'Karl',
+            "recipients": '2',
+            "sent": '4',
+            "leads": '2',
+            "replies": '0',
+            "opens": '1',
+            "bounces": '1'
+        },
+        {
+            "title": 'March 4 Outreach',
+            "created": 'Mar 4',
+            "assigned": 'Paul',
+            "recipients": '2',
+            "sent": '1',
+            "leads": '0',
+            "replies": '0',
+            "opens": '0',
+            "bounces": '0'
+        },
+        {
+            "title": 'March 1 Outreach',
+            "created": 'Mar 1',
+            "assigned": 'Valor',
+            "recipients": '1',
+            "sent": '5',
+            "leads": '1',
+            "replies": '1',
+            "opens": '1',
+            "bounces": '1'
+        }])
+
+
 class CampaignView(generics.ListAPIView):
     """
         For Get all Campaign by user 
