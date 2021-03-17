@@ -3,7 +3,7 @@ import { store } from "../redux/store/store";
 import {
   SHOW_NOTIFICATION,
   HIDE_NOTIFICATION,
-  TOP_LOADER
+  TOP_LOADER,
 } from "../redux/actionType/actionType";
 
 export const toastOnError = (error) => {
@@ -18,6 +18,10 @@ export const toastOnError = (error) => {
   }
 
   showNotification("warning", "API Call Error", errMessage);
+};
+
+export const toastOnSuccess = (msg) => {
+  showNotification("success", "Success", msg);
 };
 
 export const showNotification = (notification_type, title, message) => {
@@ -41,7 +45,7 @@ export const toggleTopLoader = (visible) => {
   store.dispatch({
     type: TOP_LOADER,
     payload: {
-      visible
+      visible,
     },
   });
 };
