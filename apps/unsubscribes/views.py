@@ -57,6 +57,8 @@ class AddUnsubscribeCSVView(APIView):
         csv_file = _request.data['file']
         csv_obj = UnsubcribeCsv(unscribe_emails=csv_file)
         csv_obj.save()
+        with open('media/' + str(csv_obj.unscribe_emails)) as csv_file:
+            pass
 
 
 class DeleteUnsubscribeEmailView(APIView):
