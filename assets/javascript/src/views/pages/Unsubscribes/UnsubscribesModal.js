@@ -11,13 +11,15 @@ import {
   Input,
   Alert,
 } from "reactstrap";
+import { CSVReader } from "react-papaparse";
 import regeneratorRuntime from "regenerator-runtime";
 
 class UnsubscribesModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      emails: undefined
+      emails: undefined,
+      csvFile: null
     }
   }
 
@@ -27,6 +29,32 @@ class UnsubscribesModal extends Component {
     });
     // this.setState({show:!this.state.show})
   }
+
+  handleOnDrop = (data, file) => {
+    if (!data || data.length == 0) {
+      this.setState({
+        csvFile: null
+      });
+      return;
+    }
+
+    this.setState({
+      csvFile: file,
+    });
+  };
+
+  handleOnError = (err, file, inputElem, reason) => {
+    console.log(err);
+    this.setState({
+      csvFile: null,
+    });
+  };
+
+  handleOnRemoveFile = (data) => {
+    this.setState({
+      csvFile: null,
+    });
+  };
 
   onSubmit = (e) => {
     const emails = this.state.emails;
@@ -39,7 +67,7 @@ class UnsubscribesModal extends Component {
 
   onUpload = async (e) => {
     e.preventDefault();
-    const file = e.target.files[0];
+    const file = this.state.csvFile;
     if (file) {
       this.props.unsubscribeCSV(file)
       this.props.close();
@@ -90,24 +118,34 @@ class UnsubscribesModal extends Component {
                   sm="12"
                   className="d-flex flex-column justify-content-between"
                 >
-                  <p>
-                    Upload a CSV (comma-separated-values) file up to 1MB. It
-                    should cont+ain just one column or have a column with the
-                    word "email" in it.
+                  <CSVReader
+                    onDrop={this.handleOnDrop}
+                    onError={this.handleOnError}
+                    addRemoveButton
+                    onRemoveFile={this.handleOnRemoveFile}
+                    config={{
+                      header: true,
+                    }}
+                    style={{
+                      dropFile: {
+                        width: 240,
+                        height: 120,
+                        background: "#eeeeee",
+                      },
+                    }}
+                  >
+                    <p>
+                      Upload a CSV file up to 1MB.
                     </p>
-                  <Input
-                    id="csvFile"
-                    type="file"
-                    name="csvFile"
-                    onChange={this.onUpload}
-                    hidden
-                  />
-                  <label
-                    htmlFor="csvFile"
-                    className="btn btn-info align-self-end m-0 mt-2"
+                  </CSVReader>
+                  <Button
+                    type="button"
+                    color="info"
+                    className="align-self-end mt-3"
+                    onClick={this.onUpload}
                   >
                     Upload
-                    </label>
+                    </Button>
                 </Col>
               </Row>
             </Form>
