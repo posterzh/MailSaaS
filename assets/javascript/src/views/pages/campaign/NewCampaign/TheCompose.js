@@ -12,6 +12,7 @@ import ReactQuill from "react-quill";
 import FollowUpPanel from "./components/FollowUpPanel";
 import DripPanel from "./components/DripPanel";
 import { campaignCompose } from "../../../../redux/action/CampaignActions";
+import { formatHeader } from "../../../../utils/Utils";
 
 class TheCompose extends Component {
   constructor(props) {
@@ -147,16 +148,16 @@ class TheCompose extends Component {
             </Col>
           </Row>
 
-          <div className="d-flex flex-wrap">
+          <div className="d-flex flex-wrap mt-2">
             {
               Object.keys(first_row || {}).filter(field => !!field).map((field, index) => {
                 return (
-                  <div className="keyword-item text-danger p-1 mr-2 my-1" key={`${index}`} draggable="true" onDragStart={(e) => {
+                  <div className="keyword-item text-danger px-1 mr-2 my-1" key={`${index}`} draggable="true" onDragStart={(e) => {
                     const dataTransfer = e.dataTransfer;
                     dataTransfer.setData('text/html', `<span class="keyword-item p-1 mr-2 my-1">{{${field}}}</span>`);
                   }}>
                     <i class="fas fa-bars text-danger mr-2"></i>
-                    {field}
+                    { formatHeader(field) }
                   </div>
                 )
               })
