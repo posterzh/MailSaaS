@@ -46,10 +46,10 @@ export const addUnsubscribeCSV = (file) => (dispatch) => {
   fileData.append("file", file);
   Api.AddUnsubscribeCSV(fileData, token)
     .then((response) => {
-      // dispatch({
-      //   type: ADD_UNSUBSCRIBE_CSV,
-      //   payload: response.data
-      // });
+      dispatch({
+        type: ADD_UNSUBSCRIBE_CSV,
+        payload: response.data
+      });
     })
     .catch((error) => {
       toastOnError(error);
