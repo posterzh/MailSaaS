@@ -18,6 +18,8 @@ from .models import UnsubcribeCsv, UnsubscribeEmail
 from .serializers import UnsubscribeEmailSerializers
 from .mixins import CreateListModelMixin
 from apps.campaign.models import CampaignRecipient
+import pandas as pd
+import json
 
 
 # from apps.campaign.serializers CampaignRecipient
@@ -34,7 +36,7 @@ class UnsubscribeEmailListView(ListAPIView):
 
 
 class AddUnsubscribeEmailsView(CreateListModelMixin,
-                               CreateAPIView, ):
+                               CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UnsubscribeEmailSerializers
     queryset = UnsubscribeEmail.objects.all()
@@ -42,7 +44,8 @@ class AddUnsubscribeEmailsView(CreateListModelMixin,
     def post(self, _request, *args, **kwargs):
         data = _request.data
         for unsubscribe in data:
-            recipients = CampaignRecipient.objects.filter(email=unsubscribe["email"], campaign__assigned=_request.user.id)
+            recipients = CampaignRecipient.objects.filter(email=unsubscribe["email"],
+                                                          campaign__assigned=_request.user.id)
             if recipients.exists():
                 for recipient in recipients:
                     recipient.unsubscribe = True
@@ -50,15 +53,46 @@ class AddUnsubscribeEmailsView(CreateListModelMixin,
         return self.create(_request, args, kwargs)
 
 
-class AddUnsubscribeCSVView(APIView):
+class AddUnsubscribeCSVView(CreateListModelMixin,
+                            CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = UnsubscribeEmailSerializers
+    queryset = UnsubscribeEmail.objects.all()
 
     def post(self, _request, *args, **kwargs):
-        csv_file = _request.data['file']
-        csv_obj = UnsubcribeCsv(unscribe_emails=csv_file)
-        csv_obj.save()
-        with open('media/' + str(csv_obj.unscribe_emails)) as csv_file:
-            pass
+        file = _request.data['file']
+        csv_obj = self.create_csv(file)
+        csv_data = pd.read_csv('media/' + str(csv_obj.unscribe_emails))
+        csv_data['user'] = _request.user.id
+        json_data = self.to_json(csv_data)
+        for unsubscribe in json_data:
+            recipients = CampaignRecipient.objects.filter(email=unsubscribe["email"],
+                                                          campaign__assigned=_request.user.id)
+            if recipients.exists():
+                for recipient in recipients:
+                    recipient.unsubscribe = True
+                    recipient.save()
+        return self.create_unsubscribe(json_data)
+
+    def create_csv(self, file):
+        obj = UnsubcribeCsv(unscribe_emails=file)
+        obj.save()
+        return obj
+
+    def to_json(self, csv_data):
+        email_name_data = csv_data[['Email', 'Name', 'user']]
+        email_name_data.rename(columns={'Email': 'email', 'Name': 'name'}, inplace=True)
+        email_name_data.dropna(subset=['email'], inplace=True)
+        email_name_data.fillna('', inplace=True)
+        json_string = email_name_data.to_json(orient='records')
+        return json.loads(json_string)
+
+    def create_unsubscribe(self, data):
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class DeleteUnsubscribeEmailView(APIView):
@@ -69,7 +103,8 @@ class DeleteUnsubscribeEmailView(APIView):
         for pk in data:
             try:
                 unsubscribe = UnsubscribeEmail.objects.get(pk=pk)
-                recipients = CampaignRecipient.objects.filter(email=unsubscribe.email, campaign__assigned=_request.user.id)
+                recipients = CampaignRecipient.objects.filter(email=unsubscribe.email,
+                                                              campaign__assigned=_request.user.id)
                 if recipients.exists():
                     for recipient in recipients:
                         recipient.unsubscribe = False
@@ -81,66 +116,65 @@ class DeleteUnsubscribeEmailView(APIView):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+# class UnsubscribeEmailAdd(CreateAPIView):
+#     serializer_class = UnsubscribeEmailSerializers
+#     permission_classes = (permissions.IsAuthenticated,)
+#
+#     def post(self, request):
+#         postdata = request.data
+#         print("request.data", postdata)
+#         for email in postdata["email"]:
+#             recipients = CampaignRecipient.objects.filter(email=email, campaign__assigned=request.user.id).exists()
+#             if recipients:
+#                 campaign_recipient = CampaignRecipient.objects.filter(email=email, campaign__assigned=request.user.id)
+#                 for recipient in campaign_recipient:
+#                     recipient.unsubscribe = True
+#                     recipient.save()
+#
+#             data = {
+#                 "email": email,
+#                 'user': request.user.id
+#             }
+#
+#             data_list = []
+#             serializer = UnsubscribeEmailSerializers(data=data)
+#             if serializer.is_valid():
+#                 serializer.save()
+#                 data_list.append(serializer.data)
+#         return Response({"message": "Unsubcribe Successfully done", "success": True})
+#         # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UnsubscribeEmailAdd(CreateAPIView):
-    serializer_class = UnsubscribeEmailSerializers
-    permission_classes = (permissions.IsAuthenticated,)
 
-    def post(self, request):
-        postdata = request.data
-        print("request.data", postdata)
-        for email in postdata["email"]:
-            recipients = CampaignRecipient.objects.filter(email=email, campaign__assigned=request.user.id).exists()
-            if recipients:
-                campaign_recipient = CampaignRecipient.objects.filter(email=email, campaign__assigned=request.user.id)
-                for recipient in campaign_recipient:
-                    recipient.unsubscribe = True
-                    recipient.save()
-
-            data = {
-                "email": email,
-                'user': request.user.id
-            }
-
-            data_list = []
-            serializer = UnsubscribeEmailSerializers(data=data)
-            if serializer.is_valid():
-                serializer.save()
-                data_list.append(serializer.data)
-        return Response({"message": "Unsubcribe Successfully done", "success": True})
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class UnsubcribeCsvEmailAdd(CreateAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def post(self, request):
-        csv_file = request.data['csv_file']
-        csv_obj = UnsubcribeCsv(unscribe_emails=csv_file)
-        csv_obj.save()
-        with open('media/' + str(csv_obj.unscribe_emails)) as csv_file:
-
-            csv_reader = csv.reader(csv_file, delimiter=',')
-            line_count = 0
-            resp = []
-            for row in csv_reader:
-                if line_count == 0:
-                    line_count += 1
-                else:
-                    data = {'email': row[0], 'name': row[1], 'user': request.user.id}
-
-                    serializer = UnsubscribeEmailSerializers(data=data)
-                    if serializer.is_valid():
-                        line_count += 1
-                        serializer.save()
-                        recep = CampaignRecipient.objects.get(email=data['email'])
-                        if data['email'] == recep.email:
-                            recep.unsubscribe = True
-                            recep.save()
-                        resp.append(serializer.data)
-
-            resp.append({"success": True})
-            return Response(resp)
+# class UnsubcribeCsvEmailAdd(CreateAPIView):
+#     permission_classes = (permissions.IsAuthenticated,)
+#
+#     def post(self, request):
+#         csv_file = request.data['csv_file']
+#         csv_obj = UnsubcribeCsv(unscribe_emails=csv_file)
+#         csv_obj.save()
+#         with open('media/' + str(csv_obj.unscribe_emails)) as csv_file:
+#
+#             csv_reader = csv.reader(csv_file, delimiter=',')
+#             line_count = 0
+#             resp = []
+#             for row in csv_reader:
+#                 if line_count == 0:
+#                     line_count += 1
+#                 else:
+#                     data = {'email': row[0], 'name': row[1], 'user': request.user.id}
+#
+#                     serializer = UnsubscribeEmailSerializers(data=data)
+#                     if serializer.is_valid():
+#                         line_count += 1
+#                         serializer.save()
+#                         recep = CampaignRecipient.objects.get(email=data['email'])
+#                         if data['email'] == recep.email:
+#                             recep.unsubscribe = True
+#                             recep.save()
+#                         resp.append(serializer.data)
+#
+#             resp.append({"success": True})
+#             return Response(resp)
 
 
 # class UnsubcribeEmailView(APIView):
@@ -160,33 +194,33 @@ class UnsubcribeCsvEmailAdd(CreateAPIView):
 #         return Response(serializer.data)
 
 
-class UnsubcribeEmailDelete(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = UnsubscribeEmailSerializers
-
-    def get_object(self, pk):
-        return UnsubscribeEmail.objects.get(pk=pk)
-
-    def put(self, request, format=None):
-        data = request.data["data"]
-
-        for pk in data:
-            try:
-                unsubcribe = self.get_object(pk)
-                if unsubcribe.on_delete:
-                    return Response("Does Not exist ")
-                else:
-                    recipients = CampaignRecipient.objects.filter(email=unsubcribe.email,
-                                                                  campaign__assigned=request.user.id).exists()
-                    if recipients:
-                        campaign_recipient = CampaignRecipient.objects.filter(email=unsubcribe.email,
-                                                                              campaign__assigned=request.user.id)
-                        for recipient in campaign_recipient:
-                            recipient.unsubscribe = False
-                            recipient.save()
-
-                    unsubcribe.on_delete = True
-                    unsubcribe.save()
-            except UnsubscribeEmail.DoesNotExist:
-                return Response("Does Not exist ")
-        return Response("Unsubcribe Recipient Successfully Done ")
+# class UnsubcribeEmailDelete(APIView):
+#     permission_classes = (permissions.IsAuthenticated,)
+#     serializer_class = UnsubscribeEmailSerializers
+#
+#     def get_object(self, pk):
+#         return UnsubscribeEmail.objects.get(pk=pk)
+#
+#     def put(self, request, format=None):
+#         data = request.data["data"]
+#
+#         for pk in data:
+#             try:
+#                 unsubcribe = self.get_object(pk)
+#                 if unsubcribe.on_delete:
+#                     return Response("Does Not exist ")
+#                 else:
+#                     recipients = CampaignRecipient.objects.filter(email=unsubcribe.email,
+#                                                                   campaign__assigned=request.user.id).exists()
+#                     if recipients:
+#                         campaign_recipient = CampaignRecipient.objects.filter(email=unsubcribe.email,
+#                                                                               campaign__assigned=request.user.id)
+#                         for recipient in campaign_recipient:
+#                             recipient.unsubscribe = False
+#                             recipient.save()
+#
+#                     unsubcribe.on_delete = True
+#                     unsubcribe.save()
+#             except UnsubscribeEmail.DoesNotExist:
+#                 return Response("Does Not exist ")
+#         return Response("Unsubcribe Recipient Successfully Done ")

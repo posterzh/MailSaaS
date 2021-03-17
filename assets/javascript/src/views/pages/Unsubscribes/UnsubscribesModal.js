@@ -29,10 +29,12 @@ class UnsubscribesModal extends Component {
   }
 
   onSubmit = (e) => {
-    const emails = this.state.emails || '';
-    const emailList = emails.split(',');
-    this.props.unsubscribeEmail(emailList);
-    this.props.close();
+    const emails = this.state.emails;
+    if (emails) {
+      const emailList = emails.split(',');
+      this.props.unsubscribeEmail(emailList);
+      this.props.close();
+    }
   }
 
   onUpload = async (e) => {
@@ -40,6 +42,7 @@ class UnsubscribesModal extends Component {
     const file = e.target.files[0];
     if (file) {
       this.props.unsubscribeCSV(file)
+      this.props.close();
     }
   }
 

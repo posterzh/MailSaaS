@@ -1,6 +1,7 @@
 import {
     GET_UNSUBSCRIBES,
     ADD_UNSUBSCRIBE_EMAILS,
+    ADD_UNSUBSCRIBE_CSV,
     DELETE_UNSUBSCRIBE_EMAILS,
   } from "../actionType/actionType";
   
@@ -16,6 +17,11 @@ import {
           unsubscribes: action.payload,
         };
       case ADD_UNSUBSCRIBE_EMAILS:
+        return {
+          ...state,
+          unsubscribes: [...state.unsubscribes, ...action.payload],
+        };
+      case ADD_UNSUBSCRIBE_CSV:
         return {
           ...state,
           unsubscribes: [...state.unsubscribes, ...action.payload],

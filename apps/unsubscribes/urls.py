@@ -8,7 +8,7 @@ urlpatterns = [
     path(r'delete-emails', views.DeleteUnsubscribeEmailView.as_view(), name='delete_emails'),
 
     # path('',views.UnsubscribeEmailAdd.as_view(), name ='unscribe'),
-    path('unsubcribecsv/', views.UnsubcribeCsvEmailAdd.as_view(), name='unsubcribecsv'),
-    # path('unsubcribeview/',views.UnsubcribeEmailView.as_view(), name ='unsubcribeview'),
-    path('unsubcribedelete/', views.UnsubcribeEmailDelete.as_view(), name='unsubcribedelete'),
+    # path('unsubcribecsv/', views.UnsubcribeCsvEmailAdd.as_view(), name='unsubcribecsv'),
+    # # path('unsubcribeview/',views.UnsubcribeEmailView.as_view(), name ='unsubcribeview'),
+    # path('unsubcribedelete/', views.UnsubcribeEmailDelete.as_view(), name='unsubcribedelete'),
 ]
