@@ -1,5 +1,5 @@
 import axios from "../../utils/axios";
-import { toastOnError } from "../../utils/Utils";
+import { toastOnError, toastOnSuccess } from "../../utils/Utils";
 import {
   GET_MAILACCOUNTS,
   ADD_MAILACCOUNT,
@@ -29,6 +29,7 @@ export const addMailAccount = (mailAccount) => (dispatch) => {
         type: ADD_MAILACCOUNT,
         payload: response.data,
       });
+      toastOnSuccess("Added successfully!");
     })
     .catch((error) => {
       toastOnError(error);
@@ -43,6 +44,7 @@ export const deleteMailAccount = (id) => (dispatch) => {
         type: DELETE_MAILACCOUNT,
         payload: id,
       });
+      toastOnSuccess("Deleted successfully!");
     })
     .catch((error) => {
       toastOnError(error);
@@ -57,6 +59,8 @@ export const updateMailAccount = (id, mailAccount) => (dispatch) => {
         type: UPDATE_MAILACCOUNT,
         payload: response.data,
       });
+
+      toastOnSuccess("Updated successfully!");
     })
     .catch((error) => {
       toastOnError(error);

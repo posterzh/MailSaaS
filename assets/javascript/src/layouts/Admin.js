@@ -44,7 +44,7 @@ function TopLoader() {
   }, [topLoader])
 
   return (
-    <LoadingBar color={"#c3092e"} ref={ref} />
+    <LoadingBar color={"#f40b3a"} ref={ref} />
   )
 }
 
