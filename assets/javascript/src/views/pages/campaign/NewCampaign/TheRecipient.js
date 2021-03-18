@@ -73,7 +73,6 @@ class TheRecipient extends Component {
       csvfile: this.state.csvFile,
       first_row: this.state.first_row,
     };
-    console.log(this.state.csvFile);
     this.props.campaignRecipient(recipientData);
     this.props.onNext();
   };
