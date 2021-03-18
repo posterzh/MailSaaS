@@ -123,7 +123,7 @@ class Unsubscribes extends Component {
       .map(e => ({ ...e, 'domain': e['email'].substring(2) }));
     const selectedUnsubscribes = unsubscribes
       .filter(e => selectedId.includes(e.id));
-console.log(selectedUnsubscribes);
+
     return (
       <>
         <PageHeader
@@ -155,7 +155,7 @@ console.log(selectedUnsubscribes);
           </label>
         </Row>
 
-        <PageContainer title="Unsubscribes">
+        <PageContainer title="Unsubscribes" showHelper={true}>
           <Row>
             <Col lg="5" md="12" sm="12" className="mb-2">
               <InputGroup className="input-group-merge">

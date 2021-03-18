@@ -50,9 +50,8 @@ class TheStart extends React.Component {
       from_address: this.state.from_address,
     };
 
-    // this.props.campaignSend(data);
-    // this.props.onNext();
-    this.props.campaignSend({})
+    this.props.campaignStart(data);
+    this.props.onNext();
   };
 
   render() {
@@ -132,6 +131,6 @@ const mapStateToProps = (state) => ({
   campaign: state.campaign,
   mailAccounts: state.mailAccounts.mailAccounts,
 });
-export default connect(mapStateToProps, { campaignStart, campaignSend })(
+export default connect(mapStateToProps, { campaignStart })(
   TheStart
 );
