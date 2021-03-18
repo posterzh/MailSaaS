@@ -20,6 +20,10 @@ export const toastOnError = (error) => {
   showNotification("warning", "API Call Error", errMessage);
 };
 
+export const toastOnSuccess = (msg) => {
+  showNotification("success", "Success", msg);
+};
+
 export const showNotification = (notification_type, title, message) => {
   store.dispatch({
     type: SHOW_NOTIFICATION,

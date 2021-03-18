@@ -1,60 +1,15 @@
 import pytz
 from django.http import Http404, HttpResponseServerError, HttpResponseBadRequest
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.campaignschedule.models import Schedule
 from apps.users.models import CustomUser
+from . import utils
 
 from .models import EmailAccount, SendingCalendar
 from .serializers import EmailAccountSerializer, SendingCalendarSerializer
-
-# class EmailAccountListView(generics.ListCreateAPIView):
-#     queryset = EmailAccount.objects.all()
-#     serializer_class = EmailAccountSerializer
-#     permission_classes = (permissions.IsAuthenticated,)
-#
-#     def post(self, request, *args, **kwargs):
-#         request.data["user"] = request.user.id
-#         serializer = EmailAccountSerializer(data=request.data)
-#         if not serializer.is_valid():
-#             return HttpResponseBadRequest(serializer.default_error_messages)
-#
-#         saved = serializer.save()
-#         return Response(serializer.data)
-#
-#     def get(self, request, *args, **kwargs):
-#         try:
-#             queryset = EmailAccount.objects.filter(user=request.user.id)
-#             serializer = EmailAccountSerializer(queryset, many=True)
-#         except Exception as ex:
-#             raise HttpResponseBadRequest(str(ex))
-#
-#         return Response(serializer.data)
-
-# class EmailAccountView(generics.UpdateAPIView):
-#     queryset = EmailAccount.objects.all()
-#     serializer_class = EmailAccountSerializer
-#     permission_classes = (permissions.IsAuthenticated,)
-#
-#     def put(self, request, pk, format=None):
-#         queryset = EmailAccount.objects.get(id=pk)
-#         request.data["user"] = request.user.id
-#         serializer = EmailAccountSerializer(queryset, data=request.data)
-#         if not serializer.is_valid():
-#             raise HttpResponseBadRequest(serializer.default_error_messages)
-#
-#         serializer.save()
-#         return Response(serializer.data)
-#
-#     def delete(self, request, pk, format=None):
-#         try:
-#             queryset = EmailAccount.objects.get(id=pk)
-#         except Exception as ex:
-#             raise HttpResponseBadRequest(str(ex))
-#         queryset.delete()
-#         return Response({"message": "Connection Delete successfully", "success": True})
 
 
 class EmailAccountListView(generics.ListCreateAPIView):
@@ -68,6 +23,11 @@ class EmailAccountListView(generics.ListCreateAPIView):
 
     def post(self, request, *args, **kwargs):
         request.data['user'] = request.user.id
+
+        is_valid, msg = utils.check_email(request=request)
+        if not is_valid:
+            return Response(msg, status=status.HTTP_400_BAD_REQUEST)
+
         return self.create(request, *args, **kwargs)
 
 
@@ -76,6 +36,12 @@ class EmailAccountView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EmailAccountSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
+    def update(self, request, *args, **kwargs):
+        is_valid, msg = utils.check_email(request=request)
+        if not is_valid:
+            return Response(msg, status=status.HTTP_400_BAD_REQUEST)
+
+        return super(EmailAccountView, self).update(request, *args, **kwargs)
 
 class SendingCalendarListView(generics.ListCreateAPIView):
     queryset = SendingCalendar.objects.all()

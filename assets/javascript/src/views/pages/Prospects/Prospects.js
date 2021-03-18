@@ -95,7 +95,7 @@ class Prospects extends Component {
 
 	componentWillReceiveProps = (nextProps) => {
 		if (nextProps.recipients !== this.props.recipients) {
-      const getUniqueArray = (array, field) => array.map(x => x[field]).filter((v, i, a) => a.indexOf(v) === i);
+			const getUniqueArray = (array, field) => array.map(x => x[field]).filter((v, i, a) => a.indexOf(v) === i);
 			filters[1].options = getUniqueArray(nextProps.recipients, 'email')
 			filters[2].options = getUniqueArray(nextProps.recipients, 'name')
 		}
@@ -248,22 +248,6 @@ class Prospects extends Component {
 						</Col>
 					</Row>
 
-					<Row className="justify-content-end">
-						<Button
-							onClick={(e) => {
-								e.preventDefault();
-								this.importContacts();
-							}}
-							className="btn-icon"
-							color="danger"
-							type="button"
-						>
-							<span className="btn-inner--icon">
-								<i className="fa fa-plus" />
-							</span>
-						</Button>
-					</Row>
-
 					<Row>
 						<Tables
 							titles={tableTitle} // required
@@ -277,6 +261,20 @@ class Prospects extends Component {
 							searchKeys={['email', 'name']}  // optional to enable search
 						/>
 					</Row>
+
+					<Button
+						className="btn-icon btn-2 rounded-circle fixed-bottom-right-btn"
+						color="info"
+						type="button"
+						onClick={(e) => {
+							e.preventDefault();
+							this.importContacts();
+						}}
+					>
+						<span className="btn-inner--icon">
+							<i className="fa fa-plus" />
+						</span>
+					</Button>
 
 					<ImportContactsModal
 						isOpen={importContactsModal}
