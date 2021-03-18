@@ -121,3 +121,55 @@ class CampaignLeadCatcher(models.Model):
 
     def __str__(self):
         return str(self.campaign)
+
+
+class UploadFiles(models.Model):
+    file_path = models.CharField(max_length=500, blank=True, null=True)
+    csv_fields = models.TextField(blank=True, null=True)
+    file_type = models.CharField(max_length=20, blank=True, null=True)
+    is_deleted = models.BooleanField(default=True)
+    created_at = models.TimeField(auto_now=True)
+
+
+class Campaigns(models.Model):
+    from_address = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
+    label_name = models.ForeignKey(CampaignLabel, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200, blank=False, null=False)
+    csvfile = models.ForeignKey(UploadFiles, on_delete=models.CASCADE)
+    assigned = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    email_subject = models.CharField(max_length=2000, blank=True, null=True)
+    email_body = models.TextField(blank=True, null=True)
+    has_follow_up = models.BooleanField(default=False)
+    has_drips = models.BooleanField(default=False)
+    terms_and_laws = models.BooleanField(default=False)
+    campaign_status = models.BooleanField(default=False)
+
+
+class CampaignLabels(models.Model):
+    label_name = models.CharField(max_length=200, unique=True)
+    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    created_at = models.TimeField(auto_now=True)
+
+
+class CampaignRecipients(models.Model):
+    LEAD_TYPE = (
+
+        ("none", "None"),
+        ("openLead", "Open Lead"),
+        ("wonLead", "Won Lead"),
+        ("lostLead", "Lost Lead"),
+        ("ignoredLead", "Ignored Lead"),
+        ("forwardedLead", "Forwarded Lead"),
+    )
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    email = models.CharField(max_length=200, blank=False, null=False)
+    replacement = models.TextField(blank=True, null=True)
+    is_sent = models.BooleanField(default=False)
+    is_lead = models.BooleanField(default=False)
+    is_reply = models.BooleanField(default=False)
+    is_open = models.BooleanField(default=False)
+    is_bounce = models.BooleanField(default=False)
+    engaged = models.BooleanField(default=False)
+    status = models.PositiveIntegerField()
+    lead_type = models.CharField(max_length=32, choices=LEAD_TYPE, default='none', null=True)
+    created_at = models.TimeField(auto_now=True)
