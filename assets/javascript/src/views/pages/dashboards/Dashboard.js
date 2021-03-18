@@ -75,7 +75,7 @@ class Dashboard extends React.Component {
                 simple solution for email outreach. A simple solution for
                 email outreach. A simple solution for email outreach.
               </CardText>
-              <Link to="/app/admin/CampaignStart">
+              <Link to="/app/admin/NewCampaign">
                 <Button className="btn-icon" color="primary" type="button">
                   <span className="btn-inner--icon mr-1">
                     <i className="ni ni-fat-add" />
