@@ -123,32 +123,23 @@ class CampaignLeadCatcher(models.Model):
         return str(self.campaign)
 
 
-class UploadFiles(models.Model):
-    file_path = models.CharField(max_length=500, blank=True, null=True)
-    csv_fields = models.TextField(blank=True, null=True)
-    file_type = models.CharField(max_length=20, blank=True, null=True)
-    is_deleted = models.BooleanField(default=True)
-    created_at = models.TimeField(auto_now=True)
-
-
 class Campaigns(models.Model):
-    from_address = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
-    label_name = models.ForeignKey(CampaignLabel, on_delete=models.CASCADE)
+    from_address = models.ForeignKey(EmailAccount, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=200, blank=False, null=False)
-    csvfile = models.ForeignKey(UploadFiles, on_delete=models.CASCADE)
+    csvfile = models.FileField(upload_to='csv_uploads/', blank=True, null=True)
+    csv_fields = models.TextField(blank=True, null=True, default='')
     assigned = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     email_subject = models.CharField(max_length=2000, blank=True, null=True)
     email_body = models.TextField(blank=True, null=True)
     has_follow_up = models.BooleanField(default=False)
     has_drips = models.BooleanField(default=False)
-    terms_and_laws = models.BooleanField(default=False)
-    campaign_status = models.BooleanField(default=False)
-
-
-class CampaignLabels(models.Model):
-    label_name = models.CharField(max_length=200, unique=True)
-    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    track_opens = models.BooleanField(default=False)
+    terms_and_laws = models.BooleanField(default=True)
+    label_name = models.ForeignKey(CampaignLabel, on_delete=models.SET_DEFAULT, default=1)
+    campaign_status = models.BooleanField(default=False)  # start or pause
+    is_deleted = models.BooleanField(default=False)
     created_at = models.TimeField(auto_now=True)
+    updated_at = models.TimeField(auto_now=True)
 
 
 class CampaignRecipients(models.Model):
@@ -161,7 +152,7 @@ class CampaignRecipients(models.Model):
         ("ignoredLead", "Ignored Lead"),
         ("forwardedLead", "Forwarded Lead"),
     )
-    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    campaign = models.ForeignKey(Campaigns, on_delete=models.CASCADE)
     email = models.CharField(max_length=200, blank=False, null=False)
     replacement = models.TextField(blank=True, null=True)
     is_sent = models.BooleanField(default=False)
@@ -170,6 +161,7 @@ class CampaignRecipients(models.Model):
     is_open = models.BooleanField(default=False)
     is_bounce = models.BooleanField(default=False)
     engaged = models.BooleanField(default=False)
-    status = models.PositiveIntegerField()
+    status = models.PositiveIntegerField(default=0)
     lead_type = models.CharField(max_length=32, choices=LEAD_TYPE, default='none', null=True)
     created_at = models.TimeField(auto_now=True)
+    updated_at = models.TimeField(auto_now=True)

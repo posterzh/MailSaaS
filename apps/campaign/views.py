@@ -2,6 +2,7 @@ import csv
 import datetime
 import json
 import re
+import pandas as pd
 import ast
 from datetime import date, datetime, time, timedelta
 import pytracking
@@ -28,7 +29,8 @@ from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
 from .serializers import (CampaignEmailSerializer,
                           CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer,
-                          OnclickSerializer, CampaignLabelSerializer, ProspectsSerializer)
+                          OnclickSerializer, CampaignLabelSerializer, ProspectsSerializer,
+                          CampaignsSerializer, CampaignRecipientsSerializer)
 from apps.mailaccounts.models import EmailAccount
 
 
@@ -451,11 +453,53 @@ class CreateCampaignSendView(APIView):
         else:
             return Response({"message": CampSerializer.errors, "success": True})
 
+
 class CreateCampaignView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
-        return Response({"message": "Updated Successfully", "success": True})
+
+        if request.user.is_active:
+            # if 'campaign.add_campaign' in request.user.get_group_permissions():
+            post_data = request.data
+            # postdata._mutable = False
+            campaign = json.loads(post_data['campaign'])
+            campaign['assigned'] = request.user.id
+            campaign['csvfile'] = post_data['csvfile']
+            campaign['has_follow_up'] = len(campaign['follow_up']) > 0
+            campaign['has_drips'] = len(campaign['drips']) > 0
+
+            camp = CampaignsSerializer(data=campaign)
+            if camp.is_valid():
+                new_camp = camp.save()
+                campaign_id = new_camp.id
+                self.createRecipients(campaign_id, str(new_camp.csvfile))
+
+                return Response({"message": "Created new campaign successfully", "success": True}, status=status.HTTP_200_OK)
+            return Response({"message": "Failed to create campaign", "success": False}, status=status.HTTP_400_BAD_REQUEST)
+
+    def createRecipients(self, campaign_id, csv_path):
+        df_csv = pd.read_csv('media/' + str(csv_path))
+        df_csv.drop(df_csv.columns[df_csv.columns.str.contains('unnamed', case=False)], axis=1, inplace=True)
+        csv_columns = df_csv.columns
+
+        if "Email" in csv_columns:
+            df_csv.rename(columns={'Email': 'email'}, inplace=True)
+        df_csv.dropna(subset=["email"], inplace=True)
+
+        res_emails = df_csv[['email']]
+        res_replacements = json.loads(df_csv.to_json(orient="records"))
+
+        for email, replacement in zip(res_emails.values, res_replacements):
+            res_data = {
+                'campaign': campaign_id,
+                'email': email[0],
+                'replacement': json.dumps(replacement)
+            }
+
+            res = CampaignRecipientsSerializer(data=res_data)
+            if res.is_valid(raise_exception=True):
+                res.save()
 
 
 class ListCampaignView(APIView):
