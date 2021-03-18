@@ -72,14 +72,9 @@ class TheCompose extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    let normal = {
-      campaign: "",
-      subject: this.state.subject,
-      email_body: this.state.email_body,
-    };
-
     let data = {
-      normal: normal,
+      email_subject: this.state.subject,
+      email_body: this.state.email_body,
       follow_up: this.state.followUpList,
       drips: this.state.dripList,
     };
@@ -156,7 +151,7 @@ class TheCompose extends Component {
                     const dataTransfer = e.dataTransfer;
                     dataTransfer.setData('text/html', `<span class="keyword-item p-1 mr-2 my-1">{{${field}}}</span>`);
                   }}>
-                    <i class="fas fa-bars text-danger mr-2"></i>
+                    <i className="fas fa-bars text-danger mr-2"></i>
                     { formatHeader(field) }
                   </div>
                 )

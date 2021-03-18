@@ -33,7 +33,7 @@ class TheOptions extends Component {
     event.preventDefault();
     
     const optionData = {
-      track_Opens: this.state.trackopen,
+      track_opens: this.state.trackopen,
       terms_and_laws: this.state.termsandlaws
     };
     this.props.campaignOptions(optionData);

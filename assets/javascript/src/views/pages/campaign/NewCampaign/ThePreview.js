@@ -27,10 +27,6 @@ class ThePreview extends Component {
     // call parent method
     this.props.onNext();
   };
-
-  parseTemplate = () => {
-
-  }
   
   render() {
     const { onPrev, onNext, campaign, sendPreview } = this.props;
@@ -68,41 +64,37 @@ class ThePreview extends Component {
           </Row>
         <Row>
           <Col>
-            {campaign.normal && 
-              <Input
-                type="text"
-                className="in"
-                name="subject"
-                defaultValue={parseTemplate(campaign.normal.subject, campaign.first_row)}
-                placeholder="Subject"
-              />
-            }
+            <Input
+              type="text"
+              className="in"
+              name="subject"
+              defaultValue={parseTemplate(campaign.email_subject, campaign.first_row)}
+              placeholder="Subject"
+            />
           </Col>
         </Row>
         <Row>
           <Col>
-            {campaign.normal && 
-              <ReactQuill
-                theme="bubble"
-                readOnly
-                className="Quill_div"
-                value={parseTemplate(campaign.normal.email_body, campaign.first_row)}
-                modules={{
-                  toolbar: [
-                    ["bold", "italic"],
-                    ["link", "blockquote", "code", "image"],
-                    [
-                      {
-                        list: "ordered",
-                      },
-                      {
-                        list: "bullet",
-                      },
-                    ],
+            <ReactQuill
+              theme="bubble"
+              readOnly
+              className="Quill_div"
+              value={parseTemplate(campaign.email_body, campaign.first_row)}
+              modules={{
+                toolbar: [
+                  ["bold", "italic"],
+                  ["link", "blockquote", "code", "image"],
+                  [
+                    {
+                      list: "ordered",
+                    },
+                    {
+                      list: "bullet",
+                    },
                   ],
-                }}
-              />
-            } 
+                ],
+              }}
+            />
           </Col>
         </Row>
 

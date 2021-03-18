@@ -83,6 +83,8 @@ export const parseCSVRow = (row) => {
 export const parseTemplate = (str, row) => {
 
   // extract matches {{...}}
+  if (!str) return '';
+  
   const matches = str.match(/\{\{([^{}]*)\}\}/g);
   if (matches && matches.length > 0) {
       matches.forEach((m) => {
