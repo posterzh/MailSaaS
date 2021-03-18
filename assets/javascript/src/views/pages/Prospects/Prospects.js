@@ -172,7 +172,7 @@ class Prospects extends Component {
 					parent="Prospects"
 					showStatus={false}
 				/>
-				<PageContainer title={"Prospect"} showHelper={false}>
+				<PageContainer title={"Prospects"} showHelper={true}>
 					<Row>
 						<Col md="2" sm="4" className="sidenav-toggler" onClick={this.onTotalClick}>
 							<Card className={this.state.selected === 'total' ? "bg-info" : "bg-light"}>
