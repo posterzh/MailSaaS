@@ -29,9 +29,9 @@ export const campaignSend = (payload) => (dispatch) => {
   formData.append('campaign', JSON.stringify(payload));
   console.log(payload);
   axios
-    .post("/campaign/createcamp/", formData)
+    .post("/campaign/create/", formData)
     .then((response) => {
-      history.push("/app/admin/CampaignList");
+      history.push("/app/admin/campaign/list");
     })
     .catch((error) => {
       toastOnError(error);

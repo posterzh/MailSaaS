@@ -24,13 +24,13 @@ from apps.integration.views import SendSlackMessage
 from apps.unsubscribes.models import UnsubscribeEmail
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
-from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
+from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, Campaigns, CampaignRecipients,
                      DripEmailModel, EmailOnLinkClick, FollowUpEmail, CampaignLabel)
 from .serializers import (CampaignEmailSerializer,
                           CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer,
                           OnclickSerializer, CampaignLabelSerializer, ProspectsSerializer,
-                          CampaignsSerializer, CampaignRecipientsSerializer)
+                          CampaignsSerializer, CampaignRecipientsSerializer, CampaignListSerializer)
 from apps.mailaccounts.models import EmailAccount
 
 
@@ -454,7 +454,7 @@ class CreateCampaignSendView(APIView):
             return Response({"message": CampSerializer.errors, "success": True})
 
 
-class CreateCampaignView(APIView):
+class CampaignCreateView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
@@ -502,43 +502,83 @@ class CreateCampaignView(APIView):
                 res.save()
 
 
-class ListCampaignView(APIView):
+class CampaignListView(generics.ListAPIView):
+    """
+        For Get all Campaign by user
+    """
     permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = CampaignListSerializer
+    pagination_class = None
+    filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ['engaged', 'leads', 'bounces', 'unsubscribe']
 
-    def get(self, request, format=None):
-        return Response([{
-            "title": 'March 18 Outreach',
-            "created": 'Mar 8',
-            "assigned": 'Karl',
-            "recipients": '2',
-            "sent": '4',
-            "leads": '2',
-            "replies": '0',
-            "opens": '1',
-            "bounces": '1'
-        },
-        {
-            "title": 'March 4 Outreach',
-            "created": 'Mar 4',
-            "assigned": 'Paul',
-            "recipients": '2',
-            "sent": '1',
-            "leads": '0',
-            "replies": '0',
-            "opens": '0',
-            "bounces": '0'
-        },
-        {
-            "title": 'March 1 Outreach',
-            "created": 'Mar 1',
-            "assigned": 'Valor',
-            "recipients": '1',
-            "sent": '5',
-            "leads": '1',
-            "replies": '1',
-            "opens": '1',
-            "bounces": '1'
-        }])
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        return Campaigns.objects.filter(assigned=user.id)
+
+    # def get_queryset(self):
+    #     """
+    #     This view should return a list of all the purchases
+    #     for the currently authenticated user.
+    #     """
+    #     user = self.request.user
+    #     return Campaigns.objects.filter(assigned=user.id)
+
+    # permission_classes = (permissions.IsAuthenticated,)
+    #
+    # def get(self, request, *args, **kwargs):
+    #     """
+    #      This view should return a list of all the purchases
+    #      for the currently authenticated user.
+    #      """
+    #     campaign_list = Campaigns.objects.filter(assigned=request.user.id)
+    #     all_data = []
+    #     for camp in campaign_list:
+    #         camp_email = CampaignRecipients.objects.filter(campaign=camp.id)
+    #         camp_recipient_serializer = CampaignRecipientsSerializer(camp_email, many=True)
+    #         resp = {
+    #             "id": camp.pk,
+    #             "title": camp.title,
+    #             "created_at": camp.created_at.strftime("%B %d"),
+    #             "assigned": camp.assigned.full_name,
+    #             "recipientCount": camp_email.count(),
+    #             "sentCount": 0,
+    #             "leadCount": 0,
+    #             "opensCount": 0,
+    #             "openLeadCount": 0,
+    #             "wonLeadCount": 0,
+    #             "lostLeadCount": 0,
+    #             "ignoredLeadCount": 0,
+    #             "forwardedLeadCount": 0,
+    #
+    #         }
+    #         for campData in camp_recipient_serializer.data:
+    #             if campData["is_sent"]:
+    #                 resp["sentCount"] = resp["sentCount"] + 1
+    #
+    #             if campData["is_open"]:
+    #                 resp["opensCount"] = resp["opensCount"] + 1
+    #
+    #             if campData["is_lead"]:
+    #                 resp["leadCount"] = resp["leadCount"] + 1
+    #
+    #                 if campData["lead_type"] == "openLead":
+    #                     resp["openLeadCount"] = resp["openLeadCount"] + 1
+    #                 if campData["lead_type"] == "wonLead":
+    #                     resp["wonLeadCount"] = resp["wonLeadCount"] + 1
+    #                 if campData["lead_type"] == "lostLead":
+    #                     resp["lostLeadCount"] = resp["lostLeadCount"] + 1
+    #                 if campData["lead_type"] == "ignoredLead":
+    #                     resp["ignoredLeadCount"] = resp["ignoredLeadCount"] + 1
+    #                 if campData["lead_type"] == "forwardedLead":
+    #                     resp["forwardedLeadCount"] = resp["forwardedLeadCount"] + 1
+    #
+    #         allData.append(resp)
+    #     return Response(allData)
 
 
 class CampaignView(generics.ListAPIView):

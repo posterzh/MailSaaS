@@ -26,6 +26,6 @@ urlpatterns = [
     path('prospects/<int:pk>/', views.ProspectsDetailView.as_view(),name = 'procpects_detail'),
     path('recipientunsubcribe/', views.RecipientUnsubcribe.as_view(), name='recipient_unsubcribe'),
     path('recipientunassigned/', views.RecipientUnassignedView.as_view(), name='recipientunassigned'),
-    path('createcamp/', views.CreateCampaignView.as_view(), name='create_campaign'),
-    path('listcamp/', views.ListCampaignView.as_view(), name='list_campaign'),
+    path('create/', views.CampaignCreateView.as_view(), name='create_campaign'),
+    path('list/', views.CampaignListView.as_view(), name='list_campaign'),
 ]

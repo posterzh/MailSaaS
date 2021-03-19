@@ -141,7 +141,7 @@ class CampaignDetailRecipients extends Component {
           showStatus={false}
         />
 
-        <PageContainer title="Date Outreach">
+        <PageContainer title="Date Outreach" showHelper={true}>
           <div
             className={`selection-bar ${
               isSelectionBar && selectedId.length > 0 ? "_block" : " "

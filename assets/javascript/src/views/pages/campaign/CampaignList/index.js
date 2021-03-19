@@ -98,7 +98,7 @@ class CampaignList extends Component {
     // Get API data
     try {
       toggleTopLoader(true);
-      const { data } = await axios.get("/campaign/listcamp/");
+      const { data } = await axios.get("/campaign/list/");
 
       const assigned = data.map(item => item.assigned);
       const { filters } = this.state;
@@ -225,7 +225,7 @@ class CampaignList extends Component {
               actionCallback={this.actionCallback}        // get call back for action select of row.
               showSelect={true}    // optional
               selectedCallback={this.getSelectedRecords}      // get call back for select object.
-              showPagination={true}   // optional
+              showPagination={false}   // optional
               paginationCallback={this.paginationCallback}     // get callback of page change.
               filters={filters}   // optional to enable filter
               searchKeys={['title']}  // optional to enable search

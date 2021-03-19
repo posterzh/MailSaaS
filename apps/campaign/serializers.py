@@ -59,6 +59,52 @@ class CampaignRecipientsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CampaignListSerializer(serializers.ModelSerializer):
+    """
+    {
+        "title": 'March 18 Outreach',
+        "created": 'Mar 8',
+        "assigned": 'Karl',
+        "recipients": '2',
+        "sent": '4',
+        "leads": '2',
+        "replies": '0',
+        "opens": '1',
+        "bounces": '1'
+    },
+    """
+    assigned = serializers.CharField(source='assigned.full_name')
+    created = serializers.DateField(source='created_at', format="%B %d")
+    recipients = serializers.SerializerMethodField()
+    sent = serializers.SerializerMethodField()
+    leads = serializers.SerializerMethodField()
+    replies = serializers.SerializerMethodField()
+    opens = serializers.SerializerMethodField()
+    bounces = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Campaigns
+        fields = '__all__'
+
+    def get_recipients(self, obj):
+        return CampaignRecipients.objects.filter(campaign=obj.id).count()
+
+    def get_sent(self, obj):
+        return CampaignRecipients.objects.filter(campaign=obj.id, is_sent=True).count()
+
+    def get_leads(self, obj):
+        return CampaignRecipients.objects.filter(campaign=obj.id, is_lead=True).count()
+
+    def get_opens(self, obj):
+        return CampaignRecipients.objects.filter(campaign=obj.id, is_open=True).count()
+
+    def get_replies(self, obj):
+        return CampaignRecipients.objects.filter(campaign=obj.id, is_reply=True).count()
+
+    def get_bounces(self, obj):
+        return CampaignRecipients.objects.filter(campaign=obj.id, is_bounce=True).count()
+
+
 class ProspectsSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='full_name')
     campaign_title = serializers.CharField(source='campaign.title')

@@ -78,7 +78,6 @@ class TheCompose extends Component {
       follow_up: this.state.followUpList,
       drips: this.state.dripList,
     };
-    console.log(data);
     this.props.campaignCompose(data);
     // call parent method
     this.props.onNext();
@@ -100,7 +99,7 @@ class TheCompose extends Component {
                 const dataTransfer = e.dataTransfer;
                 dataTransfer.setData('text/html', `<span class="keyword-item p-1 mr-2 my-1">{{${field}}}</span>`);
               }}>
-                <i class="fas fa-bars text-danger mr-2"></i>
+                <i className="fas fa-bars text-danger mr-2"></i>
                 { formatHeader(field) }
               </div>
             )

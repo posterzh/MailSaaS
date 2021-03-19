@@ -68,21 +68,21 @@ const routes = [
     state: "campaign",
     views: [
       {
-        path: "/NewCampaign",
+        path: "/campaign/create",
         name: "New Campaign",
         miniName: " ",
         component: NewCampaign,
         layout: "/app/admin",
       },
       {
-        path: "/CampaignList",
+        path: "/campaign/list",
         name: "Campaign List",
         miniName: " ",
         component: CampaignList,
         layout: "/app/admin",
       },
       {
-        path: "/CampaignDetailOverview",
+        path: "/campaign/details-overview",
         name: "Campaign Detail",
         miniName: " ",
         component: CampaignDetailOverview,
@@ -98,25 +98,19 @@ const routes = [
 
       // Campaign Detail Redirects
       {
-        path: "/CampaignDetailOverview",
-        component: CampaignDetailOverview,
-        layout: "/app/admin",
-        redirect: true,
-      },
-      {
-        path: "/CampaignDetailSequence",
+        path: "/campaign/details-sequence",
         component: CampaignDetailSequence,
         layout: "/app/admin",
         redirect: true,
       },
       {
-        path: "/CampaignDetailRecipients",
+        path: "/campaign/details-recipients",
         component: CampaignDetailRecipients,
         layout: "/app/admin",
         redirect: true,
       },
       {
-        path: "/CampaignDetailSettings",
+        path: "/campaign/details-settings",
         component: CampaignDetailSettings,
         layout: "/app/admin",
         redirect: true,
