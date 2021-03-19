@@ -18,7 +18,7 @@ urlpatterns = [
     path('recipients/<int:pk>/',views.RecipientDetailView.as_view(), name = "recipients_update"),
     path('settings-leadcatcher/', views.CampaignleadCatcher.as_view(),name = 'settings-leadcatcher'),
     path('settings-leadcatcherView/<int:pk>/', views.LeadCatcherView.as_view(),name = 'LeadCatcherView'),
-    path('update-leadcatcherstatus/',views.LeadCatcherStatusUpdateView.as_view(),name='update-leadcatcherstatus'),
+    path('update-leadcatcherstatus/', views.LeadCatcherStatusUpdateView.as_view(),name='update-leadcatcherstatus'),
     path('settings-leadcatcher/<int:pk>/', views.LeadCatcherUpdateView.as_view(),name = 'campaignleadcatcher'),
     path('sequence/<int:pk>/', views.CampaignMessages.as_view(),name = 'campaignmessage'),
     path('prospects/', views.ProspectsView.as_view(),name = 'procpects'),
@@ -28,4 +28,5 @@ urlpatterns = [
     path('recipientunassigned/', views.RecipientUnassignedView.as_view(), name='recipientunassigned'),
     path('create/', views.CampaignCreateView.as_view(), name='create_campaign'),
     path('list/', views.CampaignListView.as_view(), name='list_campaign'),
+    path('overview-summary/<int:pk>/', views.GetCampaignOverviewSummary.as_view(),name = 'Get_campaign_overview_summary'),
 ]

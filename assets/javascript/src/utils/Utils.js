@@ -13,8 +13,10 @@ export const toastOnError = (error) => {
     errMessage = JSON.stringify(error.response.data);
   } else if (error.message) {
     errMessage = JSON.stringify(error.message);
-  } else {
+  } else if (typeof error !== 'string') {
     errMessage = JSON.stringify(error);
+  } else {
+    errMessage = error;
   }
 
   showNotification("warning", "API Call Error", errMessage);

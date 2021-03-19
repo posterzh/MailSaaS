@@ -97,8 +97,8 @@ class CampaignList extends Component {
     });
   }
 
-  showDetaill = (item) => {
-    this.props.history.push('/app/admin/campaign/details-overview');
+  showDetails = (item) => {
+    this.props.history.push(`/app/admin/campaign/${item.id}/details-overview`);
   }
   // handleCheck = (e) => {
   //   let tables = this.props.Tables.CampaignTableData
@@ -183,7 +183,7 @@ class CampaignList extends Component {
             <Tables
               titles={campaignListTable} // required
               tablePropsData={data}   // required
-              onDetail={this.showDetaill}
+              onDetail={this.showDetails}
               actionMenus={actionMenus}   // optional for showing menus of row.
               actionCallback={this.actionCallback}        // get call back for action select of row.
               showSelect={true}    // optional

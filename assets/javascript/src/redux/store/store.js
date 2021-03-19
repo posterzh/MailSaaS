@@ -38,6 +38,7 @@ import { prospectsReducer } from "../reducer/ProspectsReducer";
 import { unsubscribesReducer } from "../reducer/UnsubscribeReducer";
 import { sendingCalendarsReducer } from "../reducer/SendingCalendarReducer";
 import { campaignReducer } from "../reducer/CampaignReducer";
+import { campaignDetailsReducer } from "../reducer/CampaignDetailsReducer";
 
 const composeEnhancers =
   (typeof window !== "undefined" &&
@@ -73,6 +74,7 @@ const rootReducer = combineReducers({
   LeadUpdateReducer,
   LeadViewReducer,
 
+  // new reducers by team
   mailAccounts: mailAccountsReducer,
   notification: notificationReducer,
 
@@ -80,6 +82,7 @@ const rootReducer = combineReducers({
   unsubscribes: unsubscribesReducer,
   sendingCalendars: sendingCalendarsReducer,
   campaign: campaignReducer,
+  campaignDetails: campaignDetailsReducer 
 });
 
 const persistConfig = {
