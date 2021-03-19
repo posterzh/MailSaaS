@@ -11,14 +11,14 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-import datetime 
+import datetime
 # from decouple import config
 from decouple import config
 from pathlib import Path  # Python 3.6+ only
+
 env_path = Path('.') / '.env'
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -38,7 +38,6 @@ SITE_URL = 'http://localhost:8000'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-
 # Application definition
 
 DJANGO_APPS = [
@@ -49,9 +48,9 @@ DJANGO_APPS = [
     'django.contrib.messages',
 
     'django.contrib.staticfiles',
-    
+
     'django.forms',
-  
+
     'celery_progress',
     "django_celery_results",
     'django_crontab',
@@ -62,15 +61,14 @@ DJANGO_APPS = [
 
 # Put your third-party apps here
 THIRD_PARTY_APPS = [
-    
-    
+
     # 'django_pipedrive',
 
     'corsheaders',
     # stripe integration
     'djstripe',
     'salesforce',
-   
+
 ]
 
 PEGASUS_APPS = [
@@ -102,11 +100,14 @@ PROJECT_APPS = [
     'rest_auth.registration',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    
+
+    'oauth2_provider',
+    'social_django',
+    'rest_framework_social_oauth2',
 ]
 
 if LIVE:
-    DJANGO_APPS = [ 'livereload' ] + DJANGO_APPS
+    DJANGO_APPS = ['livereload'] + DJANGO_APPS
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PEGASUS_APPS + PROJECT_APPS
 
@@ -125,7 +126,7 @@ MIDDLEWARE = [
 ]
 
 if LIVE:
-    MIDDLEWARE = MIDDLEWARE + [ 'livereload.middleware.LiveReloadScript' ]
+    MIDDLEWARE = MIDDLEWARE + ['livereload.middleware.LiveReloadScript']
 
 ROOT_URLCONF = 'mail.urls'
 
@@ -143,8 +144,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'apps.web.context_processors.project_meta',
-                 # this line can be removed if not using google analytics
+                # this line can be removed if not using google analytics
                 'apps.web.context_processors.google_analytics_id',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -160,23 +163,21 @@ FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'USER' : 'doadmin',
-        'PASSWORD':'k6sehj7ohh30gjfy',
-        'HOST':'db-postgresql-sfo2-27945-do-user-8602625-0.b.db.ondigitalocean.com',
-        'PORT':'25060',
+        'USER': 'doadmin',
+        'PASSWORD': 'k6sehj7ohh30gjfy',
+        'HOST': 'db-postgresql-sfo2-27945-do-user-8602625-0.b.db.ondigitalocean.com',
+        'PORT': '25060',
         'NAME': 'mail'
 
     }
 }
 
-GOOGLE_CLIENT_SECRET_FILE = os.path.join(BASE_DIR, 'client_secret_178038321765-1d24dsmngr7cmthb1ksvno3kehirnqbg.apps.googleusercontent.com.json')
+GOOGLE_CLIENT_SECRET_FILE = os.path.join(BASE_DIR,
+                                         'client_secret_178038321765-1d24dsmngr7cmthb1ksvno3kehirnqbg.apps.googleusercontent.com.json')
 GOOGLE_AUTH_SCOPES = [
     'https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile',
 ]
-
-
-
 
 # Auth / login stuff
 
@@ -209,7 +210,6 @@ REST_USE_JWT = True
 ACCOUNT_ADAPTER = 'apps.teams.adapter.AcceptInvitationAdapter'
 ACCOUNT_ADAPTER = 'apps.users.adapter.CustomUserAccountAdapter'
 
-
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_USERNAME_REQUIRED = False
@@ -221,18 +221,20 @@ ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
-
 ACCOUNT_FORMS = {
     'signup': 'apps.teams.forms.TeamSignupForm',
 }
 
+AUTHENTICATION_BACKENDS = (
+    # Google OAuth2
+    'social_core.backends.google.GoogleOAuth2',
 
+    # django-rest-framework-social-oauth2
+    'rest_framework_social_oauth2.backends.DjangoOAuth2',
 
-# AUTHENTICATION_BACKENDS = (
-#     "django.contrib.auth.backends.ModelBackend",
-#     "allauth.account.auth_backends.AuthenticationBackend",
-# )
-
+    # Django
+    'django.contrib.auth.backends.ModelBackend'
+)
 
 # enable social login
 SOCIALACCOUNT_PROVIDERS = {
@@ -247,7 +249,6 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -258,9 +259,7 @@ TIME_ZONE = 'Asia/Calcutta'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-DATETIME_FORMAT = '%d-%m-%Y %H:%M:%S' 
-
-
+DATETIME_FORMAT = '%d-%m-%Y %H:%M:%S'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -290,7 +289,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Django sites
 
 
-
 # DRF config
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -301,18 +299,19 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,
-    
+
     # 'DEFAULT_FILTER_BACKENDS': (
     #     'django_filters.rest_framework.DjangoFilterBackend',
-        
+
     # ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'rest_framework_social_oauth2.authentication.SocialAuthentication',
     ),
 }
-
 
 # Celery setup (using redis)
 CELERY_broker_url = 'redis://localhost:6379/0'
@@ -324,10 +323,7 @@ result_serializer = 'json'
 imports = ('apps.campaignschedule.tasks',)
 cache_backend = 'django-cache'
 
-
-
-
-# JWT_AUTH = { 
+# JWT_AUTH = {
 #     'JWT_AUTH_HEADER_PREFIX': 'JWT',
 #     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=500)
 # }
@@ -337,11 +333,9 @@ REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'apps.users.serializer.UserDetailsSerializer',
 }
 
-
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'apps.users.serializer.RegisterSerializer',
 }
-
 
 # Pegasus config
 
@@ -355,7 +349,6 @@ PROJECT_METADATA = {
     'CONTACT_EMAIL': 'elon.musk@localhost:8000',
 }
 
-
 # ADMINS = [('Elon Musk', 'elon.musk@localhost:8000')]
 
 GOOGLE_ANALYTICS_ID = ''  # replace with your google analytics ID to connect to Google Analytics
@@ -365,8 +358,8 @@ GOOGLE_ANALYTICS_ID = ''  # replace with your google analytics ID to connect to 
 # modeled to be the same as https://github.com/dj-stripe/dj-stripe
 STRIPE_LIVE_PUBLIC_KEY = os.environ.get("STRIPE_LIVE_PUBLIC_KEY", "<your publishable key>")
 STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY", "<your secret key>")
-STRIPE_TEST_PUBLIC_KEY = "pk_test_51IBszEBZVXmQYn2L10zhEROWJZIExUWXwFdIg47Sgv8VX064fmyOLaBS6wFysLJuvkTXiBpeqWmaljbmTzYgalys00VCRN4C5p" #, "pk_test_<your publishable key>")
-STRIPE_TEST_SECRET_KEY = "sk_test_51IBszEBZVXmQYn2LG0WRyPwcYrV6O3D83lD55hjDuuNkdjcawOJhYjVZ8K2mujFZlkD4x53UTbAxGoz8JSWeFa2l003KGHQZmq"#os.environ.get("STRIPE_TEST_SECRET_KEY", "sk_test_<your secret key>")
+STRIPE_TEST_PUBLIC_KEY = "pk_test_51IBszEBZVXmQYn2L10zhEROWJZIExUWXwFdIg47Sgv8VX064fmyOLaBS6wFysLJuvkTXiBpeqWmaljbmTzYgalys00VCRN4C5p"  # , "pk_test_<your publishable key>")
+STRIPE_TEST_SECRET_KEY = "sk_test_51IBszEBZVXmQYn2LG0WRyPwcYrV6O3D83lD55hjDuuNkdjcawOJhYjVZ8K2mujFZlkD4x53UTbAxGoz8JSWeFa2l003KGHQZmq"  # os.environ.get("STRIPE_TEST_SECRET_KEY", "sk_test_<your secret key>")
 STRIPE_LIVE_MODE = False  # Change to True in production
 
 # Get it from the section in the Stripe dashboard where you added the webhook endpoint
@@ -376,23 +369,22 @@ DJSTRIPE_WEBHOOK_SECRET = os.environ.get('DJSTRIPE_WEBHOOK_SECRET', "whsec_xxx")
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = 'id'  # change to 'djstripe_id' if not a new installation
 DJSTRIPE_USE_NATIVE_JSONFIELD = True  # change to False if not a new installation
 
-
 # JWT settings
 JWT_AUTH = {
     'JWT_ENCODE_HANDLER':
-    'rest_framework_jwt.utils.jwt_encode_handler',
+        'rest_framework_jwt.utils.jwt_encode_handler',
 
     'JWT_DECODE_HANDLER':
-    'rest_framework_jwt.utils.jwt_decode_handler',
+        'rest_framework_jwt.utils.jwt_decode_handler',
 
     'JWT_PAYLOAD_HANDLER':
-    'rest_framework_jwt.utils.jwt_payload_handler',
+        'rest_framework_jwt.utils.jwt_payload_handler',
 
     'JWT_PAYLOAD_GET_USER_ID_HANDLER':
-    'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
+        'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
 
     'JWT_RESPONSE_PAYLOAD_HANDLER':
-    'rest_framework_jwt.utils.jwt_response_payload_handler',
+        'rest_framework_jwt.utils.jwt_response_payload_handler',
 
     'JWT_SECRET_KEY': SECRET_KEY,
     'JWT_GET_USER_SECRET_KEY': None,
@@ -413,10 +405,9 @@ JWT_AUTH = {
     'JWT_AUTH_COOKIE': None,
 }
 
-
-#Mail_configuration
+# Mail_configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST='sg3plcpnl0063.prod.sin3.secureserver.net'
+EMAIL_HOST = 'sg3plcpnl0063.prod.sin3.secureserver.net'
 # <<<<<<< digital-ocean
 # # EMAIL_PORT=config('EMAIL_PORT')
 # # EMAIL_USE_SSL=config('EMAIL_USE_SSL')
@@ -431,8 +422,6 @@ EMAIL_HOST='sg3plcpnl0063.prod.sin3.secureserver.net'
 # >>>>>>> master
 
 
-
-
 # Slack Configuration
 # VERIFICATION_TOKEN = config('VERIFICATION_TOKEN')
 # OAUTH_ACCESS_TOKEN = config('OAUTH_ACCESS_TOKEN')
@@ -440,7 +429,7 @@ EMAIL_HOST='sg3plcpnl0063.prod.sin3.secureserver.net'
 # SLACK_CLIENT_ID = config('SLACK_CLIENT_ID')
 # SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
 
-#Salesforce Configuration
+# Salesforce Configuration
 
 # SALESFORCE_USERNAME = config('SALESFORCE_USERNAME')
 # SALESFORCE_PASSWORD = config('SALESFORCE_PASSWORD')
@@ -450,8 +439,18 @@ EMAIL_HOST='sg3plcpnl0063.prod.sin3.secureserver.net'
 # SALESFORCE_API_VERSION = '43.0'
 
 
-PIPEDRIVE_API_KEY="67ffc61ad9d85760cee59c2115bddd5cc536e9c6"
+PIPEDRIVE_API_KEY = "67ffc61ad9d85760cee59c2115bddd5cc536e9c6"
 
 # #Google Configuration
 # GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
 # GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
+
+# Google configuration
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '828042189691-4ceuofidhr2van7pt9vhpa4hmdei9d0q.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'gWLcoyt4SvNRhpb_blSLJKmq'
+
+# Define SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE to get extra permissions from Google.
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]

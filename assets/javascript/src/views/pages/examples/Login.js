@@ -45,6 +45,8 @@ import { history } from "../../../index";
 import Api from "../../../../src/redux/api/api";
 import axios from "../../../utils/axios";
 
+import GoogleLogin from 'react-google-login';
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -56,11 +58,13 @@ class Login extends React.Component {
       loginPending: false,
     };
   }
+
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
   };
+
   handleSubmit = (event) => {
     event.preventDefault();
     const loginuser = {
@@ -93,6 +97,12 @@ class Login extends React.Component {
         );
       });
   };
+
+
+  responseGoogle = (response) => {
+    console.log(response);
+  };
+
   render() {
     const { Loginuser, isLogin, loginResponse } = this.props;
     return (
@@ -110,7 +120,14 @@ class Login extends React.Component {
                     <small style={{ fontSize: 18 }}>Sign in with</small>
                   </div>
                   <div className="btn-wrapper text-center">
-                    <Button
+                    <GoogleLogin
+                      clientId="828042189691-4ceuofidhr2van7pt9vhpa4hmdei9d0q.apps.googleusercontent.com"
+                      buttonText="Login"
+                      onSuccess={this.responseGoogle}
+                      onFailure={this.responseGoogle}
+                      cookiePolicy={'single_host_origin'}
+                    />
+                    {/* <Button
                       className="btn-neutral btn-icon"
                       color="default"
                       href="#pablo"
@@ -131,7 +148,7 @@ class Login extends React.Component {
                         <img alt="..." src={'/static/images/img/icons/common/google.svg'} />
                       </span>
                       <span className="btn-inner--text">Google</span>
-                    </Button>
+                    </Button> */}
                   </div>
                 </CardHeader>
                 <CardBody className="px-lg-5 py-lg-5">
