@@ -95,7 +95,7 @@ export class CampaignDetailSettings extends Component {
           showStatus={false}
         />
 
-        <PageContainer title="Date Outreach">
+        <PageContainer title="Date Outreach" showHelper={true}>
           <Row>
             <DetailHeader activeItem="SETTINGS" />
           </Row>

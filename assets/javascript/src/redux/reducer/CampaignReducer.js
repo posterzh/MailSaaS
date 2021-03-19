@@ -17,19 +17,21 @@ export const campaignReducer = (state = initialState, action) => {
       return {
         ...state,
         csvfile: action.payload.csvfile,
-        first_row: action.payload.first_row
+        first_row: action.payload.first_row,
+        csv_fields: action.payload.csv_fields
       };
     case CAMPAIGN_COMPOSE:
       return {
         ...state,
-        normal: action.payload.normal,
+        email_subject: action.payload.email_subject,
+        email_body: action.payload.email_body,
         follow_up: action.payload.follow_up,
         drips: action.payload.drips
       };
     case CAMPAIGN_OPTIONS:
       return {
         ...state,
-        track_Opens: action.payload.track_Opens,
+        track_opens: action.payload.track_opens,
         terms_and_laws: action.payload.terms_and_laws
       };
     default:

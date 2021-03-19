@@ -39,7 +39,7 @@ function PageContainer(props) {
         ),
         type: notification.type,
         icon: "ni ni-bell-55",
-        autoDismiss: 3,
+        autoDismiss: 5,
       };
       notificationRef.current.notificationAlert(options);
 

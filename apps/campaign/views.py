@@ -2,6 +2,7 @@ import csv
 import datetime
 import json
 import re
+import pandas as pd
 import ast
 from datetime import date, datetime, time, timedelta
 import pytracking
@@ -23,12 +24,13 @@ from apps.integration.views import SendSlackMessage
 from apps.unsubscribes.models import UnsubscribeEmail
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
-from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
+from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, Campaigns, CampaignRecipients,
                      DripEmailModel, EmailOnLinkClick, FollowUpEmail, CampaignLabel)
 from .serializers import (CampaignEmailSerializer,
                           CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer,
-                          OnclickSerializer, CampaignLabelSerializer, ProspectsSerializer)
+                          OnclickSerializer, CampaignLabelSerializer, ProspectsSerializer,
+                          CampaignsSerializer, CampaignRecipientsSerializer, CampaignListSerializer)
 from apps.mailaccounts.models import EmailAccount
 
 
@@ -451,50 +453,116 @@ class CreateCampaignSendView(APIView):
         else:
             return Response({"message": CampSerializer.errors, "success": True})
 
-class CreateCampaignView(APIView):
+
+class CampaignCreateView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
-        return Response({"message": "Updated Successfully", "success": True})
+
+        if request.user.is_active:
+            # if 'campaign.add_campaign' in request.user.get_group_permissions():
+            post_data = request.data
+            # postdata._mutable = False
+            campaign = json.loads(post_data['campaign'])
+            campaign['assigned'] = request.user.id
+            campaign['csvfile'] = post_data['csvfile']
+            campaign['has_follow_up'] = len(campaign['follow_up']) > 0
+            campaign['has_drips'] = len(campaign['drips']) > 0
+
+            camp = CampaignsSerializer(data=campaign)
+            if camp.is_valid():
+                new_camp = camp.save()
+                campaign_id = new_camp.id
+                self.createRecipients(campaign_id, str(new_camp.csvfile))
+
+                return Response({"message": "Created new campaign successfully", "success": True}, status=status.HTTP_200_OK)
+            return Response({"message": "Failed to create campaign", "success": False}, status=status.HTTP_400_BAD_REQUEST)
+
+    def createRecipients(self, campaign_id, csv_path):
+        df_csv = pd.read_csv('media/' + str(csv_path))
+        df_csv.drop(df_csv.columns[df_csv.columns.str.contains('unnamed', case=False)], axis=1, inplace=True)
+        csv_columns = df_csv.columns
+
+        if "Email" in csv_columns:
+            df_csv.rename(columns={'Email': 'email'}, inplace=True)
+        df_csv.dropna(subset=["email"], inplace=True)
+
+        res_emails = df_csv[['email']]
+        res_replacements = json.loads(df_csv.to_json(orient="records"))
+
+        for email, replacement in zip(res_emails.values, res_replacements):
+            res_data = {
+                'campaign': campaign_id,
+                'email': email[0],
+                'replacement': json.dumps(replacement)
+            }
+
+            res = CampaignRecipientsSerializer(data=res_data)
+            if res.is_valid(raise_exception=True):
+                res.save()
 
 
-class ListCampaignView(APIView):
+class CampaignListView(generics.ListAPIView):
+    """
+        For Get all Campaign by user
+    """
+    # permission_classes = (permissions.IsAuthenticated,)
+    # serializer_class = CampaignListSerializer
+    # pagination_class = None
+    # filter_backends = [DjangoFilterBackend]
+    # # filterset_fields = ['engaged', 'leads', 'bounces', 'unsubscribe']
+    #
+    # def get_queryset(self):
+    #     """
+    #     This view should return a list of all the purchases
+    #     for the currently authenticated user.
+    #     """
+    #     user = self.request.user
+    #     return Campaigns.objects.filter(assigned=user.id)
+
     permission_classes = (permissions.IsAuthenticated,)
 
-    def get(self, request, format=None):
-        return Response([{
-            "title": 'March 18 Outreach',
-            "created": 'Mar 8',
-            "assigned": 'Karl',
-            "recipients": '2',
-            "sent": '4',
-            "leads": '2',
-            "replies": '0',
-            "opens": '1',
-            "bounces": '1'
-        },
-        {
-            "title": 'March 4 Outreach',
-            "created": 'Mar 4',
-            "assigned": 'Paul',
-            "recipients": '2',
-            "sent": '1',
-            "leads": '0',
-            "replies": '0',
-            "opens": '0',
-            "bounces": '0'
-        },
-        {
-            "title": 'March 1 Outreach',
-            "created": 'Mar 1',
-            "assigned": 'Valor',
-            "recipients": '1',
-            "sent": '5',
-            "leads": '1',
-            "replies": '1',
-            "opens": '1',
-            "bounces": '1'
-        }])
+    def get(self, request, *args, **kwargs):
+        """
+         This view should return a list of all the purchases
+         for the currently authenticated user.
+         """
+        campaign_list = Campaigns.objects.filter(assigned=request.user.id)
+        all_data = []
+        for camp in campaign_list:
+            camp_email = CampaignRecipients.objects.filter(campaign=camp.id)
+            camp_recipient_serializer = CampaignRecipientsSerializer(camp_email, many=True)
+            resp = {
+                "id": camp.pk,
+                "title": camp.title,
+                "created": camp.created_at.strftime("%m/%d/%Y"),
+                "assigned": camp.assigned.full_name,
+                "recipients": camp_email.count(),
+                "sent": 0,
+                "leads": 0,
+                "opens": 0,
+                "replies": 0,
+                "bounces": 0
+            }
+
+            for campData in camp_recipient_serializer.data:
+                if campData["is_sent"]:
+                    resp["sent"] = resp["sent"] + 1
+
+                if campData["is_open"]:
+                    resp["opens"] = resp["opens"] + 1
+
+                if campData["is_lead"]:
+                    resp["leads"] = resp["leads"] + 1
+
+                if campData["is_reply"]:
+                    resp["replies"] = resp["replies"] + 1
+
+                if campData["is_bounce"]:
+                    resp["bounces"] = resp["bounces"] + 1
+
+            all_data.append(resp)
+        return Response(all_data)
 
 
 class CampaignView(generics.ListAPIView):

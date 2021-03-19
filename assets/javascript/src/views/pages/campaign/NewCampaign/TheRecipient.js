@@ -27,6 +27,7 @@ class TheRecipient extends Component {
       show: false,
       csvFile: null,
       first_row: null,
+      csvFields: null,
       csvMappingContent: {
         title: [],
         data: [],
@@ -43,6 +44,7 @@ class TheRecipient extends Component {
     const recipientData = {
       csvfile: this.state.csvFile,
       first_row: this.state.first_row,
+      csv_fields: this.state.csvFields
     };
     this.props.campaignRecipient(recipientData);
     this.props.onNext();
@@ -61,18 +63,23 @@ class TheRecipient extends Component {
     const firstRow = data[0].data;
     const tableHeaders = [];
     const tableBody = [];
-    Object.keys(firstRow).forEach((key) => {
+    const fields = Object.keys(firstRow || {}).filter(key => !!key).map((key) => {
       if (
         key &&
-        (key.toLowerCase().indexOf("name") > -1 ||
-          key.toLowerCase().indexOf("email") > -1)
+        (key.toLowerCase().indexOf("name") > -1 || key.toLowerCase().indexOf("email") > -1)
       ) {
         tableHeaders.push({
           key: key,
           value: key,
         });
       }
+      return key;
     });
+
+    if (fields.indexOf("email") == -1 && fields.indexOf("Email") == -1) {
+      showNotification("warning", "Invalid CSV uploading", "CSV file should contain 'email' column.");
+      return;
+    }
 
     if (tableHeaders.length > 0) {
       data.forEach((row, index) => {
@@ -94,6 +101,7 @@ class TheRecipient extends Component {
       },
       first_row: firstRow,
       show: true,
+      csvFields: fields.join(',')
     });
   };
 

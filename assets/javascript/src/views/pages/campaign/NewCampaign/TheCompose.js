@@ -72,18 +72,12 @@ class TheCompose extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    let normal = {
-      campaign: "",
-      subject: this.state.subject,
-      email_body: this.state.email_body,
-    };
-
     let data = {
-      normal: normal,
+      email_subject: this.state.subject,
+      email_body: this.state.email_body,
       follow_up: this.state.followUpList,
       drips: this.state.dripList,
     };
-    console.log(data);
     this.props.campaignCompose(data);
     // call parent method
     this.props.onNext();
@@ -94,8 +88,29 @@ class TheCompose extends Component {
     this.props.onPrev();
   };
 
+  getDNDSource = () => {
+    const { campaign: {first_row} } = this.props;
+    return (
+      <div className="d-flex flex-wrap mt-2">
+        {
+          Object.keys(first_row || {}).filter(field => !!field).map((field, index) => {
+            return (
+              <div className="keyword-item text-danger px-1 mr-2 my-1" key={`${index}`} draggable="true" onDragStart={(e) => {
+                const dataTransfer = e.dataTransfer;
+                dataTransfer.setData('text/html', `<span class="keyword-item p-1 mr-2 my-1">{{${field}}}</span>`);
+              }}>
+                <i className="fas fa-bars text-danger mr-2"></i>
+                { formatHeader(field) }
+              </div>
+            )
+          })
+        }
+      </div>
+    )
+  }
+
   render() {
-    const { onPrev, onNext, campaign: {first_row} } = this.props;
+    const { onPrev, onNext } = this.props;
 
     return (
       <>
@@ -148,31 +163,20 @@ class TheCompose extends Component {
             </Col>
           </Row>
 
-          <div className="d-flex flex-wrap mt-2">
-            {
-              Object.keys(first_row || {}).filter(field => !!field).map((field, index) => {
-                return (
-                  <div className="keyword-item text-danger px-1 mr-2 my-1" key={`${index}`} draggable="true" onDragStart={(e) => {
-                    const dataTransfer = e.dataTransfer;
-                    dataTransfer.setData('text/html', `<span class="keyword-item p-1 mr-2 my-1">{{${field}}}</span>`);
-                  }}>
-                    <i class="fas fa-bars text-danger mr-2"></i>
-                    { formatHeader(field) }
-                  </div>
-                )
-              })
-            }
-          </div>
+          {this.getDNDSource()}
 
           <Row className="mt-5">
             <Col>
               {this.state.followUpList.map((followUp, index) => (
-                <FollowUpPanel
-                  index={index}
-                  onDelete={this.onDeleteFollowUp}
-                  data={followUp}
-                  key={index}
-                />
+                <>
+                  <FollowUpPanel
+                    index={index}
+                    onDelete={this.onDeleteFollowUp}
+                    data={followUp}
+                    key={index}
+                  />
+                  <div className="px-3">{this.getDNDSource()}</div>
+                </>
               ))}
             </Col>
           </Row>
@@ -194,12 +198,15 @@ class TheCompose extends Component {
           <Row>
             <Col>
               {this.state.dripList.map((drip, index) => (
-                <DripPanel
-                  index={index}
-                  onDelete={this.onDeleteDrip}
-                  data={drip}
-                  key={index}
-                />
+                <>
+                  <DripPanel
+                    index={index}
+                    onDelete={this.onDeleteDrip}
+                    data={drip}
+                    key={index}
+                  />
+                  <div className="px-3">{this.getDNDSource()}</div>
+                </>
               ))}
             </Col>
           </Row>

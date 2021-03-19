@@ -6,19 +6,19 @@ import classnames from "classnames";
 const items = [
   {
     name: "OVERVIEW",
-    link: "/app/admin/CampaignDetailOverview",
+    link: "/app/admin/campaign/details-overview",
   },
   {
     name: "SEQUENCE",
-    link: "/app/admin/CampaignDetailSequence",
+    link: "/app/admin/campaign/details-sequence",
   },
   {
     name: "RECIPIENTS",
-    link: "/app/admin/CampaignDetailRecipients",
+    link: "/app/admin/campaign/details-recipients",
   },
   {
     name: "SETTINGS",
-    link: "/app/admin/CampaignDetailsettings",
+    link: "/app/admin/campaign/details-settings",
   },
 ];
 
@@ -41,21 +41,20 @@ function DetailHeader(props) {
         <ButtonGroup>
           {items.map((item, index) => {
             return (
-              <>
-                <Button
-                  color={color}
-                  type="button"
-                  className={activeItem == item.name ? "active" : ""}
-                  onClick={() => {
-                    props.history.push({
-                      pathname: item.link,
-                      state: { id },
-                    });
-                  }}
-                >
-                  {item.name}
-                </Button>
-              </>
+              <Button
+                color={color}
+                type="button"
+                key={"header" + index}
+                className={activeItem == item.name ? "active" : ""}
+                onClick={() => {
+                  props.history.push({
+                    pathname: item.link,
+                    state: { id },
+                  });
+                }}
+              >
+                {item.name}
+              </Button>
             );
           })}
         </ButtonGroup>

@@ -8,7 +8,7 @@ import {
   Input,
   Button,
 } from "reactstrap";
-import { campaignStart, campaignSend } from "../../../../redux/action/CampaignActions";
+import { campaignStart } from "../../../../redux/action/CampaignActions";
 
 class TheStart extends React.Component {
   constructor(props) {
