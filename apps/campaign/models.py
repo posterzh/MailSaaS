@@ -20,8 +20,6 @@ class Campaign(models.Model):
     from_address = models.ForeignKey(EmailAccount, on_delete=models.SET_NULL, null=True)
     full_name = models.CharField(max_length=200, blank=True, null=True)
     csvfile_op1 = models.FileField(upload_to='csv_uploads/', blank=True, null=True)
-    created_date_time = models.DateTimeField(auto_now=True)
-    update_date_time = models.DateTimeField(auto_now=True)
     assigned = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     track_opens = models.BooleanField(default=False)
     track_linkclick = models.BooleanField(default=False)
@@ -32,6 +30,13 @@ class Campaign(models.Model):
     terms_and_laws = models.BooleanField(default=False)
     campaign_status = models.BooleanField(default=False)  # Start Campaign or Pause Campaign
     label_name = models.ForeignKey(CampaignLabel, on_delete=models.SET_DEFAULT, default=1)
+    csv_fields = models.TextField(blank=True, null=True, default='')
+    email_subject = models.CharField(max_length=2000, blank=True, null=True)
+    email_body = models.TextField(blank=True, null=True)
+    has_follow_up = models.BooleanField(default=False)
+    has_drips = models.BooleanField(default=False)
+    created_date_time = models.DateTimeField(auto_now=True)
+    update_date_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
@@ -48,6 +53,7 @@ class CampaignRecipient(models.Model):
         ("forwardedLead", "Forwarded Lead"),
     )
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    replacement = models.TextField(blank=True, null=True)
     full_name = models.CharField(max_length=100, blank=True, null=True)
     email = models.CharField(max_length=200)
     subject = models.CharField(max_length=2000, blank=True, null=True)

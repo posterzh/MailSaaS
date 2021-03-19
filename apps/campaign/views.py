@@ -465,11 +465,11 @@ class CampaignCreateView(APIView):
             # postdata._mutable = False
             campaign = json.loads(post_data['campaign'])
             campaign['assigned'] = request.user.id
-            campaign['csvfile'] = post_data['csvfile']
+            campaign['csvfile_opt1'] = post_data['csvfile']
             campaign['has_follow_up'] = len(campaign['follow_up']) > 0
             campaign['has_drips'] = len(campaign['drips']) > 0
 
-            camp = CampaignsSerializer(data=campaign)
+            camp = CampaignSerializer(data=campaign)
             if camp.is_valid():
                 new_camp = camp.save()
                 campaign_id = new_camp.id
@@ -497,7 +497,7 @@ class CampaignCreateView(APIView):
                 'replacement': json.dumps(replacement)
             }
 
-            res = CampaignRecipientsSerializer(data=res_data)
+            res = CampaignEmailSerializer(data=res_data)
             if res.is_valid(raise_exception=True):
                 res.save()
 
