@@ -29,47 +29,9 @@ import {
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import Tables from "../../../../components/Tables";
+import { campaignListTable } from "../../../../components/TableHeader";
 import { toggleTopLoader } from '../../../../utils/Utils';
 import axios from '../../../../utils/axios';
-
-const tableTitle = [
-  {
-    key: 'title',
-    value: 'Title',
-  },
-  {
-    key: 'created',
-    value: 'CREATED',
-  },
-  {
-    key: 'assigned',
-    value: 'ASSIGNED',
-  },
-  {
-    key: 'recipients',
-    value: 'RECIPIENTS',
-  },
-  {
-    key: 'sent',
-    value: 'SENT',
-  },
-  {
-    key: 'leads',
-    value: 'LEADS',
-  },
-  {
-    key: 'replies',
-    value: 'REPLIES',
-  },
-  {
-    key: 'opens',
-    value: 'OPENS',
-  },
-  {
-    key: 'bounces',
-    value: 'BOUNCES',
-  }
-];
 
 class CampaignList extends Component {
   constructor(props) {
@@ -134,6 +96,10 @@ class CampaignList extends Component {
       checked: tables,
     });
   }
+
+  showDetaill = (item) => {
+    this.props.history.push('/app/admin/campaign/details-overview');
+  }
   // handleCheck = (e) => {
   //   let tables = this.props.Tables.CampaignTableData
   //   tables.forEach(table => {
@@ -150,7 +116,6 @@ class CampaignList extends Component {
 
   render() {
     const { show, hide, checked, exampleModal, data, filters } = this.state;
-    const { CampaignOverviewAction } = this.props;
     const actionMenus = [
       {
         key: 'view',
@@ -216,11 +181,9 @@ class CampaignList extends Component {
           </Form> */}
           <Row>
             <Tables
-              titles={tableTitle} // required
+              titles={campaignListTable} // required
               tablePropsData={data}   // required
-              // onEdit={() => {}}
-              onDelete={() => {}}
-              onDetail={() => { this.props.history.push("CampaignDetailOverview") }}
+              onDetail={this.showDetaill}
               actionMenus={actionMenus}   // optional for showing menus of row.
               actionCallback={this.actionCallback}        // get call back for action select of row.
               showSelect={true}    // optional

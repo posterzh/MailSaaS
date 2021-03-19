@@ -41,21 +41,20 @@ function DetailHeader(props) {
         <ButtonGroup>
           {items.map((item, index) => {
             return (
-              <>
-                <Button
-                  color={color}
-                  type="button"
-                  className={activeItem == item.name ? "active" : ""}
-                  onClick={() => {
-                    props.history.push({
-                      pathname: item.link,
-                      state: { id },
-                    });
-                  }}
-                >
-                  {item.name}
-                </Button>
-              </>
+              <Button
+                color={color}
+                type="button"
+                key={"header" + index}
+                className={activeItem == item.name ? "active" : ""}
+                onClick={() => {
+                  props.history.push({
+                    pathname: item.link,
+                    state: { id },
+                  });
+                }}
+              >
+                {item.name}
+              </Button>
             );
           })}
         </ButtonGroup>

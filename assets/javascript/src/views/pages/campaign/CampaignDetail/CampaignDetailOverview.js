@@ -15,7 +15,7 @@ import {
   Input,
   Button,
 } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import classnames from "classnames";
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
@@ -51,9 +51,14 @@ class CampaignDetailOverview extends Component {
     });
   }
 
+  componentDidMount() {
+    console.log(this.props.match.params.id);
+  }
+
   render() {
     const { activeTab } = this.state;
     const { campaignOverviewData } = this.props;
+
     console.log("campaignOverviewData", this.props.history);
     return (
       <>

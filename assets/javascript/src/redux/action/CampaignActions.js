@@ -1,7 +1,8 @@
 import { CAMPAIGN_START, CAMPAIGN_RECIPIENT, CAMPAIGN_COMPOSE, CAMPAIGN_OPTIONS } from "../actionType/actionType";
 import { history } from "../..";
 import axios from "../../utils/axios";
-import { toastOnError, toastOnSuccess } from "../../utils/Utils";
+import { toastOnError, toastOnSuccess, toggleTopLoader } from "../../utils/Utils";
+
 
 export const campaignStart = (payload) => ({
   type: CAMPAIGN_START,
@@ -27,7 +28,7 @@ export const campaignSend = (payload) => (dispatch) => {
   const formData = new FormData();
   formData.append('csvfile', payload.csvfile);
   formData.append('campaign', JSON.stringify(payload));
-  console.log(payload);
+  toggleTopLoader(true);
   axios
     .post("/campaign/create/", formData)
     .then((response) => {
@@ -35,6 +36,9 @@ export const campaignSend = (payload) => (dispatch) => {
     })
     .catch((error) => {
       toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
     });
 };
 
