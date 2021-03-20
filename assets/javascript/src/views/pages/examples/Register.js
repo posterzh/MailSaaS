@@ -303,6 +303,11 @@ class Register extends React.Component {
                     </div>
                   </Form>
                 </CardBody>
+                {this.props.isLoading &&
+                  <div className="auth-loading-wrapper">
+                    <i className="ml-2 fas fa-spinner fa-spin"></i>
+                  </div>
+                }
               </Card>
             </Col>
           </Row>
@@ -317,7 +322,11 @@ class Register extends React.Component {
   }
 }
 
-export default connect(null, {
+const mapStateToProps = (state) => ({
+  isLoading: state.auth.isLoading,
+});
+
+export default connect(mapStateToProps, {
   register,
   googleLogin,
 })(Register);

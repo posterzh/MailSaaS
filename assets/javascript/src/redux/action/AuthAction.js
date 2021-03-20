@@ -6,7 +6,7 @@ import {
   LOGOUT_USER,
   GOOGLE_LOGIN_USER,
 } from "../actionType/actionType"
-import { toastOnError, toastOnSuccess, toggleTopLoader } from "../../utils/Utils";
+import { toastOnError, toastOnSuccess, toggleTopLoader, toggleAuthLoader } from "../../utils/Utils";
 
 import Api from "../api/api"
 import {
@@ -15,7 +15,7 @@ import {
 } from "../../utils/Common";
 
 export const register = (user) => (dispatch) => {
-  toggleTopLoader(true);
+  toggleAuthLoader(true);
   axios.post("/rest-auth/registration/", user)
     .then((response) => {
       const token = response.data.token;
@@ -33,12 +33,12 @@ export const register = (user) => (dispatch) => {
       toastOnError(error);
     })
     .finally(() => {
-      toggleTopLoader(false);
+      toggleAuthLoader(false);
     });
 };
 
 export const login = (user) => (dispatch) => {
-  toggleTopLoader(true);
+  toggleAuthLoader(true);
   axios.post("/rest-auth/login/", user)
   .then((response) => {
     const token = response.data.token;
@@ -56,7 +56,7 @@ export const login = (user) => (dispatch) => {
     toastOnError(error);
   })
   .finally(() => {
-    toggleTopLoader(false);
+    toggleAuthLoader(false);
   });
 }
 
@@ -86,7 +86,7 @@ export const googleLogin = (user, token) => (dispatch) => {
     "backend": "google-oauth2",
     "token": token
   }
-  toggleTopLoader(true);
+  toggleAuthLoader(true);
   axios.post("/auth/convert-token", data)
     .then((response) => {
       const token = response.data.access_token;
@@ -104,6 +104,6 @@ export const googleLogin = (user, token) => (dispatch) => {
       toastOnError(error);
     })
     .finally(() => {
-      toggleTopLoader(false);
+      toggleAuthLoader(false);
     });
 }

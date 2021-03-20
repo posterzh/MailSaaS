@@ -139,6 +139,9 @@ export const HIDE_NOTIFICATION = "HIDE_NOTIFICATION";
 // TOP LOADER
 export const TOP_LOADER = "TOP_LOADER";
 
+// AUTH LOADER
+export const AUTH_LOADER = "AUTH_LOADER";
+
 // MailAccounts
 export const GET_MAILACCOUNTS = "GET_MAILACCOUNTS";
 export const ADD_MAILACCOUNT = "ADD_MAILACCOUNT";

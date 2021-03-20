@@ -32,6 +32,7 @@ import {
   Container,
   Row,
   Col,
+  Spinner,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import AuthHeader from "../../../components/Headers/AuthHeader.js";
@@ -80,14 +81,14 @@ class Login extends React.Component {
       username: name,
       email: email,
       first_name: givenName,
-      last_name: familyName,  
+      last_name: familyName,
     }
     const token = response.tokenObj.access_token; console.log(response);
     this.props.googleLogin(user, token);
   };
 
   onGoogleAuthFailure = (response) => {
-    
+
   }
 
   render() {
@@ -203,13 +204,15 @@ class Login extends React.Component {
                     <div className="text-center">
                       <Button className="my-4" color="info" type="submit">
                         Sign in
-                        {this.state.loginPending && (
-                          <i className="ml-2 fas fa-spinner fa-spin"></i>
-                        )}
                       </Button>
                     </div>
                   </Form>
                 </CardBody>
+                {this.props.isLoading &&
+                  <div className="auth-loading-wrapper">
+                    <i className="ml-2 fas fa-spinner fa-spin"></i>
+                  </div>
+                }
               </Card>
               <Row className="mt-3">
                 <Col xs="6">
@@ -232,8 +235,11 @@ class Login extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  isLoading: state.auth.isLoading,
+});
 
-export default connect(null, {
+export default connect(mapStateToProps, {
   login,
   googleLogin,
 })(Login);

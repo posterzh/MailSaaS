@@ -3,12 +3,14 @@ import {
     LOGIN_USER,
     LOGOUT_USER,
     GOOGLE_LOGIN_USER,
+    AUTH_LOADER,
 } from "../actionType/actionType";
 
 const initialState = {
     user: '',
+    isLoading: false,
     isLogin: false,
-    socialType: 'none'
+    socialType: 'none',
 }
 
 export const AuthReducer = (state = initialState, action) => {
@@ -36,6 +38,11 @@ export const AuthReducer = (state = initialState, action) => {
             }
         case LOGOUT_USER:
             return initialState;
+        case AUTH_LOADER:
+            return {
+                ...state,
+                isLoading: action.payload,
+            }
         default: return state
     }
 }
