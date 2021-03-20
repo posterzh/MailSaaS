@@ -4,6 +4,7 @@ from .models import UnsubcribeCsv, UnsubscribeEmail
 
 
 class UnsubscribeEmailSerializers(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = UnsubscribeEmail
@@ -11,6 +12,7 @@ class UnsubscribeEmailSerializers(serializers.ModelSerializer):
 
 
 class UnsubcribeCsvEmailSerializers(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = UnsubcribeCsv

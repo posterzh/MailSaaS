@@ -50,3 +50,5 @@ urllib3==1.25.11          # via requests
 vine==5.0.0               # via amqp, celery
 wcwidth==0.2.5            # via prompt-toolkit
 zipp==3.3.0               # via importlib-metadata
+django-rest-framework-social-oauth2==1.1.0     # social oauth
+PyJWT==1.7.1              # via django auth

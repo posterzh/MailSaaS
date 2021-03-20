@@ -3,7 +3,8 @@ import { store } from "../redux/store/store";
 import {
   SHOW_NOTIFICATION,
   HIDE_NOTIFICATION,
-  TOP_LOADER
+  TOP_LOADER,
+  AUTH_LOADER,
 } from "../redux/actionType/actionType";
 
 export const toastOnError = (error) => {
@@ -13,8 +14,10 @@ export const toastOnError = (error) => {
     errMessage = JSON.stringify(error.response.data);
   } else if (error.message) {
     errMessage = JSON.stringify(error.message);
-  } else {
+  } else if (typeof error !== 'string') {
     errMessage = JSON.stringify(error);
+  } else {
+    errMessage = error;
   }
 
   showNotification("warning", "API Call Error", errMessage);
@@ -47,6 +50,13 @@ export const toggleTopLoader = (visible) => {
     payload: {
       visible
     },
+  });
+};
+
+export const toggleAuthLoader = (visible) => {
+  store.dispatch({
+    type: AUTH_LOADER,
+    payload: visible,
   });
 };
 
@@ -97,3 +107,19 @@ export const parseTemplate = (str, row) => {
   return str;
 }
 
+export const messages = {
+  "add_success": "Successfully created",
+  "update_success": "Successfully updated",
+  "delete_success": "Successfully removed",
+  "api_failed": "Sorry, server connection failed. please try again.",
+  "not_found_id": "Sorry, there is no item with this id"
+}
+
+export const makeTokenKeyword = (socialType) => {
+  if (socialType == 'none') {
+    return 'jwt';
+  } else if (socialType == 'google') {
+    return 'bearer';
+  }
+  return 'jwt';
+}

@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 
 class OverviewSummery extends Component {
   render() {
+    const { overviewSummary } = this.props;
     return (
       <div>
         <Container fluid>
@@ -101,10 +102,6 @@ class OverviewSummery extends Component {
             </div>
             <div className="draw_div">
               <div className="circle">
-                {/* <div className="recipientcount-circle">
-                                <p>{this.props.CampaignOverviewData && this.props.CampaignOverviewData.recipientCount}</p>
-                                <p>RECIPIENTS</p>
-                                </div> */}
               </div>
             </div>
             <div className="draw_div">
@@ -123,13 +120,11 @@ class OverviewSummery extends Component {
                   <div className="good_test_div">
                     <div className=" text_purple">
                       <span className="btn_heading">
-                        {this.props.CampaignOverviewData &&
-                          this.props.CampaignOverviewData.openCount}
+                        {overviewSummary.openCount}
                       </span>
                       <br></br>
                       <span className="good_btn_span">
-                        {this.props.CampaignOverviewData &&
-                          this.props.CampaignOverviewData.openPer}
+                        {overviewSummary.openPer}
                         %<br></br>OPENED
                       </span>
                     </div>
@@ -142,13 +137,11 @@ class OverviewSummery extends Component {
                     </div>
                     <div className="text_green">
                       <span className="btn_heading">
-                        {this.props.CampaignOverviewData &&
-                          this.props.CampaignOverviewData.replyCount}
+                        {overviewSummary.replyCount}
                       </span>
                       <br></br>
                       <span className="good_btn_span">
-                        {this.props.CampaignOverviewData &&
-                          this.props.CampaignOverviewData.replyPer}
+                        {overviewSummary.replyPer}
                         %<br></br>REPLIED
                       </span>
                     </div>
@@ -161,13 +154,11 @@ class OverviewSummery extends Component {
                     </div>
                     <div className="text_warning">
                       <span className="btn_heading">
-                        {this.props.CampaignOverviewData &&
-                          this.props.CampaignOverviewData.unsubscribeCount}
+                        {overviewSummary.unsubscribeCount}
                       </span>
                       <br></br>
                       <span className="good_btn_span">
-                        {this.props.CampaignOverviewData &&
-                          this.props.CampaignOverviewData.unsubscribePer}
+                        {overviewSummary.unsubscribePer}
                         %<br></br>UNSUBSCRIBED
                       </span>
                     </div>
@@ -186,8 +177,7 @@ class OverviewSummery extends Component {
             <div className="w_h-100">
               <div className="w-14">
                 <h1>
-                  {this.props.CampaignOverviewData &&
-                    this.props.CampaignOverviewData.recipientCount}
+                  {overviewSummary.recipientCount}
                 </h1>
                 <span className="over_sapn">RECIPIENT</span>
               </div>
@@ -221,13 +211,11 @@ class OverviewSummery extends Component {
             <Col md={4}>
               <Table className="table" hover responsive>
                 <thead>
-                  {" "}
                   <tr>
                     <th colSpan="2">SUMMARY</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {" "}
                   <tr>
                     <td>8</td>
                     <td>Recipients</td>
@@ -238,13 +226,11 @@ class OverviewSummery extends Component {
             <Col md={4}>
               <Table hover responsive>
                 <thead>
-                  {" "}
                   <tr>
                     <th colSpan="2">REPLIES</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {" "}
                   <tr>
                     <td>8</td>
                     <td>Recipients</td>
@@ -255,18 +241,13 @@ class OverviewSummery extends Component {
             <Col md={4}>
               <Table hover responsive>
                 <thead>
-                  {" "}
                   <tr>
                     <th colSpan="2">LEADS</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {" "}
                   <tr>
-                    <td>
-                      {this.props.CampaignOverviewData &&
-                        this.props.CampaignOverviewData.ignoredLeadCount}
-                    </td>
+                    <td>{overviewSummary.ignoredLeadCount}</td>
                     <td>Recipients</td>
                   </tr>
                 </tbody>
@@ -278,11 +259,10 @@ class OverviewSummery extends Component {
     );
   }
 }
+
 // export default OverviewSummery
-const mapStateToProps = (state) => {
-  return {
-    CampaignOverviewData: state.CampaignOverviewReducer.CampaignOverviewData,
-  };
-};
-const mapDispatchToProps = (dispatch) => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(OverviewSummery);
+const mapStateToProps = (state) => ({
+  overviewSummary: state.campaignDetails.overviewSummary
+});
+
+export default connect(mapStateToProps)(OverviewSummery);

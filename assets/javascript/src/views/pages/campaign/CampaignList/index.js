@@ -30,7 +30,7 @@ import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import Tables from "../../../../components/Tables";
 import { campaignListTable } from "../../../../components/TableHeader";
-import { toggleTopLoader } from '../../../../utils/Utils';
+import { toggleTopLoader, toastOnError, messages } from '../../../../utils/Utils';
 import axios from '../../../../utils/axios';
 
 class CampaignList extends Component {
@@ -75,7 +75,7 @@ class CampaignList extends Component {
         filters: filters
       })
     } catch (e) {
-      console.log(e);
+      toastOnError(messages.api_failed);
     } finally {
       toggleTopLoader(false);
     }
@@ -97,8 +97,8 @@ class CampaignList extends Component {
     });
   }
 
-  showDetaill = (item) => {
-    this.props.history.push('/app/admin/campaign/details-overview');
+  showDetails = (item) => {
+    this.props.history.push(`/app/admin/campaign/${item.id}/details-overview`);
   }
   // handleCheck = (e) => {
   //   let tables = this.props.Tables.CampaignTableData
@@ -183,7 +183,7 @@ class CampaignList extends Component {
             <Tables
               titles={campaignListTable} // required
               tablePropsData={data}   // required
-              onDetail={this.showDetaill}
+              onDetail={this.showDetails}
               actionMenus={actionMenus}   // optional for showing menus of row.
               actionCallback={this.actionCallback}        // get call back for action select of row.
               showSelect={true}    // optional

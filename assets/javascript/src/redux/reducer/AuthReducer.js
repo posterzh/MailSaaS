@@ -1,45 +1,47 @@
 import {
-    SUCCESS_REGISTER,
-    FAILURE_REGISTER,
-    SUCCESS_LOGIN,
-    FAILURE_LOGIN,
-    SUCCESS_LOGOUT,
-    FAILURE_LOGOUT,
+    REGISTER_USER,
+    LOGIN_USER,
+    LOGOUT_USER,
+    GOOGLE_LOGIN_USER,
+    AUTH_LOADER,
 } from "../actionType/actionType";
 
 const initialState = {
     user: '',
+    isLoading: false,
     isLogin: false,
+    socialType: 'none',
 }
 
 export const AuthReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SUCCESS_REGISTER:
+        case REGISTER_USER:
             return {
                 ...state,
-                user: action.user,
+                user: action.payload,
                 isLogin: true,
-            }
-        case FAILURE_REGISTER:
+                socialType: 'none'
+            };
+        case LOGIN_USER:
             return {
                 ...state,
-                isLogin: false,
-            }
-        case SUCCESS_LOGIN:
-            return {
-                ...state,
-                user: action.user,
+                user: action.payload,
                 isLogin: true,
+                socialType: 'none'
             }
-        case FAILURE_LOGIN:
+        case GOOGLE_LOGIN_USER:
             return {
                 ...state,
-                isLogin: false,
-
+                user: action.payload,
+                isLogin: true,
+                socialType: 'google'
             }
-        case SUCCESS_LOGOUT:
+        case LOGOUT_USER:
+            return initialState;
+        case AUTH_LOADER:
             return {
-                ...initialState
+                ...state,
+                isLoading: action.payload,
             }
         default: return state
     }

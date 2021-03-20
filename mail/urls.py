@@ -42,6 +42,9 @@ urlpatterns = [
 
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
+
+    path(r'auth/', include('rest_framework_social_oauth2.urls')),
+
     # djstripe urls - for webhooks
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
 

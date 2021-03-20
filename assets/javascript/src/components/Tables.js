@@ -21,6 +21,7 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 import CardBody from "reactstrap/lib/CardBody";
+import { Link } from "react-router-dom";
 
 /**
  * 
@@ -247,7 +248,7 @@ function Tables({
     setfilterParams(filterkeys);
     _.forEach(filterkeys, (value, key) => {
       data = _.filter(data, (item) => {
-        return item[key].includes(value);
+        return (item[key] || '').includes(value);
       });
     });
     setTableData(data);
@@ -256,10 +257,11 @@ function Tables({
   const searchFilter = (e) => {
     let data = [...tablePropsData];
     let is_available = false;
+
     data = _.filter(data, (item) => {
       is_available = false;
       _.forEach(searchKeys, (key) => {
-        if (item[key].includes(e.target.value)) {
+        if ((item[key] || '').includes(e.target.value)) {
           is_available = true;
         }
       });
@@ -294,7 +296,7 @@ function Tables({
                   <Form>
                     <Row>
                       {searchKeys.length > 0 && (
-                        <Col md="3" sm="12" key="seaarch">
+                        <Col md="3" sm="12" key="search">
                           <FormGroup>
                             <label
                               className="form-control-label text-capitalize"
@@ -423,10 +425,10 @@ function Tables({
                             return (
                               <td
                                 className="sort"
-                                key={"header-" + item.key + index}
+                                key={item.key + index}
                                 scope="col"
                               >
-                                {data[item.key]}
+                                {item.link ? <Link to={item.link.replace('{{id}}', data[item.id])}>{data[item.key]}</Link> : data[item.key]}
                               </td>
                             );
                           })}

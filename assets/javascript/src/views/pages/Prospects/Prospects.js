@@ -65,7 +65,7 @@ const tableTitle = [
 let filters = [
 	{
 		key: 'Teammate',
-		options: ['janak@gmail.com', 'ajajul@gmail.com', 'mikin@gmail.com', 'ajju@gmail.com']
+		options: ['karl920814@gmail.com', 'omaid@faizyar.com']
 	},
 	{
 		key: 'email',

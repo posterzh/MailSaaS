@@ -2,7 +2,8 @@ export const campaignListTable = [
     {
       key: 'title',
       value: 'Title',
-      link: true
+      link: '/app/admin/campaign/{{id}}/details-overview',
+      id: "id"
     },
     {
       key: 'created',

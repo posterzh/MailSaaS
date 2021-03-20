@@ -38,6 +38,7 @@ import { prospectsReducer } from "../reducer/ProspectsReducer";
 import { unsubscribesReducer } from "../reducer/UnsubscribeReducer";
 import { sendingCalendarsReducer } from "../reducer/SendingCalendarReducer";
 import { campaignReducer } from "../reducer/CampaignReducer";
+import { campaignDetailsReducer } from "../reducer/CampaignDetailsReducer";
 
 const composeEnhancers =
   (typeof window !== "undefined" &&
@@ -45,7 +46,6 @@ const composeEnhancers =
   compose;
 
 const rootReducer = combineReducers({
-  AuthReducer,
   StartCampaignReducer,
   RecipientReducer,
   MailGetDataReducer,
@@ -73,18 +73,21 @@ const rootReducer = combineReducers({
   LeadUpdateReducer,
   LeadViewReducer,
 
+  // new reducers by team
   mailAccounts: mailAccountsReducer,
   notification: notificationReducer,
 
+  auth: AuthReducer,
   prospects: prospectsReducer,
   unsubscribes: unsubscribesReducer,
   sendingCalendars: sendingCalendarsReducer,
   campaign: campaignReducer,
+  campaignDetails: campaignDetailsReducer 
 });
 
 const persistConfig = {
   key: "root",
-  whitelist: ["AuthReducer"],
+  whitelist: ["auth"],
   storage,
 };
 

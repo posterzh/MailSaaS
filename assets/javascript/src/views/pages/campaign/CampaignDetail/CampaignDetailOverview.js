@@ -1,27 +1,23 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
-  Container,
   Row,
   Col,
-  Table,
   Nav,
   NavItem,
   NavLink,
   TabContent,
   TabPane,
-  Form,
-  FormGroup,
   Input,
-  Button,
 } from "reactstrap";
-import { Link, useParams } from "react-router-dom";
 import classnames from "classnames";
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import DetailHeader from "./components/DetailHeader";
 import OverviewSummery from "./components/OverviewSummery";
 import OverviewActivity from "./components/OverviewActivity";
+
+import { getOverviewSummary } from "../../../../redux/action/CampaignDetailsActions";
 
 const tabs = [
   {
@@ -52,25 +48,30 @@ class CampaignDetailOverview extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.match.params.id);
+    const id = this.props.match.params.id;
+    if (!parseInt(id)) {
+      this.props.history.push('/app/admin/campaign/list');
+    } else {
+      this.props.getOverviewSummary(id);
+    }
   }
 
   render() {
     const { activeTab } = this.state;
-    const { campaignOverviewData } = this.props;
+    const { id, title } = this.props;
+    const campTitle = title ? title : "Date Outreach";
 
-    console.log("campaignOverviewData", this.props.history);
     return (
       <>
         <PageHeader
-          current="Date Outreach"
-          parent="Campaign List"
+          current={campTitle}
+          parent="Campaign Details"
           showStatus={false}
         />
 
-        <PageContainer title="Date Outreach" showHelper={true}>
+        <PageContainer title={campTitle} showHelper={false}>
           <Row>
-            <DetailHeader activeItem="OVERVIEW" />
+            <DetailHeader activeItem="OVERVIEW" id={id}/>
           </Row>
           <Row className="mt-4">
             <Col md={8} className="mx-auto">
@@ -115,7 +116,6 @@ class CampaignDetailOverview extends Component {
                 <TabPane tabId={2}>
                   <Row>
                     <Col>
-                      <p className="my-5">Tab 3 Contents</p>
                     </Col>
                   </Row>
                 </TabPane>
@@ -128,13 +128,11 @@ class CampaignDetailOverview extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    campaignOverviewData: state.CampaignOverviewReducer.CampaignOverviewData,
-  };
-};
-const mapDispatchToProps = (dispatch) => ({});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CampaignDetailOverview);
+const mapStateToProps = (state) => ({
+  id: state.campaignDetails.id,
+  title: state.campaignDetails.title,
+});
+
+export default connect(mapStateToProps, {
+  getOverviewSummary
+})(CampaignDetailOverview);

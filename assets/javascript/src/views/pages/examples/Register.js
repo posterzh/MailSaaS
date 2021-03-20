@@ -36,11 +36,15 @@ import {
 } from "reactstrap";
 // core components
 import AuthHeader from "../../../components/Headers/AuthHeader"
-import { registerSuccess, registerFailure } from "../../../redux/action/AuthourizationAction"
+import {
+  register,
+  googleLogin,
+} from "../../../redux/action/AuthAction"
 import { connect } from "react-redux"
-import Api from "../../../../src/redux/api/api"
 import { history } from "../../../index"
 import { Alert } from 'reactstrap';
+
+import GoogleLogin from 'react-google-login';
 
 class Register extends React.Component {
   constructor(props) {
@@ -58,8 +62,6 @@ class Register extends React.Component {
       focusedEmail: false,
       focusedPassword: false,
       focusedCompany: false,
-      registerPending: false,
-      registerSuccess: false
     }
 
   }
@@ -70,10 +72,10 @@ class Register extends React.Component {
     });
     // this.setState({show:!this.state.show})
   }
-  
+
   handleSubmit = (e) => {
     e.preventDefault();
-    
+
     const user = {
       first_name: this.state.FirstName,
       last_name: this.state.LastName,
@@ -83,29 +85,26 @@ class Register extends React.Component {
       password1: this.state.Password,
       mailsaas_type: this.state.mailsaas_type
     };
-
-    this.setState({
-      registerPending: true,
-    })
-
-    Api.RegisterApi(user).then(result => {
-      this.setState({
-        registerPending: false,
-      })
-
-      this.props.RegisterSuccess(result.data.user)
-
-      history.push("/app/admin/dashboard");
-      window.location.reload();
-    }).catch(err => {
-      this.setState({
-        registerPending: false,
-      })
-
-      err.response.data.email&&  this.props.RegisterFailure(err.response.data.email)
-      console.log(err.response.data.email)
-    })
+    console.log(this.props.register);
+    this.props.register(user);
   }
+
+  onGoogleAuthSuccess = (response) => {
+    const { email, name, givenName, familyName } = response.profileObj;
+    const user = {
+      username: name,
+      email: email,
+      first_name: givenName,
+      last_name: familyName,
+    }
+    const token = response.tokenObj.access_token; console.log(response);
+    this.props.googleLogin(user, token);
+  };
+
+  onGoogleAuthFailure = (response) => {
+
+  }
+
   render() {
     const { focusedFirstName, focusedLastName, focusedEmail, focusedCompany, focusedPassword } = this.state
     return (
@@ -120,90 +119,92 @@ class Register extends React.Component {
               <Card className="bg-secondary border-0">
                 <CardHeader className="bg-transparent pb-5">
                   <div className="text-muted text-center mt-2 mb-4">
-                    <small style={{fontSize: 18}}>Sign up with</small>
+                    <small style={{ fontSize: 18 }}>Sign up with</small>
                   </div>
                   <div className="text-center">
-                    <Button
-                      className="btn-neutral btn-icon mr-4"
-                      color="default"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <span className="btn-inner--icon mr-1">
-                        <img alt="..." src={'/static/images/img/icons/common/github.svg'} />
-                      </span>
-                      <span className="btn-inner--text">Github</span>
-                    </Button>
-                    <Button
-                      className="btn-neutral btn-icon"
-                      color="default"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <span className="btn-inner--icon mr-1">
-                        <img alt="..." src={'/static/images/img/icons/common/google.svg'} />
-                      </span>
-                      <span className="btn-inner--text">Google</span>
-                    </Button>
+                    <GoogleLogin
+                      clientId="828042189691-4ceuofidhr2van7pt9vhpa4hmdei9d0q.apps.googleusercontent.com"
+                      buttonText="Register"
+                      onSuccess={this.onGoogleAuthSuccess}
+                      onFailure={this.onGoogleAuthFailure}
+                      cookiePolicy={'single_host_origin'}
+                      render={({ onClick }) => {
+                        return (
+                          <Button
+                            className="btn-neutral btn-icon"
+                            color="default"
+                            href="#pablo"
+                            onClick={() => {
+                              onClick();
+                            }}
+                          >
+                            <span className="btn-inner--icon mr-1">
+                              <img alt="..." src={'/static/images/img/icons/common/google.svg'} />
+                            </span>
+                            <span className="btn-inner--text">Sign up with Google</span>
+                          </Button>
+                        );
+                      }}
+                    />
                   </div>
                 </CardHeader>
                 <CardBody className="px-lg-5 py-lg-5">
                   <div className="text-center text-muted mb-4">
-                    <small style={{fontSize: 18}}>Or sign up with credentials</small>
+                    <small style={{ fontSize: 18 }}>Or sign up with credentials</small>
                   </div>
                   <Form onSubmit={this.handleSubmit} role="form">
                     <Row>
                       <Col>
                         <FormGroup
-                        className={classnames({
-                          focused: focusedFirstName
-                        })}
-                      >
-                        <InputGroup className="input-group-merge input-group-alternative mb-3">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="ni ni-hat-3" />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input
-                            placeholder="First Name"
-                            type="text"
-                            name="FirstName"
-                            value={this.state.FirstName}
-                            onChange={this.handleChange}
-                            onFocus={() => { this.setState({ focusedFirstName: true }) }}
-                            onBlur={() => { this.setState({ focusedFirstName: false }) }}
-                            autoComplete='off'
-                            required
-                          />
-                        </InputGroup>
-                      </FormGroup>
+                          className={classnames({
+                            focused: focusedFirstName
+                          })}
+                        >
+                          <InputGroup className="input-group-merge input-group-alternative mb-3">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="ni ni-hat-3" />
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input
+                              placeholder="First Name"
+                              type="text"
+                              name="FirstName"
+                              value={this.state.FirstName}
+                              onChange={this.handleChange}
+                              onFocus={() => { this.setState({ focusedFirstName: true }) }}
+                              onBlur={() => { this.setState({ focusedFirstName: false }) }}
+                              autoComplete='off'
+                              required
+                            />
+                          </InputGroup>
+                        </FormGroup>
                       </Col>
                       <Col>
                         <FormGroup
-                      className={classnames({
-                        focused: focusedLastName
-                      })}
-                    >
-                      <InputGroup className="input-group-merge input-group-alternative mb-3">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="ni ni-hat-3" />
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input
-                          placeholder="Last Name"
-                          type="text"
-                          name="LastName"
-                          value={this.state.LastName}
-                          onChange={this.handleChange}
-                          onFocus={() => { this.setState({ focusedLastName: true }) }}
-                          onBlur={() => { this.setState({ focusedLastName: false }) }}
-                          autoComplete='off'
-                          required
-                        />
-                      </InputGroup>
-                    </FormGroup>
+                          className={classnames({
+                            focused: focusedLastName
+                          })}
+                        >
+                          <InputGroup className="input-group-merge input-group-alternative mb-3">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="ni ni-hat-3" />
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input
+                              placeholder="Last Name"
+                              type="text"
+                              name="LastName"
+                              value={this.state.LastName}
+                              onChange={this.handleChange}
+                              onFocus={() => { this.setState({ focusedLastName: true }) }}
+                              onBlur={() => { this.setState({ focusedLastName: false }) }}
+                              autoComplete='off'
+                              required
+                            />
+                          </InputGroup>
+                        </FormGroup>
                       </Col>
                     </Row>
                     <FormGroup
@@ -294,7 +295,7 @@ class Register extends React.Component {
                       <Button className="mt-4 mb-4" color="info" type="submit" >
                         Create account
                         {
-                          this.state.registerPending && (
+                          false && (
                             <i className="ml-2 fas fa-spinner fa-spin"></i>
                           )
                         }
@@ -302,6 +303,11 @@ class Register extends React.Component {
                     </div>
                   </Form>
                 </CardBody>
+                {this.props.isLoading &&
+                  <div className="auth-loading-wrapper">
+                    <i className="ml-2 fas fa-spinner fa-spin"></i>
+                  </div>
+                }
               </Card>
             </Col>
           </Row>
@@ -316,8 +322,11 @@ class Register extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  RegisterSuccess: user => dispatch(registerSuccess(user)),
-  RegisterFailure: payload => dispatch(registerFailure(payload)),
+const mapStateToProps = (state) => ({
+  isLoading: state.auth.isLoading,
 });
-export default connect(null, mapDispatchToProps)(Register);
+
+export default connect(mapStateToProps, {
+  register,
+  googleLogin,
+})(Register);

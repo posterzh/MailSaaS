@@ -465,18 +465,44 @@ class CampaignCreateView(APIView):
             # postdata._mutable = False
             campaign = json.loads(post_data['campaign'])
             campaign['assigned'] = request.user.id
-            campaign['csvfile'] = post_data['csvfile']
+            campaign['csvfile_op1'] = post_data['csvfile']
             campaign['has_follow_up'] = len(campaign['follow_up']) > 0
             campaign['has_drips'] = len(campaign['drips']) > 0
 
-            camp = CampaignsSerializer(data=campaign)
+            camp = CampaignSerializer(data=campaign)
             if camp.is_valid():
                 new_camp = camp.save()
                 campaign_id = new_camp.id
-                self.createRecipients(campaign_id, str(new_camp.csvfile))
+
+                if campaign['has_follow_up']:
+                    self.createFollowUps(new_camp, campaign['follow_up'])
+
+                if campaign['has_drips']:
+                    self.createDrips(new_camp, campaign['drips'])
+
+                if new_camp.csvfile_op1:
+                    self.createRecipients(campaign_id, str(new_camp.csvfile_op1))
 
                 return Response({"message": "Created new campaign successfully", "success": True}, status=status.HTTP_200_OK)
             return Response({"message": "Failed to create campaign", "success": False}, status=status.HTTP_400_BAD_REQUEST)
+
+    def createFollowUps(self, camp, follow_ups):
+        if len(follow_ups) == 0:
+            return
+
+        for follow_up in follow_ups:
+            FollowupEmail = FollowUpEmail(campaign=camp, waitDays=follow_up["waitDays"], subject=follow_up["subject"],
+                                          email_body=follow_up["email_body"])
+            FollowupEmail.save()
+
+    def createDrips(self, camp, drips):
+        if len(drips) == 0:
+            return
+
+        for drips in drips:
+            DripEmail = DripEmailModel(campaign=camp, waitDays=drips["waitDays"], subject=drips["subject"],
+                                       email_body=drips["email_body"])
+            DripEmail.save()
 
     def createRecipients(self, campaign_id, csv_path):
         df_csv = pd.read_csv('media/' + str(csv_path))
@@ -497,7 +523,7 @@ class CampaignCreateView(APIView):
                 'replacement': json.dumps(replacement)
             }
 
-            res = CampaignRecipientsSerializer(data=res_data)
+            res = CampaignEmailSerializer(data=res_data)
             if res.is_valid(raise_exception=True):
                 res.save()
 
@@ -527,17 +553,17 @@ class CampaignListView(generics.ListAPIView):
          This view should return a list of all the purchases
          for the currently authenticated user.
          """
-        campaign_list = Campaigns.objects.filter(assigned=request.user.id)
+        campaign_list = Campaign.objects.filter(assigned=request.user.id)
         all_data = []
         for camp in campaign_list:
-            camp_email = CampaignRecipients.objects.filter(campaign=camp.id)
-            camp_recipient_serializer = CampaignRecipientsSerializer(camp_email, many=True)
+            camp_recipients = CampaignRecipient.objects.filter(campaign=camp.id)
+            camp_recipient_serializer = CampaignEmailSerializer(camp_recipients, many=True)
             resp = {
                 "id": camp.pk,
                 "title": camp.title,
-                "created": camp.created_at.strftime("%m/%d/%Y"),
+                "created": camp.created_date_time.strftime("%m/%d/%Y"),
                 "assigned": camp.assigned.full_name,
-                "recipients": camp_email.count(),
+                "recipients": camp_recipients.count(),
                 "sent": 0,
                 "leads": 0,
                 "opens": 0,
@@ -546,19 +572,19 @@ class CampaignListView(generics.ListAPIView):
             }
 
             for campData in camp_recipient_serializer.data:
-                if campData["is_sent"]:
+                if campData["sent"]:
                     resp["sent"] = resp["sent"] + 1
 
-                if campData["is_open"]:
+                if campData["opens"]:
                     resp["opens"] = resp["opens"] + 1
 
-                if campData["is_lead"]:
+                if campData["leads"]:
                     resp["leads"] = resp["leads"] + 1
 
-                if campData["is_reply"]:
+                if campData["replies"]:
                     resp["replies"] = resp["replies"] + 1
 
-                if campData["is_bounce"]:
+                if campData["bounces"]:
                     resp["bounces"] = resp["bounces"] + 1
 
             all_data.append(resp)
@@ -1261,6 +1287,73 @@ class TrackEmailClick(APIView):
         #     counttracking = countTracking + 1
 
         return Response({"message": "Saved Successfully"})
+
+
+class GetCampaignOverviewSummary(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, pk, format=None):
+        postdata = request.data
+
+        try:
+            camp = Campaign.objects.get(id=pk)
+        except:
+            return Response({"message": "No Campaign with this id", "success": False})
+
+        campEmail = CampaignRecipient.objects.filter(campaign=pk)
+        campEmailserializer = CampaignEmailSerializer(campEmail, many=True)
+        resp = {
+            "id": pk,
+            "title": camp.title,
+            "recipientCount": campEmail.count(),
+            "leadCount": 0,
+            "openLeadCount": 0,
+            "openLeadPer": 0,
+            "wonLeadCount": 0,
+            "wonLeadPer": 0,
+            "lostLeadCount": 0,
+            "lostLeadPer": 0,
+            "ignoredLeadCount": 0,
+            "ignoredLeadPer": 0,
+            "sentCount": 0,
+            "sentPer": 0,
+            "openCount": 0,
+            "openPer": 0,
+            "replyCount": 0,
+            "replyPer": 0,
+            "unsubscribeCount": 0,
+            "unsubscribePer": 0
+        }
+        for campData in campEmailserializer.data:
+            if campData["leads"]:
+                resp["leadCount"] = resp["leadCount"] + 1
+
+                if campData["lead_status"] == "openLead":
+                    resp["openLeadCount"] = resp["openLeadCount"] + 1
+                if campData["lead_status"] == "wonLead":
+                    resp["wonLeadCount"] = resp["wonLeadCount"] + 1
+                if campData["lead_status"] == "lostLead":
+                    resp["lostLeadCount"] = resp["lostLeadCount"] + 1
+                if campData["lead_status"] == "ignoredLead":
+                    resp["ignoredLeadCount"] = resp["ignoredLeadCount"] + 1
+
+                resp["openLeadPer"] = round((resp["openLeadCount"] * 100) / resp["leadCount"], 2)
+                resp["wonLeadPer"] = round((resp["wonLeadCount"] * 100) / resp["leadCount"], 2)
+                resp["lostLeadPer"] = round((resp["lostLeadCount"] * 100) / resp["leadCount"], 2)
+                resp["ignoredLeadPer"] = round((resp["ignoredLeadCount"] * 100) / resp["leadCount"], 2)
+            if campData["sent"]:
+                resp["sentCount"] += 1
+            resp["sentPer"] = round((resp["sentCount"] * 100) / resp["recipientCount"], 2)
+            if campData["opens"]:
+                resp["openCount"] += 1
+            resp["openPer"] = round((resp["openCount"] * 100) / resp["recipientCount"], 2)
+            if campData["replies"]:
+                resp["replyCount"] += 1
+            resp["replyPer"] = round((resp["replyCount"] * 100) / resp["recipientCount"], 2)
+            if campData["unsubscribe"]:
+                resp["unsubscribeCount"] += 1
+            resp["unsubscribePer"] = round((resp["unsubscribeCount"] * 100) / resp["recipientCount"], 2)
+        return Response({"result": resp, "success": True})
 
 
 class GetCampaignOverview(APIView):

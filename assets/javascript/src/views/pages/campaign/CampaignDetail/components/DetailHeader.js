@@ -6,25 +6,24 @@ import classnames from "classnames";
 const items = [
   {
     name: "OVERVIEW",
-    link: "/app/admin/campaign/details-overview",
+    link: "/details-overview",
   },
   {
     name: "SEQUENCE",
-    link: "/app/admin/campaign/details-sequence",
+    link: "/details-sequence",
   },
   {
     name: "RECIPIENTS",
-    link: "/app/admin/campaign/details-recipients",
+    link: "/details-recipients",
   },
   {
     name: "SETTINGS",
-    link: "/app/admin/campaign/details-settings",
+    link: "/details-settings",
   },
 ];
 
 function DetailHeader(props) {
-  const { color, activeItem } = props;
-  const id = props.history.location.state && props.history.location.state.id;
+  const { color, activeItem, id } = props;
   return (
     <>
       <div className="d-flex align-items-center justify-content-center">
@@ -32,7 +31,7 @@ function DetailHeader(props) {
           color="transparent"
           onClick={() => {
             props.history.push({
-              pathname: "/app/admin/CampaignList",
+              pathname: "/app/admin/campaign/list",
             });
           }}
         >
@@ -47,9 +46,9 @@ function DetailHeader(props) {
                 key={"header" + index}
                 className={activeItem == item.name ? "active" : ""}
                 onClick={() => {
+                  console.log(`/app/admin/campaign/${id}${item.link}`);
                   props.history.push({
-                    pathname: item.link,
-                    state: { id },
+                    pathname: `/app/admin/campaign/${id}${item.link}`
                   });
                 }}
               >

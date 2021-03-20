@@ -57,7 +57,7 @@ function PageContainer(props) {
           <Col>
             <Card>
               {(title || showHelper) && (
-                <CardHeader>
+                <CardHeader className="pb-1">
                   <h2 className="mx-auto text-center display-3">{title}</h2>
                   {showHelper && (
                     <p
