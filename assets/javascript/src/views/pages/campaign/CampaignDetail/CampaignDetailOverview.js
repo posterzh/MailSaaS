@@ -48,6 +48,7 @@ class CampaignDetailOverview extends Component {
   }
 
   componentDidMount() {
+    
     this.props.getOverviewSummary(this.props.match.params.campId);
   }
 

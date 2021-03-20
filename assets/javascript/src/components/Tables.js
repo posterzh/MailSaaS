@@ -21,6 +21,7 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 import CardBody from "reactstrap/lib/CardBody";
+import { Link } from "react-router-dom";
 
 /**
  * 
@@ -294,7 +295,7 @@ function Tables({
                   <Form>
                     <Row>
                       {searchKeys.length > 0 && (
-                        <Col md="3" sm="12" key="seaarch">
+                        <Col md="3" sm="12" key="search">
                           <FormGroup>
                             <label
                               className="form-control-label text-capitalize"
@@ -423,10 +424,10 @@ function Tables({
                             return (
                               <td
                                 className="sort"
-                                key={"header-" + item.key + index}
+                                key={item.key + index}
                                 scope="col"
                               >
-                                {data[item.key]}
+                                {item.link ? <Link to={item.link.replace('{{id}}', data[item.id])}>{data[item.key]}</Link> : data[item.key]}
                               </td>
                             );
                           })}

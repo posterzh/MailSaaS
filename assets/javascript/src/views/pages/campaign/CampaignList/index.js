@@ -30,7 +30,7 @@ import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import Tables from "../../../../components/Tables";
 import { campaignListTable } from "../../../../components/TableHeader";
-import { toggleTopLoader } from '../../../../utils/Utils';
+import { toggleTopLoader, toastOnError, messages } from '../../../../utils/Utils';
 import axios from '../../../../utils/axios';
 
 class CampaignList extends Component {
@@ -75,7 +75,7 @@ class CampaignList extends Component {
         filters: filters
       })
     } catch (e) {
-      console.log(e);
+      toastOnError(messages.api_failed);
     } finally {
       toggleTopLoader(false);
     }

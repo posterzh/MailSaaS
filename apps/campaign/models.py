@@ -80,20 +80,20 @@ class CampaignRecipient(models.Model):
 
 
 class FollowUpEmail(models.Model):
-    campaign = models.ForeignKey('Campaign', on_delete=models.CASCADE)
-    waitDays = models.PositiveIntegerField()
-    subject = models.CharField(max_length=2000)
-    email_body = models.TextField()
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    waitDays = models.PositiveIntegerField(default=1)
+    subject = models.CharField(max_length=2000, blank=True, null=True)
+    email_body = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return str(self.campaign)
 
 
 class DripEmailModel(models.Model):
-    campaign = models.ForeignKey('Campaign', on_delete=models.CASCADE)
-    waitDays = models.PositiveIntegerField()
-    subject = models.CharField(max_length=2000)
-    email_body = models.TextField()
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    waitDays = models.PositiveIntegerField(default=1)
+    subject = models.CharField(max_length=2000, blank=True, null=True)
+    email_body = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return str(self.campaign)

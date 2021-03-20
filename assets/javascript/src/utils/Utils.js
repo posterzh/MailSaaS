@@ -99,3 +99,10 @@ export const parseTemplate = (str, row) => {
   return str;
 }
 
+export const messages = {
+  "add_success": "Successfully created",
+  "update_success": "Successfully updated",
+  "delete_success": "Successfully removed",
+  "api_failed": "Sorry, server connection failed. please try again.",
+  "not_found_id": "Sorry, there is no item with this id"
+}
