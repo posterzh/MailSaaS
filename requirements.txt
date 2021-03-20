@@ -103,3 +103,4 @@ django-livereload-server
 django_extensions
 numpy
 pandas
+django-rest-framework-social-oauth2

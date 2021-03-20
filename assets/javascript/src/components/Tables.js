@@ -248,7 +248,7 @@ function Tables({
     setfilterParams(filterkeys);
     _.forEach(filterkeys, (value, key) => {
       data = _.filter(data, (item) => {
-        return item[key].includes(value);
+        return (item[key] || '').includes(value);
       });
     });
     setTableData(data);
@@ -257,10 +257,11 @@ function Tables({
   const searchFilter = (e) => {
     let data = [...tablePropsData];
     let is_available = false;
+
     data = _.filter(data, (item) => {
       is_available = false;
       _.forEach(searchKeys, (key) => {
-        if (item[key].includes(e.target.value)) {
+        if ((item[key] || '').includes(e.target.value)) {
           is_available = true;
         }
       });

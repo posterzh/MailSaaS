@@ -46,7 +46,6 @@ const composeEnhancers =
   compose;
 
 const rootReducer = combineReducers({
-  AuthReducer,
   StartCampaignReducer,
   RecipientReducer,
   MailGetDataReducer,
@@ -78,6 +77,7 @@ const rootReducer = combineReducers({
   mailAccounts: mailAccountsReducer,
   notification: notificationReducer,
 
+  auth: AuthReducer,
   prospects: prospectsReducer,
   unsubscribes: unsubscribesReducer,
   sendingCalendars: sendingCalendarsReducer,
@@ -87,7 +87,7 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
   key: "root",
-  whitelist: ["AuthReducer"],
+  whitelist: ["auth"],
   storage,
 };
 
