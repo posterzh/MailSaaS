@@ -19,19 +19,21 @@ import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import DetailHeader from "./components/DetailHeader";
 
-export default class CampaignDetailRecipients extends React.Component {
+class CampaignDetailRecipients extends Component {
   render() {
+    const { id, title } = this.props;
+    const campTitle = title ? title : "Date Outreach";
     return (
       <>
         <PageHeader
-          current="Date Outreach"
-          parent="Campaign List"
+          current={campTitle}
+          parent="Campaign Details"
           showStatus={false}
         />
 
-        <PageContainer title="Date Outreach" showHelper={true}>
+        <PageContainer title={campTitle} showHelper={true}>
           <Row>
-            <DetailHeader activeItem="SEQUENCE" />
+            <DetailHeader activeItem="SEQUENCE" id={id}/>
           </Row>
           <Row className="mt-5">
             <Col md={10} className="mx-auto">
@@ -85,3 +87,10 @@ export default class CampaignDetailRecipients extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  id: state.campaignDetails.id,
+  title: state.campaignDetails.title,
+});
+
+export default connect(mapStateToProps)(CampaignDetailRecipients);

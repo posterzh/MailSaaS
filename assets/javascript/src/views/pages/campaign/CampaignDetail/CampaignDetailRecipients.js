@@ -74,7 +74,7 @@ class CampaignDetailRecipients extends Component {
   componentDidMount() {
     let id =
       this.props.history.location.state && this.props.history.location.state.id;
-    this.props.CampaignPeopleAction(id);
+    this.props.CampaignPeopleAction(this.props.id);
   }
   showSelectionBar = (id, isUnsubscribe) => {
     const { selectedId } = this.state;
@@ -121,7 +121,7 @@ class CampaignDetailRecipients extends Component {
   };
   CreateLead = () => {
     this.setState({ showModal: false });
-    this.props.CampaignCreateLeadAction(this.state.id);
+    this.props.CampaignCreateLeadAction(this.props.id);
   };
   render() {
     const { getData } = this.props;
@@ -132,16 +132,18 @@ class CampaignDetailRecipients extends Component {
       date,
       showModal,
     } = this.state;
+    const { id, title } = this.props;
+    const campTitle = title ? title : "Date Outreach";
 
     return (
       <>
         <PageHeader
-          current="Date Outreach"
-          parent="Campaign List"
+          current={campTitle}
+          parent="Campaign Details"
           showStatus={false}
         />
 
-        <PageContainer title="Date Outreach" showHelper={true}>
+        <PageContainer title={campTitle} showHelper={true}>
           <div
             className={`selection-bar ${
               isSelectionBar && selectedId.length > 0 ? "_block" : " "
@@ -173,7 +175,7 @@ class CampaignDetailRecipients extends Component {
             </div>
           </div>
           <Row>
-            <DetailHeader activeItem="RECIPIENTS" />
+            <DetailHeader activeItem="RECIPIENTS" id={id}/>
           </Row>
           <Row className="mt-5">
             <Col md={1} className="Recipients_details">
@@ -274,7 +276,7 @@ class CampaignDetailRecipients extends Component {
                   <th>
                     <input type="checkbox" />
                   </th>
-                  <th />
+                  <th></th>
                   <th>EMAIL</th>
                   <th>NAME</th>
                   <th>ADDED ON</th>
@@ -306,9 +308,8 @@ class CampaignDetailRecipients extends Component {
                       </td>
                       <td>
                         <span>
-                          {" "}
                           {item.unsubscribe ? (
-                            <i className="fas fa-eye-slash" />
+                            <i className="fas fa-eye-slash"></i>
                           ) : (
                             <i className="fas fa-pause"></i>
                           )}
@@ -317,7 +318,7 @@ class CampaignDetailRecipients extends Component {
                       <td>{item.email}</td>
                       <td>{item.full_name}</td>
                       <td>{item.created_date_time.substring(5, 10)}</td>
-                      <td>{}</td>
+                      <td></td>
                     </tr>
                   ))}
               </tbody>
@@ -378,6 +379,8 @@ const mapStateToProps = (state) => {
       state.CampaignPeopleReducer.campaignPeopleData
   );
   return {
+    id: state.campaignDetails.id,
+    title: state.campaignDetails.title,
     campaignOverviewData: state.CampaignOverviewReducer.CampaignOverviewData,
     getData:
       state.CampaignPeopleReducer &&

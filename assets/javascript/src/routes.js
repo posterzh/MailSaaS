@@ -82,13 +82,6 @@ const routes = [
         layout: "/app/admin",
       },
       {
-        path: "/campaign/:campId/details-overview",
-        name: "Campaign Detail",
-        miniName: " ",
-        component: CampaignDetailOverview,
-        layout: "/app/admin",
-      },
-      {
         path: "/lead-catcher",
         name: "Lead Catcher",
         miniName: " ",
@@ -98,19 +91,25 @@ const routes = [
 
       // Campaign Detail Redirects
       {
-        path: "/campaign/details-sequence/:campId",
+        path: "/campaign/:id/details-overview",
+        component: CampaignDetailOverview,
+        layout: "/app/admin",
+        redirect: true,
+      },
+      {
+        path: "/campaign/:id/details-sequence",
         component: CampaignDetailSequence,
         layout: "/app/admin",
         redirect: true,
       },
       {
-        path: "/campaign/details-recipients/:campId",
+        path: "/campaign/:id/details-recipients",
         component: CampaignDetailRecipients,
         layout: "/app/admin",
         redirect: true,
       },
       {
-        path: "/campaign/details-settings/:campId",
+        path: "/campaign/:id/details-settings",
         component: CampaignDetailSettings,
         layout: "/app/admin",
         redirect: true,
