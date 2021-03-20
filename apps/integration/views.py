@@ -164,7 +164,7 @@ class SalesForceDetailUpdate(APIView):
         #     headers = {
         #         'Content-type': 'application/json',
         #         'Accept-Encoding': 'gzip',
-        #         'Authorization': 'Bearer %s' % access_token
+        #         'Authorization': 'jwt %s' % access_token
         #     }
         #     if method == 'get':
         #         r = requests.request(method, instance_url+action, headers=headers, params=parameters, timeout=30)

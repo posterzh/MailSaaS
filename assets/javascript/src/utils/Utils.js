@@ -106,3 +106,12 @@ export const messages = {
   "api_failed": "Sorry, server connection failed. please try again.",
   "not_found_id": "Sorry, there is no item with this id"
 }
+
+export const makeTokenKeyword = (socialType) => {
+  if (socialType == 'none') {
+    return 'jwt';
+  } else if (socialType == 'google') {
+    return 'bearer';
+  }
+  return 'jwt';
+}
