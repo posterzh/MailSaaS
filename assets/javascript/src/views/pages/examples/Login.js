@@ -32,18 +32,21 @@ import {
   Container,
   Row,
   Col,
+  Spinner,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import AuthHeader from "../../../components/Headers/AuthHeader.js";
 import {
-  loginSuccess,
-  loginFailure,
-} from "../../../redux/action/AuthourizationAction";
+  login,
+  googleLogin,
+} from "../../../redux/action/AuthAction";
 import { connect } from "react-redux";
 import { history } from "../../../index";
 
 import Api from "../../../../src/redux/api/api";
 import axios from "../../../utils/axios";
+
+import GoogleLogin from 'react-google-login';
 
 class Login extends React.Component {
   constructor(props) {
@@ -56,43 +59,38 @@ class Login extends React.Component {
       loginPending: false,
     };
   }
+
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
   };
+
   handleSubmit = (event) => {
     event.preventDefault();
-    const loginuser = {
+    const user = {
       email: this.state.email,
       password: this.state.password,
     };
-
-    this.setState({ loginPending: true });
-
-    // this.props.LoginAction(loginuser)
-    Api.LoginApi(loginuser)
-      .then((result) => {
-        this.setState({ loginPending: false });
-
-        const token = result.data.token;
-        localStorage.setItem("access_token", token);
-        axios.setToken(token);
-
-        this.props.LoginSuccess(result.data.user);
-
-        history.push("/app/admin/dashboard");
-        window.location.reload();
-      })
-      .catch((err) => {
-        this.setState({ loginPending: false });
-
-        this.props.LoginFailure(
-          err.response.data.non_field_errors &&
-          err.response.data.non_field_errors[0]
-        );
-      });
+    this.props.login(user);
   };
+
+  onGoogleAuthSuccess = (response) => {
+    const { email, name, givenName, familyName } = response.profileObj;
+    const user = {
+      username: name,
+      email: email,
+      first_name: givenName,
+      last_name: familyName,
+    }
+    const token = response.tokenObj.access_token; console.log(response);
+    this.props.googleLogin(user, token);
+  };
+
+  onGoogleAuthFailure = (response) => {
+
+  }
+
   render() {
     const { Loginuser, isLogin, loginResponse } = this.props;
     return (
@@ -106,32 +104,34 @@ class Login extends React.Component {
             <Col lg="6" md="7">
               <Card className="bg-secondary border-0 mb-0">
                 <CardHeader className="bg-transparent pb-5">
-                  <div className="text-muted text-center mt-2 mb-3">
+                  <div className="text-muted text-center mt-2 mb-4">
                     <small style={{ fontSize: 18 }}>Sign in with</small>
                   </div>
                   <div className="btn-wrapper text-center">
-                    <Button
-                      className="btn-neutral btn-icon"
-                      color="default"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <span className="btn-inner--icon mr-1">
-                        <img alt="..." src={'/static/images/img/icons/common/github.svg'} />
-                      </span>
-                      <span className="btn-inner--text">Github</span>
-                    </Button>
-                    <Button
-                      className="btn-neutral btn-icon"
-                      color="default"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <span className="btn-inner--icon mr-1">
-                        <img alt="..." src={'/static/images/img/icons/common/google.svg'} />
-                      </span>
-                      <span className="btn-inner--text">Google</span>
-                    </Button>
+                    <GoogleLogin
+                      clientId="828042189691-4ceuofidhr2van7pt9vhpa4hmdei9d0q.apps.googleusercontent.com"
+                      buttonText="Register"
+                      onSuccess={this.onGoogleAuthSuccess}
+                      onFailure={this.onGoogleAuthFailure}
+                      cookiePolicy={'single_host_origin'}
+                      render={({ onClick }) => {
+                        return (
+                          <Button
+                            className="btn-neutral btn-icon"
+                            color="default"
+                            href="#pablo"
+                            onClick={() => {
+                              onClick();
+                            }}
+                          >
+                            <span className="btn-inner--icon mr-1">
+                              <img alt="..." src={'/static/images/img/icons/common/google.svg'} />
+                            </span>
+                            <span className="btn-inner--text">Sign in with Google</span>
+                          </Button>
+                        );
+                      }}
+                    />
                   </div>
                 </CardHeader>
                 <CardBody className="px-lg-5 py-lg-5">
@@ -204,13 +204,15 @@ class Login extends React.Component {
                     <div className="text-center">
                       <Button className="my-4" color="info" type="submit">
                         Sign in
-                        {this.state.loginPending && (
-                          <i className="ml-2 fas fa-spinner fa-spin"></i>
-                        )}
                       </Button>
                     </div>
                   </Form>
                 </CardBody>
+                {this.props.isLoading &&
+                  <div className="auth-loading-wrapper">
+                    <i className="ml-2 fas fa-spinner fa-spin"></i>
+                  </div>
+                }
               </Card>
               <Row className="mt-3">
                 <Col xs="6">
@@ -233,8 +235,11 @@ class Login extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  LoginSuccess: (user) => dispatch(loginSuccess(user)),
-  LoginFailure: (payload) => dispatch(loginFailure(payload)),
+const mapStateToProps = (state) => ({
+  isLoading: state.auth.isLoading,
 });
-export default connect(null, mapDispatchToProps)(Login);
+
+export default connect(mapStateToProps, {
+  login,
+  googleLogin,
+})(Login);

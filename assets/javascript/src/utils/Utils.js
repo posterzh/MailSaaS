@@ -3,7 +3,8 @@ import { store } from "../redux/store/store";
 import {
   SHOW_NOTIFICATION,
   HIDE_NOTIFICATION,
-  TOP_LOADER
+  TOP_LOADER,
+  AUTH_LOADER,
 } from "../redux/actionType/actionType";
 
 export const toastOnError = (error) => {
@@ -49,6 +50,13 @@ export const toggleTopLoader = (visible) => {
     payload: {
       visible
     },
+  });
+};
+
+export const toggleAuthLoader = (visible) => {
+  store.dispatch({
+    type: AUTH_LOADER,
+    payload: visible,
   });
 };
 
@@ -105,4 +113,13 @@ export const messages = {
   "delete_success": "Successfully removed",
   "api_failed": "Sorry, server connection failed. please try again.",
   "not_found_id": "Sorry, there is no item with this id"
+}
+
+export const makeTokenKeyword = (socialType) => {
+  if (socialType == 'none') {
+    return 'jwt';
+  } else if (socialType == 'google') {
+    return 'bearer';
+  }
+  return 'jwt';
 }
