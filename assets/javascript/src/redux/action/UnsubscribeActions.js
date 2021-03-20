@@ -4,11 +4,12 @@ import {
   ADD_UNSUBSCRIBE_CSV,
   DELETE_UNSUBSCRIBE_EMAILS,
 } from "../actionType/actionType"
-import { toastOnError } from "../../utils/Utils";
+import { toastOnError, toastOnSuccess, toggleTopLoader } from "../../utils/Utils";
+import axios from "../../utils/axios";
 
 export const getUnsubscribes = (search) => (dispatch) => {
-  const token = localStorage.getItem("access_token");
-  Api.GetUnsubscribes({search}, token)
+  toggleTopLoader(true);
+  axios.get('/unsubscribes/', {search})
     .then((response) => {
       dispatch({
         type: GET_UNSUBSCRIBES,
@@ -17,18 +18,20 @@ export const getUnsubscribes = (search) => (dispatch) => {
     })
     .catch((error) => {
       toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
     });
 };
 
 export const addUnsubscribeEmails = (emailList, user) => (dispatch) => {
+  toggleTopLoader(true);
   const data = emailList.map(email => ({
     email: email,
     mail_account: user.email,
-    name: user.first_name,
-    user: user.pk    
+    name: user.first_name,   
   }))
-  const token = localStorage.getItem("access_token");
-  Api.AddUnsubscribeEmails(data, token)
+  axios.post('/unsubscribes/add-emails', data)
     .then((response) => {
       dispatch({
         type: ADD_UNSUBSCRIBE_EMAILS,
@@ -37,14 +40,17 @@ export const addUnsubscribeEmails = (emailList, user) => (dispatch) => {
     })
     .catch((error) => {
       toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
     });
 }
 
 export const addUnsubscribeCSV = (file) => (dispatch) => {
-  const token = localStorage.getItem("access_token");
   let fileData = new FormData();
   fileData.append("file", file);
-  Api.AddUnsubscribeCSV(fileData, token)
+  toggleTopLoader(true);
+  axios.post('/unsubscribes/add-csv', fileData)
     .then((response) => {
       dispatch({
         type: ADD_UNSUBSCRIBE_CSV,
@@ -53,12 +59,15 @@ export const addUnsubscribeCSV = (file) => (dispatch) => {
     })
     .catch((error) => {
       toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
     });
 }
 
 export const deleteUnsubscribeEmails = (ids) => (dispatch) => {
-  const token = localStorage.getItem("access_token");
-  Api.DeleteUnsubscribes(ids, token)
+  toggleTopLoader(true);
+  axios.post('/unsubscribes/delete-emails', ids)
     .then((response) => {
       dispatch({
         type: DELETE_UNSUBSCRIBE_EMAILS,
@@ -67,90 +76,8 @@ export const deleteUnsubscribeEmails = (ids) => (dispatch) => {
     })
     .catch((error) => {
       toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
     });
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Karl - Will remove later
-
-import {
-  SUCCESS_FETCH_UNSUBSCRIPTION,
-  REQUEST_FOR_UNSUBSCRIBE_WITH_CSV,
-  SUCCESS_UNSUBSCRIBE_WITH_CSV,
-  FAILURE_UNSUBSCRIBE_WITH_CSV
-
-} from "../actionType/actionType"
-
-import Api from "../api/api";
-import { CampaignPeopleAction } from "./CampaignAction";
-
-export const requestUserUnsubscribeWithCsv = () => {
-  return {
-    type: REQUEST_FOR_UNSUBSCRIBE_WITH_CSV,
-  }
-}
-export const successUserUnsubscribeWithCsv = () => {
-  return {
-    type: SUCCESS_UNSUBSCRIBE_WITH_CSV,
-  }
-}
-export const failureUserUnsubscribeWithCsv = () => {
-  return {
-    type: FAILURE_UNSUBSCRIBE_WITH_CSV,
-  }
-}
-export const successFetchUnsubscribe = (payload) => {
-  return {
-    type: SUCCESS_FETCH_UNSUBSCRIPTION,
-    payload
-  }
-}
-
-export const fetchUnsubscribeAction = () => {
-  return function (dispatch) {
-    console.log("hiii")
-    const token = localStorage.getItem('access_token')
-    Api.fetchUnsbcribed(token).then((response) => {
-      console.log(response, "unsubscrive")
-      dispatch(successFetchUnsubscribe(response.data));
-    }).catch((err) => {
-      console.log(err, 'err')
-    })
-  }
-}
-
-export const deleteUnsubscribeUsersAction = (data) => {
-  return function (dispatch) {
-    const token = localStorage.getItem('access_token')
-    Api.deleteUnsbcribed(data, token).then((response) => {
-      console.log(response, "seudfdfgfhfdhdfgh")
-      dispatch(fetchUnsubscribeAction())
-    }).catch((err) => {
-      console.log(err, 'err')
-    })
-  }
-}
-
-export const unsubscribeUsersWithCsvAction = (data) => {
-  return function (dispatch) {
-    const token = localStorage.getItem('access_token')
-    dispatch(requestUserUnsubscribeWithCsv)
-    Api.unsubscribeUsersWithCsvApi(data, token).then((response) => {
-      dispatch(fetchUnsubscribeAction())
-    }).catch((err) => {
-      console.log(err, 'err')
-    })
-  }
-}
-export const unsubscribeUsersWithEmailAction = (data) => {
-  return function (dispatch) {
-    console.log("datadatadata", data)
-    const token = localStorage.getItem('access_token')
-    Api.unsubscribeUsersWithEmailApi(data, token).then((response) => {
-      dispatch(fetchUnsubscribeAction())
-    }).catch((err) => {
-      console.log(err, 'err')
-      dispatch(failureUserUnsubscribeWithCsv())
-    })
-  }
 }

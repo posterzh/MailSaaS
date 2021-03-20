@@ -276,7 +276,7 @@ console.log(selectedUnsubscribes);
 
 const mapStateToProps = (state) => {
   return {
-    user: state.AuthReducer.user,
+    user: state.auth.user,
     unsubscribes: state.unsubscribes.unsubscribes
   };
 };

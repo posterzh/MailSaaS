@@ -1,5 +1,5 @@
 import axios from "../../utils/axios";
-import { toastOnError, toastOnSuccess } from "../../utils/Utils";
+import { toastOnError, toastOnSuccess, toggleTopLoader } from "../../utils/Utils";
 import {
   GET_MAILACCOUNTS,
   ADD_MAILACCOUNT,
@@ -8,6 +8,7 @@ import {
 } from "../actionType/actionType";
 
 export const getMailAccounts = () => (dispatch) => {
+  toggleTopLoader(true);
   axios
     .get("/mailaccounts/emailaccounts/")
     .then((response) => {
@@ -18,10 +19,14 @@ export const getMailAccounts = () => (dispatch) => {
     })
     .catch((error) => {
       toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
     });
 };
 
 export const addMailAccount = (mailAccount) => (dispatch) => {
+  toggleTopLoader(true);
   axios
     .post("/mailaccounts/emailaccounts/", mailAccount)
     .then((response) => {
@@ -33,10 +38,14 @@ export const addMailAccount = (mailAccount) => (dispatch) => {
     })
     .catch((error) => {
       toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
     });
 };
 
 export const deleteMailAccount = (id) => (dispatch) => {
+  toggleTopLoader(true);
   axios
     .delete(`/mailaccounts/emailaccounts/${id}/`)
     .then((response) => {
@@ -48,10 +57,14 @@ export const deleteMailAccount = (id) => (dispatch) => {
     })
     .catch((error) => {
       toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
     });
 };
 
 export const updateMailAccount = (id, mailAccount) => (dispatch) => {
+  toggleTopLoader(true);
   axios
     .patch(`/mailaccounts/emailaccounts/${id}/`, mailAccount)
     .then((response) => {
@@ -64,5 +77,8 @@ export const updateMailAccount = (id, mailAccount) => (dispatch) => {
     })
     .catch((error) => {
       toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
     });
 };

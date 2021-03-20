@@ -95,3 +95,11 @@ export const parseTemplate = (str, row) => {
   return str;
 }
 
+export const makeTokenKeyword = (socialType) => {
+  if (socialType == 'none') {
+    return 'jwt';
+  } else if (socialType == 'google') {
+    return 'bearer';
+  }
+  return 'jwt';
+}

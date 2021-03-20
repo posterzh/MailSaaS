@@ -45,7 +45,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import { logoutSuccess, logoutFailure } from '../../redux/action/AuthourizationAction'
+import { logout } from '../../redux/action/AuthAction'
 import { connect } from 'react-redux'
 import { parseConfigFileTextToJson } from "typescript";
 
@@ -81,12 +81,7 @@ class AdminNavbar extends React.Component {
   // handle logout
   handleLogout = (event) => {
     event.preventDefault();
-    Api.LogoutApi().then(result => {
-        localStorage.removeItem('access_token')
-        this.props.LogoutSuccess();
-    }).catch(err => {
-        this.props.LogoutFailure();
-    })
+    this.props.logout();
   }
   render() {
     let { theme, sidenavOpen, toggleSidenav } = this.props
@@ -215,14 +210,11 @@ AdminNavbar.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.AuthReducer.user,
-    isLogin: state.AuthReducer.isLogin
+    user: state.auth.user,
+    isLogin: state.auth.isLogin
   }
 };
 
-const mapDispatchToProps = dispatch => ({
-  LogoutSuccess: () => { dispatch(logoutSuccess()); },
-  LogoutFailure: () => { dispatch(logoutFailure()); },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AdminNavbar);
+export default connect(mapStateToProps, {
+  logout
+})(AdminNavbar);

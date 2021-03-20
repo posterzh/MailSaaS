@@ -3,79 +3,6 @@ import { API_BASE_URL } from '../../Constants'
 
 const Api = {}
 
-// for register
-Api.RegisterApi = (user) => {
-  return axios.post(`${API_BASE_URL}/rest-auth/registration/`, user);
-}
-
-// for login
-Api.LoginApi = (loginuser) => {
-  return axios.post(`${API_BASE_URL}/rest-auth/login/`, loginuser);
-}
-
-// for logout
-Api.LogoutApi = () => {
-  return axios.post(`${API_BASE_URL}/rest-auth/logout/`);
-}
-
-// for prospects filter
-Api.FilterRecipients = (params, token) => {
-  return axios.get(`${API_BASE_URL}/campaign/prospects/`, { 
-    params,
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-  });
-}
-
-// for prospects count
-Api.CountRecipients = (token) => {
-  return axios({
-    method: 'GET',
-    url: `${API_BASE_URL}/campaign/prospects/count`,
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-  });
-}
-
-// for unsubscribe list
-Api.GetUnsubscribes = (params, token) => {
-  return axios.get(`${API_BASE_URL}/unsubscribes/`, { 
-    params,
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-  });
-}
-
-// for add unsubscribe emails
-Api.AddUnsubscribeEmails = (data, token) => {
-  return axios.post(`${API_BASE_URL}/unsubscribes/add-emails`, data, {
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-  });
-}
-
-// for add unsubscribe csv
-Api.AddUnsubscribeCSV = (fileData, token) => {
-  return axios.post(`${API_BASE_URL}/unsubscribes/add-csv`, fileData, {
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-  });
-}
-
-// for delete unsubscribes
-Api.DeleteUnsubscribes = (data, token) => {
-  return axios.post(`${API_BASE_URL}/unsubscribes/delete-emails`, data, {
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    }
-  });
-}
-
 Api.StartCampaignApi = (data, token) => {
   return axios({
     method: 'POST',
@@ -85,7 +12,7 @@ Api.StartCampaignApi = (data, token) => {
       from_address: data.from_address
     },
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -100,7 +27,7 @@ Api.RecipientApi = (recipientData, token) => {
     url: `${API_BASE_URL}/campaign/recipients/`,
     data: formData,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -115,7 +42,7 @@ Api.OptionApi = (optionData, token) => {
       ...optionData
     },
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -127,7 +54,7 @@ Api.CampaignComposeApi = (token, data) => {
     url: `${API_BASE_URL}/campaign/message/`,
     data: data,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -138,12 +65,10 @@ Api.CampaignPreviewApi = (token, id) => {
     method: 'GET',
     url: `${API_BASE_URL}/campaign/personalize/${id}/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
-
-
 
 // CAMPAIGN UPDATE PREVIEW
 Api.CampaignUpdatePreviewApi = (token, id) => {
@@ -153,7 +78,7 @@ Api.CampaignUpdatePreviewApi = (token, id) => {
     url: `${API_BASE_URL}/campaign/personalize/${id}/`,
     data:{},
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -167,7 +92,7 @@ Api.CampaignSaveApi = (token, id, saveData) => {
     },
     url: `${API_BASE_URL}/campaign/savecamp/${id}/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -184,7 +109,7 @@ Api.CampaignLeadCatcherApi = (token, id, leadData) => {
       specific_link: leadData.specific_link
     },
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     } 
   })
   
@@ -196,7 +121,7 @@ Api.CampaignLeadGetApi = (token, id) => {
     method: 'GET',
     url: `${API_BASE_URL}/campaign/settings-leadcatcherView/${id}/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -207,7 +132,7 @@ Api.CampaignLeadDeleteApi = (token, id) => {
     method: 'DELETE',
     url: `${API_BASE_URL}/campaign/settings-leadcatcher/${id}/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -225,7 +150,7 @@ Api.CampaignLeadUpadteApi = (token,getId ,id,updateLeadData) => {
     },
     url: `${API_BASE_URL}/campaign/settings-leadcatcher/${getId}/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -237,7 +162,7 @@ Api.CampaignLeadViewApi = (token) => {
     method: 'GET',
     url: `${API_BASE_URL}/campaign/leadscatcher/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -249,7 +174,7 @@ Api.CampaignOverviewApi = (token, id) => {
     method: 'GET',
     url: `${API_BASE_URL}/campaign/overview/${id}/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -259,7 +184,7 @@ Api.CampaignRecipientPeopleApi = (token, id) => {
     method: 'GET',
     url: `${API_BASE_URL}/campaign/recipients/people/${id}/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -270,7 +195,7 @@ Api.CampaignRecipienPutPeople = (token) => {
     method: 'PUT',
     url: `${API_BASE_URL}/campaign/recipients/people/1/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -285,7 +210,7 @@ Api.CampaignCreateLeadApi = (token,id,createLeadData) => {
       createLeadData
     },
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 
@@ -300,7 +225,7 @@ Api.CampaignMessage = (token) => {
 
     },
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -313,7 +238,7 @@ Api.CampaignProspects = (token) => {
     method: 'GET',
     url: `${API_BASE_URL}/campaign/prospects/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -325,7 +250,7 @@ Api.deleteProspects = (data,token) => {
     url: `${API_BASE_URL}/campaign/prospects/`,
     data: { recp_ids:data},
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -337,7 +262,7 @@ Api.CampaignOnclickProspects = (data, token) => {
     method: 'GET',
     url: `${API_BASE_URL}/campaign/prospects/${data}/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -348,7 +273,7 @@ Api.ProspectsUnsubscribe=(id,token)=>{
     method:'put',
      url: `${API_BASE_URL}/campaign/recipientunsubcribe/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     },
     data:{
       recipient_id:id
@@ -363,7 +288,7 @@ Api.UserSetting = (token) => {
     method: 'GET',
     url: `${API_BASE_URL}/users/user-setting/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -378,7 +303,7 @@ Api.UserUpdateSetting = (token, data) => {
       'email': 'omaid123@gmail.com'
     },
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -395,7 +320,7 @@ Api.ChangePassword = (token, data) => {
       'new_confirm_password': 'keshav@7014',
     },
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -406,7 +331,7 @@ Api.ChangePassword = (token, data) => {
 //     method: 'DELETE',
 //     url: `${API_BASE_URL}/mail/sender/1/`,
 //     headers: {
-//       "Authorization": `Bearer ${token}`,
+//       "Authorization": `jwt ${token}`,
 //     }
 
 //   })
@@ -421,7 +346,7 @@ Api.UnsubscribeDelete = (token, data) => {
       "data": [3]
     },
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -430,7 +355,7 @@ Api.CampaignTableDataApi = (token) => {
     method: 'GET',
     url: `${API_BASE_URL}/campaign/view/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -440,7 +365,7 @@ Api.MailSenderApi = (mailData, token) => {
     url: `${API_BASE_URL}/mail/addmailaccount/`,
     data: mailData,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
 
   })
@@ -450,7 +375,7 @@ Api.MailGetDataApi = (token) => {
     method: 'GET',
     url: `${API_BASE_URL}/mail/addmailaccount/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 
@@ -460,7 +385,7 @@ Api.MailAccountDelete = (token, id) => {
     url: `${API_BASE_URL}/mail/updatedeletemailaccount/${id}/`,
     method: 'DELETE',
     headers: {
-      "Authorization": `Bearer ${token}`
+      "Authorization": `jwt ${token}`
     }
   })
 }
@@ -470,7 +395,7 @@ Api.MailAccountUpdateApi = (token, data, id) => {
     url: `${API_BASE_URL}/mail/updatedeletemailaccount/${id}/`,
     method: "PUT",
     headers: {
-      "Authorization": `Bearer ${token}`
+      "Authorization": `jwt ${token}`
     },
     data: data
   })
@@ -481,7 +406,7 @@ Api.fetchUnsbcribed = (token) => {
     method: 'GET',
     url: `${API_BASE_URL}/unsubscribes/unsubcribeview/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -493,7 +418,7 @@ Api.deleteUnsbcribed = (data, token) => {
       data: data
     },
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -506,7 +431,7 @@ Api.unsubscribeUsersWithEmailApi = (email, token) => {
       email: [email]
     },
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -515,7 +440,7 @@ Api.unsubscribeRecipientApi = (id, token) => {
     method:'put',
      url: `${API_BASE_URL}/campaign/recipientunsubcribe/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     },
     data: {
       recipient_id: id
@@ -529,7 +454,7 @@ Api.unsubscribeUsersWithCsvApi = (file, token) => {
     url: `${API_BASE_URL}/unsubscribes/unsubcribecsv/`,
     data: file,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -538,7 +463,7 @@ Api.GetAllCampaigns = (token) => {
     url: `${API_BASE_URL}/campaign/view/`,
     data: {},
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -547,7 +472,7 @@ Api.CampaignCreateGetApi = (token, id) => {
     method: 'GET',
     url: `${API_BASE_URL}/campaign/savecamp/${id}/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -558,7 +483,7 @@ Api.GetScheduleApi = (token) => {
     method: 'GET',
     url: `${API_BASE_URL}/campaignschedule/updateschedulemail/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -570,7 +495,7 @@ Api.UpdateScheduleApi=(updatedataschedule,token)=>{
     data:{...updatedataschedule},
     url:`${API_BASE_URL}/campaignschedule/updateschedulemail/`,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }
@@ -584,7 +509,7 @@ Api.CreateCampaign = (campaign, token) => {
     url: `${API_BASE_URL}/campaign/createcamp/`,
     data: formData,
     headers: {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `jwt ${token}`,
     }
   })
 }

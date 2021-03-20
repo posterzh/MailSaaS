@@ -1,15 +1,3 @@
-// REGISTER ACTION
-export const REQUEST_FOR_REGISTER = "REQUEST_FOR_REGISTER";
-export const SUCCESS_REGISTER = "SUCCESS_REGISTER";
-export const FAILURE_REGISTER = "FAILURE_REGISTER";
-// LOGIN ACTION
-export const REQUEST_FOR_LOGIN = "REQUEST_FOR_LOGIN";
-export const SUCCESS_LOGIN = "SUCCESS_LOGIN";
-export const FAILURE_LOGIN = "FAILURE_LOGIN";
-// LOGOUT ACTION
-export const REQUEST_FOR_LOGOUT = "REQUEST_FOR_LOGOUT";
-export const SUCCESS_LOGOUT = "SUCCESS_LOGOUT";
-export const FAILURE_LOGOUT = "FAILURE_LOGOUT";
 // CAMPAIGN START ACTION
 export const REQUEST_FOR_START = "REQUEST_FOR_START";
 export const SUCCESS_START = "SUCCESS_START";
@@ -138,7 +126,11 @@ export const FAILURE_UNSUBSCRIBE_WITH_CSV = "FAILURE_UNSUBSCRIBE_WITH_CSV";
 
 // *****************************************************************
 
-
+// Authentication
+export const REGISTER_USER = "REGISTER_USER";
+export const LOGIN_USER = "LOGIN_USER";
+export const LOGOUT_USER = "LOGOUT_USER";
+export const GOOGLE_LOGIN_USER = "GOOGLE_LOGIN_USER";
 
 // Notification
 export const SHOW_NOTIFICATION = "SHOW_NOTIFICATION";
