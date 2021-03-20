@@ -3,7 +3,9 @@ import {
 } from "../actionType/actionType";
 
 const initialState = {
-  overviewSummary: {}
+  overviewSummary: {},
+  id: '',
+  title: ''
 };
 
 export const campaignDetailsReducer = (state = initialState, action) => {
@@ -12,6 +14,8 @@ export const campaignDetailsReducer = (state = initialState, action) => {
       return {
         ...state,
         overviewSummary: action.payload,
+        id: action.payload.id,
+        title: action.payload.title
       };
     default:
       return state;

@@ -68,11 +68,11 @@ export class CampaignDetailSettings extends Component {
     }
   };
   componentDidMount() {
-    const id =
-      this.props.history.location.state && this.props.history.location.state.id;
-    this.props.CampaignLeadGetAction(id);
+    // const id =
+    //   this.props.history.location.state && this.props.history.location.state.id;
+    // this.props.CampaignLeadGetAction(id);
   }
-  // this.props.CampaignLeadUpdateAction(id)
+  
   componentWillReceiveProps(preProps, nextProps) {
     console.log({
       preProps,
@@ -84,20 +84,22 @@ export class CampaignDetailSettings extends Component {
     alert("You want to delete this leadCatcher");
   }
   render() {
-    const id =
-      this.props.history.location.state && this.props.history.location.state.id;
-    const { lead, leadData } = this.props;
+    // const id =
+    //   this.props.history.location.state && this.props.history.location.state.id;
+    // const { lead, leadData } = this.props;
+    const { id, title } = this.props;
+    const campTitle = title ? title : "Date Outreach";
     return (
       <>
         <PageHeader
-          current="Date Outreach"
-          parent="Campaign List"
+          current={campTitle}
+          parent="Campaign Details"
           showStatus={false}
         />
 
-        <PageContainer title="Date Outreach" showHelper={true}>
+        <PageContainer title={campTitle} showHelper={true}>
           <Row>
-            <DetailHeader activeItem="SETTINGS" />
+            <DetailHeader activeItem="SETTINGS" id={id}/>
           </Row>
 
           <Row className="mx-3 my-5">
@@ -188,6 +190,8 @@ export class CampaignDetailSettings extends Component {
 const mapStateToProps = (state) => {
   return {
     lead: state.LeadGetReducer && state.LeadGetReducer.leadGetData,
+    id: state.campaignDetails.id,
+    title: state.campaignDetails.title,
   };
 };
 const mapDispatchToProps = (dispatch) => ({

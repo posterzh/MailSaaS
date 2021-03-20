@@ -16,8 +16,7 @@ import { connect } from "react-redux";
 
 class OverviewSummery extends Component {
   render() {
-    const { overviewSummary, mailAccounts } = this.props;
-    console.log(overviewSummary);
+    const { overviewSummary } = this.props;
     return (
       <div>
         <Container fluid>
@@ -212,13 +211,11 @@ class OverviewSummery extends Component {
             <Col md={4}>
               <Table className="table" hover responsive>
                 <thead>
-                  {" "}
                   <tr>
                     <th colSpan="2">SUMMARY</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {" "}
                   <tr>
                     <td>8</td>
                     <td>Recipients</td>
@@ -229,13 +226,11 @@ class OverviewSummery extends Component {
             <Col md={4}>
               <Table hover responsive>
                 <thead>
-                  {" "}
                   <tr>
                     <th colSpan="2">REPLIES</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {" "}
                   <tr>
                     <td>8</td>
                     <td>Recipients</td>
@@ -246,17 +241,13 @@ class OverviewSummery extends Component {
             <Col md={4}>
               <Table hover responsive>
                 <thead>
-                  {" "}
                   <tr>
                     <th colSpan="2">LEADS</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {" "}
                   <tr>
-                    <td>
-                      {overviewSummary.ignoredLeadCount}
-                    </td>
+                    <td>{overviewSummary.ignoredLeadCount}</td>
                     <td>Recipients</td>
                   </tr>
                 </tbody>

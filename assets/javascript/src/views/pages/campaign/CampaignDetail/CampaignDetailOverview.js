@@ -48,25 +48,30 @@ class CampaignDetailOverview extends Component {
   }
 
   componentDidMount() {
-    
-    this.props.getOverviewSummary(this.props.match.params.campId);
+    const id = this.props.match.params.id;
+    if (!parseInt(id)) {
+      this.props.history.push('/app/admin/campaign/list');
+    } else {
+      this.props.getOverviewSummary(id);
+    }
   }
 
   render() {
     const { activeTab } = this.state;
-    const campaignTitle = this.props.overviewSummary.title ? this.props.overviewSummary.title: "Date Outreach";
+    const { id, title } = this.props;
+    const campTitle = title ? title : "Date Outreach";
 
     return (
       <>
         <PageHeader
-          current={campaignTitle}
+          current={campTitle}
           parent="Campaign Details"
           showStatus={false}
         />
 
-        <PageContainer title={campaignTitle} showHelper={false}>
+        <PageContainer title={campTitle} showHelper={false}>
           <Row>
-            <DetailHeader activeItem="OVERVIEW" />
+            <DetailHeader activeItem="OVERVIEW" id={id}/>
           </Row>
           <Row className="mt-4">
             <Col md={8} className="mx-auto">
@@ -124,7 +129,8 @@ class CampaignDetailOverview extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  overviewSummary: state.campaignDetails.overviewSummary
+  id: state.campaignDetails.id,
+  title: state.campaignDetails.title,
 });
 
 export default connect(mapStateToProps, {
