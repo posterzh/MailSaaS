@@ -56,9 +56,7 @@ export const toggleTopLoader = (visible) => {
 export const toggleAuthLoader = (visible) => {
   store.dispatch({
     type: AUTH_LOADER,
-    payload: {
-      visible
-    },
+    payload: visible,
   });
 };
 
