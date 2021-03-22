@@ -75,7 +75,7 @@ export class ImportContactsModal extends Component {
 
     return (
       <>
-        <Modal isOpen={this.props.isOpen} toggle={this.props.close} size="lg">
+        <Modal isOpen={this.props.isOpen} toggle={this.props.close} size="xl">
           <Form onSubmit={this.handleSubmit}>
             <Card className="no-shadow">
               <CardHeader className="pb-0">
