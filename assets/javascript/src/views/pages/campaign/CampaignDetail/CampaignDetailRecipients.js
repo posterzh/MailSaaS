@@ -23,6 +23,8 @@ import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import DetailHeader from "./components/DetailHeader";
 import LinkClick from "./components/LeadClick";
+import {recipientsFilters, recipientsTable} from "../../../../components/TableHeader";
+import Tables from "../../../../components/Tables";
 
 const SpanStyles = {
   paddingRight: "10px",
@@ -134,8 +136,14 @@ class CampaignDetailRecipients extends Component {
     } = this.state;
     const { id, title } = this.props;
     const campTitle = title ? title : "Date Outreach";
-
-    return (
+    const tableBody = [{
+      'email': 'xxx@test.com',
+      'name': 'xxx',
+      'created_date_time': '02/22/2021',
+      'updated_date_time': '02/25/2021'
+    }];
+    
+    return (  
       <>
         <PageHeader
           current={campTitle}
@@ -177,8 +185,8 @@ class CampaignDetailRecipients extends Component {
           <Row>
             <DetailHeader activeItem="RECIPIENTS" id={id}/>
           </Row>
-          <Row className="mt-5">
-            <Col md={1} className="Recipients_details">
+          <Row>
+            {/* <Col md={1} className="Recipients_details">
               <a href="#">
                 <h1>1</h1>
                 <span>LISTS</span>
@@ -189,10 +197,10 @@ class CampaignDetailRecipients extends Component {
                 <h1>1</h1>
                 <span>WON</span>
               </a>
-            </Col>
-            <Col md={10} className="align-right">
+            </Col> */}
+            <Col md={12} className="align-right">
               <div className="w-h-25">
-                <Button color="danger">ADD RECIPIENTS</Button>
+                <Button color="danger" type="button" size="sm">ADD RECIPIENTS</Button>
                 <div className="child ml-3">
                   <a
                     href=""
@@ -203,8 +211,7 @@ class CampaignDetailRecipients extends Component {
                   >
                     <span className="font_icon">
                       <i
-                        className="fa fa-arrow-down"
-                        style={{ borderBottom: "2px solid silver" }}
+                        className="fa fa-download"
                       ></i>
                     </span>
                   </a>
@@ -212,65 +219,20 @@ class CampaignDetailRecipients extends Component {
               </div>
             </Col>
           </Row>
-          <Row className=" mt-3 input_search_div">
-            <Col md={4}>
-              <div className="grand_parent">
-                <div className="input_field">
-                  <Input type="email" className="in" placeholder="Search" />
-                  <div className="child mt-2">
-                    <a
-                      href=""
-                      onClick={(e) => {
-                        e.preventDefault();
-                        alert("msg");
-                      }}
-                    >
-                      <span className="font_icon">
-                        <i className="fa fa-search" aria-hidden="true"></i>
-                      </span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </Col>
-            <Col md={4}>
-              <div className="grand_parent mt-4">
-                <div className="select_div">
-                  <select className="filter_select_prospect">
-                    <option value="one">One</option>
-                    <option value="two">two</option>
-                    <option value="three">three</option>
-                    <option value="four">Four</option>
-                  </select>
-                </div>
-              </div>
-            </Col>
-            <Col md={4}>
-              <div className="grand_parent mt-4">
-                <div className="select_div">
-                  <select className="filter_select_prospect">
-                    <option value="">List</option>
-                    <option value={date}>{date}</option>
-                  </select>
-                </div>
-                <div className="child ml-3">
-                  <a
-                    href=""
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.location.reload();
-                    }}
-                  >
-                    <span className="font_icon">
-                      <i className="fa fa-undo" aria-hidden="true"></i>
-                    </span>
-                  </a>
-                </div>
-              </div>
-            </Col>
-          </Row>
           <Row>
-            <Table responsive hover className="prospect_table">
+						<Tables
+							titles={recipientsTable} // required
+							tablePropsData={tableBody}   // required
+							showSelect={true}    // optional
+							showPagination={true}   // optional
+							filters={recipientsFilters}   // optional to enable filter
+							searchKeys={['email']}  // optional to enable search
+						/>
+					</Row>
+
+          <Row>
+            
+            {/* <Table responsive hover className="prospect_table">
               <thead>
                 <tr>
                   <th>
@@ -322,7 +284,7 @@ class CampaignDetailRecipients extends Component {
                     </tr>
                   ))}
               </tbody>
-            </Table>
+            </Table> */}
           </Row>
           <div>
             <Modal isOpen={showModal} toggle={this.toggle}>
