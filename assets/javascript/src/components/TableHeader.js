@@ -43,7 +43,6 @@ export const recipientsTable = [
     {
         key: 'email',
         value: 'EMAIL',
-        link: '/app/admin/campaign/{{id}}/details-overview',
         id: "id"
     },
     {
@@ -51,13 +50,13 @@ export const recipientsTable = [
         value: 'NAME',
     },
     {
-        key: 'created_date_time',
+        key: 'created',
         value: 'ADDED ON',
     },
     {
-        key: 'updated_date_time',
+        key: 'updated',
         value: 'SEND ON',
-    }
+    },
 ];
 
 export const recipientsFilters = [

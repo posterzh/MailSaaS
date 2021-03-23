@@ -47,9 +47,6 @@ import {
 } from "reactstrap";
 import { logout } from '../../redux/action/AuthAction'
 import { connect } from 'react-redux'
-import { parseConfigFileTextToJson } from "typescript";
-
-import Api from "../../../src/redux/api/api";
 
 class AdminNavbar extends React.Component {
   // function that on mobile devices makes the search open
@@ -211,7 +208,8 @@ AdminNavbar.propTypes = {
 const mapStateToProps = (state) => {
   return {
     user: state.auth.user,
-    isLogin: state.auth.isLogin
+    socialType: state.auth.socialType,
+    isLogin: state.auth.isLogin,
   }
 };
 

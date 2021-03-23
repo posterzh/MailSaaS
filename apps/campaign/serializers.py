@@ -109,6 +109,7 @@ class ProspectsSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='full_name')
     campaign_title = serializers.CharField(source='campaign.title')
     created = serializers.SerializerMethodField()
+    updated = serializers.SerializerMethodField()
     status = serializers.CharField(source='lead_status')
     campaign_count = serializers.SerializerMethodField()
     sent_count = serializers.SerializerMethodField()
@@ -124,6 +125,9 @@ class ProspectsSerializer(serializers.ModelSerializer):
 
     def get_created(self, obj):
         return obj.created_date_time.strftime("%B %d, %Y")
+
+    def get_updated(self, obj):
+        return obj.update_date_time.strftime("%B %d, %Y")
 
     def get_campaign_count(self, obj):
         campaign_count = CampaignRecipient.objects.filter(email=obj.email).distinct('campaign').count()

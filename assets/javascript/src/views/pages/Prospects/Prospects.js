@@ -252,7 +252,6 @@ class Prospects extends Component {
 						<Tables
 							titles={tableTitle} // required
 							tablePropsData={recipients}   // required
-							showSelect={true}    // optional
 							showPagination={true}   // optional
 							selectedCallback={this.selectedCallback}      // get call back for select object.
 							paginationCallback={this.paginationCallback}     // get callback of page change.
@@ -289,8 +288,6 @@ class Prospects extends Component {
 						isOpen={detailModal}
 						data={this.state.detailItem}
 						close={this.closeDetailModal}
-					// create={this.createMailAccount}
-					// update={this.updateMailAccount}
 					/>
 				</PageContainer>
 			</div>
