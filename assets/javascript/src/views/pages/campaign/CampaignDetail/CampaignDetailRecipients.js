@@ -211,8 +211,7 @@ class CampaignDetailRecipients extends Component {
                   >
                     <span className="font_icon">
                       <i
-                        className="fa fa-arrow-down"
-                        style={{ borderBottom: "2px solid silver" }}
+                        className="fa fa-download"
                       ></i>
                     </span>
                   </a>
