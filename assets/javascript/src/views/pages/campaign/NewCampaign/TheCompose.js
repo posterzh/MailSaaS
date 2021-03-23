@@ -104,7 +104,7 @@ class TheCompose extends Component {
               </div>
             )
           })
-        }
+        } 
       </div>
     )
   }
@@ -126,7 +126,7 @@ class TheCompose extends Component {
             <Col>
               <Input
                 type="text"
-                className="in"
+                className="form-control"
                 name="subject"
                 value={this.state.subject}
                 onChange={(e) => {

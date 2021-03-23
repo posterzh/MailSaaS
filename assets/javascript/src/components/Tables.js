@@ -118,10 +118,11 @@ function Tables({
   showPagination = false,
   paginationCallback = null,
   perpageRecords = 10,
-  acitvePage = 1,
+  activePage = 1,
   totalPages = null,
   filters = [],
   searchKeys = [],
+  onClick = null,
   onDetail = null,
   onEdit = null,
   onDelete = null,
@@ -131,7 +132,7 @@ function Tables({
   const [tableData, setTableData] = React.useState(tablePropsData);
   const [noData, setNoData] = React.useState(false);
   // const [recordLimit, setRecordLimit] = React.useState(perpageRecords);    // for future use.
-  const [acitve, setActive] = React.useState(acitvePage);
+  const [active, setActive] = React.useState(activePage);
   const [selectAll, setSelectAll] = React.useState(false);
   const [filterParams, setfilterParams] = React.useState([]);
 
@@ -154,6 +155,7 @@ function Tables({
   };
 
   const pageChange = (page, type) => {
+    setActive(page);
     paginationCallback && paginationCallback(page, type);
   };
 
@@ -179,7 +181,7 @@ function Tables({
         className="pagination justify-content-end mb-0"
         listClassName="justify-content-end mb-0"
       >
-        <PaginationItem className="disabled">
+        <PaginationItem className={active === 1 ? "disabled" : ""}>
           <PaginationLink onClick={(e) => pageChange(1)} tabIndex="-1">
             <i className="fas fa-angle-left" />
             <span className="sr-only">Previous</span>
@@ -189,7 +191,7 @@ function Tables({
           return (
             <PaginationItem
               key={"page" + (index + 1)}
-              className={index + 1 === acitve ? "active" : ""}
+              className={index + 1 === active ? "active" : ""}
             >
               <PaginationLink onClick={(e) => pageChange(index + 1)}>
                 {index + 1}
@@ -197,7 +199,7 @@ function Tables({
             </PaginationItem>
           );
         })}
-        <PaginationItem>
+        <PaginationItem className={active === pages.length ? "disabled" : ""}>
           <PaginationLink onClick={(e) => pageChange(pages.length)}>
             <i className="fas fa-angle-right" />
             <span className="sr-only">Next</span>
@@ -401,38 +403,40 @@ function Tables({
                     </tr>
                   </thead>
                   <tbody className="list">
-                    {tableData.map((data, index) => {
-                      return (
-                        <tr key={"table-items" + index}>
-                          {showSelect && (
-                            <td key={"header-select-" + index}>
-                              <div className="custom-control custom-checkbox">
-                                <input
-                                  className="custom-control-input"
-                                  id={"table-check-all" + index}
-                                  type="checkbox"
-                                  checked={data.selected}
-                                  onChange={(e) => selectRecord(e, index)}
-                                />
-                                <label
-                                  className="custom-control-label"
-                                  htmlFor={"table-check-all" + index}
-                                />
-                              </div>
-                            </td>
-                          )}
-                          {titles.map((item) => {
-                            return (
-                              <td
-                                className="sort"
-                                key={item.key + index}
-                                scope="col"
-                              >
-                                {item.link ? <Link to={item.link.replace('{{id}}', data[item.id])}>{data[item.key]}</Link> : data[item.key]}
+                    {tableData
+                      .slice((active - 1) * perpageRecords, active * perpageRecords)
+                      .map((data, index) => {
+                        return (
+                          <tr key={"table-items" + index} onClick={(e) => onClick && onClick(data)}>
+                            {showSelect && (
+                              <td key={"header-select-" + index}>
+                                <div className="custom-control custom-checkbox">
+                                  <input
+                                    className="custom-control-input"
+                                    id={"table-check-all" + index}
+                                    type="checkbox"
+                                    checked={data.selected}
+                                    onChange={(e) => selectRecord(e, index)}
+                                  />
+                                  <label
+                                    className="custom-control-label"
+                                    htmlFor={"table-check-all" + index}
+                                  />
+                                </div>
                               </td>
-                            );
-                          })}
-                          {/* {showAction && (
+                            )}
+                            {titles.map((item) => {
+                              return (
+                                <td
+                                  className="sort"
+                                  key={item.key + index}
+                                  scope="col"
+                                >
+                                  {item.link ? <Link to={item.link.replace('{{id}}', data[item.id])}>{data[item.key]}</Link> : data[item.key]}
+                                </td>
+                              );
+                            })}
+                            {/* {showAction && (
                             <td
                               className="text-right"
                               key={"header-actions" + index}
@@ -467,77 +471,77 @@ function Tables({
                             </td>
                           )} */}
 
-                          <td className="table-actions">
-                            {
-                              onEdit && 
-                              <>
-                                <a
-                                  className="table-action"
-                                  href="#pablo"
-                                  id={`edit${index}`}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    onEdit(data);
-                                  }}
-                                >
-                                  <i className="fas fa-edit" />
-                                </a>
-                                <UncontrolledTooltip
-                                  delay={0}
-                                  target={`edit${index}`}
-                                >
-                                  Edit
+                            <td className="table-actions">
+                              {
+                                onEdit &&
+                                <>
+                                  <a
+                                    className="table-action"
+                                    href="#pablo"
+                                    id={`edit${index}`}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      onEdit(data);
+                                    }}
+                                  >
+                                    <i className="fas fa-edit" />
+                                  </a>
+                                  <UncontrolledTooltip
+                                    delay={0}
+                                    target={`edit${index}`}
+                                  >
+                                    Edit
                                 </UncontrolledTooltip>
-                              </>
-                            }
-                            {
-                              onDelete &&
-                              <>
-                                <a
-                                  className="table-action table-action-delete"
-                                  href="#pablo"
-                                  id={`delete${index}`}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    onDelete(data);
-                                  }}
-                                >
-                                  <i className="fas fa-trash" />
-                                </a>
-                                <UncontrolledTooltip
-                                  delay={0}
-                                  target={`delete${index}`}
-                                >
-                                  Delete
+                                </>
+                              }
+                              {
+                                onDelete &&
+                                <>
+                                  <a
+                                    className="table-action table-action-delete"
+                                    href="#pablo"
+                                    id={`delete${index}`}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      onDelete(data);
+                                    }}
+                                  >
+                                    <i className="fas fa-trash" />
+                                  </a>
+                                  <UncontrolledTooltip
+                                    delay={0}
+                                    target={`delete${index}`}
+                                  >
+                                    Delete
                                 </UncontrolledTooltip>
-                              </>
-                            }
-                            {
-                              onDetail &&
-                              <>
-                                <a
-                                  className="table-action table-action-detail"
-                                  href="#pablo"
-                                  id={`detail${index}`}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    onDetail(data);
-                                  }}
-                                >
-                                  <i className="fas fa-info-circle" />
-                                </a>
-                                <UncontrolledTooltip
-                                  delay={0}
-                                  target={`detail${index}`}
-                                >
-                                  Detail
+                                </>
+                              }
+                              {
+                                onDetail &&
+                                <>
+                                  <a
+                                    className="table-action table-action-detail"
+                                    href="#pablo"
+                                    id={`detail${index}`}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      onDetail(data);
+                                    }}
+                                  >
+                                    <i className="fas fa-info-circle" />
+                                  </a>
+                                  <UncontrolledTooltip
+                                    delay={0}
+                                    target={`detail${index}`}
+                                  >
+                                    Detail
                                 </UncontrolledTooltip>
-                              </>
-                            }
-                          </td>
-                        </tr>
-                      );
-                    })}
+                                </>
+                              }
+                            </td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </Table>
               </CardBody>

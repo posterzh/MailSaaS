@@ -524,7 +524,7 @@ class CampaignCreateView(APIView):
             }
 
             res = CampaignEmailSerializer(data=res_data)
-            if res.is_valid(raise_exception=True):
+            if res.is_valid():
                 res.save()
 
 

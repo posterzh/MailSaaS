@@ -40,7 +40,7 @@ class CampaignStart extends React.Component {
 
   onPrev = () => {
     this.setState((state) => ({
-      activeTab: (state.activeTab - 1) % 6,qq
+      activeTab: (state.activeTab - 1) % 6,
     }));
   };
 
