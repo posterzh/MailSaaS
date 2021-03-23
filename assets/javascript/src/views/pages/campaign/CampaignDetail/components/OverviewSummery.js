@@ -43,11 +43,11 @@ class OverviewSummery extends Component {
 
           <Row>
             <Col>
-              <Card className="card-summary-funnel">
+              <Card className="card-summary-funnel mb-0">
                 <div className="funnel-item-header px-4 pt-3">
                   <span>GOOD TEST</span>
                 </div>
-                <Row className="justify-content-center">
+                <Row className="justify-content-center mb-3">
                   <div class="funnel-symbol circle">
                     <div class="content">
                       <span>1</span>
@@ -59,13 +59,18 @@ class OverviewSummery extends Component {
                   <div className="d-flex justify-content-between">
                   </div>
                 </CardHeader> */}
-                <CardBody className="pt-0">
+                <CardBody className="pt-0 pb-3">
                   <Row>
-                    <Col className="detail-item">
-                      <Card className="card-stats mb-0">
-                        <CardBody className="p-1">
-                          <Row className="mx-0">
-                            <div className="col px-0">
+                    {
+                      ["OPENED", "CLICKED", "REPLIED", "BOUNCED", "UNSUBSCRIBED"].map(item => 
+                      <Col className="detail-item px-1 px-md-2">
+                        <Card className="card-stats mb-0">
+                          <CardBody className="p-1 square-box-60">
+                            <div className="dummy"></div>
+                            <div className="content d-flex flex-column justify-content-around align-items-center mx-0">
+                              <div className="icon icon-sm icon-shape bg-gradient-red text-white rounded-circle shadow">
+                                <span>0%</span>
+                              </div>
                               <span className="h2 font-weight-bold mb-0">
                                 0
                               </span>
@@ -73,15 +78,147 @@ class OverviewSummery extends Component {
                                 tag="h5"
                                 className="text-uppercase text-muted mb-0"
                               >
-                                OPENED
+                                {item}
                               </CardTitle>
                             </div>
-                            <Col className="col-auto px-0">
-                              <div className="icon icon-sm icon-shape bg-gradient-red text-white rounded-circle shadow">
-                                <i className="ni ni-active-40" />
-                              </div>
-                            </Col>
-                          </Row>
+                          </CardBody>
+                        </Card>
+                      </Col>)
+                    }
+                  </Row>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row>
+            <div className="draw_div">
+              <div className="line_div_second"></div>
+            </div>
+          </Row>
+
+          <Row>
+            <Col>
+              <Card className="card-summary-funnel mb-0">
+                <div className="funnel-item-header px-4 pt-3">
+                  <span>FOLLOW UP</span>
+                </div>
+                <Row className="justify-content-center mb-3">
+                  <div class="funnel-symbol circle">
+                    <div class="content">
+                      <span>{overviewSummary.recipientCount || 0}</span>
+                      <span>Recipients</span>
+                    </div>
+                  </div>
+                </Row>
+                {/* <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                  <div className="d-flex justify-content-between">
+                  </div>
+                </CardHeader> */}
+                <CardBody className="pt-0 pb-3">
+                  <Row>
+                    <Col className="detail-item px-1 px-md-2">
+                      <Card className="card-stats mb-0">
+                        <CardBody className="p-1 square-box-60">
+                          <div className="dummy"></div>
+                          <div className="content d-flex flex-column justify-content-around align-items-center mx-0">
+                            <div className="icon icon-sm icon-shape bg-gradient-primary text-white rounded-circle shadow">
+                              <span>{overviewSummary.openPer || 0}%</span>
+                            </div>
+                            <span className="h2 font-weight-bold mb-0">
+                              {overviewSummary.openCount || 0}
+                            </span>
+                            <CardTitle
+                              tag="h5"
+                              className="text-uppercase text-muted mb-0"
+                            >
+                              OPENED
+                            </CardTitle>
+                          </div>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                    <Col className="detail-item px-1 px-md-2">
+                      <Card className="card-stats mb-0">
+                        <CardBody className="p-1 square-box-60">
+                          <div className="dummy"></div>
+                          <div className="content d-flex flex-column justify-content-around align-items-center mx-0">
+                            <div className="icon icon-sm icon-shape bg-gradient-info text-white rounded-circle shadow">
+                              <span>0%</span>
+                            </div>
+                            <span className="h2 font-weight-bold mb-0">
+                              0
+                            </span>
+                            <CardTitle
+                              tag="h5"
+                              className="text-uppercase text-muted mb-0"
+                            >
+                              CLICKED
+                            </CardTitle>
+                          </div>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                    <Col className="detail-item px-1 px-md-2">
+                      <Card className="card-stats mb-0">
+                        <CardBody className="p-1 square-box-60">
+                          <div className="dummy"></div>
+                          <div className="content d-flex flex-column justify-content-around align-items-center mx-0">
+                            <div className="icon icon-sm icon-shape bg-gradient-green text-white rounded-circle shadow">
+                              <span>{overviewSummary.replyPer || 0}%</span>
+                            </div>
+                            <span className="h2 font-weight-bold mb-0">
+                              {overviewSummary.replyCount || 0}
+                            </span>
+                            <CardTitle
+                              tag="h5"
+                              className="text-uppercase text-muted mb-0"
+                            >
+                              REPLIED
+                            </CardTitle>
+                          </div>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                    <Col className="detail-item px-1 px-md-2">
+                      <Card className="card-stats mb-0">
+                        <CardBody className="p-1 square-box-60">
+                          <div className="dummy"></div>
+                          <div className="content d-flex flex-column justify-content-around align-items-center mx-0">
+                            <div className="icon icon-sm icon-shape bg-gradient-red text-white rounded-circle shadow">
+                              <span>0%</span>
+                            </div>
+                            <span className="h2 font-weight-bold mb-0">
+                              0
+                            </span>
+                            <CardTitle
+                              tag="h5"
+                              className="text-uppercase text-muted mb-0"
+                            >
+                              BOUNCED
+                            </CardTitle>
+                          </div>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                    <Col className="detail-item px-1 px-md-2">
+                      <Card className="card-stats mb-0">
+                        <CardBody className="p-1 square-box-60">
+                          <div className="dummy"></div>
+                          <div className="content d-flex flex-column justify-content-around align-items-center mx-0">
+                            <div className="icon icon-sm icon-shape bg-gradient-dark text-white rounded-circle shadow">
+                              <span>{overviewSummary.unsubscribePer || 0}%</span>
+                            </div>
+                            <span className="h2 font-weight-bold mb-0">
+                              {overviewSummary.unsubscribeCount || 0}
+                            </span>
+                            <CardTitle
+                              tag="h5"
+                              className="text-uppercase text-muted mb-0"
+                            >
+                              UNSUBSCRIBED
+                            </CardTitle>
+                          </div>
                         </CardBody>
                       </Card>
                     </Col>
@@ -91,145 +228,6 @@ class OverviewSummery extends Component {
             </Col>
           </Row>
 
-          <Row>
-            <div className="draw_div">
-              <div className="circle"></div>
-            </div>
-            <div className="draw_div">
-              <div className="line_div"></div>
-            </div>
-          </Row>
-          <Row></Row>
-
-          <Row className="overview_div">
-            <Col>
-              <Row>
-                <div className="good_test">
-                  <h3>GOOD TEST</h3>{" "}
-                </div>
-              </Row>
-              <Row>
-                <Col md={12}>
-                  <div className="good_test_div">
-                    <div className=" text_purple">
-                      <span className="btn_heading">0</span>
-                      <br></br>
-                      <span className="good_btn_span">
-                        0%<br></br>OPENED
-                      </span>
-                    </div>
-                    <div className="text_leaf">
-                      <span className="btn_heading">0</span>
-                      <br></br>
-                      <span className="good_btn_span">
-                        0%<br></br>OPENED
-                      </span>
-                    </div>
-                    <div className="text_green">
-                      <span className="btn_heading">0</span>
-                      <br></br>
-                      <span className="good_btn_span">
-                        0%<br></br>OPENED
-                      </span>
-                    </div>
-                    <div className="text_lime">
-                      <span className="btn_heading">0</span>
-                      <br></br>
-                      <span className="good_btn_span">
-                        0%<br></br>OPENED
-                      </span>
-                    </div>
-                    <div className="text_warning">
-                      <span className="btn_heading">0</span>
-                      <br></br>
-                      <span className="good_btn_span">
-                        0%<br></br>OPENED
-                      </span>
-                    </div>
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <button className="btn-primary text-left w-100 d-block ">
-                  items
-                </button>
-              </Row>
-            </Col>
-          </Row>
-          <Row>
-            <div className="draw_div">
-              <div className="line_div_second"></div>
-            </div>
-            <div className="draw_div">
-              <div className="circle">
-              </div>
-            </div>
-            <div className="draw_div">
-              <div className="line_div_second"></div>
-            </div>
-          </Row>
-          <Row className="overview_div">
-            <Col>
-              <Row>
-                <div className="good_test">
-                  <h3>FOLLOW UP</h3>{" "}
-                </div>
-              </Row>
-              <Row>
-                <Col md={12}>
-                  <div className="good_test_div">
-                    <div className=" text_purple">
-                      <span className="btn_heading">
-                        {overviewSummary.openCount}
-                      </span>
-                      <br></br>
-                      <span className="good_btn_span">
-                        {overviewSummary.openPer}
-                        %<br></br>OPENED
-                      </span>
-                    </div>
-                    <div className="text_leaf">
-                      <span className="btn_heading">0</span>
-                      <br></br>
-                      <span className="good_btn_span">
-                        0%<br></br>CLICKED
-                      </span>
-                    </div>
-                    <div className="text_green">
-                      <span className="btn_heading">
-                        {overviewSummary.replyCount}
-                      </span>
-                      <br></br>
-                      <span className="good_btn_span">
-                        {overviewSummary.replyPer}
-                        %<br></br>REPLIED
-                      </span>
-                    </div>
-                    <div className="text_lime">
-                      <span className="btn_heading">0</span>
-                      <br></br>
-                      <span className="good_btn_span">
-                        0%<br></br>BOUNCED
-                      </span>
-                    </div>
-                    <div className="text_warning">
-                      <span className="btn_heading">
-                        {overviewSummary.unsubscribeCount}
-                      </span>
-                      <br></br>
-                      <span className="good_btn_span">
-                        {overviewSummary.unsubscribePer}
-                        %<br></br>UNSUBSCRIBED
-                      </span>
-                    </div>
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <div className="pending_div">{/* 5 pending */}</div>
-              </Row>
-            </Col>
-          </Row>
           <Row className="mt-5">
             <h1 className="display-4">TOTALS</h1>
           </Row>
@@ -237,7 +235,7 @@ class OverviewSummery extends Component {
             <div className="w_h-100">
               <div className="w-14">
                 <h1>
-                  {overviewSummary.recipientCount}
+                  {overviewSummary.recipientCount || 0}
                 </h1>
                 <span className="over_sapn">RECIPIENT</span>
               </div>
@@ -307,7 +305,7 @@ class OverviewSummery extends Component {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>{overviewSummary.ignoredLeadCount}</td>
+                    <td>{overviewSummary.ignoredLeadCount || 0}</td>
                     <td>Recipients</td>
                   </tr>
                 </tbody>
