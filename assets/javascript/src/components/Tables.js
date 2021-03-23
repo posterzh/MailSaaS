@@ -122,6 +122,7 @@ function Tables({
   totalPages = null,
   filters = [],
   searchKeys = [],
+  onClick = null,
   onDetail = null,
   onEdit = null,
   onDelete = null,
@@ -406,7 +407,7 @@ function Tables({
                       .slice((active - 1) * perpageRecords, active * perpageRecords)
                       .map((data, index) => {
                         return (
-                          <tr key={"table-items" + index}>
+                          <tr key={"table-items" + index} onClick={(e) => onClick && onClick(data)}>
                             {showSelect && (
                               <td key={"header-select-" + index}>
                                 <div className="custom-control custom-checkbox">

@@ -37,28 +37,7 @@ export class Profile extends Component {
   }
 
   componentDidMount() {
-    let currentSingleFile = undefined;
-    new Dropzone(document.getElementById("dropzone-single"), {
-      url: "/",
-      thumbnailWidth: null,
-      thumbnailHeight: null,
-      previewsContainer: document.getElementsByClassName(
-        "dz-preview-single"
-      )[0],
-      previewTemplate: document.getElementsByClassName("dz-preview-single")[0]
-        .innerHTML,
-      maxFiles: 1,
-      acceptedFiles: "image/*",
-      init: function () {
-        this.on("addedfile", function (file) {
-          if (currentSingleFile) {
-            this.removeFile(currentSingleFile);
-          }
-          currentSingleFile = file;
-        });
-      },
-    });
-    document.getElementsByClassName("dz-preview-single")[0].innerHTML = "";
+
   }
 
   render() {
@@ -96,7 +75,7 @@ export class Profile extends Component {
           </div>
           <Container className="mt--6" fluid>
             <Row>
-              <Col xl="4">
+              <Col className="col-12">
                 <Card className="card-profile">
                   <CardHeader className="p-0 mb-5 border-0">
                     <Row className="justify-content-center">
@@ -151,7 +130,7 @@ export class Profile extends Component {
                   </CardBody>
                 </Card>
               </Col>
-              <Col xl="8">
+              <Col className="col-12">
                 <Card>
                   <CardHeader>
                     <h3 className="mb-0">User information</h3>
@@ -237,60 +216,6 @@ export class Profile extends Component {
                                 onChange={setUser}
                               />
                             </FormGroup>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col lg="12">
-                            <label
-                              className="form-control-label"
-                              htmlFor="profile"
-                            >
-                              Profile
-                            </label>
-                            <div
-                              className="dropzone dropzone-single mb-3"
-                              id="dropzone-single"
-                            >
-                              <div className="fallback">
-                                <div className="custom-file">
-                                  <Input
-                                    className="custom-file-input"
-                                    id="profile"
-                                    type="file"
-                                  />
-                                </div>
-                              </div>
-                              <div className="dz-preview dz-preview-single">
-                                <div className="dz-preview-cover">
-                                  <img
-                                    alt="..."
-                                    className="dz-preview-img"
-                                    data-dz-thumbnail=""
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <div
-                              data-quill-placeholder="Profile"
-                              data-toggle="quill"
-                            />
-                            <ReactQuill
-                              theme="snow"
-                              modules={{
-                                toolbar: [
-                                  ["bold", "italic"],
-                                  ["link", "blockquote", "code", "image"],
-                                  [
-                                    {
-                                      list: "ordered",
-                                    },
-                                    {
-                                      list: "bullet",
-                                    },
-                                  ],
-                                ],
-                              }}
-                            />
                           </Col>
                         </Row>
                       </div>
