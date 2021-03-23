@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Input } from "reactstrap";
+import { Container, Row, Col, Input, FormGroup, Label } from "reactstrap";
 import ReactQuill from "react-quill";
 import { parseCSVRow, parseTemplate } from '../../../../../utils/Utils';
 
@@ -34,9 +34,9 @@ export default class DripPanel extends React.Component {
               <h2 className="display-6">Drips</h2>
               {onDelete && 
                 <div
-                  className="btn btn-outline-warning btn-sm "
+                  className="btn btn-outline-warning btn-sm"
                   onClick={() => onDelete(index)}
-                  style={{position: 'absolute', right: 0, top: 5}}
+                  style={{position: 'absolute', right: 0, top: 10}}
                 >
                   <i style={{ paddingRight: 5 }} className="fa">
                     &#xf014;
@@ -52,30 +52,33 @@ export default class DripPanel extends React.Component {
               :
               <>
                 <Row>
-                  <p style={{ fontSize: "14px" }}>
-                    Unlike follow-ups, drips keep sending even after a recipient
-                    becomes a lead.{" "}
-                    <a href="">Learn how to customize Lead Catcher.</a>
-                  </p>
-                </Row>
-                <Row>
-                  <Col md={2} sm={6} className="WaitDiv">
-                    <label className="filter_app_new"><i className="fas fa-stopwatch" aria-hidden="true"></i>&nbsp;Wait X days</label>
-                    <Input
-                      defaultValue={data.waitDays}
-                      onChange={(e) => {
-                        this.setState({ waitDays: e.target.value });
-                        data.waitDays = e.target.value;
-                      }}
-                      type="number"
-                      className="WaitInput"
-                    ></Input>
+                  <Col>
+                    <FormGroup className="row align-center">
+                      <Label
+                        className="form-control-label"
+                        htmlFor="iputWaitDays"
+                      >
+                      <i className="fas fa-stopwatch" aria-hidden="true"></i>&nbsp; Wait X days:&nbsp;
+                      </Label>
+                      <Col md="2">
+                        <Input
+                          defaultValue={data.waitDays}
+                          className="form-control-sm"
+                          id="iputWaitDays"
+                          type="number"
+                          onChange={(e) => {
+                            this.setState({ waitDays: e.target.value });
+                            data.waitDays = e.target.value;
+                          }}
+                        />
+                      </Col>
+                    </FormGroup>
                   </Col>
                 </Row>
               </>
             }
             
-            <Row className="mt-3">
+            <Row className="mt-0">
               <Input
                 defaultValue={preview && replacement ? parseTemplate(data.subject, replacement) : data.subject}
                 onChange={(e) => {
@@ -83,7 +86,7 @@ export default class DripPanel extends React.Component {
                   data.subject = e.target.value;
                 }}
                 type="text"
-                className="in"
+                className="form-control-sm"
                 name="subject"
                 placeholder="Subject"
                 required={!preview}
