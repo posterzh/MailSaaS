@@ -256,6 +256,7 @@ class Prospects extends Component {
 							showPagination={true}   // optional
 							selectedCallback={this.selectedCallback}      // get call back for select object.
 							paginationCallback={this.paginationCallback}     // get callback of page change.
+							onClick={this.showDetailModal}
 							onDetail={this.showDetailModal}
 							filters={filters}   // optional to enable filter
 							searchKeys={['email', 'name']}  // optional to enable search
