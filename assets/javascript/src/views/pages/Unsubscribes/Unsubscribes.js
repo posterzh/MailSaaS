@@ -20,6 +20,7 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import UnsubscribesModal from "./UnsubscribesModal";
 import CSVDownloadModal from "./CSVDownloadModal";
+import DeleteModal from "./DeleteModal";
 
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
@@ -40,6 +41,7 @@ class Unsubscribes extends Component {
       selectedId: [],
       unsubscribeModal: false,
       downloadCSVModal: false,
+      deleteModal: false,
       email: "",
     };
   }
@@ -63,6 +65,7 @@ class Unsubscribes extends Component {
 
   deleteUnsubscribes = (selectedId) => {
     this.props.deleteUnsubscribeEmails(selectedId);
+    this.setState({ deleteModal: false });
     this.setState({ selectedId: [] });
   };
 
@@ -72,6 +75,10 @@ class Unsubscribes extends Component {
 
   closeDownloadCSVModal = () => {
     this.setState({ downloadCSVModal: false });
+  }
+
+  closeDeleteModal = () => {
+    this.setState({ deleteModal: false });
   }
 
   handleChange = (e) => {
@@ -131,30 +138,6 @@ class Unsubscribes extends Component {
           parent="Unsubscribes"
           showStatus={false}
         />
-        <Row
-          className={classnames(
-            "selection-bar pl-5",
-            { "_block": selectedId.length > 0 }
-          )}>
-          <span
-            className="pointer"
-            onClick={() => {
-              this.setState({
-                selectedId: [],
-              });
-            }}
-          >
-            <i className="fa fa-close" aria-hidden="true"></i>
-          </span>
-          <span className="pl-3 pr-3" style={{ borderRight: "1px dashed" }}>
-            {selectedId.length} selected
-          </span>
-          <label className="m-0 pointer" onClick={() => this.deleteUnsubscribes(this.state.selectedId)}>
-            <i className="fas fa-minus-circle pl-3 pr-2"></i>
-            Delete
-          </label>
-        </Row>
-
         <PageContainer title="Unsubscribes" showHelper={true}>
           <Row>
             <Col lg="5" md="12" sm="12" className="mb-2">
@@ -245,6 +228,19 @@ class Unsubscribes extends Component {
             </TabPane>
           </TabContent>
           <Button
+            className="btn-icon btn-2 rounded-circle fixed-bottom-right-btn mr-6"
+            color="danger"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              this.setState({ deleteModal: !this.state.deleteModal });
+            }}
+          >
+            <span className="btn-inner--icon">
+              <i className="fa fa-minus" />
+            </span>
+          </Button>
+          <Button
             className="btn-icon btn-2 rounded-circle fixed-bottom-right-btn"
             color="info"
             type="button"
@@ -267,6 +263,11 @@ class Unsubscribes extends Component {
             data={selectedUnsubscribes}
             isOpen={this.state.downloadCSVModal}
             close={this.closeDownloadCSVModal}
+          />
+          <DeleteModal
+            isOpen={this.state.deleteModal}
+            close={this.closeDeleteModal}
+            delete={() => this.deleteUnsubscribes(this.state.selectedId)}
           />
         </PageContainer>
       </>

@@ -4,6 +4,15 @@ import {
   Row,
   Col,
   Table,
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  CardImg,
+  CardImgOverlay,
+  CardTitle,
+  CardText,
   Nav,
   NavItem,
   NavLink,
@@ -31,6 +40,57 @@ class OverviewSummery extends Component {
               </span>
             </label>
           </Row>
+
+          <Row>
+            <Col>
+              <Card className="card-summary-funnel">
+                <div className="funnel-item-header px-4 pt-3">
+                  <span>GOOD TEST</span>
+                </div>
+                <Row className="justify-content-center">
+                  <div class="funnel-symbol circle">
+                    <div class="content">
+                      <span>1</span>
+                      <span>Recipients</span>
+                    </div>
+                  </div>
+                </Row>
+                {/* <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                  <div className="d-flex justify-content-between">
+                  </div>
+                </CardHeader> */}
+                <CardBody className="pt-0">
+                  <Row>
+                    <Col className="detail-item">
+                      <Card className="card-stats mb-0">
+                        <CardBody className="p-1">
+                          <Row className="mx-0">
+                            <div className="col px-0">
+                              <span className="h2 font-weight-bold mb-0">
+                                0
+                              </span>
+                              <CardTitle
+                                tag="h5"
+                                className="text-uppercase text-muted mb-0"
+                              >
+                                OPENED
+                              </CardTitle>
+                            </div>
+                            <Col className="col-auto px-0">
+                              <div className="icon icon-sm icon-shape bg-gradient-red text-white rounded-circle shadow">
+                                <i className="ni ni-active-40" />
+                              </div>
+                            </Col>
+                          </Row>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                  </Row>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+
           <Row>
             <div className="draw_div">
               <div className="circle"></div>

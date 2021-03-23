@@ -104,7 +104,7 @@ class TheCompose extends Component {
               </div>
             )
           })
-        }
+        } 
       </div>
     )
   }

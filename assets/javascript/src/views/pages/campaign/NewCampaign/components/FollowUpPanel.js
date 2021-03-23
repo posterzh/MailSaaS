@@ -47,7 +47,7 @@ export default class FollowUpPanel extends React.Component {
             {preview ? 
             <>
               <Row>
-                <i className="fas fa-arrow-alt-circle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Follow-ups {this.getPlural(data.waitDays, 'day')} later</span>
+                <i className="fa fa-reply"></i><span>&nbsp;&nbsp;Follow-ups {this.getPlural(data.waitDays, 'day')} later</span>
               </Row>
             </> 
             : 
@@ -59,7 +59,7 @@ export default class FollowUpPanel extends React.Component {
                       className="form-control-label"
                       htmlFor="iputWaitDays"
                     >
-                     <i className="fas fa-arrow-alt-circle-left" aria-hidden="true"></i>&nbsp; Wait X days:&nbsp;
+                     <i className="fa fa-reply"></i>&nbsp; Wait X days:&nbsp;
                     </Label>
                     <Col md="2">
                       <Input

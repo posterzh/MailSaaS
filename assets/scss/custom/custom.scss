@@ -2038,6 +2038,34 @@ input::-webkit-inner-spin-button {
   background: #00000011;
 }
 
+.card-summary-funnel {
+  .funnel-item-header {
+    height: 6em;
+    margin-bottom: -3em;
+    > span {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #172b4d;
+    }
+  }
+  .funnel-symbol > .content {
+    margin-top: -5em;
+    height: 5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .card-body .detail-item {
+    width: 20%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
 .align-center {
   align-items: center;
+}
+
+.full-max-w {
+  max-width: 100% !important;
 }
