@@ -10,21 +10,24 @@ from django.core.mail.backends.smtp import EmailBackend
 
 def check_email(request):
     if request.data['email_provider'] == 'SMTP':
-        if not check_smtp(server=request.data['smtp_host'],
-                            port=request.data['smtp_port'],
-                            use_tls=request.data['use_smtp_ssl'],
-                            user=request.data['smtp_username'],
-                            password=request.data['smtp_password']):
-            return False, "SMTP test failed."
+        if request.data['smtp_host']:
+            if not check_smtp(server=request.data['smtp_host'],
+                              port=request.data['smtp_port'],
+                              use_tls=request.data['use_smtp_ssl'],
+                              user=request.data['smtp_username'],
+                              password=request.data['smtp_password']):
+                return False, "SMTP test failed."
 
-        if not check_imap(server=request.data['imap_host'],
-                            port=request.data['imap_port'],
-                            use_tls=request.data['use_imap_ssl'],
-                            user=request.data['imap_username'],
-                            password=request.data['imap_password']):
-            return False, "IMAP test failed."
+        if request.data['imap_host']:
+            if not check_imap(server=request.data['imap_host'],
+                              port=request.data['imap_port'],
+                              use_tls=request.data['use_imap_ssl'],
+                              user=request.data['imap_username'],
+                              password=request.data['imap_password']):
+                return False, "IMAP test failed."
 
     return True, "Success"
+
 
 def check_smtp(server, port, use_tls, user, password):
     try:
@@ -42,7 +45,7 @@ def check_smtp(server, port, use_tls, user, password):
 
 def check_imap(server, port, use_tls, user, password):
     # imaplib.Debug = 4
-    
+
     # 1)
     # server = imaplib.IMAP4_SSL(server, port)
     # if use_tls:
@@ -61,3 +64,39 @@ def check_imap(server, port, use_tls, user, password):
 
     server.logout()
     return True
+
+
+def send_mail_with_smtp(host, port, username, password, use_tls, from_email, to_email, subject, body):
+    try:
+        con = mail.get_connection()
+        con.open()
+        print('Django connected to the SMTP server')
+
+        mail_obj = EmailBackend(
+            host=host,
+            port=port,
+            username=username,
+            password=password,
+            use_tls=use_tls,
+            use_ssl=False,
+            timeout=10
+        )
+        msg = mail.EmailMessage(
+            subject=subject,
+            body=body,
+            from_email=from_email,
+            to=to_email,
+            connection=con,
+        )
+
+        mail_obj.send_messages([msg])
+        print('Email has been sent.')
+
+        mail_obj.close()
+        print('SMTP server closed')
+        return True
+
+    except Exception as _error:
+        print('Error in sending mail >> {}'.format(_error))
+
+    return False

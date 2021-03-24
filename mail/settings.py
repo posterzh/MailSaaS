@@ -168,7 +168,7 @@ DATABASES = {
         'PASSWORD': 'k6sehj7ohh30gjfy',
         'HOST': 'db-postgresql-sfo2-27945-do-user-8602625-0.b.db.ondigitalocean.com',
         'PORT': '25060',
-        'NAME': 'mail'
+        'NAME': 'dev'
 
     }
 }
@@ -315,14 +315,15 @@ REST_FRAMEWORK = {
 }
 
 # Celery setup (using redis)
-CELERY_broker_url = 'redis://localhost:6379/0'
-result_backend = 'django-db'
-accept_content = ['application/json']
-timezone = 'Asia/Kolkata'
-task_serializer = 'json'
-result_serializer = 'json'
-imports = ('apps.campaignschedule.tasks',)
-cache_backend = 'django-cache'
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'django-db'
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_TIMEZONE = "UTC"
+
 
 # JWT_AUTH = {
 #     'JWT_AUTH_HEADER_PREFIX': 'JWT',

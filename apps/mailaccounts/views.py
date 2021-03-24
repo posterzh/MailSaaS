@@ -3,13 +3,10 @@ from django.http import Http404, HttpResponseServerError, HttpResponseBadRequest
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from apps.campaignschedule.models import Schedule
-from apps.users.models import CustomUser
 from . import utils
-
 from .models import EmailAccount, SendingCalendar
 from .serializers import EmailAccountSerializer, SendingCalendarSerializer
+from .tasks import test_email
 
 
 class EmailAccountListView(generics.ListCreateAPIView):
@@ -43,6 +40,7 @@ class EmailAccountView(generics.RetrieveUpdateDestroyAPIView):
 
         return super(EmailAccountView, self).update(request, *args, **kwargs)
 
+
 class SendingCalendarListView(generics.ListCreateAPIView):
     queryset = SendingCalendar.objects.all()
     serializer_class = SendingCalendarSerializer
@@ -64,7 +62,17 @@ class SendingCalendarView(generics.RetrieveUpdateDestroyAPIView):
 
 class AvailableTimezonesView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    def get(self, request, format=None):
+
+    def get(self, request):
         return Response(pytz.all_timezones)
 
 
+class SendTestEmailView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        mailAccountId = request.data['mailAccountId']
+        mailAccount = EmailAccount.objects.get(pk=mailAccountId)
+
+        result = test_email.delay(mailAccountId)
+        return Response("Ok")

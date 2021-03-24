@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Text, FormGroup, Input } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Text,
+  FormGroup,
+  Input,
+  Button,
+} from "reactstrap";
 import { connect } from "react-redux";
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
@@ -11,6 +19,7 @@ import {
   addSendingCalendar,
   updateSendingCalendar,
   getAvailableTimezones,
+  sendTestEmail,
 } from "../../../../redux/action/SendingCalendarActions";
 import { initial } from "lodash";
 
@@ -34,6 +43,7 @@ function SendingCalendar({
   addSendingCalendar,
   updateSendingCalendar,
   getAvailableTimezones,
+  sendTestEmail,
 }) {
   const [currentCalendar, setCurrentCalendar] = useState(null);
   const [currentMailAccount, setCurrentMailAccount] = useState(null);
@@ -47,18 +57,18 @@ function SendingCalendar({
 
   useEffect(() => {
     if (mailAccounts.length > 0) {
-      setCurrentMailAccount(mailAccounts[0].id);
+      setCurrentMailAccount(mailAccounts[0]);
     }
   }, [mailAccounts]);
 
   useEffect(() => {
     if (currentMailAccount) {
       let calendar = sendingCalendars.find(
-        (item) => item.mail_account == currentMailAccount
+        (item) => item.mail_account == currentMailAccount.id
       );
       if (!calendar) {
         calendar = initialCalendar;
-        calendar.mail_account = currentMailAccount;
+        calendar.mail_account = currentMailAccount.id;
       }
 
       setCurrentCalendar(calendar);
@@ -73,6 +83,12 @@ function SendingCalendar({
     }
 
     setIsEditing(false);
+  };
+
+  const onSendTestEmail = () => {
+    console.log(currentMailAccount.email);
+    const mailAccountId = currentMailAccount.id;
+    sendTestEmail(mailAccountId);
   };
 
   return (
@@ -116,6 +132,10 @@ function SendingCalendar({
                 cancelEditing={() => setIsEditing(false)}
               />
             )}
+
+            <Button color="danger" type="button" onClick={onSendTestEmail}>
+              Send test email
+            </Button>
           </Col>
         </Row>
       </PageContainer>
@@ -137,4 +157,5 @@ export default connect(mapStateToProps, {
   updateSendingCalendar,
 
   getAvailableTimezones,
+  sendTestEmail,
 })(SendingCalendar);
