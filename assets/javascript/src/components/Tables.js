@@ -23,6 +23,10 @@ import {
 import CardBody from "reactstrap/lib/CardBody";
 import { Link } from "react-router-dom";
 
+const actionToggleDefaultPositiveLabel = 'Yes';
+const actionToggleDefaultNegativeLabel = 'No';
+const actionToggleDefaultTheme = 'default';
+
 /**
  * 
  * @param {title} param0 : Titles of table  @Required
@@ -106,6 +110,23 @@ import { Link } from "react-router-dom";
  * @param {searchKeys} param13 : Show and manage search in table.
         @example = ['email', 'name']   // in which fields we apply search.
         @default = []
+ * @param {actions} param14 : Action fields to show. This doesn't include edit/delete actions
+        @example = [{
+          key: 'warm_enabled',      // data field
+          type: 'toggle',           // action compoment type. i.e. 'toggle' => toggle button
+          theme: 'warning',         // argon color theme values: default, success, info, danger, warning, ...
+          labelPositive: 'On',
+          labelNegative: 'Off',
+          disabled: false
+        }]
+        @default = []
+ * @param {onChange} param15 : Data change event handler
+        @param = 
+          field         // changed field
+          value         // new value
+          record        // changed record
+          recordIndex   // record index
+        @default = null
  */
 function Tables({
   titles = [],
@@ -122,6 +143,8 @@ function Tables({
   totalPages = null,
   filters = [],
   searchKeys = [],
+  actions=[],
+  onChange = null,
   onClick = null,
   onDetail = null,
   onEdit = null,
@@ -539,6 +562,29 @@ function Tables({
                                     Detail
                                 </UncontrolledTooltip>
                                 </>
+                              }
+                              {
+                                actions.map((item, _index) => {
+                                  if (item.type === 'toggle') {
+                                    const labelPositive = item.labelPositive || actionToggleDefaultPositiveLabel;
+                                    const labelNegative = item.labelNegative || actionToggleDefaultNegativeLabel;
+                                    const theme = `custom-toggle-${item.theme || actionToggleDefaultTheme}`
+                                    return (
+                                      <label key={item.type + _index} className={`custom-toggle ${theme} mr-1`}>
+                                        <input checked={!!data[item.key]} disabled={!!item.disabled} type="checkbox" onChange={(e) => {
+                                          !onChange || onChange(item.key, e.target.checked, data, index);
+                                        }} />
+                                        <span
+                                          className="custom-toggle-slider rounded-circle"
+                                          data-label-off={labelNegative}
+                                          data-label-on={labelPositive}
+                                        />
+                                      </label>
+                                    )
+                                  } else {
+                                    return null;
+                                  }
+                                })
                               }
                             </td>
                           </tr>
