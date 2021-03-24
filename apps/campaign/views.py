@@ -27,7 +27,7 @@ from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmailModel,
                      EmailOnLinkClick, FollowUpEmail, CampaignLabel, SendingObject)
 from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer,
-                          CampaignSerializer, DripEmailSerilizer, FollowUpSerializer,
+                          CampaignSerializer, DripEmailSerilizer, FollowUpSerializer, CampaignSendingObjectSerializer,
                           OnclickSerializer, CampaignLabelSerializer, ProspectsSerializer)
 from apps.mailaccounts.models import EmailAccount
 
@@ -479,9 +479,7 @@ class CampaignCreateView(APIView):
                     self.createDrips(new_camp, campaign['drips'])
 
                 if new_camp.csvfile_op1:
-                    self.createRecipients(campaign_id, str(new_camp.csvfile_op1))
-
-                self.createSendingObject(campaign)
+                    self.createRecipientsAndSendingObject(new_camp, campaign)
 
                 return Response({"message": "Created new campaign successfully", "success": True}, status=status.HTTP_200_OK)
             return Response({"message": "Failed to create campaign", "success": False}, status=status.HTTP_400_BAD_REQUEST)
@@ -499,13 +497,17 @@ class CampaignCreateView(APIView):
         if len(drips) == 0:
             return
 
-        for drips in drips:
-            DripEmail = DripEmailModel(campaign=camp, waitDays=drips["waitDays"], subject=drips["subject"],
-                                       email_body=drips["email_body"])
+        for drip in drips:
+            DripEmail = DripEmailModel(campaign=camp, waitDays=drip["waitDays"], subject=drip["subject"],
+                                       email_body=drip["email_body"])
             DripEmail.save()
 
-    def createRecipients(self, campaign_id, csv_path):
-        df_csv = pd.read_csv('media/' + str(csv_path))
+    def createRecipientsAndSendingObject(self, new_camp, campaign):
+        campaign_id = new_camp.id
+        csv_path = str(new_camp.csvfile_op1)
+        from_email = new_camp.from_address_id
+
+        df_csv = pd.read_csv('media/' + csv_path)
         df_csv.drop(df_csv.columns[df_csv.columns.str.contains('unnamed', case=False)], axis=1, inplace=True)
         csv_columns = df_csv.columns
 
@@ -527,116 +529,41 @@ class CampaignCreateView(APIView):
             if res.is_valid():
                 res.save()
 
-    def createSendingObject(self, campaign):
-        # permission_classes = (permissions.IsAuthenticated,)
-        #
-        # def get(self, request, pk, *args, **kwargs):
-        #     params = list(dict(request.GET).keys())
-        #     """
-        #     These filter are pending
-        #     Recipients with problem, customized message, has clicked,
-        #     has out-of-office reply, you replied,has not clicked, you have not replied
-        #     """
-        #     if ['search', 'tofilter'] in params:
-        #         toSearch = request.GET['search']
-        #         tofilter = request.GET['tofilter']
-        #         if request.GET['tofilter'] == 'paused_reciepent':
-        #             queryset = CampaignRecipient.objects.filter(
-        #                 Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk,
-        #                 reciepent_status=False)
-        #         elif request.GET['tofilter'] == 'leads':
-        #             choice = request.GET['choice']
-        #             if request.GET['choice'] == "openlead":
-        #                 choice = "openLead"
-        #             elif request.GET['choice'] == "wonlead":
-        #                 choice = "wonLead"
-        #             elif request.GET['choice'] == "lostlead":
-        #                 choice = "lostLead"
-        #             elif request.GET['choice'] == "ignorelead":
-        #                 choice = "ignoreLead"
-        #             else:
-        #                 choice = "none"
-        #             queryset = CampaignRecipient.objects.filter(
-        #                 Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, leads=True,
-        #                 lead_status=choice)
-        #         elif request.GET['tofilter'] == 'was_sent_message':
-        #             queryset = CampaignRecipient.objects.filter(
-        #                 Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, sent=True)
-        #         elif request.GET['tofilter'] == 'has_opened':
-        #             queryset = CampaignRecipient.objects.filter(
-        #                 Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, opens=True)
-        #             # elif request.GET['tofilter'] == 'has_clicked':
-        #         #     queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,opens=True)
-        #         elif request.GET['tofilter'] == 'has_replied':
-        #             queryset = CampaignRecipient.objects.filter(
-        #                 Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, replies=True)
-        #         elif request.GET['tofilter'] == 'has_bounced':
-        #             queryset = CampaignRecipient.objects.filter(
-        #                 Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, bounces=True)
-        #         elif request.GET['tofilter'] == 'has_unsubscribed':
-        #             queryset = CampaignRecipient.objects.filter(
-        #                 Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, unsubscribe=True)
-        #         elif request.GET['tofilter'] == 'was_not_sent_messagese':
-        #             queryset = CampaignRecipient.objects.filter(
-        #                 Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, sent=False)
-        #         elif request.GET['tofilter'] == 'has_not_opened':
-        #             queryset = CampaignRecipient.objects.filter(
-        #                 Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, opens=False)
-        #             # elif request.GET['tofilter'] == 'has_not_clicked':
-        #         #     queryset = CampaignRecipient.objects.filter(Q(email__contains=toSearch)|Q(full_name__contains=toSearch),campaign=pk,opens=False)
-        #         elif request.GET['tofilter'] == 'has_not_replied':
-        #             queryset = CampaignRecipient.objects.filter(
-        #                 Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign=pk, replies=False)
-        #     elif 'tofilter' in params:
-        #         tofilter = request.GET['tofilter']
-        #         if request.GET['tofilter'] == 'paused_reciepent':
-        #             queryset = CampaignRecipient.objects.filter(campaign=pk, reciepent_status=False)
-        #         elif request.GET['tofilter'] == 'leads':
-        #             choice = request.GET['choice']
-        #             if request.GET['choice'] == "openlead":
-        #                 choice = "openLead"
-        #             elif request.GET['choice'] == "wonlead":
-        #                 choice = "wonLead"
-        #             elif request.GET['choice'] == "lostlead":
-        #                 choice = "lostLead"
-        #             elif request.GET['choice'] == "ignorelead":
-        #                 choice = "ignoreLead"
-        #             else:
-        #                 choice = "none"
-        #             queryset = CampaignRecipient.objects.filter(campaign=pk, leads=True, lead_status=choice)
-        #         elif request.GET['tofilter'] == 'was_sent_message':
-        #             queryset = CampaignRecipient.objects.filter(campaign=pk, sent=True)
-        #         elif request.GET['tofilter'] == 'has_opened':
-        #             queryset = CampaignRecipient.objects.filter(campaign=pk, opens=True)
-        #             # elif request.GET['tofilter'] == 'has_clicked':
-        #         #     queryset = CampaignRecipient.objects.filter(campaign=pk,opens=True)
-        #         elif request.GET['tofilter'] == 'has_replied':
-        #             queryset = CampaignRecipient.objects.filter(campaign=pk, replies=True)
-        #         elif request.GET['tofilter'] == 'has_bounced':
-        #             queryset = CampaignRecipient.objects.filter(campaign=pk, bounces=True)
-        #         elif request.GET['tofilter'] == 'has_unsubscribed':
-        #             queryset = CampaignRecipient.objects.filter(campaign=pk, unsubscribe=True)
-        #         elif request.GET['tofilter'] == 'was_not_sent_messagese':
-        #             queryset = CampaignRecipient.objects.filter(campaign=pk, sent=False)
-        #         elif request.GET['tofilter'] == 'has_not_opened':
-        #             queryset = CampaignRecipient.objects.filter(campaign=pk, opens=False)
-        #             # elif request.GET['tofilter'] == 'has_not_clicked':
-        #         #     queryset = CampaignRecipient.objects.filter(campaign=pk,opens=False)
-        #         elif request.GET['tofilter'] == 'has_not_replied':
-        #             queryset = CampaignRecipient.objects.filter(campaign=pk, replies=False)
-        #
-        #     elif 'search' in params:
-        #         toSearch = request.GET['search']
-        #         queryset = CampaignRecipient.objects.filter(
-        #             Q(email__contains=toSearch) | Q(full_name__contains=toSearch),
-        #             campaign=pk)
-        #
-        #     else:
-        #         queryset = CampaignRecipient.objects.filter(campaign=pk)
-        #     campEmailserializer = CampaignEmailSerializer(queryset, many=True)
-        #     return Response(campEmailserializer.data)
-        pass
+            self.createSendingObject(campaign_id, from_email, email[0], campaign['email_subject'],
+                                     campaign['email_body'], 0, replacement, 0)
 
+            if campaign['has_follow_up']:
+                for follow in campaign['follow_up']:
+                    self.createSendingObject(campaign_id, from_email, email[0], follow['subject'],
+                                             follow['email_body'], 1, replacement, follow['waitDays'])
+
+            if campaign['has_drips']:
+                for drip in campaign['drips']:
+                    self.createSendingObject(campaign_id, from_email, email[0], drip['subject'],
+                                             drip['email_body'], 2, replacement, drip['waitDays'])
+
+    def createSendingObject(self, camp_id, from_email, to_email, subject, body, type, replacement, wait_days):
+        sending_obj = {
+            'campaign': camp_id,
+            'from_email': from_email,
+            'recipient_email': to_email,
+            'email_subject': self.convertTemplate(subject, replacement),
+            'email_body': self.convertTemplate(body, replacement),
+            'email_type': type,
+            'wait_days': wait_days
+        }
+
+        res = CampaignSendingObjectSerializer(data=sending_obj)
+        if res.is_valid():
+            res.save()
+
+    def convertTemplate(self, template, replacement):
+        for key in replacement.keys():
+            key_match = "{{" + key + "}}"
+            if key_match in template:
+                template = template.replace(key_match, replacement[key])
+
+        return template
 
 
 class CampaignListView(generics.ListAPIView):

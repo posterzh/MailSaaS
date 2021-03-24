@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
+from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, SendingObject,
                      DripEmailModel, EmailOnLinkClick, FollowUpEmail, CampaignLabel)
 
 
@@ -143,3 +143,9 @@ class ProspectsSerializer(serializers.ModelSerializer):
     def get_engaged_count(self, obj):
         engaged = CampaignRecipient.objects.filter(email=obj.email, engaged=True).count()
         return engaged
+
+
+class CampaignSendingObjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SendingObject
+        fields = '__all__'
