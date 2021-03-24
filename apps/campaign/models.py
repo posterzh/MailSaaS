@@ -131,7 +131,7 @@ class CampaignLeadCatcher(models.Model):
 
 class SendingObject(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
-    from_email = models.CharField(max_length=50)
+    from_email = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
     recipient_email = models.CharField(max_length=50)
     email_subject = models.CharField(max_length=100)
     email_body = models.TextField(blank=True, null=True)

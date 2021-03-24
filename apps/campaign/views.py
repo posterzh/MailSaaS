@@ -505,7 +505,7 @@ class CampaignCreateView(APIView):
     def createRecipientsAndSendingObject(self, new_camp, campaign):
         campaign_id = new_camp.id
         csv_path = str(new_camp.csvfile_op1)
-        from_email = new_camp.from_address.email
+        from_email = new_camp.from_address
 
         df_csv = pd.read_csv('media/' + csv_path)
         df_csv.drop(df_csv.columns[df_csv.columns.str.contains('unnamed', case=False)], axis=1, inplace=True)
