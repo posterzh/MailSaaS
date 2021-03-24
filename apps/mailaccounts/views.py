@@ -3,13 +3,10 @@ from django.http import Http404, HttpResponseServerError, HttpResponseBadRequest
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from apps.campaignschedule.models import Schedule
-from apps.users.models import CustomUser
 from . import utils
-
 from .models import EmailAccount, SendingCalendar
 from .serializers import EmailAccountSerializer, SendingCalendarSerializer
+from .tasks import test_email
 
 
 class EmailAccountListView(generics.ListCreateAPIView):
@@ -74,5 +71,8 @@ class SendTestEmailView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request):
-        email = request.data['email']
+        mailAccountId = request.data['mailAccountId']
+        mailAccount = EmailAccount.objects.get(pk=mailAccountId)
+
+        result = test_email.delay(mailAccountId)
         return Response("Ok")

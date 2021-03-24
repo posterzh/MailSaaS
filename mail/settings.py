@@ -168,7 +168,7 @@ DATABASES = {
         'PASSWORD': 'k6sehj7ohh30gjfy',
         'HOST': 'db-postgresql-sfo2-27945-do-user-8602625-0.b.db.ondigitalocean.com',
         'PORT': '25060',
-        'NAME': 'mail'
+        'NAME': 'dev'
 
     }
 }

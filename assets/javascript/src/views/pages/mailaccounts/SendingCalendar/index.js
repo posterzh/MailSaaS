@@ -87,7 +87,8 @@ function SendingCalendar({
 
   const onSendTestEmail = () => {
     console.log(currentMailAccount.email);
-    sendTestEmail(currentMailAccount.email);
+    const mailAccountId = currentMailAccount.id;
+    sendTestEmail(mailAccountId);
   };
 
   return (

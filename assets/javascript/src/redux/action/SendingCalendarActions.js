@@ -79,11 +79,11 @@ export const getAvailableTimezones = () => (dispatch) => {
     });
 };
 
-export const sendTestEmail = (email) => (dispatch) => {
+export const sendTestEmail = (mailAccountId) => (dispatch) => {
   console.log("sending test email...");
 
   axios
-    .post("/mailaccounts/send-test-email/", { email })
+    .post("/mailaccounts/send-test-email/", { mailAccountId })
     .then((response) => {
       toastOnSuccess("Sent test email successfully!");
     })
