@@ -9,13 +9,14 @@ import {
 
 export const getMailAccounts = () => (dispatch) => {
   toggleTopLoader(true);
-  axios
+  return axios
     .get("/mailaccounts/emailaccounts/")
     .then((response) => {
       dispatch({
         type: GET_MAILACCOUNTS,
         payload: response.data,
       });
+      return response.data;
     })
     .catch((error) => {
       toastOnError(error);
