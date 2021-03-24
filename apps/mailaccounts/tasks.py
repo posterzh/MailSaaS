@@ -1,5 +1,5 @@
 from celery import shared_task
-from .models import EmailAccount
+from .models import *
 from .utils import *
 
 
@@ -17,3 +17,16 @@ def test_email(self, mailAccountId):
                         to_email=['wangmingxie26@gmail.com'],
                         subject="This is test email",
                         body="Hi, this email is sent by SMTP.")
+
+
+@shared_task
+def email_sender():
+    print('Email sender is called...')
+    mailAccounts = EmailAccount.objects.all()
+    for item in mailAccounts:
+        print(item)
+
+    calendars = SendingCalendar.objects.all()
+    for item in calendars:
+        print(item)
+
