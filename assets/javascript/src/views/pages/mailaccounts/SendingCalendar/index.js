@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Text, FormGroup, Input } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Text,
+  FormGroup,
+  Input,
+  Button,
+} from "reactstrap";
 import { connect } from "react-redux";
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
@@ -47,18 +55,18 @@ function SendingCalendar({
 
   useEffect(() => {
     if (mailAccounts.length > 0) {
-      setCurrentMailAccount(mailAccounts[0].id);
+      setCurrentMailAccount(mailAccounts[0]);
     }
   }, [mailAccounts]);
 
   useEffect(() => {
     if (currentMailAccount) {
       let calendar = sendingCalendars.find(
-        (item) => item.mail_account == currentMailAccount
+        (item) => item.mail_account == currentMailAccount.id
       );
       if (!calendar) {
         calendar = initialCalendar;
-        calendar.mail_account = currentMailAccount;
+        calendar.mail_account = currentMailAccount.id;
       }
 
       setCurrentCalendar(calendar);
@@ -73,6 +81,10 @@ function SendingCalendar({
     }
 
     setIsEditing(false);
+  };
+
+  const sendTestEmail = () => {
+    console.log(currentMailAccount);
   };
 
   return (
@@ -116,6 +128,10 @@ function SendingCalendar({
                 cancelEditing={() => setIsEditing(false)}
               />
             )}
+
+            <Button color="danger" type="button" onClick={sendTestEmail}>
+              Send test email
+            </Button>
           </Col>
         </Row>
       </PageContainer>
