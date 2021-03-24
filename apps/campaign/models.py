@@ -129,45 +129,23 @@ class CampaignLeadCatcher(models.Model):
         return str(self.campaign)
 
 
-class Campaigns(models.Model):
-    from_address = models.ForeignKey(EmailAccount, on_delete=models.SET_NULL, null=True)
-    title = models.CharField(max_length=200, blank=False, null=False)
-    csvfile = models.FileField(upload_to='csv_uploads/', blank=True, null=True)
-    csv_fields = models.TextField(blank=True, null=True, default='')
-    assigned = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    email_subject = models.CharField(max_length=2000, blank=True, null=True)
-    email_body = models.TextField(blank=True, null=True)
-    has_follow_up = models.BooleanField(default=False)
-    has_drips = models.BooleanField(default=False)
-    track_opens = models.BooleanField(default=False)
-    terms_and_laws = models.BooleanField(default=True)
-    label_name = models.ForeignKey(CampaignLabel, on_delete=models.SET_DEFAULT, default=1)
-    campaign_status = models.BooleanField(default=False)  # start or pause
-    is_deleted = models.BooleanField(default=False)
-    created_at = models.TimeField(auto_now=True)
-    updated_at = models.TimeField(auto_now=True)
-
-
-class CampaignRecipients(models.Model):
-    LEAD_TYPE = (
-
-        ("none", "None"),
-        ("openLead", "Open Lead"),
-        ("wonLead", "Won Lead"),
-        ("lostLead", "Lost Lead"),
-        ("ignoredLead", "Ignored Lead"),
-        ("forwardedLead", "Forwarded Lead"),
+class SendingObject(models.Model):
+    EMAIL_TYPE = (
+        ("intro", "Intro"),
+        ("follow", "Follow-Up"),
+        ("drip", "Drip"),
     )
-    campaign = models.ForeignKey(Campaigns, on_delete=models.CASCADE)
-    email = models.CharField(max_length=200, blank=False, null=False)
-    replacement = models.TextField(blank=True, null=True)
-    is_sent = models.BooleanField(default=False)
-    is_lead = models.BooleanField(default=False)
-    is_reply = models.BooleanField(default=False)
-    is_open = models.BooleanField(default=False)
-    is_bounce = models.BooleanField(default=False)
-    engaged = models.BooleanField(default=False)
-    status = models.PositiveIntegerField(default=0)
-    lead_type = models.CharField(max_length=32, choices=LEAD_TYPE, default='none', null=True)
-    created_at = models.TimeField(auto_now=True)
-    updated_at = models.TimeField(auto_now=True)
+
+    mail_account = models.CharField(max_length=50)
+    recipient_email = models.CharField(max_length=50)
+    email_subject = models.CharField(max_length=100)
+    email_body = models.TextField(blank=True, null=True)
+    email_type = models.CharField(max_length=16, choices=EMAIL_TYPE, default='intro', null=True)
+    status = models.CharField(max_length=16)
+    date = models.DateField(auto_now=False, blank=True, null=True)
+    time = models.TimeField(auto_now=False, blank=True, null=True)
+
+    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.recipient_email

@@ -17,13 +17,17 @@ import {
   unsubscribeRecipientAction,
   CampaignCreateLeadAction,
 } from "../../../../redux/action/CampaignAction";
+import { filterRecipients } from "../../../../redux/action/ProspectsAction";
 import { connect } from "react-redux";
 
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import DetailHeader from "./components/DetailHeader";
 import LinkClick from "./components/LeadClick";
-import {recipientsFilters, recipientsTable} from "../../../../components/TableHeader";
+import ImportContactsModal from "./components/ImportContactsModal";
+import RecipientDetailModal from "./components/RecipientDetailModal";
+import CSVDownloadModal from "./components/CSVDownloadModal";
+import { recipientsFilters as recipientsInitialFilters, recipientsTable } from "../../../../components/TableHeader";
 import Tables from "../../../../components/Tables";
 
 const SpanStyles = {
@@ -33,6 +37,7 @@ const SpanStyles = {
   fontSize: "25px",
   cursor: "pointer",
 };
+
 const Span = {
   paddingRight: "20px",
   paddingLeft: "20px",
@@ -41,6 +46,7 @@ const Span = {
   borderRight: "1px dashed",
   marginRight: "10px",
 };
+
 class CampaignDetailRecipients extends Component {
   constructor() {
     super();
@@ -71,13 +77,42 @@ class CampaignDetailRecipients extends Component {
       email: "",
       full_name: "",
       created_date_time: "",
+
+      recipientDetailItem: null,
+      recipientsFilters: recipientsInitialFilters,
+      importContactsModal: false,
+      recipientDetailModal: false,
+      downloadCSVModal: false,
     };
   }
+
   componentDidMount() {
     let id =
       this.props.history.location.state && this.props.history.location.state.id;
     this.props.CampaignPeopleAction(this.props.id);
+    this.props.filterRecipients({ campaign: this.props.id });
   }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.recipients !== this.props.recipients) {
+      const getUniqueArray = (array, field) => array.map(x => x[field]).filter((v, i, a) => a.indexOf(v) === i);
+      const emailOptions = getUniqueArray(nextProps.recipients, 'email')
+      const nameOptions = getUniqueArray(nextProps.recipients, 'name')
+      this.setState({
+        recipientsFilters: [
+          {
+            key: 'email',
+            options: emailOptions
+          },
+          {
+            key: 'name',
+            options: nameOptions
+          }
+        ]
+      })
+    }
+  }
+
   showSelectionBar = (id, isUnsubscribe) => {
     const { selectedId } = this.state;
     this.setState({
@@ -105,6 +140,7 @@ class CampaignDetailRecipients extends Component {
     }
     selectedId.push(id);
   };
+
   toggle = (id, email, full_name, created_date_time) => {
     this.setState({
       showModal: !this.state.showModal,
@@ -114,6 +150,7 @@ class CampaignDetailRecipients extends Component {
       created_date_time: created_date_time,
     });
   };
+
   unsubscribeRecipient = () => {
     let data = this.state.selectedId;
     let id =
@@ -121,10 +158,38 @@ class CampaignDetailRecipients extends Component {
     this.props.RecipientUnsubscribe(data, id);
     this.state.selectedId = 0;
   };
+
   CreateLead = () => {
     this.setState({ showModal: false });
     this.props.CampaignCreateLeadAction(this.props.id);
   };
+
+  showImportContactsModal = () => {
+    this.setState({ importContactsModal: true })
+  }
+
+  closeImportContactsModal = () => {
+    this.setState({ importContactsModal: false })
+  }
+
+  showRecipientDetailModal = (item) => {
+    this.setState({ recipientDetailItem: item });
+
+    this.setState({ recipientDetailModal: true });
+  }
+
+  closeRecipientDetailModal = () => {
+    this.setState({ recipientDetailModal: false })
+  }
+
+  showDownloadCSVModal = () => {
+    this.setState({ downloadCSVModal: true });
+  }
+
+  closeDownloadCSVModal = () => {
+    this.setState({ downloadCSVModal: false });
+  }
+
   render() {
     const { getData } = this.props;
     const {
@@ -136,14 +201,12 @@ class CampaignDetailRecipients extends Component {
     } = this.state;
     const { id, title } = this.props;
     const campTitle = title ? title : "Date Outreach";
-    const tableBody = [{
-      'email': 'xxx@test.com',
-      'name': 'xxx',
-      'created_date_time': '02/22/2021',
-      'updated_date_time': '02/25/2021'
-    }];
-    
-    return (  
+
+    const { importContactsModal, recipientDetailModal } = this.state;
+    const { recipientsFilters } = this.state;
+    const { recipients } = this.props;
+
+    return (
       <>
         <PageHeader
           current={campTitle}
@@ -153,9 +216,8 @@ class CampaignDetailRecipients extends Component {
 
         <PageContainer title={campTitle} showHelper={true}>
           <div
-            className={`selection-bar ${
-              isSelectionBar && selectedId.length > 0 ? "_block" : " "
-            }`}
+            className={`selection-bar ${isSelectionBar && selectedId.length > 0 ? "_block" : " "
+              }`}
           >
             <span
               style={SpanStyles}
@@ -183,21 +245,9 @@ class CampaignDetailRecipients extends Component {
             </div>
           </div>
           <Row>
-            <DetailHeader activeItem="RECIPIENTS" id={id}/>
+            <DetailHeader activeItem="RECIPIENTS" id={id} />
           </Row>
-          <Row>
-            {/* <Col md={1} className="Recipients_details">
-              <a href="#">
-                <h1>1</h1>
-                <span>LISTS</span>
-              </a>
-            </Col>
-            <Col md={1} className="Recipients_details">
-              <a href="#">
-                <h1>1</h1>
-                <span>WON</span>
-              </a>
-            </Col> */}
+          {/* <Row>
             <Col md={12} className="align-right">
               <div className="w-h-25">
                 <Button color="danger" type="button" size="sm">ADD RECIPIENTS</Button>
@@ -218,74 +268,69 @@ class CampaignDetailRecipients extends Component {
                 </div>
               </div>
             </Col>
+          </Row> */}
+          <Row className="mt-4">
+            <Tables
+              titles={recipientsTable} // required
+              tablePropsData={recipients}   // required
+              showSelect={true}
+              showPagination={true}   // optional
+              filters={recipientsFilters}   // optional to enable filter
+              onClick={this.showRecipientDetailModal}
+              searchKeys={['email', 'name']}  // optional to enable search
+            />
           </Row>
-          <Row>
-						<Tables
-							titles={recipientsTable} // required
-							tablePropsData={tableBody}   // required
-							showSelect={true}    // optional
-							showPagination={true}   // optional
-							filters={recipientsFilters}   // optional to enable filter
-							searchKeys={['email']}  // optional to enable search
-						/>
-					</Row>
 
-          <Row>
-            
-            {/* <Table responsive hover className="prospect_table">
-              <thead>
-                <tr>
-                  <th>
-                    <input type="checkbox" />
-                  </th>
-                  <th></th>
-                  <th>EMAIL</th>
-                  <th>NAME</th>
-                  <th>ADDED ON</th>
-                  <th>SENT ON</th>
-                </tr>
-              </thead>
-              <tbody>
-                {getData &&
-                  getData.map((item, index) => (
-                    <tr
-                      key={index}
-                      style={{ cursor: "pointer" }}
-                      onClick={() =>
-                        this.toggle(
-                          item.id,
-                          item.email,
-                          item.full_name,
-                          item.created_date_time
-                        )
-                      }
-                    >
-                      <td>
-                        <input
-                          onChange={() =>
-                            this.showSelectionBar(item.id, item.unsubscribe)
-                          }
-                          type="checkbox"
-                        />
-                      </td>
-                      <td>
-                        <span>
-                          {item.unsubscribe ? (
-                            <i className="fas fa-eye-slash"></i>
-                          ) : (
-                            <i className="fas fa-pause"></i>
-                          )}
-                        </span>
-                      </td>
-                      <td>{item.email}</td>
-                      <td>{item.full_name}</td>
-                      <td>{item.created_date_time.substring(5, 10)}</td>
-                      <td></td>
-                    </tr>
-                  ))}
-              </tbody>
-            </Table> */}
-          </Row>
+          <Button
+            className="btn-icon btn-2 rounded-circle fixed-bottom-right-btn mr-6"
+            color="secondary"
+            type="button"
+            style={{ zIndex: 5 }}
+            onClick={(e) => {
+              e.preventDefault();
+              this.showDownloadCSVModal();
+            }}
+          >
+            <span className="btn-inner--icon">
+              <i className="fa fa-download" />
+            </span>
+          </Button>
+
+          <Button
+            className="btn-icon btn-2 rounded-circle fixed-bottom-right-btn"
+            color="info"
+            type="button"
+            style={{ zIndex: 5 }}
+            onClick={(e) => {
+              e.preventDefault();
+              this.showImportContactsModal();
+            }}
+          >
+            <span className="btn-inner--icon">
+              <i className="fa fa-plus" />
+            </span>
+          </Button>
+
+          <ImportContactsModal
+            isOpen={importContactsModal}
+            // data={this.state.editItem}
+            close={this.closeImportContactsModal}
+          // create={this.createMailAccount}
+          // update={this.updateMailAccount}
+          />
+
+          <RecipientDetailModal
+            isOpen={recipientDetailModal}
+            data={this.state.recipientDetailItem}
+            close={this.closeRecipientDetailModal}
+          />
+
+          <CSVDownloadModal
+            data={recipients}
+            isOpen={this.state.downloadCSVModal}
+            close={this.closeDownloadCSVModal}
+          />
+
           <div>
             <Modal isOpen={showModal} toggle={this.toggle}>
               <ModalHeader>
@@ -338,7 +383,7 @@ const mapStateToProps = (state) => {
   console.log(
     "state.CampaignPeopleReducer && state.CampaignPeopleReducer.campaignPeopleData",
     state.CampaignPeopleReducer &&
-      state.CampaignPeopleReducer.campaignPeopleData
+    state.CampaignPeopleReducer.campaignPeopleData
   );
   return {
     id: state.campaignDetails.id,
@@ -347,6 +392,7 @@ const mapStateToProps = (state) => {
     getData:
       state.CampaignPeopleReducer &&
       state.CampaignPeopleReducer.campaignPeopleData,
+    recipients: state.prospects.recipients,
   };
 };
 const mapDispatchToProps = (dispatch) => ({
@@ -355,6 +401,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(unsubscribeRecipientAction(data, id));
   },
   CampaignCreateLeadAction: (id) => dispatch(CampaignCreateLeadAction(id)),
+  filterRecipients: (filter) => dispatch(filterRecipients(filter)),
 });
 export default connect(
   mapStateToProps,
