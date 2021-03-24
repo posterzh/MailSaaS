@@ -1974,7 +1974,7 @@ input::-webkit-inner-spin-button {
 .profile-edit-icon {
   position: absolute;
   z-index: 50;
-  right: -18px;
+  right: -70px;
   bottom: -55px;
   height: 30px;
   width: 30px;
@@ -1990,33 +1990,6 @@ input::-webkit-inner-spin-button {
     color: $info;
   }
 }
-
-// .sidenav .sidenav-toggler {
-//   @media (min-width: 576px) {
-//     padding: 1.5rem;
-//   }
-// }
-
-// .g-sidenav-pinned .sidenav.fixed-left + .main-content {
-//   @media (min-width: 576px) {
-//     margin-left: 250px;
-//   }
-// }
-
-// .sidenav.fixed-left + .main-content {
-//   @media (max-width: 575.98px) {
-//     margin-left: 0 !important;
-//   }
-//   @media (min-width: 576px) {
-//     margin-left: 250px !important;
-//   }
-// }
-
-// .g-sidenav-pinned .sidenav {
-//   @media (max-width: 575.98px) {
-//       transform: translateX(0);
-//   }
-// }
 
 .keyword-item {
   border: 1px solid #f5365c;
@@ -2039,9 +2012,10 @@ input::-webkit-inner-spin-button {
 }
 
 .card-summary-funnel {
+  background-image: linear-gradient(#e6f3ff, white);
   .funnel-item-header {
     height: 6em;
-    margin-bottom: -3em;
+    margin-bottom: -4em;
     > span {
       font-size: 1.3rem;
       font-weight: bold;
@@ -2049,19 +2023,71 @@ input::-webkit-inner-spin-button {
     }
   }
   .funnel-symbol > .content {
-    margin-top: -5em;
+    margin-top: -5.2em;
     height: 5em;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    > span:first-child {
+      font-size: 1.5rem;
+      color: #0059ac;
+    }
+    > span:last-child {
+      font-size: 0.8rem;
+    }
   }
   .card-body .detail-item {
-    width: 20%;
+    max-width: 20%;
     padding-left: 0;
     padding-right: 0;
+    .card {
+      transition: all 0.2s;
+      &:hover {
+        cursor: pointer;
+        background-color: #f7f7f7;
+      }
+    }
+    .square-box-60 {
+      min-height: 100px;
+    }
   }
 }
+
+.square-box-60 {
+  position: relative;
+  .dummy {
+    margin-top: 60%;
+  }
+  .content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.square-box {
+  position: relative;
+  .dummy {
+    margin-top: 100%;
+  }
+  .content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 .align-center {
   align-items: center;
 }

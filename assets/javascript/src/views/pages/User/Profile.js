@@ -79,24 +79,22 @@ export class Profile extends Component {
                 <Card className="card-profile">
                   <CardHeader className="p-0 mb-5 border-0">
                     <Row className="justify-content-center">
-                      <Col lg="3">
-                        <div className="card-profile-image">
-                          <img
-                            alt="..."
-                            className="profile-rounded-img"
-                            src={user.profile_url}
+                      <div className="card-profile-image">
+                        <img
+                          alt="..."
+                          className="profile-rounded-img"
+                          src={user.profile_url}
+                        />
+                        <label className="profile-edit-icon">
+                          <input
+                            type="file"
+                            name="profile-input"
+                            hidden
+                            onChange={onChangeProfile}
                           />
-                          <label className="profile-edit-icon">
-                            <input
-                              type="file"
-                              name="profile-input"
-                              hidden
-                              onChange={onChangeProfile}
-                            />
-                            <i className="fa fa-camera"></i>
-                          </label>
-                        </div>
-                      </Col>
+                          <i className="fa fa-camera"></i>
+                        </label>
+                      </div>
                     </Row>
                   </CardHeader>
                   <CardBody className="pt-0">
