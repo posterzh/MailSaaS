@@ -72,7 +72,5 @@ class SendTestEmailView(APIView):
 
     def post(self, request):
         mailAccountId = request.data['mailAccountId']
-        mailAccount = EmailAccount.objects.get(pk=mailAccountId)
-
-        result = test_email.delay(mailAccountId)
+        test_email.delay(mailAccountId)
         return Response("Ok")
