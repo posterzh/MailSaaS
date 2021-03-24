@@ -14,6 +14,7 @@ import PageContainer from "../../../../components/Containers/PageContainer";
 import Tables from "../../../../components/Tables";
 import {
   getMailAccounts,
+  updateMailAccount,
 } from "../../../../redux/action/MailAccountsActions";
 
 const tableTitle = [
@@ -59,17 +60,28 @@ class WarmList extends Component {
     })
   }
 
-  onTblValChange(field, value, record, recordIndex) {
+  async onTblValChange(field, value, record, recordIndex) {
     const { data } = this.state;
     if (field === 'warming_enabled') {
-      data.forEach(item => {
-        if (item.id === record.id) {
-          item[field] = value;
-        }
-      })
+      const account_changed = data.filter(item => item.id === record.id);
+      if (!account_changed.length) {
+        return;
+      }
+      const origin_value = account_changed[0][field];
+      account_changed[0][field] = value;
       this.setState({
         data: [...data]
       })
+
+      // Call API
+      try {
+        await this.props.updateMailAccount(account_changed[0].id, account_changed[0])
+      } catch (e) {
+        account_changed[0][field] = origin_value;
+        this.setState({
+          data: [...data]
+        })
+      }
     }
   }
 
@@ -156,4 +168,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   getMailAccounts,
+  updateMailAccount,
 })(WarmList);
