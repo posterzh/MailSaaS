@@ -19,6 +19,7 @@ import {
   addSendingCalendar,
   updateSendingCalendar,
   getAvailableTimezones,
+  sendTestEmail,
 } from "../../../../redux/action/SendingCalendarActions";
 import { initial } from "lodash";
 
@@ -42,6 +43,7 @@ function SendingCalendar({
   addSendingCalendar,
   updateSendingCalendar,
   getAvailableTimezones,
+  sendTestEmail,
 }) {
   const [currentCalendar, setCurrentCalendar] = useState(null);
   const [currentMailAccount, setCurrentMailAccount] = useState(null);
@@ -83,8 +85,9 @@ function SendingCalendar({
     setIsEditing(false);
   };
 
-  const sendTestEmail = () => {
-    console.log(currentMailAccount);
+  const onSendTestEmail = () => {
+    console.log(currentMailAccount.email);
+    sendTestEmail(currentMailAccount.email);
   };
 
   return (
@@ -129,7 +132,7 @@ function SendingCalendar({
               />
             )}
 
-            <Button color="danger" type="button" onClick={sendTestEmail}>
+            <Button color="danger" type="button" onClick={onSendTestEmail}>
               Send test email
             </Button>
           </Col>
@@ -153,4 +156,5 @@ export default connect(mapStateToProps, {
   updateSendingCalendar,
 
   getAvailableTimezones,
+  sendTestEmail,
 })(SendingCalendar);

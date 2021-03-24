@@ -10,4 +10,6 @@ urlpatterns = [
     path('sending-calendars/<int:pk>/', views.SendingCalendarView.as_view(), name='sending-calendar'),
 
     path('available-timezones/', views.AvailableTimezonesView.as_view(), name="available-timezones"),
+
+    path('send-test-email/', views.SendTestEmailView.as_view(), name="send-test-email"),
 ]

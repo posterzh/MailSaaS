@@ -43,6 +43,7 @@ class EmailAccountView(generics.RetrieveUpdateDestroyAPIView):
 
         return super(EmailAccountView, self).update(request, *args, **kwargs)
 
+
 class SendingCalendarListView(generics.ListCreateAPIView):
     queryset = SendingCalendar.objects.all()
     serializer_class = SendingCalendarSerializer
@@ -64,7 +65,14 @@ class SendingCalendarView(generics.RetrieveUpdateDestroyAPIView):
 
 class AvailableTimezonesView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    def get(self, request, format=None):
+
+    def get(self, request):
         return Response(pytz.all_timezones)
 
 
+class SendTestEmailView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        email = request.data['email']
+        return Response("Ok")

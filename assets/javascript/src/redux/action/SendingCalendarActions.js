@@ -1,11 +1,12 @@
 import axios from "../../utils/axios";
-import { toastOnError } from "../../utils/Utils";
+import { toastOnError, toastOnSuccess } from "../../utils/Utils";
 import {
   GET_SENDING_CALENDARS,
   ADD_SENDING_CALENDAR,
   UPDATE_SENDING_CALENDAR,
   DELETE_SENDING_CALENDAR,
   GET_AVAILABLE_TIME_ZONES,
+  SEND_TEST_EMAIL,
 } from "../actionType/actionType";
 
 export const getSendingCalendars = () => (dispatch) => {
@@ -72,6 +73,19 @@ export const getAvailableTimezones = () => (dispatch) => {
         type: GET_AVAILABLE_TIME_ZONES,
         payload: response.data,
       });
+    })
+    .catch((error) => {
+      toastOnError(error);
+    });
+};
+
+export const sendTestEmail = (email) => (dispatch) => {
+  console.log("sending test email...");
+
+  axios
+    .post("/mailaccounts/send-test-email/", { email })
+    .then((response) => {
+      toastOnSuccess("Sent test email successfully!");
     })
     .catch((error) => {
       toastOnError(error);
