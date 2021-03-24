@@ -131,7 +131,7 @@ class CampaignLeadCatcher(models.Model):
 
 class SendingObject(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
-    mail_account = models.CharField(max_length=50)
+    from_email = models.CharField(max_length=50)
     recipient_email = models.CharField(max_length=50)
     email_subject = models.CharField(max_length=100)
     email_body = models.TextField(blank=True, null=True)
@@ -139,5 +139,6 @@ class SendingObject(models.Model):
     email_type = models.PositiveSmallIntegerField(default=0, null=True)
     # 0: not send, 1: sent, 2: xxx
     status = models.PositiveSmallIntegerField(default=0, null=True)
+    wait_days = models.PositiveSmallIntegerField(blank=True, null=True)
     sent_date = models.DateField(auto_now=False, blank=True, null=True)
     sent_time = models.TimeField(auto_now=False, blank=True, null=True)

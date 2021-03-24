@@ -34,8 +34,6 @@ export class TheSend extends Component {
   render() {
     const { onPrev, campaign, mailAccounts } = this.props;
     const activeMailaccount = mailAccounts.find((m) => m.id == campaign.from_address);
-
-    console.log(activeMailaccount);
     return (
       <>
         <Row>
