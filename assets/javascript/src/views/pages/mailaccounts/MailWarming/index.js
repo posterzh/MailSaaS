@@ -36,7 +36,7 @@ const tableTitle = [
 ];
 
 const actions = [{
-  key: 'warm_enabled',
+  key: 'warming_enabled',
   type: 'toggle',
   theme: 'warning',
   labelPositive: 'On',
@@ -61,7 +61,7 @@ class WarmList extends Component {
 
   onTblValChange(field, value, record, recordIndex) {
     const { data } = this.state;
-    if (field === 'warm_enabled') {
+    if (field === 'warming_enabled') {
       data.forEach(item => {
         if (item.id === record.id) {
           item[field] = value;
@@ -74,7 +74,7 @@ class WarmList extends Component {
   }
 
   render() {
-    const { mailAccounts } = this.props;
+    const { data } = this.state;
 
     return (
       <>
@@ -138,7 +138,7 @@ class WarmList extends Component {
           <Row>
             <Tables
               titles={tableTitle} // required
-              tablePropsData={mailAccounts} // required
+              tablePropsData={data} // required
               showPagination={true} // optional
               actions={actions}
               onChange={this.onTblValChange.bind(this)}
