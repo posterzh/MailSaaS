@@ -416,11 +416,13 @@ function Tables({
                                     id={"table-check-all" + index}
                                     type="checkbox"
                                     checked={data.selected}
-                                    onChange={(e) => selectRecord(e, index)}
+                                    onChange={(e) => {selectRecord(e, index);}}
+                                    onClick={(e) => e.stopPropagation()}
                                   />
                                   <label
                                     className="custom-control-label"
                                     htmlFor={"table-check-all" + index}
+                                    onClick={(e) => e.stopPropagation()}
                                   />
                                 </div>
                               </td>

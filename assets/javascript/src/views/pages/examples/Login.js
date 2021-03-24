@@ -113,6 +113,8 @@ class Login extends React.Component {
                       buttonText="Register"
                       onSuccess={this.onGoogleAuthSuccess}
                       onFailure={this.onGoogleAuthFailure}
+                      autoLoad = {false}
+                      isSignedIn={false}
                       cookiePolicy={'single_host_origin'}
                       render={({ onClick }) => {
                         return (

@@ -1974,7 +1974,7 @@ input::-webkit-inner-spin-button {
 .profile-edit-icon {
   position: absolute;
   z-index: 50;
-  right: -18px;
+  right: -70px;
   bottom: -55px;
   height: 30px;
   width: 30px;
@@ -1990,33 +1990,6 @@ input::-webkit-inner-spin-button {
     color: $info;
   }
 }
-
-// .sidenav .sidenav-toggler {
-//   @media (min-width: 576px) {
-//     padding: 1.5rem;
-//   }
-// }
-
-// .g-sidenav-pinned .sidenav.fixed-left + .main-content {
-//   @media (min-width: 576px) {
-//     margin-left: 250px;
-//   }
-// }
-
-// .sidenav.fixed-left + .main-content {
-//   @media (max-width: 575.98px) {
-//     margin-left: 0 !important;
-//   }
-//   @media (min-width: 576px) {
-//     margin-left: 250px !important;
-//   }
-// }
-
-// .g-sidenav-pinned .sidenav {
-//   @media (max-width: 575.98px) {
-//       transform: translateX(0);
-//   }
-// }
 
 .keyword-item {
   border: 1px solid #f5365c;
