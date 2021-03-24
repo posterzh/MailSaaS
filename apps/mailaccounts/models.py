@@ -104,7 +104,8 @@ class SendingCalendar(models.Model):
     min_emails_to_send = models.PositiveIntegerField(default=1)
     max_emails_to_send = models.PositiveIntegerField(default=1)
 
-    def __str__(self):
-        return str(self.user.email)
 
-
+class CalendarStatus(models.Model):
+    sending_calendar = models.ForeignKey(SendingCalendar, on_delete=models.CASCADE)
+    updated_time = models.TimeField(auto_now=True)
+    sent_count = models.PositiveIntegerField(default=0)
