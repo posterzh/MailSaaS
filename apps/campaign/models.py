@@ -80,7 +80,7 @@ class CampaignRecipient(models.Model):
 
 
 class FollowUpEmail(models.Model):
-    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name='followup')
     waitDays = models.PositiveIntegerField(default=1)
     subject = models.CharField(max_length=2000, blank=True, null=True)
     email_body = models.TextField(blank=True, null=True)
@@ -90,7 +90,7 @@ class FollowUpEmail(models.Model):
 
 
 class DripEmailModel(models.Model):
-    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name='drip')
     waitDays = models.PositiveIntegerField(default=1)
     subject = models.CharField(max_length=2000, blank=True, null=True)
     email_body = models.TextField(blank=True, null=True)

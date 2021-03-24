@@ -29,4 +29,5 @@ urlpatterns = [
     path('create/', views.CampaignCreateView.as_view(), name='create_campaign'),
     path('list/', views.CampaignListView.as_view(), name='list_campaign'),
     path('overview-summary/<int:pk>/', views.GetCampaignOverviewSummary.as_view(),name = 'Get_campaign_overview_summary'),
+    path('details-sequence/<int:pk>', views.CampaignDetailsSequenceView.as_view(), name='details-sequence')
 ]

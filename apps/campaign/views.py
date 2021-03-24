@@ -1853,3 +1853,7 @@ class LeadCatcherStatusUpdateView(generics.RetrieveUpdateAPIView):
         lead_status = request.data['lead_status']
         recipient = CampaignRecipient.objects.filter(id__in=eamil_ids).update(lead_status=lead_status)
         return Response({"message": "Lead Updated successfully", "success": True})
+
+
+class CampaignDetailsSequenceView(generics.ListAPIView):
+    pass

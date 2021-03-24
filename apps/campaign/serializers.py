@@ -156,3 +156,21 @@ class ProspectsSerializer(serializers.ModelSerializer):
     def get_engaged_count(self, obj):
         engaged = CampaignRecipient.objects.filter(email=obj.email, engaged=True).count()
         return engaged
+
+
+class CampaignDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Campaign
+        fields = '__all__'
+
+
+class FollowUpDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FollowUpEmail
+        fields = '__all__'
+
+
+class DripEmailDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DripEmailModel
+        fields = '__all__'
