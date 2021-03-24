@@ -24,13 +24,12 @@ from apps.integration.views import SendSlackMessage
 from apps.unsubscribes.models import UnsubscribeEmail
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
-from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, Campaigns, CampaignRecipients,
+from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
                      DripEmailModel, EmailOnLinkClick, FollowUpEmail, CampaignLabel)
 from .serializers import (CampaignEmailSerializer,
                           CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer,
-                          OnclickSerializer, CampaignLabelSerializer, ProspectsSerializer,
-                          CampaignsSerializer, CampaignRecipientsSerializer, CampaignListSerializer)
+                          OnclickSerializer, CampaignLabelSerializer, ProspectsSerializer)
 from apps.mailaccounts.models import EmailAccount
 
 
