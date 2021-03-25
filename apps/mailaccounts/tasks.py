@@ -17,7 +17,7 @@ def test_email(self, mailAccountId):
                         password=mailAccount.smtp_password,
                         use_tls=mailAccount.use_smtp_ssl,
                         from_email=mailAccount.email,
-                        to_email=['wangmingxie26@gmail.com'],
+                        to_email=['valor312@gmail.com'],
                         subject="This is test email",
                         body="Hi, this email is sent by SMTP.")
 
@@ -36,8 +36,7 @@ def email_sender():
             sending_calendar = SendingCalendar.objects.get(mail_account_id=mail_account.id)
         calendar_status, created = CalendarStatus.objects.get_or_create(sending_calendar_id=sending_calendar.id,
                                                                         defaults={'updated_datetime': datetime.now(
-                                                                            timezone.utc) - timedelta(days=1)
-                                                                                  })
+                                                                            timezone.utc) - timedelta(days=1)})
 
         can_send = True
         # Check time
@@ -102,6 +101,3 @@ def email_sender():
             sending_item.save()
         else:
             print(f"Failed to send from {mail_account.email} to {sending_item.recipient_email}")
-
-
-
