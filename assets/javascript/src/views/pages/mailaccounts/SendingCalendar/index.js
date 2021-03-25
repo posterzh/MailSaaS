@@ -24,7 +24,7 @@ import {
 import { initial } from "lodash";
 
 const initialCalendar = {
-  block_days: 65,
+  block_days: 96,
   start_time: "09:00:00",
   end_time: "17:00:00",
   time_zone: "US/Eastern",

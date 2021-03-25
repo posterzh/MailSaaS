@@ -97,10 +97,10 @@ class SendingCalendar(models.Model):
     TIMEZONE_CHOICES = zip(pytz.all_timezones, pytz.all_timezones)
 
     mail_account = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
-    block_days = models.PositiveIntegerField()
-    start_time = models.TimeField(auto_now=False)
-    end_time = models.TimeField(auto_now=False)
-    time_zone = models.CharField(choices=TIMEZONE_CHOICES, blank=True, default='', max_length=50)
+    block_days = models.PositiveIntegerField(default=96)
+    start_time = models.TimeField(auto_now=False, default='09:00:00')
+    end_time = models.TimeField(auto_now=False, default='17:00:00')
+    time_zone = models.CharField(choices=TIMEZONE_CHOICES, blank=True, default='US/Eastern', max_length=50)
     max_emails_per_day = models.PositiveIntegerField(default=20)
     minutes_between_sends = models.PositiveIntegerField(default=12)
     min_emails_to_send = models.PositiveIntegerField(default=1)
@@ -109,5 +109,5 @@ class SendingCalendar(models.Model):
 
 class CalendarStatus(models.Model):
     sending_calendar = models.ForeignKey(SendingCalendar, on_delete=models.CASCADE)
-    updated_time = models.TimeField(auto_now=True)
+    updated_datetime = models.DateTimeField(auto_now=False)
     sent_count = models.PositiveIntegerField(default=0)
