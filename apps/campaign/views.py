@@ -1745,7 +1745,7 @@ class ProspectsView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ProspectsSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['engaged', 'leads', 'bounces', 'unsubscribe', 'campaign']
+    filterset_fields = ['engaged', 'leads', 'bounces', 'unsubscribe']
 
     def get_queryset(self):
         """
@@ -1892,6 +1892,17 @@ class LeadCatcherStatusUpdateView(generics.RetrieveUpdateAPIView):
         recipient = CampaignRecipient.objects.filter(id__in=eamil_ids).update(lead_status=lead_status)
         return Response({"message": "Lead Updated successfully", "success": True})
 
+
+class CampaignSendingObjectView:
+    def getTimeToSendEmails(self, mail_account, cnt):
+        sendingObjects = []
+        campaigns = Campaign.objects.get(from_address=mail_account)
+        for camp in campaigns:
+            if campaigns.campaign_status:
+                objs = SendingObject.objects.filter(from_email=mail_account, campaign=camp.id, status=0).order_by("email_type")[:cnt]
+                sendingObjects.extend(objs)
+
+        return sendingObjects
 
 class CampaignDetailsSequenceView(generics.RetrieveAPIView):
     serializer_class = CampaignDetailsSerializer

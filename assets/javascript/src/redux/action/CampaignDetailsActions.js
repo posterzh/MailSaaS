@@ -54,13 +54,14 @@ export const getDetialsSequence = (id) => (dispatch) => {
 
 export const getDetailsSettings = (id) => (dispatch) => {
   toggleTopLoader(true);
-  axios
+  return axios
     .get(`/campaign/details-settings/${id}/`)
     .then((response) => {
       dispatch({
         type: GET_DETAILS_SETTINGS,
         payload: response.data,
       });
+      return response.data;
     })
     .catch((error) => {
       toastOnError(error);

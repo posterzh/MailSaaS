@@ -24,16 +24,19 @@ export class CampaignDetailSettings extends Component {
     this.state = {
       sendingAddressId: "",
       leadAddressId: "",
+      sendingAddressName: "",
+      leadAddressName: "",
     };
   }
 
-  componentDidMount() {
-    const { id } = this.props;
-    this.props.getDetailsSettings(this.props.id);
+  async componentDidMount() {
     this.props.getMailAccounts();
+
+    let detailsSettings = await this.props.getDetailsSettings(this.props.id);
+
     this.setState({
-      sendingAddressId: id,
-      leadAddressId: id,
+      sendingAddressId: detailsSettings.from_address,
+      leadAddressId: detailsSettings.from_address
     })
   }
 
@@ -42,11 +45,15 @@ export class CampaignDetailSettings extends Component {
   }
 
   onSendingAddressChange = (e) => {
-    this.setState({ sendingAddressId: e.target.value })
+    this.setState({
+      sendingAddressId: e.target.value
+    })
   }
 
   onLeadAddressChange = (e) => {
-    this.setState({ leadAddressId: e.target.value })
+    this.setState({ 
+      leadAddressId: e.target.value
+    })
   }
 
   render() {
@@ -54,14 +61,16 @@ export class CampaignDetailSettings extends Component {
     const { id, title, mailAccounts } = this.props;
     const campTitle = title ? title : "Date Outreach";
 
-    const activeSendingAddress = mailAccounts.find((m) => m.id == sendingAddressId);
-    const activeLeadAddress = mailAccounts.find((m) => m.id == leadAddressId);
+    console.log(sendingAddressId + " " + leadAddressId);
 
+    const activeSendingAddress = mailAccounts.find((m) => m.id == sendingAddressId);
     const activeSendingName = activeSendingAddress ?
       `${activeSendingAddress.first_name} ${activeSendingAddress.last_name}` : "";
+
+    const activeLeadAddress = mailAccounts.find((m) => m.id == leadAddressId);
     const activeLeadName = activeLeadAddress ?
       `${activeLeadAddress.first_name} ${activeLeadAddress.last_name}` : "";
-
+    
     return (
       <>
         <PageHeader
