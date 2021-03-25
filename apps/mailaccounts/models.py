@@ -109,5 +109,5 @@ class SendingCalendar(models.Model):
 
 class CalendarStatus(models.Model):
     sending_calendar = models.ForeignKey(SendingCalendar, on_delete=models.CASCADE)
-    updated_datetime = models.DateTimeField(auto_now=True)
+    updated_datetime = models.DateTimeField(auto_now=False)
     sent_count = models.PositiveIntegerField(default=0)
