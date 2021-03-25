@@ -130,22 +130,15 @@ class CampaignLeadCatcher(models.Model):
 
 
 class SendingObject(models.Model):
-    EMAIL_TYPE = (
-        ("intro", "Intro"),
-        ("follow", "Follow-Up"),
-        ("drip", "Drip"),
-    )
-
-    mail_account = models.CharField(max_length=50)
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    from_email = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
     recipient_email = models.CharField(max_length=50)
     email_subject = models.CharField(max_length=100)
     email_body = models.TextField(blank=True, null=True)
-    email_type = models.CharField(max_length=16, choices=EMAIL_TYPE, default='intro', null=True)
-    status = models.CharField(max_length=16)
-    date = models.DateField(auto_now=False, blank=True, null=True)
-    time = models.TimeField(auto_now=False, blank=True, null=True)
-
-    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.recipient_email
+    # 0: intro, 1: follow-up, 2: drip
+    email_type = models.PositiveSmallIntegerField(default=0, null=True)
+    # 0: not send, 1: sent, 2: xxx
+    status = models.PositiveSmallIntegerField(default=0, null=True)
+    wait_days = models.PositiveSmallIntegerField(blank=True, null=True)
+    sent_date = models.DateField(auto_now=False, blank=True, null=True)
+    sent_time = models.TimeField(auto_now=False, blank=True, null=True)

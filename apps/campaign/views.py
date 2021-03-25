@@ -21,15 +21,14 @@ from rest_framework.views import APIView
 
 from apps.campaignschedule.models import Email_schedule
 from apps.integration.views import SendSlackMessage
-from apps.unsubscribes.models import UnsubscribeEmail
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
-from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
-                     DripEmailModel, EmailOnLinkClick, FollowUpEmail, CampaignLabel)
-from .serializers import (CampaignEmailSerializer,
-                          CampaignLeadCatcherSerializer, CampaignSerializer,
+from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmailModel,
+                     EmailOnLinkClick, FollowUpEmail, CampaignLabel)
+from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
-                          OnclickSerializer, CampaignLabelSerializer, ProspectsSerializer)
+                          CampaignSendingObjectSerializer, OnclickSerializer, CampaignLabelSerializer,
+                          ProspectsSerializer)
 from apps.mailaccounts.models import EmailAccount
 
 
@@ -480,7 +479,7 @@ class CampaignCreateView(APIView):
                     self.createDrips(new_camp, campaign['drips'])
 
                 if new_camp.csvfile_op1:
-                    self.createRecipients(campaign_id, str(new_camp.csvfile_op1))
+                    self.createRecipientsAndSendingObject(new_camp, campaign)
 
                 return Response({"message": "Created new campaign successfully", "success": True}, status=status.HTTP_200_OK)
             return Response({"message": "Failed to create campaign", "success": False}, status=status.HTTP_400_BAD_REQUEST)
@@ -498,13 +497,17 @@ class CampaignCreateView(APIView):
         if len(drips) == 0:
             return
 
-        for drips in drips:
-            DripEmail = DripEmailModel(campaign=camp, waitDays=drips["waitDays"], subject=drips["subject"],
-                                       email_body=drips["email_body"])
+        for drip in drips:
+            DripEmail = DripEmailModel(campaign=camp, waitDays=drip["waitDays"], subject=drip["subject"],
+                                       email_body=drip["email_body"])
             DripEmail.save()
 
-    def createRecipients(self, campaign_id, csv_path):
-        df_csv = pd.read_csv('media/' + str(csv_path))
+    def createRecipientsAndSendingObject(self, new_camp, campaign):
+        campaign_id = new_camp.id
+        csv_path = str(new_camp.csvfile_op1)
+        from_email = new_camp.from_address_id
+
+        df_csv = pd.read_csv('media/' + csv_path)
         df_csv.drop(df_csv.columns[df_csv.columns.str.contains('unnamed', case=False)], axis=1, inplace=True)
         csv_columns = df_csv.columns
 
@@ -525,6 +528,42 @@ class CampaignCreateView(APIView):
             res = CampaignEmailSerializer(data=res_data)
             if res.is_valid():
                 res.save()
+
+            self.createSendingObject(campaign_id, from_email, email[0], campaign['email_subject'],
+                                     campaign['email_body'], 0, replacement, 0)
+
+            if campaign['has_follow_up']:
+                for follow in campaign['follow_up']:
+                    self.createSendingObject(campaign_id, from_email, email[0], follow['subject'],
+                                             follow['email_body'], 1, replacement, follow['waitDays'])
+
+            if campaign['has_drips']:
+                for drip in campaign['drips']:
+                    self.createSendingObject(campaign_id, from_email, email[0], drip['subject'],
+                                             drip['email_body'], 2, replacement, drip['waitDays'])
+
+    def createSendingObject(self, camp_id, from_email, to_email, subject, body, type, replacement, wait_days):
+        sending_obj = {
+            'campaign': camp_id,
+            'from_email': from_email,
+            'recipient_email': to_email,
+            'email_subject': self.convertTemplate(subject, replacement),
+            'email_body': self.convertTemplate(body, replacement),
+            'email_type': type,
+            'wait_days': wait_days
+        }
+
+        res = CampaignSendingObjectSerializer(data=sending_obj)
+        if res.is_valid():
+            res.save()
+
+    def convertTemplate(self, template, replacement):
+        for key in replacement.keys():
+            key_match = "{{" + key + "}}"
+            if key_match in template:
+                template = template.replace(key_match, replacement[key])
+
+        return template
 
 
 class CampaignListView(generics.ListAPIView):
@@ -1288,7 +1327,7 @@ class TrackEmailClick(APIView):
         return Response({"message": "Saved Successfully"})
 
 
-class GetCampaignOverviewSummary(APIView):
+class CampaignOverviewSummary(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, pk, format=None):

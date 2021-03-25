@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
+from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, SendingObject,
                      DripEmailModel, EmailOnLinkClick, FollowUpEmail, CampaignLabel)
 
 
@@ -165,3 +165,8 @@ class CampaignDetailsSerializer(serializers.ModelSerializer):
         model = Campaign
         fields = '__all__'
 
+
+class CampaignSendingObjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SendingObject
+        fields = '__all__'

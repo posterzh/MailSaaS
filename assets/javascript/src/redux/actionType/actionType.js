@@ -98,8 +98,6 @@ export const SUCCESS_LEAD_VIEW = "SUCCESS_LEAD_VIEW";
 // CREATE LEAD
 export const SUCCESS_CREATE_LEAD = "SUCCESS_CREATE_LEAD";
 
-
-
 // Karl - Will remove later
 // ****************************************************************
 
@@ -114,7 +112,6 @@ export const SUCCESS_FETCH_ONCLICK_PROSPECTS =
 
 // DELETE PROSPECTS
 export const DELETE_PROSPECT = "DELETE_PROSPECT";
-
 
 // FETCH_UNSUBSCRIPTION
 export const FETCH_UNSUBSCRIPTION = "FETCH_UNSUBSCRIPTION";
@@ -155,6 +152,7 @@ export const UPDATE_SENDING_CALENDAR = "UPDATE_SENDING_CALENDAR";
 export const DELETE_SENDING_CALENDAR = "DELETE_SENDING_CALENDAR";
 
 export const GET_AVAILABLE_TIME_ZONES = "GET_AVAILABLE_TIME_ZONES";
+export const SEND_TEST_EMAIL = "SEND_TEST_EMAIL";
 
 // Campaign actions
 export const CAMPAIGN_START = "CAMPAIGN_START";
