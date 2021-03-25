@@ -34,6 +34,8 @@ class EmailAccount(models.Model):
     first_name = models.CharField(max_length=200, default='', null=True, blank=True)
     last_name = models.CharField(max_length=200, default='', null=True, blank=True)
 
+    warming_enabled = models.BooleanField(default=False)
+
     # Google, Microsoft fields
     password = models.CharField(max_length=200, default='', null=True, blank=True)
 

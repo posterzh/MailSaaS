@@ -1,9 +1,12 @@
 import {
   GET_OVERVIEW_SUMMARY,
+  GET_DETAILS_SEQUENCE,
+  GET_DETAILS_SETTINGS,
 } from "../actionType/actionType";
 
 const initialState = {
   overviewSummary: {},
+  detailsSequence: {},
   id: '',
   title: ''
 };
@@ -14,9 +17,20 @@ export const campaignDetailsReducer = (state = initialState, action) => {
       return {
         ...state,
         overviewSummary: action.payload,
+        detailsSequence: {},
         id: action.payload.id,
         title: action.payload.title
       };
+    case GET_DETAILS_SEQUENCE:
+      return {
+        ...state,
+        detailsSequence: action.payload,
+      }
+    case GET_DETAILS_SETTINGS:
+      return {
+        ...state,
+        detailsSettings: action.payload,
+      }
     default:
       return state;
   }

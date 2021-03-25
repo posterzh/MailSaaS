@@ -21,14 +21,14 @@ from rest_framework.views import APIView
 
 from apps.campaignschedule.models import Email_schedule
 from apps.integration.views import SendSlackMessage
-from apps.unsubscribes.models import UnsubscribeEmail
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmailModel,
-                     EmailOnLinkClick, FollowUpEmail, CampaignLabel, SendingObject)
-from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer,
-                          CampaignSerializer, DripEmailSerilizer, FollowUpSerializer, CampaignSendingObjectSerializer,
-                          OnclickSerializer, CampaignLabelSerializer, ProspectsSerializer)
+                     EmailOnLinkClick, FollowUpEmail, CampaignLabel)
+from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
+                          DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
+                          CampaignSendingObjectSerializer, OnclickSerializer, CampaignLabelSerializer,
+                          ProspectsSerializer)
 from apps.mailaccounts.models import EmailAccount
 
 
@@ -1891,3 +1891,30 @@ class LeadCatcherStatusUpdateView(generics.RetrieveUpdateAPIView):
         lead_status = request.data['lead_status']
         recipient = CampaignRecipient.objects.filter(id__in=eamil_ids).update(lead_status=lead_status)
         return Response({"message": "Lead Updated successfully", "success": True})
+
+
+class CampaignSendingObjectView:
+    def getTimeToSendEmails(self, mail_account, cnt):
+        sendingObjects = []
+        campaigns = Campaign.objects.get(from_address=mail_account)
+        for camp in campaigns:
+            if campaigns.campaign_status:
+                objs = SendingObject.objects.filter(from_email=mail_account, campaign=camp.id, status=0).order_by("email_type")[:cnt]
+                sendingObjects.extend(objs)
+
+        return sendingObjects
+
+class CampaignDetailsSequenceView(generics.RetrieveAPIView):
+    serializer_class = CampaignDetailsSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Campaign.objects.filter(assigned=user.id)
+
+
+class CampaignDetailsSettingsView(generics.RetrieveAPIView):
+    serializer_class = CampaignSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Campaign.objects.filter(assigned=user.id)

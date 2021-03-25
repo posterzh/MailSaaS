@@ -33,6 +33,7 @@ import Profile from "./views/pages/User/Profile";
 // Mail Account
 import MailAccounts from "./views/pages/mailaccounts/MailAccounts";
 import SendingCalendar from "./views/pages/mailaccounts/SendingCalendar";
+import MailWarming from "./views/pages/mailaccounts/MailWarming";
 
 // New Campaign pages
 import NewCampaign from "./views/pages/campaign/NewCampaign";
@@ -153,6 +154,13 @@ const routes = [
         name: "Mail Accounts",
         miniName: " ",
         component: MailAccounts,
+        layout: "/app/admin",
+      },
+      {
+        path: "/mail-warming",
+        name: "Mail Warming",
+        miniName: " ",
+        component: MailWarming,
         layout: "/app/admin",
       },
       {

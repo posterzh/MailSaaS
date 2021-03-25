@@ -12,12 +12,8 @@ import {
   CardHeader,
   CardBody,
 } from "reactstrap";
-import {
-  CampaignLeadCatcherAction,
-  CampaignLeadGetAction,
-  CampaignLeadDeleteAction,
-  CampaignLeadUpdateAction,
-} from "../../../../redux/action/CampaignAction";
+import { getMailAccounts } from "../../../../redux/action/MailAccountsActions"
+import { getDetailsSettings } from "../../../../redux/action/CampaignDetailsActions"
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import DetailHeader from "./components/DetailHeader";
@@ -26,69 +22,55 @@ export class CampaignDetailSettings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      recipientsData: "",
-      num: "",
-      specific_link: null,
-      isOpen: false,
-      show: false,
-      hide: false,
+      sendingAddressId: "",
+      leadAddressId: "",
+      sendingAddressName: "",
+      leadAddressName: "",
     };
   }
-  handleChange = (e) => {
+
+  async componentDidMount() {
+    this.props.getMailAccounts();
+
+    let detailsSettings = await this.props.getDetailsSettings(this.props.id);
+
     this.setState({
-      [e.target.name]: e.target.value,
-      show: true,
-    });
-  };
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.setState({ isOpen: true });
-    if (!this.state.recipientsData || !this.state.num) {
-      alert("Fill all information");
-    }
-    var id =
-      this.props.history.location.state && this.props.history.location.state.id;
-    if (this.props.lead && this.props.lead.campaign) {
-      //put
-      const updateLeadData = {
-        leadcatcher_recipient: this.state.recipientsData,
-        of_times: this.state.num,
-        specific_link: this.state.specific_link,
-      };
-      const getId = this.props.lead.id;
-      this.props.CampaignLeadUpdateAction(getId, id, updateLeadData);
-    } else {
-      //post
-      const leadData = {
-        leadcatcher_recipient: this.state.recipientsData,
-        of_times: this.state.num,
-        specific_link: this.state.specific_link,
-      };
-      this.props.CampaignLeadCatcherAction(id, leadData);
-    }
-  };
-  componentDidMount() {
-    // const id =
-    //   this.props.history.location.state && this.props.history.location.state.id;
-    // this.props.CampaignLeadGetAction(id);
+      sendingAddressId: detailsSettings.from_address,
+      leadAddressId: detailsSettings.from_address
+    })
   }
-  
+
   componentWillReceiveProps(preProps, nextProps) {
-    console.log({
-      preProps,
-      nextProps,
-    });
+
   }
-  leadDeleteAction(id) {
-    this.props.CampaignLeadDelete(id);
-    alert("You want to delete this leadCatcher");
+
+  onSendingAddressChange = (e) => {
+    this.setState({
+      sendingAddressId: e.target.value
+    })
   }
+
+  onLeadAddressChange = (e) => {
+    this.setState({ 
+      leadAddressId: e.target.value
+    })
+  }
+
   render() {
-    // const id =
-    //   this.props.history.location.state && this.props.history.location.state.id;
-    // const { lead, leadData } = this.props;
-    const { id, title } = this.props;
+    const { sendingAddressId, leadAddressId } = this.state;
+    const { id, title, mailAccounts } = this.props;
     const campTitle = title ? title : "Date Outreach";
+
+    console.log(sendingAddressId + " " + leadAddressId);
+
+    const activeSendingAddress = mailAccounts.find((m) => m.id == sendingAddressId);
+    const activeSendingName = activeSendingAddress ?
+      `${activeSendingAddress.first_name} ${activeSendingAddress.last_name}` : "";
+
+    const activeLeadAddress = mailAccounts.find((m) => m.id == leadAddressId);
+    const activeLeadName = activeLeadAddress ?
+      `${activeLeadAddress.first_name} ${activeLeadAddress.last_name}` : "";
+    
     return (
       <>
         <PageHeader
@@ -99,7 +81,7 @@ export class CampaignDetailSettings extends Component {
 
         <PageContainer title={campTitle} showHelper={true}>
           <Row>
-            <DetailHeader activeItem="SETTINGS" id={id}/>
+            <DetailHeader activeItem="SETTINGS" id={id} />
           </Row>
 
           <Row className="mx-3 my-5">
@@ -120,20 +102,24 @@ export class CampaignDetailSettings extends Component {
                       id="selectFromAddress"
                       type="select"
                       className="form-control-sm"
+                      value={sendingAddressId}
+                      onChange={this.onSendingAddressChange}
                     >
-                      <option>test@gmail.com</option>
-                      <option>admin@gmail.com</option>
+                      <option>Select</option>
+                      {mailAccounts && mailAccounts.map((mailAccount, id) => (
+                        <option key={`item_${id}`} value={mailAccount.id}>{mailAccount.email}</option>
+                      ))}
                     </Input>
                   </FormGroup>
 
                   <FormGroup>
                     <label className="form-control-label">From name</label>
-                    <Input type="text" className="form-control-sm" />
+                    <Input type="text" className="form-control-sm" defaultValue={activeSendingName} />
                   </FormGroup>
 
                   <Row>
                     <Col>
-                      <Button color="danger">SAVE</Button>
+                      <Button color="danger" size="sm">&nbsp;&nbsp;SAVE&nbsp;&nbsp;</Button>
                     </Col>
                   </Row>
                 </CardBody>
@@ -157,9 +143,13 @@ export class CampaignDetailSettings extends Component {
                       id="selectFromAddress"
                       type="select"
                       className="form-control-sm"
+                      value={leadAddressId}
+                      onChange={this.onLeadAddressChange}
                     >
-                      <option>test@gmail.com</option>
-                      <option>admin@gmail.com</option>
+                      <option>Select</option>
+                      {mailAccounts && mailAccounts.map((mailAccount, id) => (
+                        <option key={`item_${id}`} value={mailAccount.id}>{mailAccount.email}</option>
+                      ))}
                     </Input>
                   </FormGroup>
 
@@ -167,16 +157,17 @@ export class CampaignDetailSettings extends Component {
                     <label className="form-control-label">
                       When does a recipient become a lead?
                     </label>
-                    <Input type="text" className="form-control-sm" />
+                    <Input type="text" className="form-control-sm" defaultValue={activeLeadName} />
                   </FormGroup>
 
                   <Row>
                     <Col>
-                      <Button color="danger">SAVE </Button>
+                      <Button color="danger" size="sm">&nbsp;&nbsp;SAVE&nbsp;&nbsp;</Button>
                     </Col>
                     <Col>
-                      <Button color="secondary">CANCEL</Button>
+                      <Button color="secondary" size="sm">CANCEL</Button>
                     </Col>
+                    <Col></Col>
                   </Row>
                 </CardBody>
               </Card>
@@ -189,27 +180,13 @@ export class CampaignDetailSettings extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    lead: state.LeadGetReducer && state.LeadGetReducer.leadGetData,
     id: state.campaignDetails.id,
     title: state.campaignDetails.title,
+    mailAccounts: state.mailAccounts.mailAccounts,
   };
 };
-const mapDispatchToProps = (dispatch) => ({
-  CampaignLeadCatcherAction: (id, leadData) => {
-    dispatch(CampaignLeadCatcherAction(id, leadData));
-  },
-  CampaignLeadDelete: (id) => {
-    dispatch(CampaignLeadDeleteAction(id));
-  },
-  CampaignLeadGetAction: (id) => {
-    dispatch(CampaignLeadGetAction(id));
-  },
-  CampaignLeadUpdateAction: (getId, id, updateLeadData) => {
-    dispatch(CampaignLeadUpdateAction(getId, id, updateLeadData));
-  },
-});
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CampaignDetailSettings);
+export default connect(mapStateToProps, {
+  getDetailsSettings,
+  getMailAccounts
+})(CampaignDetailSettings);
