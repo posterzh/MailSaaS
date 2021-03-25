@@ -1,12 +1,15 @@
+from datetime import datetime
+
 import pytz
 from django.http import Http404, HttpResponseServerError, HttpResponseBadRequest
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from . import utils
-from .models import EmailAccount, SendingCalendar
+from .models import EmailAccount, SendingCalendar, CalendarStatus
 from .serializers import EmailAccountSerializer, SendingCalendarSerializer
-from .tasks import test_email
+from .tasks import test_email, send_mail_with_smtp
+from ..campaign.models import SendingObject
 
 
 class EmailAccountListView(generics.ListCreateAPIView):
@@ -73,4 +76,5 @@ class SendTestEmailView(APIView):
     def post(self, request):
         mailAccountId = request.data['mailAccountId']
         test_email.delay(mailAccountId)
+
         return Response("Ok")

@@ -13,7 +13,7 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'every': {
         'task': 'apps.mailaccounts.tasks.email_sender',
-        'schedule': 10.0,
+        'schedule': 60.0,
     },
 }
 
