@@ -28,7 +28,7 @@ from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
                      DripEmailModel, EmailOnLinkClick, FollowUpEmail, CampaignLabel)
 from .serializers import (CampaignEmailSerializer,
                           CampaignLeadCatcherSerializer, CampaignSerializer,
-                          DripEmailSerilizer, FollowUpSerializer,
+                          DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
                           OnclickSerializer, CampaignLabelSerializer, ProspectsSerializer)
 from apps.mailaccounts.models import EmailAccount
 
@@ -1706,7 +1706,7 @@ class ProspectsView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ProspectsSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['engaged', 'leads', 'bounces', 'unsubscribe']
+    filterset_fields = ['engaged', 'leads', 'bounces', 'unsubscribe', 'campaign']
 
     def get_queryset(self):
         """
@@ -1854,5 +1854,17 @@ class LeadCatcherStatusUpdateView(generics.RetrieveUpdateAPIView):
         return Response({"message": "Lead Updated successfully", "success": True})
 
 
-class CampaignDetailsSequenceView(generics.ListAPIView):
-    pass
+class CampaignDetailsSequenceView(generics.RetrieveAPIView):
+    serializer_class = CampaignDetailsSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Campaign.objects.filter(assigned=user.id)
+
+
+class CampaignDetailsSettingsView(generics.RetrieveAPIView):
+    serializer_class = CampaignSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Campaign.objects.filter(assigned=user.id)

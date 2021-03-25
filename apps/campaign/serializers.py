@@ -145,12 +145,6 @@ class ProspectsSerializer(serializers.ModelSerializer):
         return engaged
 
 
-class CampaignDetailsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Campaign
-        fields = '__all__'
-
-
 class FollowUpDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = FollowUpEmail
@@ -161,3 +155,13 @@ class DripEmailDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = DripEmailModel
         fields = '__all__'
+
+
+class CampaignDetailsSerializer(serializers.ModelSerializer):
+    followups = FollowUpDetailsSerializer(many=True, read_only=True)
+    drips = DripEmailDetailsSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Campaign
+        fields = '__all__'
+
