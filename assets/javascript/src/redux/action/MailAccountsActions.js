@@ -9,13 +9,14 @@ import {
 
 export const getMailAccounts = () => (dispatch) => {
   toggleTopLoader(true);
-  axios
+  return axios
     .get("/mailaccounts/emailaccounts/")
     .then((response) => {
       dispatch({
         type: GET_MAILACCOUNTS,
         payload: response.data,
       });
+      return response.data;
     })
     .catch((error) => {
       toastOnError(error);
@@ -65,7 +66,7 @@ export const deleteMailAccount = (id) => (dispatch) => {
 
 export const updateMailAccount = (id, mailAccount) => (dispatch) => {
   toggleTopLoader(true);
-  axios
+  return axios
     .patch(`/mailaccounts/emailaccounts/${id}/`, mailAccount)
     .then((response) => {
       dispatch({
@@ -74,6 +75,8 @@ export const updateMailAccount = (id, mailAccount) => (dispatch) => {
       });
 
       toastOnSuccess("Updated successfully!");
+
+      return response.data;
     })
     .catch((error) => {
       toastOnError(error);

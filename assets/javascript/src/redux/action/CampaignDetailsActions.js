@@ -2,7 +2,9 @@ import axios from "../../utils/axios";
 import { toastOnError, toastOnSuccess, toggleTopLoader } from "../../utils/Utils";
 import { history } from "../..";
 import {
-  GET_OVERVIEW_SUMMARY
+  GET_OVERVIEW_SUMMARY,
+  GET_DETAILS_SEQUENCE,
+  GET_DETAILS_SETTINGS,
 } from "../actionType/actionType";
 
 
@@ -32,3 +34,39 @@ export const getOverviewSummary = (id) => (dispatch) => {
     });
 };
 
+export const getDetialsSequence = (id) => (dispatch) => {
+  toggleTopLoader(true);
+  axios
+    .get(`/campaign/details-sequence/${id}/`)
+    .then((response) => {
+      dispatch({
+        type: GET_DETAILS_SEQUENCE,
+        payload: response.data,
+      });
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+}
+
+export const getDetailsSettings = (id) => (dispatch) => {
+  toggleTopLoader(true);
+  return axios
+    .get(`/campaign/details-settings/${id}/`)
+    .then((response) => {
+      dispatch({
+        type: GET_DETAILS_SETTINGS,
+        payload: response.data,
+      });
+      return response.data;
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+}

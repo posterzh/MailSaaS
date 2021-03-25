@@ -21,14 +21,14 @@ from rest_framework.views import APIView
 
 from apps.campaignschedule.models import Email_schedule
 from apps.integration.views import SendSlackMessage
-from apps.unsubscribes.models import UnsubscribeEmail
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmailModel,
-                     EmailOnLinkClick, FollowUpEmail, CampaignLabel, SendingObject)
-from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer,
-                          CampaignSerializer, DripEmailSerilizer, FollowUpSerializer, CampaignSendingObjectSerializer,
-                          OnclickSerializer, CampaignLabelSerializer, ProspectsSerializer)
+                     EmailOnLinkClick, FollowUpEmail, CampaignLabel)
+from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
+                          DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
+                          CampaignSendingObjectSerializer, OnclickSerializer, CampaignLabelSerializer,
+                          ProspectsSerializer)
 from apps.mailaccounts.models import EmailAccount
 
 
@@ -1903,3 +1903,18 @@ class CampaignSendingObjectView:
                 sendingObjects.extend(objs)
 
         return sendingObjects
+
+class CampaignDetailsSequenceView(generics.RetrieveAPIView):
+    serializer_class = CampaignDetailsSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Campaign.objects.filter(assigned=user.id)
+
+
+class CampaignDetailsSettingsView(generics.RetrieveAPIView):
+    serializer_class = CampaignSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Campaign.objects.filter(assigned=user.id)

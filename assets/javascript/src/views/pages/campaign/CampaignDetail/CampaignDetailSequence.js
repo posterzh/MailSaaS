@@ -22,10 +22,15 @@ import {
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import DetailHeader from "./components/DetailHeader";
+import { getDetialsSequence } from "../../../../redux/action/CampaignDetailsActions";
 
-class CampaignDetailRecipients extends Component {
+class CampaignDetailSequence extends Component {
+  componentDidMount() {
+    this.props.getDetialsSequence(this.props.id);
+  }
+
   render() {
-    const { id, title } = this.props;
+    const { id, title, detailsSequence } = this.props;
     const campTitle = title ? title : "Date Outreach";
     return (
       <>
@@ -37,7 +42,7 @@ class CampaignDetailRecipients extends Component {
 
         <PageContainer title={campTitle} showHelper={true}>
           <Row>
-            <DetailHeader activeItem="SEQUENCE" id={id}/>
+            <DetailHeader activeItem="SEQUENCE" id={id} />
           </Row>
           <Row className="my-3">
             <Col md={12} className="mx-auto text-right">
@@ -47,6 +52,114 @@ class CampaignDetailRecipients extends Component {
             </Col>
           </Row>
           <Row>
+            <Col md="12">
+              <Card>
+                <CardHeader className="bg-transparent py-2">
+                  <h3 className="mb-0">Initial campaign email</h3>
+                </CardHeader>
+                <CardBody className="py-2">
+                  <div
+                    className="timeline timeline-one-side"
+                    data-timeline-axis-style="dashed"
+                    data-timeline-content="axis"
+                  >
+                    <div className="timeline-block mb-1">
+                      <span className="timeline-step badge-success">
+                        <i className="fa fa-envelope"></i>
+                      </span>
+                      <div className="timeline-content full-max-w">
+                        <h5 className="mb-0">{detailsSequence.email_subject}</h5>
+                        <p className="text-sm mt-1 mb-0" dangerouslySetInnerHTML={{ __html: detailsSequence.email_body }}>
+                        </p>
+                        <div className="mt-3" style={{position: "absolute", top: -12, right: 0}}>
+                          <Badge color="danger" pill>
+                            <i className="fa fa-pause"></i>
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+          <Row>
+            <Col md="6">
+              <Card>
+                <CardHeader className="bg-transparent py-2">
+                  <h3 className="mb-0">Follow-Ups</h3>
+                </CardHeader>
+                <CardBody className="py-2">
+                  <div
+                    className="timeline timeline-one-side"
+                    data-timeline-axis-style="dashed"
+                    data-timeline-content="axis"
+                  >
+                    {detailsSequence.followups && (
+                      detailsSequence.followups.map(followup => (
+                        <div className="timeline-block mb-1">
+                          <span className="timeline-step badge-success">
+                            <i className="fa fa-reply"></i>
+                          </span>
+                          <div className="timeline-content">
+                            <small className="text-muted font-weight-bold">
+                              Wait {followup.waitDays} days
+                            </small>
+                            <h5 className="mt-3 mb-0">{followup.subject}</h5>
+                            <p className="text-sm mt-1 mb-0" dangerouslySetInnerHTML={{ __html: followup.email_body }}>
+                            </p>
+                            <div className="mt-3" style={{}}>
+                              <Badge color="danger" pill style={{position: "absolute", top: 6, right: 0}}>
+                                <i className="fa fa-pause"></i>
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+            <Col md="6">
+              <Card>
+                <CardHeader className="bg-transparent py-2">
+                  <h3 className="mb-0">Drips</h3>
+                </CardHeader>
+                <CardBody className="py-2">
+                  <div
+                    className="timeline timeline-one-side"
+                    data-timeline-axis-style="dashed"
+                    data-timeline-content="axis"
+                  >
+                    {detailsSequence.drips && (
+                      detailsSequence.drips.map(drip => (
+                        <div className="timeline-block mb-1">
+                          <span className="timeline-step badge-success">
+                            <i className="fas fa-stopwatch"></i>
+                          </span>
+                          <div className="timeline-content">
+                            <small className="text-muted font-weight-bold">
+                              Wait {drip.waitDays} days
+                            </small>
+                            <h5 className="mt-3 mb-0">{drip.subject}</h5>
+                            <p className="text-sm mt-1 mb-0" dangerouslySetInnerHTML={{ __html: drip.email_body }}>
+                            </p>
+                            <div className="mt-3">
+                              <Badge color="success" pill style={{position: "absolute", top: 6, right: 0}}>
+                                <i className="fa fa-play"></i>
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+          {/* <Row>
             <Col md="12">
               <Card>
                 <CardHeader className="bg-transparent py-2">
@@ -220,7 +333,7 @@ class CampaignDetailRecipients extends Component {
                 </CardBody>
               </Card>
             </Col>
-          </Row>
+          </Row> */}
           {/* <Row className="mt-4">
             <div className="Sequence_div">
               <span>
@@ -268,6 +381,9 @@ class CampaignDetailRecipients extends Component {
 const mapStateToProps = (state) => ({
   id: state.campaignDetails.id,
   title: state.campaignDetails.title,
+  detailsSequence: state.campaignDetails.detailsSequence,
 });
 
-export default connect(mapStateToProps)(CampaignDetailRecipients);
+export default connect(mapStateToProps, {
+  getDetialsSequence
+})(CampaignDetailSequence);
