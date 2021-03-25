@@ -1891,3 +1891,15 @@ class LeadCatcherStatusUpdateView(generics.RetrieveUpdateAPIView):
         lead_status = request.data['lead_status']
         recipient = CampaignRecipient.objects.filter(id__in=eamil_ids).update(lead_status=lead_status)
         return Response({"message": "Lead Updated successfully", "success": True})
+
+
+class CampaignSendingObjectView:
+    def getTimeToSendEmails(self, mail_account, cnt):
+        sendingObjects = []
+        campaigns = Campaign.objects.get(from_address=mail_account)
+        for camp in campaigns:
+            if campaigns.campaign_status:
+                objs = SendingObject.objects.filter(from_email=mail_account, campaign=camp.id, status=0).order_by("email_type")[:cnt]
+                sendingObjects.extend(objs)
+
+        return sendingObjects

@@ -9,15 +9,8 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  CardImg,
-  CardImgOverlay,
+  Badge,
   CardTitle,
-  CardText,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
 } from "reactstrap";
 // import React, { Component } from 'react'
 import { CampaignOverviewAction } from "../../../../../redux/action/CampaignAction";
@@ -44,17 +37,20 @@ class OverviewSummery extends Component {
           <Row>
             <Col>
               <Card className="card-summary-funnel mb-0">
-                <div className="funnel-item-header px-4 pt-3">
-                  <span>GOOD TEST</span>
+                <div className="funnel-item-header px-3 pt-3 align-items-center">
+                  <span className="mr-3">GOOD TEST</span>
+                  <Badge color="danger" pill>
+                    2 Recipients
+                  </Badge>
                 </div>
-                <Row className="justify-content-center mb-3">
+                {/* <Row className="justify-content-center mb-3">
                   <div class="funnel-symbol circle">
                     <div class="content">
                       <span>1</span>
                       <span>Recipients</span>
                     </div>
                   </div>
-                </Row>
+                </Row> */}
                 {/* <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                   <div className="d-flex justify-content-between">
                   </div>
@@ -62,15 +58,15 @@ class OverviewSummery extends Component {
                 <CardBody className="pt-0 pb-3">
                   <Row>
                     {
-                      ["OPENED", "CLICKED", "REPLIED", "BOUNCED", "UNSUBSCRIBED"].map(item => 
-                      <Col className="detail-item px-1 px-md-2">
+                      ["OPENED", "CLICKED", "REPLIED", "BOUNCED", "UNSUBSCRIBED"].map((item, index) => 
+                      <Col className="detail-item px-1 px-md-2" key={"summary" + index}>
                         <Card className="card-stats mb-0">
                           <CardBody className="p-1 square-box-60">
                             <div className="dummy"></div>
                             <div className="content d-flex flex-column justify-content-around align-items-center mx-0">
-                              <div className="icon icon-sm icon-shape bg-gradient-red text-white rounded-circle shadow">
+                              {/* <div className="icon icon-sm icon-shape bg-gradient-dark text-white rounded-circle shadow">
                                 <span>0%</span>
-                              </div>
+                              </div> */}
                               <span className="h2 font-weight-bold mb-0">
                                 0
                               </span>
@@ -92,29 +88,17 @@ class OverviewSummery extends Component {
           </Row>
 
           <Row>
-            <div className="draw_div">
-              <div className="line_div_second"></div>
-            </div>
           </Row>
 
           <Row>
             <Col>
-              <Card className="card-summary-funnel mb-0">
+              <Card className="card-summary-funnel mb-0 mt-3">
                 <div className="funnel-item-header px-4 pt-3">
-                  <span>FOLLOW UP</span>
+                  <span className="mr-3">FOLLOW UP</span>
+                  <Badge color="danger" pill>
+                    {overviewSummary.recipientCount || 0} Recipients
+                  </Badge>
                 </div>
-                <Row className="justify-content-center mb-3">
-                  <div class="funnel-symbol circle">
-                    <div class="content">
-                      <span>{overviewSummary.recipientCount || 0}</span>
-                      <span>Recipients</span>
-                    </div>
-                  </div>
-                </Row>
-                {/* <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                  <div className="d-flex justify-content-between">
-                  </div>
-                </CardHeader> */}
                 <CardBody className="pt-0 pb-3">
                   <Row>
                     <Col className="detail-item px-1 px-md-2">
@@ -122,9 +106,9 @@ class OverviewSummery extends Component {
                         <CardBody className="p-1 square-box-60">
                           <div className="dummy"></div>
                           <div className="content d-flex flex-column justify-content-around align-items-center mx-0">
-                            <div className="icon icon-sm icon-shape bg-gradient-primary text-white rounded-circle shadow">
+                            {/* <div className="icon icon-sm icon-shape bg-gradient-dark text-white rounded-circle shadow">
                               <span>{overviewSummary.openPer || 0}%</span>
-                            </div>
+                            </div> */}
                             <span className="h2 font-weight-bold mb-0">
                               {overviewSummary.openCount || 0}
                             </span>
@@ -143,9 +127,9 @@ class OverviewSummery extends Component {
                         <CardBody className="p-1 square-box-60">
                           <div className="dummy"></div>
                           <div className="content d-flex flex-column justify-content-around align-items-center mx-0">
-                            <div className="icon icon-sm icon-shape bg-gradient-info text-white rounded-circle shadow">
+                            {/* <div className="icon icon-sm icon-shape bg-gradient-dark text-white rounded-circle shadow">
                               <span>0%</span>
-                            </div>
+                            </div> */}
                             <span className="h2 font-weight-bold mb-0">
                               0
                             </span>
@@ -164,9 +148,9 @@ class OverviewSummery extends Component {
                         <CardBody className="p-1 square-box-60">
                           <div className="dummy"></div>
                           <div className="content d-flex flex-column justify-content-around align-items-center mx-0">
-                            <div className="icon icon-sm icon-shape bg-gradient-green text-white rounded-circle shadow">
+                            {/* <div className="icon icon-sm icon-shape bg-gradient-dark text-white rounded-circle shadow">
                               <span>{overviewSummary.replyPer || 0}%</span>
-                            </div>
+                            </div> */}
                             <span className="h2 font-weight-bold mb-0">
                               {overviewSummary.replyCount || 0}
                             </span>
@@ -185,9 +169,9 @@ class OverviewSummery extends Component {
                         <CardBody className="p-1 square-box-60">
                           <div className="dummy"></div>
                           <div className="content d-flex flex-column justify-content-around align-items-center mx-0">
-                            <div className="icon icon-sm icon-shape bg-gradient-red text-white rounded-circle shadow">
+                            {/* <div className="icon icon-sm icon-shape bg-gradient-dark text-white rounded-circle shadow">
                               <span>0%</span>
-                            </div>
+                            </div> */}
                             <span className="h2 font-weight-bold mb-0">
                               0
                             </span>
@@ -206,9 +190,9 @@ class OverviewSummery extends Component {
                         <CardBody className="p-1 square-box-60">
                           <div className="dummy"></div>
                           <div className="content d-flex flex-column justify-content-around align-items-center mx-0">
-                            <div className="icon icon-sm icon-shape bg-gradient-dark text-white rounded-circle shadow">
+                            {/* <div className="icon icon-sm icon-shape bg-gradient-dark text-white rounded-circle shadow">
                               <span>{overviewSummary.unsubscribePer || 0}%</span>
-                            </div>
+                            </div> */}
                             <span className="h2 font-weight-bold mb-0">
                               {overviewSummary.unsubscribeCount || 0}
                             </span>
