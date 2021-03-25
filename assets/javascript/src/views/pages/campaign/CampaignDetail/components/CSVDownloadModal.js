@@ -47,7 +47,13 @@ class CSVDownloadModal extends Component {
             <h1 className="mb-4">Download</h1>
             <Row>
               <Col className="d-flex flex-row justify-content-center">
-                <CSVLink className="w-50" data={data} headers={headers} filename={"mailsaas-export.csv"}>
+                <CSVLink className="w-50"
+                  data={data}
+                  headers={headers}
+                  filename={"mailsaas-export.csv"}
+                  onClick={() => {
+                    this.props.close();
+                  }}>
                   <Button className="btn btn-warning w-100">
                     Download CSV
                   </Button>
