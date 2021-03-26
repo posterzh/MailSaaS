@@ -116,7 +116,7 @@ class WarmingStatus(models.Model):
 
     warming_enabled = models.BooleanField(default=False)
     days_passed = models.IntegerField(default=0)
-    status_updated_at = models.DateTimeField(auto_now=False)
+    status_updated_at = models.DateTimeField(auto_now_add=True)
 
 
 class WarmingLog(models.Model):
