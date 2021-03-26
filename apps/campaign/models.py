@@ -142,3 +142,13 @@ class SendingObject(models.Model):
     wait_days = models.PositiveSmallIntegerField(blank=True, null=True)
     sent_date = models.DateField(auto_now=False, blank=True, null=True)
     sent_time = models.TimeField(auto_now=False, blank=True, null=True)
+
+    # Email open tracking
+    opened = models.PositiveIntegerField(default=0)
+    opened_datetime = models.DateTimeField(null=True)
+
+    # Email click tracking
+    clicked = models.PositiveIntegerField(default=0)
+    clicked_datetime = models.DateTimeField(null=True)
+
+
