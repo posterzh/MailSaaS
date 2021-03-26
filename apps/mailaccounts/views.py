@@ -1,5 +1,6 @@
 from datetime import datetime, timezone, timedelta
 from itertools import chain
+import email, imaplib
 
 import pytz
 from django.db.models import Prefetch
@@ -48,15 +49,18 @@ class EmailAccountView(generics.RetrieveUpdateDestroyAPIView):
 
 class EmailAccountWarmingView(APIView):
     queryset = EmailAccount.objects.all()
+    serializer_class = EmailAccountSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
         # emailAccounts = EmailAccount.objects.filter(user=self.request.user.id)
         # warmingList = WarmingStatus.objects.filter()
+        # results = []
         # for item in emailAccounts:
         #     for warming in warmingList:
         #         if item.id == warming.mail_account_id:
         #             item.warming = warming
+        #             results.append(item)
         #             print("found")
         #             break
         # return Response(EmailAccount.objects.filter(user=self.request.user.id).prefetch_related(
@@ -73,6 +77,18 @@ class EmailAccountWarmingView(APIView):
             warming.update(warming_enabled=warming_enabled, status_updated_at=datetime.now())
         else:
             WarmingStatus.objects.create(mail_account_id=mail_account_id, warming_enabled=warming_enabled)
+
+            # Create 'mailerrize' folder in the email account
+            email_account = EmailAccount.objects.get(pk=mail_account_id)
+            if email_account.email_provider == 'SMTP':
+                mail = imaplib.IMAP4_SSL(email_account.imap_host, email_account.imap_port)
+                mail.login(email_account.imap_username, email_account.imap_password)
+                mail.create("mailerrize")
+            if email_account.email_provider == 'Google':
+                host = "imap.gmail.com"
+                mail = imaplib.IMAP4_SSL(host)
+                mail.login(email_account.email, email_account.password)
+                mail.create("mailerrize")
         return Response(True)
 
 
