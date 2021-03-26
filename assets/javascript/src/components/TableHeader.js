@@ -11,7 +11,7 @@ export const campaignListTable = [
     },
     {
         key: 'assigned',
-        value: 'ASSIGNED',
+        value: 'EMAIL ACCOUNT',
     },
     {
         key: 'recipients',
