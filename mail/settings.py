@@ -89,6 +89,7 @@ PROJECT_APPS = [
     "apps.unsubscribes",
 
     'apps.mailaccounts',
+    'apps.dashbaord',
 
     'rest_framework',
     'rest_framework.authtoken',
