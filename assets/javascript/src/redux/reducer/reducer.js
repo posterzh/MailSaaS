@@ -8,14 +8,6 @@ import {
     // SUCCESS_SEND_CAMPAIGN,
     REQUEST_FOR_OPTION,
     FAILURE_OPTION,
-
-    // Karl - Will remove later
-    // ***************************************************
-    FETCH_PROSPECTS,
-    SUCCESS_FETCH_PROSPECTS,
-    SUCCESS_FETCH_ONCLICK_PROSPECTS,
-    // ***************************************************
-
     REQUEST_FOR_CAMPAIGN_CREATE_PREVIEW,
     SUCCESS_FETCH_CAMPAIGN_CREATE_PREVIEW,
     FAILURE_FETCH_CAMPAIGN_CREATE_PREVIEW,
@@ -148,33 +140,6 @@ export const MailGetDataReducer = (state = initialState, action) => {
             break;
     }
 }
-export const UnsubscribeReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case SUCCESS_FETCH_UNSUBSCRIPTION:
-            return {
-                ...state,
-                unsubscribeData: action.payload
-            }
-        case REQUEST_FOR_UNSUBSCRIBE_WITH_CSV:
-            return {
-                ...state,
-                loading: true,
-            }
-        case SUCCESS_UNSUBSCRIBE_WITH_CSV:
-            return {
-                ...state,
-                loading: false
-            }
-        case FAILURE_UNSUBSCRIBE_WITH_CSV:
-            return {
-                ...state,
-                loading: false
-            }
-
-        default: return state
-            break;
-    }
-}
 
 // CAMPAIGN OPTION REDUCER
 export const CampaignOptionReducer = (state = initialState, action) => {
@@ -191,39 +156,6 @@ export const CampaignOptionReducer = (state = initialState, action) => {
             break;
     }
 }
-
-// Karl - Will remove later
-// ***************************************************
-// PROSPECT_TABLE_DATA
-export const ProspectsGetReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case FETCH_PROSPECTS: {
-
-        }
-        case SUCCESS_FETCH_PROSPECTS:
-            return {
-                ...state,
-                prospectData: action.prospectData,
-            }
-        default: return state
-            break;
-    }
-}
-
-// ONCLICK PROSPECT TABLE DATA
-export const OnclickProspectsReducer = (state = initialState, action) => {
-    // console.log("action======>",action)
-    switch (action.type) {
-        case SUCCESS_FETCH_ONCLICK_PROSPECTS:
-            return {
-                ...state,
-                prospectOnclickData: action.prospectOnclickData,
-            }
-        default: return state
-            break;
-    }
-}
-// ***************************************************
 
 // CAMPAIGN_PREVIEW_DATA
 export const CampaignPreviewGetReducer = (state = initialState, action) => {
