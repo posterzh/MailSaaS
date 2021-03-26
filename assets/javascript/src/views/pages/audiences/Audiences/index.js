@@ -21,15 +21,15 @@ import {
 	FormGroup,
 	CardTitle
 } from 'reactstrap'
-import PageHeader from "../../../components/Headers/PageHeader";
-import PageContainer from "../../../components/Containers/PageContainer";
-import Tables from "../../../components/Tables";
+import PageHeader from "../../../../components/Headers/PageHeader";
+import PageContainer from "../../../../components/Containers/PageContainer";
+import Tables from "../../../../components/Tables";
 import ImportContactsModal from "./components/ImportContactsModal"
 import DetailModal from "./components/DetailModal"
 import {
 	filterRecipients,
 	countRecipients,
-} from "../../../redux/action/ProspectsAction";
+} from "../../../../redux/action/ProspectsAction";
 
 const tableTitle = [
 	{
@@ -172,7 +172,7 @@ class Prospects extends Component {
 					parent="Prospects"
 					showStatus={false}
 				/>
-				<PageContainer title={"Prospects"} showHelper={true}>
+				<PageContainer title={"Audiences"} showHelper={true} newButton="New Audience" newAction={this.importContacts}>
 					<Row>
 						<Col md="2" sm="4" className="sidenav-toggler" onClick={this.onTotalClick}>
 							<Card className={this.state.selected === 'total' ? "bg-info" : "bg-light"}>
@@ -262,20 +262,6 @@ class Prospects extends Component {
 						/>
 					</Row>
 
-					<Button
-						className="btn-icon btn-2 rounded-circle fixed-bottom-right-btn"
-						color="info"
-						type="button"
-						onClick={(e) => {
-							e.preventDefault();
-							this.importContacts();
-						}}
-					>
-						<span className="btn-inner--icon">
-							<i className="fa fa-plus" />
-						</span>
-					</Button>
-
 					<ImportContactsModal
 						isOpen={importContactsModal}
 						// data={this.state.editItem}
@@ -299,6 +285,11 @@ const mapStateToProps = (state) => ({
 	recipients: state.prospects.recipients,
 	counts: state.prospects.counts,
 });
+
+
+
+
+
 
 export default connect(mapStateToProps, {
 	filterRecipients,

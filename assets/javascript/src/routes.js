@@ -19,14 +19,12 @@ import AppsandCrm from "./views/pages/Extension/Apps&Crm";
 import Billing from "./views/pages/TeamSettings/Billing";
 import Dashboard from "./views/pages/dashboards/Dashboard.js";
 import Login from "./views/pages/examples/Login.js";
-import Prospects from "./views/pages/Prospects/Prospects.js";
 import Redeem from "./views/pages/TeamSettings/Redeem";
 import Register from "./views/pages/examples/Register.js";
 import Setting from "./views/pages/TeamSettings/Setting";
 import Teammates from "./views/pages/TeamSettings/Teammates";
-import Unsubscribes from "./views/pages/Unsubscribes/Unsubscribes";
+import Unsubscribes from "./views/pages/audiences/Unsubscribes/Unsubscribes";
 import ConversionTracking from "./views/pages/Extension/ConversionTracking";
-import ProspectOnclick from "./views/pages/Prospects/ProspectOnclick";
 import ForgetPassword from "./views/pages/examples/ForgetPassword";
 import Profile from "./views/pages/User/Profile";
 
@@ -49,6 +47,9 @@ import CampaignDetailSettings from "./views/pages/campaign/CampaignDetail/Campai
 
 // Campaign > LeadCatcher page
 import LeadCatcher from "./views/pages/campaign/LeadCatcher";
+
+// Audience page
+import Prospects from "./views/pages/audiences/Audiences";
 
 const routes = [
   {
@@ -120,13 +121,13 @@ const routes = [
   // Prospects
   {
     collapse: true,
-    name: "Prospects",
+    name: "Audiences",
     icon: "fa fa-users text-dark",
     state: "prospects",
     views: [
       {
         path: "/prospects",
-        name: "Prospects",
+        name: "Audiences",
         miniName: " ",
         component: Prospects,
         layout: "/app/admin",
@@ -144,27 +145,27 @@ const routes = [
   // MailAccount
   {
     collapse: true,
-    name: "Mail Accounts",
+    name: "Email Accounts",
     icon: "fa fa-envelope text-dark",
     state: "mailAccount",
     views: [
       {
         path: "/mail-account",
-        name: "Mail Accounts",
+        name: "Email Accounts",
         miniName: " ",
         component: MailAccounts,
         layout: "/app/admin",
       },
       {
         path: "/mail-warming",
-        name: "Mail Warming",
+        name: "Email Warming",
         miniName: " ",
         component: MailWarming,
         layout: "/app/admin",
       },
       {
         path: "/sending-calendar",
-        name: "Sending Calendar",
+        name: "Sending Schedule",
         miniName: " ",
         component: SendingCalendar,
         layout: "/app/admin",
@@ -174,7 +175,7 @@ const routes = [
   // for TeamSetting
   {
     collapse: true,
-    name: "Team Settings",
+    name: "Settings",
     icon: "fa fa-cogs text-dark",
     state: "teamSetting",
     views: [
@@ -213,7 +214,7 @@ const routes = [
   // for Extension
   {
     collapse: true,
-    name: "Extension",
+    name: "Integrations",
     icon: "fa fa-puzzle-piece text-dark",
     state: "extensions",
     views: [

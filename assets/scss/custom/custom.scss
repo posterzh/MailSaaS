@@ -2103,3 +2103,11 @@ input::-webkit-inner-spin-button {
   border: 1px solid #adb5bd;
   border-radius: 20px;
 }
+
+.active.nav-item .nav-link {
+  background-color: #beefff !important;
+}
+
+.nav-item a.nav-link:hover {
+  background-color: #beefff !important;
+}

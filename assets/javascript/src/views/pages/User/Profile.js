@@ -12,52 +12,25 @@ import {
   Form,
   Input,
 } from "reactstrap";
-import Dropzone from "dropzone";
 import ReactQuill from "react-quill";
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import { getProfile } from '../../../redux/action/ProfileAction';
+import { defaultProfilePic } from '../../../utils/Common';
 
 import PageHeader from "../../../components/Headers/PageHeader";
-
-Dropzone.autoDiscover = false;
 
 export class Profile extends Component {
   constructor(props) {
     super(props);
-    let { user } = this.props;
-
-    this.state = {
-      user: {
-        firstName: user.first_name,
-        lastName: user.last_name,
-        email: user.email,
-        companyName: user.company_name,
-        profile_url: STATIC_FILES.team_4,
-      },
-    };
   }
 
   componentDidMount() {
-
+    const {id, getProfile} = this.props;
+    getProfile(id);
   }
 
   render() {
-    const { user } = this.state;
-    const setUser = (e) => {
-      this.setState({
-        user: { ...user, [e.target.name]: e.target.value },
-      });
-    };
-
-    const onChangeProfile = (e) => {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = function (e) {
-        this.setState({
-          user: { ...user, profile_url: [reader.result] },
-        });
-      }.bind(this);
-    };
+    const { user } = this.props;
 
     return (
       <>
@@ -69,7 +42,7 @@ export class Profile extends Component {
             <span className="mask bg-v-gradient-info" />
             <Row>
               <Col>
-                <h1 className="display-2 text-white">Hello {user.firstName}</h1>
+                <h1 className="display-2 text-white">Hello {user.first_name}</h1>
               </Col>
             </Row>
           </div>
@@ -83,14 +56,14 @@ export class Profile extends Component {
                         <img
                           alt="..."
                           className="profile-rounded-img"
-                          src={user.profile_url}
+                          style = {{background: "ghostwhite"}}
+                          src={user.avatar ? user.avatar : defaultProfilePic}
                         />
                         <label className="profile-edit-icon">
                           <input
                             type="file"
                             name="profile-input"
                             hidden
-                            onChange={onChangeProfile}
                           />
                           <i className="fa fa-camera"></i>
                         </label>
@@ -118,7 +91,7 @@ export class Profile extends Component {
                     </Row>
                     <div className="text-center">
                       <h5 className="h3">
-                        {`${user.firstName} ${user.lastName}`}
+                        {`${user.first_name} ${user.last_name}`}
                       </h5>
                       <div className="h5 font-weight-300">
                         <i className="ni location_pin mr-2" />
@@ -152,9 +125,8 @@ export class Profile extends Component {
                                 id="first-name"
                                 placeholder="First name"
                                 type="text"
-                                value={user.firstName}
+                                defaultValue={user.first_name}
                                 name="firstName"
-                                onChange={setUser}
                               />
                             </FormGroup>
                           </Col>
@@ -170,9 +142,8 @@ export class Profile extends Component {
                                 id="last-name"
                                 placeholder="Last name"
                                 type="text"
-                                value={user.lastName}
+                                defaultValue={user.last_name}
                                 name="lastName"
-                                onChange={setUser}
                               />
                             </FormGroup>
                           </Col>
@@ -190,10 +161,9 @@ export class Profile extends Component {
                                 id="company-name"
                                 placeholder="Company name"
                                 type="text"
-                                value={user.companyName}
+                                defaultValue={user.company_name}
                                 name="companyName"
                                 autoComplete='off'
-                                onChange={setUser}
                               />
                             </FormGroup>
                           </Col>
@@ -209,9 +179,8 @@ export class Profile extends Component {
                                 id="email"
                                 placeholder="jesse@example.com"
                                 type="email"
-                                value={user.email}
+                                defaultValue={user.email}
                                 name="email"
-                                onChange={setUser}
                               />
                             </FormGroup>
                           </Col>
@@ -294,8 +263,11 @@ export class Profile extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.auth.user
+    id: state.auth.user.pk,
+    user: state.profile.user
   }
 };
 
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps, {
+  getProfile
+})(Profile);

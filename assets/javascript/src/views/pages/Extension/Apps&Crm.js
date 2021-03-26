@@ -25,35 +25,6 @@ export class AppsandCrm extends Component {
                     <img
                       alt="..."
                       className="img-center img-fluid rounded-center-img"
-                      src={STATIC_FILES.slack}
-                    />
-                    <div className="pt-4 text-center">
-                      <h5 className="h3 title">
-                        <span className="d-block mb-1">SALESFORCE</span>
-                        <small className="h4 font-weight-light text-muted">
-                          Track activities and update lead statuses when actions
-                          are taken in MailSaaS.
-                        </small>
-                      </h5>
-                      <div className="mt-3">
-                        <Button>ADD</Button>
-                      </div>
-                    </div>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
-          <span className="display-4">NATIVE INTEGRATIONS</span>
-          <hr className="mt-2 mb-2" />
-          <Container fluid>
-            <Row className="mt-5">
-              <Col lg={3} md={4} sm={12}>
-                <Card>
-                  <CardBody>
-                    <img
-                      alt="..."
-                      className="rounded-circle img-center img-fluid shadow shadow-lg--hover rounded-center-img"
                       src={STATIC_FILES.sales_force}
                     />
                     <div className="pt-4 text-center">
@@ -76,38 +47,15 @@ export class AppsandCrm extends Component {
                   <CardBody>
                     <img
                       alt="..."
-                      className="rounded-circle img-center img-fluid shadow shadow-lg--hover rounded-center-img"
-                      src={STATIC_FILES.slack}
+                      className="img-center img-fluid rounded-center-img"
+                      src={STATIC_FILES.zapier}
                     />
                     <div className="pt-4 text-center">
                       <h5 className="h3 title">
-                        <span className="d-block mb-1">SLACK</span>
+                        <span className="d-block mb-1">ZAPIER</span>
                         <small className="h4 font-weight-light text-muted">
-                          Post messages to your channels when you receive a new
-                          reply or lead.
-                        </small>
-                      </h5>
-                      <div className="mt-3">
-                        <Button>ADD</Button>
-                      </div>
-                    </div>
-                  </CardBody>
-                </Card>
-              </Col>
-              <Col lg={3} md={4} sm={12}>
-                <Card>
-                  <CardBody>
-                    <img
-                      alt="..."
-                      className="rounded-circle img-center img-fluid shadow shadow-lg--hover rounded-center-img"
-                      src={STATIC_FILES.pipe_drive}
-                    />
-                    <div className="pt-4 text-center">
-                      <h5 className="h3 title">
-                        <span className="d-block mb-1">PIPEDRIVE</span>
-                        <small className="h4 font-weight-light text-muted">
-                          Move deals through your stages, track activities, and
-                          update lead statuses.
+                          Track activities and update lead statuses when actions
+                          are taken in MailSaaS.
                         </small>
                       </h5>
                       <div className="mt-3">
@@ -119,7 +67,7 @@ export class AppsandCrm extends Component {
               </Col>
             </Row>
           </Container>
-        </PageContainer>
+          </PageContainer>
       </>
     );
   }

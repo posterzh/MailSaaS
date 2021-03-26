@@ -17,7 +17,7 @@ import {
   NavLink,
 } from "reactstrap";
 import { CSVReader } from 'react-papaparse';
-import Tables from "../../../../components/Tables";
+import Tables from "../../../../../components/Tables";
 
 const initialState = {
 

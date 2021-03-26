@@ -106,12 +106,12 @@ class LeadCatcher extends Component {
     return (
       <>
         <PageHeader
-          current="Lead Catcher"
+          current="Leads"
           parent="Campaign"
           showStatus={false}
         />
 
-        <PageContainer title="Lead Catcher" showHelper={true}>
+        <PageContainer title="Leads" showHelper={true}>
           
           {/* <div>
             <Modal className="Leadcatcher_modal" isOpen={modal} toggle={this.toggle} className={LeadCatcher}>

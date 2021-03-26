@@ -13,6 +13,9 @@ import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import Tables from "../../../../components/Tables";
 import {
+  getMailAccounts
+} from "../../../../redux/action/MailAccountsActions";
+import {
   getWarmings,
   updateWarmings,
 } from "../../../../redux/action/WarmingActions";
@@ -54,9 +57,19 @@ class WarmList extends Component {
   }
 
   async componentDidMount() {
-    const mail_accounts = await this.props.getWarmings();
+    const mail_accounts = await this.props.getMailAccounts();
+    const warmings = await this.props.getWarmings();
     this.setState({
-      data: [...mail_accounts]
+      data: [...mail_accounts.map(item => {
+        const warming = warmings.filter(warm_item => warm_item.mail_account_id == item.id);
+        if (warming) {
+          return {
+            ...warming[0],
+            ...item
+          }
+        }
+        return item;
+      })]
     })
   }
 
@@ -97,7 +110,7 @@ class WarmList extends Component {
           parent="Mail Accounts"
           showStatus={false}
         />
-        <PageContainer title="Mail Warming">
+        <PageContainer title="Email Warming">
           <div className="px-3">
             <h3 className="mb-1">
               Automatically send and reply emails from MailSaaS community to warm up your email account.
@@ -169,6 +182,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
+  getMailAccounts,
   getWarmings,
   updateWarmings,
 })(WarmList);

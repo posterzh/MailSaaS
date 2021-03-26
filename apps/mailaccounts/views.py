@@ -51,11 +51,20 @@ class EmailAccountWarmingView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
-        return Response(EmailAccount.objects.filter(user=self.request.user.id).prefetch_related(
-                Prefetch('WarmingStatus_set',
-                         queryset=WarmingStatus.objects.all(),
-                         to_attr="WarmingStatus")
-            ).values())
+        # emailAccounts = EmailAccount.objects.filter(user=self.request.user.id)
+        # warmingList = WarmingStatus.objects.filter()
+        # for item in emailAccounts:
+        #     for warming in warmingList:
+        #         if item.id == warming.mail_account_id:
+        #             item.warming = warming
+        #             print("found")
+        #             break
+        # return Response(EmailAccount.objects.filter(user=self.request.user.id).prefetch_related(
+        #         Prefetch('WarmingStatus_set',
+        #                  queryset=WarmingStatus.objects.all(),
+        #                  to_attr="WarmingStatus")
+        #     ).values())
+        return Response(WarmingStatus.objects.select_related("mail_account").filter(mail_account__user_id=self.request.user.id).values())
 
     def post(self, request, mail_account_id):
         warming_enabled = request.data['warming_enabled']

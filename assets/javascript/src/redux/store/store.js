@@ -7,15 +7,7 @@ import {
   RecipientReducer,
   MailGetDataReducer,
   MailSenderReducer,
-  UnsubscribeReducer,
   CampaignOptionReducer,
-
-  // Karl - Will remove later
-  // ******************************************
-  ProspectsGetReducer,
-  OnclickProspectsReducer,
-  // ******************************************
-
   CampaignCreateReducer,
   CampaignPreviewGetReducer,
   CampaignOverviewReducer,
@@ -40,6 +32,7 @@ import { unsubscribesReducer } from "../reducer/UnsubscribeReducer";
 import { sendingCalendarsReducer } from "../reducer/SendingCalendarReducer";
 import { campaignReducer } from "../reducer/CampaignReducer";
 import { campaignDetailsReducer } from "../reducer/CampaignDetailsReducer";
+import { profileReducer } from "../reducer/ProfileReducer";
 
 const composeEnhancers =
   (typeof window !== "undefined" &&
@@ -51,15 +44,7 @@ const rootReducer = combineReducers({
   RecipientReducer,
   MailGetDataReducer,
   MailSenderReducer,
-  UnsubscribeReducer,
   CampaignOptionReducer,
-
-  // Karl - Will remove later
-  // ******************************************
-  ProspectsGetReducer,
-  OnclickProspectsReducer,
-  // ******************************************
-
   CampaignCreateReducer,
   CampaignPreviewGetReducer,
   CampaignOverviewReducer,
@@ -84,7 +69,8 @@ const rootReducer = combineReducers({
   unsubscribes: unsubscribesReducer,
   sendingCalendars: sendingCalendarsReducer,
   campaign: campaignReducer,
-  campaignDetails: campaignDetailsReducer 
+  campaignDetails: campaignDetailsReducer,
+  profile: profileReducer
 });
 
 const persistConfig = {

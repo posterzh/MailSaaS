@@ -45,10 +45,16 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { getProfile } from '../../redux/action/ProfileAction';
 import { logout } from '../../redux/action/AuthAction'
 import { connect } from 'react-redux'
+import { defaultProfilePic } from '../../utils/Common';
 
 class AdminNavbar extends React.Component {
+  componentDidMount() {
+    this.props.getProfile();
+  }
+
   // function that on mobile devices makes the search open
   openSearch = () => {
     document.body.classList.add("g-navbar-search-showing");
@@ -60,6 +66,7 @@ class AdminNavbar extends React.Component {
       document.body.classList.add("g-navbar-search-shown");
     }, 300);
   };
+
   // function that on mobile devices makes the search close
   closeSearch = () => {
     document.body.classList.remove("g-navbar-search-shown");
@@ -75,11 +82,13 @@ class AdminNavbar extends React.Component {
       document.body.classList.remove("g-navbar-search-hidden");
     }, 500);
   };
+
   // handle logout
   handleLogout = (event) => {
     event.preventDefault();
     this.props.logout();
   }
+
   render() {
     let { theme, sidenavOpen, toggleSidenav } = this.props
     return (
@@ -136,7 +145,8 @@ class AdminNavbar extends React.Component {
                   <DropdownToggle className="nav-link pr-0" color="" tag="a">
                     <Media className="align-items-center">
                       <span className="avatar avatar-sm rounded-circle">
-                        <img alt="..." src={STATIC_FILES.team_4} />
+                        <img alt="..." src={this.props.user.avatar ? this.props.user.avatar : defaultProfilePic}
+                          style={{ background: "ghostwhite" }} />
                       </span>
                       <Media className="ml-2 d-none d-sm-block">
                         <span className="mb-0 text-sm font-weight-bold">
@@ -195,7 +205,7 @@ class AdminNavbar extends React.Component {
   }
 }
 AdminNavbar.defaultProps = {
-  toggleSidenav: () => {},
+  toggleSidenav: () => { },
   sidenavOpen: false,
   theme: "dark",
 };
@@ -207,12 +217,13 @@ AdminNavbar.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.auth.user,
+    user: state.profile.user,
     socialType: state.auth.socialType,
     isLogin: state.auth.isLogin,
   }
 };
 
 export default connect(mapStateToProps, {
+  getProfile,
   logout
 })(AdminNavbar);
