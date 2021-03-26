@@ -24,7 +24,7 @@ from apps.integration.views import SendSlackMessage
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmailModel,
-                     EmailOnLinkClick, FollowUpEmail, CampaignLabel)
+                     EmailOnLinkClick, FollowUpEmail, CampaignLabel, SendingObject)
 from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
                           CampaignSendingObjectSerializer, OnclickSerializer, CampaignLabelSerializer,
@@ -1903,6 +1903,7 @@ class CampaignSendingObjectView:
                 sendingObjects.extend(objs)
 
         return sendingObjects
+
 
 class CampaignDetailsSequenceView(generics.RetrieveAPIView):
     serializer_class = CampaignDetailsSerializer

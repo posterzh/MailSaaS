@@ -34,8 +34,6 @@ class EmailAccount(models.Model):
     first_name = models.CharField(max_length=200, default='', null=True, blank=True)
     last_name = models.CharField(max_length=200, default='', null=True, blank=True)
 
-    warming_enabled = models.BooleanField(default=False)
-
     # Google, Microsoft fields
     password = models.CharField(max_length=200, default='', null=True, blank=True)
 
@@ -97,10 +95,10 @@ class SendingCalendar(models.Model):
     TIMEZONE_CHOICES = zip(pytz.all_timezones, pytz.all_timezones)
 
     mail_account = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
-    block_days = models.PositiveIntegerField()
-    start_time = models.TimeField(auto_now=False)
-    end_time = models.TimeField(auto_now=False)
-    time_zone = models.CharField(choices=TIMEZONE_CHOICES, blank=True, default='', max_length=50)
+    block_days = models.PositiveIntegerField(default=96)
+    start_time = models.TimeField(auto_now=False, default='09:00:00')
+    end_time = models.TimeField(auto_now=False, default='17:00:00')
+    time_zone = models.CharField(choices=TIMEZONE_CHOICES, blank=True, default='US/Eastern', max_length=50)
     max_emails_per_day = models.PositiveIntegerField(default=20)
     minutes_between_sends = models.PositiveIntegerField(default=12)
     min_emails_to_send = models.PositiveIntegerField(default=1)
@@ -109,5 +107,19 @@ class SendingCalendar(models.Model):
 
 class CalendarStatus(models.Model):
     sending_calendar = models.ForeignKey(SendingCalendar, on_delete=models.CASCADE)
-    updated_time = models.TimeField(auto_now=True)
+    updated_datetime = models.DateTimeField(auto_now=False)
     sent_count = models.PositiveIntegerField(default=0)
+
+
+class WarmingStatus(models.Model):
+    mail_account = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
+
+    warming_enabled = models.BooleanField(default=False)
+    days_passed = models.IntegerField(default=0)
+    status_updated_at = models.DateTimeField(auto_now=False)
+
+
+class WarmingLog(models.Model):
+    mail_account = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
+
+    sent_at = models.DateTimeField(auto_now_add=True)

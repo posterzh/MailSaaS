@@ -6,12 +6,16 @@ export default function WeekdayPicker({ block_days, setBlock_days, readonly }) {
   const WEEKDAYS_SHORT = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
   const isChecked = (index) => {
+    index = (index + 6) % 7;
     return block_days & (1 << index);
   };
 
   const toggleChecked = (index) => {
+    index = (index + 6) % 7;
     setBlock_days(block_days ^ (1 << index));
   };
+
+  console.log("block days: ", block_days);
 
   return (
     <>

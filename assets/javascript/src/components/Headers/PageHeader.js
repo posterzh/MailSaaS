@@ -1,19 +1,3 @@
-/*!
-
-=========================================================
-* Argon Dashboard PRO React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-pro-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
@@ -73,7 +57,7 @@ function PageHeader({ current, parent, showStatus, showBreadcrumb }) {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Draft
+                            Campaigns
                           </CardTitle>
                           <span className="h1 font-weight-bold mb-0">76</span>
                         </div>
@@ -98,7 +82,7 @@ function PageHeader({ current, parent, showStatus, showBreadcrumb }) {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Working
+                            Started
                           </CardTitle>
                           <span className="h1 font-weight-bold mb-0">12</span>
                         </div>
@@ -148,18 +132,18 @@ function PageHeader({ current, parent, showStatus, showBreadcrumb }) {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Ended
+                            Mail Accounts
                           </CardTitle>
-                          <span className="h1 font-weight-bold mb-0">0</span>
+                          <span className="h1 font-weight-bold mb-0">10</span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-gradient-primary text-white rounded-circle shadow">
-                            <i className="ni ni-chart-bar-32" />
+                            <i className="ni ni-email-83" />
                           </div>
                         </Col>
                       </Row>
                       <p className="mt-3 mb-0 text-sm">
-                        <span className="text-success mr-2">0%</span>{" "}
+                        <span className="text-success mr-2">{" "}</span>{" "}
                       </p>
                     </CardBody>
                   </Card>
