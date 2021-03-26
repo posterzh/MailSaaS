@@ -70,7 +70,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('pk', 'username', 'email', 'first_name', 'last_name', 'company_name')
+        fields = ('pk', 'username', 'email', 'first_name', 'last_name', 'company_name', 'avatar')
         read_only_fields = ('email',)
 
 

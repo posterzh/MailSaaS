@@ -11,13 +11,22 @@ from rest_framework_jwt.settings import api_settings
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
-from apps.users.serializer import (ChangePasswordSerializer, TokenSerializer,
-                                   UserSettingSerilizer,GetEmailSerializer,ResetPasswordSerializer)
+from apps.users.serializer import (ChangePasswordSerializer, TokenSerializer, UserSettingSerilizer,
+                                   GetEmailSerializer, ResetPasswordSerializer, UserDetailsSerializer)
 
 from .forms import CustomUserChangeForm, UploadAvatarForm
 from .helpers import (require_email_confirmation,
                       user_has_confirmed_email_address)
 from .models import CustomUser
+
+
+class ProfileView(generics.RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = UserDetailsSerializer
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER

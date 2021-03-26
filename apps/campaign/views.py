@@ -1904,7 +1904,9 @@ class CampaignSendingObjectView:
 
         return sendingObjects
 
+
 class CampaignDetailsSequenceView(generics.RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
     serializer_class = CampaignDetailsSerializer
 
     def get_queryset(self):
@@ -1913,6 +1915,7 @@ class CampaignDetailsSequenceView(generics.RetrieveAPIView):
 
 
 class CampaignDetailsSettingsView(generics.RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
     serializer_class = CampaignSerializer
 
     def get_queryset(self):
