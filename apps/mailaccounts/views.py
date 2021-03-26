@@ -1,12 +1,14 @@
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+from itertools import chain
 
 import pytz
+from django.db.models import Prefetch
 from django.http import Http404, HttpResponseServerError, HttpResponseBadRequest
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from . import utils
-from .models import EmailAccount, SendingCalendar, CalendarStatus
+from .models import EmailAccount, SendingCalendar, CalendarStatus, WarmingStatus
 from .serializers import EmailAccountSerializer, SendingCalendarSerializer
 from .tasks import test_email, send_mail_with_smtp
 from ..campaign.models import SendingObject
@@ -42,6 +44,27 @@ class EmailAccountView(generics.RetrieveUpdateDestroyAPIView):
             return Response(msg, status=status.HTTP_400_BAD_REQUEST)
 
         return super(EmailAccountView, self).update(request, *args, **kwargs)
+
+
+class EmailAccountWarmingView(APIView):
+    queryset = EmailAccount.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        return Response(EmailAccount.objects.filter(user=self.request.user.id).prefetch_related(
+                Prefetch('WarmingStatus_set',
+                         queryset=WarmingStatus.objects.all(),
+                         to_attr="WarmingStatus")
+            ).values())
+
+    def post(self, request, mail_account_id):
+        warming_enabled = request.data['warming_enabled']
+        warming = WarmingStatus.objects.filter(mail_account_id=mail_account_id)
+        if len(warming) > 0:
+            warming.update(warming_enabled=warming_enabled, status_updated_at=datetime.now())
+        else:
+            WarmingStatus.objects.create(mail_account_id=mail_account_id, warming_enabled=warming_enabled)
+        return Response(True)
 
 
 class SendingCalendarListView(generics.ListCreateAPIView):

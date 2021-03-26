@@ -114,6 +114,10 @@ class CampaignList extends Component {
   //   });
   // };
 
+  createCampaign = () => {
+    this.props.history.push("/app/admin/campaign/create");
+  }
+
   render() {
     const { show, hide, checked, exampleModal, data, filters } = this.state;
     const actionMenus = [
@@ -129,12 +133,12 @@ class CampaignList extends Component {
     return (
       <>
         <PageHeader
-          current="Campaign List"
+          current="Campaigns"
           parent="Campaign"
           showStatus={false}
         />
 
-        <PageContainer title="Campaign List" showHelper={true}>
+        <PageContainer title="Campaigns" showHelper={true} newButton="New Campaign" newAction={this.createCampaign}>
           {/* <Form onSubmit={this.handleSubmit}>
             <Row>
               <Col>

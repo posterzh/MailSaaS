@@ -34,8 +34,6 @@ class EmailAccount(models.Model):
     first_name = models.CharField(max_length=200, default='', null=True, blank=True)
     last_name = models.CharField(max_length=200, default='', null=True, blank=True)
 
-    warming_enabled = models.BooleanField(default=False)
-
     # Google, Microsoft fields
     password = models.CharField(max_length=200, default='', null=True, blank=True)
 
@@ -109,5 +107,19 @@ class SendingCalendar(models.Model):
 
 class CalendarStatus(models.Model):
     sending_calendar = models.ForeignKey(SendingCalendar, on_delete=models.CASCADE)
-    updated_datetime = models.DateTimeField(auto_now=True)
+    updated_datetime = models.DateTimeField(auto_now=False)
     sent_count = models.PositiveIntegerField(default=0)
+
+
+class WarmingStatus(models.Model):
+    mail_account = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
+
+    warming_enabled = models.BooleanField(default=False)
+    days_passed = models.IntegerField(default=0)
+    status_updated_at = models.DateTimeField(auto_now_add=True)
+
+
+class WarmingLog(models.Model):
+    mail_account = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
+
+    sent_at = models.DateTimeField(auto_now_add=True)

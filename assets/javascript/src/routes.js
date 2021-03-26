@@ -70,14 +70,13 @@ const routes = [
     views: [
       {
         path: "/campaign/create",
-        name: "New Campaign",
-        miniName: " ",
         component: NewCampaign,
         layout: "/app/admin",
+        redirect: true,
       },
       {
         path: "/campaign/list",
-        name: "Campaign List",
+        name: "Campaigns",
         miniName: " ",
         component: CampaignList,
         layout: "/app/admin",

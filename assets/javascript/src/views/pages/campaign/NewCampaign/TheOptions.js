@@ -16,7 +16,8 @@ class TheOptions extends Component {
   constructor() {
     super();
     this.state = {
-      trackopen: true,
+      trackOpen: false,
+      trackLink: false,
       termsandlaws: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,7 +35,7 @@ class TheOptions extends Component {
     event.preventDefault();
     
     const optionData = {
-      track_opens: this.state.trackopen,
+      track_opens: this.state.trackOpen,
       terms_and_laws: this.state.termsandlaws
     };
     this.props.campaignOptions(optionData);
@@ -64,14 +65,28 @@ class TheOptions extends Component {
                   className="custom-control-input"
                   id="check1"
                   type="checkbox"
-                  defaultChecked={this.state.trackopen}
-                  name="trackopen"
+                  defaultChecked={this.state.trackOpen}
+                  name="trackOpen"
                   onChange={this.handleChange}
                 />
                 <label className="custom-control-label" htmlFor="check1">
                   Track opens
                 </label>
-                {!this.state.trackopen &&
+              </div>
+
+              <div className="custom-control custom-checkbox mb-3">
+                <input
+                  className="custom-control-input"
+                  id="check2"
+                  type="checkbox"
+                  defaultChecked={this.state.trackLink}
+                  name="trackLink"
+                  onChange={this.handleChange}
+                />
+                <label className="custom-control-label" htmlFor="check2">
+                  Track Link Clicks
+                </label>
+                {(!this.state.trackOpen || !this.state.trackLink) &&
                   <Card className="pt-3 pl-3 mt-3" style={{ backgroundColor: "#e9e9e9" }}>
                     <span><i className="ni ni-air-baloon text-warning"></i>&nbsp;&nbsp;<b>Friendly remember</b></span>
                     <p>Disabling tracking may affect your rules for follow-ups or lead-catcher and may prevent click-triggered messages from sending.</p>
@@ -82,14 +97,14 @@ class TheOptions extends Component {
               <div className="custom-control custom-checkbox mb-3">
                 <input
                   className="custom-control-input"
-                  id="check2"
+                  id="check3"
                   type="checkbox"
                   checked={this.state.termsandlaws}
                   name="termsandlaws"
                   onChange={this.handleChange}
                   required
                 />
-                <label className="custom-control-label" htmlFor="check2">
+                <label className="custom-control-label" htmlFor="check3">
                   I'll obey pertinent laws and I've read the
                   <a href="www.google.com"> important notes.</a>
                 </label>
