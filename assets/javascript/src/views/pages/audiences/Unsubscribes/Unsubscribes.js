@@ -13,24 +13,24 @@ import {
   Button,
   Col,
 } from "reactstrap";
-import Domainpage from "./Domainpage";
-import Addresstable from "./Addresstable";
+import Domainpage from "./components/Domainpage";
+import Addresstable from "./components/Addresstable";
 import classnames from "classnames";
 import { Component } from "react";
 import { connect } from "react-redux";
-import UnsubscribesModal from "./UnsubscribesModal";
-import CSVDownloadModal from "./CSVDownloadModal";
-import DeleteModal from "./DeleteModal";
+import UnsubscribesModal from "./components/UnsubscribesModal";
+import CSVDownloadModal from "./components/CSVDownloadModal";
+import DeleteModal from "./components/DeleteModal";
 
-import PageHeader from "../../../components/Headers/PageHeader";
-import PageContainer from "../../../components/Containers/PageContainer";
+import PageHeader from "../../../../components/Headers/PageHeader";
+import PageContainer from "../../../../components/Containers/PageContainer";
 
 import {
   getUnsubscribes,
   addUnsubscribeEmails,
   addUnsubscribeCSV,
   deleteUnsubscribeEmails,
-} from "../../../redux/action/UnsubscribeActions";
+} from "../../../../redux/action/UnsubscribeActions";
 
 class Unsubscribes extends Component {
   constructor(props) {
@@ -138,7 +138,8 @@ class Unsubscribes extends Component {
           parent="Unsubscribes"
           showStatus={false}
         />
-        <PageContainer title="Unsubscribes" showHelper={true}>
+        <PageContainer title="Unsubscribes" showHelper={true} newButton="New Unsubscribes"
+          newAction={e => {this.setState({ unsubscribeModal: !this.state.unsubscribeModal });}}>
           <Row>
             <Col lg="5" md="12" sm="12" className="mb-2">
               <InputGroup className="input-group-merge">
