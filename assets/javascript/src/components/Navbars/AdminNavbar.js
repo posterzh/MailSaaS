@@ -48,8 +48,7 @@ import {
 import { getProfile } from '../../redux/action/ProfileAction';
 import { logout } from '../../redux/action/AuthAction'
 import { connect } from 'react-redux'
-
-const defaultProfilePic = "/media/profile-pictures/profile_pic_default.jpeg"
+import { defaultProfilePic } from '../../utils/Common';
 
 class AdminNavbar extends React.Component {
   componentDidMount() {
@@ -146,7 +145,8 @@ class AdminNavbar extends React.Component {
                   <DropdownToggle className="nav-link pr-0" color="" tag="a">
                     <Media className="align-items-center">
                       <span className="avatar avatar-sm rounded-circle">
-                        <img alt="..." src={this.props.user.avatar ? this.props.user.avatar : defaultProfilePic} />
+                        <img alt="..." src={this.props.user.avatar ? this.props.user.avatar : defaultProfilePic}
+                          style={{ background: "ghostwhite" }} />
                       </span>
                       <Media className="ml-2 d-none d-sm-block">
                         <span className="mb-0 text-sm font-weight-bold">
@@ -205,7 +205,7 @@ class AdminNavbar extends React.Component {
   }
 }
 AdminNavbar.defaultProps = {
-  toggleSidenav: () => {},
+  toggleSidenav: () => { },
   sidenavOpen: false,
   theme: "dark",
 };

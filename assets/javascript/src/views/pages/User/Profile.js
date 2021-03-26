@@ -15,10 +15,9 @@ import {
 import ReactQuill from "react-quill";
 import { connect } from 'react-redux';
 import { getProfile } from '../../../redux/action/ProfileAction';
+import { defaultProfilePic } from '../../../utils/Common';
 
 import PageHeader from "../../../components/Headers/PageHeader";
-
-const defaultProfilePic = "/media/profile-pictures/profile_pic_default.jpeg"
 
 export class Profile extends Component {
   constructor(props) {
