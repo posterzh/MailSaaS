@@ -33,6 +33,7 @@ import {
 
 import { AuthReducer } from "../reducer/AuthReducer";
 import { mailAccountsReducer } from "../reducer/MailAccountsReducer";
+import { warmingsReducer } from "../reducer/WarmingReducer";
 import { notificationReducer } from "../reducer/CommonReducer";
 import { prospectsReducer } from "../reducer/ProspectsReducer";
 import { unsubscribesReducer } from "../reducer/UnsubscribeReducer";
@@ -75,6 +76,7 @@ const rootReducer = combineReducers({
 
   // new reducers by team
   mailAccounts: mailAccountsReducer,
+  warmings: warmingsReducer,
   notification: notificationReducer,
 
   auth: AuthReducer,
