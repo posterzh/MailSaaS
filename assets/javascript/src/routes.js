@@ -26,7 +26,7 @@ import Teammates from "./views/pages/TeamSettings/Teammates";
 import Unsubscribes from "./views/pages/audiences/Unsubscribes/Unsubscribes";
 import ConversionTracking from "./views/pages/Extension/ConversionTracking";
 import ForgetPassword from "./views/pages/examples/ForgetPassword";
-import Profile from "./views/pages/user/Profile";
+import Profile from "./views/pages/User/Profile";
 
 // Mail Account
 import MailAccounts from "./views/pages/mailaccounts/MailAccounts";
