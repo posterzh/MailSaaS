@@ -165,27 +165,13 @@ class AdminNavbar extends React.Component {
                       <i className="ni ni-single-02" />
                       <span>My profile</span>
                     </DropdownItem>
-                    <DropdownItem
+                    {/* <DropdownItem
                       href="#pablo"
                       onClick={(e) => e.preventDefault()}
                     >
                       <i className="ni ni-settings-gear-65" />
                       <span>Settings</span>
-                    </DropdownItem>
-                    <DropdownItem
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <i className="ni ni-calendar-grid-58" />
-                      <span>Activity</span>
-                    </DropdownItem>
-                    <DropdownItem
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <i className="ni ni-support-16" />
-                      <span>Support</span>
-                    </DropdownItem>
+                    </DropdownItem> */}
                     <DropdownItem divider />
                     <DropdownItem
                       href="#pablo"

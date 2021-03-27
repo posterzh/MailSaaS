@@ -17,8 +17,8 @@ export default function CampaignTabs(props) {
                 className={classnames({
                   active: activeTab == index,
                 })}
-                onClick={() => {}}
                 key={index}
+                style={{cursor: 'normal'}}
               >
                 {item}
               </Button>

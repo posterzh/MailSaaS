@@ -84,7 +84,7 @@ const routes = [
       },
       {
         path: "/lead-catcher",
-        name: "Lead Catcher",
+        name: "Leads",
         miniName: " ",
         component: LeadCatcher,
         layout: "/app/admin",

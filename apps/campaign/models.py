@@ -140,6 +140,8 @@ class SendingObject(models.Model):
     # 0: not send, 1: sent, 2: xxx
     status = models.PositiveSmallIntegerField(default=0, null=True)
     wait_days = models.PositiveSmallIntegerField(blank=True, null=True)
+    email_order = models.PositiveSmallIntegerField(default=0, null=True)
+
     sent_date = models.DateField(auto_now=False, blank=True, null=True)
     sent_time = models.TimeField(auto_now=False, blank=True, null=True)
 
