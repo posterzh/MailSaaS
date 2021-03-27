@@ -1921,3 +1921,103 @@ class CampaignDetailsSettingsView(generics.RetrieveAPIView):
     def get_queryset(self):
         user = self.request.user
         return Campaign.objects.filter(assigned=user.id)
+
+
+class CampaignScheduleView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, format=None):
+        
+        from_email_id = 26
+        campaign = 67
+        total_mail_count = 20
+        max_followup_mail_count = 20 / 2
+
+        # Follow up emails
+
+        followup_items_all = SendingObject.objects \
+            .filter(from_email_id=from_email_id, campaign=campaign, email_type=1, status=0) \
+            .all()
+
+        followup_items = []
+        for followup_item in followup_items_all:
+            matching_sent_main_item = SendingObject.objects \
+                .filter(from_email_id=from_email_id, campaign=campaign, email_type=0,
+                        recipient_email=followup_item.recipient_email, status=0) \
+                .first()
+
+            if matching_sent_main_item is None:
+                continue
+            else:
+                last_sent_time = datetime.combine(previous_sent_followup_item.sent_date, previous_sent_followup_item.sent_time)
+
+            if followup_item.email_order > 0:
+                previous_email_order = followup_item.email_order - 1
+                previous_sent_followup_item = SendingObject.objects \
+                    .filter(from_email_id=from_email_id, campaign=campaign, email_type=1,
+                            recipient_email=followup_item.recipient_email, email_order=previous_email_order, status=0) \
+                    .first()
+
+                if previous_sent_followup_item is None:
+                    continue
+                else:
+                    last_sent_time = datetime.combine(previous_sent_followup_item.sent_date, previous_sent_followup_item.sent_time)
+
+            should_send_time = last_sent_time + timedelta(days=followup_item.wait_days)
+            today = datetime.datetime.now()
+            if should_send_time > today:
+                continue
+
+            followup_items.append(followup_item)
+
+            if len(followup_items) > max_followup_mail_count:
+                break
+
+        # Main emails
+
+        max_main_mail_count = total_mail_count = len(followup_items)
+
+        main_items = SendingObject.objects \
+            .filter(from_email_id=from_email_id, campaign=campaign, email_type=0, status=0) \
+            .all()[:max_main_mail_count]
+
+        # Drip emails
+
+        drip_items_all = SendingObject.objects \
+            .filter(from_email_id=from_email_id, campaign=campaign, email_type=2, status=0) \
+            .all()
+
+        drip_items = []
+        for drip_item in drip_items_all:
+            matching_sent_main_item = SendingObject.objects \
+                .filter(from_email_id=from_email_id, campaign=campaign, email_type=0, recipient_email=drip_item.recipient_email, status=0) \
+                .first()
+
+            if matching_sent_main_item is None:
+                continue
+            else:
+                last_sent_time = datetime.combine(matching_sent_main_item.sent_date, matching_sent_main_item.sent_time)
+
+            if drip_item.email_order > 0:
+                previous_email_order = drip_item.email_order - 1
+                previous_sent_drip_item = SendingObject.objects \
+                    .filter(from_email_id=from_email_id, campaign=campaign, email_type=2, recipient_email=drip_item.recipient_email, email_order=previous_email_order, status=0) \
+                    .first()
+
+                if previous_sent_drip_item is None:
+                    continue
+                else:
+                    last_sent_time = datetime.combine(previous_sent_drip_item.sent_date, previous_sent_drip_item.sent_time)
+
+            should_send_time = last_sent_time + timedelta(days=drip_item.wait_days)
+            today = datetime.datetime.now()
+            if should_send_time > today:
+                continue
+
+            drip_items.append(drip_item)
+
+        return Response({
+            'main': main_items,
+            'followup': followup_items,
+            'drip': drip_items
+        })
