@@ -104,3 +104,5 @@ django_extensions
 numpy
 pandas
 django-rest-framework-social-oauth2
+django-ipware==1.1.6
+lxml
