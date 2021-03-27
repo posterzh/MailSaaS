@@ -110,6 +110,8 @@ class SendTestEmailView(APIView):
         # mailAccountId = request.data['mailAccountId']
         # send_test_email.delay(mailAccountId)
 
+        mailAccount = EmailAccount.objects.first()
+
         return Response("Ok")
 
 

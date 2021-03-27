@@ -68,14 +68,15 @@ def check_imap(server, port, use_tls, user, password):
     return True
 
 
-def send_mail_with_smtp(host, port, username, password, use_tls, from_email, to_email, subject, body, uuid):
+def send_mail_with_smtp(host, port, username, password, use_tls, from_email, to_email,
+                        subject, body, uuid, track_opens, track_linkclick):
     # tracking_body = add_tracking(body, uuid)
     #
     # print(f"Sent from {from_email} to {to_email}")
     # print(f"Body: {tracking_body}")
     # return True
 
-    tracking_body = add_tracking(body, uuid)
+    tracking_body = add_tracking(body, uuid, track_opens, track_linkclick)
 
     try:
         con = mail.get_connection()

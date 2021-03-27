@@ -79,7 +79,9 @@ def email_sender():
                                      to_email=[sending_item.recipient_email],
                                      subject=sending_item.email_subject,
                                      body=sending_item.email_body,
-                                     uuid=sending_item.id)
+                                     uuid=sending_item.id,
+                                     track_opens=sending_item.campaign.track_opens,
+                                     track_linkclick=sending_item.campaign.track_linkclick)
 
         if result:
             print(f"Email sent from {mail_account.email} to {sending_item.recipient_email}")

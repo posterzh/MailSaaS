@@ -4,7 +4,7 @@ from pytracking.html import adapt_html
 from mail import settings
 
 
-def add_tracking(html_message, uuid):
+def add_tracking(html_message, uuid, track_opens = False, track_linkclick = False):
     try:
         configuration = pytracking.Configuration(
             base_open_tracking_url=settings.PYTRACKING_CONFIGURATION["base_open_tracking_url"],
@@ -12,7 +12,7 @@ def add_tracking(html_message, uuid):
 
         new_html_email_text = adapt_html(
             html_message, extra_metadata={"uuid": uuid},
-            click_tracking=True, open_tracking=True, configuration=configuration)
+            click_tracking=track_linkclick, open_tracking=track_opens, configuration=configuration)
         return new_html_email_text
     except Exception as ex:
         print('Exception while adding a tracking info: ', ex)
