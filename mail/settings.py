@@ -325,7 +325,6 @@ CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_TIMEZONE = "UTC"
 
-
 # JWT_AUTH = {
 #     'JWT_AUTH_HEADER_PREFIX': 'JWT',
 #     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=500)
@@ -470,3 +469,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
     'apps.users.pipeline.get_avatar',
 )
+
+PYTRACKING_CONFIGURATION = {
+    "base_open_tracking_url": SITE_URL + "/mailaccounts/tracking/open/",
+    "base_click_tracking_url": SITE_URL + "/mailaccounts/tracking/click/",
+}

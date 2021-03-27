@@ -2,12 +2,12 @@ from datetime import datetime, timezone, timedelta
 
 from celery import shared_task
 from .models import *
-from .utils import *
+from .utils.smtp import send_mail_with_smtp
 from ..campaign.models import SendingObject
 
 
 @shared_task(bind=True)
-def test_email(self, mailAccountId):
+def send_test_email(self, mailAccountId):
     mailAccount = EmailAccount.objects.get(pk=mailAccountId)
     print('Sending email from :', mailAccount)
 
@@ -78,7 +78,10 @@ def email_sender():
                                      from_email=mail_account.email,
                                      to_email=[sending_item.recipient_email],
                                      subject=sending_item.email_subject,
-                                     body=sending_item.email_body)
+                                     body=sending_item.email_body,
+                                     uuid=sending_item.id,
+                                     track_opens=sending_item.campaign.track_opens,
+                                     track_linkclick=sending_item.campaign.track_linkclick)
 
         if result:
             print(f"Email sent from {mail_account.email} to {sending_item.recipient_email}")

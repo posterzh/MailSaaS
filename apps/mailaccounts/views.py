@@ -5,15 +5,16 @@ import email, imaplib
 import pytz
 from django.db.models import Prefetch
 from django.http import Http404, HttpResponseServerError, HttpResponseBadRequest
+from pytracking.django import OpenTrackingView, ClickTrackingView
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from . import utils
 from .models import EmailAccount, SendingCalendar, CalendarStatus, WarmingStatus
 from .serializers import EmailAccountSerializer, SendingCalendarSerializer
-from .tasks import test_email, send_mail_with_smtp
 from ..campaign.models import SendingObject
-
+from .utils.smtp import send_mail_with_smtp
+from .tasks import send_test_email
 
 class EmailAccountListView(generics.ListCreateAPIView):
     queryset = EmailAccount.objects.all()
@@ -122,7 +123,31 @@ class SendTestEmailView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request):
-        mailAccountId = request.data['mailAccountId']
-        test_email.delay(mailAccountId)
+        # mailAccountId = request.data['mailAccountId']
+        # send_test_email.delay(mailAccountId)
+
+        mailAccount = EmailAccount.objects.first()
 
         return Response("Ok")
+
+
+class MyOpenTrackingView(OpenTrackingView):
+
+    def notify_tracking_event(self, tracking_result):
+        uuid = tracking_result.metadata['uuid']
+
+        sending_object = SendingObject.objects.get(id=uuid)
+        sending_object.opened += 1
+        sending_object.opened_datetime = datetime.now(timezone.utc)
+        sending_object.save()
+
+
+class MyClickTrackingView(ClickTrackingView):
+
+    def notify_tracking_event(self, tracking_result):
+        uuid = tracking_result.metadata['uuid']
+
+        sending_object = SendingObject.objects.get(id=uuid)
+        sending_object.clicked += 1
+        sending_object.clicked_datetime = datetime.now(timezone.utc)
+        sending_object.save()
