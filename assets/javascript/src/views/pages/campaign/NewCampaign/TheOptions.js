@@ -37,7 +37,7 @@ class TheOptions extends Component {
     const optionData = {
       track_opens: this.state.trackOpen,
       terms_and_laws: this.state.termsandlaws,
-      track_link: this.state.trackLink
+      track_linkclick: this.state.trackLink
     };
     this.props.campaignOptions(optionData);
     this.props.onNext();

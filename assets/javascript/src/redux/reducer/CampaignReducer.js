@@ -32,6 +32,7 @@ export const campaignReducer = (state = initialState, action) => {
       return {
         ...state,
         track_opens: action.payload.track_opens,
+        track_linkclick: action.payload.track_linkclick,
         terms_and_laws: action.payload.terms_and_laws
       };
     default:
