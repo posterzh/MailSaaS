@@ -12,7 +12,6 @@ class LeadCatcher extends Component {
     super()
     this.state = {
       modal: false
-
     }
   }
   componentDidMount() {

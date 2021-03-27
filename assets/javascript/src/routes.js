@@ -26,7 +26,7 @@ import Teammates from "./views/pages/TeamSettings/Teammates";
 import Unsubscribes from "./views/pages/audiences/Unsubscribes/Unsubscribes";
 import ConversionTracking from "./views/pages/Extension/ConversionTracking";
 import ForgetPassword from "./views/pages/examples/ForgetPassword";
-import Profile from "./views/pages/User/Profile";
+import Profile from "./views/pages/user/Profile";
 
 // Mail Account
 import MailAccounts from "./views/pages/mailaccounts/MailAccounts";
@@ -84,7 +84,7 @@ const routes = [
       },
       {
         path: "/lead-catcher",
-        name: "Lead Catcher",
+        name: "Leads",
         miniName: " ",
         component: LeadCatcher,
         layout: "/app/admin",

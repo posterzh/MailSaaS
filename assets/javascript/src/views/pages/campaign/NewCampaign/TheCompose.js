@@ -4,7 +4,7 @@ import {
   Button,
   Input,
   Col,
-  Form,
+  Form
 } from "reactstrap";
 import { connect } from "react-redux";
 import { CampaignComposeAction } from "../../../../redux/action/CampaignAction";
@@ -95,11 +95,11 @@ class TheCompose extends Component {
         {
           Object.keys(first_row || {}).filter(field => !!field).map((field, index) => {
             return (
-              <div className="keyword-item text-danger px-1 mr-2 my-1" key={`${index}`} draggable="true" onDragStart={(e) => {
+              <div className="keyword-item text-danger px-1 mr-2 my-1" key={`template ${index}`} draggable="true" onDragStart={(e) => {
                 const dataTransfer = e.dataTransfer;
                 dataTransfer.setData('text/html', `<span class="keyword-item p-1 mr-2 my-1">{{${field}}}</span>`);
               }}>
-                <i className="fas fa-bars text-danger mr-2"></i>
+                <i className="fas fa-bars text-danger mr-1"></i>
                 { formatHeader(field) }
               </div>
             )
@@ -165,18 +165,17 @@ class TheCompose extends Component {
 
           {this.getDNDSource()}
 
-          <Row className="mt-5">
+          <Row className="mt-3">
             <Col>
               {this.state.followUpList.map((followUp, index) => (
-                <>
+                <div key={"follow" + index}>
                   <FollowUpPanel
                     index={index}
                     onDelete={this.onDeleteFollowUp}
                     data={followUp}
-                    key={index}
                   />
                   <div className="px-3">{this.getDNDSource()}</div>
-                </>
+                </div>
               ))}
             </Col>
           </Row>
@@ -198,15 +197,14 @@ class TheCompose extends Component {
           <Row>
             <Col>
               {this.state.dripList.map((drip, index) => (
-                <>
+                <div key={"drip" + index}>
                   <DripPanel
                     index={index}
                     onDelete={this.onDeleteDrip}
                     data={drip}
-                    key={index}
                   />
                   <div className="px-3">{this.getDNDSource()}</div>
-                </>
+                </div>
               ))}
             </Col>
           </Row>

@@ -15,4 +15,7 @@ urlpatterns = [
     path('available-timezones/', views.AvailableTimezonesView.as_view(), name="available-timezones"),
 
     path('send-test-email/', views.SendTestEmailView.as_view(), name="send-test-email"),
+
+    path('tracking/open/<path:path>', views.MyOpenTrackingView.as_view(), name="open-tracking"),
+    path('tracking/click/<path:path>', views.MyClickTrackingView.as_view(), name="click-tracking"),
 ]

@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Input, FormGroup, Label } from "reactstrap";
+import { Container, Row, Col, Input, FormGroup, Label, Button } from "reactstrap";
 import ReactQuill from "react-quill";
 import { parseCSVRow, parseTemplate } from '../../../../../utils/Utils';
 
@@ -30,24 +30,12 @@ export default class FollowUpPanel extends React.Component {
         <Row className="mt-3">
           <Col md={12} className="alignRight">
             <Row>
-              <h2 className="display-6">Follow-ups</h2>
-              {onDelete && 
-                <div
-                  className="btn btn-outline-warning btn-sm"
-                  style={{position: 'absolute', right: 0, top: 10}}
-                  onClick={() => onDelete(index)}
-                >
-                  <i style={{ paddingRight: 5 }} className="fa">
-                    &#xf014;
-                  </i>
-                  DELETE
-                </div>
-              }
+              {index == 0 && <h2 className="display-6">Follow-ups</h2>}
             </Row>
             {preview ? 
             <>
               <Row>
-                <i className="fa fa-reply"></i><span>&nbsp;&nbsp;Follow-ups {this.getPlural(data.waitDays, 'day')} later</span>
+                <i className="fa fa-reply"></i><span>&nbsp;&nbsp;{this.getPlural(data.waitDays, 'day')} later</span>
               </Row>
             </> 
             : 
@@ -74,6 +62,20 @@ export default class FollowUpPanel extends React.Component {
                       />
                     </Col>
                   </FormGroup>
+                  {onDelete && 
+                    <Button outline
+                      size="sm"
+                      type="button"
+                      color="warning"
+                      onClick={() => onDelete(index)}
+                      style={{position: 'absolute', right: 0, top: 5}}
+                    >
+                      <i style={{ paddingRight: 5 }} className="fa">
+                        &#xf014;
+                      </i>
+                      DELETE
+                    </Button>
+                  }
                 </Col>
               </Row>
             </>

@@ -23,7 +23,6 @@ export const filterRecipients = (filter) => (dispatch) => {
 };
 
 export const countRecipients = () => (dispatch) => {
-  toggleTopLoader(true);
   axios.get('/campaign/prospects/count')
     .then((response) => {
       dispatch({
@@ -35,6 +34,5 @@ export const countRecipients = () => (dispatch) => {
       toastOnError(error);
     })
     .finally(() => {
-      toggleTopLoader(false);
     });
 };
