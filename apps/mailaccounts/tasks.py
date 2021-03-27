@@ -1,10 +1,13 @@
 from datetime import datetime, timezone, timedelta
-
+import math
+import random
 from celery import shared_task
 from .models import *
 from .utils import *
 from ..campaign.models import SendingObject
 
+default_rampup_increment = 3
+default_max_warmup_cnt = 20
 
 @shared_task(bind=True)
 def test_email(self, mailAccountId):
@@ -101,3 +104,39 @@ def email_sender():
             sending_item.save()
         else:
             print(f"Failed to send from {mail_account.email} to {sending_item.recipient_email}")
+
+
+@shared_task
+def warming_trigger():
+    print("warming_sender triggered")
+    return
+    # Get warming enabled accounts
+    enabledAccounts = WarmingStatus.objects.filter(warming_enabled=True).select_related("mail_account")
+    for item in enabledAccounts:
+        mail_account = item.mail_account
+        cnt_to_send = min(default_rampup_increment * item.days_passed, default_max_warmup_cnt)
+
+        # calculate time span for today's warmup emails
+        timespan = math.floor(20 * 60 / cnt_to_send)            # time interval between 2 adjacent mails; notice the total time range is 20 hours
+        timespan += random.randint(-10, 10)
+
+        logs = WarmingLog.objects.filter(mail_account_id=mail_account.id, sent_at__day=datetime.today().day).order_by('-sent_at')
+
+        # if it exceeded today's count, continue
+        if len(logs) >= cnt_to_send:
+            continue
+
+        if len(logs) > 0:
+            timediff_minutes = (datetime.today() - logs[0].sent_at) / 60
+            # if it's too soon to send warm email, continue
+            if (timediff_minutes < timespan):
+                continue
+
+        # get random Warming account to sent out email
+        account_list = [tmp for tmp in enabledAccounts if tmp.mail_account_id != mail_account.id ]
+        dest_account = random.choice(account_list)
+
+        # send email to dest_account
+
+        # log in the DB
+        WarmingLog.objects.create(mail_account_id=mail_account.id)
