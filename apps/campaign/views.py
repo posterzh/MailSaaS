@@ -1927,97 +1927,116 @@ class CampaignScheduleView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
-        
+
         from_email_id = 26
         campaign = 67
         total_mail_count = 20
         max_followup_mail_count = 20 / 2
 
+        items = SendingObject.objects\
+            .filter(from_email_id=from_email_id, campaign=campaign)\
+            .values()
+        df_items = pd.DataFrame(data=items)
+
+        recipients = CampaignRecipient.objects\
+            .filter(campaign=campaign, leads=True)\
+            .values()
+        lead_emails = recipients.values_list('email', flat=True)
+
         # Follow up emails
+        followup_items_all = df_items[(df_items.email_type == 1) & (df_items.status == 0)]
 
-        followup_items_all = SendingObject.objects \
-            .filter(from_email_id=from_email_id, campaign=campaign, email_type=1, status=0) \
-            .all()
-
-        followup_items = []
-        for followup_item in followup_items_all:
-            matching_sent_main_item = SendingObject.objects \
-                .filter(from_email_id=from_email_id, campaign=campaign, email_type=0,
-                        recipient_email=followup_item.recipient_email, status=0) \
-                .first()
-
-            if matching_sent_main_item is None:
+        followup_items = pd.DataFrame(columns=df_items.columns)
+        for index, followup_item in followup_items_all.iterrows():
+            # Skip leads email
+            if followup_item.recipient_email in lead_emails:
                 continue
-            else:
-                last_sent_time = datetime.combine(previous_sent_followup_item.sent_date, previous_sent_followup_item.sent_time)
 
-            if followup_item.email_order > 0:
+            #
+            matching_sent_main_item = df_items[
+                (df_items.email_type == 0) &
+                (df_items.status == 1) &
+                (df_items.recipient_email == followup_item.recipient_email)]
+
+            if len(matching_sent_main_item) == 0:
+                continue
+
+            last_sent_time = datetime.combine(matching_sent_main_item.iloc[0].sent_date,
+                                              matching_sent_main_item.iloc[0].sent_time)
+
+            if followup_item.email_order >= 1:
                 previous_email_order = followup_item.email_order - 1
-                previous_sent_followup_item = SendingObject.objects \
-                    .filter(from_email_id=from_email_id, campaign=campaign, email_type=1,
-                            recipient_email=followup_item.recipient_email, email_order=previous_email_order, status=0) \
-                    .first()
+                previous_sent_followup_item = df_items[
+                    (df_items.email_type == 1) &
+                    (df_items.status == 1) &
+                    (df_items.recipient_email == followup_item.recipient_email) &
+                    (df_items.email_order == previous_email_order)]
 
-                if previous_sent_followup_item is None:
+                if len(previous_sent_followup_item) == 0:
                     continue
-                else:
-                    last_sent_time = datetime.combine(previous_sent_followup_item.sent_date, previous_sent_followup_item.sent_time)
+
+                last_sent_time = datetime.combine(previous_sent_followup_item.iloc[0].sent_date,
+                                                  previous_sent_followup_item.iloc[0].sent_time)
 
             should_send_time = last_sent_time + timedelta(days=followup_item.wait_days)
-            today = datetime.datetime.now()
-            if should_send_time > today:
+            now = datetime.datetime.now()
+            if should_send_time > now:
                 continue
 
-            followup_items.append(followup_item)
+            followup_items = followup_items.append(followup_item)
 
             if len(followup_items) > max_followup_mail_count:
                 break
 
+        json_followup = json.loads(followup_items.to_json(orient='records'))
+
         # Main emails
+        max_main_mail_count = total_mail_count - len(followup_items)
 
-        max_main_mail_count = total_mail_count = len(followup_items)
-
-        main_items = SendingObject.objects \
-            .filter(from_email_id=from_email_id, campaign=campaign, email_type=0, status=0) \
-            .all()[:max_main_mail_count]
+        main_items = df_items[(df_items.email_type == 0) & (df_items.status == 0)].head(max_main_mail_count)
+        json_main = json.loads(main_items.to_json(orient='records'))
 
         # Drip emails
+        drip_items_all = df_items[(df_items.email_type == 2) & (df_items.status == 0)]
 
-        drip_items_all = SendingObject.objects \
-            .filter(from_email_id=from_email_id, campaign=campaign, email_type=2, status=0) \
-            .all()
+        drip_items = pd.DataFrame(columns=df_items.columns)
+        for index, drip_item in drip_items_all.iterrows():
+            matching_sent_main_item = df_items[
+                (df_items.email_type == 0) &
+                (df_items.status == 1) &
+                (df_items.recipient_email == drip_item.recipient_email)]
 
-        drip_items = []
-        for drip_item in drip_items_all:
-            matching_sent_main_item = SendingObject.objects \
-                .filter(from_email_id=from_email_id, campaign=campaign, email_type=0, recipient_email=drip_item.recipient_email, status=0) \
-                .first()
-
-            if matching_sent_main_item is None:
+            if len(matching_sent_main_item) == 0:
                 continue
-            else:
-                last_sent_time = datetime.combine(matching_sent_main_item.sent_date, matching_sent_main_item.sent_time)
 
-            if drip_item.email_order > 0:
+            last_sent_time = datetime.combine(matching_sent_main_item.iloc[0].sent_date,
+                                              matching_sent_main_item.iloc[0].sent_time)
+
+            if drip_item.email_order >= 1:
                 previous_email_order = drip_item.email_order - 1
-                previous_sent_drip_item = SendingObject.objects \
-                    .filter(from_email_id=from_email_id, campaign=campaign, email_type=2, recipient_email=drip_item.recipient_email, email_order=previous_email_order, status=0) \
-                    .first()
+                previous_sent_drip_item = df_items[
+                    (df_items.email_type == 2) &
+                    (df_items.status == 1) &
+                    (df_items.recipient_email == drip_item.recipient_email) &
+                    (df_items.email_order == previous_email_order)]
 
-                if previous_sent_drip_item is None:
+                if len(previous_sent_drip_item) == 0:
                     continue
-                else:
-                    last_sent_time = datetime.combine(previous_sent_drip_item.sent_date, previous_sent_drip_item.sent_time)
+
+                last_sent_time = datetime.combine(previous_sent_drip_item.iloc[0].sent_date,
+                                                  previous_sent_drip_item.iloc[0].sent_time)
 
             should_send_time = last_sent_time + timedelta(days=drip_item.wait_days)
-            today = datetime.datetime.now()
-            if should_send_time > today:
+            now = datetime.datetime.now()
+            if should_send_time > now:
                 continue
 
-            drip_items.append(drip_item)
+            drip_items = drip_items.append(drip_item)
+
+        json_drip = json.loads(drip_items.to_json(orient='records'))
 
         return Response({
-            'main': main_items,
-            'followup': followup_items,
-            'drip': drip_items
+            'main': json_main,
+            'followup': json_followup,
+            'drip': json_drip
         })
