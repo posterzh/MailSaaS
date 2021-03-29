@@ -1,3 +1,4 @@
+import imaplib
 from datetime import datetime, timezone, timedelta
 
 from celery import shared_task
@@ -104,3 +105,35 @@ def email_sender():
             sending_item.save()
         else:
             print(f"Failed to send from {mail_account.email} to {sending_item.recipient_email}")
+
+
+@shared_task
+def email_receiver():
+    print('Email receiver is called...')
+
+    mb = {}
+    mb.email_box_ssl = True
+    mb.email_box_host = "outlook.office365.com"
+    mb.email_box_port = 993
+    mb.email_box_user = "uishaozin@outlook.com"
+    mb.email_box_pass = "AaBb!@#$"
+    mb.email_box_imap_folder = "inbox"
+
+    if mb.email_box_ssl:
+        if not mb.email_box_port: mb.email_box_port = 993
+        server = imaplib.IMAP4_SSL(mb.email_box_host, int(mb.email_box_port))
+    else:
+        if not mb.email_box_port:
+            mb.email_box_port = 143
+        server = imaplib.IMAP4(mb.email_box_host, int(mb.email_box_port))
+    server.login(mb.email_box_user, mb.email_box_pass)
+    server.select(mb.email_box_imap_folder)
+    status, data = server.search(None, 'ALL')
+    for num in data[0].split():
+        status, data = server.fetch(num, '(RFC822)')
+        full_message = data[0][1]
+
+        server.store(num, '+FLAGS', '\\Deleted')
+    server.expunge()
+    server.close()
+    server.logout()
