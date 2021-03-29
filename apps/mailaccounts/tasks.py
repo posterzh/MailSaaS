@@ -120,11 +120,8 @@ def email_receiver():
     mb.email_box_imap_folder = "inbox"
 
     if mb.email_box_ssl:
-        if not mb.email_box_port: mb.email_box_port = 993
         server = imaplib.IMAP4_SSL(mb.email_box_host, int(mb.email_box_port))
     else:
-        if not mb.email_box_port:
-            mb.email_box_port = 143
         server = imaplib.IMAP4(mb.email_box_host, int(mb.email_box_port))
     server.login(mb.email_box_user, mb.email_box_pass)
     server.select(mb.email_box_imap_folder)
