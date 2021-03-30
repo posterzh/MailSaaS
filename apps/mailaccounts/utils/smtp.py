@@ -172,11 +172,14 @@ def receive_mail_with_imap(host, port, username, password, use_tls):
 
     return emails
 
+def get_sending_items(available_email_ids, email_limits):
+    for email, limit in zip(available_email_ids, email_limits):
+        result = get_emails_to_send(email, limit)
+
 
 # from_email_id = 26
-# campaign = 67
 # total_mail_count = 20
-def get_emails_to_send(from_email_id, campaign, total_mail_count=20):
+def get_emails_to_send(from_email_id, total_mail_count, campaign = 67):
     max_followup_mail_count = total_mail_count / 2
 
     items = SendingObject.objects \
@@ -234,13 +237,10 @@ def get_emails_to_send(from_email_id, campaign, total_mail_count=20):
         if len(followup_items) > max_followup_mail_count:
             break
 
-    json_followup = json.loads(followup_items.to_json(orient='records'))
-
     # Main emails
     max_main_mail_count = total_mail_count - len(followup_items)
 
     main_items = df_items[(df_items.email_type == 0) & (df_items.status == 0)].head(max_main_mail_count)
-    json_main = json.loads(main_items.to_json(orient='records'))
 
     # Drip emails
     drip_items_all = df_items[(df_items.email_type == 2) & (df_items.status == 0)]
@@ -279,10 +279,8 @@ def get_emails_to_send(from_email_id, campaign, total_mail_count=20):
 
         drip_items = drip_items.append(drip_item)
 
-    json_drip = json.loads(drip_items.to_json(orient='records'))
-
     return {
-        'main': json_main,
-        'followup': json_followup,
-        'drip': json_drip
+        'main': main_items,
+        'followup': followup_items,
+        'drip': drip_items
     }

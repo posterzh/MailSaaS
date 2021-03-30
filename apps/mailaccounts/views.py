@@ -13,7 +13,7 @@ from . import utils
 from .models import EmailAccount, SendingCalendar, CalendarStatus, WarmingStatus
 from .serializers import EmailAccountSerializer, SendingCalendarSerializer
 from ..campaign.models import SendingObject, EmailInbox
-from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap
+from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_sending_items
 from .tasks import send_test_email
 
 
@@ -127,6 +127,84 @@ class SendTestEmailView(APIView):
     def post(self, request):
         # mailAccountId = request.data['mailAccountId']
         # send_test_email.delay(mailAccountId)
+
+        available_mail_ids = []
+        available_mail_limits = []
+        mail_accounts = EmailAccount.objects.all()
+        for mail_account in mail_accounts:
+            sending_calendar, created = SendingCalendar.objects.get_or_create(mail_account_id=mail_account.id)
+            if created:
+                sending_calendar = SendingCalendar.objects.get(mail_account_id=mail_account.id)
+            calendar_status, created = CalendarStatus.objects.get_or_create(sending_calendar_id=sending_calendar.id,
+                                                                            defaults={'updated_datetime': datetime.now(
+                                                                                timezone.utc) - timedelta(days=1)})
+
+            can_send = True
+            # Check time
+
+            current_time = datetime.now().time()
+            if sending_calendar.start_time > current_time:
+                can_send = False
+            if current_time > sending_calendar.end_time:
+                can_send = False
+
+            weekday = datetime.today().weekday()
+            if sending_calendar.block_days & weekday:
+                can_send = False
+
+            # Check max email count per day
+            if calendar_status.sent_count >= sending_calendar.max_emails_per_day:
+                can_send = False
+
+            minutes = (datetime.now(timezone.utc) - calendar_status.updated_datetime).total_seconds() / 60.0
+            if minutes < sending_calendar.minutes_between_sends:
+                can_send = False
+
+            if can_send:
+                available_mail_ids.append(mail_account.id)
+                available_mail_limits.append(calendar_status.sent_count)
+
+        # Fetch sending objects
+        sending_objects = get_sending_items(available_mail_ids, available_mail_limits)
+
+        for sending_item in sending_objects:
+            mail_account = sending_item.from_email
+
+            # Send email
+            result = send_mail_with_smtp(host=mail_account.smtp_host,
+                                         port=mail_account.smtp_port,
+                                         username=mail_account.smtp_username,
+                                         password=mail_account.smtp_password,
+                                         use_tls=mail_account.use_smtp_ssl,
+                                         from_email=mail_account.email,
+                                         to_email=[sending_item.recipient_email],
+                                         subject=sending_item.email_subject,
+                                         body=sending_item.email_body,
+                                         uuid=sending_item.id,
+                                         track_opens=sending_item.campaign.track_opens,
+                                         track_linkclick=sending_item.campaign.track_linkclick)
+
+            if result:
+                print(f"Email sent from {mail_account.email} to {sending_item.recipient_email}")
+
+                # Update CalendarStatus
+                #   reset the today's count
+                if calendar_status.updated_datetime.date() != datetime.today().date():
+                    calendar_status.sent_count = 0
+                #   increase the sent count
+                calendar_status.sent_count += 1
+                #   update the timestamp
+                calendar_status.updated_datetime = datetime.now(timezone.utc)
+                #   save
+                calendar_status.save()
+
+                # Update SendingObjects
+                sending_item.status = 1
+                sending_item.sent_date = datetime.now().date()
+                sending_item.sent_time = datetime.now().time()
+                sending_item.save()
+            else:
+                print(f"Failed to send from {mail_account.email} to {sending_item.recipient_email}")
 
 
         return Response("Ok")
