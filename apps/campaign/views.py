@@ -12,6 +12,7 @@ from django.contrib.sites.models import Site
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMultiAlternatives, send_mail
 from django.db.models import Q
+from django.db.models import F
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django_filters.rest_framework import DjangoFilterBackend
@@ -1921,3 +1922,80 @@ class CampaignDetailsSettingsView(generics.RetrieveAPIView):
     def get_queryset(self):
         user = self.request.user
         return Campaign.objects.filter(assigned=user.id)
+
+
+class CampaignLeadsView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        params = list(dict(request.GET).keys())
+        queryset = CampaignRecipient.objects.filter(leads=True, campaign__assigned=request.user.id)
+
+        # Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign__title__contains=title,
+        # lead_status=leadstatus, campaign__assigned=request.user.id, leads=True)
+        if 'search' in params:
+            toSearch = request.GET['search']
+            queryset = queryset.filter(
+                Q(email__contains=toSearch) |
+                Q(full_name__contains=toSearch) |
+                Q(campaign__title__contains=toSearch))
+
+        if 'leadstatus' in params:
+            lead_status = request.GET['leadstatus']
+            queryset = queryset.filter(lead_status=lead_status)
+
+        if 'date' in params:
+            if request.GET['date'] == "last14days":
+                to_date = datetime.today()
+                from_date = to_date - timedelta(days=14)
+
+            elif request.GET['date'] == "last30days":
+                to_date = datetime.today()
+                from_date = to_date - timedelta(days=30)
+
+            elif request.GET['date'] == "last90days":
+                to_date = datetime.today()
+                from_date = to_date - timedelta(days=90)
+
+            elif request.GET['date'] == "last6weeks":
+                to_date = datetime.today()
+                from_date = to_date - timedelta(weeks=6)
+
+            elif request.GET['date'] == "last3months":
+                to_date = datetime.today()
+                month_3_ago = to_date.month - 3 if to_date.month > 3 else 12
+                last_year = to_date.year - 1
+                from_date = to_date.replace(month=month_3_ago)
+                if from_date > to_date:
+                    from_date = from_date.replace(year=last_year)
+
+            elif request.GET['date'] == "last6months":
+                to_date = datetime.today()
+                month_6_ago = to_date.month - 6 if to_date.month > 6 else 12
+                last_year = to_date.year - 1
+                from_date = to_date.replace(month=month_6_ago)
+                if from_date > to_date:
+                    from_date = from_date.replace(year=last_year)
+
+            elif request.GET['date'] == "last12months":
+                to_date = datetime.today()
+                month_12_ago = to_date.month - 12 if to_date.month > 12 else 12
+                last_year = to_date.year - 1
+                from_date = to_date.replace(month=month_12_ago)
+                if from_date > to_date:
+                    from_date = from_date.replace(year=last_year)
+            elif request.GET['date'] == "monthtodate":
+                to_date = datetime.today()
+                from_date = to_date.replace(day=1)
+
+            elif request.GET['date'] == "yeartodate":
+                to_date = datetime.today()
+                from_date = to_date.replace(month=1, day=1)
+
+            queryset = queryset.filter(created_date_time__range=(from_date, to_date))
+
+        # queryset = queryset.select_related('title')
+        res = queryset.values('id', 'email', 'lead_status', campaign_title=F('campaign__title'),
+                              assigned_name=F('campaign__assigned__full_name'), camp_id=F('campaign'))
+        # campEmailserializer = CampaignEmailSerializer(queryset, many=True)
+        return Response({'res': res, 'success': True})
