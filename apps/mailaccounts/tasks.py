@@ -3,8 +3,8 @@ from datetime import datetime, timezone, timedelta
 
 from celery import shared_task
 from .models import *
-from .utils.smtp import send_mail_with_smtp
-from ..campaign.models import SendingObject
+from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap
+from ..campaign.models import SendingObject, EmailInbox
 
 
 @shared_task(bind=True)
@@ -111,26 +111,24 @@ def email_sender():
 def email_receiver():
     print('Email receiver is called...')
 
-    mb = {}
-    mb.email_box_ssl = True
-    mb.email_box_host = "outlook.office365.com"
-    mb.email_box_port = 993
-    mb.email_box_user = "uishaozin@outlook.com"
-    mb.email_box_pass = "AaBb!@#$"
-    mb.email_box_imap_folder = "inbox"
+    mail_accounts = EmailAccount.objects.exclude(imap_username__exact='').exclude(imap_username__isnull=True)
 
-    if mb.email_box_ssl:
-        server = imaplib.IMAP4_SSL(mb.email_box_host, int(mb.email_box_port))
-    else:
-        server = imaplib.IMAP4(mb.email_box_host, int(mb.email_box_port))
-    server.login(mb.email_box_user, mb.email_box_pass)
-    server.select(mb.email_box_imap_folder)
-    status, data = server.search(None, 'ALL')
-    for num in data[0].split():
-        status, data = server.fetch(num, '(RFC822)')
-        full_message = data[0][1]
+    for mail_account in mail_accounts:
+        emails = receive_mail_with_imap(
+            host=mail_account.imap_host,
+            port=mail_account.imap_port,
+            username=mail_account.imap_username,
+            password=mail_account.imap_password,
+            use_tls=mail_account.use_imap_ssl
+        )
 
-        server.store(num, '+FLAGS', '\\Deleted')
-    server.expunge()
-    server.close()
-    server.logout()
+        for email_item in emails:
+            inbox = EmailInbox()
+            inbox.recipient_email = mail_account
+            inbox.from_email = email_item['from']
+            inbox.email_subject = email_item['subject']
+            inbox.email_body = email_item['content']
+            inbox.status = 0
+            inbox.receive_date = datetime.now().date()
+            inbox.receive_time = datetime.now().time()
+            inbox.save()

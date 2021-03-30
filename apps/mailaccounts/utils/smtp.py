@@ -133,6 +133,7 @@ def receive_mail_with_imap(host, port, username, password, use_tls):
     for block in data:
         mail_ids += block.split()
 
+    emails = []
     for num in mail_ids:
         status, data = mail.fetch(num, '(RFC822)')
 
@@ -155,12 +156,14 @@ def receive_mail_with_imap(host, port, username, password, use_tls):
                 else:
                     mail_content = message.get_payload()
 
-                print(f'From: {mail_from}')
-                print(f'Subject: {mail_subject}')
-                print(f'Content: {mail_content}')
+                # print(f'From: {mail_from}')
+                # print(f'Subject: {mail_subject}')
+                # print(f'Content: {mail_content}')
+                email_item = {'from': mail_from, 'subject': mail_subject, 'content': mail_content}
+                emails.append(email_item)
 
         status, data = mail.store(num, '+FLAGS', '\\Seen')
-        print("Set as seen: ", status, data)
+        # print("Set as seen: ", status, data)
 
-    return True
+    return emails
 

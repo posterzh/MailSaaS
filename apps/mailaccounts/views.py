@@ -12,9 +12,10 @@ from rest_framework.views import APIView
 from . import utils
 from .models import EmailAccount, SendingCalendar, CalendarStatus, WarmingStatus
 from .serializers import EmailAccountSerializer, SendingCalendarSerializer
-from ..campaign.models import SendingObject
+from ..campaign.models import SendingObject, EmailInbox
 from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap
 from .tasks import send_test_email
+
 
 class EmailAccountListView(generics.ListCreateAPIView):
     queryset = EmailAccount.objects.all()
@@ -69,7 +70,8 @@ class EmailAccountWarmingView(APIView):
         #                  queryset=WarmingStatus.objects.all(),
         #                  to_attr="WarmingStatus")
         #     ).values())
-        return Response(WarmingStatus.objects.select_related("mail_account").filter(mail_account__user_id=self.request.user.id).values())
+        return Response(WarmingStatus.objects.select_related("mail_account").filter(
+            mail_account__user_id=self.request.user.id).values())
 
     def post(self, request, mail_account_id):
         warming_enabled = request.data['warming_enabled']
@@ -126,13 +128,6 @@ class SendTestEmailView(APIView):
         # mailAccountId = request.data['mailAccountId']
         # send_test_email.delay(mailAccountId)
 
-        receive_mail_with_imap(
-            host="outlook.office365.com",
-            port=993,
-            username="uishaozin@outlook.com",
-            password="AaBb!@#$",
-            use_tls=True
-        )
 
         return Response("Ok")
 
