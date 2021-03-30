@@ -13,7 +13,7 @@ from . import utils
 from .models import EmailAccount, SendingCalendar, CalendarStatus, WarmingStatus
 from .serializers import EmailAccountSerializer, SendingCalendarSerializer
 from ..campaign.models import SendingObject
-from .utils.smtp import send_mail_with_smtp
+from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap
 from .tasks import send_test_email
 
 class EmailAccountListView(generics.ListCreateAPIView):
@@ -126,7 +126,13 @@ class SendTestEmailView(APIView):
         # mailAccountId = request.data['mailAccountId']
         # send_test_email.delay(mailAccountId)
 
-        mailAccount = EmailAccount.objects.first()
+        receive_mail_with_imap(
+            host="outlook.office365.com",
+            port=993,
+            username="uishaozin@outlook.com",
+            password="AaBb!@#$",
+            use_tls=True
+        )
 
         return Response("Ok")
 
