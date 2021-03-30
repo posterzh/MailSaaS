@@ -156,8 +156,8 @@ class SendingObject(models.Model):
 
 class EmailInbox(models.Model):
     recipient_email = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
-    from_email = models.CharField(max_length=50)
-    email_subject = models.CharField(max_length=100)
+    from_email = models.TextField()
+    email_subject = models.TextField()
     email_body = models.TextField(blank=True, null=True)
 
     # 0: received, 1: processed, 2: xxx
