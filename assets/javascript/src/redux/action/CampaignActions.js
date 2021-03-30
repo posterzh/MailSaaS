@@ -42,3 +42,19 @@ export const campaignSend = (payload) => (dispatch) => {
     });
 };
 
+export const campaignUpdate = (payload) => (dispatch) => {
+  const formData = new FormData();
+  formData.append('campaign', JSON.stringify(payload));
+  toggleTopLoader(true);
+  axios
+    .post("/campaign/update/", formData)
+    .then((response) => {
+      //TODO: reload page
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+}
