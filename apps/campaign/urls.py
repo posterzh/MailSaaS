@@ -12,7 +12,6 @@ urlpatterns = [
     path('options/', views.CreateCampaignOptionView.as_view(), name='create_campaign_options'),
     path('view/', views.CampaignView.as_view(), name='campaign_view'),
     path('savecamp/<int:pk>/', views.CreateCampaignSendView.as_view(), name='create_campaign_send'),
-    path('leadscatcher/', views.LeadsCatcherView.as_view(), name='leads_catcher'),
     path('overview/<int:pk>/', views.GetCampaignOverview.as_view(), name='Get_campaign_overview'),
     path('recipients/people/<int:pk>/', views.AllRecipientView.as_view(), name='recipients'),
     path('recipients/<int:pk>/', views.RecipientDetailView.as_view(), name="recipients_update"),
@@ -31,4 +30,6 @@ urlpatterns = [
     path('overview-summary/<int:pk>/', views.CampaignOverviewSummary.as_view(), name='Get_campaign_overview_summary'),
     path('details-sequence/<int:pk>/', views.CampaignDetailsSequenceView.as_view(), name='details-sequence'),
     path('details-settings/<int:pk>/', views.CampaignDetailsSettingsView.as_view(), name='details-settings'),
+    path('schedule/', views.CampaignScheduleView.as_view(), name='schedule'),
+    path('leads/', views.CampaignLeadsView.as_view(), name='leads'),
 ]
