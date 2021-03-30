@@ -19,20 +19,78 @@ import {
   CardHeader,
   CardBody
 } from "reactstrap";
+import ReactQuill from "react-quill";
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import DetailHeader from "./components/DetailHeader";
+import PreviewPanelList from "./components/PreviewPanelList";
+import MainPreviewPanel from "./components/MainPreviewPanel";
+import FollowUpPreviewPanel from "./components/FollowUpPreviewPanel";
+import DripPreviewPanel from "./components/DripPreviewPanel";
+import FollowUpPanel from "../NewCampaign/components/FollowUpPanel";
+import DripPanel from "../NewCampaign/components/DripPanel";
 import { getDetialsSequence } from "../../../../redux/action/CampaignDetailsActions";
+import { formatHeader } from "../../../../utils/Utils";
 
 class CampaignDetailSequence extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      editing: false,
+      followUpList: [],
+      dripList: [],
+    }
+  }
+
   componentDidMount() {
     this.props.getDetialsSequence(this.props.id);
   }
 
+  handleSubmit = () => {
+
+  }
+
+  onEdit = () => {
+    const { detailsSequence: { followups, drips } } = this.props;
+    this.setState({
+      editing: true,
+      followUpList: followups,
+      dripList: drips,
+    })
+  }
+
+  onCancel = () => {
+
+  }
+
+  getDNDSource = () => {
+    const { detailsSequence } = this.props;
+
+    return (
+      <div className="d-flex flex-wrap mt-2">
+        {
+          detailsSequence.csv_fields.split(",").map((field, index) => {
+            return (
+              <div className="keyword-item text-danger px-1 mr-2 my-1" key={`template ${index}`} draggable="true" onDragStart={(e) => {
+                const dataTransfer = e.dataTransfer;
+                dataTransfer.setData('text/html', `<span class="keyword-item p-1 mr-2 my-1">{{${field}}}</span>`);
+              }}>
+                <i className="fas fa-bars text-danger mr-1"></i>
+                { formatHeader(field)}
+              </div>
+            )
+          })
+        }
+      </div>
+    )
+  }
+
   render() {
+    const { editing } = this.state;
     const { id, title, detailsSequence } = this.props;
     const campTitle = title ? title : "Date Outreach";
     return (
+
       <>
         <PageHeader
           current={campTitle}
@@ -44,122 +102,201 @@ class CampaignDetailSequence extends Component {
           <Row>
             <DetailHeader activeItem="SEQUENCE" id={id} />
           </Row>
-          <Row className="my-3">
-            <Col md={12} className="mx-auto text-right">
-              <Button type="button" color="danger" className="mx-auto" size="sm">
-                EDIT SEQUENCE
-              </Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col md="12">
-              <Card>
-                <CardHeader className="bg-transparent py-2">
-                  <h3 className="mb-0">Initial campaign email</h3>
-                </CardHeader>
-                <CardBody className="py-2">
-                  <div
-                    className="timeline timeline-one-side"
-                    data-timeline-axis-style="dashed"
-                    data-timeline-content="axis"
-                  >
-                    <div className="timeline-block mb-1">
-                      <span className="timeline-step badge-success">
-                        <i className="fa fa-envelope"></i>
-                      </span>
-                      <div className="timeline-content full-max-w">
-                        <h5 className="mb-0">{detailsSequence.email_subject}</h5>
-                        <p className="text-sm mt-1 mb-0" dangerouslySetInnerHTML={{ __html: detailsSequence.email_body }}>
-                        </p>
-                        <div className="mt-3" style={{position: "absolute", top: -12, right: 0}}>
-                          <Badge color="danger" pill>
-                            <i className="fa fa-pause"></i>
-                          </Badge>
-                        </div>
+          {editing
+            ?
+            <>
+              <Row className="my-3">
+                <Col className="text-right">
+                  <Button color="danger" type="submit" size="sm">
+                    &nbsp;&nbsp;
+                    <i className="fa fa-save" aria-hidden="true"></i>
+                    &nbsp;Save&nbsp;&nbsp;
+                  </Button>
+                  <Button color="primary" type="button" size="sm" outline onClick={this.onCancel}>
+                    <i className="fa fa-times" aria-hidden="true"></i>
+                    &nbsp;Cancel
+                    </Button>
+                </Col>
+              </Row>
+              <Form onSubmit={this.handleSubmit}>
+                <Row>
+                  <Col>
+                    <Input
+                      type="text"
+                      className="form-control"
+                      name="subject"
+                      value={this.state.subject}
+                      onChange={(e) => {
+                        this.setState({ subject: e.target.value });
+                      }}
+                      placeholder="Subject"
+                      required
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <ReactQuill
+                      onChange={(value) => {
+                        this.setState({ email_body: value });
+                      }}
+                      theme="snow"
+                      className="Quill_div"
+                      modules={{
+                        toolbar: [
+                          ["bold", "italic"],
+                          ["link", "blockquote", "code", "image"],
+                          [
+                            {
+                              list: "ordered",
+                            },
+                            {
+                              list: "bullet",
+                            },
+                          ],
+                        ],
+                      }}
+                    />
+                  </Col>
+                </Row>
+
+                {this.getDNDSource()}
+
+                <Row className="mt-3">
+                  <Col>
+                    {this.state.followUpList.map((followUp, index) => (
+                      <div key={"follow" + index}>
+                        <FollowUpPanel
+                          index={index}
+                          onDelete={this.onDeleteFollowUp}
+                          data={followUp}
+                        />
+                        <div className="px-3">{this.getDNDSource()}</div>
                       </div>
-                    </div>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-          <Row>
-            <Col md="6">
-              <Card>
-                <CardHeader className="bg-transparent py-2">
-                  <h3 className="mb-0">Follow-Ups</h3>
-                </CardHeader>
-                <CardBody className="py-2">
-                  <div
-                    className="timeline timeline-one-side"
-                    data-timeline-axis-style="dashed"
-                    data-timeline-content="axis"
-                  >
-                    {detailsSequence.followups && (
-                      detailsSequence.followups.map(followup => (
-                        <div className="timeline-block mb-1">
-                          <span className="timeline-step badge-success">
-                            <i className="fa fa-reply"></i>
-                          </span>
-                          <div className="timeline-content">
-                            <small className="text-muted font-weight-bold">
-                              Wait {followup.waitDays} days
-                            </small>
-                            <h5 className="mt-3 mb-0">{followup.subject}</h5>
-                            <p className="text-sm mt-1 mb-0" dangerouslySetInnerHTML={{ __html: followup.email_body }}>
-                            </p>
-                            <div className="mt-3" style={{}}>
-                              <Badge color="danger" pill style={{position: "absolute", top: 6, right: 0}}>
-                                <i className="fa fa-pause"></i>
-                              </Badge>
-                            </div>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-            <Col md="6">
-              <Card>
-                <CardHeader className="bg-transparent py-2">
-                  <h3 className="mb-0">Drips</h3>
-                </CardHeader>
-                <CardBody className="py-2">
-                  <div
-                    className="timeline timeline-one-side"
-                    data-timeline-axis-style="dashed"
-                    data-timeline-content="axis"
-                  >
-                    {detailsSequence.drips && (
-                      detailsSequence.drips.map(drip => (
-                        <div className="timeline-block mb-1">
-                          <span className="timeline-step badge-success">
-                            <i className="fas fa-stopwatch"></i>
-                          </span>
-                          <div className="timeline-content">
-                            <small className="text-muted font-weight-bold">
-                              Wait {drip.waitDays} days
-                            </small>
-                            <h5 className="mt-3 mb-0">{drip.subject}</h5>
-                            <p className="text-sm mt-1 mb-0" dangerouslySetInnerHTML={{ __html: drip.email_body }}>
-                            </p>
-                            <div className="mt-3">
-                              <Badge color="success" pill style={{position: "absolute", top: 6, right: 0}}>
-                                <i className="fa fa-play"></i>
-                              </Badge>
-                            </div>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-          {/* <Row>
+                    ))}
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col className="mt-3">
+                    <Button
+                      color="default"
+                      outline
+                      type="button"
+                      block
+                      onClick={this.onAddFollowUp}
+                    >
+                      <i className="fa fa-plus"></i> &nbsp;ADD FOLLOW-UP
+                    </Button>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col>
+                    {this.state.dripList.map((drip, index) => (
+                      <div key={"drip" + index}>
+                        <DripPanel
+                          index={index}
+                          onDelete={this.onDeleteDrip}
+                          data={drip}
+                        />
+                        <div className="px-3">{this.getDNDSource()}</div>
+                      </div>
+                    ))}
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col className="mt-3">
+                    <Button
+                      color="default"
+                      outline
+                      type="button"
+                      block
+                      onClick={this.onAddDrip}
+                    >
+                      <i className="fa fa-plus"></i> &nbsp;ADD DRIP
+                    </Button>
+                  </Col>
+                </Row>
+              </Form>
+            </>
+            :
+            <>
+              <Row className="my-3">
+                <Col md={12} className="mx-auto text-right">
+                  <Button type="button" color="danger" className="mx-auto" size="sm" onClick={this.onEdit}>
+                    EDIT SEQUENCE
+                  </Button>
+                </Col>
+              </Row>
+              <Row>
+                <Col md="12">
+                  <Card>
+                    <CardHeader className="bg-transparent py-2">
+                      <h3 className="mb-0">Initial campaign email</h3>
+                    </CardHeader>
+                    <CardBody className="py-2">
+                      <PreviewPanelList>
+                        <MainPreviewPanel subject={detailsSequence.email_subject} body={detailsSequence.email_body} />
+                      </PreviewPanelList>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+              <Row>
+                <Col md="6">
+                  <Card>
+                    <CardHeader className="bg-transparent py-2">
+                      <h3 className="mb-0">Follow-Ups</h3>
+                    </CardHeader>
+                    <CardBody className="py-2">
+                      <PreviewPanelList>
+                        {detailsSequence.followups && (
+                          detailsSequence.followups.map(followup => (
+                            <FollowUpPreviewPanel subject={followup.subject} body={followup.email_body} waitDays={followup.waitDays} />
+                          ))
+                        )}
+                      </PreviewPanelList>
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col md="6">
+                  <Card>
+                    <CardHeader className="bg-transparent py-2">
+                      <h3 className="mb-0">Drips</h3>
+                    </CardHeader>
+                    <CardBody className="py-2">
+                      <PreviewPanelList>
+                        {detailsSequence.drips && (
+                          detailsSequence.drips.map(drip => (
+                            <DripPreviewPanel subject={drip.subject} body={drip.email_body} waitDays={drip.waitDays} />
+                          ))
+                        )}
+                      </PreviewPanelList>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+            </>
+          }
+        </PageContainer>
+      </>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  id: state.campaignDetails.id,
+  title: state.campaignDetails.title,
+  detailsSequence: state.campaignDetails.detailsSequence,
+});
+
+export default connect(mapStateToProps, {
+  getDetialsSequence
+})(CampaignDetailSequence);
+
+{/* <Row>
             <Col md="12">
               <Card>
                 <CardHeader className="bg-transparent py-2">
@@ -334,7 +471,7 @@ class CampaignDetailSequence extends Component {
               </Card>
             </Col>
           </Row> */}
-          {/* <Row className="mt-4">
+{/* <Row className="mt-4">
             <div className="Sequence_div">
               <span>
                 {" "}
@@ -372,18 +509,3 @@ class CampaignDetailSequence extends Component {
               <p>this is a pera graph</p>
             </div>
           </Row> */}
-        </PageContainer>
-      </>
-    );
-  }
-}
-
-const mapStateToProps = (state) => ({
-  id: state.campaignDetails.id,
-  title: state.campaignDetails.title,
-  detailsSequence: state.campaignDetails.detailsSequence,
-});
-
-export default connect(mapStateToProps, {
-  getDetialsSequence
-})(CampaignDetailSequence);
