@@ -567,6 +567,13 @@ class CampaignCreateView(APIView):
         return template
 
 
+class CampaignUpdateView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, format=None):
+        return Response(status=status.HTTP_200_OK)
+
+
 class CampaignListView(generics.ListAPIView):
     """
         For Get all Campaign by user
