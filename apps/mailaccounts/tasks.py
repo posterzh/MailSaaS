@@ -160,18 +160,21 @@ def email_receiver():
             # Filter out the warmup emails
             if email_item['subject'].endswith("• mailerrize") and not email_item['subject'].startswith("Re:"):
                 warm_reply_subject = "Re: " + email_item['subject']
-                send_mail_with_smtp(host=mail_account.smtp_host,
-                                    port=mail_account.smtp_port,
-                                    username=mail_account.smtp_username,
-                                    password=mail_account.smtp_password,
-                                    use_tls=mail_account.use_smtp_ssl,
-                                    from_email=mail_account.email,
-                                    to_email=[email_item['from']],
-                                    subject=warm_reply_subject,
-                                    body=default_warmup_reply_mail_body,
-                                    uuid=None,
-                                    track_opens=False,
-                                    track_linkclick=False)
+                param = {
+                    "host": mail_account.smtp_host,
+                    "port": mail_account.smtp_port,
+                    "username": mail_account.smtp_username,
+                    "password": mail_account.smtp_password,
+                    "use_tls": mail_account.use_smtp_ssl,
+                    "from_email": mail_account.email,
+                    "to_email": [email_item['from']],
+                    "subject": warm_reply_subject,
+                    "body": default_warmup_reply_mail_body,
+                    "uuid": None,
+                    "track_opens": False,
+                    "track_linkclick": False
+                }
+                send_immediate_email.delay(param)
 
 
 @shared_task
@@ -230,20 +233,37 @@ def warming_trigger():
         else:
             warmup_email_body = "Thank you"
         # print(warmup_email_body)
-        result = send_mail_with_smtp(host=mail_account.smtp_host,
-                                     port=mail_account.smtp_port,
-                                     username=mail_account.smtp_username,
-                                     password=mail_account.smtp_password,
-                                     use_tls=mail_account.use_smtp_ssl,
-                                     from_email=mail_account.email,
-                                     to_email=[dest_account.email],
-                                     subject=default_warmup_mail_subject,
-                                     body=warmup_email_body,
-                                     uuid=None,
-                                     track_opens=False,
-                                     track_linkclick=False)
+        param = {
+            "host": mail_account.smtp_host,
+            "port": mail_account.smtp_port,
+            "username": mail_account.smtp_username,
+            "password": mail_account.smtp_password,
+            "use_tls": mail_account.use_smtp_ssl,
+            "from_email": mail_account.email,
+            "to_email": [dest_account.email],
+            "subject": default_warmup_mail_subject,
+            "body": warmup_email_body,
+            "uuid": None,
+            "track_opens": False,
+            "track_linkclick": False
+        }
+        send_immediate_email.delay(param)
 
-        # print(f"Email Sent: {result}")
-        if result == True:
-            # log into the DB
-            WarmingLog.objects.create(mail_account_id=mail_account.id)
+        # log into the DB
+        WarmingLog.objects.create(mail_account_id=mail_account.id)
+
+
+@shared_task
+def send_immediate_email(param):
+    result = send_mail_with_smtp(host=param['host'],
+                                 port=param['port'],
+                                 username=param['username'],
+                                 password=param['password'],
+                                 use_tls=param['use_tls'],
+                                 from_email=param['from_email'],
+                                 to_email=param['to_email'],
+                                 subject=param['subject'],
+                                 body=param['body'],
+                                 uuid=param['uuid'],
+                                 track_opens=param['track_opens'],
+                                 track_linkclick=param['track_linkclick'])
