@@ -1,5 +1,9 @@
 import axios from "../../utils/axios";
-import { toastOnError, toastOnSuccess, toggleTopLoader } from "../../utils/Utils";
+import {
+  toastOnError,
+  toastOnSuccess,
+  toggleTopLoader,
+} from "../../utils/Utils";
 import {
   GET_MAILACCOUNTS,
   ADD_MAILACCOUNT,
@@ -9,7 +13,7 @@ import {
 
 export const getMailAccounts = () => (dispatch) => {
   toggleTopLoader(true);
-  return axios
+  axios
     .get("/mailaccounts/emailaccounts/")
     .then((response) => {
       dispatch({
@@ -66,7 +70,7 @@ export const deleteMailAccount = (id) => (dispatch) => {
 
 export const updateMailAccount = (id, mailAccount) => (dispatch) => {
   toggleTopLoader(true);
-  return axios
+  axios
     .patch(`/mailaccounts/emailaccounts/${id}/`, mailAccount)
     .then((response) => {
       dispatch({
