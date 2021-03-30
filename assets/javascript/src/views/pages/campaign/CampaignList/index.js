@@ -187,6 +187,7 @@ class CampaignList extends Component {
             <Tables
               titles={campaignListTable} // required
               tablePropsData={data}   // required
+              onClick={this.showDetails}
               onDetail={this.showDetails}
               actionMenus={actionMenus}   // optional for showing menus of row.
               actionCallback={this.actionCallback}        // get call back for action select of row.

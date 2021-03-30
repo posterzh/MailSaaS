@@ -814,7 +814,7 @@ button .import_button {
 //  Quill div
 .Quill_div {
   margin-top: 10px;
-  height: 250px;
+  height: 180px;
   margin-bottom: 50px;
   p {
     margin-bottom: 0;
@@ -2102,4 +2102,20 @@ input::-webkit-inner-spin-button {
 .section-round-border {
   border: 1px solid #adb5bd;
   border-radius: 20px;
+}
+
+.sidenav .active.nav-item .nav-link {
+  background-color: #beefff !important;
+}
+
+.sidenav .nav-item a.nav-link:hover {
+  background-color: #beefff !important;
+}
+
+.new-campaign-header .btn-group > .btn:active {
+  background-color: transparent !important;
+}
+
+.custom-table tr:hover {
+  cursor: pointer !important;
 }

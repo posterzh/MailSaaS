@@ -12,6 +12,7 @@ from django.contrib.sites.models import Site
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMultiAlternatives, send_mail
 from django.db.models import Q
+from django.db.models import F
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django_filters.rest_framework import DjangoFilterBackend
@@ -1921,3 +1922,199 @@ class CampaignDetailsSettingsView(generics.RetrieveAPIView):
     def get_queryset(self):
         user = self.request.user
         return Campaign.objects.filter(assigned=user.id)
+
+
+class CampaignLeadsView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        params = list(dict(request.GET).keys())
+        queryset = CampaignRecipient.objects.filter(leads=True, campaign__assigned=request.user.id)
+
+        # Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign__title__contains=title,
+        # lead_status=leadstatus, campaign__assigned=request.user.id, leads=True)
+        if 'search' in params:
+            toSearch = request.GET['search']
+            queryset = queryset.filter(
+                Q(email__contains=toSearch) |
+                Q(full_name__contains=toSearch) |
+                Q(campaign__title__contains=toSearch))
+
+        if 'leadstatus' in params:
+            lead_status = request.GET['leadstatus']
+            queryset = queryset.filter(lead_status=lead_status)
+
+        if 'date' in params:
+            if request.GET['date'] == "last14days":
+                to_date = datetime.today()
+                from_date = to_date - timedelta(days=14)
+
+            elif request.GET['date'] == "last30days":
+                to_date = datetime.today()
+                from_date = to_date - timedelta(days=30)
+
+            elif request.GET['date'] == "last90days":
+                to_date = datetime.today()
+                from_date = to_date - timedelta(days=90)
+
+            elif request.GET['date'] == "last6weeks":
+                to_date = datetime.today()
+                from_date = to_date - timedelta(weeks=6)
+
+            elif request.GET['date'] == "last3months":
+                to_date = datetime.today()
+                month_3_ago = to_date.month - 3 if to_date.month > 3 else 12
+                last_year = to_date.year - 1
+                from_date = to_date.replace(month=month_3_ago)
+                if from_date > to_date:
+                    from_date = from_date.replace(year=last_year)
+
+            elif request.GET['date'] == "last6months":
+                to_date = datetime.today()
+                month_6_ago = to_date.month - 6 if to_date.month > 6 else 12
+                last_year = to_date.year - 1
+                from_date = to_date.replace(month=month_6_ago)
+                if from_date > to_date:
+                    from_date = from_date.replace(year=last_year)
+
+            elif request.GET['date'] == "last12months":
+                to_date = datetime.today()
+                month_12_ago = to_date.month - 12 if to_date.month > 12 else 12
+                last_year = to_date.year - 1
+                from_date = to_date.replace(month=month_12_ago)
+                if from_date > to_date:
+                    from_date = from_date.replace(year=last_year)
+            elif request.GET['date'] == "monthtodate":
+                to_date = datetime.today()
+                from_date = to_date.replace(day=1)
+
+            elif request.GET['date'] == "yeartodate":
+                to_date = datetime.today()
+                from_date = to_date.replace(month=1, day=1)
+
+            queryset = queryset.filter(created_date_time__range=(from_date, to_date))
+
+        # queryset = queryset.select_related('title')
+        res = queryset.values('id', 'email', 'lead_status', campaign_title=F('campaign__title'),
+                              assigned_name=F('campaign__assigned__full_name'), camp_id=F('campaign'))
+        # campEmailserializer = CampaignEmailSerializer(queryset, many=True)
+        return Response({'res': res, 'success': True})
+
+
+class CampaignScheduleView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, format=None):
+
+        from_email_id = 26
+        campaign = 67
+        total_mail_count = 20
+        max_followup_mail_count = 20 / 2
+
+        items = SendingObject.objects\
+            .filter(from_email_id=from_email_id, campaign=campaign)\
+            .values()
+        df_items = pd.DataFrame(data=items)
+
+        recipients = CampaignRecipient.objects\
+            .filter(campaign=campaign, leads=True)\
+            .values()
+        lead_emails = recipients.values_list('email', flat=True)
+
+        # Follow up emails
+        followup_items_all = df_items[(df_items.email_type == 1) & (df_items.status == 0)]
+
+        followup_items = pd.DataFrame(columns=df_items.columns)
+        for index, followup_item in followup_items_all.iterrows():
+            # Skip leads email
+            if followup_item.recipient_email in lead_emails:
+                continue
+
+            #
+            matching_sent_main_item = df_items[
+                (df_items.email_type == 0) &
+                (df_items.status == 1) &
+                (df_items.recipient_email == followup_item.recipient_email)]
+
+            if len(matching_sent_main_item) == 0:
+                continue
+
+            last_sent_time = datetime.combine(matching_sent_main_item.iloc[0].sent_date,
+                                              matching_sent_main_item.iloc[0].sent_time)
+
+            if followup_item.email_order >= 1:
+                previous_email_order = followup_item.email_order - 1
+                previous_sent_followup_item = df_items[
+                    (df_items.email_type == 1) &
+                    (df_items.status == 1) &
+                    (df_items.recipient_email == followup_item.recipient_email) &
+                    (df_items.email_order == previous_email_order)]
+
+                if len(previous_sent_followup_item) == 0:
+                    continue
+
+                last_sent_time = datetime.combine(previous_sent_followup_item.iloc[0].sent_date,
+                                                  previous_sent_followup_item.iloc[0].sent_time)
+
+            should_send_time = last_sent_time + timedelta(days=followup_item.wait_days)
+            now = datetime.datetime.now()
+            if should_send_time > now:
+                continue
+
+            followup_items = followup_items.append(followup_item)
+
+            if len(followup_items) > max_followup_mail_count:
+                break
+
+        json_followup = json.loads(followup_items.to_json(orient='records'))
+
+        # Main emails
+        max_main_mail_count = total_mail_count - len(followup_items)
+
+        main_items = df_items[(df_items.email_type == 0) & (df_items.status == 0)].head(max_main_mail_count)
+        json_main = json.loads(main_items.to_json(orient='records'))
+
+        # Drip emails
+        drip_items_all = df_items[(df_items.email_type == 2) & (df_items.status == 0)]
+
+        drip_items = pd.DataFrame(columns=df_items.columns)
+        for index, drip_item in drip_items_all.iterrows():
+            matching_sent_main_item = df_items[
+                (df_items.email_type == 0) &
+                (df_items.status == 1) &
+                (df_items.recipient_email == drip_item.recipient_email)]
+
+            if len(matching_sent_main_item) == 0:
+                continue
+
+            last_sent_time = datetime.combine(matching_sent_main_item.iloc[0].sent_date,
+                                              matching_sent_main_item.iloc[0].sent_time)
+
+            if drip_item.email_order >= 1:
+                previous_email_order = drip_item.email_order - 1
+                previous_sent_drip_item = df_items[
+                    (df_items.email_type == 2) &
+                    (df_items.status == 1) &
+                    (df_items.recipient_email == drip_item.recipient_email) &
+                    (df_items.email_order == previous_email_order)]
+
+                if len(previous_sent_drip_item) == 0:
+                    continue
+
+                last_sent_time = datetime.combine(previous_sent_drip_item.iloc[0].sent_date,
+                                                  previous_sent_drip_item.iloc[0].sent_time)
+
+            should_send_time = last_sent_time + timedelta(days=drip_item.wait_days)
+            now = datetime.datetime.now()
+            if should_send_time > now:
+                continue
+
+            drip_items = drip_items.append(drip_item)
+
+        json_drip = json.loads(drip_items.to_json(orient='records'))
+
+        return Response({
+            'main': json_main,
+            'followup': json_followup,
+            'drip': json_drip
+        })

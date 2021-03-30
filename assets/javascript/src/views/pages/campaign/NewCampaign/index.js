@@ -65,7 +65,7 @@ class CampaignStart extends React.Component {
           <Row>
             <Col md={8} className="mx-auto">
               <Row>
-                <Col>
+                <Col className="new-campaign-header">
                   <CampaignTabs tabs={this.tabs} activeTab={activeTab} />
                 </Col>
               </Row>

@@ -41,6 +41,7 @@ class TheRecipient extends Component {
       showNotification("danger", "Not uploaded CSV", "");
       return false;
     }
+    
     const recipientData = {
       csvfile: this.state.csvFile,
       first_row: this.state.first_row,

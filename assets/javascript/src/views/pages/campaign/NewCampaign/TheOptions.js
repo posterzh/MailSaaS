@@ -16,8 +16,8 @@ class TheOptions extends Component {
   constructor() {
     super();
     this.state = {
-      trackOpen: false,
-      trackLink: false,
+      trackOpen: true,
+      trackLink: true,
       termsandlaws: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -36,7 +36,8 @@ class TheOptions extends Component {
     
     const optionData = {
       track_opens: this.state.trackOpen,
-      terms_and_laws: this.state.termsandlaws
+      terms_and_laws: this.state.termsandlaws,
+      track_linkclick: this.state.trackLink
     };
     this.props.campaignOptions(optionData);
     this.props.onNext();
@@ -84,7 +85,7 @@ class TheOptions extends Component {
                   onChange={this.handleChange}
                 />
                 <label className="custom-control-label" htmlFor="check2">
-                  Track Link Clicks
+                  Track link clicks
                 </label>
                 {(!this.state.trackOpen || !this.state.trackLink) &&
                   <Card className="pt-3 pl-3 mt-3" style={{ backgroundColor: "#e9e9e9" }}>

@@ -386,7 +386,7 @@ function Tables({
                 </CardHeader>
               )}
               <CardBody className="p-0">
-                <Table className="align-items-center table-flush" responsive>
+                <Table className="align-items-center table-flush custom-table" hover responsive>
                   <thead className="thead-light">
                     <tr>
                       {showSelect && (

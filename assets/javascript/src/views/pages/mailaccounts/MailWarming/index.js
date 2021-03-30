@@ -110,7 +110,7 @@ class WarmList extends Component {
           parent="Mail Accounts"
           showStatus={false}
         />
-        <PageContainer title="Mail Warming">
+        <PageContainer title="Email Warming">
           <div className="px-3">
             <h3 className="mb-1">
               Automatically send and reply emails from MailSaaS community to warm up your email account.

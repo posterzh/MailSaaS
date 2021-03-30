@@ -114,23 +114,7 @@ class MailAccountList extends Component {
           parent="Mail Accounts"
           showStatus={true}
         />
-        <PageContainer title="Mail Accounts">
-          <Row className="justify-content-end">
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                this.showDetailModal();
-              }}
-              className="btn-icon"
-              color="danger"
-              type="button"
-            >
-              <span className="btn-inner--icon">
-                <i className="fa fa-plus" />
-              </span>
-            </Button>
-          </Row>
-
+        <PageContainer title="Email Accounts"  showHelper={true} newButton="New Email Accounts" newAction={this.showDetailModal}>
           <Row>
             <Tables
               titles={tableTitle} // required

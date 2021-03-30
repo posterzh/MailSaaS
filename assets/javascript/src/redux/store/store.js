@@ -7,15 +7,7 @@ import {
   RecipientReducer,
   MailGetDataReducer,
   MailSenderReducer,
-  UnsubscribeReducer,
   CampaignOptionReducer,
-
-  // Karl - Will remove later
-  // ******************************************
-  ProspectsGetReducer,
-  OnclickProspectsReducer,
-  // ******************************************
-
   CampaignCreateReducer,
   CampaignPreviewGetReducer,
   CampaignOverviewReducer,
@@ -52,15 +44,7 @@ const rootReducer = combineReducers({
   RecipientReducer,
   MailGetDataReducer,
   MailSenderReducer,
-  UnsubscribeReducer,
   CampaignOptionReducer,
-
-  // Karl - Will remove later
-  // ******************************************
-  ProspectsGetReducer,
-  OnclickProspectsReducer,
-  // ******************************************
-
   CampaignCreateReducer,
   CampaignPreviewGetReducer,
   CampaignOverviewReducer,

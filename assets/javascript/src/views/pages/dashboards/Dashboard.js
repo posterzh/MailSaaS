@@ -35,33 +35,30 @@ import {
   Nav,
   Navbar,
 } from "reactstrap";
+import { connect } from "react-redux";
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
+import { CampaignTableAction } from "../../../redux/action/CampaignAction";
 
 // /home/hr-01/project/MailSaaS/assets/javascript/src/components/Headers/CardsHeader.js
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      activeNav: 1,
-      chartExample1Data: "data1",
-    };
   }
-  toggleNavs = (e, index) => {
-    e.preventDefault();
-    this.setState({
-      activeNav: index,
-      chartExample1Data:
-        this.state.chartExample1Data === "data1" ? "data2" : "data1",
-    });
-  };
+
+  componentDidMount() {
+    this.props.CampaignTableAction();
+  }
+
   render() {
+    const { campaigns } = this.props;
+
     return (
       <>
         <PageHeader
           current="Dashboard"
           parent="Dashboard"
-          showStatus={true}
+          showStatus={campaigns.length > 0}
         />
 
         <PageContainer title="Welcome to MailSaaS">
@@ -91,4 +88,16 @@ class Dashboard extends React.Component {
   }
 }
 
-export default Dashboard;
+// export default Dashboard;
+
+const mapStateToProps = (state) => {
+  return {
+    campaigns: state.CampaignTableReducer.CampaignTableData,
+  };
+};
+const mapDispatchToProps = (dispatch) => ({
+  CampaignTableAction: (mailGetData) => {
+    dispatch(CampaignTableAction(mailGetData));
+  },
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
