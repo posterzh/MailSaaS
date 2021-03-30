@@ -17,6 +17,9 @@ class LeadCatcher extends Component {
       data: []
     }
   }
+  showDetails = () => {
+    console.log("asdfasdfasd")
+  }
   async componentDidMount() {
     // this.props.CampaignLeadViewAction()
     try {
@@ -81,6 +84,7 @@ class LeadCatcher extends Component {
                 showPagination={true}   // optional
                 filters={filters}   // optional to enable filter
                 searchKeys={['email', 'campaign_title']}  // optional to enable search
+                onClick={this.showDetails}
               />
             </Row>
           </Container>

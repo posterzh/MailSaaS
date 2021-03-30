@@ -21,7 +21,7 @@ import {
 } from "reactstrap";
 import ReactQuill from "react-quill";
 import { formatHeader } from "../../../../../utils/Utils";
-import { getDetialsSequence } from "../../../../../redux/action/CampaignDetailsActions";
+import { campaignUpdate } from "../../../../../redux/action/CampaignActions";
 import FollowUpPanel from "../../NewCampaign/components/FollowUpPanel";
 import DripPanel from "../../NewCampaign/components/DripPanel";
 
@@ -29,16 +29,77 @@ class SequenceEditPanel extends Component {
   constructor(props) {
     super(props);
 
-    const { detailsSequence: { followups, drips } } = props;
+    const { detailsSequence: {email_subject, email_body, followups, drips } } = props;
 
     this.state = {
+      subject: email_subject,
+      email_body: email_body,
       followUpList: followups,
       dripList: drips,
     }
   }
 
   componentDidMount() {
-    
+
+  }
+
+  onAddFollowUp = () => {
+    this.setState((state) => {
+      const index = state.followUpList.length;
+      let newFollowUp = { index, subject: "Re: ", email_body: "Hi", waitDays: 1 };
+      const followUpList = state.followUpList.concat(newFollowUp);
+      return {
+        ...state,
+        followUpList,
+      };
+    });
+  };
+
+  onDeleteFollowUp = (index) => {
+    this.setState((state) => {
+      const followUpList = state.followUpList.filter((item, i) => i != index);
+      return {
+        ...state,
+        followUpList,
+      };
+    });
+  };
+
+  onAddDrip = () => {
+    this.setState((state) => {
+      const index = state.dripList.length;
+      let newFollowUp = { index, subject: "Re: ", email_body: "Hi", waitDays: 1 };
+      const dripList = state.dripList.concat(newFollowUp);
+      return {
+        ...state,
+        dripList,
+      };
+    });
+  };
+
+  onDeleteDrip = (index) => {
+    this.setState((state) => {
+      const dripList = state.dripList.filter((item, i) => i != index);
+      return {
+        ...state,
+        dripList,
+      };
+    });
+  };
+
+  onSave = () => {
+    let data = {
+      email_subject: this.state.subject,
+      email_body: this.state.email_body,
+      follow_up: this.state.followUpList,
+      drips: this.state.dripList,
+    };
+    this.props.campaignUpdate(data);
+    this.props.onSave();
+  }
+
+  onCancel = () => {
+    this.props.onCancel();
   }
 
   getDNDSource = () => {
@@ -65,28 +126,29 @@ class SequenceEditPanel extends Component {
 
   render() {
     return (
-      <>
+      <Row>
+      <Col md={8} className="mx-auto">
         <Row className="my-3">
           <Col className="text-right">
-            <Button color="danger" type="submit" size="sm">
+            <Button color="danger" type="button" size="sm" onClick={this.onSave}>
               &nbsp;&nbsp;
-            <i className="fa fa-save" aria-hidden="true"></i>
-            &nbsp;Save&nbsp;&nbsp;
-          </Button>
+              <i className="fa fa-save" aria-hidden="true"></i>
+              &nbsp;Save&nbsp;&nbsp;
+            </Button>
             <Button color="primary" type="button" size="sm" outline onClick={this.onCancel}>
               <i className="fa fa-times" aria-hidden="true"></i>
-            &nbsp;Cancel
+              &nbsp;Cancel
             </Button>
           </Col>
         </Row>
-        <Form onSubmit={this.handleSubmit}>
+        <Form>
           <Row>
             <Col>
               <Input
                 type="text"
                 className="form-control"
                 name="subject"
-                value={this.state.subject}
+                defaultValue={this.state.subject}
                 onChange={(e) => {
                   this.setState({ subject: e.target.value });
                 }}
@@ -98,6 +160,7 @@ class SequenceEditPanel extends Component {
           <Row>
             <Col>
               <ReactQuill
+                defaultValue={this.state.email_body}
                 onChange={(value) => {
                   this.setState({ email_body: value });
                 }}
@@ -181,7 +244,8 @@ class SequenceEditPanel extends Component {
             </Col>
           </Row>
         </Form>
-      </>
+      </Col>
+      </Row>
     );
   }
 }
@@ -192,4 +256,6 @@ const mapStateToProps = (state) => ({
   detailsSequence: state.campaignDetails.detailsSequence,
 });
 
-export default connect(mapStateToProps)(SequenceEditPanel);
+export default connect(mapStateToProps, {
+  campaignUpdate,
+})(SequenceEditPanel);

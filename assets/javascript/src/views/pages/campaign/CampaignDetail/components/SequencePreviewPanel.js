@@ -40,6 +40,10 @@ class SequencePreviewPanel extends Component {
 
   }
 
+  onEdit = () => {
+    this.props.onEdit();
+  }
+
   render() {
     const { detailsSequence } = this.props;
 
@@ -60,7 +64,10 @@ class SequencePreviewPanel extends Component {
               </CardHeader>
               <CardBody className="py-2">
                 <PreviewPanelList>
-                  <MainPreviewPanel subject={detailsSequence.email_subject} body={detailsSequence.email_body} />
+                  {
+                    detailsSequence.email_subject &&
+                    <MainPreviewPanel subject={detailsSequence.email_subject} body={detailsSequence.email_body} />
+                  }
                 </PreviewPanelList>
               </CardBody>
             </Card>
@@ -75,8 +82,8 @@ class SequencePreviewPanel extends Component {
               <CardBody className="py-2">
                 <PreviewPanelList>
                   {detailsSequence.followups && (
-                    detailsSequence.followups.map(followup => (
-                      <FollowUpPreviewPanel subject={followup.subject} body={followup.email_body} waitDays={followup.waitDays} />
+                    detailsSequence.followups.map((followup, index) => (
+                      <FollowUpPreviewPanel key={`item_${index}`} subject={followup.subject} body={followup.email_body} waitDays={followup.waitDays} />
                     ))
                   )}
                 </PreviewPanelList>
@@ -91,8 +98,8 @@ class SequencePreviewPanel extends Component {
               <CardBody className="py-2">
                 <PreviewPanelList>
                   {detailsSequence.drips && (
-                    detailsSequence.drips.map(drip => (
-                      <DripPreviewPanel subject={drip.subject} body={drip.email_body} waitDays={drip.waitDays} />
+                    detailsSequence.drips.map((drip, index) => (
+                      <DripPreviewPanel key={`item_${index}`} subject={drip.subject} body={drip.email_body} waitDays={drip.waitDays} />
                     ))
                   )}
                 </PreviewPanelList>

@@ -20,7 +20,7 @@ class OverviewSummery extends Component {
   render() {
     const { overviewSummary } = this.props;
     return (
-      <div>
+      <>
         <Container fluid>
           <Row>
             <label>
@@ -43,18 +43,6 @@ class OverviewSummery extends Component {
                     2 Recipients
                   </Badge>
                 </div>
-                {/* <Row className="justify-content-center mb-3">
-                  <div class="funnel-symbol circle">
-                    <div class="content">
-                      <span>1</span>
-                      <span>Recipients</span>
-                    </div>
-                  </div>
-                </Row> */}
-                {/* <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                  <div className="d-flex justify-content-between">
-                  </div>
-                </CardHeader> */}
                 <CardBody className="pt-0 pb-3">
                   <Row>
                     {
@@ -86,10 +74,6 @@ class OverviewSummery extends Component {
               </Card>
             </Col>
           </Row>
-
-          <Row>
-          </Row>
-
           <Row>
             <Col>
               <Card className="card-summary-funnel mb-0 mt-3">
@@ -297,7 +281,7 @@ class OverviewSummery extends Component {
             </Col>
           </Row>
         </Container>
-      </div>
+      </>
     );
   }
 }

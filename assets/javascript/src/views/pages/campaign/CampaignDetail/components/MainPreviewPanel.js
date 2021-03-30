@@ -10,7 +10,7 @@ class MainPreviewPanel extends Component {
 
   render() {
     const { subject, body } = this.props;
-
+    
     return (
       <div className="timeline-block mb-1">
         <span className="timeline-step badge-success">
