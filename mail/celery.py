@@ -11,9 +11,13 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
-    'every': {
+    'sender': {
         'task': 'apps.mailaccounts.tasks.email_sender',
         'schedule': 60.0,
+    },
+    'receiver': {
+        'task': 'apps.mailaccounts.tasks.email_receiver',
+        'schedule': 30.0,
     },
 }
 
