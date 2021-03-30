@@ -26,6 +26,8 @@ export class CampaignDetailSettings extends Component {
       leadAddressId: "",
       sendingAddressName: "",
       leadAddressName: "",
+      leadConditions: [],
+      operator: false,
     };
   }
 
@@ -51,17 +53,31 @@ export class CampaignDetailSettings extends Component {
   }
 
   onLeadAddressChange = (e) => {
-    this.setState({ 
+    this.setState({
       leadAddressId: e.target.value
     })
   }
 
+  onAddCondition = () => {
+    this.setState({
+      leadConditions: [...this.state.leadConditions, { recipient: 0, times: 1 }]
+    })
+  }
+
+  onDeleteCondition = (index) => {
+    var leadConditions = [...this.state.leadConditions];
+    leadConditions.splice(index, 1);
+    this.setState({ leadConditions });
+  }
+
+  onToggleOperator = () => {
+    this.setState({operator: !this.state.operator});
+  }
+
   render() {
-    const { sendingAddressId, leadAddressId } = this.state;
+    const { sendingAddressId, leadAddressId, leadConditions } = this.state;
     const { id, title, mailAccounts } = this.props;
     const campTitle = title ? title : "Date Outreach";
-
-    console.log(sendingAddressId + " " + leadAddressId);
 
     const activeSendingAddress = mailAccounts.find((m) => m.id == sendingAddressId);
     const activeSendingName = activeSendingAddress ?
@@ -70,7 +86,7 @@ export class CampaignDetailSettings extends Component {
     const activeLeadAddress = mailAccounts.find((m) => m.id == leadAddressId);
     const activeLeadName = activeLeadAddress ?
       `${activeLeadAddress.first_name} ${activeLeadAddress.last_name}` : "";
-    
+
     return (
       <>
         <PageHeader
@@ -153,12 +169,67 @@ export class CampaignDetailSettings extends Component {
                     </Input>
                   </FormGroup>
 
-                  <FormGroup>
-                    <label className="form-control-label">
-                      When does a recipient become a lead?
-                    </label>
-                    <Input type="text" className="form-control-sm" defaultValue={activeLeadName} />
-                  </FormGroup>
+                  <label className="form-control-label">
+                    {
+                      leadConditions && leadConditions.length == 0
+                        ?
+                        "Lead catching is disable."
+                        :
+                        "When does a recipient become a lead?"
+                    }
+                  </label>
+
+                  {
+                    leadConditions.map((leadCondition, index) => (
+                      <>
+                        {index == 0 ||
+                          <div>
+                            <Button color="secondary mb-3" type="button" size="sm" onClick={this.onToggleOperator}>
+                              { this.state.operator ? "OR" : "ADD" }
+                            </Button>
+                          </div>
+                        }
+                        <div className="d-flex flex-row">
+                          <FormGroup className="mr-2 mb-3">
+                            <label style={{ fontSize: 11 }}>
+                              Recipient
+                            </label>
+                            <Input type="select" className="form-control-sm" defaultValue={leadCondition.recipient}>
+                              <option>Replies</option>
+                              <option>Opens</option>
+                              <option>Clicks any link</option>
+                              <option>Clicks specific link</option>
+                            </Input>
+                          </FormGroup>
+                          <FormGroup className="mr-2 mb-3">
+                            <label style={{ fontSize: 11 }}>
+                              # of times
+                            </label>
+                            <Input type="text" className="form-control-sm" defaultValue={leadCondition.times} />
+                          </FormGroup>
+                          <FormGroup className="d-flex flex-column justify-content-end mb-3">
+                            <Button className="mb-1" color="danger" type="button" size="sm"
+                              onClick={() => { this.onDeleteCondition(index) }}
+                            >
+                              <i className="fa fa-trash" aria-hidden="true"></i>
+                            </Button>
+                          </FormGroup>
+                        </div>
+                      </>
+                    ))
+                  }
+
+                  <div>
+                    <Button outline color="secondary mb-3" type="button" size="sm" onClick={this.onAddCondition}>
+                      {
+                        leadConditions && leadConditions.length == 0
+                          ?
+                          "+ Add condition"
+                          :
+                          "+ Add another condition"
+                      }
+                    </Button>
+                  </div>
 
                   <Row>
                     <Col>
