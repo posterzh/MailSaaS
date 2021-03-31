@@ -19,6 +19,7 @@ import {
   FormGroup,
   Input,
   UncontrolledTooltip,
+  Badge,
 } from "reactstrap";
 import CardBody from "reactstrap/lib/CardBody";
 import { Link } from "react-router-dom";
@@ -136,6 +137,8 @@ function Tables({
   actionCallback = null,
   showSelect = false,
   selectedCallback = null,
+  showControl = false,
+  controlCallback = null,
   showPagination = false,
   paginationCallback = null,
   perpageRecords = 10,
@@ -143,7 +146,7 @@ function Tables({
   totalPages = null,
   filters = [],
   searchKeys = [],
-  actions=[],
+  actions = [],
   onChange = null,
   onClick = null,
   onDetail = null,
@@ -408,6 +411,10 @@ function Tables({
                           </div>
                         </th>
                       )}
+                      {showControl && (
+                        <th key="header-control">
+                        </th>
+                      )}
                       {titles.map((item, index) => {
                         return (
                           <th
@@ -439,7 +446,7 @@ function Tables({
                                     id={"table-check-all" + index}
                                     type="checkbox"
                                     checked={data.selected}
-                                    onChange={(e) => {selectRecord(e, index);}}
+                                    onChange={(e) => { selectRecord(e, index); }}
                                     onClick={(e) => e.stopPropagation()}
                                   />
                                   <label
@@ -447,6 +454,21 @@ function Tables({
                                     htmlFor={"table-check-all" + index}
                                     onClick={(e) => e.stopPropagation()}
                                   />
+                                </div>
+                              </td>
+                            )}
+                            {showControl && (
+                              <td key="header-control">
+                                <div className="mt-3">
+                                  {data.control &&
+                                    <Badge color={data.control == "play" ? "success" : "danger"}
+                                      onClick={(e) => {
+                                        e.stopPropagation(); controlCallback(e, index);
+                                      }}
+                                    >
+                                      <i className={`fa fa-${data.control}`}></i>
+                                    </Badge>
+                                  }
                                 </div>
                               </td>
                             )}

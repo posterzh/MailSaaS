@@ -118,8 +118,31 @@ class CampaignList extends Component {
     this.props.history.push("/app/admin/campaign/create");
   }
 
+  actionCallback = () => {
+
+  }
+
+  controlCallback = () => {
+    alert('control is clicked!');
+  }
+
+  paginationCallback = () => {
+
+  }
+
+  getSelectedRecords = () => {
+
+  }
+
   render() {
     const { show, hide, checked, exampleModal, data, filters } = this.state;
+
+    //For example
+    if (data.length > 6) {
+      data[1].control = "play";
+      data[3].control = "pause";
+    }
+
     const actionMenus = [
       {
         key: 'view',
@@ -188,11 +211,12 @@ class CampaignList extends Component {
               titles={campaignListTable} // required
               tablePropsData={data}   // required
               onClick={this.showDetails}
-              onDetail={this.showDetails}
               actionMenus={actionMenus}   // optional for showing menus of row.
               actionCallback={this.actionCallback}        // get call back for action select of row.
               showSelect={true}    // optional
               selectedCallback={this.getSelectedRecords}      // get call back for select object.
+              showControl={true}   // optional
+              controlCallback={this.controlCallback}
               showPagination={false}   // optional
               paginationCallback={this.paginationCallback}     // get callback of page change.
               filters={filters}   // optional to enable filter

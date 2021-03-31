@@ -465,18 +465,16 @@ class CampaignCreateView(APIView):
             campaign = json.loads(post_data['campaign'])
             campaign['assigned'] = request.user.id
             campaign['csvfile_op1'] = post_data['csvfile']
-            campaign['has_follow_up'] = len(campaign['follow_up']) > 0
-            campaign['has_drips'] = len(campaign['drips']) > 0
 
             camp = CampaignSerializer(data=campaign)
             if camp.is_valid():
                 new_camp = camp.save()
                 campaign_id = new_camp.id
 
-                if campaign['has_follow_up']:
+                if len(campaign['follow_up']) > 0:
                     self.createFollowUps(new_camp, campaign['follow_up'])
 
-                if campaign['has_drips']:
+                if len(campaign['drips']) > 0:
                     self.createDrips(new_camp, campaign['drips'])
 
                 if new_camp.csvfile_op1:
@@ -533,12 +531,12 @@ class CampaignCreateView(APIView):
             self.createSendingObject(campaign_id, from_email, email[0], campaign['email_subject'],
                                      campaign['email_body'], 0, replacement, 0)
 
-            if campaign['has_follow_up']:
+            if campaign['follow_up']:
                 for follow in campaign['follow_up']:
                     self.createSendingObject(campaign_id, from_email, email[0], follow['subject'],
                                              follow['email_body'], 1, replacement, follow['waitDays'])
 
-            if campaign['has_drips']:
+            if campaign['drips']:
                 for drip in campaign['drips']:
                     self.createSendingObject(campaign_id, from_email, email[0], drip['subject'],
                                              drip['email_body'], 2, replacement, drip['waitDays'])
