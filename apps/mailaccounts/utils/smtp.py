@@ -197,6 +197,12 @@ def get_emails_to_send(available_email_ids, email_limits):
     email_subject = 'test1'
     email_body = '<p>how are you?</p>'
 
-    send_item = (camp_id, from_email_id, to_email_id, email_subject, email_body)
+    send_item = {
+        'camp_id': camp_id,
+        'from_email_id': from_email_id,
+        'to_email_id': to_email_id,
+        'email_subject': email_subject,
+        'email_body': email_body
+    }
 
     return [send_item]

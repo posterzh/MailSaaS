@@ -12,7 +12,8 @@ from rest_framework.views import APIView
 from . import utils
 from .models import EmailAccount, SendingCalendar, CalendarStatus, WarmingStatus
 from .serializers import EmailAccountSerializer, SendingCalendarSerializer
-from ..campaign.models import SendingObject, EmailInbox
+from .utils.sending_calendar import can_send_email, calendar_sent
+from ..campaign.models import SendingObject, EmailInbox, Campaign, Recipient, EmailOutbox
 from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_emails_to_send, check_email
 from .tasks import send_test_email
 
@@ -139,74 +140,62 @@ class SendTestEmailView(APIView):
                                                                             defaults={'updated_datetime': datetime.now(
                                                                                 timezone.utc) - timedelta(days=1)})
 
-            can_send = True
-            # Check time
-
-            current_time = datetime.now(timezone.utc).time()
-            if sending_calendar.start_time > current_time:
-                can_send = False
-            if current_time > sending_calendar.end_time:
-                can_send = False
-
-            weekday = datetime.today().weekday()
-            if sending_calendar.block_days & weekday:
-                can_send = False
-
-            # Check max email count per day
-            if calendar_status.sent_count >= sending_calendar.max_emails_per_day:
-                can_send = False
-
-            minutes = (datetime.now(timezone.utc) - calendar_status.updated_datetime).total_seconds() / 60.0
-            if minutes < sending_calendar.minutes_between_sends:
-                can_send = False
-
-            if can_send:
+            if can_send_email(sending_calendar, calendar_status):
                 available_mail_ids.append(mail_account.id)
                 mail_limit = sending_calendar.max_emails_per_day - calendar_status.sent_count
                 available_mail_limits.append(mail_limit)
 
         # Fetch sending objects
-        # sending_objects = get_emails_to_send(available_mail_ids, available_mail_limits)
-        sending_objects = SendingObject.objects.filter(from_email_id__in=available_mail_ids)
+        sending_objects = get_emails_to_send(available_mail_ids, available_mail_limits)
 
         for sending_item in sending_objects:
-            mail_account = sending_item.from_email
+            camp = Campaign.objects.get(id=sending_item['camp_id'])
+            from_email = EmailAccount.objects.get(id=sending_item['from_email_id'])
+            to_email = Recipient.objects.get(id=sending_item['to_email_id'])
+            email_subject = sending_item['email_subject']
+            email_body = sending_item['email_body']
+
+            # Save to EmailOutbox
+            outbox = EmailOutbox()
+            outbox.campaign = camp
+            outbox.from_email = from_email
+            outbox.recipient = to_email
+            outbox.email_subject = email_subject
+            outbox.email_body = email_body
+            outbox.status = 0
+            outbox.sent_date = datetime.now(timezone.utc).date()
+            outbox.sent_time = datetime.now(timezone.utc).time()
+            outbox.save()
 
             # Send email
-            result = send_mail_with_smtp(host=mail_account.smtp_host,
-                                         port=mail_account.smtp_port,
-                                         username=mail_account.smtp_username,
-                                         password=mail_account.smtp_password,
-                                         use_tls=mail_account.use_smtp_ssl,
-                                         from_email=mail_account.email,
-                                         to_email=[sending_item.recipient_email],
-                                         subject=sending_item.email_subject,
-                                         body=sending_item.email_body,
-                                         uuid=sending_item.id,
-                                         track_opens=sending_item.campaign.track_opens,
-                                         track_linkclick=sending_item.campaign.track_linkclick)
+            result = send_mail_with_smtp(host=from_email.smtp_host,
+                                         port=from_email.smtp_port,
+                                         username=from_email.smtp_username,
+                                         password=from_email.smtp_password,
+                                         use_tls=from_email.use_smtp_ssl,
+                                         from_email=from_email.email,
+                                         to_email=to_email.email,
+                                         subject=email_subject,
+                                         body=email_body,
+                                         uuid=outbox.id,
+                                         track_opens=camp.track_opens,
+                                         track_linkclick=camp.track_linkclick)
 
             if result:
-                print(f"Email sent from {mail_account.email} to {sending_item.recipient_email}")
+                print(f"Email sent from {from_email.email} to {to_email.email}")
 
                 # Update CalendarStatus
-                #   reset the today's count
-                if calendar_status.updated_datetime.date() != datetime.today().date():
-                    calendar_status.sent_count = 0
-                #   increase the sent count
-                calendar_status.sent_count += 1
-                #   update the timestamp
-                calendar_status.updated_datetime = datetime.now(timezone.utc)
-                #   save
-                calendar_status.save()
+                calendar_status = CalendarStatus.objects.get(sending_calendar__mail_account_id=from_email.id)
+                calendar_sent(calendar_status)
 
-                # Update SendingObjects
-                sending_item.status = 1
-                sending_item.sent_date = datetime.now(timezone.utc).date()
-                sending_item.sent_time = datetime.now(timezone.utc).time()
-                sending_item.save()
+                # Update EmailOutbox status
+                outbox.status = 1
+                outbox.save()
             else:
-                print(f"Failed to send from {mail_account.email} to {sending_item.recipient_email}")
+                print(f"Failed to send from {from_email.email} to {to_email.email}")
+
+                # Delete the EmailOutbox entry that fails
+                outbox.delete()
 
         return Response("Ok")
 
