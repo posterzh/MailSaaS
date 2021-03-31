@@ -4,7 +4,7 @@ EXPOSE 8000
 COPY . /
 WORKDIR /
 RUN apt-get update
-RUN apt-get install libpq-dev gcc python3-pip -y
+RUN apt-get install libpq-dev gcc python3-pip  python3-tk  -y
 RUN pip3 install -r requirements.txt
 RUN npm i
 RUN npm run build
