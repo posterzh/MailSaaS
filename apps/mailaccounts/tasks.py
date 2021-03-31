@@ -6,7 +6,7 @@ import math
 import random
 from celery import shared_task
 from .models import *
-from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_sending_items
+from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap
 from ..campaign.models import SendingObject, EmailInbox
 
 default_rampup_increment = 3

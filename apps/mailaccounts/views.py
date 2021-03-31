@@ -13,7 +13,7 @@ from . import utils
 from .models import EmailAccount, SendingCalendar, CalendarStatus, WarmingStatus
 from .serializers import EmailAccountSerializer, SendingCalendarSerializer
 from ..campaign.models import SendingObject, EmailInbox
-from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_sending_items, check_email
+from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_emails_to_send, check_email
 from .tasks import send_test_email
 
 
@@ -142,7 +142,7 @@ class SendTestEmailView(APIView):
             can_send = True
             # Check time
 
-            current_time = datetime.now().time()
+            current_time = datetime.now(timezone.utc).time()
             if sending_calendar.start_time > current_time:
                 can_send = False
             if current_time > sending_calendar.end_time:
@@ -162,10 +162,11 @@ class SendTestEmailView(APIView):
 
             if can_send:
                 available_mail_ids.append(mail_account.id)
-                available_mail_limits.append(calendar_status.sent_count)
+                mail_limit = sending_calendar.max_emails_per_day - calendar_status.sent_count
+                available_mail_limits.append(mail_limit)
 
         # Fetch sending objects
-        sending_objects = get_sending_items(available_mail_ids, available_mail_limits)
+        sending_objects = get_emails_to_send(available_mail_ids, available_mail_limits)
 
         for sending_item in sending_objects:
             mail_account = sending_item.from_email
@@ -200,12 +201,11 @@ class SendTestEmailView(APIView):
 
                 # Update SendingObjects
                 sending_item.status = 1
-                sending_item.sent_date = datetime.now().date()
-                sending_item.sent_time = datetime.now().time()
+                sending_item.sent_date = datetime.now(timezone.utc).date()
+                sending_item.sent_time = datetime.now(timezone.utc).time()
                 sending_item.save()
             else:
                 print(f"Failed to send from {mail_account.email} to {sending_item.recipient_email}")
-
 
         return Response("Ok")
 
