@@ -56,6 +56,8 @@ class MailAccountList extends Component {
   }
 
   showDetailModal = (item) => {
+    console.log(item);
+
     // Save the item to edit
     if (!item) {
       item = {};
@@ -114,7 +116,12 @@ class MailAccountList extends Component {
           parent="Mail Accounts"
           showStatus={true}
         />
-        <PageContainer title="Email Accounts"  showHelper={true} newButton="New Email Accounts" newAction={this.showDetailModal}>
+        <PageContainer
+          title="Email Accounts"
+          showHelper={true}
+          newButton="New Email Accounts"
+          newAction={this.showDetailModal}
+        >
           <Row>
             <Tables
               titles={tableTitle} // required
