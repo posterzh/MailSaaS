@@ -195,19 +195,26 @@ class Recipient(models.Model):
         return str(self.campaign)
 
 
-class Logs(models.Model):
+class Emails(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
-    from_email = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
-    recipient_email = models.CharField(max_length=50)
+    email_type = models.PositiveSmallIntegerField(default=0, null=True)
     email_subject = models.CharField(max_length=100)
     email_body = models.TextField(blank=True, null=True)
-    # 0: intro, 1: follow-up, 2: drip
-    email_type = models.PositiveSmallIntegerField(default=0, null=True)
-    # 0: not send, 1: sent, 2: xxx
-    status = models.PositiveSmallIntegerField(default=0, null=True)
-
     wait_days = models.PositiveSmallIntegerField(blank=True, null=True)
     email_order = models.PositiveSmallIntegerField(default=0, null=True)
+    is_deleted = models.BooleanField(default=False)
+
+
+class Log(models.Model):
+    campaign = models.ForeignKey(Campaign, on_delete=models.SET_NULL, null=True)
+    from_email = models.ForeignKey(EmailAccount, on_delete=models.SET_NULL, null=True)
+    recipient_id = models.ForeignKey(Recipient, on_delete=models.SET_NULL, null=True)
+    email_id = models.ForeignKey(Emails, on_delete=models.SET_NULL, null=True)
+    email_subject = models.CharField(max_length=100)
+    email_body = models.TextField(blank=True, null=True)
+
+    # 0: not send, 1: sent, 2: xxx
+    status = models.PositiveSmallIntegerField(default=0, null=True)
 
     sent_date = models.DateField(auto_now=False, blank=True, null=True)
     sent_time = models.TimeField(auto_now=False, blank=True, null=True)
