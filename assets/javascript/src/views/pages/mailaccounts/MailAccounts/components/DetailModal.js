@@ -161,7 +161,7 @@ export default class DetailModal extends Component {
                             <Input
                               id="password"
                               name="password"
-                              type="text"
+                              type="password"
                               className="form-control-sm"
                               onChange={this.handleChange}
                               value={this.state.password}
