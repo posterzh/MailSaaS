@@ -189,7 +189,7 @@ export class CampaignDetailSettings extends Component {
                             </Button>
                           </div>
                         }
-                        <div className="d-flex flex-row">
+                        <div key={`item_${index}`} className="d-flex flex-row">
                           <FormGroup className="mr-2 mb-3">
                             <label style={{ fontSize: 11 }}>
                               Recipient
