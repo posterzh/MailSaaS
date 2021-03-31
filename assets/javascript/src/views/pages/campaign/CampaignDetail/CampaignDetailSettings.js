@@ -148,7 +148,7 @@ export class CampaignDetailSettings extends Component {
                   <h3 className="mb-0">Lead Catcher</h3>
                 </CardHeader>
                 <CardBody>
-                  <FormGroup>
+                  {/* <FormGroup>
                     <label
                       className="form-control-label"
                       htmlFor="selectFromAddress"
@@ -167,7 +167,7 @@ export class CampaignDetailSettings extends Component {
                         <option key={`item_${id}`} value={mailAccount.id}>{mailAccount.email}</option>
                       ))}
                     </Input>
-                  </FormGroup>
+                  </FormGroup> */}
 
                   <label className="form-control-label">
                     {
