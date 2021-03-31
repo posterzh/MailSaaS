@@ -15,6 +15,7 @@ from .serializers import EmailAccountSerializer, SendingCalendarSerializer
 from ..campaign.models import SendingObject, EmailInbox
 from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_sending_items, check_email
 from .tasks import send_test_email
+from mail.settings import DEFAULT_WARMUP_FOLDER
 
 
 class EmailAccountListView(generics.ListCreateAPIView):
@@ -86,12 +87,12 @@ class EmailAccountWarmingView(APIView):
             if email_account.email_provider == 'SMTP':
                 mail = imaplib.IMAP4_SSL(email_account.imap_host, email_account.imap_port)
                 mail.login(email_account.imap_username, email_account.imap_password)
-                mail.create("mailerrize")
+                mail.create(DEFAULT_WARMUP_FOLDER)
             if email_account.email_provider == 'Google':
                 host = "imap.gmail.com"
                 mail = imaplib.IMAP4_SSL(host)
                 mail.login(email_account.email, email_account.password)
-                mail.create("mailerrize")
+                mail.create(DEFAULT_WARMUP_FOLDER)
         return Response(True)
 
 

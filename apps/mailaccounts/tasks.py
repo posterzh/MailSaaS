@@ -7,14 +7,12 @@ import random
 from essential_generators import DocumentGenerator
 from celery import shared_task
 from .models import *
-from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_sending_items
+from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_sending_items, move_warmups_from_spam_to_inbox
 from ..campaign.models import SendingObject, EmailInbox
-
-default_rampup_increment = 3
-default_max_warmup_cnt = 20
-default_warmup_mail_subject_suffix = "• mailerrize"
+from mail.settings import DEFAULT_RAMPUP_INCREMENT, DEFAULT_WARMUP_MAX_CNT, DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX
 
 gen = DocumentGenerator()
+
 
 @shared_task(bind=True)
 def send_test_email(self, mailAccountId):
@@ -37,8 +35,7 @@ def email_sender():
     print('Email sender is called...')
 
 
-
-
+@shared_task
 def email_receiver():
     print('Email receiver is called...')
 
@@ -65,7 +62,8 @@ def email_receiver():
             inbox.save()
 
             # Filter out the warmup emails
-            if email_item['subject'].endswith(default_warmup_mail_subject_suffix) and not email_item['subject'].startswith("Re:"):
+            if (email_item['subject'].endswith("mailerrize") or email_item['subject'].endswith("mailerrize?=")) \
+                    and "Re:" not in email_item['subject']:
                 warm_reply_subject = "Re: " + email_item['subject']
                 warm_reply_body = "Hi,\n\n" + gen.paragraph() + "\n\nYours truly,\n\n"
                 if mail_account.first_name:
@@ -99,7 +97,7 @@ def warming_trigger():
         mail_account = item.mail_account
         # print(f"Warmer email: {mail_account.email}")
 
-        cnt_to_send = min(default_rampup_increment * (item.days_passed + 1), default_max_warmup_cnt)
+        cnt_to_send = min(DEFAULT_RAMPUP_INCREMENT * (item.days_passed + 1), DEFAULT_WARMUP_MAX_CNT)
 
         # print(f"Number of warmup emails to send: {cnt_to_send}")
 
@@ -132,7 +130,7 @@ def warming_trigger():
 
         # print(f"Sending email to: ${dest_account.email}")
         # send email to dest_account
-        warmup_email_subject = gen.sentence() + " " + default_warmup_mail_subject_suffix
+        warmup_email_subject = gen.sentence() + " " + DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX
         warmup_email_body = "Dear "
         if dest_account.first_name:
             warmup_email_body += dest_account.first_name + ","

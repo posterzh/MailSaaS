@@ -14,6 +14,9 @@ from django.core.mail.backends.smtp import EmailBackend
 
 from apps.campaign.models import SendingObject, CampaignRecipient
 from apps.mailaccounts.utils.tracking import add_tracking
+from mail.settings import DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX, DEFAULT_WARMUP_FOLDER
+
+pattern_uid = re.compile('.*\d+ \(UID (?P<uid>\d+)\).*')
 
 
 def check_email(request):
@@ -171,6 +174,63 @@ def receive_mail_with_imap(host, port, username, password, use_tls):
         # print("Set as seen: ", status, data)
 
     return emails
+
+
+def parse_uid(data):
+    match = pattern_uid.match(data)
+    return match.group('uid')
+
+
+def move_warmups_from_spam_to_inbox(host, port, username, password, use_tls):
+    if use_tls:
+        mail = imaplib.IMAP4_SSL(host, port)
+    else:
+        mail = imaplib.IMAP4_SSL(host, port)
+
+    try:
+        mail.login(username, password)
+    except Exception as e:
+        return False
+
+    mail.select('spam')
+    if mail.state == 'AUTH':
+        mail.select('junk')
+    if mail.state == 'AUTH':
+        return False
+
+    status, data = mail.search(None, '(UNSEEN)')
+    mail_ids = []
+    for block in data:
+        mail_ids += block.split()
+
+    for num in mail_ids:
+        status, data = mail.fetch(num, '(RFC822)')
+
+        is_warmup_email = False
+
+        for response_part in data:
+            if isinstance(response_part, tuple):
+                # we go for the content at its second element
+                # skipping the header at the first and the closing
+                # at the third
+                message = email.message_from_bytes(response_part[1])
+
+                mail_subject = message['subject']
+                if mail_subject.endswith("mailerrize") or mail_subject.endswith("mailerrize?="):
+                    is_warmup_email = True
+                break
+
+        mail.store(num, '-FLAGS', '\\Seen')
+        if is_warmup_email:
+            resp, data = mail.fetch(num, "(UID)")
+            msg_uid = parse_uid(f"{data[0]}")
+
+            result = mail.uid('COPY', msg_uid, DEFAULT_WARMUP_FOLDER)
+
+            if result[0] == 'OK':
+                mov, data = mail.uid('STORE', msg_uid, '+FLAGS', '(\Deleted)')
+                mail.expunge()
+
 
 def get_sending_items(available_email_ids, email_limits):
     for email, limit in zip(available_email_ids, email_limits):
