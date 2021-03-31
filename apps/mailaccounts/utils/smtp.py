@@ -12,7 +12,8 @@ from datetime import timedelta
 from django.core import mail
 from django.core.mail.backends.smtp import EmailBackend
 
-from apps.campaign.models import SendingObject, CampaignRecipient
+from apps.campaign.models import SendingObject, CampaignRecipient, EmailOutbox, Campaign, Recipient
+from apps.mailaccounts.models import EmailAccount
 from apps.mailaccounts.utils.tracking import add_tracking
 
 
@@ -176,9 +177,20 @@ def receive_mail_with_imap(host, port, username, password, use_tls):
     return emails
 
 def get_emails_to_send(available_email_ids, email_limits):
+    # Parameters
     for email, limit in zip(available_email_ids, email_limits):
-        result = get_emails(email, limit)
-        print(result)
+        print(email, limit)
+
+    # Return value
+    camp1 = Campaign()
+    from_email = EmailAccount()
+    to_email = Recipient()
+    email_subject = 'test1'
+    email_body = '<p>how are you?</p>'
+
+    send_item = (camp1, from_email, to_email, email_subject, email_body)
+
+    return [send_item]
 
 
 # from_email_id = 26
