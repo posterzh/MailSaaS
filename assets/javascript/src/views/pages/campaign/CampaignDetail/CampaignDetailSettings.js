@@ -101,7 +101,7 @@ export class CampaignDetailSettings extends Component {
           </Row>
 
           <Row className="mx-3 my-5">
-            <Col md={4}>
+            <Col md={6}>
               <Card>
                 <CardHeader>
                   <h3 className="mb-0">Sending Account</h3>
@@ -142,7 +142,7 @@ export class CampaignDetailSettings extends Component {
               </Card>
             </Col>
 
-            <Col md={4}>
+            <Col md={6}>
               <Card>
                 <CardHeader>
                   <h3 className="mb-0">Lead Catcher</h3>
