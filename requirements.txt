@@ -107,3 +107,5 @@ django-rest-framework-social-oauth2
 PyJWT
 django-ipware==1.1.6
 lxml
+sentry_sdk
+pytk
