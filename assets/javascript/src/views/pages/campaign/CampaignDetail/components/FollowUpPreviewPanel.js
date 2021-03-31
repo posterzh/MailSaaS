@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-import {
-  Badge,
-} from "reactstrap";
 
 class FollowUpPreviewPanel extends Component {
   constructor(props) {
@@ -23,11 +20,6 @@ class FollowUpPreviewPanel extends Component {
           <h5 className="mt-3 mb-0">{subject}</h5>
           <p className="text-sm mt-1 mb-0" dangerouslySetInnerHTML={{ __html: body }}>
           </p>
-          <div className="mt-3" style={{}}>
-            <Badge color="danger" pill style={{ position: "absolute", top: 6, right: 0 }}>
-              <i className="fa fa-pause"></i>
-            </Badge>
-          </div>
         </div>
       </div>
     )

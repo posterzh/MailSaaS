@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-import {
-  Badge,
-} from "reactstrap";
 
 class MainPreviewPanel extends Component {
   constructor(props) {
@@ -20,11 +17,6 @@ class MainPreviewPanel extends Component {
           <h5 className="mb-0">{subject}</h5>
           <p className="text-sm mt-1 mb-0" dangerouslySetInnerHTML={{ __html: body }}>
           </p>
-          <div className="mt-3" style={{ position: "absolute", top: -12, right: 0 }}>
-            <Badge color="danger" pill>
-              <i className="fa fa-pause"></i>
-            </Badge>
-          </div>
         </div>
       </div>
     )
