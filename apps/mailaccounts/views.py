@@ -166,7 +166,8 @@ class SendTestEmailView(APIView):
                 available_mail_limits.append(mail_limit)
 
         # Fetch sending objects
-        sending_objects = get_emails_to_send(available_mail_ids, available_mail_limits)
+        # sending_objects = get_emails_to_send(available_mail_ids, available_mail_limits)
+        sending_objects = SendingObject.objects.filter(from_email_id__in=available_mail_ids)
 
         for sending_item in sending_objects:
             mail_account = sending_item.from_email
