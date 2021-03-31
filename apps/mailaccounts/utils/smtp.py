@@ -6,8 +6,8 @@ import smtplib
 import email
 import sys
 import time
+import pandas as pd
 from datetime import timedelta
-from turtle import pd
 
 from django.core import mail
 from django.core.mail.backends.smtp import EmailBackend
@@ -76,6 +76,9 @@ def check_imap(server, port, use_tls, user, password):
 
 def send_mail_with_smtp(host, port, username, password, use_tls, from_email, to_email,
                         subject, body, uuid, track_opens, track_linkclick):
+
+    body = f'<html><body>{body}</body></html>'
+
     # tracking_body = add_tracking(body, uuid)
     #
     # print(f"Sent from {from_email} to {to_email}")
@@ -172,14 +175,15 @@ def receive_mail_with_imap(host, port, username, password, use_tls):
 
     return emails
 
-def get_sending_items(available_email_ids, email_limits):
+def get_emails_to_send(available_email_ids, email_limits):
     for email, limit in zip(available_email_ids, email_limits):
-        result = get_emails_to_send(email, limit)
+        result = get_emails(email, limit)
+        print(result)
 
 
 # from_email_id = 26
 # total_mail_count = 20
-def get_emails_to_send(from_email_id, total_mail_count, campaign = 67):
+def get_emails(from_email_id, total_mail_count, campaign = 67):
     max_followup_mail_count = total_mail_count / 2
 
     items = SendingObject.objects \
