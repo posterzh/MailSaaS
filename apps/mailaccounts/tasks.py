@@ -169,6 +169,15 @@ def warming_trigger():
 
 
 @shared_task
+def warming_days_counter():
+    # Get warming enabled accounts
+    enabledAccounts = WarmingStatus.objects.filter(warming_enabled=True).select_related("mail_account")
+    for item in enabledAccounts:
+        item.days_passed += 1
+        item.save()
+
+
+@shared_task
 def send_immediate_email(param):
     result = send_mail_with_smtp(host=param['host'],
                                  port=param['port'],
