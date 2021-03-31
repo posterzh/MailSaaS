@@ -32,10 +32,11 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = False
+DEBUG = True
 
 # LIVE = bool(os.environ.get("LIVE", "True"))
-LIVE=False
+LIVE = False
+
 ALLOWED_HOSTS = ['*']
 # CORS_ALLOWED_ORIGINS = ['*']
 SITE_URL = 'http://localhost:8000'

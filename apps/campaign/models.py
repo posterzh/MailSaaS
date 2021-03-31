@@ -176,7 +176,7 @@ class Recipient(models.Model):
     )
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     email = models.CharField(max_length=200)
-    full_name = models.CharField(max_length=200)
+    full_name = models.CharField(max_length=200, null=True)
     replacement = models.TextField(blank=True, null=True)
     sent = models.PositiveSmallIntegerField(default=0, null=True)
     leads = models.PositiveSmallIntegerField(default=0, null=True)
@@ -208,8 +208,8 @@ class Emails(models.Model):
 class Log(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.SET_NULL, null=True)
     from_email = models.ForeignKey(EmailAccount, on_delete=models.SET_NULL, null=True)
-    recipient_id = models.ForeignKey(Recipient, on_delete=models.SET_NULL, null=True)
-    email_id = models.ForeignKey(Emails, on_delete=models.SET_NULL, null=True)
+    recipient = models.ForeignKey(Recipient, on_delete=models.SET_NULL, null=True)
+    email = models.ForeignKey(Emails, on_delete=models.SET_NULL, null=True)
     email_subject = models.CharField(max_length=100)
     email_body = models.TextField(blank=True, null=True)
 
@@ -231,8 +231,8 @@ class Log(models.Model):
 class EmailOutbox(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.SET_NULL, null=True)
     from_email = models.ForeignKey(EmailAccount, on_delete=models.SET_NULL, null=True)
-    recipient_id = models.ForeignKey(Recipient, on_delete=models.SET_NULL, null=True)
-    email_id = models.ForeignKey(Emails, on_delete=models.SET_NULL, null=True)
+    recipient = models.ForeignKey(Recipient, on_delete=models.SET_NULL, null=True)
+    email = models.ForeignKey(Emails, on_delete=models.SET_NULL, null=True)
     email_subject = models.CharField(max_length=100)
     email_body = models.TextField(blank=True, null=True)
     status = models.PositiveSmallIntegerField(default=0, null=True)
