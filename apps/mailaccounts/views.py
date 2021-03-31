@@ -13,7 +13,7 @@ from . import utils
 from .models import EmailAccount, SendingCalendar, CalendarStatus, WarmingStatus
 from .serializers import EmailAccountSerializer, SendingCalendarSerializer
 from ..campaign.models import SendingObject, EmailInbox
-from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_sending_items
+from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_sending_items, check_email
 from .tasks import send_test_email
 
 
@@ -29,7 +29,7 @@ class EmailAccountListView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         request.data['user'] = request.user.id
 
-        is_valid, msg = utils.check_email(request=request)
+        is_valid, msg = check_email(request=request)
         if not is_valid:
             return Response(msg, status=status.HTTP_400_BAD_REQUEST)
 
@@ -42,7 +42,7 @@ class EmailAccountView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def update(self, request, *args, **kwargs):
-        is_valid, msg = utils.check_email(request=request)
+        is_valid, msg = check_email(request=request)
         if not is_valid:
             return Response(msg, status=status.HTTP_400_BAD_REQUEST)
 
