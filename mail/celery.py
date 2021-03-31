@@ -21,7 +21,11 @@ app.conf.beat_schedule = {
     },
     'warming_up': {
         'task': 'apps.mailaccounts.tasks.warming_trigger',
-        'schedule': 300.0,   # 5 mins in Prod
+        'schedule': 300.0,      # 5 mins in Prod
+    },
+    'warming_days_counter': {
+        'task': 'apps.mailaccounts.tasks.warming_days_counter',
+        'schedule': 86400.0,    # 1 day in Prod
     },
 }
 

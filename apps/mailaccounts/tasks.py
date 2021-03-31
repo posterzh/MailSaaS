@@ -4,6 +4,7 @@ import pytz
 import numpy as np
 import math
 import random
+from essential_generators import DocumentGenerator
 from celery import shared_task
 from .models import *
 from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_sending_items
@@ -11,26 +12,9 @@ from ..campaign.models import SendingObject, EmailInbox
 
 default_rampup_increment = 3
 default_max_warmup_cnt = 20
-default_warmup_mail_subject = "Before apples, limes were only camels. • mailerrize"
-default_warmup_mail_body = """
+default_warmup_mail_subject_suffix = "• mailerrize"
 
-A tangerine of the rabbit is assumed to be a loving bee. An easygoing pear's lemon comes with it the thought that the dashing snake is a lion? Few can name a lovely pear that isn't a productive hamster? Creative kiwis show us how monkeys can be spiders.
-
-One cannot separate cheetahs from practical ants! We can assume that any instance of an apple can be construed as a sensitive lobster! After a long day at school and work, the chicken of a blackberry becomes a confident chimpanzee. Shouting with happiness, humorous pigs show us how birds can be deers. The blackberries could be said to resemble fine lions. What we don't know for sure is whether or not the imaginative melon comes from a decisive fig? What we don't know for sure is whether or not those apricots are nothing more than lemons! In modern times they were lost without the determined rabbit that composed their snail. The lobster of a pear becomes an industrious rat. The goats could be said to resemble witty alligators.
-
-It's very tricky, if not impossible, a vivacious lobster is a strawberry of the mind! Some posit the excellent elephant to be less than generous; They were lost without the thrifty rabbit that composed their hamster. The first fearless lemon is, in its own way, a shark.
-
-The first decorous apricot is, in its own way, a lobster. A pomegranate is an ant's persimmon! We can assume that any instance of a pig can be construed as a self-disciplined cat. The pomegranate of a dog becomes an intuitive giraffe. A snail of the prune is assumed to be an excellent rabbit. Some proud cheetahs are thought of simply as hamsters.
-
-Yours sincerely,
-
-"""
-default_warmup_reply_mail_body = """
-
-Received your warming email.
-
-"""
-
+gen = DocumentGenerator()
 
 @shared_task(bind=True)
 def send_test_email(self, mailAccountId):
@@ -81,8 +65,15 @@ def email_receiver():
             inbox.save()
 
             # Filter out the warmup emails
-            if email_item['subject'].endswith("• mailerrize") and not email_item['subject'].startswith("Re:"):
+            if email_item['subject'].endswith(default_warmup_mail_subject_suffix) and not email_item['subject'].startswith("Re:"):
                 warm_reply_subject = "Re: " + email_item['subject']
+                warm_reply_body = "Hi,\n\n" + gen.paragraph() + "\n\nYours truly,\n\n"
+                if mail_account.first_name:
+                    warm_reply_body += mail_account.first_name
+                elif mail_account.last_name:
+                    warm_reply_body += mail_account.last_name
+                else:
+                    warm_reply_body = "Thank you"
                 param = {
                     "host": mail_account.smtp_host,
                     "port": mail_account.smtp_port,
@@ -92,7 +83,7 @@ def email_receiver():
                     "from_email": mail_account.email,
                     "to_email": [email_item['from']],
                     "subject": warm_reply_subject,
-                    "body": default_warmup_reply_mail_body,
+                    "body": warm_reply_body,
                     "uuid": None,
                     "track_opens": False,
                     "track_linkclick": False
@@ -141,6 +132,7 @@ def warming_trigger():
 
         # print(f"Sending email to: ${dest_account.email}")
         # send email to dest_account
+        warmup_email_subject = gen.sentence() + " " + default_warmup_mail_subject_suffix
         warmup_email_body = "Dear "
         if dest_account.first_name:
             warmup_email_body += dest_account.first_name + ","
@@ -148,7 +140,7 @@ def warming_trigger():
             warmup_email_body += dest_account.last_name + ","
         else:
             warmup_email_body = "Hello,"
-        warmup_email_body += default_warmup_mail_body
+        warmup_email_body += "\n\n" + gen.paragraph() + "\n\nYours sincerely,\n\n"
         if mail_account.first_name:
             warmup_email_body += mail_account.first_name
         elif mail_account.last_name:
@@ -164,7 +156,7 @@ def warming_trigger():
             "use_tls": mail_account.use_smtp_ssl,
             "from_email": mail_account.email,
             "to_email": [dest_account.email],
-            "subject": default_warmup_mail_subject,
+            "subject": warmup_email_subject,
             "body": warmup_email_body,
             "uuid": None,
             "track_opens": False,
@@ -174,6 +166,15 @@ def warming_trigger():
 
         # log into the DB
         WarmingLog.objects.create(mail_account_id=mail_account.id)
+
+
+@shared_task
+def warming_days_counter():
+    # Get warming enabled accounts
+    enabledAccounts = WarmingStatus.objects.filter(warming_enabled=True).select_related("mail_account")
+    for item in enabledAccounts:
+        item.days_passed += 1
+        item.save()
 
 
 @shared_task

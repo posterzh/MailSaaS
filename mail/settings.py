@@ -33,7 +33,6 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = False
-DEV_MODE = False
 
 # LIVE = bool(os.environ.get("LIVE", "True"))
 LIVE=False
