@@ -25,11 +25,11 @@ from apps.integration.views import SendSlackMessage
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmailModel,
-                     EmailOnLinkClick, FollowUpEmail, CampaignLabel, SendingObject)
+                     EmailOnLinkClick, FollowUpEmail, CampaignLabel, SendingObject, Emails)
 from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
                           CampaignSendingObjectSerializer, OnclickSerializer, CampaignLabelSerializer,
-                          ProspectsSerializer)
+                          ProspectsSerializer, CampaignRecipientSerializer)
 from apps.mailaccounts.models import EmailAccount
 
 
@@ -471,6 +471,9 @@ class CampaignCreateView(APIView):
                 new_camp = camp.save()
                 campaign_id = new_camp.id
 
+                intro_email = Emails(campaign=new_camp, email_subject=campaign["email_subject"], email_body=campaign["email_body"], email_type=0)
+                intro_email.save()
+
                 if len(campaign['follow_up']) > 0:
                     self.createFollowUps(new_camp, campaign['follow_up'])
 
@@ -487,19 +490,24 @@ class CampaignCreateView(APIView):
         if len(follow_ups) == 0:
             return
 
+        email_order = 0
         for follow_up in follow_ups:
-            FollowupEmail = FollowUpEmail(campaign=camp, waitDays=follow_up["waitDays"], subject=follow_up["subject"],
-                                          email_body=follow_up["email_body"])
-            FollowupEmail.save()
+            follow_email = Emails(campaign=camp, wait_days=follow_up["waitDays"], email_subject=follow_up["subject"],
+                                  email_body=follow_up["email_body"], email_type=1, email_order=email_order)
+            follow_email.save()
+            email_order += 1
 
     def createDrips(self, camp, drips):
         if len(drips) == 0:
             return
 
+        email_order = 0
+
         for drip in drips:
-            DripEmail = DripEmailModel(campaign=camp, waitDays=drip["waitDays"], subject=drip["subject"],
-                                       email_body=drip["email_body"])
-            DripEmail.save()
+            drip_email = Emails(campaign=camp, wait_days=drip["waitDays"], email_subject=drip["subject"],
+                                       email_body=drip["email_body"], email_type=2, email_order=email_order)
+            drip_email.save()
+            email_order += 1
 
     def createRecipientsAndSendingObject(self, new_camp, campaign):
         campaign_id = new_camp.id
@@ -524,22 +532,24 @@ class CampaignCreateView(APIView):
                 'replacement': json.dumps(replacement)
             }
 
-            res = CampaignEmailSerializer(data=res_data)
+            res = CampaignRecipientSerializer(data=res_data)
             if res.is_valid():
                 res.save()
+            else:
+                print(res.errors)
 
-            self.createSendingObject(campaign_id, from_email, email[0], campaign['email_subject'],
-                                     campaign['email_body'], 0, replacement, 0)
-
-            if campaign['follow_up']:
-                for follow in campaign['follow_up']:
-                    self.createSendingObject(campaign_id, from_email, email[0], follow['subject'],
-                                             follow['email_body'], 1, replacement, follow['waitDays'])
-
-            if campaign['drips']:
-                for drip in campaign['drips']:
-                    self.createSendingObject(campaign_id, from_email, email[0], drip['subject'],
-                                             drip['email_body'], 2, replacement, drip['waitDays'])
+            # self.createSendingObject(campaign_id, from_email, email[0], campaign['email_subject'],
+            #                          campaign['email_body'], 0, replacement, 0)
+            #
+            # if campaign['follow_up']:
+            #     for follow in campaign['follow_up']:
+            #         self.createSendingObject(campaign_id, from_email, email[0], follow['subject'],
+            #                                  follow['email_body'], 1, replacement, follow['waitDays'])
+            #
+            # if campaign['drips']:
+            #     for drip in campaign['drips']:
+            #         self.createSendingObject(campaign_id, from_email, email[0], drip['subject'],
+            #                                  drip['email_body'], 2, replacement, drip['waitDays'])
 
     def createSendingObject(self, camp_id, from_email, to_email, subject, body, type, replacement, wait_days):
         sending_obj = {
