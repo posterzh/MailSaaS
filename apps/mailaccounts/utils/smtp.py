@@ -77,7 +77,6 @@ def check_imap(server, port, use_tls, user, password):
 
 def send_mail_with_smtp(host, port, username, password, use_tls, from_email, to_email,
                         subject, body, uuid, track_opens, track_linkclick):
-
     body = f'<html><body>{body}</body></html>'
 
     # tracking_body = add_tracking(body, uuid)
@@ -176,127 +175,28 @@ def receive_mail_with_imap(host, port, username, password, use_tls):
 
     return emails
 
+
+# Parameter
+#   [ email_id: EmailAccount ]
+#   [ limit: Number ]
+# Return Value:
+#   [ (camp_id: Campaign,
+#       from_email_id: EmailAccount,
+#       to_email_id: Recipient,
+#       email_subject: Text,
+#       email_body: Text) ]
 def get_emails_to_send(available_email_ids, email_limits):
     # Parameters
-    for email, limit in zip(available_email_ids, email_limits):
-        print(email, limit)
+    for email_id, limit in zip(available_email_ids, email_limits):
+        print(email_id, limit)
 
     # Return value
-    camp1 = Campaign()
-    from_email = EmailAccount()
-    to_email = Recipient()
+    camp_id = 75
+    from_email_id = 29
+    to_email_id = 25
     email_subject = 'test1'
     email_body = '<p>how are you?</p>'
 
-    send_item = (camp1, from_email, to_email, email_subject, email_body)
+    send_item = (camp_id, from_email_id, to_email_id, email_subject, email_body)
 
     return [send_item]
-
-
-# from_email_id = 26
-# total_mail_count = 20
-def get_emails(from_email_id, total_mail_count, campaign = 67):
-    max_followup_mail_count = total_mail_count / 2
-
-    items = SendingObject.objects \
-        .filter(from_email_id=from_email_id, campaign=campaign) \
-        .values()
-    df_items = pd.DataFrame(data=items)
-
-    recipients = CampaignRecipient.objects \
-        .filter(campaign=campaign, leads=True) \
-        .values()
-    lead_emails = recipients.values_list('email', flat=True)
-
-    # Follow up emails
-    followup_items_all = df_items[(df_items.email_type == 1) & (df_items.status == 0)]
-
-    followup_items = pd.DataFrame(columns=df_items.columns)
-    for index, followup_item in followup_items_all.iterrows():
-        # Skip leads email
-        if followup_item.recipient_email in lead_emails:
-            continue
-
-        #
-        matching_sent_main_item = df_items[
-            (df_items.email_type == 0) &
-            (df_items.status == 1) &
-            (df_items.recipient_email == followup_item.recipient_email)]
-
-        if len(matching_sent_main_item) == 0:
-            continue
-
-        last_sent_time = datetime.combine(matching_sent_main_item.iloc[0].sent_date,
-                                          matching_sent_main_item.iloc[0].sent_time)
-
-        if followup_item.email_order >= 1:
-            previous_email_order = followup_item.email_order - 1
-            previous_sent_followup_item = df_items[
-                (df_items.email_type == 1) &
-                (df_items.status == 1) &
-                (df_items.recipient_email == followup_item.recipient_email) &
-                (df_items.email_order == previous_email_order)]
-
-            if len(previous_sent_followup_item) == 0:
-                continue
-
-            last_sent_time = datetime.combine(previous_sent_followup_item.iloc[0].sent_date,
-                                              previous_sent_followup_item.iloc[0].sent_time)
-
-        should_send_time = last_sent_time + timedelta(days=followup_item.wait_days)
-        now = datetime.datetime.now()
-        if should_send_time > now:
-            continue
-
-        followup_items = followup_items.append(followup_item)
-
-        if len(followup_items) > max_followup_mail_count:
-            break
-
-    # Main emails
-    max_main_mail_count = total_mail_count - len(followup_items)
-
-    main_items = df_items[(df_items.email_type == 0) & (df_items.status == 0)].head(max_main_mail_count)
-
-    # Drip emails
-    drip_items_all = df_items[(df_items.email_type == 2) & (df_items.status == 0)]
-
-    drip_items = pd.DataFrame(columns=df_items.columns)
-    for index, drip_item in drip_items_all.iterrows():
-        matching_sent_main_item = df_items[
-            (df_items.email_type == 0) &
-            (df_items.status == 1) &
-            (df_items.recipient_email == drip_item.recipient_email)]
-
-        if len(matching_sent_main_item) == 0:
-            continue
-
-        last_sent_time = datetime.combine(matching_sent_main_item.iloc[0].sent_date,
-                                          matching_sent_main_item.iloc[0].sent_time)
-
-        if drip_item.email_order >= 1:
-            previous_email_order = drip_item.email_order - 1
-            previous_sent_drip_item = df_items[
-                (df_items.email_type == 2) &
-                (df_items.status == 1) &
-                (df_items.recipient_email == drip_item.recipient_email) &
-                (df_items.email_order == previous_email_order)]
-
-            if len(previous_sent_drip_item) == 0:
-                continue
-
-            last_sent_time = datetime.combine(previous_sent_drip_item.iloc[0].sent_date,
-                                              previous_sent_drip_item.iloc[0].sent_time)
-
-        should_send_time = last_sent_time + timedelta(days=drip_item.wait_days)
-        now = datetime.datetime.now()
-        if should_send_time > now:
-            continue
-
-        drip_items = drip_items.append(drip_item)
-
-    return {
-        'main': main_items,
-        'followup': followup_items,
-        'drip': drip_items
-    }
