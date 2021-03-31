@@ -35,7 +35,7 @@ django-rest-auth==0.9.5
 django-timezone-field==4.1.1
 djangorestframework==3.12.1
 djangorestframework-jwt==1.11.0
-essential_generators=1.0
+essential_generators==1.0
 google-api-core==1.26.0
 google-api-python-client==1.12.8
 google-auth==1.25.0
