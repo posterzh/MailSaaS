@@ -24,7 +24,7 @@ function PageContainer(props) {
     notification,
     newButton,
     newAction,
-    buttonColor
+    buttonColor,
   } = props;
   const notificationRef = useRef(null);
 
@@ -63,15 +63,17 @@ function PageContainer(props) {
                 <CardHeader className="pb-1">
                   <h2 className="mx-auto text-center display-3">{title}</h2>
                   {newButton && newAction && (
-                    <Button color={buttonColor ? buttonColor : 'danger'} type="button"
+                    <Button
+                      color={buttonColor ? buttonColor : "danger"}
+                      type="button"
                       style={{
                         position: "absolute",
                         top: "15px",
                         left: "15px",
                       }}
-                      onClick={newAction}
+                      onClick={() => newAction()}
                     >
-                      { newButton }
+                      {newButton}
                     </Button>
                   )}
                   {showHelper && (

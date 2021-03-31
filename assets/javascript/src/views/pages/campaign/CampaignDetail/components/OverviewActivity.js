@@ -1,10 +1,10 @@
 import React from "react";
-import { Container, Row, Col, Input } from "reactstrap";
+import { Container, Row, Col, Input, Card, CardBody } from "reactstrap";
 
 export default function OverviewActivity() {
   return (
     <>
-      <Container fluid>
+      {/* <Container fluid>
         <Row>
           <Col>
             <Card className="card-summary-funnel mb-0">
@@ -23,9 +23,6 @@ export default function OverviewActivity() {
                         <CardBody className="p-1 square-box-60">
                           <div className="dummy"></div>
                           <div className="content d-flex flex-column justify-content-around align-items-center mx-0">
-                            {/* <div className="icon icon-sm icon-shape bg-gradient-dark text-white rounded-circle shadow">
-                              <span>0%</span>
-                            </div> */}
                             <span className="h2 font-weight-bold mb-0">
                               0
                             </span>
@@ -61,9 +58,6 @@ export default function OverviewActivity() {
                       <CardBody className="p-1 square-box-60">
                         <div className="dummy"></div>
                         <div className="content d-flex flex-column justify-content-around align-items-center mx-0">
-                          {/* <div className="icon icon-sm icon-shape bg-gradient-dark text-white rounded-circle shadow">
-                            <span>{overviewSummary.openPer || 0}%</span>
-                          </div> */}
                           <span className="h2 font-weight-bold mb-0">
                             
                           </span>
@@ -237,7 +231,7 @@ export default function OverviewActivity() {
             </Table>
           </Col>
         </Row>
-      </Container>
+      </Container> */}
     </>
   );
 }
