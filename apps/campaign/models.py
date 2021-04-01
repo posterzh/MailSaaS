@@ -28,7 +28,9 @@ class Campaign(models.Model):
     # schedule_date = models.DateField(blank=True, null=True)
     # schedule_time = models.TimeField(blank=True, null=True)
     terms_and_laws = models.BooleanField(default=False)
-    campaign_status = models.BooleanField(default=False)  # Start Campaign or Pause Campaign
+    campaign_status = models.BooleanField(default=True) # True: Start, False: Pause
+    is_deleted = models.BooleanField(default=False)
+    is_draft = models.BooleanField(default=False)
     label_name = models.ForeignKey(CampaignLabel, on_delete=models.SET_DEFAULT, default=1)
     csv_fields = models.TextField(blank=True, null=True, default='')
     email_subject = models.CharField(max_length=2000, blank=True, null=True)
@@ -154,18 +156,6 @@ class SendingObject(models.Model):
     clicked_datetime = models.DateTimeField(null=True)
 
 
-class EmailInbox(models.Model):
-    recipient_email = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
-    from_email = models.TextField()
-    email_subject = models.TextField()
-    email_body = models.TextField(blank=True, null=True)
-
-    # 0: received, 1: processed, 2: xxx
-    status = models.PositiveSmallIntegerField(default=0)
-    receive_date = models.DateField(auto_now=False, blank=True, null=True)
-    receive_time = models.TimeField(auto_now=False, blank=True, null=True)
-
-
 class Recipient(models.Model):
     LEAD_TYPE = (
         ("none", "None"),
@@ -178,12 +168,12 @@ class Recipient(models.Model):
     email = models.CharField(max_length=200)
     full_name = models.CharField(max_length=200, null=True)
     replacement = models.TextField(blank=True, null=True)
-    sent = models.PositiveSmallIntegerField(default=0, null=True)
-    leads = models.PositiveSmallIntegerField(default=0, null=True)
-    replies = models.PositiveSmallIntegerField(default=0, null=True)
-    opens = models.PositiveSmallIntegerField(default=0, null=True)
-    bounces = models.PositiveSmallIntegerField(default=0, null=True)
-    clicked = models.PositiveSmallIntegerField(default=0, null=True)
+    sent = models.PositiveSmallIntegerField(default=0)
+    leads = models.PositiveSmallIntegerField(default=0)
+    replies = models.PositiveSmallIntegerField(default=0)
+    opens = models.PositiveSmallIntegerField(default=0)
+    bounces = models.PositiveSmallIntegerField(default=0)
+    clicked = models.PositiveSmallIntegerField(default=0)
     lead_status = models.CharField(max_length=32, choices=LEAD_TYPE, default='none', null=True)
     recipient_status = models.BooleanField(default=False)  # Start or Pause Recipient
     is_unsubscribe = models.BooleanField(default=False)
@@ -224,3 +214,16 @@ class EmailOutbox(models.Model):
     # Email click tracking
     clicked = models.PositiveIntegerField(default=0)
     clicked_datetime = models.DateTimeField(null=True)
+
+
+class EmailInbox(models.Model):
+    recipient_email = models.ForeignKey(Recipient, on_delete=models.SET_NULL, null=True)
+    from_email = models.ForeignKey(EmailAccount, on_delete=models.SET_NULL, null=True)
+    outbox = models.ForeignKey(EmailOutbox, on_delete=models.SET_NULL, null=True)
+    email_subject = models.TextField()
+    email_body = models.TextField(blank=True, null=True)
+
+    # 0: received, 1: processed, 2: other
+    status = models.PositiveSmallIntegerField(default=0)
+    receive_date = models.DateField(auto_now=False, blank=True, null=True)
+    receive_time = models.TimeField(auto_now=False, blank=True, null=True)

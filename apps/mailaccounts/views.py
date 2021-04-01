@@ -15,7 +15,6 @@ from .serializers import EmailAccountSerializer, SendingCalendarSerializer
 from .utils.sending_calendar import can_send_email, calendar_sent
 from ..campaign.models import SendingObject, EmailInbox, Campaign, Recipient, EmailOutbox
 from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_emails_to_send, check_email
-from .tasks import send_test_email
 from mail.settings import DEFAULT_WARMUP_FOLDER
 
 
