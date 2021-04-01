@@ -478,3 +478,8 @@ PYTRACKING_CONFIGURATION = {
     "base_open_tracking_url": SITE_URL + "/mailaccounts/tracking/open/",
     "base_click_tracking_url": SITE_URL + "/mailaccounts/tracking/click/",
 }
+
+DEFAULT_WARMUP_FOLDER = "mailerrize"
+DEFAULT_RAMPUP_INCREMENT = 3
+DEFAULT_WARMUP_MAX_CNT = 20
+DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX = "• mailerrize"
