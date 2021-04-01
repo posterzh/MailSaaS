@@ -205,29 +205,6 @@ class Emails(models.Model):
     is_deleted = models.BooleanField(default=False)
 
 
-class Log(models.Model):
-    campaign = models.ForeignKey(Campaign, on_delete=models.SET_NULL, null=True)
-    from_email = models.ForeignKey(EmailAccount, on_delete=models.SET_NULL, null=True)
-    recipient = models.ForeignKey(Recipient, on_delete=models.SET_NULL, null=True)
-    email = models.ForeignKey(Emails, on_delete=models.SET_NULL, null=True)
-    email_subject = models.CharField(max_length=100)
-    email_body = models.TextField(blank=True, null=True)
-
-    # 0: not send, 1: sent, 2: xxx
-    status = models.PositiveSmallIntegerField(default=0, null=True)
-
-    sent_date = models.DateField(auto_now=False, blank=True, null=True)
-    sent_time = models.TimeField(auto_now=False, blank=True, null=True)
-
-    # Email open tracking
-    opened = models.PositiveIntegerField(default=0)
-    opened_datetime = models.DateTimeField(null=True)
-
-    # Email click tracking
-    clicked = models.PositiveIntegerField(default=0)
-    clicked_datetime = models.DateTimeField(null=True)
-
-
 class EmailOutbox(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.SET_NULL, null=True)
     from_email = models.ForeignKey(EmailAccount, on_delete=models.SET_NULL, null=True)

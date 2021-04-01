@@ -32,8 +32,9 @@ import {
   InputGroup,
   Container,
   Row,
-  Col,
+  Col
 } from "reactstrap";
+import { Link } from "react-router-dom";
 // core components
 import AuthHeader from "../../../components/Headers/AuthHeader"
 import {
@@ -311,6 +312,13 @@ class Register extends React.Component {
                   </div>
                 }
               </Card>
+              <Row className="mt-3">
+                <Col xs="6">
+                  <Link to="/app/auth/login">
+                    <small className="text-light">Already have account</small>
+                  </Link>
+                </Col>
+              </Row>
             </Col>
           </Row>
         </Container>

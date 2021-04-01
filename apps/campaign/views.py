@@ -1314,12 +1314,12 @@ class TrackEmailClick(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None, id=None):
-        tracking_result = pytracking.get_open_tracking_result(
-            full_url, base_click_tracking_url="https://trackingdomain.com/path/")
-        full_url = settings.SITE_URL + request.get_full_path()
-
-        tracking_result = pytracking.get_open_tracking_result(
-            full_url, base_click_tracking_url=settings.SITE_URL + "/campaign/email/click/")
+        # tracking_result = pytracking.get_open_tracking_result(
+        #     full_url, base_click_tracking_url="https://trackingdomain.com/path/")
+        # full_url = settings.SITE_URL + request.get_full_path()
+        #
+        # tracking_result = pytracking.get_open_tracking_result(
+        #     full_url, base_click_tracking_url=settings.SITE_URL + "/campaign/email/click/")
 
         # full_url = settings.SITE_URL + request.get_full_path()
 
