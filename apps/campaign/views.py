@@ -11,8 +11,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.sites.models import Site
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMultiAlternatives, send_mail
-from django.db.models import Q
+from django.db.models import Q, Count, Sum
 from django.db.models import F
+from django.db.models.functions import Coalesce
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django_filters.rest_framework import DjangoFilterBackend
@@ -29,7 +30,7 @@ from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmail
 from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
                           CampaignSendingObjectSerializer, OnclickSerializer, CampaignLabelSerializer,
-                          ProspectsSerializer, CampaignRecipientSerializer)
+                          ProspectsSerializer, CampaignRecipientSerializer, CampaignListSerializer)
 from apps.mailaccounts.models import EmailAccount
 
 
@@ -583,6 +584,22 @@ class CampaignUpdateView(APIView):
 
 
 class CampaignListView(generics.ListAPIView):
+    queryset = Campaign.objects.annotate(recipients=Count('recipient'),
+                                         sent=Coalesce(Sum('recipient__sent'), 0),
+                                         opens=Coalesce(Sum('recipient__opens'), 0),
+                                         leads=Coalesce(Sum('recipient__leads'), 0),
+                                         replies=Coalesce(Sum('recipient__replies'), 0),
+                                         bounces=Coalesce(Sum('recipient__bounces'), 0))
+
+    serializer_class = CampaignListSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    pagination_class = None
+
+    def get_queryset(self):
+        return super().get_queryset().filter(assigned=self.request.user.id)
+
+
+class CampaignListView_old(generics.ListAPIView):
     """
         For Get all Campaign by user
     """
