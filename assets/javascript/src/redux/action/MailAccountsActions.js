@@ -13,7 +13,7 @@ import {
 
 export const getMailAccounts = () => (dispatch) => {
   toggleTopLoader(true);
-  axios
+  return axios
     .get("/mailaccounts/emailaccounts/")
     .then((response) => {
       dispatch({
