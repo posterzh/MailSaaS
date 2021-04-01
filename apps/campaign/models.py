@@ -28,7 +28,9 @@ class Campaign(models.Model):
     # schedule_date = models.DateField(blank=True, null=True)
     # schedule_time = models.TimeField(blank=True, null=True)
     terms_and_laws = models.BooleanField(default=False)
-    campaign_status = models.BooleanField(default=False)  # Start Campaign or Pause Campaign
+    campaign_status = models.BooleanField(default=True) # True: Start, False: Pause
+    is_deleted = models.BooleanField(default=False)
+    is_draft = models.BooleanField(default=False)
     label_name = models.ForeignKey(CampaignLabel, on_delete=models.SET_DEFAULT, default=1)
     csv_fields = models.TextField(blank=True, null=True, default='')
     email_subject = models.CharField(max_length=2000, blank=True, null=True)
