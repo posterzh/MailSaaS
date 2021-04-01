@@ -32,8 +32,9 @@ import {
   InputGroup,
   Container,
   Row,
-  Col,
+  Col
 } from "reactstrap";
+import { Link } from "react-router-dom";
 // core components
 import AuthHeader from "../../../components/Headers/AuthHeader"
 import {
@@ -45,6 +46,7 @@ import { history } from "../../../index"
 import { Alert } from 'reactstrap';
 
 import GoogleLogin from 'react-google-login';
+import Label from "reactstrap/lib/Label";
 
 class Register extends React.Component {
   constructor(props) {
@@ -285,7 +287,8 @@ class Register extends React.Component {
                         {!this.state.show && <span className='password-message'> A minimum 8 characters password contains a combination of uppercase and lowercase letter and number are required.</span>}
                       </div>
                       <FormGroup className='mt-4'>
-                        <Input type="select" name="mailsaas_type" value={this.state.mailsaas_type} onChange={this.handleChange} id="exampleSelect">
+                        <Label for="mailsaas_type">What are you using this for?</Label>
+                        <Input id="mailsaas_type" type="select" name="mailsaas_type" value={this.state.mailsaas_type} onChange={this.handleChange} id="exampleSelect">
                           <option value='Sales'>Sales</option>
                           <option value='Marketing'>Marketing/PR</option>
                           <option value='Recruiting'>Recruiting</option>
@@ -311,6 +314,13 @@ class Register extends React.Component {
                   </div>
                 }
               </Card>
+              <Row className="mt-3">
+                <Col xs="6">
+                  <Link to="/app/auth/login">
+                    <small className="text-light">Already have account</small>
+                  </Link>
+                </Col>
+              </Row>
             </Col>
           </Row>
         </Container>

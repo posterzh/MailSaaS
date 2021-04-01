@@ -1,20 +1,16 @@
-import imaplib
 from datetime import datetime, timezone, timedelta
-import pytz
-import numpy as np
 import math
 import random
 from essential_generators import DocumentGenerator
 from celery import shared_task
 from .models import *
-from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_sending_items
-from ..campaign.models import SendingObject, EmailInbox
-
-default_rampup_increment = 3
-default_max_warmup_cnt = 20
-default_warmup_mail_subject_suffix = "• mailerrize"
+from .utils.sending_calendar import can_send_email, calendar_sent
+from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_emails_to_send, get_sending_items, move_warmups_from_spam_to_inbox
+from ..campaign.models import SendingObject, EmailInbox, Campaign, Recipient, EmailOutbox
+from mail.settings import DEFAULT_RAMPUP_INCREMENT, DEFAULT_WARMUP_MAX_CNT, DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX
 
 gen = DocumentGenerator()
+
 
 @shared_task(bind=True)
 def send_test_email(self, mailAccountId):
@@ -36,9 +32,76 @@ def send_test_email(self, mailAccountId):
 def email_sender():
     print('Email sender is called...')
 
+    available_mail_ids = []
+    available_mail_limits = []
+    mail_accounts = EmailAccount.objects.all()
+    for mail_account in mail_accounts:
+        sending_calendar, created = SendingCalendar.objects.get_or_create(mail_account_id=mail_account.id)
+        if created:
+            sending_calendar = SendingCalendar.objects.get(mail_account_id=mail_account.id)
+        calendar_status, created = CalendarStatus.objects.get_or_create(sending_calendar_id=sending_calendar.id,
+                                                                        defaults={'updated_datetime': datetime.now(
+                                                                            timezone.utc) - timedelta(days=1)})
+
+        if can_send_email(sending_calendar, calendar_status):
+            available_mail_ids.append(mail_account.id)
+            mail_limit = sending_calendar.max_emails_per_day - calendar_status.sent_count
+            available_mail_limits.append(mail_limit)
+
+    # Fetch sending objects
+    sending_objects = get_emails_to_send(available_mail_ids, available_mail_limits)
+
+    for sending_item in sending_objects:
+        camp = Campaign.objects.get(id=sending_item['camp_id'])
+        from_email = EmailAccount.objects.get(id=sending_item['from_email_id'])
+        to_email = Recipient.objects.get(id=sending_item['to_email_id'])
+        email_subject = sending_item['email_subject']
+        email_body = sending_item['email_body']
+
+        # Save to EmailOutbox
+        outbox = EmailOutbox()
+        outbox.campaign = camp
+        outbox.from_email = from_email
+        outbox.recipient = to_email
+        outbox.email_subject = email_subject
+        outbox.email_body = email_body
+        outbox.status = 0
+        outbox.sent_date = datetime.now(timezone.utc).date()
+        outbox.sent_time = datetime.now(timezone.utc).time()
+        outbox.save()
+
+        # Send email
+        result = send_mail_with_smtp(host=from_email.smtp_host,
+                                     port=from_email.smtp_port,
+                                     username=from_email.smtp_username,
+                                     password=from_email.smtp_password,
+                                     use_tls=from_email.use_smtp_ssl,
+                                     from_email=from_email.email,
+                                     to_email=to_email.email,
+                                     subject=email_subject,
+                                     body=email_body,
+                                     uuid=outbox.id,
+                                     track_opens=camp.track_opens,
+                                     track_linkclick=camp.track_linkclick)
+
+        if result:
+            print(f"Email sent from {from_email.email} to {to_email.email}")
+
+            # Update CalendarStatus
+            calendar_status = CalendarStatus.objects.get(sending_calendar__mail_account_id=from_email.id)
+            calendar_sent(calendar_status)
+
+            # Update EmailOutbox status
+            outbox.status = 1
+            outbox.save()
+        else:
+            print(f"Failed to send from {from_email.email} to {to_email.email}")
+
+            # Delete the EmailOutbox entry that fails
+            outbox.delete()
 
 
-
+@shared_task
 def email_receiver():
     print('Email receiver is called...')
 
@@ -65,7 +128,8 @@ def email_receiver():
             inbox.save()
 
             # Filter out the warmup emails
-            if email_item['subject'].endswith(default_warmup_mail_subject_suffix) and not email_item['subject'].startswith("Re:"):
+            if (email_item['subject'].endswith("mailerrize") or email_item['subject'].endswith("mailerrize?=")) \
+                    and "Re:" not in email_item['subject']:
                 warm_reply_subject = "Re: " + email_item['subject']
                 warm_reply_body = "Hi,\n\n" + gen.paragraph() + "\n\nYours truly,\n\n"
                 if mail_account.first_name:
@@ -99,7 +163,7 @@ def warming_trigger():
         mail_account = item.mail_account
         # print(f"Warmer email: {mail_account.email}")
 
-        cnt_to_send = min(default_rampup_increment * (item.days_passed + 1), default_max_warmup_cnt)
+        cnt_to_send = min(DEFAULT_RAMPUP_INCREMENT * (item.days_passed + 1), DEFAULT_WARMUP_MAX_CNT)
 
         # print(f"Number of warmup emails to send: {cnt_to_send}")
 
@@ -132,7 +196,7 @@ def warming_trigger():
 
         # print(f"Sending email to: ${dest_account.email}")
         # send email to dest_account
-        warmup_email_subject = gen.sentence() + " " + default_warmup_mail_subject_suffix
+        warmup_email_subject = gen.sentence() + " " + DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX
         warmup_email_body = "Dear "
         if dest_account.first_name:
             warmup_email_body += dest_account.first_name + ","
