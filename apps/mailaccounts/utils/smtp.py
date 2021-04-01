@@ -11,11 +11,14 @@ from datetime import timedelta
 
 from django.core import mail
 from django.core.mail.backends.smtp import EmailBackend
+from django.db import connection
 
 from apps.campaign.models import SendingObject, CampaignRecipient, EmailOutbox, Campaign, Recipient
 from apps.mailaccounts.models import EmailAccount
 from apps.mailaccounts.utils.tracking import add_tracking
 from mail.settings import DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX, DEFAULT_WARMUP_FOLDER
+
+from .sqls import schedule_sql_template
 
 pattern_uid = re.compile('.*\d+ \(UID (?P<uid>\d+)\).*')
 
@@ -251,22 +254,160 @@ def get_sending_items(available_email_ids, email_limits):
 #       email_body: Text) ]
 def get_emails_to_send(available_email_ids, email_limits):
     # Parameters
+    arr = []
     for email_id, limit in zip(available_email_ids, email_limits):
-        print(email_id, limit)
+        arr.append(schedule_email(email_id, limit))
+    emails = pd.concat(arr)
+    return json.loads(emails.to_json(orient='records'))
 
-    # Return value
-    camp_id = 75
-    from_email_id = 29
-    to_email_id = 25
-    email_subject = 'test1'
-    email_body = '<p>how are you?</p>'
 
-    send_item = {
-        'camp_id': camp_id,
-        'from_email_id': from_email_id,
-        'to_email_id': to_email_id,
-        'email_subject': email_subject,
-        'email_body': email_body
-    }
+def get_all_emails(email_id):
+    schedule_sql = schedule_sql_template % email_id
 
-    return [send_item]
+    with connection.cursor() as cursor:
+        cursor.execute(schedule_sql)
+        rows = cursor.fetchall()
+        columns = [desc[0] for desc in cursor.description]
+
+    df_emails = pd.DataFrame(rows, columns=columns)
+
+    return df_emails
+
+
+def get_followup_emails(df_emails, followup_emails_count):
+    df_followup_emails = df_emails[
+        (df_emails["email_type"] == 1) &
+        (df_emails["leads"] == 0) &
+        (df_emails["emailoutbox_id"].isnull())]
+
+    followup_emails = pd.DataFrame(columns=df_emails.columns)
+    for index, followup_email in df_followup_emails.iterrows():
+        main_email = df_emails[
+            (df_emails["campaign_id"] == followup_email["campaign_id"])
+            & (df_emails["email_type"] == 0)
+            & (df_emails["recipient_email"] == followup_email["recipient_email"])]
+
+        if main_email["emailoutbox_id"].isnull().bool():
+            continue
+
+        last_sent_time = datetime.combine(main_email.iloc[0].sent_date,
+                                          main_email.iloc[0].sent_time)
+
+        if followup_email.email_order > 1:
+            previous_email_order = followup_email.email_order - 1
+            previous_follow_email = df_emails[
+                (df_emails["campaign_id"] == followup_email["campaign_id"])
+                & (df_emails["email_type"] == 1)
+                & (df_emails["recipient_email"] == followup_email["recipient_email"])
+                & (df_emails["email_order"] == previous_email_order)]
+
+            if previous_follow_email["emailoutbox_id"].isnull().bool():
+                continue
+
+            last_sent_time = datetime.combine(previous_follow_email.iloc[0].sent_date,
+                                              previous_follow_email.iloc[0].sent_time)
+
+        should_send_time = last_sent_time + timedelta(days=followup_email.wait_days)
+        now = datetime.now()
+        if should_send_time > now:
+            continue
+
+        followup_email["email_body"] = convert_template(
+            followup_email["email_body"], followup_email["replacement"]
+        )
+
+        followup_emails = followup_emails.append(followup_email)
+
+    followup_emails = followup_emails.head(followup_emails_count)
+
+    return followup_emails
+
+
+def get_main_emails(df_emails, main_emails_count):
+    df_main_emails = df_emails[
+        (df_emails["email_type"] == 0) &
+        (df_emails["emailoutbox_id"].isnull())]
+    main_emails = df_main_emails.head(main_emails_count)
+
+    main_emails["email_body"] = main_emails.apply(
+        lambda x: convert_template(x["email_body"], json.loads(x["replacement"])),
+        axis=1
+    )
+
+    return main_emails
+
+
+def get_drip_emails(df_emails):
+    df_drip_emails = df_emails[
+        (df_emails["email_type"] == 2) &
+        (df_emails["emailoutbox_id"].isnull())]
+
+    drip_emails = pd.DataFrame(columns=df_emails.columns)
+    for index, drip_email in df_drip_emails.iterrows():
+        main_email = df_emails[
+            (df_emails["campaign_id"] == drip_email["campaign_id"])
+            & (df_emails["email_type"] == 0)
+            & (df_emails["recipient_email"] == drip_email["recipient_email"])]
+
+        if main_email["emailoutbox_id"].isnull().bool():
+            continue
+
+        last_sent_time = datetime.combine(main_email.iloc[0].sent_date,
+                                          main_email.iloc[0].sent_time)
+
+        if drip_email.email_order > 1:
+            previous_email_order = drip_email.email_order - 1
+            previous_drip_email = df_emails[
+                (df_emails["campaign_id"] == drip_email["campaign_id"])
+                & (df_emails["email_type"] == 2)
+                & (df_emails["recipient_email"] == drip_email["recipient_email"])
+                & (df_emails["email_order"] == previous_email_order)]
+
+            if previous_drip_email["emailoutbox_id"].isnull().bool():
+                continue
+
+            last_sent_time = datetime.combine(previous_drip_email.iloc[0].sent_date,
+                                              previous_drip_email.iloc[0].sent_time)
+
+        should_send_time = last_sent_time + timedelta(days=drip_email.wait_days)
+        now = datetime.now()
+        if should_send_time > now:
+            continue
+
+        drip_email["email_body"] = convert_template(
+            drip_email["email_body"], drip_email["replacement"]
+        )
+
+        drip_emails = drip_emails.append(drip_email)
+
+    return drip_emails
+
+
+def convert_template(template, replacement):
+    for key in replacement.keys():
+        key_match = "{{" + key + "}}"
+        if key_match in template:
+            if replacement[key] is None:
+                template = template.replace(key_match, '')
+            else:
+                template = template.replace(key_match, replacement[key])
+
+    return template
+
+
+def schedule_email(email_id, email_limit):
+    df_emails = get_all_emails(email_id)
+
+    followup_emails_count = int(email_limit / 2)
+    followup_emails = get_followup_emails(df_emails, followup_emails_count)
+
+    main_emails_count = email_limit - followup_emails.shape[0]
+    main_emails = get_main_emails(df_emails, main_emails_count)
+
+    drip_emails = get_drip_emails(df_emails)
+
+    emails = pd.concat([main_emails, followup_emails, drip_emails])
+    emails['from_email_id'] = email_id
+    emails.rename(columns={'campaign_id': 'camp_id', 'recipient_id': 'to_email_id'}, inplace=True)
+
+    return emails
