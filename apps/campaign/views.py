@@ -1,16 +1,27 @@
+import csv
 import datetime
 import json
+import re
 import pandas as pd
+import ast
 from datetime import date, datetime, time, timedelta
 import pytracking
 from django.conf import settings
-from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from django.contrib.sites.models import Site
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMultiAlternatives, send_mail
+from django.db.models import Q, Count, Sum
 from django.db.models import F
+from django.db.models.functions import Coalesce
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.campaignschedule.models import Email_schedule
 from apps.integration.views import SendSlackMessage
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
@@ -19,7 +30,8 @@ from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmail
 from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
                           CampaignSendingObjectSerializer, OnclickSerializer, CampaignLabelSerializer,
-                          ProspectsSerializer, CampaignRecipientSerializer)
+                          ProspectsSerializer, CampaignRecipientSerializer, CampaignListSerializer)
+from apps.mailaccounts.models import EmailAccount
 
 
 class CreateCampaignStartView(APIView):
@@ -460,8 +472,7 @@ class CampaignCreateView(APIView):
                 new_camp = camp.save()
                 campaign_id = new_camp.id
 
-                intro_email = Emails(campaign=new_camp, email_subject=campaign["email_subject"],
-                                     email_body=campaign["email_body"], email_type=0)
+                intro_email = Emails(campaign=new_camp, email_subject=campaign["email_subject"], email_body=campaign["email_body"], email_type=0)
                 intro_email.save()
 
                 if len(campaign['follow_up']) > 0:
@@ -473,10 +484,8 @@ class CampaignCreateView(APIView):
                 if new_camp.csvfile_op1:
                     self.createRecipientsAndSendingObject(new_camp, campaign)
 
-                return Response({"message": "Created new campaign successfully", "success": True},
-                                status=status.HTTP_200_OK)
-            return Response({"message": "Failed to create campaign", "success": False},
-                            status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message": "Created new campaign successfully", "success": True}, status=status.HTTP_200_OK)
+            return Response({"message": "Failed to create campaign", "success": False}, status=status.HTTP_400_BAD_REQUEST)
 
     def createFollowUps(self, camp, follow_ups):
         if len(follow_ups) == 0:
@@ -497,7 +506,7 @@ class CampaignCreateView(APIView):
 
         for drip in drips:
             drip_email = Emails(campaign=camp, wait_days=drip["waitDays"], email_subject=drip["subject"],
-                                email_body=drip["email_body"], email_type=2, email_order=email_order)
+                                       email_body=drip["email_body"], email_type=2, email_order=email_order)
             drip_email.save()
             email_order += 1
 
@@ -575,66 +584,19 @@ class CampaignUpdateView(APIView):
 
 
 class CampaignListView(generics.ListAPIView):
-    """
-        For Get all Campaign by user
-    """
-    # permission_classes = (permissions.IsAuthenticated,)
-    # serializer_class = CampaignListSerializer
-    # pagination_class = None
-    # filter_backends = [DjangoFilterBackend]
-    # # filterset_fields = ['engaged', 'leads', 'bounces', 'unsubscribe']
-    #
-    # def get_queryset(self):
-    #     """
-    #     This view should return a list of all the purchases
-    #     for the currently authenticated user.
-    #     """
-    #     user = self.request.user
-    #     return Campaigns.objects.filter(assigned=user.id)
+    queryset = Campaign.objects.annotate(recipients=Count('recipient'),
+                                         sent=Coalesce(Sum('recipient__sent'), 0),
+                                         opens=Coalesce(Sum('recipient__opens'), 0),
+                                         leads=Coalesce(Sum('recipient__leads'), 0),
+                                         replies=Coalesce(Sum('recipient__replies'), 0),
+                                         bounces=Coalesce(Sum('recipient__bounces'), 0))
 
+    serializer_class = CampaignListSerializer
     permission_classes = (permissions.IsAuthenticated,)
+    pagination_class = None
 
-    def get(self, request, *args, **kwargs):
-        """
-         This view should return a list of all the purchases
-         for the currently authenticated user.
-         """
-        campaign_list = Campaign.objects.filter(assigned=request.user.id)
-        all_data = []
-        for camp in campaign_list:
-            camp_recipients = CampaignRecipient.objects.filter(campaign=camp.id)
-            camp_recipient_serializer = CampaignEmailSerializer(camp_recipients, many=True)
-            resp = {
-                "id": camp.pk,
-                "title": camp.title,
-                "created": camp.created_date_time.strftime("%m/%d/%Y"),
-                "assigned": camp.assigned.full_name,
-                "recipients": camp_recipients.count(),
-                "sent": 0,
-                "leads": 0,
-                "opens": 0,
-                "replies": 0,
-                "bounces": 0
-            }
-
-            for campData in camp_recipient_serializer.data:
-                if campData["sent"]:
-                    resp["sent"] = resp["sent"] + 1
-
-                if campData["opens"]:
-                    resp["opens"] = resp["opens"] + 1
-
-                if campData["leads"]:
-                    resp["leads"] = resp["leads"] + 1
-
-                if campData["replies"]:
-                    resp["replies"] = resp["replies"] + 1
-
-                if campData["bounces"]:
-                    resp["bounces"] = resp["bounces"] + 1
-
-            all_data.append(resp)
-        return Response(all_data)
+    def get_queryset(self):
+        return super().get_queryset().filter(assigned=self.request.user.id)
 
 
 class CampaignView(generics.ListAPIView):
@@ -1791,8 +1753,7 @@ class ProspectsCountView(APIView):
         engaged = CampaignRecipient.objects.filter(campaign__assigned=user.id, engaged=True, is_delete=False).count()
         leads = CampaignRecipient.objects.filter(campaign__assigned=user.id, leads=True, is_delete=False).count()
         bounces = CampaignRecipient.objects.filter(campaign__assigned=user.id, bounces=True, is_delete=False).count()
-        unsubscribes = CampaignRecipient.objects.filter(campaign__assigned=user.id, unsubscribe=True,
-                                                        is_delete=False).count()
+        unsubscribes = CampaignRecipient.objects.filter(campaign__assigned=user.id, unsubscribe=True, is_delete=False).count()
 
         return Response({
             'total': total,
@@ -1908,8 +1869,7 @@ class CampaignSendingObjectView:
         campaigns = Campaign.objects.get(from_address=mail_account)
         for camp in campaigns:
             if campaigns.campaign_status:
-                objs = SendingObject.objects.filter(from_email=mail_account, campaign=camp.id, status=0).order_by(
-                    "email_type")[:cnt]
+                objs = SendingObject.objects.filter(from_email=mail_account, campaign=camp.id, status=0).order_by("email_type")[:cnt]
                 sendingObjects.extend(objs)
 
         return sendingObjects
@@ -2014,7 +1974,6 @@ class CampaignScheduleView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
-        available_email_ids = [1, 1]
-        email_limits = [100, 50]
 
+        # Moved to mailaccounts > tasks.py
         return Response()
