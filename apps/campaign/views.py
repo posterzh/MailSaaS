@@ -599,69 +599,6 @@ class CampaignListView(generics.ListAPIView):
         return super().get_queryset().filter(assigned=self.request.user.id)
 
 
-class CampaignListView_old(generics.ListAPIView):
-    """
-        For Get all Campaign by user
-    """
-    # permission_classes = (permissions.IsAuthenticated,)
-    # serializer_class = CampaignListSerializer
-    # pagination_class = None
-    # filter_backends = [DjangoFilterBackend]
-    # # filterset_fields = ['engaged', 'leads', 'bounces', 'unsubscribe']
-    #
-    # def get_queryset(self):
-    #     """
-    #     This view should return a list of all the purchases
-    #     for the currently authenticated user.
-    #     """
-    #     user = self.request.user
-    #     return Campaigns.objects.filter(assigned=user.id)
-
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get(self, request, *args, **kwargs):
-        """
-         This view should return a list of all the purchases
-         for the currently authenticated user.
-         """
-        campaign_list = Campaign.objects.filter(assigned=request.user.id)
-        all_data = []
-        for camp in campaign_list:
-            camp_recipients = CampaignRecipient.objects.filter(campaign=camp.id)
-            camp_recipient_serializer = CampaignEmailSerializer(camp_recipients, many=True)
-            resp = {
-                "id": camp.pk,
-                "title": camp.title,
-                "created": camp.created_date_time.strftime("%m/%d/%Y"),
-                "assigned": camp.assigned.full_name,
-                "recipients": camp_recipients.count(),
-                "sent": 0,
-                "leads": 0,
-                "opens": 0,
-                "replies": 0,
-                "bounces": 0
-            }
-
-            for campData in camp_recipient_serializer.data:
-                if campData["sent"]:
-                    resp["sent"] = resp["sent"] + 1
-
-                if campData["opens"]:
-                    resp["opens"] = resp["opens"] + 1
-
-                if campData["leads"]:
-                    resp["leads"] = resp["leads"] + 1
-
-                if campData["replies"]:
-                    resp["replies"] = resp["replies"] + 1
-
-                if campData["bounces"]:
-                    resp["bounces"] = resp["bounces"] + 1
-
-            all_data.append(resp)
-        return Response(all_data)
-
-
 class CampaignView(generics.ListAPIView):
     """
         For Get all Campaign by user 
