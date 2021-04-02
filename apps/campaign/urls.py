@@ -30,6 +30,7 @@ urlpatterns = [
     path('list/', views.CampaignListView.as_view(), name='list_campaign'),
     path('overview-summary/<int:pk>/', views.CampaignOverviewSummary.as_view(), name='Get_campaign_overview_summary'),
     path('details-sequence/<int:pk>/', views.CampaignDetailsSequenceView.as_view(), name='details-sequence'),
+    path('details-recipients/<int:pk>/', views.CampaignDetailsRecipientsView.as_view(), name='details-recipients'),
     path('details-settings/<int:pk>/', views.CampaignDetailsSettingsView.as_view(), name='details-settings'),
     path('schedule/', views.CampaignScheduleView.as_view(), name='schedule'),
     path('leads/', views.CampaignLeadsView.as_view(), name='leads'),

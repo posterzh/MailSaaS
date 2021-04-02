@@ -25,7 +25,7 @@ from apps.campaignschedule.models import Email_schedule
 from apps.integration.views import SendSlackMessage
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
-from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmailModel,
+from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmailModel, Recipient,
                      EmailOnLinkClick, FollowUpEmail, CampaignLabel, SendingObject, Emails)
 from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
@@ -1886,6 +1886,15 @@ class CampaignDetailsSequenceView(generics.RetrieveAPIView):
     def get_queryset(self):
         user = self.request.user
         return Campaign.objects.filter(assigned=user.id)
+
+
+class CampaignDetailsRecipientsView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = CampaignRecipientSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        return Recipient.objects.filter(campaign=pk)
 
 
 class CampaignDetailsSettingsView(generics.RetrieveAPIView):

@@ -77,7 +77,7 @@ class ProspectsSerializer(serializers.ModelSerializer):
     engaged_count = serializers.SerializerMethodField()
 
     class Meta:
-        model = CampaignRecipient
+        model = Recipient
         fields = '__all__'
 
     def get_created(self, obj):

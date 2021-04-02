@@ -2,11 +2,13 @@ import {
   GET_OVERVIEW_SUMMARY,
   GET_DETAILS_SEQUENCE,
   GET_DETAILS_SETTINGS,
+  GET_DETAILS_RECIPIENTS,
 } from "../actionType/actionType";
 
 const initialState = {
   overviewSummary: {},
   detailsSequence: {},
+  detailRecipients: {},
   id: '',
   title: ''
 };
@@ -25,6 +27,11 @@ export const campaignDetailsReducer = (state = initialState, action) => {
       return {
         ...state,
         detailsSequence: action.payload,
+      }
+    case GET_DETAILS_RECIPIENTS:
+      return {
+        ...state,
+        detailRecipients: action.payload
       }
     case GET_DETAILS_SETTINGS:
       return {

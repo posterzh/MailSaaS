@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 
 
-import { filterRecipients } from "../../../../redux/action/ProspectsAction";
+import { getDetailRecipients } from "../../../../redux/action/CampaignDetailsActions";
 import { connect } from "react-redux";
 
 import PageHeader from "../../../../components/Headers/PageHeader";
@@ -38,7 +38,7 @@ class CampaignDetailRecipients extends Component {
   }
 
   componentDidMount() {
-    this.props.filterRecipients({ campaign: this.props.id });
+    this.props.getDetailRecipients(this.props.id);
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -179,9 +179,9 @@ const mapStateToProps = (state) => {
   return {
     id: state.campaignDetails.id,
     title: state.campaignDetails.title,
-    recipients: state.prospects.recipients,
+    recipients: state.campaignDetails.detailRecipients,
   };
 };
 export default connect( mapStateToProps, {
-  filterRecipients
+  getDetailRecipients
 })(CampaignDetailRecipients);

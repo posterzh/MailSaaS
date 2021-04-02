@@ -29,7 +29,10 @@ class SequenceEditPanel extends Component {
   constructor(props) {
     super(props);
 
-    const { detailsSequence: {email_subject, email_body, followups, drips } } = props;
+    const { detailsSequence: {email_subject, email_body, emails } } = props;
+
+    const followups = emails.filter(e => e.email_type == 1);
+    const drips = emails.filter(e => e.email_type == 2);
 
     this.state = {
       subject: email_subject,

@@ -4,6 +4,7 @@ import { history } from "../..";
 import {
   GET_OVERVIEW_SUMMARY,
   GET_DETAILS_SEQUENCE,
+  GET_DETAILS_RECIPIENTS,
   GET_DETAILS_SETTINGS,
 } from "../actionType/actionType";
 
@@ -42,6 +43,24 @@ export const getDetialsSequence = (id) => (dispatch) => {
       dispatch({
         type: GET_DETAILS_SEQUENCE,
         payload: response.data,
+      });
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+}
+
+export const getDetailRecipients = (id) => (dispatch) => {
+  toggleTopLoader(true);
+  return axios
+    .get(`/campaign/details-recipients/${id}/`)
+    .then((response) => {
+      dispatch({
+        type: GET_DETAILS_RECIPIENTS,
+        payload: response.data.results,
       });
     })
     .catch((error) => {
