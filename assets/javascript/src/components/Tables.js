@@ -321,7 +321,7 @@ function Tables({
             <Card>
               {searchKeys.length > 0 && filters.length > 0 && (
                 <CardHeader>
-                  <Form>
+                  <Form onSubmit={e => { e.preventDefault(); }}>
                     <Row>
                       {searchKeys.length > 0 && (
                         <Col md="3" sm="12" key="search">
@@ -335,7 +335,6 @@ function Tables({
                             <Row>
                               <Col>
                                 <Input
-                                  name="smtpHost"
                                   type="text"
                                   className="form-control-sm"
                                   onChange={searchFilter}
@@ -360,7 +359,6 @@ function Tables({
                                 <Row>
                                   <Col>
                                     <Input
-                                      name="smtpPort"
                                       className="form-control-sm"
                                       type="select"
                                       key={"filter-" + item.key}
