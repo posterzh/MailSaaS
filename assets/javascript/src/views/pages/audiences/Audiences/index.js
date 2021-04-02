@@ -37,10 +37,6 @@ const tableTitle = [
 		value: 'Email',
 	},
 	{
-		key: 'name',
-		value: 'Name',
-	},
-	{
 		key: 'created',
 		value: 'Created',
 	},
@@ -66,14 +62,6 @@ let filters = [
 	{
 		key: 'Teammate',
 		options: ['karl920814@gmail.com', 'omaid@faizyar.com']
-	},
-	{
-		key: 'email',
-		options: []
-	},
-	{
-		key: 'name',
-		options: []
 	}
 ];
 
@@ -89,15 +77,13 @@ class Prospects extends Component {
 	}
 
 	componentDidMount() {
-		this.props.filterRecipients();
+		this.props.filterRecipients({ unsubscribe: false });
 		this.props.countRecipients();
 	}
 
 	componentWillReceiveProps = (nextProps) => {
 		if (nextProps.recipients !== this.props.recipients) {
-			const getUniqueArray = (array, field) => array.map(x => x[field]).filter((v, i, a) => a.indexOf(v) === i);
-			filters[1].options = getUniqueArray(nextProps.recipients, 'email')
-			filters[2].options = getUniqueArray(nextProps.recipients, 'name')
+
 		}
 	}
 
@@ -133,12 +119,12 @@ class Prospects extends Component {
 
 	onTotalClick = () => {
 		this.setState({ selected: 'total' })
-		this.props.filterRecipients();
+		this.props.filterRecipients({ unsubscribe: false });
 	}
 
 	onInCampaignClick = () => {
 		this.setState({ selected: 'in-campaign' })
-		this.props.filterRecipients();
+		this.props.filterRecipients({ unsubscribe: false });
 	}
 
 	onEngagedClick = () => {
@@ -285,11 +271,6 @@ const mapStateToProps = (state) => ({
 	recipients: state.prospects.recipients,
 	counts: state.prospects.counts,
 });
-
-
-
-
-
 
 export default connect(mapStateToProps, {
 	filterRecipients,
