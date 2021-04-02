@@ -31,6 +31,7 @@ from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
                           CampaignSendingObjectSerializer, OnclickSerializer, CampaignLabelSerializer,
                           ProspectsSerializer, CampaignRecipientSerializer, CampaignListSerializer, LeadSettingsSerializer)
+from ..unsubscribes.models import UnsubscribeEmail
 from apps.mailaccounts.models import EmailAccount
 
 
@@ -1717,7 +1718,7 @@ class ProspectsView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ProspectsSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['engaged', 'leads', 'bounces', 'unsubscribe']
+    filterset_fields = ['leads', 'bounces', 'is_unsubscribe']
 
     def get_queryset(self):
         """
@@ -1725,7 +1726,21 @@ class ProspectsView(generics.ListAPIView):
         for the currently authenticated user.
         """
         user = self.request.user
-        return CampaignRecipient.objects.filter(campaign__assigned=user.id, is_delete=False)
+
+        unsubscribe_emails = UnsubscribeEmail.objects.values_list('email', flat=True)
+
+        return Recipient.objects \
+            .filter(campaign__assigned=user.id, is_delete=False) \
+            .exclude(email__in=unsubscribe_emails) \
+            .values('email') \
+            .annotate(sent_count=Coalesce(Sum('sent'), 0),
+                      open_count=Coalesce(Sum('opens'), 0),
+                      click_count=Coalesce(Sum('clicked'), 0),
+                      reply_count=Coalesce(Sum('replies'), 0),
+                      lead_count=Coalesce(Sum('leads'), 0))
+                        # campaign_count=0,
+                        # engaged_count=0
+
 
     def delete(self, request):
         CampaignRecipient.objects.filter(id__in=request.data["recp_ids"]).update(is_delete=True)

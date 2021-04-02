@@ -37,24 +37,24 @@ const tableTitle = [
 		value: 'Email',
 	},
 	{
-		key: 'created',
-		value: 'Created',
-	},
-	{
-		key: 'lead_status',
-		value: 'Status',
-	},
-	{
-		key: 'campaign_count',
-		value: 'Campaign',
-	},
-	{
 		key: 'sent_count',
 		value: 'Sent',
 	},
 	{
-		key: 'engaged_count',
-		value: 'Engaged',
+		key: 'open_count',
+		value: 'Open',
+	},
+	{
+		key: 'click_count',
+		value: 'Click',
+	},
+	{
+		key: 'reply_count',
+		value: 'Reply',
+	},
+	{
+		key: 'lead_count',
+		value: 'Lead',
 	},
 ];
 
@@ -123,28 +123,28 @@ class Prospects extends Component {
 	}
 
 	onInCampaignClick = () => {
-		this.setState({ selected: 'in-campaign' })
-		this.props.filterRecipients({ unsubscribe: false });
+		// this.setState({ selected: 'in-campaign' })
+		// this.props.filterRecipients({ unsubscribe: false });
 	}
 
 	onEngagedClick = () => {
-		this.setState({ selected: 'engaged' })
-		this.props.filterRecipients({ engaged: true });
+		// this.setState({ selected: 'engaged' })
+		// this.props.filterRecipients({ engaged: true });
 	}
 
 	onLeadsClick = () => {
-		this.setState({ selected: 'leads' })
-		this.props.filterRecipients({ leads: true });
+		// this.setState({ selected: 'leads' })
+		// this.props.filterRecipients({ leads: true });
 	}
 
 	onBouncesClick = () => {
-		this.setState({ selected: 'bounces' })
-		this.props.filterRecipients({ bounces: true });
+		// this.setState({ selected: 'bounces' })
+		// this.props.filterRecipients({ bounces: true });
 	}
 
 	onUnsubscribesClick = () => {
-		this.setState({ selected: 'unsubscribes' })
-		this.props.filterRecipients({ unsubscribe: true });
+		// this.setState({ selected: 'unsubscribes' })
+		// this.props.filterRecipients({ unsubscribe: true });
 	}
 
 	render() {

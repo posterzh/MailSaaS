@@ -431,7 +431,7 @@ function Tables({
                     </tr>
                   </thead>
                   <tbody className="list">
-                    {tableData
+                    {tableData && tableData
                       .slice((active - 1) * perpageRecords, active * perpageRecords)
                       .map((data, index) => {
                         return (

@@ -95,6 +95,8 @@ class CampaignDetailRecipients extends Component {
     const { recipientsFilters } = this.state;
     const { recipients } = this.props;
 
+    console.log("TableData", recipients);
+
     return (
       <>
         <PageHeader
