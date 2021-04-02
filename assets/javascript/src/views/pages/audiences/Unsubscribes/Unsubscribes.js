@@ -138,8 +138,7 @@ class Unsubscribes extends Component {
           parent="Unsubscribes"
           showStatus={false}
         />
-        <PageContainer title="Unsubscribes" showHelper={true} newButton="New Unsubscribes"
-          newAction={e => {this.setState({ unsubscribeModal: !this.state.unsubscribeModal });}}>
+        <PageContainer title="Unsubscribes" showHelper={true}>
           <Row>
             <Col lg="5" md="12" sm="12" className="mb-2">
               <InputGroup className="input-group-merge">

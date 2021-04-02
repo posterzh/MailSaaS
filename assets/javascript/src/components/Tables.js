@@ -431,7 +431,7 @@ function Tables({
                     </tr>
                   </thead>
                   <tbody className="list">
-                    {tableData
+                    {tableData && tableData
                       .slice((active - 1) * perpageRecords, active * perpageRecords)
                       .map((data, index) => {
                         return (
@@ -457,17 +457,15 @@ function Tables({
                             )}
                             {showControl && (
                               <td key="header-control">
-                                <div className="mt-3">
-                                  {data.control &&
-                                    <Badge color={data.control == "play" ? "success" : "danger"}
-                                      onClick={(e) => {
-                                        e.stopPropagation(); controlCallback(e, index);
-                                      }}
-                                    >
-                                      <i className={`fa fa-${data.control}`}></i>
-                                    </Badge>
-                                  }
-                                </div>
+                                {data.control &&
+                                  <Badge color={data.control == "play" ? "success" : "danger"}
+                                    onClick={(e) => {
+                                      e.stopPropagation(); controlCallback(e, index);
+                                    }}
+                                  >
+                                    <i className={`fa fa-${data.control}`}></i>
+                                  </Badge>
+                                }
                               </td>
                             )}
                             {titles.map((item) => {

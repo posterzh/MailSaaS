@@ -31,6 +31,7 @@ from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
                           CampaignSendingObjectSerializer, OnclickSerializer, CampaignLabelSerializer,
                           ProspectsSerializer, CampaignRecipientSerializer, CampaignListSerializer, LeadSettingsSerializer)
+from ..unsubscribes.models import UnsubscribeEmail
 from apps.mailaccounts.models import EmailAccount
 
 
@@ -598,7 +599,7 @@ class CampaignListView(generics.ListAPIView):
     pagination_class = None
 
     def get_queryset(self):
-        return super().get_queryset().filter(assigned=self.request.user.id)
+        return super().get_queryset().filter(assigned=self.request.user.id).order_by('-id')
 
 
 class CampaignView(generics.ListAPIView):
@@ -1717,7 +1718,7 @@ class ProspectsView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ProspectsSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['engaged', 'leads', 'bounces', 'unsubscribe']
+    filterset_fields = ['leads', 'bounces', 'is_unsubscribe']
 
     def get_queryset(self):
         """
@@ -1725,7 +1726,21 @@ class ProspectsView(generics.ListAPIView):
         for the currently authenticated user.
         """
         user = self.request.user
-        return CampaignRecipient.objects.filter(campaign__assigned=user.id, is_delete=False)
+
+        unsubscribe_emails = UnsubscribeEmail.objects.values_list('email', flat=True)
+
+        return Recipient.objects \
+            .filter(campaign__assigned=user.id, is_delete=False) \
+            .exclude(email__in=unsubscribe_emails) \
+            .values('email') \
+            .annotate(sent_count=Coalesce(Sum('sent'), 0),
+                      open_count=Coalesce(Sum('opens'), 0),
+                      click_count=Coalesce(Sum('clicked'), 0),
+                      reply_count=Coalesce(Sum('replies'), 0),
+                      lead_count=Coalesce(Sum('leads'), 0))
+                        # campaign_count=0,
+                        # engaged_count=0
+
 
     def delete(self, request):
         CampaignRecipient.objects.filter(id__in=request.data["recp_ids"]).update(is_delete=True)
@@ -1750,13 +1765,15 @@ class ProspectsCountView(APIView):
 
     def get(self, request):
         user = self.request.user
-        total = CampaignRecipient.objects.filter(campaign__assigned=user.id, is_delete=False).count()
-        in_campaign = CampaignRecipient.objects.filter(campaign__assigned=user.id, is_delete=False).count()
-        engaged = CampaignRecipient.objects.filter(campaign__assigned=user.id, engaged=True, is_delete=False).count()
-        leads = CampaignRecipient.objects.filter(campaign__assigned=user.id, leads=True, is_delete=False).count()
-        bounces = CampaignRecipient.objects.filter(campaign__assigned=user.id, bounces=True, is_delete=False).count()
-        unsubscribes = CampaignRecipient.objects.filter(campaign__assigned=user.id, unsubscribe=True,
-                                                        is_delete=False).count()
+        total = Recipient.objects.filter(campaign__assigned=user.id, is_delete=False).count()
+        in_campaign = Recipient.objects.filter(campaign__assigned=user.id, is_delete=False).count()
+        engaged = 0
+        leads = Recipient.objects.filter(campaign__assigned=user.id, is_delete=False) \
+            .aggregate(Sum('leads'))['leads__sum']
+        bounces = Recipient.objects.filter(campaign__assigned=user.id, is_delete=False) \
+            .aggregate(Sum('bounces'))['bounces__sum']
+        unsubscribes = Recipient.objects.filter(campaign__assigned=user.id, is_delete=False, is_unsubscribe=True) \
+            .count()
 
         return Response({
             'total': total,
@@ -1911,7 +1928,7 @@ class CampaignLeadsView(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         params = list(dict(request.GET).keys())
-        queryset = CampaignRecipient.objects.filter(leads=True, campaign__assigned=request.user.id)
+        queryset = Recipient.objects.filter(leads__gt=0, campaign__assigned=request.user.id)
 
         # Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign__title__contains=title,
         # lead_status=leadstatus, campaign__assigned=request.user.id, leads=True)
@@ -1977,7 +1994,7 @@ class CampaignLeadsView(generics.ListAPIView):
             queryset = queryset.filter(created_date_time__range=(from_date, to_date))
 
         # queryset = queryset.select_related('title')
-        res = queryset.values('id', 'email', 'lead_status', campaign_title=F('campaign__title'),
+        res = queryset.values('id', 'email', 'lead_status', 'update_date_time', campaign_title=F('campaign__title'),
                               assigned_name=F('campaign__assigned__full_name'), camp_id=F('campaign'))
         # campEmailserializer = CampaignEmailSerializer(queryset, many=True)
         return Response({'res': res, 'success': True})

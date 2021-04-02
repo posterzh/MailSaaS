@@ -95,6 +95,8 @@ class CampaignDetailRecipients extends Component {
     const { recipientsFilters } = this.state;
     const { recipients } = this.props;
 
+    console.log("TableData", recipients);
+
     return (
       <>
         <PageHeader
@@ -108,7 +110,7 @@ class CampaignDetailRecipients extends Component {
             <DetailHeader activeItem="RECIPIENTS" id={id} />
           </Row>
 
-          <Row className="mt-4">
+          <Row className="mt-4 mx-3">
             <Tables
               titles={recipientsTable} // required
               tablePropsData={recipients}   // required

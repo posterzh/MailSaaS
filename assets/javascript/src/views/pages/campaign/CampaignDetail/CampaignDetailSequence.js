@@ -25,6 +25,7 @@ import SequenceEditPanel from "./components/SequenceEditPanel";
 import SequencePreviewPanel from "./components/SequencePreviewPanel";
 import DetailHeader from "./components/DetailHeader";
 import { getDetialsSequence } from "../../../../redux/action/CampaignDetailsActions";
+import { showNotification } from "../../../../utils/Utils";
 
 class CampaignDetailSequence extends Component {
   constructor(props) {
@@ -45,11 +46,14 @@ class CampaignDetailSequence extends Component {
   onEdit = () => {
     this.setState({
       editing: true
-    })
+    });
   }
 
   onSave = () => {
-
+    this.setState({
+      editing: false
+    });
+    showNotification("warning", "Coming soon...", "This feature will be implemented in the future version");
   }
 
   onCancel = () => {
@@ -73,12 +77,16 @@ class CampaignDetailSequence extends Component {
           <Row>
             <DetailHeader activeItem="SEQUENCE" id={id} />
           </Row>
-          {editing
-            ?
-            <SequenceEditPanel onSave={this.onSave} onCancel={this.onCancel}/>
-            :
-            <SequencePreviewPanel onEdit={this.onEdit}/>
-          }
+          <Row className="mx-3">
+            <Col md={12}>
+            {editing
+              ?
+              <SequenceEditPanel onSave={this.onSave} onCancel={this.onCancel}/>
+              :
+              <SequencePreviewPanel onEdit={this.onEdit}/>
+            }
+            </Col>
+          </Row>
         </PageContainer>
       </>
     );

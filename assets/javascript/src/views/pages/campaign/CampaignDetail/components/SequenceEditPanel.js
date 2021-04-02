@@ -31,8 +31,8 @@ class SequenceEditPanel extends Component {
 
     const { detailsSequence: {email_subject, email_body, emails } } = props;
 
-    const followups = emails.filter(e => e.email_type == 1);
-    const drips = emails.filter(e => e.email_type == 2);
+    const followups = emails ? emails.filter(e => e.email_type == 1) : [];
+    const drips = emails ? emails.filter(e => e.email_type == 2) : [];
 
     this.state = {
       subject: email_subject,

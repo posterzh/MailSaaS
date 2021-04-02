@@ -2014,7 +2014,6 @@ input::-webkit-inner-spin-button {
 }
 
 .card-summary-funnel {
-  background-image: linear-gradient(white, #e6f3ff);
   .funnel-item-header {
     margin-bottom: 1em;
     > span {
@@ -2042,6 +2041,7 @@ input::-webkit-inner-spin-button {
     padding-right: 0;
     .card {
       transition: all 0.2s;
+      border: 1px solid;
       &:hover {
         cursor: pointer;
         background-color: #f7f7f7;
@@ -2056,7 +2056,7 @@ input::-webkit-inner-spin-button {
 .square-box-60 {
   position: relative;
   .dummy {
-    margin-top: 60%;
+    margin-top: 30%;
   }
   .content {
     position: absolute;

@@ -10,7 +10,7 @@ import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import Tables from "../../../../components/Tables";
 import { campaignListTable } from "../../../../components/TableHeader";
-import { toggleTopLoader, toastOnError, messages } from '../../../../utils/Utils';
+import { toggleTopLoader, toastOnError, messages, showNotification } from '../../../../utils/Utils';
 import axios from '../../../../utils/axios';
 
 class CampaignList extends Component {
@@ -37,7 +37,10 @@ class CampaignList extends Component {
       toggleTopLoader(true);
       const { data } = await axios.get("/campaign/list/");
 
-      const assigned = data.map(item => item.assigned);
+      const assigned = data.map(item => {
+        item['control'] = item.campaign_status ? "play" : "pause";
+        return item.assigned
+      });
       const { filters } = this.state;
       filters.forEach(item => {
         if (item.key === 'assigned') {
@@ -85,7 +88,7 @@ class CampaignList extends Component {
   }
 
   controlCallback = () => {
-    alert('control is clicked!');
+    showNotification('warning', 'Campaign action is clicked', 'Not implemented yet. Ready for next version.');
   }
 
   paginationCallback = () => {
@@ -97,24 +100,8 @@ class CampaignList extends Component {
   }
 
   render() {
-    const { show, hide, checked, exampleModal, data, filters } = this.state;
-
-    //For example
-    if (data.length > 6) {
-      data[1].control = "play";
-      data[3].control = "pause";
-    }
-
-    const actionMenus = [
-      {
-        key: 'view',
-        name: 'View'
-      },
-      {
-        key: 'edit',
-        name: 'Edit'
-      }
-    ];
+    const { data, filters } = this.state;
+    
     return (
       <>
         <PageHeader
@@ -129,7 +116,6 @@ class CampaignList extends Component {
               titles={campaignListTable} // required
               tablePropsData={data}   // required
               onClick={this.showDetails}
-              actionMenus={actionMenus}   // optional for showing menus of row.
               actionCallback={this.actionCallback}        // get call back for action select of row.
               showSelect={true}    // optional
               selectedCallback={this.getSelectedRecords}      // get call back for select object.

@@ -17,6 +17,7 @@ import {
 } from "reactstrap";
 import { CSVReader } from 'react-papaparse';
 import Tables from "../../../../../components/Tables";
+import { showNotification } from "../../../../../utils/Utils";
 
 const initialState = {
   show: false,
@@ -43,6 +44,11 @@ export class ImportContactsModal extends Component {
     //     this.setState({ ...initialState });
     //   }
     // }
+  }
+
+  handleSubmit = () => {
+    this.props.close();
+    showNotification("warning", "Coming soon...", "This feature will be implemented in the future version");
   }
 
   handleOnDrop = (data, file) => {
@@ -188,7 +194,7 @@ export class ImportContactsModal extends Component {
                 )}
                 <Row className="mt-4">
                   <Col md={2}>
-                    <Button type="submit" color="danger" block>
+                    <Button type="button" onClick={this.handleSubmit} color="danger" block>
                       Ok
                     </Button>
                   </Col>
