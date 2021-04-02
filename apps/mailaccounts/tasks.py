@@ -77,7 +77,7 @@ def email_sender():
                                      password=from_email.smtp_password,
                                      use_tls=from_email.use_smtp_ssl,
                                      from_email=from_email.email,
-                                     to_email=to_email.email,
+                                     to_email=[to_email.email],
                                      subject=email_subject,
                                      body=email_body,
                                      uuid=outbox.id,
@@ -86,6 +86,10 @@ def email_sender():
 
         if result:
             print(f"Email sent from {from_email.email} to {to_email.email}")
+
+            # Increase the Recipient sent number
+            outbox.recipient.sent += 1
+            outbox.recipient.save()
 
             # Update CalendarStatus
             calendar_status = CalendarStatus.objects.get(sending_calendar__mail_account_id=from_email.id)
