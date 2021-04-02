@@ -197,7 +197,7 @@ class Recipient(models.Model):
     update_date_time = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
-        return str(self.campaign)
+        return str(self.email)
 
 
 class Emails(models.Model):

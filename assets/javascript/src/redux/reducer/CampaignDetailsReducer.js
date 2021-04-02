@@ -8,7 +8,7 @@ import {
 const initialState = {
   overviewSummary: {},
   detailsSequence: {},
-  detailRecipients: {},
+  detailRecipients: [],
   id: '',
   title: ''
 };
@@ -20,6 +20,7 @@ export const campaignDetailsReducer = (state = initialState, action) => {
         ...state,
         overviewSummary: action.payload,
         detailsSequence: {},
+        detailRecipients: [],
         id: action.payload.id,
         title: action.payload.title
       };
