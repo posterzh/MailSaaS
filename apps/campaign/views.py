@@ -1765,13 +1765,15 @@ class ProspectsCountView(APIView):
 
     def get(self, request):
         user = self.request.user
-        total = CampaignRecipient.objects.filter(campaign__assigned=user.id, is_delete=False).count()
-        in_campaign = CampaignRecipient.objects.filter(campaign__assigned=user.id, is_delete=False).count()
-        engaged = CampaignRecipient.objects.filter(campaign__assigned=user.id, engaged=True, is_delete=False).count()
-        leads = CampaignRecipient.objects.filter(campaign__assigned=user.id, leads=True, is_delete=False).count()
-        bounces = CampaignRecipient.objects.filter(campaign__assigned=user.id, bounces=True, is_delete=False).count()
-        unsubscribes = CampaignRecipient.objects.filter(campaign__assigned=user.id, unsubscribe=True,
-                                                        is_delete=False).count()
+        total = Recipient.objects.filter(campaign__assigned=user.id, is_delete=False).count()
+        in_campaign = Recipient.objects.filter(campaign__assigned=user.id, is_delete=False).count()
+        engaged = 0
+        leads = Recipient.objects.filter(campaign__assigned=user.id, is_delete=False) \
+            .aggregate(Sum('leads'))['leads__sum']
+        bounces = Recipient.objects.filter(campaign__assigned=user.id, is_delete=False) \
+            .aggregate(Sum('bounces'))['bounces__sum']
+        unsubscribes = Recipient.objects.filter(campaign__assigned=user.id, is_delete=False, is_unsubscribe=True) \
+            .count()
 
         return Response({
             'total': total,
