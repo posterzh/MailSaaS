@@ -38,5 +38,6 @@ def triggerLeadCatcher(campaign_id, recipient_id):
 
     if can_be_lead:
         recipient.leads = 1
+        recipient.lead_status = 'open'
         recipient.save()
 

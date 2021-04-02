@@ -174,6 +174,7 @@ class SendingObject(models.Model):
 class Recipient(models.Model):
     LEAD_TYPE = (
         ("none", "None"),
+        ("open", "Open"),
         ("replied", "Replied"),
         ("won", "Won"),
         ("lost", "Lost"),
