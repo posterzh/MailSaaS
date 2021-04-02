@@ -76,11 +76,27 @@ class TheCompose extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
+    const follow_ups = this.state.followUpList.map(item => {
+      const dup = {
+        ...item
+      }
+      delete dup['ref'];
+      return dup;
+    });
+    const drips = this.state.dripList.map(item => {
+      const dup = {
+        ...item
+      }
+      delete dup['ref'];
+      return dup;
+    });
+    debugger;
+
     let data = {
       email_subject: this.state.subject,
       email_body: this.state.email_body,
-      follow_up: this.state.followUpList,
-      drips: this.state.dripList,
+      follow_up: follow_ups,
+      drips: drips,
     };
     this.props.campaignCompose(data);
     // call parent method

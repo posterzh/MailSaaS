@@ -11,6 +11,7 @@ import {
   CardFooter,
   Badge,
   CardTitle,
+  Input
 } from "reactstrap";
 // import React, { Component } from 'react'
 import { CampaignOverviewAction } from "../../../../../redux/action/CampaignAction";
@@ -23,15 +24,32 @@ class OverviewSummery extends Component {
       <>
         <Container fluid>
           <Row>
-            <label>
-              <h1 className="display-4">FUNNEL</h1>
-              <span>
-                <a href="#" className="explain_number">
-                  <i className="fa fa-question-circle-o" aria-hidden="true"></i>{" "}
-                  Explain these numbers
-                </a>
-              </span>
-            </label>
+            <Col>
+              <label>
+                <h1 className="display-4">FUNNEL</h1>
+                <span>
+                  <a href="#" className="explain_number">
+                    <i className="fa fa-question-circle-o" aria-hidden="true"></i>{" "}
+                    Explain these numbers
+                  </a>
+                </span>
+              </label>
+              <div style={{position: 'absolute', top: 20, right: 20}}>
+                <Input
+                  id="selectRecipients"
+                  type="select"
+                  className="form-control-sm"
+                >
+                  <option>All</option>
+                  <option value="date1">Last 7 days</option>
+                  <option value="date2">Last 15 days</option>
+                  <option value="date3">Last 30 days</option>
+                  <option value="date4">MTD</option>
+                  <option value="date5">YTD</option>
+                </Input>
+              </div>
+            </Col>
+            
           </Row>
 
           <Row>

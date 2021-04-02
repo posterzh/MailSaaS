@@ -77,12 +77,16 @@ class CampaignDetailSequence extends Component {
           <Row>
             <DetailHeader activeItem="SEQUENCE" id={id} />
           </Row>
-          {editing
-            ?
-            <SequenceEditPanel onSave={this.onSave} onCancel={this.onCancel}/>
-            :
-            <SequencePreviewPanel onEdit={this.onEdit}/>
-          }
+          <Row className="mx-3">
+            <Col md={12}>
+            {editing
+              ?
+              <SequenceEditPanel onSave={this.onSave} onCancel={this.onCancel}/>
+              :
+              <SequencePreviewPanel onEdit={this.onEdit}/>
+            }
+            </Col>
+          </Row>
         </PageContainer>
       </>
     );
