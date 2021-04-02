@@ -152,7 +152,8 @@ class MyOpenTrackingView(OpenTrackingView):
         outbox.recipient.opens += 1
         outbox.recipient.save()
 
-        triggerLeadCatcher.delay(outbox.campaign_id, outbox.recipient_id)
+        # Lead checking
+        triggerLeadCatcher(outbox.campaign_id, outbox.recipient_id)
 
         print(f'Tracking: Email {outbox.recipient.email} is opened.')
 
@@ -170,6 +171,7 @@ class MyClickTrackingView(ClickTrackingView):
         outbox.recipient.clicked += 1
         outbox.recipient.save()
 
-        triggerLeadCatcher.delay(outbox.campaign_id, outbox.recipient_id)
+        # Lead checking
+        triggerLeadCatcher(outbox.campaign_id, outbox.recipient_id)
 
         print(f'Tracking: Email {outbox.recipient.email} is clicked.')

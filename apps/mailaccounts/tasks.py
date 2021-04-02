@@ -11,6 +11,7 @@ from .utils.sending_calendar import can_send_email, calendar_sent
 from .utils.smtp import send_mail_with_smtp, get_emails_to_send, move_warmups_from_spam_to_inbox
 from ..campaign.models import SendingObject, EmailInbox, Campaign, Recipient, EmailOutbox
 from mail.settings import DEFAULT_RAMPUP_INCREMENT, DEFAULT_WARMUP_MAX_CNT, DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX
+from ..campaign.tasks import triggerLeadCatcher
 
 gen = DocumentGenerator()
 
@@ -140,7 +141,10 @@ def email_receiver():
                 inbox.recipient_email.replies += 1
                 inbox.recipient_email.save()
 
-                print(f"Email received from {inbox.from_email} to {inbox.recipient_email}")
+                # Lead checking
+                triggerLeadCatcher(inbox.campaign_id, inbox.recipient_id)
+
+                print(f"Email received from {inbox.recipient_email} to {inbox.from_email}")
 
                 # Filter out the warmup emails
                 if (msg.subject.endswith("mailerrize") or msg.subject.endswith("mailerrize?=")) \
