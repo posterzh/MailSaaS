@@ -127,9 +127,11 @@ class SendTestEmailView(APIView):
         # send_test_email.delay(mailAccountId)
 
         ########################################
-        # email_sender()
-
-        email_receiver()
+        mailAccountId = request.data['mailAccountId']
+        if mailAccountId == 0:
+            email_sender()
+        elif mailAccountId == 1:
+            email_receiver()
 
         ########################################
 

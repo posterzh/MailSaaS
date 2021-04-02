@@ -137,6 +137,11 @@ def email_receiver():
                 inbox.receive_time = datetime.now().time()
                 inbox.save()
 
+                inbox.recipient_email.replies += 1
+                inbox.recipient_email.save()
+
+                print(f"Email received from {inbox.from_email} to {inbox.recipient_email}")
+
                 # Filter out the warmup emails
                 if (msg.subject.endswith("mailerrize") or msg.subject.endswith("mailerrize?=")) \
                         and "Re:" not in msg.subject:
