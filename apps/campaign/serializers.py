@@ -58,7 +58,7 @@ class CampaignListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Campaign
-        fields = ['id', 'title', 'created', 'assigned', 'recipients',
+        fields = ['id', 'title', 'created', 'campaign_status', 'assigned', 'recipients',
                   'sent', 'opens', 'leads', 'replies', 'bounces']
 
 
