@@ -68,10 +68,11 @@ class ProspectsSerializer(serializers.ModelSerializer):
     click_count = serializers.IntegerField(read_only=True)
     reply_count = serializers.IntegerField(read_only=True)
     lead_count = serializers.IntegerField(read_only=True)
+    status = serializers.CharField(default="Not contacted")
 
     class Meta:
         model = Recipient
-        fields = ['email', 'sent_count', 'open_count', 'click_count', 'reply_count', 'lead_count']
+        fields = ['email', 'sent_count', 'open_count', 'click_count', 'reply_count', 'lead_count', 'status']
 
 
 class EmailsSerializer(serializers.ModelSerializer):

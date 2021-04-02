@@ -46,6 +46,11 @@ export class ImportContactsModal extends Component {
     // }
   }
 
+  handleSubmit = () => {
+    this.props.close();
+    showNotification("warning", "Coming soon...", "This feature will be implemented in the future version");
+  }
+
   handleOnDrop = (data, file) => {
     if (!data || data.length == 0) {
       this.setState({

@@ -30,11 +30,16 @@ import {
 	filterRecipients,
 	countRecipients,
 } from "../../../../redux/action/ProspectsAction";
+import { showNotification } from "../../../../utils/Utils";
 
 const tableTitle = [
 	{
 		key: 'email',
 		value: 'Email',
+	},
+	{
+		key: 'status',
+		value: 'STATUS'
 	},
 	{
 		key: 'sent_count',
@@ -125,26 +130,31 @@ class Prospects extends Component {
 	onInCampaignClick = () => {
 		// this.setState({ selected: 'in-campaign' })
 		// this.props.filterRecipients({ unsubscribe: false });
+		showNotification("warning", "Coming soon...", "This feature will be implemented in the future version");
 	}
 
 	onEngagedClick = () => {
 		// this.setState({ selected: 'engaged' })
 		// this.props.filterRecipients({ engaged: true });
+		showNotification("warning", "Coming soon...", "This feature will be implemented in the future version");
 	}
 
 	onLeadsClick = () => {
 		// this.setState({ selected: 'leads' })
 		// this.props.filterRecipients({ leads: true });
+		showNotification("warning", "Coming soon...", "This feature will be implemented in the future version");
 	}
 
 	onBouncesClick = () => {
 		// this.setState({ selected: 'bounces' })
 		// this.props.filterRecipients({ bounces: true });
+		showNotification("warning", "Coming soon...", "This feature will be implemented in the future version");
 	}
 
 	onUnsubscribesClick = () => {
 		// this.setState({ selected: 'unsubscribes' })
 		// this.props.filterRecipients({ unsubscribe: true });
+		showNotification("warning", "Coming soon...", "This feature will be implemented in the future version");
 	}
 
 	render() {
@@ -242,7 +252,6 @@ class Prospects extends Component {
 							selectedCallback={this.selectedCallback}      // get call back for select object.
 							paginationCallback={this.paginationCallback}     // get callback of page change.
 							onClick={this.showDetailModal}
-							onDetail={this.showDetailModal}
 							filters={filters}   // optional to enable filter
 							searchKeys={['email', 'name']}  // optional to enable search
 						/>

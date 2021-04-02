@@ -88,7 +88,7 @@ export class ImportContactsModal extends Component {
                       <CardBody className="text-center p-3">
                         <CardTitle className="m-0">
                           <h3 className="text-white heading m-0">
-                            <div>{this.state.campaign_count}</div>
+                            <div>{/*this.state.campaign_count*/0}</div>
                             <div>CAMPS</div>
                           </h3>
                         </CardTitle>
