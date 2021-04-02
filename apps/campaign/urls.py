@@ -34,4 +34,5 @@ urlpatterns = [
     path('details-settings/<int:pk>/', views.CampaignDetailsSettingsView.as_view(), name='details-settings'),
     path('schedule/', views.CampaignScheduleView.as_view(), name='schedule'),
     path('leads/', views.CampaignLeadsView.as_view(), name='leads'),
+    path('settings-lead/<int:campaign_id>/', views.CampaignLeadSettingView.as_view(), name='lead-settings'),
 ]

@@ -89,3 +89,34 @@ export const getDetailsSettings = (id) => (dispatch) => {
       toggleTopLoader(false);
     });
 }
+
+export const getLeadSettings = (id) => (dispatch) => {
+  toggleTopLoader(true);
+  return axios
+    .get(`/campaign/settings-lead/${id}/`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+}
+
+export const updateLeadSettings = (id, data) => (dispatch) => {
+  toggleTopLoader(true);
+  return axios
+    .post(`/campaign/settings-lead/${id}/`, data)
+    .then((response) => {
+      toastOnSuccess("Updated successfully!");
+      return response.data;
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+};

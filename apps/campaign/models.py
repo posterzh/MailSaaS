@@ -137,13 +137,13 @@ class CampaignLeadCatcher(models.Model):
         return str(self.campaign)
 
 
-class CampaignLeadSettings(models.Model):
+class LeadSettings(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     join_operator = models.CharField(max_length=8, choices=CAMPAIGN_LEAD_SETTING_OPERATOR, default='and')
-    replies = models.PositiveIntegerField(null=True, blank=True, default=0)
-    open = models.PositiveIntegerField(null=True, blank=True, default=0)
-    click_any_link = models.PositiveIntegerField(null=True, blank=True, default=0)
-    clicks_specific_link = models.PositiveIntegerField(null=True, blank=True, default=0)
+    replies = models.PositiveSmallIntegerField(blank=True, default=0)
+    open = models.PositiveSmallIntegerField(blank=True, default=0)
+    click_any_link = models.PositiveSmallIntegerField(blank=True, default=0)
+    clicks_specific_link = models.PositiveSmallIntegerField(blank=True, default=0)
 
 
 class SendingObject(models.Model):

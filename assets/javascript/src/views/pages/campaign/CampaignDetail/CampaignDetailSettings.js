@@ -13,10 +13,12 @@ import {
   CardBody,
 } from "reactstrap";
 import { getMailAccounts } from "../../../../redux/action/MailAccountsActions"
-import { getDetailsSettings } from "../../../../redux/action/CampaignDetailsActions"
+import { getDetailsSettings, getLeadSettings, updateLeadSettings } from "../../../../redux/action/CampaignDetailsActions"
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import DetailHeader from "./components/DetailHeader";
+import { showNotification } from "../../../../utils/Utils";
+import { CAMPAIGN_LEAD_CATCHER_ITEM_TYPE } from "../../../../utils/Common";
 
 export class CampaignDetailSettings extends Component {
   constructor(props) {
@@ -34,12 +36,34 @@ export class CampaignDetailSettings extends Component {
   async componentDidMount() {
     this.props.getMailAccounts();
 
-    let detailsSettings = await this.props.getDetailsSettings(this.props.id);
+    try {
+      const detailsSettings = await this.props.getDetailsSettings(this.props.id);
+      this.setState({
+        sendingAddressId: detailsSettings.from_address,
+        leadAddressId: detailsSettings.from_address
+      })
 
-    this.setState({
-      sendingAddressId: detailsSettings.from_address,
-      leadAddressId: detailsSettings.from_address
-    })
+      const leadSettings = await this.props.getLeadSettings(this.props.id);
+      if (leadSettings && leadSettings.length > 0) {
+        const item = leadSettings[0]
+        const conditions = [];
+        for (let field in CAMPAIGN_LEAD_CATCHER_ITEM_TYPE) {
+          if (item[field]) {
+            conditions.push({
+              action: field,
+              times: item[field]
+            })
+          }
+        }
+        this.setState({
+          leadConditions: [
+            ...conditions
+          ],
+          operator: item.join_operator == 'or',
+        })
+      }
+    } catch (error) {}
+
   }
 
   componentWillReceiveProps(preProps, nextProps) {
@@ -60,7 +84,7 @@ export class CampaignDetailSettings extends Component {
 
   onAddCondition = () => {
     this.setState({
-      leadConditions: [...this.state.leadConditions, { recipient: 0, times: 1 }]
+      leadConditions: [...this.state.leadConditions, { action: "replies", times: 1 }]
     })
   }
 
@@ -72,6 +96,34 @@ export class CampaignDetailSettings extends Component {
 
   onToggleOperator = () => {
     this.setState({operator: !this.state.operator});
+  }
+
+  onClickSaveLeadCatcher = async () => {
+    const { leadConditions, operator } = this.state;
+    const payload = {};
+
+    // Validate input
+    leadConditions.forEach(item => {
+      payload[item.action] = item.times;
+    })
+    if (Object.keys(payload).length < leadConditions.length) {
+      showNotification("danger", "Invalid content", "There are multiple items for the same action.");
+      return;
+    }
+    const negativeValues = leadConditions.filter(item => item.times <= 0);
+    if (negativeValues.length) {
+      showNotification("danger", "Invalid content", "Number of times must be positive.");
+      return;
+    }
+
+    console.log(payload);
+
+    // Call API
+    payload['join_operator'] = operator ? 'or' : 'and';
+    try {
+      await this.props.updateLeadSettings(this.props.id, payload)
+    } catch (e) {
+    }
   }
 
   render() {
@@ -181,11 +233,11 @@ export class CampaignDetailSettings extends Component {
 
                   {
                     leadConditions.map((leadCondition, index) => (
-                      <>
+                      <div key={`${index}`}>
                         {index == 0 ||
                           <div>
                             <Button color="secondary mb-3" type="button" size="sm" onClick={this.onToggleOperator}>
-                              { this.state.operator ? "OR" : "ADD" }
+                              { this.state.operator ? "OR" : "AND" }
                             </Button>
                           </div>
                         }
@@ -194,18 +246,29 @@ export class CampaignDetailSettings extends Component {
                             <label style={{ fontSize: 11 }}>
                               Recipient
                             </label>
-                            <Input type="select" className="form-control-sm" defaultValue={leadCondition.recipient}>
-                              <option>Replies</option>
-                              <option>Opens</option>
-                              <option>Clicks any link</option>
-                              <option>Clicks specific link</option>
+                            <Input type="select" className="form-control-sm" value={leadCondition.action} onChange={e => {
+                              leadCondition.action = e.target.value;
+                              this.setState({
+                                leadConditions: [...leadConditions]
+                              })
+                            }}>
+                              {
+                                Object.keys(CAMPAIGN_LEAD_CATCHER_ITEM_TYPE).map((item, index1) => {
+                                  return <option key={index1} value={item}>{CAMPAIGN_LEAD_CATCHER_ITEM_TYPE[item]}</option>;
+                                })
+                              }
                             </Input>
                           </FormGroup>
                           <FormGroup className="mr-2 mb-3">
                             <label style={{ fontSize: 11 }}>
                               # of times
                             </label>
-                            <Input type="text" className="form-control-sm" defaultValue={leadCondition.times} />
+                            <Input type="number" className="form-control-sm" value={leadCondition.times} onChange={e => {
+                              leadCondition.times = e.target.value;
+                              this.setState({
+                                leadConditions: [...leadConditions]
+                              })
+                            }} />
                           </FormGroup>
                           <FormGroup className="d-flex flex-column justify-content-end mb-3">
                             <Button className="mb-1" color="danger" type="button" size="sm"
@@ -215,7 +278,7 @@ export class CampaignDetailSettings extends Component {
                             </Button>
                           </FormGroup>
                         </div>
-                      </>
+                      </div>
                     ))
                   }
 
@@ -233,7 +296,7 @@ export class CampaignDetailSettings extends Component {
 
                   <Row>
                     <Col>
-                      <Button color="danger" size="sm">&nbsp;&nbsp;SAVE&nbsp;&nbsp;</Button>
+                      <Button color="danger" size="sm" onClick={this.onClickSaveLeadCatcher}>&nbsp;&nbsp;SAVE&nbsp;&nbsp;</Button>
                     </Col>
                     <Col>
                       <Button color="secondary" size="sm">CANCEL</Button>
@@ -259,5 +322,7 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   getDetailsSettings,
+  getLeadSettings,
+  updateLeadSettings,
   getMailAccounts
 })(CampaignDetailSettings);

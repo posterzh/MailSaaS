@@ -26,11 +26,11 @@ from apps.integration.views import SendSlackMessage
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmailModel, Recipient,
-                     EmailOnLinkClick, FollowUpEmail, CampaignLabel, SendingObject, Emails)
+                     EmailOnLinkClick, FollowUpEmail, CampaignLabel, SendingObject, Emails, LeadSettings)
 from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
                           CampaignSendingObjectSerializer, OnclickSerializer, CampaignLabelSerializer,
-                          ProspectsSerializer, CampaignRecipientSerializer, CampaignListSerializer)
+                          ProspectsSerializer, CampaignRecipientSerializer, CampaignListSerializer, LeadSettingsSerializer)
 from apps.mailaccounts.models import EmailAccount
 
 
@@ -1989,3 +1989,52 @@ class CampaignScheduleView(APIView):
     def post(self, request, format=None):
         # Moved to mailaccounts > tasks.py
         return Response()
+
+
+class CampaignLeadSettingView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = LeadSettingsSerializer
+
+    def get(self, request, campaign_id):
+        return Response(LeadSettings.objects.filter(campaign_id=campaign_id).values())
+
+    def post(self, request, campaign_id):
+        setting_item = LeadSettings.objects.filter(campaign_id=campaign_id)
+        if len(setting_item) > 0:
+            setting_item[0].replies = 0
+            setting_item[0].open = 0
+            setting_item[0].click_any_link = 0
+            setting_item[0].clicks_specific_link = 0
+
+            for field in request.data:
+                if field == "replies":
+                    setting_item[0].replies = request.data[field]
+                if field == "open":
+                    setting_item[0].open = request.data[field]
+                if field == "click_any_link":
+                    setting_item[0].click_any_link = request.data[field]
+                if field == "clicks_specific_link":
+                    setting_item[0].clicks_specific_link = request.data[field]
+                if field == "join_operator":
+                    setting_item[0].join_operator = request.data[field]
+
+            setting_item[0].save()
+        else:
+            new_item = LeadSettings()
+            new_item.campaign_id = campaign_id
+
+            for field in request.data:
+                if field == "replies":
+                    new_item.replies = request.data[field]
+                if field == "open":
+                    new_item.open = request.data[field]
+                if field == "click_any_link":
+                    new_item.click_any_link = request.data[field]
+                if field == "clicks_specific_link":
+                    new_item.clicks_specific_link = request.data[field]
+                if field == "join_operator":
+                    new_item.join_operator = request.data[field]
+
+            new_item.save()
+
+        return Response({'success': True})
