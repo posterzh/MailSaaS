@@ -20,6 +20,7 @@ export const toastOnError = (error) => {
     errMessage = error;
   }
 
+  errMessage = errMessage.slice(0, 100);
   showNotification("warning", "API Call Error", errMessage);
 };
 
