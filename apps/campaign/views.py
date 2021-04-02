@@ -598,7 +598,7 @@ class CampaignListView(generics.ListAPIView):
     pagination_class = None
 
     def get_queryset(self):
-        return super().get_queryset().filter(assigned=self.request.user.id)
+        return super().get_queryset().filter(assigned=self.request.user.id).order_by('-id')
 
 
 class CampaignView(generics.ListAPIView):
