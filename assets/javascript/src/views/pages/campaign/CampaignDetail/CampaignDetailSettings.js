@@ -298,9 +298,9 @@ export class CampaignDetailSettings extends Component {
                     <Col>
                       <Button color="danger" size="sm" onClick={this.onClickSaveLeadCatcher}>&nbsp;&nbsp;SAVE&nbsp;&nbsp;</Button>
                     </Col>
-                    <Col>
+                    {/* <Col>
                       <Button color="secondary" size="sm">CANCEL</Button>
-                    </Col>
+                    </Col> */}
                     <Col></Col>
                   </Row>
                 </CardBody>
