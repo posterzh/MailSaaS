@@ -253,7 +253,7 @@ def get_sending_items(available_email_ids, email_limits):
 #       email_subject: Text,
 #       email_body: Text) ]
 def get_emails_to_send(available_email_ids, email_limits):
-    # Parameters
+    # TODO: send emails per campaign
     arr = []
     for email_id, limit in zip(available_email_ids, email_limits):
         arr.append(schedule_email(email_id, limit))

@@ -186,7 +186,7 @@ class Recipient(models.Model):
 
 
 class Emails(models.Model):
-    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name='emails')
     email_type = models.PositiveSmallIntegerField(default=0, null=True)
     email_subject = models.CharField(max_length=100)
     email_body = models.TextField(blank=True, null=True)
