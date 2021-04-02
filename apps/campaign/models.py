@@ -28,7 +28,7 @@ class Campaign(models.Model):
     # schedule_date = models.DateField(blank=True, null=True)
     # schedule_time = models.TimeField(blank=True, null=True)
     terms_and_laws = models.BooleanField(default=False)
-    campaign_status = models.BooleanField(default=True) # True: Start, False: Pause
+    campaign_status = models.BooleanField(default=True)  # True: Start, False: Pause
     is_deleted = models.BooleanField(default=False)
     is_draft = models.BooleanField(default=False)
     label_name = models.ForeignKey(CampaignLabel, on_delete=models.SET_DEFAULT, default=1)
