@@ -47,7 +47,7 @@ def check_email(request):
 def check_smtp(server, port, use_tls, user, password):
     try:
         server = smtplib.SMTP(server, port)
-        # server.set_debuglevel(1)
+        server.set_debuglevel(1)
         if use_tls:
             server.starttls()
         server.ehlo()
@@ -59,7 +59,7 @@ def check_smtp(server, port, use_tls, user, password):
 
 
 def check_imap(server, port, use_tls, user, password):
-    # imaplib.Debug = 4
+    imaplib.Debug = 4
 
     # 1)
     # server = imaplib.IMAP4_SSL(server, port)
@@ -236,11 +236,6 @@ def move_warmups_from_spam_to_inbox(host, port, username, password, use_tls):
             if result[0] == 'OK':
                 mov, data = mail.uid('STORE', msg_uid, '+FLAGS', '(\Deleted)')
                 mail.expunge()
-
-
-def get_sending_items(available_email_ids, email_limits):
-    for email, limit in zip(available_email_ids, email_limits):
-        result = get_emails_to_send(email, limit)
 
 
 # Parameter
