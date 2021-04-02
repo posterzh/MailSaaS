@@ -4,3 +4,10 @@ export const DJANGO_OAUTH_CLIENT_SECRET = "PRsO6yiaxNg0qhLRSflnb02xJsYb2nMd8JLvh
 
 // Default profile image
 export const defaultProfilePic = "/media/profile-pictures/profile_pic_default.jpeg"
+
+export const CAMPAIGN_LEAD_CATCHER_ITEM_TYPE = {
+  'replies': "Replies",
+  'open': "Open",
+  'click_any_link': "Clicks any link",
+  // 'clicks_specific_link': "Clicks specific link",
+}

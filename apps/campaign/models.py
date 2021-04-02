@@ -120,6 +120,12 @@ RECIPIENT = (
 )
 
 
+CAMPAIGN_LEAD_SETTING_OPERATOR = (
+    ('and', "AND"),
+    ('or', "OR"),
+)
+
+
 class CampaignLeadCatcher(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     assigned = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -129,6 +135,15 @@ class CampaignLeadCatcher(models.Model):
 
     def __str__(self):
         return str(self.campaign)
+
+
+class LeadSettings(models.Model):
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    join_operator = models.CharField(max_length=8, choices=CAMPAIGN_LEAD_SETTING_OPERATOR, default='and')
+    replies = models.PositiveSmallIntegerField(blank=True, default=0)
+    open = models.PositiveSmallIntegerField(blank=True, default=0)
+    click_any_link = models.PositiveSmallIntegerField(blank=True, default=0)
+    clicks_specific_link = models.PositiveSmallIntegerField(blank=True, default=0)
 
 
 class SendingObject(models.Model):

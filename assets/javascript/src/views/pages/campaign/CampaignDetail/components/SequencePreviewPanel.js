@@ -27,13 +27,6 @@ import DripPreviewPanel from "./DripPreviewPanel";
 class SequencePreviewPanel extends Component {
   constructor(props) {
     super(props);
-
-    const { detailsSequence: { followups, drips } } = props;
-
-    this.state = {
-      followUpList: followups,
-      dripList: drips,
-    }
   }
 
   componentDidMount() {
@@ -47,8 +40,8 @@ class SequencePreviewPanel extends Component {
   render() {
     const { detailsSequence } = this.props;
 
-    const followups = detailsSequence.emails.filter(e => e.email_type == 1);
-    const drips = detailsSequence.emails.filter(e => e.email_type == 2);
+    const followups = detailsSequence.emails ? detailsSequence.emails.filter(e => e.email_type == 1) : [];
+    const drips = detailsSequence.emails ? detailsSequence.emails.filter(e => e.email_type == 2) : [];
 
     return (
       <>
