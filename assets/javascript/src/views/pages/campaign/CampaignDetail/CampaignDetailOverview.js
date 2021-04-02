@@ -73,19 +73,9 @@ class CampaignDetailOverview extends Component {
           <Row>
             <DetailHeader activeItem="OVERVIEW" id={id}/>
           </Row>
-          <Row className="mt-4">
-            <Col md={8} className="mx-auto">
+          <Row className="mx-3 mt-5">
+            <Col md={12}>
               <Nav tabs>
-                <Col md={3}>
-                  <Input
-                    id="selectRecipients"
-                    type="select"
-                    className="form-control-sm"
-                  >
-                    <option>All recipient lists</option>
-                    <option value="Date">Date</option>
-                  </Input>
-                </Col>
                 {tabs.map(({ to, title }, index) => (
                   <Col key={index} md={3}>
                     <NavItem>

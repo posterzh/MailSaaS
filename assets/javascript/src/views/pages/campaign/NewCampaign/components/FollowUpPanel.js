@@ -98,7 +98,10 @@ export default class FollowUpPanel extends React.Component {
             <Row>
               <Col className="p-0">
                 <ReactQuill
-                  ref={ref => data['ref'] = ref}
+                  ref={ref => {
+                    if (!preview)
+                      data['ref'] = ref
+                  }}
                   defaultValue={preview && replacement ? parseTemplate(data.email_body, replacement) : data.email_body}
                   onChange={(value) => {
                     this.setState({ email_body: value });
