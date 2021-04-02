@@ -1,11 +1,14 @@
 from datetime import datetime, timezone, timedelta
+import re
 import math
 import random
 from essential_generators import DocumentGenerator
 from celery import shared_task
+from imap_tools import MailBox
+
 from .models import *
 from .utils.sending_calendar import can_send_email, calendar_sent
-from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_emails_to_send, move_warmups_from_spam_to_inbox
+from .utils.smtp import send_mail_with_smtp, get_emails_to_send, move_warmups_from_spam_to_inbox
 from ..campaign.models import SendingObject, EmailInbox, Campaign, Recipient, EmailOutbox
 from mail.settings import DEFAULT_RAMPUP_INCREMENT, DEFAULT_WARMUP_MAX_CNT, DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX
 
@@ -105,6 +108,11 @@ def email_sender():
             outbox.delete()
 
 
+def _prase_outbox_id(html):
+    outbox_id = re.findall(r"\<td.+opacity:(\d+)", html)[0]
+    return outbox_id
+
+
 @shared_task
 def email_receiver():
     print('Email receiver is called...')
@@ -112,51 +120,49 @@ def email_receiver():
     mail_accounts = EmailAccount.objects.exclude(imap_username__exact='').exclude(imap_username__isnull=True)
 
     for mail_account in mail_accounts:
-        emails = receive_mail_with_imap(
-            host=mail_account.imap_host,
-            port=mail_account.imap_port,
-            username=mail_account.imap_username,
-            password=mail_account.imap_password,
-            use_tls=mail_account.use_imap_ssl
-        )
+        with MailBox(host=mail_account.imap_host, port=mail_account.imap_port).login(mail_account.imap_username,
+                                                                                     mail_account.imap_password,
+                                                                                     'INBOX') as mailbox:
+            for msg in mailbox.fetch():
+                outbox_id = _prase_outbox_id(msg.html)
 
-        for email_item in emails:
-            inbox = EmailInbox()
-            inbox.recipient_email = mail_account
-            inbox.from_email = email_item['from']
-            inbox.email_subject = email_item['subject']
-            inbox.email_body = email_item['content']
-            inbox.status = 0
-            inbox.receive_date = datetime.now().date()
-            inbox.receive_time = datetime.now().time()
-            inbox.save()
+                inbox = EmailInbox()
+                inbox.outbox_id = outbox_id
+                inbox.recipient_email_id = inbox.outbox.recipient_id
+                inbox.from_email_id = inbox.outbox.from_email_id
+                inbox.email_subject = msg.subject
+                inbox.email_body = msg.html
+                inbox.status = 0
+                inbox.receive_date = datetime.now().date()
+                inbox.receive_time = datetime.now().time()
+                inbox.save()
 
-            # Filter out the warmup emails
-            if (email_item['subject'].endswith("mailerrize") or email_item['subject'].endswith("mailerrize?=")) \
-                    and "Re:" not in email_item['subject']:
-                warm_reply_subject = "Re: " + email_item['subject']
-                warm_reply_body = "Hi,\n\n" + gen.paragraph() + "\n\nYours truly,\n\n"
-                if mail_account.first_name:
-                    warm_reply_body += mail_account.first_name
-                elif mail_account.last_name:
-                    warm_reply_body += mail_account.last_name
-                else:
-                    warm_reply_body = "Thank you"
-                param = {
-                    "host": mail_account.smtp_host,
-                    "port": mail_account.smtp_port,
-                    "username": mail_account.smtp_username,
-                    "password": mail_account.smtp_password,
-                    "use_tls": mail_account.use_smtp_ssl,
-                    "from_email": mail_account.email,
-                    "to_email": [email_item['from']],
-                    "subject": warm_reply_subject,
-                    "body": warm_reply_body,
-                    "uuid": None,
-                    "track_opens": False,
-                    "track_linkclick": False
-                }
-                send_immediate_email.delay(param)
+                # Filter out the warmup emails
+                if (msg.subject.endswith("mailerrize") or msg.subject.endswith("mailerrize?=")) \
+                        and "Re:" not in msg.subject:
+                    warm_reply_subject = "Re: " + msg.subject
+                    warm_reply_body = "Hi,\n\n" + gen.paragraph() + "\n\nYours truly,\n\n"
+                    if mail_account.first_name:
+                        warm_reply_body += mail_account.first_name
+                    elif mail_account.last_name:
+                        warm_reply_body += mail_account.last_name
+                    else:
+                        warm_reply_body = "Thank you"
+                    param = {
+                        "host": mail_account.smtp_host,
+                        "port": mail_account.smtp_port,
+                        "username": mail_account.smtp_username,
+                        "password": mail_account.smtp_password,
+                        "use_tls": mail_account.use_smtp_ssl,
+                        "from_email": mail_account.email,
+                        "to_email": [msg.from_],
+                        "subject": warm_reply_subject,
+                        "body": warm_reply_body,
+                        "uuid": None,
+                        "track_opens": False,
+                        "track_linkclick": False
+                    }
+                    send_immediate_email.delay(param)
 
 
 @shared_task

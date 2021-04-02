@@ -1,20 +1,17 @@
 from datetime import datetime, timezone, timedelta
 from itertools import chain
-import email, imaplib
+import imaplib
 
 import pytz
-from django.db.models import Prefetch
-from django.http import Http404, HttpResponseServerError, HttpResponseBadRequest
 from pytracking.django import OpenTrackingView, ClickTrackingView
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from . import utils
 from .models import EmailAccount, SendingCalendar, CalendarStatus, WarmingStatus
 from .serializers import EmailAccountSerializer, SendingCalendarSerializer
-from .utils.sending_calendar import can_send_email, calendar_sent
-from ..campaign.models import SendingObject, EmailInbox, Campaign, Recipient, EmailOutbox
-from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_emails_to_send, check_email
+from .tasks import email_receiver, email_sender
+from ..campaign.models import EmailOutbox
+from .utils.smtp import check_email
 from mail.settings import DEFAULT_WARMUP_FOLDER
 
 
@@ -129,7 +126,12 @@ class SendTestEmailView(APIView):
         # mailAccountId = request.data['mailAccountId']
         # send_test_email.delay(mailAccountId)
 
+        ########################################
+        # email_sender()
 
+        email_receiver()
+
+        ########################################
 
         return Response("Ok")
 
@@ -139,10 +141,13 @@ class MyOpenTrackingView(OpenTrackingView):
     def notify_tracking_event(self, tracking_result):
         uuid = tracking_result.metadata['uuid']
 
-        sending_object = SendingObject.objects.get(id=uuid)
-        sending_object.opened += 1
-        sending_object.opened_datetime = datetime.now(timezone.utc)
-        sending_object.save()
+        outbox = EmailOutbox.objects.get(id=uuid)
+        outbox.opened += 1
+        outbox.opened_datetime = datetime.now(timezone.utc)
+        outbox.save()
+
+        outbox.recipient.opens += 1
+        outbox.recipient.save()
 
 
 class MyClickTrackingView(ClickTrackingView):
@@ -150,7 +155,10 @@ class MyClickTrackingView(ClickTrackingView):
     def notify_tracking_event(self, tracking_result):
         uuid = tracking_result.metadata['uuid']
 
-        sending_object = SendingObject.objects.get(id=uuid)
-        sending_object.clicked += 1
-        sending_object.clicked_datetime = datetime.now(timezone.utc)
-        sending_object.save()
+        outbox = EmailOutbox.objects.get(id=uuid)
+        outbox.clicked += 1
+        outbox.clicked_datetime = datetime.now(timezone.utc)
+        outbox.save()
+
+        outbox.recipient.clicked += 1
+        outbox.recipient.save()
