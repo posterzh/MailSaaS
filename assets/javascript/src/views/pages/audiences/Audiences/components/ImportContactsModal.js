@@ -194,7 +194,7 @@ export class ImportContactsModal extends Component {
                 )}
                 <Row className="mt-4">
                   <Col md={2}>
-                    <Button type="submit" color="danger" block>
+                    <Button type="button" onClick={this.handleSubmit} color="danger" block>
                       Ok
                     </Button>
                   </Col>
