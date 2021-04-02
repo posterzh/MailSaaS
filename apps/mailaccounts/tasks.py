@@ -5,7 +5,7 @@ from essential_generators import DocumentGenerator
 from celery import shared_task
 from .models import *
 from .utils.sending_calendar import can_send_email, calendar_sent
-from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_emails_to_send, get_sending_items, move_warmups_from_spam_to_inbox
+from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_emails_to_send, move_warmups_from_spam_to_inbox
 from ..campaign.models import SendingObject, EmailInbox, Campaign, Recipient, EmailOutbox
 from mail.settings import DEFAULT_RAMPUP_INCREMENT, DEFAULT_WARMUP_MAX_CNT, DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX
 

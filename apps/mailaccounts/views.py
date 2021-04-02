@@ -129,24 +129,12 @@ class SendTestEmailView(APIView):
         # mailAccountId = request.data['mailAccountId']
         # send_test_email.delay(mailAccountId)
 
-        available_mail_ids = []
-        available_mail_limits = []
-        mail_accounts = EmailAccount.objects.all()
-        for mail_account in mail_accounts:
-            sending_calendar, created = SendingCalendar.objects.get_or_create(mail_account_id=mail_account.id)
-            if created:
-                sending_calendar = SendingCalendar.objects.get(mail_account_id=mail_account.id)
-            calendar_status, created = CalendarStatus.objects.get_or_create(sending_calendar_id=sending_calendar.id,
-                                                                            defaults={'updated_datetime': datetime.now(
-                                                                                timezone.utc) - timedelta(days=1)})
-
-            if can_send_email(sending_calendar, calendar_status):
-                available_mail_ids.append(mail_account.id)
-                mail_limit = sending_calendar.max_emails_per_day - calendar_status.sent_count
-                available_mail_limits.append(mail_limit)
-
         # Fetch sending objects
-        sending_objects = get_emails_to_send(available_mail_ids, available_mail_limits)
+        sending_objects = [{'camp_id': 29,
+                           'from_email_id': 34,
+                           'to_email_id': 25,
+                           'email_subject': 'Test email',
+                           'email_body': 'How are you?'}]
 
         for sending_item in sending_objects:
             camp = Campaign.objects.get(id=sending_item['camp_id'])
@@ -174,7 +162,7 @@ class SendTestEmailView(APIView):
                                          password=from_email.smtp_password,
                                          use_tls=from_email.use_smtp_ssl,
                                          from_email=from_email.email,
-                                         to_email=to_email.email,
+                                         to_email=[to_email.email],
                                          subject=email_subject,
                                          body=email_body,
                                          uuid=outbox.id,
@@ -183,6 +171,10 @@ class SendTestEmailView(APIView):
 
             if result:
                 print(f"Email sent from {from_email.email} to {to_email.email}")
+
+                # Increase the Recipient sent number
+                outbox.recipient.sent += 1
+                outbox.recipient.save()
 
                 # Update CalendarStatus
                 calendar_status = CalendarStatus.objects.get(sending_calendar__mail_account_id=from_email.id)
