@@ -249,11 +249,18 @@ def move_warmups_from_spam_to_inbox(host, port, username, password, use_tls):
 #       email_body: Text) ]
 def get_emails_to_send(available_email_ids, email_limits):
     # TODO: send emails per campaign
-    arr = []
-    for email_id, limit in zip(available_email_ids, email_limits):
-        arr.append(schedule_email(email_id, limit))
-    emails = pd.concat(arr)
-    return json.loads(emails.to_json(orient='records'))
+    # arr = []
+    # for email_id, limit in zip(available_email_ids, email_limits):
+    #     arr.append(schedule_email(email_id, limit))
+    # emails = pd.concat(arr)
+    # return json.loads(emails.to_json(orient='records'))
+
+    # test data
+    return [{'camp_id': 29,
+                        'from_email_id': 34,
+                        'to_email_id': 25,
+                        'email_subject': 'Test email',
+                        'email_body': 'How are you?'}]
 
 
 def get_all_emails(email_id):

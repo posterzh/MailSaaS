@@ -129,65 +129,7 @@ class SendTestEmailView(APIView):
         # mailAccountId = request.data['mailAccountId']
         # send_test_email.delay(mailAccountId)
 
-        # Fetch sending objects
-        sending_objects = [{'camp_id': 29,
-                           'from_email_id': 34,
-                           'to_email_id': 25,
-                           'email_subject': 'Test email',
-                           'email_body': 'How are you?'}]
 
-        for sending_item in sending_objects:
-            camp = Campaign.objects.get(id=sending_item['camp_id'])
-            from_email = EmailAccount.objects.get(id=sending_item['from_email_id'])
-            to_email = Recipient.objects.get(id=sending_item['to_email_id'])
-            email_subject = sending_item['email_subject']
-            email_body = sending_item['email_body']
-
-            # Save to EmailOutbox
-            outbox = EmailOutbox()
-            outbox.campaign = camp
-            outbox.from_email = from_email
-            outbox.recipient = to_email
-            outbox.email_subject = email_subject
-            outbox.email_body = email_body
-            outbox.status = 0
-            outbox.sent_date = datetime.now(timezone.utc).date()
-            outbox.sent_time = datetime.now(timezone.utc).time()
-            outbox.save()
-
-            # Send email
-            result = send_mail_with_smtp(host=from_email.smtp_host,
-                                         port=from_email.smtp_port,
-                                         username=from_email.smtp_username,
-                                         password=from_email.smtp_password,
-                                         use_tls=from_email.use_smtp_ssl,
-                                         from_email=from_email.email,
-                                         to_email=[to_email.email],
-                                         subject=email_subject,
-                                         body=email_body,
-                                         uuid=outbox.id,
-                                         track_opens=camp.track_opens,
-                                         track_linkclick=camp.track_linkclick)
-
-            if result:
-                print(f"Email sent from {from_email.email} to {to_email.email}")
-
-                # Increase the Recipient sent number
-                outbox.recipient.sent += 1
-                outbox.recipient.save()
-
-                # Update CalendarStatus
-                calendar_status = CalendarStatus.objects.get(sending_calendar__mail_account_id=from_email.id)
-                calendar_sent(calendar_status)
-
-                # Update EmailOutbox status
-                outbox.status = 1
-                outbox.save()
-            else:
-                print(f"Failed to send from {from_email.email} to {to_email.email}")
-
-                # Delete the EmailOutbox entry that fails
-                outbox.delete()
 
         return Response("Ok")
 
