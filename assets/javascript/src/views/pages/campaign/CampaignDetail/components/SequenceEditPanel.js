@@ -39,6 +39,10 @@ class SequenceEditPanel extends Component {
     }
   }
 
+  _emailBodyQuill = {
+    ref: null
+  }
+
   componentDidMount() {
 
   }
@@ -102,17 +106,23 @@ class SequenceEditPanel extends Component {
     this.props.onCancel();
   }
 
-  getDNDSource = () => {
+  getDNDSource = (panelItem) => {
     const { detailsSequence } = this.props;
 
     return (
       <div className="d-flex flex-wrap mt-2">
         {
-          detailsSequence.csv_fields.split(",").map((field, index) => {
+          (detailsSequence.csv_fields || '').split(",").map((field, index) => {
             return (
               <div className="keyword-item text-danger px-1 mr-2 my-1" key={`template ${index}`} draggable="true" onDragStart={(e) => {
                 const dataTransfer = e.dataTransfer;
                 dataTransfer.setData('text/html', `<span class="keyword-item p-1 mr-2 my-1">{{${field}}}</span>`);
+              }} onDoubleClick={() => {
+                const { ref: _quillRef } = panelItem;
+                if (_quillRef) {
+                  const currentLen = _quillRef.getEditor().getLength();
+                  _quillRef.getEditor().insertText(currentLen - 1, `{{${field}}}`)
+                }
               }}>
                 <i className="fas fa-bars text-danger mr-1"></i>
                 { formatHeader(field)}
@@ -160,6 +170,7 @@ class SequenceEditPanel extends Component {
           <Row>
             <Col>
               <ReactQuill
+                ref={ref => this._emailBodyQuill['ref'] = ref}
                 defaultValue={this.state.email_body}
                 onChange={(value) => {
                   this.setState({ email_body: value });
@@ -184,7 +195,7 @@ class SequenceEditPanel extends Component {
             </Col>
           </Row>
 
-          {this.getDNDSource()}
+          {this.getDNDSource(this._emailBodyQuill)}
 
           <Row className="mt-3">
             <Col>
@@ -195,7 +206,7 @@ class SequenceEditPanel extends Component {
                     onDelete={this.onDeleteFollowUp}
                     data={followUp}
                   />
-                  <div className="px-3">{this.getDNDSource()}</div>
+                  <div className="px-3">{this.getDNDSource(followUp)}</div>
                 </div>
               ))}
             </Col>
@@ -224,7 +235,7 @@ class SequenceEditPanel extends Component {
                     onDelete={this.onDeleteDrip}
                     data={drip}
                   />
-                  <div className="px-3">{this.getDNDSource()}</div>
+                  <div className="px-3">{this.getDNDSource(drip)}</div>
                 </div>
               ))}
             </Col>

@@ -522,9 +522,8 @@ function Tables({
                               {
                                 onEdit &&
                                 <>
-                                  <a
+                                  <span
                                     className="table-action"
-                                    href="#pablo"
                                     id={`edit${index}`}
                                     onClick={(e) => {
                                       e.preventDefault();
@@ -532,7 +531,7 @@ function Tables({
                                     }}
                                   >
                                     <i className="fas fa-edit" />
-                                  </a>
+                                  </span>
                                   <UncontrolledTooltip
                                     delay={0}
                                     target={`edit${index}`}
@@ -544,9 +543,8 @@ function Tables({
                               {
                                 onDelete &&
                                 <>
-                                  <a
+                                  <span
                                     className="table-action table-action-delete"
-                                    href="#pablo"
                                     id={`delete${index}`}
                                     onClick={(e) => {
                                       e.preventDefault();
@@ -554,21 +552,14 @@ function Tables({
                                     }}
                                   >
                                     <i className="fas fa-trash" />
-                                  </a>
-                                  <UncontrolledTooltip
-                                    delay={0}
-                                    target={`delete${index}`}
-                                  >
-                                    Delete
-                                </UncontrolledTooltip>
+                                  </span>
                                 </>
                               }
                               {
                                 onDetail &&
                                 <>
-                                  <a
+                                  <span
                                     className="table-action table-action-detail"
-                                    href="#pablo"
                                     id={`detail${index}`}
                                     onClick={(e) => {
                                       e.preventDefault();
@@ -576,7 +567,7 @@ function Tables({
                                     }}
                                   >
                                     <i className="fas fa-info-circle" />
-                                  </a>
+                                  </span>
                                   <UncontrolledTooltip
                                     delay={0}
                                     target={`detail${index}`}
