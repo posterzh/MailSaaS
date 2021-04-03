@@ -138,12 +138,12 @@ function SendingCalendar({
                 cancelEditing={() => setIsEditing(false)}
               />
             )}
-            
-            <Button className="float-right" color="danger" type="button" onClick={onSendTestEmail}>
+
+            <Button className="float-right" color="danger" type="button" size="sm" onClick={onSendTestEmail} outline>
               Test sender
             </Button>
 
-            <Button className="float-right" color="danger" type="button" onClick={onReceiveTestEmail}>
+            <Button className="float-right" color="danger" type="button" size="sm" onClick={onReceiveTestEmail} outline>
               Test receiver
             </Button>
           </Col>
