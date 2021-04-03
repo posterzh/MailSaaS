@@ -1929,7 +1929,7 @@ class CampaignLeadsView(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         params = list(dict(request.GET).keys())
-        queryset = CampaignRecipient.objects.filter(leads=True, campaign__assigned=request.user.id)
+        queryset = Recipient.objects.filter(leads__gt=0, campaign__assigned=request.user.id)
 
         # Q(email__contains=toSearch) | Q(full_name__contains=toSearch), campaign__title__contains=title,
         # lead_status=leadstatus, campaign__assigned=request.user.id, leads=True)
@@ -1995,7 +1995,7 @@ class CampaignLeadsView(generics.ListAPIView):
             queryset = queryset.filter(created_date_time__range=(from_date, to_date))
 
         # queryset = queryset.select_related('title')
-        res = queryset.values('id', 'email', 'lead_status', campaign_title=F('campaign__title'),
+        res = queryset.values('id', 'email', 'lead_status', 'update_date_time', campaign_title=F('campaign__title'),
                               assigned_name=F('campaign__assigned__full_name'), camp_id=F('campaign'))
         # campEmailserializer = CampaignEmailSerializer(queryset, many=True)
         return Response({'res': res, 'success': True})

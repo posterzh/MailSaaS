@@ -109,3 +109,4 @@ lxml
 sentry_sdk
 pytk
 essential_generators
+imap-tools

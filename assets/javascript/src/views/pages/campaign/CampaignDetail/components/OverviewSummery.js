@@ -215,7 +215,9 @@ class OverviewSummery extends Component {
           </Row>
 
           <Row className="mt-5">
-            <h1 className="display-4">TOTALS</h1>
+            <Col>
+              <h1 className="display-4">TOTALS</h1>
+            </Col>
           </Row>
           <Row className="mt-2">
             <div className="w_h-100">

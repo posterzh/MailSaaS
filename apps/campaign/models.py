@@ -174,6 +174,7 @@ class SendingObject(models.Model):
 class Recipient(models.Model):
     LEAD_TYPE = (
         ("none", "None"),
+        ("open", "Open"),
         ("replied", "Replied"),
         ("won", "Won"),
         ("lost", "Lost"),
@@ -232,9 +233,9 @@ class EmailOutbox(models.Model):
 
 
 class EmailInbox(models.Model):
+    outbox = models.ForeignKey(EmailOutbox, on_delete=models.SET_NULL, null=True)
     recipient_email = models.ForeignKey(Recipient, on_delete=models.SET_NULL, null=True)
     from_email = models.ForeignKey(EmailAccount, on_delete=models.SET_NULL, null=True)
-    outbox = models.ForeignKey(EmailOutbox, on_delete=models.SET_NULL, null=True)
     email_subject = models.TextField()
     email_body = models.TextField(blank=True, null=True)
 

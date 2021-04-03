@@ -12,7 +12,6 @@ def triggerLeadCatcher(campaign_id, recipient_id):
     lead_setting = lead_setting[0]
     recipient = Recipient.objects.get(id=recipient_id)
 
-    can_be_lead = False
     fits = []
     if lead_setting.open > 0:
         if recipient.opens >= lead_setting.open:
@@ -30,6 +29,9 @@ def triggerLeadCatcher(campaign_id, recipient_id):
         else:
             fits.append(False)
 
+    can_be_lead = False
+    if len(fits) > 0:
+        can_be_lead = fits[0]
     for item in fits:
         if lead_setting.join_operator == 'and':
             can_be_lead = can_be_lead and item
@@ -38,5 +40,6 @@ def triggerLeadCatcher(campaign_id, recipient_id):
 
     if can_be_lead:
         recipient.leads = 1
+        recipient.lead_status = 'open'
         recipient.save()
 
