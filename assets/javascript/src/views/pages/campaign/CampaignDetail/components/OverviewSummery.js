@@ -56,7 +56,7 @@ class OverviewSummery extends Component {
             <Col>
               <Card className="card-summary-funnel mb-0">
                 <div className="funnel-item-header px-3 pt-3 align-items-center">
-                  <span className="mr-3">GOOD TEST</span>
+                  <span className="mr-3">Initial campaign email</span>
                   <Badge color="danger" pill>
                     2 Recipients
                   </Badge>
@@ -228,27 +228,27 @@ class OverviewSummery extends Component {
                 <span className="over_sapn">RECIPIENT</span>
               </div>
               <div className="w-14">
-                <h1>6</h1>
+                <h1>0</h1>
                 <span className="over_sapn">IN CAMPAIGN</span>
               </div>
               <div className="w-14">
-                <h1>6</h1>
+                <h1>0</h1>
                 <span className="over_sapn">ENGAGED</span>
               </div>
               <div className="w-14">
-                <h1>6</h1>
+                <h1>0</h1>
                 <span className="over_sapn">LEADS</span>
               </div>
               <div className="w-14">
-                <h1>6</h1>
+                <h1>0</h1>
                 <span className="over_sapn">BOUNCES</span>
               </div>
               <div className="w-14">
-                <h1>6</h1>
+                <h1>0</h1>
                 <span className="over_sapn">UNSUBSCRIBES</span>
               </div>
               <div className="w-14">
-                <h1>6</h1>
+                <h1>0</h1>
                 <span className="over_sapn">UNSUBSCRIBES</span>
               </div>
             </div>
@@ -263,7 +263,7 @@ class OverviewSummery extends Component {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>8</td>
+                    <td>0</td>
                     <td>Recipients</td>
                   </tr>
                 </tbody>
@@ -278,7 +278,7 @@ class OverviewSummery extends Component {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>8</td>
+                    <td>0</td>
                     <td>Recipients</td>
                   </tr>
                 </tbody>
@@ -294,7 +294,7 @@ class OverviewSummery extends Component {
                 <tbody>
                   <tr>
                     <td>{overviewSummary.ignoredLeadCount || 0}</td>
-                    <td>Recipients</td>
+                    <td>Ignored</td>
                   </tr>
                 </tbody>
               </Table>
