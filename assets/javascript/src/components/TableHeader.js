@@ -46,16 +46,16 @@ export const recipientsTable = [
         id: "id"
     },
     {
-        key: 'name',
+        key: 'full_name',
         value: 'NAME',
     },
     {
-        key: 'created',
-        value: 'ADDED ON',
+        key: 'sent',
+        value: 'SENT',
     },
     {
-        key: 'updated',
-        value: 'SEND ON',
+        key: 'leads',
+        value: 'LEADS',
     },
 ];
 

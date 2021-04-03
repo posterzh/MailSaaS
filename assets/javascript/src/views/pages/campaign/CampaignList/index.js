@@ -1,36 +1,16 @@
 import React, { Component } from "react";
 // nodejs library that concatenates classes
-import classnames from "classnames";
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
-  ListGroupItem,
-  ListGroup,
-  Container,
   Row,
   Col,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import {
-  CampaignTableAction,
-  CampaignSaveAction,
-  CampaignOverviewAction,
-} from "../../../../redux/action/CampaignAction";
-
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import Tables from "../../../../components/Tables";
 import { campaignListTable } from "../../../../components/TableHeader";
-import { toggleTopLoader, toastOnError, messages } from '../../../../utils/Utils';
+import { toggleTopLoader, toastOnError, messages, showNotification } from '../../../../utils/Utils';
 import axios from '../../../../utils/axios';
 
 class CampaignList extends Component {
@@ -52,21 +32,19 @@ class CampaignList extends Component {
     };
   }
   async componentDidMount() {
-    const CampId =
-      this.props.history.location.state && this.props.history.location.state;
-    console.log("campID", CampId);
-    this.props.CampaignTableAction();
-
     // Get API data
     try {
       toggleTopLoader(true);
       const { data } = await axios.get("/campaign/list/");
 
-      const assigned = data.map(item => item.assigned);
+      const assigned = data.map(item => {
+        item['control'] = item.campaign_status ? "play" : "pause";
+        return item.assigned
+      });
       const { filters } = this.state;
       filters.forEach(item => {
         if (item.key === 'assigned') {
-          item.options = [...assigned];
+          item.options = [...new Set(assigned)];
         }
       })
 
@@ -100,19 +78,6 @@ class CampaignList extends Component {
   showDetails = (item) => {
     this.props.history.push(`/app/admin/campaign/${item.id}/details-overview`);
   }
-  // handleCheck = (e) => {
-  //   let tables = this.props.Tables.CampaignTableData
-  //   tables.forEach(table => {
-  //     if (table.value === e.target.value)
-  //       table.isChecked = e.target.checked
-  //   })
-  //   this.setState({ tables: tables })
-  // }
-  // toggleModal = ()=> {
-  //   this.setState({
-  //     exampleModal: !this.state.exampleModal
-  //   });
-  // };
 
   createCampaign = () => {
     this.props.history.push("/app/admin/campaign/create");
@@ -123,7 +88,7 @@ class CampaignList extends Component {
   }
 
   controlCallback = () => {
-    alert('control is clicked!');
+    showNotification('warning', 'Campaign action is clicked', 'Not implemented yet. Ready for next version.');
   }
 
   paginationCallback = () => {
@@ -135,24 +100,8 @@ class CampaignList extends Component {
   }
 
   render() {
-    const { show, hide, checked, exampleModal, data, filters } = this.state;
-
-    //For example
-    if (data.length > 6) {
-      data[1].control = "play";
-      data[3].control = "pause";
-    }
-
-    const actionMenus = [
-      {
-        key: 'view',
-        name: 'View'
-      },
-      {
-        key: 'edit',
-        name: 'Edit'
-      }
-    ];
+    const { data, filters } = this.state;
+    
     return (
       <>
         <PageHeader
@@ -162,62 +111,17 @@ class CampaignList extends Component {
         />
 
         <PageContainer title="Campaigns" showHelper={true} newButton="New Campaign" newAction={this.createCampaign}>
-          {/* <Form onSubmit={this.handleSubmit}>
-            <Row>
-              <Col>
-                <FormGroup>
-                  <InputGroup
-                    className={classnames("input-group-merge", {
-                      focused: this.state.phoneNumber,
-                    })}
-                  >
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="fas fa-globe-americas" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input
-                      placeholder="Phone number"
-                      type="text"
-                      onFocus={(e) => {}}
-                      onBlur={(e) => {}}
-                    />
-                    <InputGroupAddon addonType="append">
-                      <InputGroupText>
-                        <i className="fas fa-phone" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                  </InputGroup>
-                </FormGroup>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col>
-                <Button
-                  color="primary"
-                  type="button"
-                  type="submit"
-                  className="my-3"
-                >
-                  NEXT&nbsp;
-                  <i className="fa fa-arrow-right" aria-hidden="true"></i>
-                </Button>
-              </Col>
-            </Row>
-          </Form> */}
           <Row>
             <Tables
               titles={campaignListTable} // required
               tablePropsData={data}   // required
               onClick={this.showDetails}
-              actionMenus={actionMenus}   // optional for showing menus of row.
               actionCallback={this.actionCallback}        // get call back for action select of row.
               showSelect={true}    // optional
               selectedCallback={this.getSelectedRecords}      // get call back for select object.
               showControl={true}   // optional
               controlCallback={this.controlCallback}
-              showPagination={false}   // optional
+              showPagination={true}   // optional
               paginationCallback={this.paginationCallback}     // get callback of page change.
               filters={filters}   // optional to enable filter
               searchKeys={['title']}  // optional to enable search
@@ -233,15 +137,5 @@ const mapStateToProps = (state) => {
     Tables: state.CampaignTableReducer,
   };
 };
-const mapDispatchToProps = (dispatch) => ({
-  CampaignTableAction: (mailGetData) => {
-    dispatch(CampaignTableAction(mailGetData));
-  },
-  CampaignSaveAction: (saveData) => {
-    dispatch(CampaignSaveAction(saveData));
-  },
-  CampaignOverviewAction: (id) => {
-    dispatch(CampaignOverviewAction(id));
-  },
-});
-export default connect(mapStateToProps, mapDispatchToProps)(CampaignList);
+
+export default connect(mapStateToProps)(CampaignList);

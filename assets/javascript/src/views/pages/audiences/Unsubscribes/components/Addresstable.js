@@ -22,7 +22,6 @@ function Addresstable(props) {
                 />
               </th>
               <th>Email</th>
-              <th>Name</th>
               <th>UNSUBSCRIBE DATE</th>
             </tr>
           </thead>
@@ -43,7 +42,6 @@ function Addresstable(props) {
                   />
                 </td>
                 <td>{row.email}</td>
-                <td>{row.name}</td>
                 <td>{new Date(row.date).toLocaleString()}</td>
               </tr>
             ))}

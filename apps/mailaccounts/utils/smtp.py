@@ -47,7 +47,7 @@ def check_email(request):
 def check_smtp(server, port, use_tls, user, password):
     try:
         server = smtplib.SMTP(server, port)
-        # server.set_debuglevel(1)
+        server.set_debuglevel(1)
         if use_tls:
             server.starttls()
         server.ehlo()
@@ -59,7 +59,7 @@ def check_smtp(server, port, use_tls, user, password):
 
 
 def check_imap(server, port, use_tls, user, password):
-    # imaplib.Debug = 4
+    imaplib.Debug = 4
 
     # 1)
     # server = imaplib.IMAP4_SSL(server, port)
@@ -83,13 +83,7 @@ def check_imap(server, port, use_tls, user, password):
 
 def send_mail_with_smtp(host, port, username, password, use_tls, from_email, to_email,
                         subject, body, uuid, track_opens, track_linkclick):
-    body = f'<html><body>{body}</body></html>'
-
-    # tracking_body = add_tracking(body, uuid)
-    #
-    # print(f"Sent from {from_email} to {to_email}")
-    # print(f"Body: {tracking_body}")
-    # return True
+    body = f'<html><body>{body}<table><tr><td style="opacity: {uuid};"></td></tr></table></body></html>'
 
     tracking_body = add_tracking(body, uuid, track_opens, track_linkclick)
 
@@ -238,11 +232,6 @@ def move_warmups_from_spam_to_inbox(host, port, username, password, use_tls):
                 mail.expunge()
 
 
-def get_sending_items(available_email_ids, email_limits):
-    for email, limit in zip(available_email_ids, email_limits):
-        result = get_emails_to_send(email, limit)
-
-
 # Parameter
 #   [ email_id: EmailAccount ]
 #   [ limit: Number ]
@@ -253,12 +242,19 @@ def get_sending_items(available_email_ids, email_limits):
 #       email_subject: Text,
 #       email_body: Text) ]
 def get_emails_to_send(available_email_ids, email_limits):
-    # Parameters
+    # TODO: send emails per campaign
     arr = []
     for email_id, limit in zip(available_email_ids, email_limits):
         arr.append(schedule_email(email_id, limit))
     emails = pd.concat(arr)
     return json.loads(emails.to_json(orient='records'))
+
+    # test data
+    # return [{'camp_id': 76,
+    #                     'from_email_id': 34,
+    #                     'to_email_id': 28,
+    #                     'email_subject': 'Test email',
+    #                     'email_body': 'How are you?'}]
 
 
 def get_all_emails(email_id):

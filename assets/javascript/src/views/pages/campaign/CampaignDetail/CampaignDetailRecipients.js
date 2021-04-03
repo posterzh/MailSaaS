@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 
 
-import { filterRecipients } from "../../../../redux/action/ProspectsAction";
+import { getDetailRecipients } from "../../../../redux/action/CampaignDetailsActions";
 import { connect } from "react-redux";
 
 import PageHeader from "../../../../components/Headers/PageHeader";
@@ -38,7 +38,7 @@ class CampaignDetailRecipients extends Component {
   }
 
   componentDidMount() {
-    this.props.filterRecipients({ campaign: this.props.id });
+    this.props.getDetailRecipients(this.props.id);
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -95,6 +95,8 @@ class CampaignDetailRecipients extends Component {
     const { recipientsFilters } = this.state;
     const { recipients } = this.props;
 
+    console.log("TableData", recipients);
+
     return (
       <>
         <PageHeader
@@ -108,7 +110,7 @@ class CampaignDetailRecipients extends Component {
             <DetailHeader activeItem="RECIPIENTS" id={id} />
           </Row>
 
-          <Row className="mt-4">
+          <Row className="mt-4 mx-3">
             <Tables
               titles={recipientsTable} // required
               tablePropsData={recipients}   // required
@@ -179,9 +181,9 @@ const mapStateToProps = (state) => {
   return {
     id: state.campaignDetails.id,
     title: state.campaignDetails.title,
-    recipients: state.prospects.recipients,
+    recipients: state.campaignDetails.detailRecipients,
   };
 };
 export default connect( mapStateToProps, {
-  filterRecipients
+  getDetailRecipients
 })(CampaignDetailRecipients);

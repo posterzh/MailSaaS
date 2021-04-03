@@ -30,6 +30,7 @@ import {
 	filterRecipients,
 	countRecipients,
 } from "../../../../redux/action/ProspectsAction";
+import { showNotification } from "../../../../utils/Utils";
 
 const tableTitle = [
 	{
@@ -37,42 +38,34 @@ const tableTitle = [
 		value: 'Email',
 	},
 	{
-		key: 'name',
-		value: 'Name',
-	},
-	{
-		key: 'created',
-		value: 'Created',
-	},
-	{
-		key: 'lead_status',
-		value: 'Status',
-	},
-	{
-		key: 'campaign_count',
-		value: 'Campaign',
+		key: 'status',
+		value: 'STATUS'
 	},
 	{
 		key: 'sent_count',
 		value: 'Sent',
 	},
 	{
-		key: 'engaged_count',
-		value: 'Engaged',
+		key: 'open_count',
+		value: 'Open',
+	},
+	{
+		key: 'click_count',
+		value: 'Click',
+	},
+	{
+		key: 'reply_count',
+		value: 'Reply',
+	},
+	{
+		key: 'lead_count',
+		value: 'Lead',
 	},
 ];
 
 let filters = [
 	{
-		key: 'Teammate',
-		options: ['karl920814@gmail.com', 'omaid@faizyar.com']
-	},
-	{
-		key: 'email',
-		options: []
-	},
-	{
-		key: 'name',
+		key: 'status',
 		options: []
 	}
 ];
@@ -89,15 +82,14 @@ class Prospects extends Component {
 	}
 
 	componentDidMount() {
-		this.props.filterRecipients();
+		this.props.filterRecipients({ unsubscribe: false });
 		this.props.countRecipients();
 	}
 
 	componentWillReceiveProps = (nextProps) => {
 		if (nextProps.recipients !== this.props.recipients) {
 			const getUniqueArray = (array, field) => array.map(x => x[field]).filter((v, i, a) => a.indexOf(v) === i);
-			filters[1].options = getUniqueArray(nextProps.recipients, 'email')
-			filters[2].options = getUniqueArray(nextProps.recipients, 'name')
+			filters[0].options = getUniqueArray(nextProps.recipients, 'status');
 		}
 	}
 
@@ -131,34 +123,45 @@ class Prospects extends Component {
 		this.setState({ detailModal: false });
 	}
 
-	onTotalClick = () => {
+	onTotalClick = (e) => {
+		e.preventDefault();
 		this.setState({ selected: 'total' })
-		this.props.filterRecipients();
+		this.props.filterRecipients({ unsubscribe: false });
 	}
 
-	onInCampaignClick = () => {
-		this.setState({ selected: 'in-campaign' })
-		this.props.filterRecipients();
+	onInCampaignClick = (e) => {
+		e.preventDefault();
+		// this.setState({ selected: 'in-campaign' })
+		// this.props.filterRecipients({ unsubscribe: false });
+		showNotification("warning", "Coming soon...", "This feature will be implemented in the future version");
 	}
 
-	onEngagedClick = () => {
-		this.setState({ selected: 'engaged' })
-		this.props.filterRecipients({ engaged: true });
+	onEngagedClick = (e) => {
+		e.preventDefault();
+		// this.setState({ selected: 'engaged' })
+		// this.props.filterRecipients({ engaged: true });
+		showNotification("warning", "Coming soon...", "This feature will be implemented in the future version");
 	}
 
-	onLeadsClick = () => {
-		this.setState({ selected: 'leads' })
-		this.props.filterRecipients({ leads: true });
+	onLeadsClick = (e) => {
+		e.preventDefault();
+		// this.setState({ selected: 'leads' })
+		// this.props.filterRecipients({ leads: true });
+		showNotification("warning", "Coming soon...", "This feature will be implemented in the future version");
 	}
 
-	onBouncesClick = () => {
-		this.setState({ selected: 'bounces' })
-		this.props.filterRecipients({ bounces: true });
+	onBouncesClick = (e) => {
+		e.preventDefault();
+		// this.setState({ selected: 'bounces' })
+		// this.props.filterRecipients({ bounces: true });
+		showNotification("warning", "Coming soon...", "This feature will be implemented in the future version");
 	}
 
-	onUnsubscribesClick = () => {
-		this.setState({ selected: 'unsubscribes' })
-		this.props.filterRecipients({ unsubscribe: true });
+	onUnsubscribesClick = (e) => {
+		e.preventDefault();
+		// this.setState({ selected: 'unsubscribes' })
+		// this.props.filterRecipients({ unsubscribe: true });
+		showNotification("warning", "Coming soon...", "This feature will be implemented in the future version");
 	}
 
 	render() {
@@ -174,8 +177,8 @@ class Prospects extends Component {
 				/>
 				<PageContainer title={"Audiences"} showHelper={true} newButton="New Audience" newAction={this.importContacts}>
 					<Row>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={this.onTotalClick}>
-							<Card className={this.state.selected === 'total' ? "bg-info" : "bg-light"}>
+						<Col md="2" sm="4" className="sidenav-toggler">
+							<Card className={this.state.selected === 'total' ? "bg-info" : "bg-light"} onClick={this.onTotalClick}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
@@ -186,8 +189,8 @@ class Prospects extends Component {
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={this.onInCampaignClick}>
-							<Card className={this.state.selected === 'in-campaign' ? "bg-info" : "bg-light"}>
+						<Col md="2" sm="4" className="sidenav-toggler">
+							<Card className={this.state.selected === 'in-campaign' ? "bg-info" : "bg-light"}  onClick={this.onInCampaignClick}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
@@ -198,8 +201,8 @@ class Prospects extends Component {
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={this.onEngagedClick}>
-							<Card className={this.state.selected === 'engaged' ? "bg-info" : "bg-light"}>
+						<Col md="2" sm="4" className="sidenav-toggler">
+							<Card className={this.state.selected === 'engaged' ? "bg-info" : "bg-light"} onClick={this.onEngagedClick}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
@@ -210,8 +213,8 @@ class Prospects extends Component {
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={this.onLeadsClick}>
-							<Card className={this.state.selected === 'leads' ? "bg-info" : "bg-light"}>
+						<Col md="2" sm="4" className="sidenav-toggler">
+							<Card className={this.state.selected === 'leads' ? "bg-info" : "bg-light"} onClick={this.onLeadsClick}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
@@ -222,8 +225,8 @@ class Prospects extends Component {
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={this.onBouncesClick}>
-							<Card className={this.state.selected === 'bounces' ? "bg-info" : "bg-light"}>
+						<Col md="2" sm="4" className="sidenav-toggler">
+							<Card className={this.state.selected === 'bounces' ? "bg-info" : "bg-light"} onClick={this.onBouncesClick}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
@@ -234,8 +237,8 @@ class Prospects extends Component {
 								</CardBody>
 							</Card>
 						</Col>
-						<Col md="2" sm="4" className="sidenav-toggler" onClick={this.onUnsubscribesClick}>
-							<Card className={this.state.selected === 'unsubscribes' ? "bg-info" : "bg-light"}>
+						<Col md="2" sm="4" className="sidenav-toggler">
+							<Card className={this.state.selected === 'unsubscribes' ? "bg-info" : "bg-light"} onClick={this.onUnsubscribesClick}>
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
@@ -256,7 +259,6 @@ class Prospects extends Component {
 							selectedCallback={this.selectedCallback}      // get call back for select object.
 							paginationCallback={this.paginationCallback}     // get callback of page change.
 							onClick={this.showDetailModal}
-							onDetail={this.showDetailModal}
 							filters={filters}   // optional to enable filter
 							searchKeys={['email', 'name']}  // optional to enable search
 						/>
@@ -285,11 +287,6 @@ const mapStateToProps = (state) => ({
 	recipients: state.prospects.recipients,
 	counts: state.prospects.counts,
 });
-
-
-
-
-
 
 export default connect(mapStateToProps, {
 	filterRecipients,

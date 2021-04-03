@@ -20,7 +20,12 @@ export const toastOnError = (error) => {
     errMessage = error;
   }
 
-  showNotification("warning", "API Call Error", errMessage);
+  if (errMessage.length > 100) {
+    showNotification("warning", "API Call Error", "The server encountered an internal error. Please try again.");
+  }
+  else {
+    showNotification("warning", "API Call Error", errMessage);
+  }
 };
 
 export const toastOnSuccess = (msg) => {

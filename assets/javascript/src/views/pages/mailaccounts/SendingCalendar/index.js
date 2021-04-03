@@ -86,9 +86,15 @@ function SendingCalendar({
   };
 
   const onSendTestEmail = () => {
-    console.log(currentMailAccount.email);
-    const mailAccountId = currentMailAccount.id;
-    sendTestEmail(mailAccountId);
+    // 0 : Call celery > email_sender()
+    // 1 : Call celery > email_receiver()
+    sendTestEmail(0);
+  };
+
+  const onReceiveTestEmail = () => {
+    // 0 : Call celery > email_sender()
+    // 1 : Call celery > email_receiver()
+    sendTestEmail(1);
   };
 
   return (
@@ -133,8 +139,12 @@ function SendingCalendar({
               />
             )}
 
-            <Button color="danger" type="button" onClick={onSendTestEmail}>
-              Send test email
+            <Button className="float-right" color="danger" type="button" onClick={onSendTestEmail} outline>
+              Test sender
+            </Button>
+
+            <Button className="float-right" color="danger" type="button" onClick={onReceiveTestEmail} outline>
+              Test receiver
             </Button>
           </Col>
         </Row>

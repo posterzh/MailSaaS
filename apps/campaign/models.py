@@ -28,7 +28,7 @@ class Campaign(models.Model):
     # schedule_date = models.DateField(blank=True, null=True)
     # schedule_time = models.TimeField(blank=True, null=True)
     terms_and_laws = models.BooleanField(default=False)
-    campaign_status = models.BooleanField(default=True) # True: Start, False: Pause
+    campaign_status = models.BooleanField(default=True)  # True: Start, False: Pause
     is_deleted = models.BooleanField(default=False)
     is_draft = models.BooleanField(default=False)
     label_name = models.ForeignKey(CampaignLabel, on_delete=models.SET_DEFAULT, default=1)
@@ -120,6 +120,12 @@ RECIPIENT = (
 )
 
 
+CAMPAIGN_LEAD_SETTING_OPERATOR = (
+    ('and', "AND"),
+    ('or', "OR"),
+)
+
+
 class CampaignLeadCatcher(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     assigned = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -129,6 +135,15 @@ class CampaignLeadCatcher(models.Model):
 
     def __str__(self):
         return str(self.campaign)
+
+
+class LeadSettings(models.Model):
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    join_operator = models.CharField(max_length=8, choices=CAMPAIGN_LEAD_SETTING_OPERATOR, default='and')
+    replies = models.PositiveSmallIntegerField(blank=True, default=0)
+    open = models.PositiveSmallIntegerField(blank=True, default=0)
+    click_any_link = models.PositiveSmallIntegerField(blank=True, default=0)
+    clicks_specific_link = models.PositiveSmallIntegerField(blank=True, default=0)
 
 
 class SendingObject(models.Model):
@@ -159,6 +174,7 @@ class SendingObject(models.Model):
 class Recipient(models.Model):
     LEAD_TYPE = (
         ("none", "None"),
+        ("open", "Open"),
         ("replied", "Replied"),
         ("won", "Won"),
         ("lost", "Lost"),
@@ -182,11 +198,11 @@ class Recipient(models.Model):
     update_date_time = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
-        return str(self.campaign)
+        return str(self.email)
 
 
 class Emails(models.Model):
-    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name='emails')
     email_type = models.PositiveSmallIntegerField(default=0, null=True)
     email_subject = models.CharField(max_length=100)
     email_body = models.TextField(blank=True, null=True)
@@ -217,9 +233,9 @@ class EmailOutbox(models.Model):
 
 
 class EmailInbox(models.Model):
+    outbox = models.ForeignKey(EmailOutbox, on_delete=models.SET_NULL, null=True)
     recipient_email = models.ForeignKey(Recipient, on_delete=models.SET_NULL, null=True)
     from_email = models.ForeignKey(EmailAccount, on_delete=models.SET_NULL, null=True)
-    outbox = models.ForeignKey(EmailOutbox, on_delete=models.SET_NULL, null=True)
     email_subject = models.TextField()
     email_body = models.TextField(blank=True, null=True)
 

@@ -1,21 +1,19 @@
 from datetime import datetime, timezone, timedelta
 from itertools import chain
-import email, imaplib
+import imaplib
 
 import pytz
-from django.db.models import Prefetch
-from django.http import Http404, HttpResponseServerError, HttpResponseBadRequest
 from pytracking.django import OpenTrackingView, ClickTrackingView
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from . import utils
 from .models import EmailAccount, SendingCalendar, CalendarStatus, WarmingStatus
 from .serializers import EmailAccountSerializer, SendingCalendarSerializer
-from .utils.sending_calendar import can_send_email, calendar_sent
-from ..campaign.models import SendingObject, EmailInbox, Campaign, Recipient, EmailOutbox
-from .utils.smtp import send_mail_with_smtp, receive_mail_with_imap, get_emails_to_send, check_email
+from .tasks import email_receiver, email_sender
+from ..campaign.models import EmailOutbox
+from .utils.smtp import check_email
 from mail.settings import DEFAULT_WARMUP_FOLDER
+from ..campaign.tasks import triggerLeadCatcher
 
 
 class EmailAccountListView(generics.ListCreateAPIView):
@@ -129,73 +127,14 @@ class SendTestEmailView(APIView):
         # mailAccountId = request.data['mailAccountId']
         # send_test_email.delay(mailAccountId)
 
-        available_mail_ids = []
-        available_mail_limits = []
-        mail_accounts = EmailAccount.objects.all()
-        for mail_account in mail_accounts:
-            sending_calendar, created = SendingCalendar.objects.get_or_create(mail_account_id=mail_account.id)
-            if created:
-                sending_calendar = SendingCalendar.objects.get(mail_account_id=mail_account.id)
-            calendar_status, created = CalendarStatus.objects.get_or_create(sending_calendar_id=sending_calendar.id,
-                                                                            defaults={'updated_datetime': datetime.now(
-                                                                                timezone.utc) - timedelta(days=1)})
+        ########################################
+        mailAccountId = request.data['mailAccountId']
+        if mailAccountId == 0:
+            email_sender()
+        elif mailAccountId == 1:
+            email_receiver()
 
-            if can_send_email(sending_calendar, calendar_status):
-                available_mail_ids.append(mail_account.id)
-                mail_limit = sending_calendar.max_emails_per_day - calendar_status.sent_count
-                available_mail_limits.append(mail_limit)
-
-        # Fetch sending objects
-        sending_objects = get_emails_to_send(available_mail_ids, available_mail_limits)
-
-        for sending_item in sending_objects:
-            camp = Campaign.objects.get(id=sending_item['camp_id'])
-            from_email = EmailAccount.objects.get(id=sending_item['from_email_id'])
-            to_email = Recipient.objects.get(id=sending_item['to_email_id'])
-            email_subject = sending_item['email_subject']
-            email_body = sending_item['email_body']
-
-            # Save to EmailOutbox
-            outbox = EmailOutbox()
-            outbox.campaign = camp
-            outbox.from_email = from_email
-            outbox.recipient = to_email
-            outbox.email_subject = email_subject
-            outbox.email_body = email_body
-            outbox.status = 0
-            outbox.sent_date = datetime.now(timezone.utc).date()
-            outbox.sent_time = datetime.now(timezone.utc).time()
-            outbox.save()
-
-            # Send email
-            result = send_mail_with_smtp(host=from_email.smtp_host,
-                                         port=from_email.smtp_port,
-                                         username=from_email.smtp_username,
-                                         password=from_email.smtp_password,
-                                         use_tls=from_email.use_smtp_ssl,
-                                         from_email=from_email.email,
-                                         to_email=to_email.email,
-                                         subject=email_subject,
-                                         body=email_body,
-                                         uuid=outbox.id,
-                                         track_opens=camp.track_opens,
-                                         track_linkclick=camp.track_linkclick)
-
-            if result:
-                print(f"Email sent from {from_email.email} to {to_email.email}")
-
-                # Update CalendarStatus
-                calendar_status = CalendarStatus.objects.get(sending_calendar__mail_account_id=from_email.id)
-                calendar_sent(calendar_status)
-
-                # Update EmailOutbox status
-                outbox.status = 1
-                outbox.save()
-            else:
-                print(f"Failed to send from {from_email.email} to {to_email.email}")
-
-                # Delete the EmailOutbox entry that fails
-                outbox.delete()
+        ########################################
 
         return Response("Ok")
 
@@ -205,10 +144,18 @@ class MyOpenTrackingView(OpenTrackingView):
     def notify_tracking_event(self, tracking_result):
         uuid = tracking_result.metadata['uuid']
 
-        sending_object = SendingObject.objects.get(id=uuid)
-        sending_object.opened += 1
-        sending_object.opened_datetime = datetime.now(timezone.utc)
-        sending_object.save()
+        outbox = EmailOutbox.objects.get(id=uuid)
+        outbox.opened += 1
+        outbox.opened_datetime = datetime.now(timezone.utc)
+        outbox.save()
+
+        outbox.recipient.opens += 1
+        outbox.recipient.save()
+
+        # Lead checking
+        triggerLeadCatcher(outbox.campaign_id, outbox.recipient_id)
+
+        print(f'Tracking: Email {outbox.recipient.email} is opened.')
 
 
 class MyClickTrackingView(ClickTrackingView):
@@ -216,7 +163,15 @@ class MyClickTrackingView(ClickTrackingView):
     def notify_tracking_event(self, tracking_result):
         uuid = tracking_result.metadata['uuid']
 
-        sending_object = SendingObject.objects.get(id=uuid)
-        sending_object.clicked += 1
-        sending_object.clicked_datetime = datetime.now(timezone.utc)
-        sending_object.save()
+        outbox = EmailOutbox.objects.get(id=uuid)
+        outbox.clicked += 1
+        outbox.clicked_datetime = datetime.now(timezone.utc)
+        outbox.save()
+
+        outbox.recipient.clicked += 1
+        outbox.recipient.save()
+
+        # Lead checking
+        triggerLeadCatcher(outbox.campaign_id, outbox.recipient_id)
+
+        print(f'Tracking: Email {outbox.recipient.email} is clicked.')

@@ -8,6 +8,7 @@ import PageContainer from "../../../components/Containers/PageContainer";
 import Tables from "../../../components/Tables";
 import { toggleTopLoader, toastOnError, messages } from '../../../utils/Utils';
 import axios from '../../../utils/axios';
+import moment from "moment";
 
 class LeadCatcher extends Component {
   constructor() {
@@ -18,7 +19,6 @@ class LeadCatcher extends Component {
     }
   }
   showDetails = () => {
-    console.log("asdfasdfasd")
   }
   async componentDidMount() {
     // this.props.CampaignLeadViewAction()
@@ -27,11 +27,12 @@ class LeadCatcher extends Component {
       const { data } = await axios.get("/campaign/leads/");
       if (data.success) {
         this.setState({
-          data: data.res
+          data: data.res.map(item => {
+            item.opened = moment(item.update_date_time).format('MMM DD, YYYY')
+            return item;
+          })
         })
       }
-      console.log(data.res);
-      
     } catch (e) {
       toastOnError(messages.api_failed);
     } finally {
@@ -58,12 +59,16 @@ class LeadCatcher extends Component {
       {
         key: 'lead_status',
         value: 'Lead Status',
+      },
+      {
+        key: 'opened',
+        value: 'Opened'
       }
     ];
     const filters = [
       {
-        key: 'status',
-        options: ['Open', 'Ignored', 'Won', 'Lost']
+        key: 'lead_status',
+        options: ['open', 'replied', 'won', 'lost', 'ignored']
       }
     ];
     return (

@@ -27,13 +27,6 @@ import DripPreviewPanel from "./DripPreviewPanel";
 class SequencePreviewPanel extends Component {
   constructor(props) {
     super(props);
-
-    const { detailsSequence: { followups, drips } } = props;
-
-    this.state = {
-      followUpList: followups,
-      dripList: drips,
-    }
   }
 
   componentDidMount() {
@@ -46,6 +39,9 @@ class SequencePreviewPanel extends Component {
 
   render() {
     const { detailsSequence } = this.props;
+
+    const followups = detailsSequence.emails ? detailsSequence.emails.filter(e => e.email_type == 1) : [];
+    const drips = detailsSequence.emails ? detailsSequence.emails.filter(e => e.email_type == 2) : [];
 
     return (
       <>
@@ -81,8 +77,8 @@ class SequencePreviewPanel extends Component {
               </CardHeader>
               <CardBody className="py-2">
                 <PreviewPanelList>
-                  {detailsSequence.followups && (
-                    detailsSequence.followups.map((followup, index) => (
+                  {followups && (
+                    followups.map((followup, index) => (
                       <FollowUpPreviewPanel key={`item_${index}`} subject={followup.subject} body={followup.email_body} waitDays={followup.waitDays} />
                     ))
                   )}
@@ -97,8 +93,8 @@ class SequencePreviewPanel extends Component {
               </CardHeader>
               <CardBody className="py-2">
                 <PreviewPanelList>
-                  {detailsSequence.drips && (
-                    detailsSequence.drips.map((drip, index) => (
+                  {drips && (
+                    drips.map((drip, index) => (
                       <DripPreviewPanel key={`item_${index}`} subject={drip.subject} body={drip.email_body} waitDays={drip.waitDays} />
                     ))
                   )}

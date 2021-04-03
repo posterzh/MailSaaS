@@ -4,6 +4,7 @@ import { history } from "../..";
 import {
   GET_OVERVIEW_SUMMARY,
   GET_DETAILS_SEQUENCE,
+  GET_DETAILS_RECIPIENTS,
   GET_DETAILS_SETTINGS,
 } from "../actionType/actionType";
 
@@ -52,6 +53,24 @@ export const getDetialsSequence = (id) => (dispatch) => {
     });
 }
 
+export const getDetailRecipients = (id) => (dispatch) => {
+  toggleTopLoader(true);
+  return axios
+    .get(`/campaign/details-recipients/${id}/`)
+    .then((response) => {
+      dispatch({
+        type: GET_DETAILS_RECIPIENTS,
+        payload: response.data.results,
+      });
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+}
+
 export const getDetailsSettings = (id) => (dispatch) => {
   toggleTopLoader(true);
   return axios
@@ -70,3 +89,34 @@ export const getDetailsSettings = (id) => (dispatch) => {
       toggleTopLoader(false);
     });
 }
+
+export const getLeadSettings = (id) => (dispatch) => {
+  toggleTopLoader(true);
+  return axios
+    .get(`/campaign/settings-lead/${id}/`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+}
+
+export const updateLeadSettings = (id, data) => (dispatch) => {
+  toggleTopLoader(true);
+  return axios
+    .post(`/campaign/settings-lead/${id}/`, data)
+    .then((response) => {
+      toastOnSuccess("Updated successfully!");
+      return response.data;
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+};

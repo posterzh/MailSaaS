@@ -25,7 +25,7 @@ export class Profile extends Component {
   }
 
   componentDidMount() {
-    const {id, getProfile} = this.props;
+    const { id, getProfile } = this.props;
     getProfile(id);
   }
 
@@ -56,7 +56,7 @@ export class Profile extends Component {
                         <img
                           alt="..."
                           className="profile-rounded-img"
-                          style = {{background: "ghostwhite"}}
+                          style={{ background: "ghostwhite" }}
                           src={user.avatar ? user.avatar : defaultProfilePic}
                         />
                         <label className="profile-edit-icon">
@@ -74,18 +74,7 @@ export class Profile extends Component {
                     <Row>
                       <div className="col">
                         <div className="card-profile-stats d-flex justify-content-center">
-                          <div>
-                            <span className="heading">22</span>
-                            <span className="description">Draft</span>
-                          </div>
-                          <div>
-                            <span className="heading">10</span>
-                            <span className="description">Working</span>
-                          </div>
-                          <div>
-                            <span className="heading">89</span>
-                            <span className="description">Paused</span>
-                          </div>
+
                         </div>
                       </div>
                     </Row>
@@ -108,138 +97,144 @@ export class Profile extends Component {
                   </CardHeader>
                   <CardBody>
                     <Form>
-                      <h6 className="heading-small text-muted mb-4">
-                        User information
+                      <Row>
+                        <Col md={6}>
+                          <h6 className="heading-small text-muted mb-4">
+                            User information
                       </h6>
-                      <div className="pl-lg-4">
-                        <Row>
-                          <Col lg="6">
-                            <FormGroup>
-                              <label
-                                className="form-control-label"
-                                htmlFor="first-name"
-                              >
-                                First name
+                          <div className="pl-lg-4">
+                            <Row>
+                              <Col lg="6">
+                                <FormGroup>
+                                  <label
+                                    className="form-control-label"
+                                    htmlFor="first-name"
+                                  >
+                                    First name
                               </label>
-                              <Input
-                                id="first-name"
-                                placeholder="First name"
-                                type="text"
-                                defaultValue={user.first_name}
-                                name="firstName"
-                              />
-                            </FormGroup>
-                          </Col>
-                          <Col lg="6">
-                            <FormGroup>
-                              <label
-                                className="form-control-label"
-                                htmlFor="last-name"
-                              >
-                                Last name
+                                  <Input
+                                    id="first-name"
+                                    placeholder="First name"
+                                    type="text"
+                                    defaultValue={user.first_name}
+                                    name="firstName"
+                                  />
+                                </FormGroup>
+                              </Col>
+                              <Col lg="6">
+                                <FormGroup>
+                                  <label
+                                    className="form-control-label"
+                                    htmlFor="last-name"
+                                  >
+                                    Last name
                               </label>
-                              <Input
-                                id="last-name"
-                                placeholder="Last name"
-                                type="text"
-                                defaultValue={user.last_name}
-                                name="lastName"
-                              />
-                            </FormGroup>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col lg="6">
-                            <FormGroup>
-                              <label
-                                className="form-control-label"
-                                htmlFor="companyName"
-                              >
-                                Company name
+                                  <Input
+                                    id="last-name"
+                                    placeholder="Last name"
+                                    type="text"
+                                    defaultValue={user.last_name}
+                                    name="lastName"
+                                  />
+                                </FormGroup>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col lg="12">
+                                <FormGroup>
+                                  <label
+                                    className="form-control-label"
+                                    htmlFor="companyName"
+                                  >
+                                    Company name
                               </label>
-                              <Input
-                                id="company-name"
-                                placeholder="Company name"
-                                type="text"
-                                defaultValue={user.company_name}
-                                name="companyName"
-                                autoComplete='off'
-                              />
-                            </FormGroup>
-                          </Col>
-                          <Col lg="6">
-                            <FormGroup>
-                              <label
-                                className="form-control-label"
-                                htmlFor="email"
-                              >
-                                Email address
+                                  <Input
+                                    id="company-name"
+                                    placeholder="Company name"
+                                    type="text"
+                                    defaultValue={user.company_name}
+                                    name="companyName"
+                                    autoComplete='off'
+                                  />
+                                </FormGroup>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col lg="12">
+                                <FormGroup>
+                                  <label
+                                    className="form-control-label"
+                                    htmlFor="email"
+                                  >
+                                    Email address
                               </label>
-                              <Input
-                                id="email"
-                                placeholder="jesse@example.com"
-                                type="email"
-                                defaultValue={user.email}
-                                name="email"
-                              />
-                            </FormGroup>
-                          </Col>
-                        </Row>
-                      </div>
-                      <hr className="my-4" />
-
-                      <h6 className="heading-small text-muted mb-4">
-                        Change Password
+                                  <Input
+                                    id="email"
+                                    placeholder="jesse@example.com"
+                                    type="email"
+                                    defaultValue={user.email}
+                                    name="email"
+                                  />
+                                </FormGroup>
+                              </Col>
+                            </Row>
+                          </div>
+                        </Col>
+                        <Col md={6}>
+                          <h6 className="heading-small text-muted mb-4">
+                            Change Password
                       </h6>
-                      <div className="pl-lg-4">
-                        <Row>
-                          <Col md="12">
-                            <FormGroup>
-                              <label
-                                className="form-control-label"
-                                htmlFor="old-password"
-                              >
-                                Old Password
+                          <div className="pl-lg-4">
+                            <Row>
+                              <Col md="12">
+                                <FormGroup>
+                                  <label
+                                    className="form-control-label"
+                                    htmlFor="old-password"
+                                  >
+                                    Old Password
                               </label>
-                              <Input
-                                id="old-password"
-                                placeholder="Old Password"
-                                type="password"
-                              />
-                            </FormGroup>
-                          </Col>
-                          <Col md="12">
-                            <FormGroup>
-                              <label
-                                className="form-control-label"
-                                htmlFor="new-password"
-                              >
-                                New Password
+                                  <Input
+                                    id="old-password"
+                                    placeholder="Old Password"
+                                    type="password"
+                                  />
+                                </FormGroup>
+                              </Col>
+                              <Col md="12">
+                                <FormGroup>
+                                  <label
+                                    className="form-control-label"
+                                    htmlFor="new-password"
+                                  >
+                                    New Password
                               </label>
-                              <Input
-                                id="new-password"
-                                placeholder="New Password"
-                                type="password"
-                              />
-                            </FormGroup>
-                          </Col>
-                          <Col md="12">
-                            <FormGroup>
-                              <label
-                                className="form-control-label"
-                                htmlFor="confirm-password"
-                              >
-                                Confirm Password
+                                  <Input
+                                    id="new-password"
+                                    placeholder="New Password"
+                                    type="password"
+                                  />
+                                </FormGroup>
+                              </Col>
+                              <Col md="12">
+                                <FormGroup>
+                                  <label
+                                    className="form-control-label"
+                                    htmlFor="confirm-password"
+                                  >
+                                    Confirm Password
                               </label>
-                              <Input
-                                id="confirm-password"
-                                placeholder="Confirm Password"
-                                type="password"
-                              />
-                            </FormGroup>
-                          </Col>
-                        </Row>
-                      </div>
+                                  <Input
+                                    id="confirm-password"
+                                    placeholder="Confirm Password"
+                                    type="password"
+                                  />
+                                </FormGroup>
+                              </Col>
+                            </Row>
+                          </div>
+                        </Col>
+                      </Row>
                     </Form>
                   </CardBody>
                   <CardFooter className="bg-transparent text-right">

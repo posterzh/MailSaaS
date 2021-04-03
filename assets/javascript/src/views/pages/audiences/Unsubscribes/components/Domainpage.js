@@ -22,7 +22,6 @@ function Domainpage(props) {
                 />
               </th>
               <th>Domain</th>
-              <th>Name</th>
               <th>UNSUBSCRIBE DATE</th>
             </tr>
           </thead>
@@ -43,7 +42,6 @@ function Domainpage(props) {
                   />
                 </td>
                 <td>{row.domain}</td>
-                <td>{row.name}</td>
                 <td>{new Date(row.date).toLocaleString()}</td>
               </tr>
             ))}
