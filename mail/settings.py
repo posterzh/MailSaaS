@@ -4,11 +4,9 @@ import datetime
 from decouple import config
 from pathlib import Path  # Python 3.6+ only
 import sentry_sdk
-from .dbpass import get_secret
+from .dbpass import get_secret,get_s3_secret
 from sentry_sdk.integrations.django import DjangoIntegration
 
-
-AWS_S3_CUSTOM_DOMAIN = 'cdn.mailerrize.com'
 
 sentry_sdk.init(
     dsn="https://54a77e70d6ac40c9b834017e1c5d4df0@o423610.ingest.sentry.io/5701236",
@@ -290,23 +288,44 @@ DATETIME_FORMAT = '%d-%m-%Y %H:%M:%S'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+
+if DEBUG == False:
+    # aws settings
+    s3key = get_s3_secret()['s3key']
+    s3secret = get_s3_secret()['s3secret']
+    AWS_ACCESS_KEY_ID = s3key
+    AWS_SECRET_ACCESS_KEY = s3secret
+    AWS_STORAGE_BUCKET_NAME = "mailerrize"
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_S3_FILE_OVERWRITE = True
+    # AWS_S3_CUSTOM_DOMAIN = f'mailerrize.s3.amazonaws.com'
+    AWS_S3_CUSTOM_DOMAIN = 'cdn.mailerrize.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # s3 static settings
+    AWS_LOCATION = ''
+    STATIC_URL = 'https://cdn.mailerrize.com/'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+else:
+    STATIC_URL = '/staticfiles/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = '/media/'
 # STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR,'media'),
-    os.path.join(BASE_DIR,'assets'),
+    "static",os.path.join(BASE_DIR, 'static'),
+    "media",os.path.join(BASE_DIR,'media'),
+    "assets",os.path.join(BASE_DIR,'assets'),
 ]
 
-if DEBUG == False:
-    STATIC_URL = 'https://cdn.mailerrize.com/'
+
 # uncomment to use manifest storage to bust cache when file change
 # note: this may break some image references in sass files which is why it is not enabled by default
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+
 
 # Email setup
 
