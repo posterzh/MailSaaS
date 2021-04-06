@@ -57,3 +57,19 @@ export const campaignUpdate = (payload) => (dispatch) => {
       toggleTopLoader(false);
     });
 }
+
+export const campaignChangeStatus = (id, status) => {
+  toggleTopLoader(true);
+  axios
+    .post(`/campaign/update-status/${id}`, status)
+    .then((response) => {
+      toastOnSuccess("Updated successfully!");
+      return response.data;
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+}

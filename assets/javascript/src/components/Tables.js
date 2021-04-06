@@ -458,13 +458,22 @@ function Tables({
                             {showControl && (
                               <td key="header-control">
                                 {data.control &&
-                                  <Badge color={data.control == "play" ? "success" : "danger"}
-                                    onClick={(e) => {
-                                      e.stopPropagation(); controlCallback(e, index);
-                                    }}
-                                  >
-                                    <i className={`fa fa-${data.control}`}></i>
-                                  </Badge>
+                                  <>
+                                    <Badge id={`action${index}`} color={data.control == "play" ? "success" : "danger"}
+                                      onClick={(e) => {
+                                        e.stopPropagation(); controlCallback(data, index);
+                                      }}
+                                    >
+                                      <i className={`fa fa-${data.control}`}></i>
+                                    </Badge>
+                                    <UncontrolledTooltip
+                                      delay={0}
+                                      placement="bottom"
+                                      target={`action${index}`}
+                                    >
+                                      {data.tooltip}
+                                    </UncontrolledTooltip>
+                                  </>
                                 }
                               </td>
                             )}

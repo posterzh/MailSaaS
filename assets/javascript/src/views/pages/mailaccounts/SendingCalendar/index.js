@@ -139,12 +139,12 @@ function SendingCalendar({
               />
             )}
 
-            <Button color="danger" type="button" onClick={onSendTestEmail}>
-              Send test
+            <Button className="float-right" color="danger" type="button" onClick={onSendTestEmail} outline>
+              Test sender
             </Button>
 
-            <Button color="danger" type="button" onClick={onReceiveTestEmail}>
-              Receive test
+            <Button className="float-right" color="danger" type="button" onClick={onReceiveTestEmail} outline>
+              Test receiver
             </Button>
           </Col>
         </Row>

@@ -527,6 +527,7 @@ class CampaignCreateView(APIView):
         if "Email" in csv_columns:
             df_csv.rename(columns={'Email': 'email'}, inplace=True)
         df_csv.dropna(subset=["email"], inplace=True)
+        df_csv.drop_duplicates(subset=["email"], inplace=True)
 
         res_emails = df_csv[['email']]
         res_replacements = json.loads(df_csv.to_json(orient="records"))
@@ -557,20 +558,20 @@ class CampaignCreateView(APIView):
             #         self.createSendingObject(campaign_id, from_email, email[0], drip['subject'],
             #                                  drip['email_body'], 2, replacement, drip['waitDays'])
 
-    def createSendingObject(self, camp_id, from_email, to_email, subject, body, type, replacement, wait_days):
-        sending_obj = {
-            'campaign': camp_id,
-            'from_email': from_email,
-            'recipient_email': to_email,
-            'email_subject': self.convertTemplate(subject, replacement),
-            'email_body': self.convertTemplate(body, replacement),
-            'email_type': type,
-            'wait_days': wait_days
-        }
-
-        res = CampaignSendingObjectSerializer(data=sending_obj)
-        if res.is_valid():
-            res.save()
+    # def createSendingObject(self, camp_id, from_email, to_email, subject, body, type, replacement, wait_days):
+    #     sending_obj = {
+    #         'campaign': camp_id,
+    #         'from_email': from_email,
+    #         'recipient_email': to_email,
+    #         'email_subject': self.convertTemplate(subject, replacement),
+    #         'email_body': self.convertTemplate(body, replacement),
+    #         'email_type': type,
+    #         'wait_days': wait_days
+    #     }
+    #
+    #     res = CampaignSendingObjectSerializer(data=sending_obj)
+    #     if res.is_valid():
+    #         res.save()
 
     def convertTemplate(self, template, replacement):
         for key in replacement.keys():
@@ -1324,8 +1325,8 @@ class CampaignOverviewSummary(APIView):
         except:
             return Response({"message": "No Campaign with this id", "success": False})
 
-        campEmail = CampaignRecipient.objects.filter(campaign=pk)
-        campEmailserializer = CampaignEmailSerializer(campEmail, many=True)
+        campEmail = Recipient.objects.filter(campaign=pk)
+        campEmailserializer = CampaignRecipientSerializer(campEmail, many=True)
         resp = {
             "id": pk,
             "title": camp.title,
@@ -1374,7 +1375,7 @@ class CampaignOverviewSummary(APIView):
             if campData["replies"]:
                 resp["replyCount"] += 1
             resp["replyPer"] = round((resp["replyCount"] * 100) / resp["recipientCount"], 2)
-            if campData["unsubscribe"]:
+            if campData["is_unsubscribe"]:
                 resp["unsubscribeCount"] += 1
             resp["unsubscribePer"] = round((resp["unsubscribeCount"] * 100) / resp["recipientCount"], 2)
         return Response({"result": resp, "success": True})
@@ -2011,6 +2012,18 @@ class CampaignLeadsView(generics.ListAPIView):
                               assigned_name=F('campaign__assigned__full_name'), camp_id=F('campaign'))
         # campEmailserializer = CampaignEmailSerializer(queryset, many=True)
         return Response({'res': res, 'success': True})
+
+
+class CampaignUpdateStatus(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, pk):
+        camp = Campaign.objects.filter(id=pk)
+        if len(camp) > 0:
+            camp[0].campaign_status = request.data['status']
+            camp[0].save()
+
+        return Response({'success': True})
 
 
 class CampaignLeadSettingView(APIView):
