@@ -18,6 +18,7 @@ import {
 import { CSVReader } from 'react-papaparse';
 import { showNotification } from "../../../../../utils/Utils";
 import Tables from "../../../../../components/Tables";
+import { importContactsFromCSV } from "../../../../../redux/action/CampaignDetailsActions";
 
 const initialState = {
   show: false,
@@ -46,9 +47,15 @@ export class ImportContactsModal extends Component {
     // }
   }
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
+    e.preventDefault();
+    if (!this.state.csvFile) {
+      showNotification("danger", "Not uploaded CSV", "");
+      return false;
+    }
+
+    this.props.importContactsFromCSV(this.state.csvFile);
     this.props.close();
-    showNotification("warning", "Coming soon...", "This feature will be implemented in the future version");
   }
 
   handleOnDrop = (data, file) => {

@@ -22,7 +22,7 @@ import DetailHeader from "./components/DetailHeader";
 import ImportContactsModal from "./components/ImportContactsModal";
 import RecipientDetailModal from "./components/RecipientDetailModal";
 import CSVDownloadModal from "./components/CSVDownloadModal";
-import { recipientsFilters as recipientsInitialFilters, recipientsTable } from "../../../../components/TableHeader";
+import { recipientsFilters, recipientsTable } from "../../../../components/TableHeader";
 import Tables from "../../../../components/Tables";
 
 class CampaignDetailRecipients extends Component {
@@ -30,7 +30,7 @@ class CampaignDetailRecipients extends Component {
     super();
     this.state = {
       recipientDetailItem: null,
-      recipientsFilters: recipientsInitialFilters,
+      recipientsFilters: recipientsFilters,
       importContactsModal: false,
       recipientDetailModal: false,
       downloadCSVModal: false,
@@ -45,17 +45,12 @@ class CampaignDetailRecipients extends Component {
     if (nextProps.recipients !== this.props.recipients) {
       const getUniqueArray = (array, field) => array.map(x => x[field]).filter((v, i, a) => a.indexOf(v) === i);
       const emailOptions = getUniqueArray(nextProps.recipients, 'email')
-      const nameOptions = getUniqueArray(nextProps.recipients, 'name')
       this.setState({
         recipientsFilters: [
           {
             key: 'email',
             options: emailOptions
           },
-          {
-            key: 'name',
-            options: nameOptions
-          }
         ]
       })
     }

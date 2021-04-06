@@ -1,7 +1,3 @@
-import urllib
-from io import BytesIO
-from django.core.files import File
-
 def get_avatar(backend, strategy, details, response, user=None, *args, **kwargs):
     url = None
     if backend.name == 'facebook':
@@ -11,8 +7,6 @@ def get_avatar(backend, strategy, details, response, user=None, *args, **kwargs)
     if backend.name == 'google-oauth2':
         url = response['picture']
     if url:
-        response = urllib.request.urlopen(url)
-        io = BytesIO(response.read())
-        user.avatar.save('profile_pic_{}.jpg'.format(user.id), File(io))
+        user.avatar_url = url
         user.save()
     return {}
