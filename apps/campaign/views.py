@@ -27,7 +27,7 @@ from apps.integration.views import SendSlackMessage
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmailModel, Recipient,
-                     EmailOnLinkClick, FollowUpEmail, CampaignLabel, SendingObject, Emails, LeadSettings)
+                     EmailOnLinkClick, FollowUpEmail, CampaignLabel, SendingObject, Emails, LeadSettings, EmailOutbox)
 from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
                           CampaignSendingObjectSerializer, OnclickSerializer, CampaignLabelSerializer,
@@ -1301,8 +1301,93 @@ class TrackEmailClick(APIView):
 
         return Response({"message": "Saved Successfully"})
 
+class GetCampaignOverview(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, pk, format=None):
+        # postdata = request.data
+        #
+        # campEmail = CampaignRecipient.objects.filter(campaign=pk)
+        # campEmailserializer = CampaignEmailSerializer(campEmail, many=True)
+        # resp = {
+        #     "recipientCount": campEmail.count(),
+        #     "leadCount": 0,
+        #     "openLeadCount": 0,
+        #     "openLeadPer": 0,
+        #     "wonLeadCount": 0,
+        #     "wonLeadPer": 0,
+        #     "lostLeadCount": 0,
+        #     "lostLeadPer": 0,
+        #     "ignoredLeadCount": 0,
+        #     "ignoredLeadPer": 0,
+        #     "sentCount": 0,
+        #     "sentPer": 0,
+        #     "openCount": 0,
+        #     "openPer": 0,
+        #     "replyCount": 0,
+        #     "replyPer": 0,
+        #     "unsubscribeCount": 0,
+        #     "unsubscribePer": 0,
+        # }
+        # for campData in campEmailserializer.data:
+        #     if campData["leads"]:
+        #         resp["leadCount"] = resp["leadCount"] + 1
+        #
+        #         if campData["lead_status"] == "openLead":
+        #             resp["openLeadCount"] = resp["openLeadCount"] + 1
+        #         if campData["lead_status"] == "wonLead":
+        #             resp["wonLeadCount"] = resp["wonLeadCount"] + 1
+        #         if campData["lead_status"] == "lostLead":
+        #             resp["lostLeadCount"] = resp["lostLeadCount"] + 1
+        #         if campData["lead_status"] == "ignoredLead":
+        #             resp["ignoredLeadCount"] = resp["ignoredLeadCount"] + 1
+        #
+        #         resp["openLeadPer"] = round((resp["openLeadCount"] * 100) / resp["leadCount"], 2)
+        #         resp["wonLeadPer"] = round((resp["wonLeadCount"] * 100) / resp["leadCount"], 2)
+        #         resp["lostLeadPer"] = round((resp["lostLeadCount"] * 100) / resp["leadCount"], 2)
+        #         resp["ignoredLeadPer"] = round((resp["ignoredLeadCount"] * 100) / resp["leadCount"], 2)
+        #     if campData["sent"]:
+        #         resp["sentCount"] += 1
+        #     resp["sentPer"] = round((resp["sentCount"] * 100) / resp["recipientCount"], 2)
+        #     if campData["opens"]:
+        #         resp["openCount"] += 1
+        #     resp["openPer"] = round((resp["openCount"] * 100) / resp["recipientCount"], 2)
+        #     if campData["replies"]:
+        #         resp["replyCount"] += 1
+        #     resp["replyPer"] = round((resp["replyCount"] * 100) / resp["recipientCount"], 2)
+        #     if campData["unsubscribe"]:
+        #         resp["unsubscribeCount"] += 1
+        #     resp["unsubscribePer"] = round((resp["unsubscribeCount"] * 100) / resp["recipientCount"], 2)
+        return Response({})
+
 
 class CampaignOverviewSummary(APIView):
+    # permission_classes = (permissions.IsAuthenticated,)
+    # serializer_class = ProspectsSerializer
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ['leads', 'bounces', 'is_unsubscribe']
+    #
+    # def get_queryset(self):
+    #     """
+    #     This view should return a list of all the purchases
+    #     for the currently authenticated user.
+    #     """
+    #     user = self.request.user
+    #
+    #     unsubscribe_emails = UnsubscribeEmail.objects.values_list('email', flat=True)
+    #
+    #     EmailOutbox.objects.values('recipient', 'email').annotate(Sum('recipient__sent'), Sum('email'))
+    #
+    #     return Recipient.objects \
+    #         .filter(campaign__assigned=user.id, is_delete=False) \
+    #         .exclude(email__in=unsubscribe_emails) \
+    #         .values('email') \
+    #         .annotate(sent_count=Coalesce(Sum('sent'), 0),
+    #                   open_count=Coalesce(Sum('opens'), 0),
+    #                   click_count=Coalesce(Sum('clicked'), 0),
+    #                   reply_count=Coalesce(Sum('replies'), 0),
+    #                   lead_count=Coalesce(Sum('leads'), 0))
+
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, pk, format=None):
@@ -1315,6 +1400,17 @@ class CampaignOverviewSummary(APIView):
 
         campEmail = Recipient.objects.filter(campaign=pk)
         campEmailserializer = CampaignRecipientSerializer(campEmail, many=True)
+
+        resp = {
+            "id": pk,
+            "title": camp.title,
+            "recipients": campEmail.count(),
+            "intro": {},
+            "follow-ups": [],
+            "drips": [],
+            "leads": {}
+        }
+
         resp = {
             "id": pk,
             "title": camp.title,
@@ -1367,66 +1463,6 @@ class CampaignOverviewSummary(APIView):
                 resp["unsubscribeCount"] += 1
             resp["unsubscribePer"] = round((resp["unsubscribeCount"] * 100) / resp["recipientCount"], 2)
         return Response({"result": resp, "success": True})
-
-
-class GetCampaignOverview(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get(self, request, pk, format=None):
-        postdata = request.data
-
-        campEmail = CampaignRecipient.objects.filter(campaign=pk)
-        campEmailserializer = CampaignEmailSerializer(campEmail, many=True)
-        resp = {
-            "recipientCount": campEmail.count(),
-            "leadCount": 0,
-            "openLeadCount": 0,
-            "openLeadPer": 0,
-            "wonLeadCount": 0,
-            "wonLeadPer": 0,
-            "lostLeadCount": 0,
-            "lostLeadPer": 0,
-            "ignoredLeadCount": 0,
-            "ignoredLeadPer": 0,
-            "sentCount": 0,
-            "sentPer": 0,
-            "openCount": 0,
-            "openPer": 0,
-            "replyCount": 0,
-            "replyPer": 0,
-            "unsubscribeCount": 0,
-            "unsubscribePer": 0,
-        }
-        for campData in campEmailserializer.data:
-            if campData["leads"]:
-                resp["leadCount"] = resp["leadCount"] + 1
-
-                if campData["lead_status"] == "openLead":
-                    resp["openLeadCount"] = resp["openLeadCount"] + 1
-                if campData["lead_status"] == "wonLead":
-                    resp["wonLeadCount"] = resp["wonLeadCount"] + 1
-                if campData["lead_status"] == "lostLead":
-                    resp["lostLeadCount"] = resp["lostLeadCount"] + 1
-                if campData["lead_status"] == "ignoredLead":
-                    resp["ignoredLeadCount"] = resp["ignoredLeadCount"] + 1
-
-                resp["openLeadPer"] = round((resp["openLeadCount"] * 100) / resp["leadCount"], 2)
-                resp["wonLeadPer"] = round((resp["wonLeadCount"] * 100) / resp["leadCount"], 2)
-                resp["lostLeadPer"] = round((resp["lostLeadCount"] * 100) / resp["leadCount"], 2)
-                resp["ignoredLeadPer"] = round((resp["ignoredLeadCount"] * 100) / resp["leadCount"], 2)
-            if campData["sent"]:
-                resp["sentCount"] += 1
-            resp["sentPer"] = round((resp["sentCount"] * 100) / resp["recipientCount"], 2)
-            if campData["opens"]:
-                resp["openCount"] += 1
-            resp["openPer"] = round((resp["openCount"] * 100) / resp["recipientCount"], 2)
-            if campData["replies"]:
-                resp["replyCount"] += 1
-            resp["replyPer"] = round((resp["replyCount"] * 100) / resp["recipientCount"], 2)
-            if campData["unsubscribe"]:
-                resp["unsubscribeCount"] += 1
-            resp["unsubscribePer"] = round((resp["unsubscribeCount"] * 100) / resp["recipientCount"], 2)
-        return Response(resp)
 
 
 class AllRecipientView(generics.RetrieveUpdateDestroyAPIView):
