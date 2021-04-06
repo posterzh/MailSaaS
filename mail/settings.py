@@ -363,7 +363,10 @@ REST_FRAMEWORK = {
 }
 
 # Celery setup (using redis)
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'sqs://AKIA3PBLWS55IDE6RJW2:qCcVKF0q8cUgJRat89P25oJp+pPfGeKVHn2w4lzA@'
+CELERY_BROKER_TRANSPORT = 'sqs'
+CELERY_BROKER_TRANSPORT_OPTIONS = {'region': 'us-east-2'}
+
 CELERY_RESULT_BACKEND = 'django-db'
 
 CELERY_ACCEPT_CONTENT = ['json']

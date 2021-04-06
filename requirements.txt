@@ -113,3 +113,5 @@ imap-tools
 django-oauth-toolkit
 django-storages
 boto3
+pycurl
+celery[sqs]
