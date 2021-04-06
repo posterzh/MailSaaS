@@ -8,4 +8,5 @@ RUN apt-get install libpq-dev gcc python3-pip  python3-tk  -y
 RUN pip3 install -r requirements.txt
 RUN npm i
 RUN npm run build
+RUN python3 manage.py collectstatic --no-input
 CMD python3 manage.py runserver 0.0.0.0:8000

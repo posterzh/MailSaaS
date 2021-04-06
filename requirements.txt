@@ -111,3 +111,4 @@ pytk
 essential_generators
 imap-tools
 django-oauth-toolkit
+django-storages

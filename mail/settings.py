@@ -4,7 +4,9 @@ import datetime
 from decouple import config
 from pathlib import Path  # Python 3.6+ only
 import sentry_sdk
+from .dbpass import get_secret,get_s3_secret
 from sentry_sdk.integrations.django import DjangoIntegration
+
 
 sentry_sdk.init(
     dsn="https://54a77e70d6ac40c9b834017e1c5d4df0@o423610.ingest.sentry.io/5701236",
@@ -32,7 +34,7 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True
+DEBUG = False
 
 # LIVE = bool(os.environ.get("LIVE", "True"))
 LIVE = False
@@ -62,6 +64,7 @@ DJANGO_APPS = [
     'django_celery_beat',
     'django_extensions',
     'django_filters',
+    'storages'
 ]
 
 # Put your third-party apps here
@@ -166,17 +169,32 @@ FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
+if DEBUG == True:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'USER': 'doadmin',
+            'PASSWORD': 'k6sehj7ohh30gjfy',
+            'HOST': 'db-postgresql-sfo2-27945-do-user-8602625-0.b.db.ondigitalocean.com',
+            'PORT': '25060',
+            'NAME': 'mail'
+
+        }
+    }
+
+if DEBUG == False:
+    dbpassw = get_secret()['password']
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'USER': 'doadmin',
-        'PASSWORD': 'k6sehj7ohh30gjfy',
-        'HOST': 'db-postgresql-sfo2-27945-do-user-8602625-0.b.db.ondigitalocean.com',
-        'PORT': '25060',
-        'NAME': 'mail'
+        'USER': 'postgres',
+        'PASSWORD': dbpassw,
+        'HOST': 'mailerrize-prod.cluster-cti2gmro8z63.us-east-2.rds.amazonaws.com',
+        'PORT': '5432',
+        'NAME': 'mailerrizeprod'
 
     }
-}
+    } 
 
 GOOGLE_CLIENT_SECRET_FILE = os.path.join(BASE_DIR,
                                          'client_secret_178038321765-1d24dsmngr7cmthb1ksvno3kehirnqbg.apps.googleusercontent.com.json')
@@ -270,18 +288,44 @@ DATETIME_FORMAT = '%d-%m-%Y %H:%M:%S'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
-STATIC_URL = '/static/'
+
+if DEBUG == False:
+    # aws settings
+    s3key = get_s3_secret()['s3key']
+    s3secret = get_s3_secret()['s3secret']
+    AWS_ACCESS_KEY_ID = s3key
+    AWS_SECRET_ACCESS_KEY = s3secret
+    AWS_STORAGE_BUCKET_NAME = "mailerrize"
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_S3_FILE_OVERWRITE = True
+    # AWS_S3_CUSTOM_DOMAIN = f'mailerrize.s3.amazonaws.com'
+    AWS_S3_CUSTOM_DOMAIN = 'cdn.mailerrize.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # s3 static settings
+    AWS_LOCATION = ''
+    STATIC_URL = 'https://cdn.mailerrize.com/'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+else:
+    STATIC_URL = '/staticfiles/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = '/media/'
+# STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    "static",os.path.join(BASE_DIR, 'static'),
+    "media",os.path.join(BASE_DIR,'media'),
+    "assets",os.path.join(BASE_DIR,'assets'),
 ]
+
+
 # uncomment to use manifest storage to bust cache when file change
 # note: this may break some image references in sass files which is why it is not enabled by default
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+
 
 # Email setup
 
