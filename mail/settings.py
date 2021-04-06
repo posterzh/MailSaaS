@@ -34,14 +34,14 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = False
+DEBUG = bool(os.environ.get("DEBUG", "True"))
 
 # LIVE = bool(os.environ.get("LIVE", "True"))
 LIVE = False
 
 ALLOWED_HOSTS = ['*']
 # CORS_ALLOWED_ORIGINS = ['*']
-SITE_URL = 'http://localhost:8000'
+SITE_URL = os.environ.get("SITE_URL", "http://localhost:8000")
 
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -169,7 +169,7 @@ FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-if DEBUG == True:
+if DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -182,19 +182,19 @@ if DEBUG == True:
         }
     }
 
-if DEBUG == False:
+if not DEBUG:
     dbpassw = get_secret()['password']
     DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'USER': 'postgres',
-        'PASSWORD': dbpassw,
-        'HOST': 'mailerrize-prod.cluster-cti2gmro8z63.us-east-2.rds.amazonaws.com',
-        'PORT': '5432',
-        'NAME': 'mailerrizeprod'
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'USER': 'postgres',
+            'PASSWORD': dbpassw,
+            'HOST': 'mailerrize-prod.cluster-cti2gmro8z63.us-east-2.rds.amazonaws.com',
+            'PORT': '5432',
+            'NAME': 'mailerrizeprod'
 
+        }
     }
-    } 
 
 
 GOOGLE_AUTH_SCOPES = [
@@ -363,10 +363,10 @@ REST_FRAMEWORK = {
 }
 
 # Celery setup (using redis)
+
 CELERY_BROKER_URL = 'sqs://AKIA3PBLWS55IDE6RJW2:qCcVKF0q8cUgJRat89P25oJp+pPfGeKVHn2w4lzA@'
 CELERY_BROKER_TRANSPORT = 'sqs'
 CELERY_BROKER_TRANSPORT_OPTIONS = {'region': 'us-east-2'}
-
 CELERY_RESULT_BACKEND = 'django-db'
 
 CELERY_ACCEPT_CONTENT = ['json']

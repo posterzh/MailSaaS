@@ -13,7 +13,7 @@ from django.core import mail
 from django.core.mail.backends.smtp import EmailBackend
 from django.db import connection
 
-from apps.campaign.models import SendingObject, CampaignRecipient, EmailOutbox, Campaign, Recipient
+from apps.campaign.models import CampaignRecipient, EmailOutbox, Campaign, Recipient
 from apps.mailaccounts.models import EmailAccount
 from apps.mailaccounts.utils.tracking import add_tracking
 from mail.settings import DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX, DEFAULT_WARMUP_FOLDER

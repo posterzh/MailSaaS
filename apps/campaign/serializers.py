@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, SendingObject, Emails,
+from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, Emails,
                      DripEmailModel, EmailOnLinkClick, FollowUpEmail, CampaignLabel, Recipient, LeadSettings)
 
 
@@ -88,12 +88,6 @@ class CampaignDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Campaign
         exclude = ('csvfile_op1',)
-
-
-class CampaignSendingObjectSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SendingObject
-        fields = '__all__'
 
 
 class CampaignRecipientSerializer(serializers.ModelSerializer):
