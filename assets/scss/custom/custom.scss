@@ -2119,3 +2119,39 @@ input::-webkit-inner-spin-button {
 .custom-table tr:hover {
   cursor: pointer !important;
 }
+
+.timeline.lead-timeline {
+  span.timeline-step.badge-secondary {
+    /* position: relative; */
+    background-color: #E4E6EF;
+  }
+  span.timeline-step[data-badge]:after {
+    content: attr(data-badge);
+    font-size: 0.8rem;
+    position: absolute;
+    right: -5px;
+    top: -5px;
+    background-color: #fd7e14;
+    color: white;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    text-align: center;
+  }
+  .card.lead-initial-email {
+    box-shadow: 0 0 0.5rem 0 rgba(136, 152, 170, 0.3) !important;
+    color: #333333;
+    .card-header {
+      font-size: 0.8rem;
+      padding-bottom: 0.3rem !important;
+      label {
+        width: 60px;
+        margin-bottom: 0;
+        color: #999;
+      }
+    }
+    .card-body {
+      padding-top: 0.3rem !important;
+    }
+  }
+}

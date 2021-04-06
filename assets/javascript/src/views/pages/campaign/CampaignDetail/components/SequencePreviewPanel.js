@@ -40,8 +40,9 @@ class SequencePreviewPanel extends Component {
   render() {
     const { detailsSequence } = this.props;
 
-    const followups = detailsSequence.emails ? detailsSequence.emails.filter(e => e.email_type == 1) : [];
-    const drips = detailsSequence.emails ? detailsSequence.emails.filter(e => e.email_type == 2) : [];
+    const main = detailsSequence.emails ? detailsSequence.emails.find(e => e.email_type === 0) : undefined;
+    const followups = detailsSequence.emails ? detailsSequence.emails.filter(e => e.email_type === 1) : [];
+    const drips = detailsSequence.emails ? detailsSequence.emails.filter(e => e.email_type === 2) : [];
 
     return (
       <>
@@ -61,8 +62,8 @@ class SequencePreviewPanel extends Component {
               <CardBody className="py-2">
                 <PreviewPanelList>
                   {
-                    detailsSequence.email_subject &&
-                    <MainPreviewPanel subject={detailsSequence.email_subject} body={detailsSequence.email_body} />
+                    main &&
+                    <MainPreviewPanel subject={main.email_subject} body={main.email_body} />
                   }
                 </PreviewPanelList>
               </CardBody>
@@ -79,7 +80,7 @@ class SequencePreviewPanel extends Component {
                 <PreviewPanelList>
                   {followups && (
                     followups.map((followup, index) => (
-                      <FollowUpPreviewPanel key={`item_${index}`} subject={followup.subject} body={followup.email_body} waitDays={followup.waitDays} />
+                      <FollowUpPreviewPanel key={`item_${index}`} subject={followup.email_subject} body={followup.email_body} waitDays={followup.wait_days} />
                     ))
                   )}
                 </PreviewPanelList>
@@ -95,7 +96,7 @@ class SequencePreviewPanel extends Component {
                 <PreviewPanelList>
                   {drips && (
                     drips.map((drip, index) => (
-                      <DripPreviewPanel key={`item_${index}`} subject={drip.subject} body={drip.email_body} waitDays={drip.waitDays} />
+                      <DripPreviewPanel key={`item_${index}`} subject={drip.email_subject} body={drip.email_body} waitDays={drip.wait_days} />
                     ))
                   )}
                 </PreviewPanelList>

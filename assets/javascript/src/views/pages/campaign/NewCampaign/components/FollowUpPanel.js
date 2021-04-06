@@ -7,7 +7,7 @@ export default class FollowUpPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      waitDays: 1,
+      wait_days: 1,
       subject: "",
       email_body: "",
     };
@@ -35,7 +35,7 @@ export default class FollowUpPanel extends React.Component {
             {preview ? 
             <>
               <Row>
-                <i className="fa fa-reply"></i><span>&nbsp;&nbsp;{this.getPlural(data.waitDays, 'day')} later</span>
+                <i className="fa fa-reply"></i><span>&nbsp;&nbsp;{this.getPlural(data.wait_days, 'day')} later</span>
               </Row>
             </> 
             : 
@@ -51,13 +51,13 @@ export default class FollowUpPanel extends React.Component {
                     </Label>
                     <Col md="2">
                       <Input
-                        defaultValue={data.waitDays}
+                        defaultValue={data.wait_days}
                         className="form-control-sm"
                         id="iputWaitDays"
                         type="number"
                         onChange={(e) => {
-                          this.setState({ waitDays: e.target.value });
-                          data.waitDays = e.target.value;
+                          this.setState({ wait_days: e.target.value });
+                          data.wait_days = e.target.value;
                         }}
                       />
                     </Col>
@@ -82,10 +82,10 @@ export default class FollowUpPanel extends React.Component {
             }
             <Row className="mt-0">
               <Input
-                value={preview && replacement ? parseTemplate(data.subject, replacement) : data.subject}
+                value={preview && replacement ? parseTemplate(data.email_subject, replacement) : data.email_subject}
                 onChange={(e) => {
-                  this.setState({ subject: e.target.value });
-                  data.subject = e.target.value;
+                  this.setState({ email_subject: e.target.value });
+                  data.email_subject = e.target.value;
                 }}
                 type="text"
                 className="form-control-sm"
@@ -98,10 +98,6 @@ export default class FollowUpPanel extends React.Component {
             <Row>
               <Col className="p-0">
                 <ReactQuill
-                  ref={ref => {
-                    if (!preview)
-                      data['ref'] = ref
-                  }}
                   defaultValue={preview && replacement ? parseTemplate(data.email_body, replacement) : data.email_body}
                   onChange={(value) => {
                     this.setState({ email_body: value });
