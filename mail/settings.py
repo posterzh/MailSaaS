@@ -41,7 +41,7 @@ LIVE = False
 
 ALLOWED_HOSTS = ['*']
 # CORS_ALLOWED_ORIGINS = ['*']
-SITE_URL = 'http://localhost:8000'
+SITE_URL = os.environ.get("SITE_URL", "http://localhost:8000")
 
 CORS_ALLOW_ALL_ORIGINS = True
 
