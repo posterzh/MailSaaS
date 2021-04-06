@@ -31,7 +31,8 @@ from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmail
 from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
                           CampaignSendingObjectSerializer, OnclickSerializer, CampaignLabelSerializer,
-                          ProspectsSerializer, CampaignRecipientSerializer, CampaignListSerializer, LeadSettingsSerializer)
+                          ProspectsSerializer, CampaignRecipientSerializer, CampaignListSerializer,
+                          LeadSettingsSerializer, EmailsSerializer)
 from ..unsubscribes.models import UnsubscribeEmail
 from apps.mailaccounts.models import EmailAccount
 
@@ -526,6 +527,7 @@ class CampaignCreateView(APIView):
         if "Email" in csv_columns:
             df_csv.rename(columns={'Email': 'email'}, inplace=True)
         df_csv.dropna(subset=["email"], inplace=True)
+        df_csv.drop_duplicates(subset=["email"], inplace=True)
 
         res_emails = df_csv[['email']]
         res_replacements = json.loads(df_csv.to_json(orient="records"))
@@ -556,20 +558,20 @@ class CampaignCreateView(APIView):
             #         self.createSendingObject(campaign_id, from_email, email[0], drip['subject'],
             #                                  drip['email_body'], 2, replacement, drip['waitDays'])
 
-    def createSendingObject(self, camp_id, from_email, to_email, subject, body, type, replacement, wait_days):
-        sending_obj = {
-            'campaign': camp_id,
-            'from_email': from_email,
-            'recipient_email': to_email,
-            'email_subject': self.convertTemplate(subject, replacement),
-            'email_body': self.convertTemplate(body, replacement),
-            'email_type': type,
-            'wait_days': wait_days
-        }
-
-        res = CampaignSendingObjectSerializer(data=sending_obj)
-        if res.is_valid():
-            res.save()
+    # def createSendingObject(self, camp_id, from_email, to_email, subject, body, type, replacement, wait_days):
+    #     sending_obj = {
+    #         'campaign': camp_id,
+    #         'from_email': from_email,
+    #         'recipient_email': to_email,
+    #         'email_subject': self.convertTemplate(subject, replacement),
+    #         'email_body': self.convertTemplate(body, replacement),
+    #         'email_type': type,
+    #         'wait_days': wait_days
+    #     }
+    #
+    #     res = CampaignSendingObjectSerializer(data=sending_obj)
+    #     if res.is_valid():
+    #         res.save()
 
     def convertTemplate(self, template, replacement):
         for key in replacement.keys():
@@ -583,7 +585,18 @@ class CampaignCreateView(APIView):
 class CampaignUpdateView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
-    def post(self, request, format=None):
+    def post(self, request):
+        emails = request.data
+        for index, email in enumerate(emails):
+            if 'id' in email:
+                instance = Emails.objects.get(pk=email['id'])
+                serializer = EmailsSerializer(instance, data=email)
+            else:
+                serializer = EmailsSerializer(data=email)
+
+            if serializer.is_valid():
+                serializer.save()
+
         return Response(status=status.HTTP_200_OK)
 
 
@@ -2001,6 +2014,18 @@ class CampaignLeadsView(generics.ListAPIView):
         return Response({'res': res, 'success': True})
 
 
+class CampaignUpdateStatus(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, pk):
+        camp = Campaign.objects.filter(id=pk)
+        if len(camp) > 0:
+            camp[0].campaign_status = request.data['status']
+            camp[0].save()
+
+        return Response({'success': True})
+
+
 class CampaignLeadSettingView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = LeadSettingsSerializer
@@ -2088,6 +2113,7 @@ FROM
     INNER JOIN
         campaign_recipient cr
         ON ce.campaign_id = cr.campaign_id
+            AND ce.is_deleted = FALSE
     LEFT JOIN
         campaign_emailoutbox ceo
         ON ce.campaign_id = ceo.campaign_id

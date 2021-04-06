@@ -53,7 +53,7 @@ class CampaignDetailSequence extends Component {
     this.setState({
       editing: false
     });
-    showNotification("warning", "Coming soon...", "This feature will be implemented in the future version");
+    this.props.getDetialsSequence(this.props.id);
   }
 
   onCancel = () => {
