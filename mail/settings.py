@@ -169,7 +169,7 @@ FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-if DEBUG == True:
+if DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -182,19 +182,19 @@ if DEBUG == True:
         }
     }
 
-if DEBUG == False:
+if not DEBUG:
     dbpassw = get_secret()['password']
     DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'USER': 'postgres',
-        'PASSWORD': dbpassw,
-        'HOST': 'mailerrize-prod.cluster-cti2gmro8z63.us-east-2.rds.amazonaws.com',
-        'PORT': '5432',
-        'NAME': 'mailerrizeprod'
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'USER': 'postgres',
+            'PASSWORD': dbpassw,
+            'HOST': 'mailerrize-prod.cluster-cti2gmro8z63.us-east-2.rds.amazonaws.com',
+            'PORT': '5432',
+            'NAME': 'mailerrizeprod'
 
+        }
     }
-    } 
 
 GOOGLE_CLIENT_SECRET_FILE = os.path.join(BASE_DIR,
                                          'client_secret_178038321765-1d24dsmngr7cmthb1ksvno3kehirnqbg.apps.googleusercontent.com.json')
