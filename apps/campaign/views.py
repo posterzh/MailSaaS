@@ -31,7 +31,8 @@ from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmail
 from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
                           CampaignSendingObjectSerializer, OnclickSerializer, CampaignLabelSerializer,
-                          ProspectsSerializer, CampaignRecipientSerializer, CampaignListSerializer, LeadSettingsSerializer)
+                          ProspectsSerializer, CampaignRecipientSerializer, CampaignListSerializer,
+                          LeadSettingsSerializer, EmailsSerializer)
 from ..unsubscribes.models import UnsubscribeEmail
 from apps.mailaccounts.models import EmailAccount
 
@@ -583,7 +584,18 @@ class CampaignCreateView(APIView):
 class CampaignUpdateView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
-    def post(self, request, format=None):
+    def post(self, request):
+        emails = request.data
+        for index, email in enumerate(emails):
+            if 'id' in email:
+                instance = Emails.objects.get(pk=email['id'])
+                serializer = EmailsSerializer(instance, data=email)
+            else:
+                serializer = EmailsSerializer(data=email)
+
+            if serializer.is_valid():
+                serializer.save()
+
         return Response(status=status.HTTP_200_OK)
 
 

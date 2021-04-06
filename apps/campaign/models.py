@@ -43,6 +43,9 @@ class Campaign(models.Model):
     def __str__(self):
         return self.title
 
+    def current_emails(self):
+        return Emails.objects.filter(is_deleted=False)
+
 
 class CampaignRecipient(models.Model):
     LEAD_TYPE = (
