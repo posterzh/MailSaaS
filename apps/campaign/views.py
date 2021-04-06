@@ -2113,6 +2113,7 @@ FROM
     INNER JOIN
         campaign_recipient cr
         ON ce.campaign_id = cr.campaign_id
+            AND ce.is_deleted = FALSE
     LEFT JOIN
         campaign_emailoutbox ceo
         ON ce.campaign_id = ceo.campaign_id
