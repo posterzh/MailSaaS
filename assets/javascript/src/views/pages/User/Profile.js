@@ -57,7 +57,7 @@ export class Profile extends Component {
                           alt="..."
                           className="profile-rounded-img"
                           style={{ background: "ghostwhite" }}
-                          src={user.avatar ? user.avatar : defaultProfilePic}
+                          src={user.avatar_url ? user.avatar_url : defaultProfilePic}
                         />
                         <label className="profile-edit-icon">
                           <input
