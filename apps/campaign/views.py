@@ -27,10 +27,10 @@ from apps.integration.views import SendSlackMessage
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmailModel, Recipient,
-                     EmailOnLinkClick, FollowUpEmail, CampaignLabel, SendingObject, Emails, LeadSettings, EmailOutbox)
+                     EmailOnLinkClick, FollowUpEmail, CampaignLabel, Emails, LeadSettings, EmailOutbox)
 from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
-                          CampaignSendingObjectSerializer, OnclickSerializer, CampaignLabelSerializer,
+                          OnclickSerializer, CampaignLabelSerializer,
                           ProspectsSerializer, CampaignRecipientSerializer, CampaignListSerializer,
                           LeadSettingsSerializer, EmailsSerializer)
 from ..unsubscribes.models import UnsubscribeEmail
@@ -485,7 +485,7 @@ class CampaignCreateView(APIView):
                     self.createDrips(new_camp, campaign['drips'])
 
                 if new_camp.csvfile_op1:
-                    self.createRecipientsAndSendingObject(new_camp, campaign)
+                    self.createRecipients(new_camp, campaign)
 
                 return Response({"message": "Created new campaign successfully", "success": True},
                                 status=status.HTTP_200_OK)
@@ -515,7 +515,7 @@ class CampaignCreateView(APIView):
             drip_email.save()
             email_order += 1
 
-    def createRecipientsAndSendingObject(self, new_camp, campaign):
+    def createRecipients(self, new_camp, campaign):
         campaign_id = new_camp.id
         csv_path = str(new_camp.csvfile_op1)
         from_email = new_camp.from_address_id
@@ -545,33 +545,6 @@ class CampaignCreateView(APIView):
             else:
                 print(res.errors)
 
-            # self.createSendingObject(campaign_id, from_email, email[0], campaign['email_subject'],
-            #                          campaign['email_body'], 0, replacement, 0)
-            #
-            # if campaign['follow_up']:
-            #     for follow in campaign['follow_up']:
-            #         self.createSendingObject(campaign_id, from_email, email[0], follow['subject'],
-            #                                  follow['email_body'], 1, replacement, follow['waitDays'])
-            #
-            # if campaign['drips']:
-            #     for drip in campaign['drips']:
-            #         self.createSendingObject(campaign_id, from_email, email[0], drip['subject'],
-            #                                  drip['email_body'], 2, replacement, drip['waitDays'])
-
-    # def createSendingObject(self, camp_id, from_email, to_email, subject, body, type, replacement, wait_days):
-    #     sending_obj = {
-    #         'campaign': camp_id,
-    #         'from_email': from_email,
-    #         'recipient_email': to_email,
-    #         'email_subject': self.convertTemplate(subject, replacement),
-    #         'email_body': self.convertTemplate(body, replacement),
-    #         'email_type': type,
-    #         'wait_days': wait_days
-    #     }
-    #
-    #     res = CampaignSendingObjectSerializer(data=sending_obj)
-    #     if res.is_valid():
-    #         res.save()
 
     def convertTemplate(self, template, replacement):
         for key in replacement.keys():
@@ -1931,19 +1904,6 @@ class LeadCatcherStatusUpdateView(generics.RetrieveUpdateAPIView):
         lead_status = request.data['lead_status']
         recipient = CampaignRecipient.objects.filter(id__in=eamil_ids).update(lead_status=lead_status)
         return Response({"message": "Lead Updated successfully", "success": True})
-
-
-class CampaignSendingObjectView:
-    def getTimeToSendEmails(self, mail_account, cnt):
-        sendingObjects = []
-        campaigns = Campaign.objects.get(from_address=mail_account)
-        for camp in campaigns:
-            if campaigns.campaign_status:
-                objs = SendingObject.objects.filter(from_email=mail_account, campaign=camp.id, status=0).order_by(
-                    "email_type")[:cnt]
-                sendingObjects.extend(objs)
-
-        return sendingObjects
 
 
 class CampaignDetailsSequenceView(generics.RetrieveAPIView):
