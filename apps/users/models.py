@@ -18,6 +18,7 @@ class CustomUser(AbstractUser):
     company_name = models.CharField(max_length=500, null=False, blank=False)
     mailsaas_type = models.CharField(max_length=100, null=False, blank=False)
     avatar = models.FileField(upload_to='profile-pictures/', storage=OverwriteStorage(), null=True, blank=True)
+    avatar_url = models.TextField(blank=True, null=True)
 
     objects = UserManager()
     USERNAME_FIELD = 'email'

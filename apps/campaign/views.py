@@ -1964,6 +1964,10 @@ class CampaignDetailsRecipientsView(generics.ListAPIView):
         return Recipient.objects.filter(campaign=pk)
 
 
+class CampaignDetailsRecipientsAddView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+
 class CampaignDetailsSettingsView(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = CampaignSerializer

@@ -64,8 +64,4 @@ export const recipientsFilters = [
 		key: 'email',
 		options: []
 	},
-	{
-		key: 'name',
-		options: []
-	}
 ];

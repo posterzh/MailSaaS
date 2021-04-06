@@ -120,3 +120,20 @@ export const updateLeadSettings = (id, data) => (dispatch) => {
       toggleTopLoader(false);
     });
 };
+
+export const importContactsFromCSV = (csvFile) => (dispatch) => {
+  const formData = new FormData();
+  formData.append('csvfile', csvFile);
+  toggleTopLoader(true);
+  axios
+    .post("/campaign/create/", formData)
+    .then((response) => {
+      
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+}
