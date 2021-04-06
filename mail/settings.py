@@ -196,8 +196,7 @@ if DEBUG == False:
     }
     } 
 
-GOOGLE_CLIENT_SECRET_FILE = os.path.join(BASE_DIR,
-                                         'client_secret_178038321765-1d24dsmngr7cmthb1ksvno3kehirnqbg.apps.googleusercontent.com.json')
+
 GOOGLE_AUTH_SCOPES = [
     'https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile',
@@ -373,11 +372,6 @@ CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_TIMEZONE = "UTC"
 
-# JWT_AUTH = {
-#     'JWT_AUTH_HEADER_PREFIX': 'JWT',
-#     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=500)
-# }
-
 
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'apps.users.serializer.UserDetailsSerializer',
@@ -458,35 +452,6 @@ JWT_AUTH = {
 # Mail_configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'sg3plcpnl0063.prod.sin3.secureserver.net'
-# <<<<<<< digital-ocean
-# # EMAIL_PORT=config('EMAIL_PORT')
-# # EMAIL_USE_SSL=config('EMAIL_USE_SSL')
-# # EMAIL_HOST_USER=config('EMAIL_HOST_USER')
-# # EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
-# =======
-# EMAIL_PORT=config('EMAIL_PORT')
-# EMAIL_USE_TLS = False
-# EMAIL_USE_SSL=config('EMAIL_USE_SSL')
-# EMAIL_HOST_USER=config('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
-# >>>>>>> master
-
-
-# Slack Configuration
-# VERIFICATION_TOKEN = config('VERIFICATION_TOKEN')
-# OAUTH_ACCESS_TOKEN = config('OAUTH_ACCESS_TOKEN')
-# BOT_USER_ACCESS_TOKEN = config('BOT_USER_ACCESS_TOKEN')
-# SLACK_CLIENT_ID = config('SLACK_CLIENT_ID')
-# SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
-
-# Salesforce Configuration
-
-# SALESFORCE_USERNAME = config('SALESFORCE_USERNAME')
-# SALESFORCE_PASSWORD = config('SALESFORCE_PASSWORD')
-# SALESFORCE_SECURITY_TOKEN = config('SALESFORCE_SECURITY_TOKEN')
-# SALESFORCE_DOMAIN = 'test'
-# SALESFORCE_USE_SANDBOX = True
-# SALESFORCE_API_VERSION = '43.0'
 
 
 PIPEDRIVE_API_KEY = "67ffc61ad9d85760cee59c2115bddd5cc536e9c6"
