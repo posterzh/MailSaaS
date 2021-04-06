@@ -4,26 +4,17 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import Tables from "../../../../components/Tables";
 import { campaignListTable } from "../../../../components/TableHeader";
-import { toggleTopLoader, toastOnError, messages, showNotification } from '../../../../utils/Utils';
+import { toggleTopLoader, toastOnError, messages, toastOnSuccess } from '../../../../utils/Utils';
 import axios from '../../../../utils/axios';
 
 class CampaignList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: true,
-      hide: true,
-      checked: false,
-      exampleModal: false,
-
-      phoneNumber: "123", // Example
-
       data: [],
       filters: [{
         key: 'assigned',
@@ -38,7 +29,8 @@ class CampaignList extends Component {
       const { data } = await axios.get("/campaign/list/");
 
       const assigned = data.map(item => {
-        item['control'] = item.campaign_status ? "play" : "pause";
+        item['control'] = item.campaign_status ? "pause" : "play";
+        item['tooltip'] = item.campaign_status ? "click to pause" : "click to start";
         return item.assigned
       });
       const { filters } = this.state;
@@ -58,23 +50,7 @@ class CampaignList extends Component {
       toggleTopLoader(false);
     }
   }
-  allCheck = (e) => {
-    const table = this.props.Tables.CampaignTableData;
-    for (let i = 0; i < table.length; i++) {
-      this.setState({
-        checked: !this.state.checked,
-        exampleModal: !this.state.exampleModal,
-      });
-    }
-  };
-  singleCheck(index) {
-    let tables = this.props.Tables.CampaignTableData.slice();
-    tables[index].checked = !tables[index].checked;
-    this.setState({
-      checked: tables,
-    });
-  }
-
+  
   showDetails = (item) => {
     this.props.history.push(`/app/admin/campaign/${item.id}/details-overview`);
   }
@@ -87,8 +63,27 @@ class CampaignList extends Component {
 
   }
 
-  controlCallback = () => {
-    showNotification('warning', 'Campaign action is clicked', 'Not implemented yet. Ready for next version.');
+  controlCallback = (e, index) => {
+    if (!e) return;
+
+    toggleTopLoader(true);
+    axios
+      .post(`/campaign/update-status/${e.id}`, {status: e.control == 'play'})
+      .then((response) => {
+        toastOnSuccess("Updated successfully!");
+        if (response.data.success) {
+          const items = this.state.data;
+          items[index].control = items[index].control == "play" ? "pause" : "play";
+          items[index].tooltip = items[index].control == "play" ? "click to start" : "click to pause";
+          this.setState({data: items});
+        }
+      })
+      .catch((error) => {
+        toastOnError(error);
+      })
+      .finally(() => {
+        toggleTopLoader(false);
+      });
   }
 
   paginationCallback = () => {
@@ -132,10 +127,5 @@ class CampaignList extends Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    Tables: state.CampaignTableReducer,
-  };
-};
 
-export default connect(mapStateToProps)(CampaignList);
+export default CampaignList;

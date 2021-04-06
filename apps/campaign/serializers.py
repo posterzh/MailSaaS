@@ -83,11 +83,11 @@ class EmailsSerializer(serializers.ModelSerializer):
 
 
 class CampaignDetailsSerializer(serializers.ModelSerializer):
-    emails = EmailsSerializer(many=True, read_only=True)
+    emails = EmailsSerializer(many=True, read_only=True, source='current_emails')
 
     class Meta:
         model = Campaign
-        fields = '__all__'
+        exclude = ('csvfile_op1',)
 
 
 class CampaignSendingObjectSerializer(serializers.ModelSerializer):

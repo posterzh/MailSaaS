@@ -29,16 +29,16 @@ class SequenceEditPanel extends Component {
   constructor(props) {
     super(props);
 
-    const { detailsSequence: {email_subject, email_body, emails } } = props;
+    const { detailsSequence: { emails } } = props;
 
+    const main = emails ? emails.find(e => e.email_type === 0) : undefined;
     const followups = emails ? emails.filter(e => e.email_type == 1) : [];
     const drips = emails ? emails.filter(e => e.email_type == 2) : [];
 
     this.state = {
-      subject: email_subject,
-      email_body: email_body,
-      followUpList: followups,
-      dripList: drips,
+      main: main,
+      followups: followups,
+      drips: drips,
     }
   }
 
@@ -51,57 +51,84 @@ class SequenceEditPanel extends Component {
   }
 
   onAddFollowUp = () => {
+    const { id } = this.props;
     this.setState((state) => {
-      const index = state.followUpList.length;
-      let newFollowUp = { index, subject: "Re: ", email_body: "Hi", waitDays: 1 };
-      const followUpList = state.followUpList.concat(newFollowUp);
+      let newFollowUp = {
+        campaign: id,
+        email_subject: "Re: ",
+        email_body: "Hi",
+        wait_days: 1,
+        is_deleted: false,
+        email_type: 1
+      };
+      const followups = state.followups.concat(newFollowUp);
       return {
         ...state,
-        followUpList,
+        followups,
       };
     });
   };
 
   onDeleteFollowUp = (index) => {
     this.setState((state) => {
-      const followUpList = state.followUpList.filter((item, i) => i != index);
+      const followups = state.followups.map((item, i) => {
+        if (index == i) {
+          item.is_deleted = true
+        }
+        return item;
+      });
       return {
         ...state,
-        followUpList,
+        followups,
       };
     });
   };
 
   onAddDrip = () => {
+    const { id } = this.props;
     this.setState((state) => {
-      const index = state.dripList.length;
-      let newFollowUp = { index, subject: "Re: ", email_body: "Hi", waitDays: 1 };
-      const dripList = state.dripList.concat(newFollowUp);
+      let newFollowUp = {
+        campaign: id,
+        email_subject: "Re: ",
+        email_body: "Hi",
+        wait_days: 1,
+        is_deleted: false,
+        email_type: 2
+      };
+      const drips = state.drips.concat(newFollowUp);
       return {
         ...state,
-        dripList,
+        drips,
       };
     });
   };
 
   onDeleteDrip = (index) => {
     this.setState((state) => {
-      const dripList = state.dripList.filter((item, i) => i != index);
+      const drips = state.drips.map((item, i) => {
+        if (index == i) {
+          item.is_deleted = true
+        }
+        return item;
+      });
       return {
         ...state,
-        dripList,
+        drips,
       };
     });
   };
 
-  onSave = () => {
-    let data = {
-      email_subject: this.state.subject,
-      email_body: this.state.email_body,
-      follow_up: this.state.followUpList,
-      drips: this.state.dripList,
-    };
-    this.props.campaignUpdate(data);
+  onSave = async () => {
+    const main = this.state.main;
+    const followups = this.state.followups
+      .filter(followup => followup.id !== undefined || followup.is_deleted === false)
+      .map((followup, index) => { followup.email_order = index; return followup; });
+    const drips = this.state.drips
+      .filter(drip => drip.id !== undefined || drip.is_deleted === false)
+      .map((drip, index) => { drip.email_order = index; return drip; });
+    const emails = [main].concat(followups).concat(drips);
+
+    await this.props.campaignUpdate(emails);
     this.props.onSave();
   }
 
@@ -140,125 +167,143 @@ class SequenceEditPanel extends Component {
   render() {
     return (
       <Row>
-      <Col md={8} className="mx-auto">
-        <Row className="my-3">
-          <Col className="text-right">
-            <Button color="danger" type="button" size="sm" onClick={this.onSave}>
-              &nbsp;&nbsp;
+        <Col md={8} className="mx-auto">
+          <Row className="my-3">
+            <Col className="text-right">
+              <Button color="danger" type="button" size="sm" onClick={this.onSave}>
+                &nbsp;&nbsp;
               <i className="fa fa-save" aria-hidden="true"></i>
               &nbsp;Save&nbsp;&nbsp;
             </Button>
-            <Button color="primary" type="button" size="sm" outline onClick={this.onCancel}>
-              <i className="fa fa-times" aria-hidden="true"></i>
+              <Button color="primary" type="button" size="sm" outline onClick={this.onCancel}>
+                <i className="fa fa-times" aria-hidden="true"></i>
               &nbsp;Cancel
             </Button>
-          </Col>
-        </Row>
-        <Form>
-          <Row>
-            <Col>
-              <Input
-                type="text"
-                className="form-control"
-                name="subject"
-                defaultValue={this.state.subject}
-                onChange={(e) => {
-                  this.setState({ subject: e.target.value });
-                }}
-                placeholder="Subject"
-                required
-              />
             </Col>
           </Row>
-          <Row>
-            <Col>
-              <ReactQuill
-                ref={ref => this._emailBodyQuill['ref'] = ref}
-                defaultValue={this.state.email_body}
-                onChange={(value) => {
-                  this.setState({ email_body: value });
-                }}
-                theme="snow"
-                className="Quill_div"
-                modules={{
-                  toolbar: [
-                    ["bold", "italic"],
-                    ["link", "blockquote", "code", "image"],
-                    [
-                      {
-                        list: "ordered",
-                      },
-                      {
-                        list: "bullet",
-                      },
-                    ],
-                  ],
-                }}
-              />
-            </Col>
-          </Row>
-
-          {this.getDNDSource(this._emailBodyQuill)}
-
-          <Row className="mt-3">
-            <Col>
-              {this.state.followUpList.map((followUp, index) => (
-                <div key={"follow" + index}>
-                  <FollowUpPanel
-                    index={index}
-                    onDelete={this.onDeleteFollowUp}
-                    data={followUp}
+          <Form>
+            <Row>
+              <Col>
+                {this.state.main &&
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="email_subject"
+                    defaultValue={this.state.main.email_subject}
+                    onChange={(e) => {
+                      const { main } = this.state;
+                      main.email_subject = e.target.value;
+                      this.setState({
+                        ...this.state,
+                        main
+                      });
+                    }}
+                    placeholder="Subject"
+                    required
                   />
-                  <div className="px-3">{this.getDNDSource(followUp)}</div>
-                </div>
-              ))}
-            </Col>
-          </Row>
-
-          <Row>
-            <Col className="mt-3">
-              <Button
-                color="default"
-                outline
-                type="button"
-                block
-                onClick={this.onAddFollowUp}
-              >
-                <i className="fa fa-plus"></i> &nbsp;ADD FOLLOW-UP
-            </Button>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col>
-              {this.state.dripList.map((drip, index) => (
-                <div key={"drip" + index}>
-                  <DripPanel
-                    index={index}
-                    onDelete={this.onDeleteDrip}
-                    data={drip}
+                }
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                {this.state.main &&
+                  <ReactQuill
+                    ref={ref => this._emailBodyQuill['ref'] = ref}
+                    defaultValue={this.state.main.email_body}
+                    onChange={(value) => {
+                      const { main } = this.state;
+                      main.email_body = e.target.value;
+                      this.setState({
+                        ...this.state,
+                        main
+                      });
+                    }}
+                    theme="snow"
+                    className="Quill_div"
+                    modules={{
+                      toolbar: [
+                        ["bold", "italic"],
+                        ["link", "blockquote", "code", "image"],
+                        [
+                          {
+                            list: "ordered",
+                          },
+                          {
+                            list: "bullet",
+                          },
+                        ],
+                      ],
+                    }}
                   />
-                  <div className="px-3">{this.getDNDSource(drip)}</div>
-                </div>
-              ))}
-            </Col>
-          </Row>
+                }
+              </Col>
+            </Row>
 
-          <Row>
-            <Col className="mt-3">
-              <Button
-                color="default"
-                outline
-                type="button"
-                block
-                onClick={this.onAddDrip}
-              >
-                <i className="fa fa-plus"></i> &nbsp;ADD DRIP
+            {this.getDNDSource(this._emailBodyQuill)}
+
+            <Row className="mt-3">
+              <Col>
+                {this.state.followups
+                  .map((followup, index) => (
+                    !followup.is_deleted &&
+                    <div key={"follow" + index}>
+                      <FollowUpPanel
+                        index={index}
+                        onDelete={this.onDeleteFollowUp}
+                        data={followup}
+                      />
+                      <div className="px-3">{this.getDNDSource(followup)}</div>
+                    </div>
+                  ))}
+              </Col>
+            </Row>
+
+            <Row>
+              <Col className="mt-3">
+                <Button
+                  color="default"
+                  outline
+                  type="button"
+                  block
+                  onClick={this.onAddFollowUp}
+                >
+                  <i className="fa fa-plus"></i> &nbsp;ADD FOLLOW-UP
             </Button>
-            </Col>
-          </Row>
-        </Form>
-      </Col>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col>
+                {this.state.drips
+                  .map((drip, index) => (
+                    !drip.is_deleted &&
+                    <div key={"drip" + index}>
+                      <DripPanel
+                        index={index}
+                        onDelete={this.onDeleteDrip}
+                        data={drip}
+                      />
+                      <div className="px-3">{this.getDNDSource(drip)}</div>
+                    </div>
+                  ))}
+              </Col>
+            </Row>
+
+            <Row>
+              <Col className="mt-3">
+                <Button
+                  color="default"
+                  outline
+                  type="button"
+                  block
+                  onClick={this.onAddDrip}
+                >
+                  <i className="fa fa-plus"></i> &nbsp;ADD DRIP
+            </Button>
+              </Col>
+            </Row>
+          </Form>
+        </Col>
       </Row>
     );
   }

@@ -18,8 +18,6 @@ class LeadCatcher extends Component {
       data: []
     }
   }
-  showDetails = () => {
-  }
   async componentDidMount() {
     // this.props.CampaignLeadViewAction()
     try {
@@ -41,6 +39,9 @@ class LeadCatcher extends Component {
   }
   toggle = () => {
     this.setState({ modal: !this.state.modal })
+  }
+  showDetails = (data) => {
+    this.props.history.push(`/app/admin/lead/${data.id}/detail`);
   }
   render() {
     const tableTitle = [

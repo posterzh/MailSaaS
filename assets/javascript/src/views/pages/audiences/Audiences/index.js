@@ -264,6 +264,12 @@ class Prospects extends Component {
 						/>
 					</Row>
 
+					<Row>
+						<Col md={4}></Col>
+						<Col md={4}></Col>
+						<Col md={4}></Col>
+					</Row>
+
 					<ImportContactsModal
 						isOpen={importContactsModal}
 						// data={this.state.editItem}

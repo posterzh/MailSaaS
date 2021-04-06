@@ -43,13 +43,28 @@ export const campaignSend = (payload) => (dispatch) => {
 };
 
 export const campaignUpdate = (payload) => (dispatch) => {
-  const formData = new FormData();
-  formData.append('campaign', JSON.stringify(payload));
   toggleTopLoader(true);
-  axios
-    .post("/campaign/update/", formData)
+  return axios
+    .post("/campaign/update/", payload)
     .then((response) => {
       //TODO: reload page
+      return response;
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+}
+
+export const campaignChangeStatus = (id, status) => {
+  toggleTopLoader(true);
+  axios
+    .post(`/campaign/update-status/${id}`, status)
+    .then((response) => {
+      toastOnSuccess("Updated successfully!");
+      return response.data;
     })
     .catch((error) => {
       toastOnError(error);
