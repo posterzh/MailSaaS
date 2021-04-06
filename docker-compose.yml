@@ -16,16 +16,16 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    ports :
+    ports:
       - "8000:8000"
-    environment: 
+    environment:
       - DEBUG=1
       - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
       - CELERY_BROKER=redis://redis:6379/0
       - CELERY_BACKEND=redis://redis:6379/0
     volumes:
       - .:/app
-    command: > 
+    command: >
       sh -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
     depends_on:
       - db
@@ -42,7 +42,7 @@ services:
       - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
       - CELERY_BROKER=redis://redis:6379/0
       - CELERY_BACKEND=redis://redis:6379/0
-    links: 
+    links:
       - redis
       - db
     depends_on:
@@ -52,17 +52,14 @@ services:
     restart: always
     stdin_open: true
     command: npm run build
-    build: 
-      context: . 
+    build:
+      context: .
       dockerfile: Dockerfile
-    depends_on: 
+    depends_on:
       - web
-    volumes: 
+    volumes:
       - .:/app
-      - ./app/node_modules
-
-  
- 
+      # - ./app/node_modules
 
 volumes:
   postgres_data:
