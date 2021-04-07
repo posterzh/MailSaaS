@@ -11,7 +11,7 @@ import ReactQuill from "react-quill";
 import FollowUpPanel from "./components/FollowUpPanel";
 import DripPanel from "./components/DripPanel";
 import { campaignCompose } from "../../../../redux/action/CampaignActions";
-import { formatHeader } from "../../../../utils/Utils";
+import { formatHeader, showNotification } from "../../../../utils/Utils";
 
 class TheCompose extends Component {
   constructor(props) {
@@ -96,6 +96,51 @@ class TheCompose extends Component {
       follow_up: follow_ups,
       drips: drips,
     };
+
+    if (!data.email_subject) {
+      showNotification("danger", "The email subject should not be empty.");
+      return false;
+    }
+
+    if (!data.email_body) {
+      showNotification("danger", "The email body should not be empty.");
+      return false;
+    }
+
+    for (let follow_up of data.follow_up) {
+      if (!follow_up.email_subject) {
+        showNotification("danger", "The email subject should not be empty.");
+        return false;
+      }
+
+      if (!follow_up.email_body) {
+        showNotification("danger", "The email body should not be empty.");
+        return false;
+      }
+
+      if (follow_up.wait_days <= 0) {
+        showNotification("danger", "The wait days should be greater than 0.")
+        return false;
+      }
+    }
+
+    for (let drip of data.drips) {
+      if (!drip.email_subject) {
+        showNotification("danger", "The email subject should not be empty.");
+        return false;
+      }
+
+      if (!drip.email_body) {
+        showNotification("danger", "The email body should not be empty.");
+        return false;
+      }
+
+      if (drip.wait_days <= 0) {
+        showNotification("danger", "The wait days should be greater than 0.");
+        return false;
+      }
+    }
+
     this.props.campaignCompose(data);
     // call parent method
     this.props.onNext();
