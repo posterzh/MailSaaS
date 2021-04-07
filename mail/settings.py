@@ -53,7 +53,7 @@ DJANGO_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-
+    'collectfast',
     'django.contrib.staticfiles',
 
     'django.forms',
@@ -64,7 +64,8 @@ DJANGO_APPS = [
     'django_celery_beat',
     'django_extensions',
     'django_filters',
-    'storages'
+    'storages',
+    
 ]
 
 # Put your third-party apps here
@@ -304,6 +305,7 @@ if DEBUG == False:
     AWS_LOCATION = ''
     STATIC_URL = 'https://cdn.mailerrize.com/'
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
 else:
     STATIC_URL = '/staticfiles/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
