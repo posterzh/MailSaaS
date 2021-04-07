@@ -1961,6 +1961,15 @@ class CampaignDetailsRecipientsAddView(APIView):
         return Response(data=recipients, status=status.HTTP_201_CREATED)
 
 
+class CampaignDetailsRecipientsUpdateView(generics.UpdateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = CampaignRecipientSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Recipient.objects.filter(campaign__assigned=user.id)
+
+
 class CampaignDetailsSettingsView(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = CampaignSerializer
