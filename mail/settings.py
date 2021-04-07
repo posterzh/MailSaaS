@@ -33,14 +33,14 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True
+DEBUG = bool(os.environ.get("DEBUG", "True"))
 
 # LIVE = bool(os.environ.get("LIVE", "True"))
 LIVE = False
 
 ALLOWED_HOSTS = ['*']
 # CORS_ALLOWED_ORIGINS = ['*']
-SITE_URL = 'http://localhost:8000'
+SITE_URL = os.environ.get("SITE_URL", "http://localhost:8000")
 
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -361,7 +361,7 @@ REST_FRAMEWORK = {
 }
 
 # Celery setup (using redis)
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379")
 CELERY_RESULT_BACKEND = 'django-db'
 
 CELERY_ACCEPT_CONTENT = ['json']
@@ -455,18 +455,11 @@ JWT_AUTH = {
 # Mail_configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'sg3plcpnl0063.prod.sin3.secureserver.net'
-# <<<<<<< digital-ocean
-# # EMAIL_PORT=config('EMAIL_PORT')
-# # EMAIL_USE_SSL=config('EMAIL_USE_SSL')
-# # EMAIL_HOST_USER=config('EMAIL_HOST_USER')
-# # EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
-# =======
 # EMAIL_PORT=config('EMAIL_PORT')
 # EMAIL_USE_TLS = False
 # EMAIL_USE_SSL=config('EMAIL_USE_SSL')
 # EMAIL_HOST_USER=config('EMAIL_HOST_USER')
 # EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
-# >>>>>>> master
 
 
 # Slack Configuration
