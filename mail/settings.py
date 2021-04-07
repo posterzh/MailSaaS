@@ -4,9 +4,8 @@ import datetime
 from decouple import config
 from pathlib import Path  # Python 3.6+ only
 import sentry_sdk
-from .dbpass import get_secret,get_s3_secret
+from .dbpass import get_secret, get_s3_secret
 from sentry_sdk.integrations.django import DjangoIntegration
-
 
 sentry_sdk.init(
     dsn="https://54a77e70d6ac40c9b834017e1c5d4df0@o423610.ingest.sentry.io/5701236",
@@ -34,7 +33,7 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = False
+DEBUG = True
 
 # LIVE = bool(os.environ.get("LIVE", "True"))
 LIVE = False
@@ -306,8 +305,8 @@ if DEBUG == False:
     STATIC_URL = 'https://cdn.mailerrize.com/'
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 else:
-    STATIC_URL = '/staticfiles/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_URL = '/static/'
+    # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
     STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -315,16 +314,14 @@ else:
 # STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    "static",os.path.join(BASE_DIR, 'static'),
-    "media",os.path.join(BASE_DIR,'media'),
-    "assets",os.path.join(BASE_DIR,'assets'),
+    "static", os.path.join(BASE_DIR, 'static'),
+    "media", os.path.join(BASE_DIR, 'media'),
+    "assets", os.path.join(BASE_DIR, 'assets'),
 ]
-
 
 # uncomment to use manifest storage to bust cache when file change
 # note: this may break some image references in sass files which is why it is not enabled by default
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
-
 
 
 # Email setup
@@ -529,4 +526,3 @@ DEFAULT_WARMUP_FOLDER = "mailerrize"
 DEFAULT_RAMPUP_INCREMENT = 3
 DEFAULT_WARMUP_MAX_CNT = 20
 DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX = "• mailerrize"
-
