@@ -363,9 +363,7 @@ REST_FRAMEWORK = {
 
 # Celery setup (using redis)
 
-CELERY_BROKER_URL = 'sqs://AKIA3PBLWS55IDE6RJW2:qCcVKF0q8cUgJRat89P25oJp+pPfGeKVHn2w4lzA@'
-CELERY_BROKER_TRANSPORT = 'sqs'
-CELERY_BROKER_TRANSPORT_OPTIONS = {'region': 'us-east-2'}
+CELERY_BROKER_URL = 'redis://redis.qy64ux.clustercfg.use2.cache.amazonaws.com:6379/0'
 CELERY_RESULT_BACKEND = 'django-db'
 
 CELERY_ACCEPT_CONTENT = ['json']
@@ -373,6 +371,7 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_TIMEZONE = "UTC"
+
 
 
 REST_AUTH_SERIALIZERS = {
@@ -454,34 +453,8 @@ JWT_AUTH = {
 # Mail_configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'sg3plcpnl0063.prod.sin3.secureserver.net'
-# EMAIL_PORT=config('EMAIL_PORT')
-# EMAIL_USE_TLS = False
-# EMAIL_USE_SSL=config('EMAIL_USE_SSL')
-# EMAIL_HOST_USER=config('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
 
 
-# Slack Configuration
-# VERIFICATION_TOKEN = config('VERIFICATION_TOKEN')
-# OAUTH_ACCESS_TOKEN = config('OAUTH_ACCESS_TOKEN')
-# BOT_USER_ACCESS_TOKEN = config('BOT_USER_ACCESS_TOKEN')
-# SLACK_CLIENT_ID = config('SLACK_CLIENT_ID')
-# SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
-
-# Salesforce Configuration
-
-# SALESFORCE_USERNAME = config('SALESFORCE_USERNAME')
-# SALESFORCE_PASSWORD = config('SALESFORCE_PASSWORD')
-# SALESFORCE_SECURITY_TOKEN = config('SALESFORCE_SECURITY_TOKEN')
-# SALESFORCE_DOMAIN = 'test'
-# SALESFORCE_USE_SANDBOX = True
-# SALESFORCE_API_VERSION = '43.0'
-
-PIPEDRIVE_API_KEY = "67ffc61ad9d85760cee59c2115bddd5cc536e9c6"
-
-# #Google Configuration
-# GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
-# GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
 
 # Google configuration
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '828042189691-4ceuofidhr2van7pt9vhpa4hmdei9d0q.apps.googleusercontent.com'
