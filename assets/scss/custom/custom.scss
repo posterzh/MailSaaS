@@ -2125,7 +2125,7 @@ input::-webkit-inner-spin-button {
     /* position: relative; */
     background-color: #E4E6EF;
   }
-  span.timeline-step[data-badge]:after {
+  span.timeline-step.has-badge[data-badge]:after {
     content: attr(data-badge);
     font-size: 0.8rem;
     position: absolute;

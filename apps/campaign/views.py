@@ -2075,6 +2075,49 @@ class CampaignLeadSettingView(APIView):
         return Response({'success': True})
 
 
+# class LeadDetailView(APIView):
+#     permission_classes = (permissions.IsAuthenticated,)
+#
+#     def get(self, request, lead_id):
+#         recipient = Recipient.objects.filter(id=lead_id)
+#         if len(recipient) == 0:
+#             return Response({'success': False})
+#
+#         recipient = recipient.values()[0]
+#
+#         campaign = Campaign.objects.filter(id=recipient['campaign_id'])
+#         if len(campaign) == 0:
+#             return Response({'success': False})
+#
+#         campaign = campaign.values("email_body", "email_subject", "from_address_id")[0]
+#
+#         # populate email body
+#         campaign['email_body'] = convert_template(campaign['email_body'], json.loads(recipient['replacement']))
+#
+#         email_account = EmailAccount.objects.filter(id=campaign['from_address_id']).values("email", "first_name", "last_name")[0]
+#
+#         return Response({'success': True, 'recipient': recipient, 'campaign': campaign, 'from_address': email_account})
+
+
+class LeadDetailView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, camp_id, lead_id):
+        recipient = Recipient.objects.filter(id=lead_id)
+        if len(recipient) == 0:
+            return Response({'success': False})
+
+        outbound_email = EmailOutbox.objects.filter(campaign_id=camp_id, recipient_id=lead_id, email__email_type=0).select_related('from_email', 'campaign')
+        if len(outbound_email) == 0:
+            return Response({'success': False})
+
+        outbound_email = outbound_email.values(from_email_addr=F("from_email__email"),
+                                               from_first_name=F("from_email__first_name"),
+                                               from_last_name=F("from_email__last_name")).values()[0]
+
+        return Response({'success': True, 'content': outbound_email})
+
+
 class CampaignScheduleView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 

@@ -41,7 +41,7 @@ class LeadCatcher extends Component {
     this.setState({ modal: !this.state.modal })
   }
   showDetails = (data) => {
-    this.props.history.push(`/app/admin/lead/${data.id}/detail`);
+    this.props.history.push(`/app/admin/lead/detail/${data.camp_id}/${data.id}`);
   }
   render() {
     const tableTitle = [

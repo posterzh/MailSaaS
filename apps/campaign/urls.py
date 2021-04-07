@@ -36,5 +36,6 @@ urlpatterns = [
     path('schedule/', views.CampaignScheduleView.as_view(), name='schedule'),
     path('leads/', views.CampaignLeadsView.as_view(), name='leads'),
     path('settings-lead/<int:campaign_id>/', views.CampaignLeadSettingView.as_view(), name='lead-settings'),
+    path('lead-detail/<int:camp_id>/<int:lead_id>/', views.LeadDetailView.as_view(), name='lead-detail'),
     path('update-status/<int:pk>', views.CampaignUpdateStatus.as_view(), name='campaign_update_status')
 ]
