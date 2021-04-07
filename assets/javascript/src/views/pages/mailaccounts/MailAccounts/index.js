@@ -114,7 +114,7 @@ class MailAccountList extends Component {
         <PageHeader
           current="Mail Accounts"
           parent="Mail Accounts"
-          showStatus={true}
+          showStatus={false}
         />
         <PageContainer
           title="Email Accounts"
