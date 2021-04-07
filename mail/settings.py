@@ -34,8 +34,8 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = bool(os.environ.get("DEBUG", "True"))
-
+# DEBUG = bool(os.environ.get("DEBUG", "True"))
+DEBUG = False
 # LIVE = bool(os.environ.get("LIVE", "True"))
 LIVE = False
 
@@ -65,7 +65,7 @@ DJANGO_APPS = [
     'django_extensions',
     'django_filters',
     'storages',
-    
+
 ]
 
 # Put your third-party apps here
