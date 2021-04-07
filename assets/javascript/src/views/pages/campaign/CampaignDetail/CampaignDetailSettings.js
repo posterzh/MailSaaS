@@ -13,7 +13,7 @@ import {
   CardBody,
 } from "reactstrap";
 import { getMailAccounts } from "../../../../redux/action/MailAccountsActions"
-import { getDetailsSettings, getLeadSettings, updateLeadSettings } from "../../../../redux/action/CampaignDetailsActions"
+import { getDetailsSettings, getLeadSettings, updateLeadSettings, updateSendingAddress } from "../../../../redux/action/CampaignDetailsActions"
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import DetailHeader from "./components/DetailHeader";
@@ -98,6 +98,18 @@ export class CampaignDetailSettings extends Component {
     this.setState({operator: !this.state.operator});
   }
 
+  saveSendingAccount = () => {
+    const { id } = this.props;
+    const { sendingAddressId } = this.state;
+
+    if (!sendingAddressId) {
+      showNotification("warning", null, "Please select the sending account.");
+      return;
+    }
+
+    this.props.updateSendingAddress(id, sendingAddressId);
+  }
+
   onClickSaveLeadCatcher = async () => {
     const { leadConditions, operator } = this.state;
     const payload = {};
@@ -173,7 +185,7 @@ export class CampaignDetailSettings extends Component {
                       value={sendingAddressId}
                       onChange={this.onSendingAddressChange}
                     >
-                      <option>Select</option>
+                      <option value={""}>Select</option>
                       {mailAccounts && mailAccounts.map((mailAccount, id) => (
                         <option key={`item_${id}`} value={mailAccount.id}>{mailAccount.email}</option>
                       ))}
@@ -187,7 +199,7 @@ export class CampaignDetailSettings extends Component {
 
                   <Row>
                     <Col>
-                      <Button color="danger" size="sm">&nbsp;&nbsp;SAVE&nbsp;&nbsp;</Button>
+                      <Button color="danger" size="sm" onClick={this.saveSendingAccount}>&nbsp;&nbsp;SAVE&nbsp;&nbsp;</Button>
                     </Col>
                   </Row>
                 </CardBody>
@@ -200,27 +212,6 @@ export class CampaignDetailSettings extends Component {
                   <h3 className="mb-0">Lead Catcher</h3>
                 </CardHeader>
                 <CardBody>
-                  {/* <FormGroup>
-                    <label
-                      className="form-control-label"
-                      htmlFor="selectFromAddress"
-                    >
-                      Who should leads be assigned to?
-                    </label>
-                    <Input
-                      id="selectFromAddress"
-                      type="select"
-                      className="form-control-sm"
-                      value={leadAddressId}
-                      onChange={this.onLeadAddressChange}
-                    >
-                      <option>Select</option>
-                      {mailAccounts && mailAccounts.map((mailAccount, id) => (
-                        <option key={`item_${id}`} value={mailAccount.id}>{mailAccount.email}</option>
-                      ))}
-                    </Input>
-                  </FormGroup> */}
-
                   <label className="form-control-label">
                     {
                       leadConditions && leadConditions.length == 0
@@ -230,7 +221,6 @@ export class CampaignDetailSettings extends Component {
                         "When does a recipient become a lead?"
                     }
                   </label>
-
                   {
                     leadConditions.map((leadCondition, index) => (
                       <div key={`${index}`}>
@@ -312,6 +302,7 @@ export class CampaignDetailSettings extends Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   return {
     id: state.campaignDetails.id,
@@ -324,5 +315,6 @@ export default connect(mapStateToProps, {
   getDetailsSettings,
   getLeadSettings,
   updateLeadSettings,
+  updateSendingAddress,
   getMailAccounts
 })(CampaignDetailSettings);

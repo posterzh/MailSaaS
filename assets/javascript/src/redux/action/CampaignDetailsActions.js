@@ -122,6 +122,22 @@ export const updateLeadSettings = (id, data) => (dispatch) => {
     });
 };
 
+export const updateSendingAddress = (id, sendingAddress) => (dispatch) => {
+  toggleTopLoader(true);
+  return axios
+    .patch(`/campaign/details-settings-update/${id}/`, {"from_address": sendingAddress})
+    .then((response) => {
+      toastOnSuccess("Updated successfully!");
+      return response.data;
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+}
+
 export const importContactsFromCSV = (id, csvFile) => (dispatch) => {
   const formData = new FormData();
   formData.append('csv_file', csvFile);
