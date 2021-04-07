@@ -33,6 +33,7 @@ urlpatterns = [
     path('details-recipients/<int:pk>/', views.CampaignDetailsRecipientsView.as_view(), name='details-recipients'),
     path('details-recipients-add/<int:pk>', views.CampaignDetailsRecipientsAddView.as_view(), name='details-recipients-add'),
     path('details-settings/<int:pk>/', views.CampaignDetailsSettingsView.as_view(), name='details-settings'),
+    path('details-settings-update/<int:pk>/', views.CampaignDetailsSettingsUpdateView.as_view(), name='details-settings-update'),
     path('schedule/', views.CampaignScheduleView.as_view(), name='schedule'),
     path('leads/', views.CampaignLeadsView.as_view(), name='leads'),
     path('settings-lead/<int:campaign_id>/', views.CampaignLeadSettingView.as_view(), name='lead-settings'),

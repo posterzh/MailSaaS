@@ -567,8 +567,8 @@ class CampaignUpdateView(APIView):
             else:
                 serializer = EmailsSerializer(data=email)
 
-            if serializer.is_valid():
-                serializer.save()
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
 
         return Response(status=status.HTTP_200_OK)
 
@@ -1566,7 +1566,6 @@ class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CampaignEmailSerializer
 
     def get_object(self, request, pk):
-
         try:
             return CampaignRecipient.objects.get(id=pk)
         except CampaignRecipient.DoesNotExist:
@@ -1963,6 +1962,15 @@ class CampaignDetailsRecipientsAddView(APIView):
 
 
 class CampaignDetailsSettingsView(generics.RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = CampaignSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Campaign.objects.filter(assigned=user.id)
+
+
+class CampaignDetailsSettingsUpdateView(generics.UpdateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = CampaignSerializer
 
