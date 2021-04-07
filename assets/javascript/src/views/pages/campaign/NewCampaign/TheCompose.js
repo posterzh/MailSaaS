@@ -31,7 +31,7 @@ class TheCompose extends Component {
   onAddFollowUp = () => {
     this.setState((state) => {
       const index = state.followUpList.length;
-      let newFollowUp = { index, subject: "Re: ", email_body: "Hi", waitDays: 1 };
+      let newFollowUp = { index, email_subject: "Re: ", email_body: "Hi", wait_days: 1 };
       const followUpList = state.followUpList.concat(newFollowUp);
       return {
         ...state,
@@ -53,7 +53,7 @@ class TheCompose extends Component {
   onAddDrip = () => {
     this.setState((state) => {
       const index = state.dripList.length;
-      let newFollowUp = { index, subject: "Re: ", email_body: "Hi", waitDays: 1 };
+      let newFollowUp = { index, email_subject: "Re: ", email_body: "Hi", wait_days: 1 };
       const dripList = state.dripList.concat(newFollowUp);
       return {
         ...state,
@@ -89,7 +89,6 @@ class TheCompose extends Component {
       delete dup['ref'];
       return dup;
     });
-    debugger;
 
     let data = {
       email_subject: this.state.subject,
@@ -117,6 +116,7 @@ class TheCompose extends Component {
               <div className="keyword-item text-danger px-1 mr-2 my-1" key={`template ${index}`} draggable="true" onDragStart={(e) => {
                 const dataTransfer = e.dataTransfer;
                 dataTransfer.setData('text/html', `<span class="keyword-item p-1 mr-2 my-1">{{${field}}}</span>`);
+                dataTransfer.setData('text', `{{${field}}}`);
               }} onDoubleClick={() => {
                 const { ref: _quillRef } = panelItem;
                 if (_quillRef) {

@@ -94,7 +94,7 @@ class MicrosoftAccount(EmailAccount):
 class SendingCalendar(models.Model):
     TIMEZONE_CHOICES = zip(pytz.all_timezones, pytz.all_timezones)
 
-    mail_account = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
+    mail_account = models.OneToOneField(EmailAccount, on_delete=models.CASCADE)
     block_days = models.PositiveIntegerField(default=96)
     start_time = models.TimeField(auto_now=False, default='09:00:00')
     end_time = models.TimeField(auto_now=False, default='17:00:00')
@@ -106,7 +106,7 @@ class SendingCalendar(models.Model):
 
 
 class CalendarStatus(models.Model):
-    sending_calendar = models.ForeignKey(SendingCalendar, on_delete=models.CASCADE)
+    sending_calendar = models.OneToOneField(SendingCalendar, on_delete=models.CASCADE)
     updated_datetime = models.DateTimeField(auto_now=False)
     sent_count = models.PositiveIntegerField(default=0)
 
