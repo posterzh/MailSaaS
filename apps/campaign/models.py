@@ -31,7 +31,7 @@ class Campaign(models.Model):
     campaign_status = models.BooleanField(default=True)  # True: Start, False: Pause
     is_deleted = models.BooleanField(default=False)
     is_draft = models.BooleanField(default=False)
-    label_name = models.ForeignKey(CampaignLabel, on_delete=models.SET_DEFAULT, default=1)
+    label_name = models.ForeignKey(CampaignLabel, on_delete=models.SET_NULL, null=True)
     csv_fields = models.TextField(blank=True, null=True, default='')
     email_subject = models.CharField(max_length=2000, blank=True, null=True)
     email_body = models.TextField(blank=True, null=True)

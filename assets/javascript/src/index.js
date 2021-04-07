@@ -25,6 +25,7 @@ import { Router, Route, Switch, Redirect } from "react-router-dom";
 // // import "assets/vendor/bootstrap-rtl/bootstrap-rtl.scss";
 
 // plugins styles from node_modules
+import "bootstrap/dist/css/bootstrap.min.css";
 import "react-notification-alert/dist/animate.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "@fullcalendar/common/main.min.css";
