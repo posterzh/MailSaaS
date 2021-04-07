@@ -175,7 +175,7 @@ class Prospects extends Component {
 					parent="Prospects"
 					showStatus={false}
 				/>
-				<PageContainer title={"Audiences"} showHelper={true} newButton="New Audience" newAction={this.importContacts}>
+				<PageContainer title={"Audiences"} showHelper={true}>
 					<Row>
 						<Col md="2" sm="4" className="sidenav-toggler">
 							<Card className={this.state.selected === 'total' ? "bg-info" : "bg-light"} onClick={this.onTotalClick}>
