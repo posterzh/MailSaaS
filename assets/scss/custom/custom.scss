@@ -811,23 +811,6 @@ button .import_button {
   border: 1px solid silver;
 }
 
-//  Quill div
-.Quill_div {
-  margin-top: 10px;
-  height: 180px;
-  margin-bottom: 50px;
-  p {
-    margin-bottom: 0;
-  }
-}
-.ql-container {
-  height: 100%;
-}
-.ql-editor {
-  height: 100%;
-  overflow-y: auto;
-}
-
 .editorDiv {
   background-color: #f5f5f5;
   border: 2px solid;
@@ -2120,6 +2103,31 @@ input::-webkit-inner-spin-button {
   cursor: pointer !important;
 }
 
+//  Quill div
+.Quill_div {
+  margin-top: 10px;
+  // height: 180px;
+  // margin-bottom: 50px;
+  p {
+    margin-bottom: 0;
+  }
+}
+// .ql-container {
+//   height: 100%;
+// }
+// .ql-editor {
+//   height: 100%;
+//   overflow-y: auto;
+// }
+
+.ql-clipboard {
+  left: -100000px;
+  height: 1px;
+  overflow-y: hidden;
+  position: absolute;
+  top: 50%;
+}
+
 .timeline.lead-timeline {
   span.timeline-step.badge-secondary {
     /* position: relative; */
@@ -2189,4 +2197,37 @@ input::-webkit-inner-spin-button {
   .panel-body {
     padding-top: 1rem;
   }
+}
+
+.modal-dialog.lead-detail-modal {
+  .timeline-one-side .timeline-content {
+    max-width: unset !important;
+  }
+}
+
+/**
+ * Bootstrap spinner styles
+ */
+ @-webkit-keyframes spinner-border {
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinner-border {
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+.spinner-border {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: text-bottom;
+  border: 0.25em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  -webkit-animation: spinner-border .75s linear infinite;
+  animation: spinner-border .75s linear infinite;
 }

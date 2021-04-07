@@ -7,6 +7,7 @@ import {
   GET_DETAILS_RECIPIENTS,
   GET_DETAILS_SETTINGS,
   IMPORT_CONTACTS_FROM_CSV,
+  UPDATE_RECIPIENT_STATUS,
 } from "../actionType/actionType";
 
 
@@ -63,6 +64,26 @@ export const getDetailRecipients = (id) => (dispatch) => {
         type: GET_DETAILS_RECIPIENTS,
         payload: response.data.results,
       });
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+}
+
+export const updateRecipientStatus = (id, status) => (dispatch) => {
+  toggleTopLoader(true);
+  return axios
+    .patch(`/campaign/details-recipients-update/${id}/`, {"recipient_status": status})
+    .then((response) => {
+      dispatch({
+        type: UPDATE_RECIPIENT_STATUS,
+        payload: response.data
+      });
+      toastOnSuccess("Updated successfully!");
+      return response.data;
     })
     .catch((error) => {
       toastOnError(error);
