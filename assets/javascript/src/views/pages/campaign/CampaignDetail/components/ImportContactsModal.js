@@ -15,6 +15,7 @@ import {
   NavItem,
   NavLink,
 } from "reactstrap";
+import { connect } from 'react-redux';
 import { CSVReader } from 'react-papaparse';
 import { showNotification } from "../../../../../utils/Utils";
 import Tables from "../../../../../components/Tables";
@@ -54,8 +55,11 @@ export class ImportContactsModal extends Component {
       return false;
     }
 
-    this.props.importContactsFromCSV(this.state.csvFile);
-    this.props.close();
+    const { id } = this.props;
+    const { csvFile } = this.state;
+
+    this.props.importContactsFromCSV(id, csvFile);
+    this.close();
   }
 
   handleOnDrop = (data, file) => {
@@ -67,7 +71,7 @@ export class ImportContactsModal extends Component {
       });
       return;
     }
-
+    
     const firstRow = data[0].data;
     const tableHeaders = [];
     const tableBody = [];
@@ -136,12 +140,17 @@ export class ImportContactsModal extends Component {
     });
   };
 
+  close = () => {
+    this.setState(initialState);
+    this.props.close();
+  }
+
   render() {
     const { show, csvMappingContent } = this.state;
 
     return (
       <>
-        <Modal isOpen={this.props.isOpen} toggle={this.props.close} size="lg">
+        <Modal isOpen={this.props.isOpen} toggle={this.close} size="lg">
           <Form onSubmit={this.handleSubmit}>
             <Card className="no-shadow">
               <CardHeader className="pb-0">
@@ -202,11 +211,11 @@ export class ImportContactsModal extends Component {
                 <Row className="mt-4">
                   <Col md={2}>
                     <Button type="submit" color="danger" block>
-                      Ok
+                      OK
                     </Button>
                   </Col>
                   <Col md={2}>
-                    <Button type="button" onClick={this.props.close}>
+                    <Button type="button" onClick={this.close}>
                       CANCEL
                     </Button>
                   </Col>
@@ -220,4 +229,12 @@ export class ImportContactsModal extends Component {
   }
 }
 
-export default ImportContactsModal;
+const mapStateToProps = (state) => {
+  return {
+    id: state.campaignDetails.id,
+  };
+};
+
+export default connect( mapStateToProps, {
+  importContactsFromCSV
+})(ImportContactsModal);

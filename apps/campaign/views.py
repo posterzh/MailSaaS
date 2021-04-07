@@ -3,7 +3,7 @@ import datetime
 import json
 import re
 import pandas as pd
-import ast
+from io import StringIO
 from datetime import date, datetime, time, timedelta
 import pytracking
 from django.conf import settings
@@ -1926,6 +1926,40 @@ class CampaignDetailsRecipientsView(generics.ListAPIView):
 
 class CampaignDetailsRecipientsAddView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, pk):
+        data = request.data
+
+        csv_file = data['csv_file']
+        file_data = csv_file.read().decode("utf-8")
+        string_data = StringIO(file_data)
+
+        df_data = pd.read_csv(string_data)
+        df_data.drop(df_data.columns[df_data.columns.str.contains('unnamed', case=False)], axis=1, inplace=True)
+        csv_columns = df_data.columns
+
+        if "Email" in csv_columns:
+            df_data.rename(columns={'Email': 'email'}, inplace=True)
+        df_data.dropna(subset=["email"], inplace=True)
+        df_data.drop_duplicates(subset=["email"], inplace=True)
+
+        emails = df_data[['email']].values
+        replacements = json.loads(df_data.to_json(orient="records"))
+
+        recipients = []
+        for email, replacement in zip(emails, replacements):
+            data = {
+                'campaign': pk,
+                'email': email[0],
+                'replacement': json.dumps(replacement)
+            }
+
+            serializer = CampaignRecipientSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                recipients.append(serializer.data)
+
+        return Response(data=recipients, status=status.HTTP_201_CREATED)
 
 
 class CampaignDetailsSettingsView(generics.RetrieveAPIView):

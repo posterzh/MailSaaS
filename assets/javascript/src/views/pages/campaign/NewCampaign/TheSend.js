@@ -8,12 +8,7 @@ import {
   CardBody,
 } from "reactstrap";
 import { connect } from "react-redux";
-import {
-  CampaignCreateAction,
-  CampaignSaveAction,
-} from "../../../../redux/action/CampaignAction";
 import ThePreview from "./ThePreview";
-
 import { campaignSend } from "../../../../redux/action/CampaignActions";
 
 export class TheSend extends Component {

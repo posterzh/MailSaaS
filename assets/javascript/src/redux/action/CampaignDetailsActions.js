@@ -6,6 +6,7 @@ import {
   GET_DETAILS_SEQUENCE,
   GET_DETAILS_RECIPIENTS,
   GET_DETAILS_SETTINGS,
+  IMPORT_CONTACTS_FROM_CSV,
 } from "../actionType/actionType";
 
 
@@ -121,14 +122,18 @@ export const updateLeadSettings = (id, data) => (dispatch) => {
     });
 };
 
-export const importContactsFromCSV = (csvFile) => (dispatch) => {
+export const importContactsFromCSV = (id, csvFile) => (dispatch) => {
   const formData = new FormData();
-  formData.append('csvfile', csvFile);
+  formData.append('csv_file', csvFile);
   toggleTopLoader(true);
-  axios
-    .post("/campaign/create/", formData)
+  return axios
+    .post(`/campaign/details-recipients-add/${id}`, formData)
     .then((response) => {
-      
+      dispatch({
+        type: IMPORT_CONTACTS_FROM_CSV,
+        payload: response.data,
+      });
+      return response.data;
     })
     .catch((error) => {
       toastOnError(error);
