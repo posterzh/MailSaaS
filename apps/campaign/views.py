@@ -498,7 +498,7 @@ class CampaignCreateView(APIView):
 
         email_order = 0
         for follow_up in follow_ups:
-            follow_email = Emails(campaign=camp, wait_days=follow_up["waitDays"], email_subject=follow_up["subject"],
+            follow_email = Emails(campaign=camp, wait_days=follow_up["wait_days"], email_subject=follow_up["email_subject"],
                                   email_body=follow_up["email_body"], email_type=1, email_order=email_order)
             follow_email.save()
             email_order += 1
@@ -510,7 +510,7 @@ class CampaignCreateView(APIView):
         email_order = 0
 
         for drip in drips:
-            drip_email = Emails(campaign=camp, wait_days=drip["waitDays"], email_subject=drip["subject"],
+            drip_email = Emails(campaign=camp, wait_days=drip["wait_days"], email_subject=drip["email_subject"],
                                 email_body=drip["email_body"], email_type=2, email_order=email_order)
             drip_email.save()
             email_order += 1
@@ -1961,6 +1961,15 @@ class CampaignDetailsRecipientsAddView(APIView):
         return Response(data=recipients, status=status.HTTP_201_CREATED)
 
 
+class CampaignDetailsRecipientsUpdateView(generics.UpdateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = CampaignRecipientSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Recipient.objects.filter(campaign__assigned=user.id)
+
+
 class CampaignDetailsSettingsView(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = CampaignSerializer
@@ -2284,7 +2293,7 @@ def get_followup_emails(df_emails, followup_emails_count):
             continue
 
         followup_email["email_body"] = convert_template(
-            followup_email["email_body"], followup_email["replacement"]
+            followup_email["email_body"], json.loads(followup_email["replacement"])
         )
 
         followup_emails = followup_emails.append(followup_email)
@@ -2344,7 +2353,7 @@ def get_drip_emails(df_emails):
             continue
 
         drip_email["email_body"] = convert_template(
-            drip_email["email_body"], drip_email["replacement"]
+            drip_email["email_body"], json.loads(drip_email["replacement"])
         )
 
         drip_emails = drip_emails.append(drip_email)
@@ -2353,6 +2362,12 @@ def get_drip_emails(df_emails):
 
 
 def convert_template(template, replacement):
+    if not replacement:
+        return template
+
+    if type(replacement) == str:
+        replacement = json.loads(replacement)
+
     for key in replacement.keys():
         key_match = "{{" + key + "}}"
         if key_match in template:
