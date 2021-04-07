@@ -9,11 +9,6 @@ import {
 } from "reactstrap";
 import Dropzone from "dropzone";
 import { CSVReader } from "react-papaparse";
-// import {
-//   RecipientAction,
-//   StartCampaignAction,
-// } from "../../../../redux/action/CampaignAction";
-
 import Tables from "../../../../components/Tables";
 import { showNotification } from "../../../../utils/Utils";
 import { campaignRecipient } from "../../../../redux/action/CampaignActions";

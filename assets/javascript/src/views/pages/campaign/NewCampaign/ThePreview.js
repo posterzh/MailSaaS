@@ -6,7 +6,6 @@ import {
   Button,
   Card,
 } from "reactstrap";
-import { PreviewCampaignAction } from "../../../../redux/action/CampaignAction";
 import ReactQuill from "react-quill";
 import FollowUpPanel from "./components/FollowUpPanel";
 import DripPanel from "./components/DripPanel";

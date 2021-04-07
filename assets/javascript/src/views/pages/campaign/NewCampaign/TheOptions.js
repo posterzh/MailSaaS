@@ -8,7 +8,6 @@ import {
   Card,
   Input
 } from "reactstrap";
-import { CampaignOptionAction } from "../../../../redux/action/CampaignAction";
 import { connect } from "react-redux";
 import { campaignOptions } from "../../../../redux/action/CampaignActions";
 

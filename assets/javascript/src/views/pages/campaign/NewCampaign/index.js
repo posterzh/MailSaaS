@@ -1,9 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Row, Col } from "reactstrap";
-// import { StartCampaignAction } from "../../../../redux/action/CampaignAction";
-// import { MailGetDataAction } from "../../../../redux/action/MailSenderAction";
-
 import { getMailAccounts } from "../../../../redux/action/MailAccountsActions";
 
 import PageHeader from "../../../../components/Headers/PageHeader";
