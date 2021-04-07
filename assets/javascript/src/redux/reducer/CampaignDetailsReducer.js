@@ -3,6 +3,7 @@ import {
   GET_DETAILS_SEQUENCE,
   GET_DETAILS_SETTINGS,
   GET_DETAILS_RECIPIENTS,
+  IMPORT_CONTACTS_FROM_CSV,
 } from "../actionType/actionType";
 
 const initialState = {
@@ -38,6 +39,14 @@ export const campaignDetailsReducer = (state = initialState, action) => {
       return {
         ...state,
         detailsSettings: action.payload,
+      }
+    case IMPORT_CONTACTS_FROM_CSV:
+      return {
+        ...state,
+        detailRecipients: [
+          ...state.detailRecipients,
+          ...action.payload
+        ]
       }
     default:
       return state;
