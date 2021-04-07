@@ -145,7 +145,7 @@ class AdminNavbar extends React.Component {
                   <DropdownToggle className="nav-link pr-0" color="" tag="a">
                     <Media className="align-items-center">
                       <span className="avatar avatar-sm rounded-circle">
-                        <img alt="..." src={this.props.user.avatar ? this.props.user.avatar : defaultProfilePic}
+                        <img alt="..." src={this.props.user.avatar_url ? this.props.user.avatar_url : defaultProfilePic}
                           style={{ background: "ghostwhite" }} />
                       </span>
                       <Media className="ml-2 d-none d-sm-block">

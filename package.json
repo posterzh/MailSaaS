@@ -49,6 +49,7 @@
     "@fullcalendar/daygrid": "4.4.0",
     "@fullcalendar/interaction": "4.4.0",
     "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
     "bulma": "^0.9.1",
     "chart.js": "2.9.3",
     "classnames": "2.2.6",

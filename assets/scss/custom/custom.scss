@@ -2125,7 +2125,7 @@ input::-webkit-inner-spin-button {
     /* position: relative; */
     background-color: #E4E6EF;
   }
-  span.timeline-step[data-badge]:after {
+  span.timeline-step.has-badge[data-badge]:after {
     content: attr(data-badge);
     font-size: 0.8rem;
     position: absolute;
@@ -2153,5 +2153,40 @@ input::-webkit-inner-spin-button {
     .card-body {
       padding-top: 0.3rem !important;
     }
+  }
+}
+
+.float-panel.panel-right {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  z-index: 1050;
+  background-color: white;
+  box-shadow: none;
+  transition: all 0.3s;
+  &.show {
+    width: 600px;
+    padding: 1rem;
+    box-shadow: 0 1px 15px 4px rgba(0, 0, 0, 0.25);
+  }
+  .panel-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.5rem 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    > .header-title {
+      margin-bottom: 0;
+    }
+    > .btn-close {
+      cursor: pointer;
+      user-select: none;
+    }
+  }
+  .panel-body {
+    padding-top: 1rem;
   }
 }

@@ -233,7 +233,7 @@ export default class DetailModal extends Component {
                               <Input
                                 id="smtp_password"
                                 name="smtp_password"
-                                type="text"
+                                type="password"
                                 className="form-control-sm"
                                 onChange={this.handleChange}
                                 value={this.state.smtp_password}
@@ -313,7 +313,7 @@ export default class DetailModal extends Component {
                               <Input
                                 id="imap_username"
                                 name="imap_username"
-                                type="text"
+                                type="password"
                                 className="form-control-sm"
                                 onChange={this.handleChange}
                                 value={this.state.imap_username}

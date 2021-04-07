@@ -9,7 +9,7 @@ from rest_framework import viewsets
 
 from apps.teams.decorators import login_and_team_required, team_admin_required
 from .invitations import send_invitation, process_invitation, clear_invite_from_session
-# from .forms import TeamChangeForm
+from .forms import TeamChangeForm
 from .models import Team, Invitation
 from .serializers import TeamSerializer, InvitationSerializer
 

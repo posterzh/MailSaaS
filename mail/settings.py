@@ -4,9 +4,8 @@ import datetime
 from decouple import config
 from pathlib import Path  # Python 3.6+ only
 import sentry_sdk
-from .dbpass import get_secret,get_s3_secret
+from .dbpass import get_secret, get_s3_secret
 from sentry_sdk.integrations.django import DjangoIntegration
-
 
 sentry_sdk.init(
     dsn="https://54a77e70d6ac40c9b834017e1c5d4df0@o423610.ingest.sentry.io/5701236",
@@ -35,7 +34,7 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # DEBUG = bool(os.environ.get("DEBUG", "True"))
-DEBUG = False
+DEBUG = True
 # LIVE = bool(os.environ.get("LIVE", "True"))
 LIVE = False
 
@@ -307,8 +306,8 @@ if DEBUG == False:
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
 else:
-    STATIC_URL = '/staticfiles/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_URL = '/static/'
+    # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
     STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -316,16 +315,14 @@ else:
 # STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    "static",os.path.join(BASE_DIR, 'static'),
-    "media",os.path.join(BASE_DIR,'media'),
-    "assets",os.path.join(BASE_DIR,'assets'),
+    "static", os.path.join(BASE_DIR, 'static'),
+    "media", os.path.join(BASE_DIR, 'media'),
+    "assets", os.path.join(BASE_DIR, 'assets'),
 ]
-
 
 # uncomment to use manifest storage to bust cache when file change
 # note: this may break some image references in sass files which is why it is not enabled by default
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
-
 
 
 # Email setup
@@ -457,7 +454,28 @@ JWT_AUTH = {
 # Mail_configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'sg3plcpnl0063.prod.sin3.secureserver.net'
+# EMAIL_PORT=config('EMAIL_PORT')
+# EMAIL_USE_TLS = False
+# EMAIL_USE_SSL=config('EMAIL_USE_SSL')
+# EMAIL_HOST_USER=config('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
 
+
+# Slack Configuration
+# VERIFICATION_TOKEN = config('VERIFICATION_TOKEN')
+# OAUTH_ACCESS_TOKEN = config('OAUTH_ACCESS_TOKEN')
+# BOT_USER_ACCESS_TOKEN = config('BOT_USER_ACCESS_TOKEN')
+# SLACK_CLIENT_ID = config('SLACK_CLIENT_ID')
+# SLACK_CLIENT_SECRET = config('SLACK_CLIENT_SECRET')
+
+# Salesforce Configuration
+
+# SALESFORCE_USERNAME = config('SALESFORCE_USERNAME')
+# SALESFORCE_PASSWORD = config('SALESFORCE_PASSWORD')
+# SALESFORCE_SECURITY_TOKEN = config('SALESFORCE_SECURITY_TOKEN')
+# SALESFORCE_DOMAIN = 'test'
+# SALESFORCE_USE_SANDBOX = True
+# SALESFORCE_API_VERSION = '43.0'
 
 PIPEDRIVE_API_KEY = "67ffc61ad9d85760cee59c2115bddd5cc536e9c6"
 
@@ -499,4 +517,3 @@ DEFAULT_WARMUP_FOLDER = "mailerrize"
 DEFAULT_RAMPUP_INCREMENT = 3
 DEFAULT_WARMUP_MAX_CNT = 20
 DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX = "• mailerrize"
-

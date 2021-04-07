@@ -91,7 +91,7 @@ const routes = [
         layout: "/app/admin",
       },
       {
-        path: "/lead/:id/detail",
+        path: "/lead/detail/:camp_id/:lead_id",
         component: LeadDetail,
         layout: "/app/admin",
         redirect: true,

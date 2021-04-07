@@ -3,7 +3,7 @@ import datetime
 import json
 import re
 import pandas as pd
-import ast
+from io import StringIO
 from datetime import date, datetime, time, timedelta
 import pytracking
 from django.conf import settings
@@ -567,8 +567,8 @@ class CampaignUpdateView(APIView):
             else:
                 serializer = EmailsSerializer(data=email)
 
-            if serializer.is_valid():
-                serializer.save()
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
 
         return Response(status=status.HTTP_200_OK)
 
@@ -1566,7 +1566,6 @@ class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CampaignEmailSerializer
 
     def get_object(self, request, pk):
-
         try:
             return CampaignRecipient.objects.get(id=pk)
         except CampaignRecipient.DoesNotExist:
@@ -1927,8 +1926,51 @@ class CampaignDetailsRecipientsView(generics.ListAPIView):
 class CampaignDetailsRecipientsAddView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
+    def post(self, request, pk):
+        data = request.data
+
+        csv_file = data['csv_file']
+        file_data = csv_file.read().decode("utf-8")
+        string_data = StringIO(file_data)
+
+        df_data = pd.read_csv(string_data)
+        df_data.drop(df_data.columns[df_data.columns.str.contains('unnamed', case=False)], axis=1, inplace=True)
+        csv_columns = df_data.columns
+
+        if "Email" in csv_columns:
+            df_data.rename(columns={'Email': 'email'}, inplace=True)
+        df_data.dropna(subset=["email"], inplace=True)
+        df_data.drop_duplicates(subset=["email"], inplace=True)
+
+        emails = df_data[['email']].values
+        replacements = json.loads(df_data.to_json(orient="records"))
+
+        recipients = []
+        for email, replacement in zip(emails, replacements):
+            data = {
+                'campaign': pk,
+                'email': email[0],
+                'replacement': json.dumps(replacement)
+            }
+
+            serializer = CampaignRecipientSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                recipients.append(serializer.data)
+
+        return Response(data=recipients, status=status.HTTP_201_CREATED)
+
 
 class CampaignDetailsSettingsView(generics.RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = CampaignSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Campaign.objects.filter(assigned=user.id)
+
+
+class CampaignDetailsSettingsUpdateView(generics.UpdateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = CampaignSerializer
 
@@ -2073,6 +2115,49 @@ class CampaignLeadSettingView(APIView):
             new_item.save()
 
         return Response({'success': True})
+
+
+# class LeadDetailView(APIView):
+#     permission_classes = (permissions.IsAuthenticated,)
+#
+#     def get(self, request, lead_id):
+#         recipient = Recipient.objects.filter(id=lead_id)
+#         if len(recipient) == 0:
+#             return Response({'success': False})
+#
+#         recipient = recipient.values()[0]
+#
+#         campaign = Campaign.objects.filter(id=recipient['campaign_id'])
+#         if len(campaign) == 0:
+#             return Response({'success': False})
+#
+#         campaign = campaign.values("email_body", "email_subject", "from_address_id")[0]
+#
+#         # populate email body
+#         campaign['email_body'] = convert_template(campaign['email_body'], json.loads(recipient['replacement']))
+#
+#         email_account = EmailAccount.objects.filter(id=campaign['from_address_id']).values("email", "first_name", "last_name")[0]
+#
+#         return Response({'success': True, 'recipient': recipient, 'campaign': campaign, 'from_address': email_account})
+
+
+class LeadDetailView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, camp_id, lead_id):
+        recipient = Recipient.objects.filter(id=lead_id)
+        if len(recipient) == 0:
+            return Response({'success': False})
+
+        outbound_email = EmailOutbox.objects.filter(campaign_id=camp_id, recipient_id=lead_id, email__email_type=0).select_related('from_email', 'campaign')
+        if len(outbound_email) == 0:
+            return Response({'success': False})
+
+        outbound_email = outbound_email.values(from_email_addr=F("from_email__email"),
+                                               from_first_name=F("from_email__first_name"),
+                                               from_last_name=F("from_email__last_name")).values()[0]
+
+        return Response({'success': True, 'content': outbound_email})
 
 
 class CampaignScheduleView(APIView):
