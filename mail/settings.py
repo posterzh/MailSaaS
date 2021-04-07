@@ -33,8 +33,8 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = bool(os.environ.get("DEBUG", "True"))
-
+# DEBUG = bool(os.environ.get("DEBUG", "True"))
+DEBUG = False
 # LIVE = bool(os.environ.get("LIVE", "True"))
 LIVE = False
 
@@ -52,7 +52,7 @@ DJANGO_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-
+    'collectfast',
     'django.contrib.staticfiles',
 
     'django.forms',
@@ -63,7 +63,8 @@ DJANGO_APPS = [
     'django_celery_beat',
     'django_extensions',
     'django_filters',
-    'storages'
+    'storages',
+
 ]
 
 # Put your third-party apps here
@@ -195,8 +196,7 @@ if not DEBUG:
         }
     }
 
-GOOGLE_CLIENT_SECRET_FILE = os.path.join(BASE_DIR,
-                                         'client_secret_178038321765-1d24dsmngr7cmthb1ksvno3kehirnqbg.apps.googleusercontent.com.json')
+
 GOOGLE_AUTH_SCOPES = [
     'https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile',
@@ -304,6 +304,7 @@ if DEBUG == False:
     AWS_LOCATION = ''
     STATIC_URL = 'https://cdn.mailerrize.com/'
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
 else:
     STATIC_URL = '/static/'
     # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -361,7 +362,10 @@ REST_FRAMEWORK = {
 }
 
 # Celery setup (using redis)
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379")
+
+CELERY_BROKER_URL = 'sqs://AKIA3PBLWS55IDE6RJW2:qCcVKF0q8cUgJRat89P25oJp+pPfGeKVHn2w4lzA@'
+CELERY_BROKER_TRANSPORT = 'sqs'
+CELERY_BROKER_TRANSPORT_OPTIONS = {'region': 'us-east-2'}
 CELERY_RESULT_BACKEND = 'django-db'
 
 CELERY_ACCEPT_CONTENT = ['json']
@@ -369,11 +373,6 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_TIMEZONE = "UTC"
-
-# JWT_AUTH = {
-#     'JWT_AUTH_HEADER_PREFIX': 'JWT',
-#     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=500)
-# }
 
 
 REST_AUTH_SERIALIZERS = {
@@ -477,7 +476,6 @@ EMAIL_HOST = 'sg3plcpnl0063.prod.sin3.secureserver.net'
 # SALESFORCE_DOMAIN = 'test'
 # SALESFORCE_USE_SANDBOX = True
 # SALESFORCE_API_VERSION = '43.0'
-
 
 PIPEDRIVE_API_KEY = "67ffc61ad9d85760cee59c2115bddd5cc536e9c6"
 
