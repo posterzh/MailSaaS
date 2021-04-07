@@ -24,6 +24,7 @@ import { formatHeader } from "../../../../../utils/Utils";
 import { campaignUpdate } from "../../../../../redux/action/CampaignActions";
 import FollowUpPanel from "../../NewCampaign/components/FollowUpPanel";
 import DripPanel from "../../NewCampaign/components/DripPanel";
+import { showNotification } from "../../../../../utils/Utils"
 
 class SequenceEditPanel extends Component {
   constructor(props) {
@@ -127,6 +128,50 @@ class SequenceEditPanel extends Component {
       .filter(drip => drip.id !== undefined || drip.is_deleted === false)
       .map((drip, index) => { drip.email_order = index; return drip; });
     const emails = [main].concat(followups).concat(drips);
+
+    if (!main.email_subject) {
+      showNotification("danger", "The email subject should not be empty.");
+      return false;
+    }
+
+    if (!main.email_body) {
+      showNotification("danger", "The email body should not be empty.");
+      return false;
+    }
+
+    for (let followup of followups) {
+      if (!followup.email_subject) {
+        showNotification("danger", "The email subject should not be empty.");
+        return false;
+      }
+
+      if (!followup.email_body) {
+        showNotification("danger", "The email body should not be empty.");
+        return false;
+      }
+
+      if (followup.wait_days <= 0) {
+        showNotification("danger", "The wait days should be greater than 0.")
+        return false;
+      }
+    }
+
+    for (let drip of drips) {
+      if (!drip.email_subject) {
+        showNotification("danger", "The email subject should not be empty.");
+        return false;
+      }
+
+      if (!drip.email_body) {
+        showNotification("danger", "The email body should not be empty.");
+        return false;
+      }
+
+      if (drip.wait_days <= 0) {
+        showNotification("danger", "The wait days should be greater than 0.");
+        return false;
+      }
+    }
 
     await this.props.campaignUpdate(emails);
     this.props.onSave();

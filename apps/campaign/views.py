@@ -2292,6 +2292,9 @@ def get_followup_emails(df_emails, followup_emails_count):
         if should_send_time > now:
             continue
 
+        followup_email["email_subject"] = convert_template(
+            followup_email["email_subject"], json.loads(followup_email["replacement"])
+        )
         followup_email["email_body"] = convert_template(
             followup_email["email_body"], json.loads(followup_email["replacement"])
         )
@@ -2309,6 +2312,10 @@ def get_main_emails(df_emails, main_emails_count):
         (df_emails["emailoutbox_id"].isnull())]
     main_emails = df_main_emails.head(main_emails_count)
 
+    main_emails["email_subject"] = main_emails.apply(
+        lambda x: convert_template(x["email_subject"], json.loads(x["replacement"])),
+        axis=1
+    )
     main_emails["email_body"] = main_emails.apply(
         lambda x: convert_template(x["email_body"], json.loads(x["replacement"])),
         axis=1
@@ -2352,6 +2359,9 @@ def get_drip_emails(df_emails):
         if should_send_time > now:
             continue
 
+        drip_email["email_subject"] = convert_template(
+            drip_email["email_subject"], json.loads(drip_email["replacement"])
+        )
         drip_email["email_body"] = convert_template(
             drip_email["email_body"], json.loads(drip_email["replacement"])
         )
