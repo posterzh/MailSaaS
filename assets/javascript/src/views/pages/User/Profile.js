@@ -59,14 +59,6 @@ export class Profile extends Component {
                           style={{ background: "ghostwhite" }}
                           src={user.avatar_url ? user.avatar_url : defaultProfilePic}
                         />
-                        <label className="profile-edit-icon">
-                          <input
-                            type="file"
-                            name="profile-input"
-                            hidden
-                          />
-                          <i className="fa fa-camera"></i>
-                        </label>
                       </div>
                     </Row>
                   </CardHeader>
