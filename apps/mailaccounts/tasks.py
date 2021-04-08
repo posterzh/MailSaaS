@@ -127,8 +127,9 @@ def email_receiver():
 
                 inbox = EmailInbox()
                 inbox.outbox_id = outbox_id
-                inbox.recipient_email_id = inbox.outbox.recipient_id
-                inbox.from_email_id = inbox.outbox.from_email_id
+                if inbox.outbox:
+                    inbox.recipient_email_id = inbox.outbox.recipient_id
+                    inbox.from_email_id = inbox.outbox.from_email_id
                 inbox.email_subject = msg.subject
                 inbox.email_body = msg.html
                 inbox.status = 0
@@ -140,7 +141,8 @@ def email_receiver():
                 inbox.recipient_email.save()
 
                 # Lead checking
-                triggerLeadCatcher(inbox.outbox.campaign_id, inbox.outbox.recipient_id)
+                if inbox.outbox:
+                    triggerLeadCatcher(inbox.outbox.campaign_id, inbox.outbox.recipient_id)
 
                 print(f"Email received from {inbox.recipient_email} to {inbox.from_email}")
 
