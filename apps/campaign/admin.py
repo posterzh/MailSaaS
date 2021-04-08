@@ -6,7 +6,7 @@ from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient,
 
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
-    list_display = ('assigned', 'title', 'from_address', 'csvfile_op1', 'created_date_time', 'track_opens', 'track_linkclick', 'terms_and_laws', 'campaign_status', 'id')
+    list_display = ('assigned', 'title', 'from_address', 'csvfile', 'created_date_time', 'track_opens', 'track_linkclick', 'terms_and_laws', 'campaign_status', 'id')
 
 
 @admin.register(CampaignRecipient)

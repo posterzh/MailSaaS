@@ -1868,6 +1868,31 @@ input::-webkit-inner-spin-button {
 }
 //  style={{ color: '#ccc',borderRight:'1px solid #ccc',paddingRight:'10px',paddingLeft:'10px',borderTop:'1px solid #ccc',borderBottom:'1px solid #ccc',borderLeft:'1px solid'}}
 
+//  Quill div
+.Quill_div {
+  margin-top: 10px;
+  // height: 180px;
+  // margin-bottom: 50px;
+  p {
+    margin-bottom: 0;
+  }
+}
+// .ql-container {
+//   height: 100%;
+// }
+// .ql-editor {
+//   height: 100%;
+//   overflow-y: auto;
+// }
+
+.ql-clipboard {
+  left: -100000px;
+  height: 1px;
+  overflow-y: hidden;
+  position: absolute;
+  top: 50%;
+}
+
 .search-bar input:focus {
   background-color: transparent !important;
 }
@@ -2101,31 +2126,6 @@ input::-webkit-inner-spin-button {
 
 .custom-table tr:hover {
   cursor: pointer !important;
-}
-
-//  Quill div
-.Quill_div {
-  margin-top: 10px;
-  // height: 180px;
-  // margin-bottom: 50px;
-  p {
-    margin-bottom: 0;
-  }
-}
-// .ql-container {
-//   height: 100%;
-// }
-// .ql-editor {
-//   height: 100%;
-//   overflow-y: auto;
-// }
-
-.ql-clipboard {
-  left: -100000px;
-  height: 1px;
-  overflow-y: hidden;
-  position: absolute;
-  top: 50%;
 }
 
 .timeline.lead-timeline {

@@ -4,6 +4,7 @@ from django.db import models
 
 from apps.mailaccounts.models import EmailAccount
 from apps.users.models import CustomUser
+from apps.utils.utils import RandomFileName
 
 
 class CampaignLabel(models.Model):
@@ -19,7 +20,9 @@ class Campaign(models.Model):
     title = models.CharField(max_length=200)
     from_address = models.ForeignKey(EmailAccount, on_delete=models.SET_NULL, null=True)
     full_name = models.CharField(max_length=200, blank=True, null=True)
-    csvfile_op1 = models.FileField(upload_to='csv_uploads/', blank=True, null=True)
+    csvfile = models.FileField(upload_to=RandomFileName('csv_uploads'), blank=True, null=True)
+    csvfile_name = models.CharField(max_length=100, blank=True, null=True)
+    csv_fields = models.TextField(blank=True, null=True, default='')
     assigned = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     track_opens = models.BooleanField(default=False)
     track_linkclick = models.BooleanField(default=False)
@@ -32,9 +35,8 @@ class Campaign(models.Model):
     is_deleted = models.BooleanField(default=False)
     is_draft = models.BooleanField(default=False)
     label_name = models.ForeignKey(CampaignLabel, on_delete=models.SET_NULL, null=True)
-    csv_fields = models.TextField(blank=True, null=True, default='')
-    email_subject = models.CharField(max_length=2000, blank=True, null=True)
-    email_body = models.TextField(blank=True, null=True)
+    # email_subject = models.CharField(max_length=2000, blank=True, null=True)
+    # email_body = models.TextField(blank=True, null=True)
     # has_follow_up = models.BooleanField(default=False)
     # has_drips = models.BooleanField(default=False)
     created_date_time = models.DateTimeField(auto_now=True)
