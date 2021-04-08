@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 
 
-import { getDetailRecipients } from "../../../../redux/action/CampaignDetailsActions";
+import { getDetailRecipients, updateRecipientStatus } from "../../../../redux/action/CampaignDetailsActions";
 import { connect } from "react-redux";
 
 import PageHeader from "../../../../components/Headers/PageHeader";
@@ -82,15 +82,23 @@ class CampaignDetailRecipients extends Component {
     this.setState({ downloadCSVModal: false });
   }
 
+  updateRecipientStatus = (data, index) => {
+    this.props.updateRecipientStatus(data.id, !data.recipient_status)
+  }
+
   render() {
     const { id, title } = this.props;
     const campTitle = title ? title : "Date Outreach";
 
     const { importContactsModal, recipientDetailModal } = this.state;
     const { recipientsFilters } = this.state;
-    const { recipients } = this.props;
+    let { recipients } = this.props;
 
-    console.log("TableData", recipients);
+    recipients = recipients.map(recipient => ({
+      ...recipient,
+      control: recipient.recipient_status ? "pause" : "play",
+      tooltip: recipient.recipient_status ? "click to pause" : "click to start"
+    }));
 
     return (
       <>
@@ -111,7 +119,9 @@ class CampaignDetailRecipients extends Component {
               tablePropsData={recipients}   // required
               showSelect={true}
               showPagination={true}   // optional
+              showControl={true}
               filters={recipientsFilters}   // optional to enable filter
+              controlCallback={this.updateRecipientStatus}
               onClick={this.showRecipientDetailModal}
               searchKeys={['email', 'name']}  // optional to enable search
             />
@@ -180,5 +190,6 @@ const mapStateToProps = (state) => {
   };
 };
 export default connect( mapStateToProps, {
-  getDetailRecipients
+  getDetailRecipients,
+  updateRecipientStatus,
 })(CampaignDetailRecipients);

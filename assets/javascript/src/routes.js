@@ -47,7 +47,6 @@ import CampaignDetailSettings from "./views/pages/campaign/CampaignDetail/Campai
 
 // Campaign > LeadCatcher page
 import LeadCatcher from "./views/pages/campaign/LeadCatcher";
-import LeadDetail from "./views/pages/campaign/LeadDetail/index";
 
 // Audience page
 import Prospects from "./views/pages/audiences/Audiences";
@@ -89,12 +88,6 @@ const routes = [
         miniName: " ",
         component: LeadCatcher,
         layout: "/app/admin",
-      },
-      {
-        path: "/lead/detail/:camp_id/:lead_id",
-        component: LeadDetail,
-        layout: "/app/admin",
-        redirect: true,
       },
 
       // Campaign Detail Redirects

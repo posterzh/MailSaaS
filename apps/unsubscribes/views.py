@@ -20,6 +20,7 @@ from .mixins import CreateListModelMixin
 from apps.campaign.models import CampaignRecipient
 import pandas as pd
 import json
+from io import StringIO
 
 
 # from apps.campaign.serializers CampaignRecipient
@@ -60,9 +61,13 @@ class AddUnsubscribeCSVView(CreateListModelMixin,
     queryset = UnsubscribeEmail.objects.all()
 
     def post(self, _request, *args, **kwargs):
-        file = _request.data['file']
-        csv_obj = self.create_csv(file)
-        csv_data = pd.read_csv('media/' + str(csv_obj.unscribe_emails))
+        data = _request.data
+
+        csv_file = data['file']
+        file_data = csv_file.read().decode("utf-8")
+        string_data = StringIO(file_data)
+
+        csv_data = pd.read_csv(string_data)
         csv_data['user'] = _request.user.id
         json_data = self.to_json(csv_data)
         for unsubscribe in json_data:

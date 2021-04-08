@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import LeadCatchermodel from "./components/LeadCatchermodel"
 import { connect } from 'react-redux'
 import { CampaignLeadViewAction, CampaignOverviewAction } from "../../../redux/action/CampaignAction";
-import { Container, Row, Col, Card, CardHeader, CardBody, Spinner } from 'reactstrap'
+import { Container, Row, Col, Card, CardHeader, CardBody, Spinner, Modal, ModalHeader, ModalBody } from 'reactstrap'
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
 import Tables from "../../../components/Tables";
@@ -53,7 +53,8 @@ class LeadCatcher extends Component {
     this.setState({
       detailLoading: true,
       detailPanelVisible: true,
-      detailLeadId: lead_id
+      detailLeadId: lead_id,
+      detailData: null
     })
     try {
       toggleTopLoader(true);
@@ -76,6 +77,13 @@ class LeadCatcher extends Component {
         detailLoading: false
       })
     }
+  }
+  hideDetails = () => {
+    this.setState({
+      detailPanelVisible: false,
+      detailData: null,
+      detailLeadId: null
+    })
   }
   getFullName = (first_name, last_name) => {
     const arr = [];
@@ -198,58 +206,58 @@ class LeadCatcher extends Component {
               />
             </Row>
           </Container>
-          <FloatingPanel
-            visible={detailPanelVisible}
-            title={!!detailLead && detailLead.email}
-            onClose={() =>{
-              this.setState({
-                detailPanelVisible: false,
-                detailData: null,
-                detailLeadId: null
-              })
-            }}>
-            {
-              detailLoading &&
-              <Spinner color="dark" />
-            }
-            <div className="timeline timeline-one-side lead-timeline"
-              data-timeline-axis-style="dashed"
-              data-timeline-content="axis">
-              {
-                timeline.map((item, index) => {
-                  return (
-                    <div className="timeline-block" key={`${index}`}>
-                      <span className={`timeline-step ${item.badge_class} ${item.badge_cnt > 1 && 'has-badge'}`} data-badge={item.badge_cnt}>
-                        <i className={item.icon} />
-                      </span>
-                      <div className="timeline-content">
-                        <div>
-                          <span className="font-weight-bold">{item.label}</span>
-                          <small className="text-muted ml-2">
-                            {item.dt.format('MMM DD, YYYY hh:mm a')}
-                          </small>
-                        </div>
-                        {
-                          item.type === 'sent' && detailData &&
-                          <Card className="lead-initial-email mt-3">
-                            <CardHeader className="p-3">
-                              <label>From:</label><span><strong>{this.getFullName(detailData.from_first_name, detailData.from_last_name)}</strong> {detailData.from_email_addr}</span><br />
-                              <label>Subject:</label><span><strong>{ detailData.email_subject }</strong></span>
-                            </CardHeader>
+          <Modal isOpen={detailPanelVisible} toggle={this.hideDetails} size="lg" className="lead-detail-modal">
+            <ModalHeader toggle={this.hideDetails}>{!!detailLead && detailLead.email}</ModalHeader>
+            <ModalBody>
+              <div className="px-0 px-sm-5">
+                {
+                  detailLoading &&
+                  <Spinner color="primary" />
+                }
+                {
+                  !detailLoading && timeline.length === 0 &&
+                  <p className="text-muted text-center mb-0">Lead detail data doesn't exist for this lead.</p>
+                }
+                <div className="timeline timeline-one-side lead-timeline"
+                  data-timeline-axis-style="dashed"
+                  data-timeline-content="axis">
+                  {
+                    timeline.map((item, index) => {
+                      return (
+                        <div className="timeline-block" key={`${index}`}>
+                          <span className={`timeline-step ${item.badge_class} ${item.badge_cnt > 1 && 'has-badge'}`} data-badge={item.badge_cnt}>
+                            <i className={item.icon} />
+                          </span>
+                          <div className="timeline-content">
+                            <div>
+                              <span className="font-weight-bold">{item.label}</span>
+                              <small className="text-muted ml-2">
+                                {item.dt.format('MMM DD, YYYY hh:mm a')}
+                              </small>
+                            </div>
+                            {
+                              item.type === 'sent' && detailData &&
+                              <Card className="lead-initial-email mt-3">
+                                <CardHeader className="p-3">
+                                  <label>From:</label><span><strong>{this.getFullName(detailData.from_first_name, detailData.from_last_name)}</strong> {detailData.from_email_addr}</span><br />
+                                  <label>Subject:</label><span><strong>{ detailData.email_subject }</strong></span>
+                                </CardHeader>
 
-                            <CardBody className="p-3">
-                              <div dangerouslySetInnerHTML={{__html: detailData.email_body}}>
-                              </div>
-                            </CardBody>
-                          </Card>
-                        }
-                      </div>
-                    </div>
-                  )
-                })
-              }
-            </div>
-          </FloatingPanel>
+                                <CardBody className="p-3">
+                                  <div dangerouslySetInnerHTML={{__html: detailData.email_body}}>
+                                  </div>
+                                </CardBody>
+                              </Card>
+                            }
+                          </div>
+                        </div>
+                      )
+                    })
+                  }
+                </div>
+              </div>
+            </ModalBody>
+          </Modal>
         </PageContainer>
       </>
     )
