@@ -123,3 +123,8 @@ class WarmingLog(models.Model):
     mail_account = models.ForeignKey(EmailAccount, on_delete=models.CASCADE)
 
     sent_at = models.DateTimeField(auto_now_add=True)
+
+
+class WarmingMailTemplate(models.Model):
+    subject = models.CharField(max_length=100, blank=True, null=True)
+    content = models.CharField(max_length=1024, blank=True, null=True)

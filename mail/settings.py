@@ -4,7 +4,7 @@ import datetime
 from decouple import config
 from pathlib import Path  # Python 3.6+ only
 import sentry_sdk
-from .dbpass import get_secret, get_s3_secret
+from .dbpass import get_secret, get_s3_secret,mailgun_key
 from sentry_sdk.integrations.django import DjangoIntegration
 
 sentry_sdk.init(
@@ -334,12 +334,13 @@ STATICFILES_DIRS = [
 
 # use in development
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# use in production
-# see https://github.com/anymail/django-anymail for more details/examples
-# EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
-
-# Django sites
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+ANYMAIL = {
+    "MAILGUN_API_KEY": mailgun_key()['mailgun'],
+    "MAILGUN_SENDER_DOMAIN": "m.mailerrize.com",
+}
+SERVER_EMAIL = "noreply@mailerrize.com"
+DEFAULT_FROM_EMAIL = "noreply@mailerrize.com"
 
 
 # DRF config
@@ -368,7 +369,7 @@ REST_FRAMEWORK = {
 
 # Celery setup (using redis)
 
-CELERY_BROKER_URL = 'redis://redis-2-ro.qy64ux.ng.0001.use2.cache.amazonaws.com:6379/0'
+CELERY_BROKER_URL = 'redis://redis-2.qy64ux.ng.0001.use2.cache.amazonaws.com:6379/0'
 CELERY_RESULT_BACKEND = 'django-db'
 
 CELERY_ACCEPT_CONTENT = ['json']
