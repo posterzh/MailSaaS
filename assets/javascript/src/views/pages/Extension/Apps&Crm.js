@@ -25,29 +25,6 @@ export class AppsandCrm extends Component {
                     <img
                       alt="..."
                       className="img-center img-fluid rounded-center-img"
-                      src={STATIC_FILES.sales_force}
-                    />
-                    <div className="pt-4 text-center">
-                      <h5 className="h3 title">
-                        <span className="d-block mb-1">SALESFORCE</span>
-                        <small className="h4 font-weight-light text-muted">
-                          Track activities and update lead statuses when actions
-                          are taken in MailSaaS.
-                        </small>
-                      </h5>
-                      <div className="mt-3">
-                        <Button>ADD</Button>
-                      </div>
-                    </div>
-                  </CardBody>
-                </Card>
-              </Col>
-              <Col lg={3} md={4} sm={12}>
-                <Card>
-                  <CardBody>
-                    <img
-                      alt="..."
-                      className="img-center img-fluid rounded-center-img"
                       src={STATIC_FILES.zapier}
                     />
                     <div className="pt-4 text-center">
