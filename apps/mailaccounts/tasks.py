@@ -103,65 +103,67 @@ def email_receiver():
     mail_accounts = EmailAccount.objects.exclude(imap_username__exact='').exclude(imap_username__isnull=True)
 
     for mail_account in mail_accounts:
-        with MailBox(host=mail_account.imap_host, port=mail_account.imap_port).login(mail_account.imap_username,
-                                                                                     mail_account.imap_password,
-                                                                                     'INBOX') as mailbox:
-            for msg in mailbox.fetch():
-                outbox_id = _prase_outbox_id(msg.html)
+        try:
+            with MailBox(host=mail_account.imap_host, port=mail_account.imap_port).login(mail_account.imap_username,
+                                                                                         mail_account.imap_password,
+                                                                                         'INBOX') as mailbox:
+                for msg in mailbox.fetch():
+                    outbox_id = _prase_outbox_id(msg.html)
 
-                inbox = EmailInbox()
-                inbox.outbox_id = outbox_id
-                if inbox.outbox:
-                    inbox.recipient_email_id = inbox.outbox.recipient_id
-                    inbox.from_email_id = inbox.outbox.from_email_id
-                else:
-                    # recipient
-                    continue
-
-                inbox.email_subject = msg.subject
-                inbox.email_body = msg.html
-                inbox.status = 0
-                inbox.receive_date = datetime.now().date()
-                inbox.receive_time = datetime.now().time()
-                inbox.save()
-
-                if inbox.recipient_email:
-                    inbox.recipient_email.replies += 1
-                    inbox.recipient_email.save()
-
-                # Lead checking
-                if inbox.outbox:
-                    triggerLeadCatcher(inbox.outbox.campaign_id, inbox.outbox.recipient_id)
-
-                print(f"Email received from {msg.from_} to {msg.to}")
-
-                # Filter out the warmup emails
-                if (msg.subject.endswith("mailerrize") or msg.subject.endswith("mailerrize?=")) \
-                        and "Re:" not in msg.subject:
-                    warm_reply_subject = "Re: " + msg.subject
-                    warm_reply_body = "Hi,\n\n" + gen.paragraph() + "\n\nYours truly,\n\n"
-                    if mail_account.first_name:
-                        warm_reply_body += mail_account.first_name
-                    elif mail_account.last_name:
-                        warm_reply_body += mail_account.last_name
+                    inbox = EmailInbox()
+                    inbox.outbox_id = outbox_id
+                    if inbox.outbox:
+                        inbox.recipient_email_id = inbox.outbox.recipient_id
+                        inbox.from_email_id = inbox.outbox.from_email_id
                     else:
-                        warm_reply_body = "Thank you"
-                    param = {
-                        "host": mail_account.smtp_host,
-                        "port": mail_account.smtp_port,
-                        "username": mail_account.smtp_username,
-                        "password": mail_account.smtp_password,
-                        "use_tls": mail_account.use_smtp_ssl,
-                        "from_email": mail_account.email,
-                        "to_email": [msg.from_],
-                        "subject": warm_reply_subject,
-                        "body": warm_reply_body,
-                        "uuid": None,
-                        "track_opens": False,
-                        "track_linkclick": False
-                    }
-                    send_immediate_email.delay(param)
+                        # recipient
+                        continue
 
+                    inbox.email_subject = msg.subject
+                    inbox.email_body = msg.html
+                    inbox.status = 0
+                    inbox.receive_date = datetime.now().date()
+                    inbox.receive_time = datetime.now().time()
+                    inbox.save()
+
+                    if inbox.recipient_email:
+                        inbox.recipient_email.replies += 1
+                        inbox.recipient_email.save()
+
+                    # Lead checking
+                    if inbox.outbox:
+                        triggerLeadCatcher(inbox.outbox.campaign_id, inbox.outbox.recipient_id)
+
+                    print(f"Email received from {msg.from_} to {msg.to}")
+
+                    # Filter out the warmup emails
+                    if (msg.subject.endswith("mailerrize") or msg.subject.endswith("mailerrize?=")) \
+                            and "Re:" not in msg.subject:
+                        warm_reply_subject = "Re: " + msg.subject
+                        warm_reply_body = "Hi,\n\n" + gen.paragraph() + "\n\nYours truly,\n\n"
+                        if mail_account.first_name:
+                            warm_reply_body += mail_account.first_name
+                        elif mail_account.last_name:
+                            warm_reply_body += mail_account.last_name
+                        else:
+                            warm_reply_body = "Thank you"
+                        param = {
+                            "host": mail_account.smtp_host,
+                            "port": mail_account.smtp_port,
+                            "username": mail_account.smtp_username,
+                            "password": mail_account.smtp_password,
+                            "use_tls": mail_account.use_smtp_ssl,
+                            "from_email": mail_account.email,
+                            "to_email": [msg.from_],
+                            "subject": warm_reply_subject,
+                            "body": warm_reply_body,
+                            "uuid": None,
+                            "track_opens": False,
+                            "track_linkclick": False
+                        }
+                        send_immediate_email.delay(param)
+        except:
+            print(f"Sending mail failed : {mail_account}")
 
 @shared_task
 def warming_trigger():
