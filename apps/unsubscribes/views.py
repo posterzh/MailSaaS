@@ -17,7 +17,7 @@ from rest_framework.settings import api_settings
 from .models import UnsubcribeCsv, UnsubscribeEmail
 from .serializers import UnsubscribeEmailSerializers
 from .mixins import CreateListModelMixin
-from apps.campaign.models import CampaignRecipient
+from apps.campaign.models import Recipient
 import pandas as pd
 import json
 from io import StringIO
@@ -29,11 +29,12 @@ class UnsubscribeEmailListView(ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UnsubscribeEmailSerializers
     filter_backends = [filters.SearchFilter]
-    search_fields = ['email', 'mail_account', 'name']
+    search_fields = ['email', 'name']
+    pagination_class = None
 
     def get_queryset(self):
         user = self.request.user
-        return UnsubscribeEmail.objects.filter(user=user.id, on_delete=False)
+        return UnsubscribeEmail.objects.filter(user=user.id)
 
 
 class AddUnsubscribeEmailsView(CreateListModelMixin,
@@ -41,15 +42,16 @@ class AddUnsubscribeEmailsView(CreateListModelMixin,
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UnsubscribeEmailSerializers
     queryset = UnsubscribeEmail.objects.all()
+    pagination_class = None
 
     def post(self, _request, *args, **kwargs):
         data = _request.data
         for unsubscribe in data:
-            recipients = CampaignRecipient.objects.filter(email=unsubscribe["email"],
-                                                          campaign__assigned=_request.user.id)
+            recipients = Recipient.objects.filter(email=unsubscribe["email"],
+                                                  campaign__assigned=_request.user.id)
             if recipients.exists():
                 for recipient in recipients:
-                    recipient.unsubscribe = True
+                    recipient.is_unsubscribe = True
                     recipient.save()
         return self.create(_request, args, kwargs)
 
@@ -59,6 +61,7 @@ class AddUnsubscribeCSVView(CreateListModelMixin,
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UnsubscribeEmailSerializers
     queryset = UnsubscribeEmail.objects.all()
+    pagination_class = None
 
     def post(self, _request, *args, **kwargs):
         data = _request.data
@@ -71,11 +74,11 @@ class AddUnsubscribeCSVView(CreateListModelMixin,
         csv_data['user'] = _request.user.id
         json_data = self.to_json(csv_data)
         for unsubscribe in json_data:
-            recipients = CampaignRecipient.objects.filter(email=unsubscribe["email"],
-                                                          campaign__assigned=_request.user.id)
+            recipients = Recipient.objects.filter(email=unsubscribe["email"],
+                                                  campaign__assigned=_request.user.id)
             if recipients.exists():
                 for recipient in recipients:
-                    recipient.unsubscribe = True
+                    recipient.is_unsubscribe = True
                     recipient.save()
         return self.create_unsubscribe(json_data)
 
@@ -85,9 +88,37 @@ class AddUnsubscribeCSVView(CreateListModelMixin,
         return obj
 
     def to_json(self, csv_data):
-        email_name_data = csv_data[['Email', 'Name', 'user']]
-        email_name_data.rename(columns={'Email': 'email', 'Name': 'name'}, inplace=True)
-        email_name_data.dropna(subset=['email'], inplace=True)
+        csv_columns = csv_data.columns
+
+        if 'Email' in csv_columns and 'email' not in csv_columns:
+            csv_data.rename(columns={'Email': 'email'}, inplace=True)
+        if 'Name' in csv_columns and 'email' not in csv_columns:
+            csv_data.rename(columns={'Name': 'name'}, inplace=True)
+
+        first_columns = ['first', 'first name', 'given name']
+        last_columns = ['last', 'last name', 'family name']
+
+        if 'name' not in csv_columns:
+            for column in csv_columns:
+                if column.lower() in first_columns:
+                    csv_data.rename(columns={column: 'first'})
+                    break
+
+            for column in csv_columns:
+                if column.lower() in last_columns:
+                    csv_data.rename(columns={column: 'last'})
+                    break
+
+            csv_columns = csv_data.columns
+            if 'first' in csv_columns and 'last' in csv_columns:
+                csv_data['name'] = csv_data[['first', 'last']].agg(' '.join, axis=1)
+
+        csv_columns = csv_data.columns
+        if 'name' not in csv_columns:
+            csv_data['name'] = ''
+
+        email_name_data = csv_data[['email', 'name', 'user']]
+        email_name_data = email_name_data.dropna(subset=['email'])
         email_name_data.fillna('', inplace=True)
         json_string = email_name_data.to_json(orient='records')
         return json.loads(json_string)
@@ -108,15 +139,14 @@ class DeleteUnsubscribeEmailView(APIView):
         for pk in data:
             try:
                 unsubscribe = UnsubscribeEmail.objects.get(pk=pk)
-                recipients = CampaignRecipient.objects.filter(email=unsubscribe.email,
-                                                              campaign__assigned=_request.user.id)
+                recipients = Recipient.objects.filter(email=unsubscribe.email,
+                                                      campaign__assigned=_request.user.id)
                 if recipients.exists():
                     for recipient in recipients:
-                        recipient.unsubscribe = False
+                        recipient.is_unsubscribe = False
                         recipient.save()
 
-                unsubscribe.on_delete = True
-                unsubscribe.save()
+                unsubscribe.delete()
             except UnsubscribeEmail.DoesNotExist:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_204_NO_CONTENT)

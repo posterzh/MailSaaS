@@ -13,7 +13,7 @@ export const getUnsubscribes = (search) => (dispatch) => {
     .then((response) => {
       dispatch({
         type: GET_UNSUBSCRIBES,
-        payload: response.data.results,
+        payload: response.data,
       });
     })
     .catch((error) => {
