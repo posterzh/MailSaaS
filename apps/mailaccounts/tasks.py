@@ -120,14 +120,15 @@ def email_receiver():
                 inbox.receive_time = datetime.now().time()
                 inbox.save()
 
-                inbox.recipient_email.replies += 1
-                inbox.recipient_email.save()
+                if inbox.recipient_email:
+                    inbox.recipient_email.replies += 1
+                    inbox.recipient_email.save()
 
                 # Lead checking
                 if inbox.outbox:
                     triggerLeadCatcher(inbox.outbox.campaign_id, inbox.outbox.recipient_id)
 
-                print(f"Email received from {inbox.recipient_email} to {inbox.from_email}")
+                print(f"Email received from {msg.from_} to {msg.to}")
 
                 # Filter out the warmup emails
                 if (msg.subject.endswith("mailerrize") or msg.subject.endswith("mailerrize?=")) \
