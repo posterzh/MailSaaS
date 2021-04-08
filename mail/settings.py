@@ -34,7 +34,7 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # DEBUG = bool(os.environ.get("DEBUG", "True"))
-DEBUG = True
+DEBUG = False
 # LIVE = bool(os.environ.get("LIVE", "True"))
 LIVE = False
 
@@ -305,6 +305,11 @@ if DEBUG == False:
     STATIC_URL = 'https://cdn.mailerrize.com/'
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
+
+    # valor
+    AWS_PRIVATE_BUCKET = 'mailerrize-recipients'
+    DEFAULT_FILE_STORAGE = 'mail.storage_backends.PrivateMediaStorage'
+    # end
 else:
     STATIC_URL = '/static/'
     # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

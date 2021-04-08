@@ -520,6 +520,10 @@ class CampaignCreateView(APIView):
         csv_path = str(new_camp.csvfile_op1)
         from_email = new_camp.from_address_id
 
+        #
+        csv_content = new_camp.csvfile_op1.read()
+        #
+
         df_csv = pd.read_csv('media/' + csv_path)
         df_csv.drop(df_csv.columns[df_csv.columns.str.contains('unnamed', case=False)], axis=1, inplace=True)
         csv_columns = df_csv.columns
