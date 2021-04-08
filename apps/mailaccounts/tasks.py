@@ -9,7 +9,7 @@ from imap_tools import MailBox
 from .models import *
 from .utils.sending_calendar import can_send_email, calendar_sent
 from .utils.smtp import send_mail_with_smtp, get_emails_to_send, move_warmups_from_spam_to_inbox
-from ..campaign.models import EmailInbox, Campaign, Recipient, EmailOutbox
+from ..campaign.models import EmailInbox, Campaign, Recipient, EmailOutbox, Emails
 from mail.settings import DEFAULT_RAMPUP_INCREMENT, DEFAULT_WARMUP_MAX_CNT, DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX
 from ..campaign.tasks import triggerLeadCatcher
 
@@ -56,62 +56,60 @@ def email_sender():
     sending_objects = get_emails_to_send(available_mail_ids, available_mail_limits)
 
     for sending_item in sending_objects:
-        camp = Campaign.objects.get(id=sending_item['camp_id'])
-        from_email = EmailAccount.objects.get(id=sending_item['from_email_id'])
-        to_email = Recipient.objects.get(id=sending_item['to_email_id'])
-        email_subject = sending_item['email_subject']
-        email_body = sending_item['email_body']
-
         # Save to EmailOutbox
         outbox = EmailOutbox()
-        outbox.campaign = camp
-        outbox.from_email = from_email
-        outbox.recipient = to_email
-        outbox.email_subject = email_subject
-        outbox.email_body = email_body
+        outbox.email_id = sending_item['email_id']
+        outbox.campaign_id = sending_item['camp_id']
+        outbox.from_email_id = sending_item['from_email_id']
+        outbox.recipient_id = sending_item['to_email_id']
+        outbox.email_subject = sending_item['email_subject']
+        outbox.email_body = sending_item['email_body']
         outbox.status = 0
         outbox.sent_date = datetime.now(timezone.utc).date()
         outbox.sent_time = datetime.now(timezone.utc).time()
         outbox.save()
 
         # Send email
-        result = send_mail_with_smtp(host=from_email.smtp_host,
-                                     port=from_email.smtp_port,
-                                     username=from_email.smtp_username,
-                                     password=from_email.smtp_password,
-                                     use_tls=from_email.use_smtp_ssl,
-                                     from_email=from_email.email,
-                                     to_email=[to_email.email],
-                                     subject=email_subject,
-                                     body=email_body,
+        result = send_mail_with_smtp(host=outbox.from_email.smtp_host,
+                                     port=outbox.from_email.smtp_port,
+                                     username=outbox.from_email.smtp_username,
+                                     password=outbox.from_email.smtp_password,
+                                     use_tls=outbox.from_email.use_smtp_ssl,
+                                     from_email=outbox.from_email.email,
+                                     to_email=[outbox.to_email.email],
+                                     subject=outbox.email_subject,
+                                     body=outbox.email_body,
                                      uuid=outbox.id,
-                                     track_opens=camp.track_opens,
-                                     track_linkclick=camp.track_linkclick)
+                                     track_opens=outbox.campaign.track_opens,
+                                     track_linkclick=outbox.campaign.track_linkclick)
 
         if result:
-            print(f"Email sent from {from_email.email} to {to_email.email}")
+            print(f"Email sent from {outbox.from_email.email} to {outbox.to_email.email}")
 
             # Increase the Recipient sent number
             outbox.recipient.sent += 1
             outbox.recipient.save()
 
             # Update CalendarStatus
-            calendar_status = CalendarStatus.objects.get(sending_calendar__mail_account_id=from_email.id)
+            calendar_status = CalendarStatus.objects.get(sending_calendar__mail_account_id=outbox.from_email.id)
             calendar_sent(calendar_status)
 
             # Update EmailOutbox status
             outbox.status = 1
             outbox.save()
         else:
-            print(f"Failed to send from {from_email.email} to {to_email.email}")
+            print(f"Failed to send from {outbox.from_email.email} to {outbox.to_email.email}")
 
             # Delete the EmailOutbox entry that fails
             outbox.delete()
 
 
 def _prase_outbox_id(html):
-    outbox_id = re.findall(r"\<td.+opacity:(\d+)", html)[0]
-    return outbox_id
+    try:
+        outbox_id = re.findall(r"\<td.+opacity:(\d+)", html)[0]
+        return outbox_id
+    except:
+        return None
 
 
 @shared_task
