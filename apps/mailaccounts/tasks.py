@@ -15,23 +15,6 @@ from ..campaign.tasks import triggerLeadCatcher
 
 gen = DocumentGenerator()
 
-
-@shared_task(bind=True)
-def send_test_email(self, mailAccountId):
-    mailAccount = EmailAccount.objects.get(pk=mailAccountId)
-    print('Sending email from :', mailAccount)
-
-    send_mail_with_smtp(host=mailAccount.smtp_host,
-                        port=mailAccount.smtp_port,
-                        username=mailAccount.smtp_username,
-                        password=mailAccount.smtp_password,
-                        use_tls=mailAccount.use_smtp_ssl,
-                        from_email=mailAccount.email,
-                        to_email=['valor312@gmail.com'],
-                        subject="This is test email",
-                        body="Hi, this email is sent by SMTP.")
-
-
 @shared_task
 def email_sender():
     print('Email sender is called...')
@@ -130,6 +113,10 @@ def email_receiver():
                 if inbox.outbox:
                     inbox.recipient_email_id = inbox.outbox.recipient_id
                     inbox.from_email_id = inbox.outbox.from_email_id
+                else:
+                    # recipient
+                    continue
+
                 inbox.email_subject = msg.subject
                 inbox.email_body = msg.html
                 inbox.status = 0
@@ -137,14 +124,15 @@ def email_receiver():
                 inbox.receive_time = datetime.now().time()
                 inbox.save()
 
-                inbox.recipient_email.replies += 1
-                inbox.recipient_email.save()
+                if inbox.recipient_email:
+                    inbox.recipient_email.replies += 1
+                    inbox.recipient_email.save()
 
                 # Lead checking
                 if inbox.outbox:
                     triggerLeadCatcher(inbox.outbox.campaign_id, inbox.outbox.recipient_id)
 
-                print(f"Email received from {inbox.recipient_email} to {inbox.from_email}")
+                print(f"Email received from {msg.from_} to {msg.to}")
 
                 # Filter out the warmup emails
                 if (msg.subject.endswith("mailerrize") or msg.subject.endswith("mailerrize?=")) \
