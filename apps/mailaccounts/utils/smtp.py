@@ -1,4 +1,3 @@
-import datetime
 import imaplib
 import json
 import re
@@ -7,7 +6,7 @@ import email
 import sys
 import time
 import pandas as pd
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from django.core import mail
 from django.core.mail.backends.smtp import EmailBackend
@@ -289,7 +288,7 @@ def get_followup_emails(df_emails, followup_emails_count):
         last_sent_time = datetime.combine(main_email.iloc[0].sent_date,
                                           main_email.iloc[0].sent_time)
 
-        if followup_email.email_order > 1:
+        if followup_email.email_order >= 1:
             previous_email_order = followup_email.email_order - 1
             previous_follow_email = df_emails[
                 (df_emails["campaign_id"] == followup_email["campaign_id"])
@@ -309,7 +308,7 @@ def get_followup_emails(df_emails, followup_emails_count):
             continue
 
         followup_email["email_body"] = convert_template(
-            followup_email["email_body"], followup_email["replacement"]
+            followup_email["email_body"], json.loads(followup_email["replacement"])
         )
 
         followup_emails = followup_emails.append(followup_email)
@@ -345,13 +344,13 @@ def get_drip_emails(df_emails):
             & (df_emails["email_type"] == 0)
             & (df_emails["recipient_email"] == drip_email["recipient_email"])]
 
-        # if main_email["emailoutbox_id"].isnull().bool():
-        #     continue
+        if main_email["emailoutbox_id"].isnull().bool():
+            continue
 
         last_sent_time = datetime.combine(main_email.iloc[0].sent_date,
                                           main_email.iloc[0].sent_time)
 
-        if drip_email.email_order > 1:
+        if drip_email.email_order >= 1:
             previous_email_order = drip_email.email_order - 1
             previous_drip_email = df_emails[
                 (df_emails["campaign_id"] == drip_email["campaign_id"])
@@ -371,7 +370,7 @@ def get_drip_emails(df_emails):
             continue
 
         drip_email["email_body"] = convert_template(
-            drip_email["email_body"], drip_email["replacement"]
+            drip_email["email_body"], json.loads(drip_email["replacement"])
         )
 
         drip_emails = drip_emails.append(drip_email)
