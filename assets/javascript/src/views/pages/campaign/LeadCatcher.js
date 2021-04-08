@@ -15,6 +15,18 @@ class LeadCatcher extends Component {
   constructor() {
     super()
     this.state = {
+      filters: [
+        {
+          key: 'lead_status',
+          label: 'Lead Status',
+          options: ['open', 'replied', 'won', 'lost', 'ignored']
+        },
+        {
+          key: 'campaign_title',
+          label: 'Campaign',
+          options: []
+        }
+      ],
       modal: false,
       data: [],
       detailLoading: false,
@@ -29,11 +41,16 @@ class LeadCatcher extends Component {
       toggleTopLoader(true);
       const { data } = await axios.get("/campaign/leads/");
       if (data.success) {
+        const { filters } = this.state;
+        filters[1].options = data.res.map(item => item.campaign_title)
         this.setState({
           data: data.res.map(item => {
             item.opened = moment(item.update_date_time).format('MMM DD, YYYY')
             return item;
-          })
+          }),
+          filters: [
+            ...filters
+          ]
         })
       }
     } catch (e) {
@@ -114,14 +131,8 @@ class LeadCatcher extends Component {
         value: 'Opened'
       }
     ];
-    const filters = [
-      {
-        key: 'lead_status',
-        options: ['open', 'replied', 'won', 'lost', 'ignored']
-      }
-    ];
 
-    const { data, detailLeadId, detailData, detailPanelVisible, detailLoading } = this.state;
+    const { filters, data, detailLeadId, detailData, detailPanelVisible, detailLoading } = this.state;
     let detailLead = null;
     if (detailLeadId) {
       detailLead = data.filter(item => item.id == detailLeadId)
