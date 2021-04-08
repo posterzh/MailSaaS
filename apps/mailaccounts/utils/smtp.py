@@ -345,8 +345,8 @@ def get_drip_emails(df_emails):
             & (df_emails["email_type"] == 0)
             & (df_emails["recipient_email"] == drip_email["recipient_email"])]
 
-        if main_email["emailoutbox_id"].isnull().bool():
-            continue
+        # if main_email["emailoutbox_id"].isnull().bool():
+        #     continue
 
         last_sent_time = datetime.combine(main_email.iloc[0].sent_date,
                                           main_email.iloc[0].sent_time)
