@@ -34,7 +34,7 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # DEBUG = bool(os.environ.get("DEBUG", "True"))
-DEBUG = True
+DEBUG = False
 # LIVE = bool(os.environ.get("LIVE", "True"))
 LIVE = False
 
@@ -299,7 +299,7 @@ if DEBUG == False:
     AWS_S3_FILE_OVERWRITE = True
     # AWS_S3_CUSTOM_DOMAIN = f'mailerrize.s3.amazonaws.com'
     AWS_S3_CUSTOM_DOMAIN = 'cdn.mailerrize.com'
-    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=3600'}
     # s3 static settings
     AWS_LOCATION = ''
     STATIC_URL = 'https://cdn.mailerrize.com/'
@@ -363,7 +363,7 @@ REST_FRAMEWORK = {
 
 # Celery setup (using redis)
 
-CELERY_BROKER_URL = 'redis://redis.qy64ux.clustercfg.use2.cache.amazonaws.com:6379/0'
+CELERY_BROKER_URL = 'redis://redis-2-ro.qy64ux.ng.0001.use2.cache.amazonaws.com:6379/0'
 CELERY_RESULT_BACKEND = 'django-db'
 
 CELERY_ACCEPT_CONTENT = ['json']
