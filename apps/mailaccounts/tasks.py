@@ -48,8 +48,7 @@ def email_sender():
         outbox.email_subject = sending_item['email_subject']
         outbox.email_body = sending_item['email_body']
         outbox.status = 0
-        outbox.sent_date = datetime.now(timezone.utc).date()
-        outbox.sent_time = datetime.now(timezone.utc).time()
+
         outbox.save()
 
         # Send email
@@ -78,6 +77,8 @@ def email_sender():
             calendar_sent(calendar_status)
 
             # Update EmailOutbox status
+            outbox.sent_date = datetime.now(timezone.utc).date()
+            outbox.sent_time = datetime.now(timezone.utc).time()
             outbox.status = 1
             outbox.save()
         else:

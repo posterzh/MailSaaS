@@ -21,7 +21,6 @@ import {
   getAvailableTimezones,
   sendTestEmail,
 } from "../../../../redux/action/SendingCalendarActions";
-import { initial } from "lodash";
 
 const initialCalendar = {
   block_days: 96,
@@ -48,6 +47,7 @@ function SendingCalendar({
   const [currentCalendar, setCurrentCalendar] = useState(null);
   const [currentMailAccount, setCurrentMailAccount] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isLocal, setIsLocal] = useState(window.location.href.indexOf('localhost') > -1);
 
   useEffect(() => {
     getMailAccounts();
@@ -138,14 +138,16 @@ function SendingCalendar({
                 cancelEditing={() => setIsEditing(false)}
               />
             )}
+            {isLocal && <>
+              <Button className="float-right" color="danger" type="button" onClick={onSendTestEmail} outline>
+                Test sender
+              </Button>
 
-            <Button className="float-right" color="danger" type="button" onClick={onSendTestEmail} outline>
-              Test sender
-            </Button>
-
-            <Button className="float-right" color="danger" type="button" onClick={onReceiveTestEmail} outline>
-              Test receiver
-            </Button>
+              <Button className="float-right" color="danger" type="button" onClick={onReceiveTestEmail} outline>
+                Test receiver
+              </Button>
+            </>}
+            
           </Col>
         </Row>
       </PageContainer>
