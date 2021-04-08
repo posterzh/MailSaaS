@@ -87,7 +87,7 @@ class CampaignDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Campaign
-        exclude = ('csvfile_op1',)
+        exclude = ('csvfile',)
 
 
 class CampaignRecipientSerializer(serializers.ModelSerializer):
