@@ -34,7 +34,7 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # DEBUG = bool(os.environ.get("DEBUG", "True"))
-DEBUG = True
+DEBUG = False
 # LIVE = bool(os.environ.get("LIVE", "True"))
 LIVE = False
 
@@ -368,7 +368,7 @@ REST_FRAMEWORK = {
 
 # Celery setup (using redis)
 
-CELERY_BROKER_URL = 'redis://redis-2-ro.qy64ux.ng.0001.use2.cache.amazonaws.com:6379/0'
+CELERY_BROKER_URL = 'redis://redis-2.qy64ux.ng.0001.use2.cache.amazonaws.com:6379/0'
 CELERY_RESULT_BACKEND = 'django-db'
 
 CELERY_ACCEPT_CONTENT = ['json']
