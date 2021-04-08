@@ -76,7 +76,7 @@ def email_sender():
                                      password=outbox.from_email.smtp_password,
                                      use_tls=outbox.from_email.use_smtp_ssl,
                                      from_email=outbox.from_email.email,
-                                     to_email=[outbox.to_email.email],
+                                     to_email=[outbox.recipient.email],
                                      subject=outbox.email_subject,
                                      body=outbox.email_body,
                                      uuid=outbox.id,
@@ -84,7 +84,7 @@ def email_sender():
                                      track_linkclick=outbox.campaign.track_linkclick)
 
         if result:
-            print(f"Email sent from {outbox.from_email.email} to {outbox.to_email.email}")
+            print(f"Email sent from {outbox.from_email.email} to {outbox.recipient.email}")
 
             # Increase the Recipient sent number
             outbox.recipient.sent += 1
@@ -98,7 +98,7 @@ def email_sender():
             outbox.status = 1
             outbox.save()
         else:
-            print(f"Failed to send from {outbox.from_email.email} to {outbox.to_email.email}")
+            print(f"Failed to send from {outbox.from_email.email} to {outbox.recipient.email}")
 
             # Delete the EmailOutbox entry that fails
             outbox.delete()
