@@ -106,7 +106,7 @@ class TheOptions extends Component {
                 />
                 <label className="custom-control-label" htmlFor="check3">
                   I'll obey pertinent laws and I've read the
-                  <a href="www.google.com"> important notes.</a>
+                  <a href="/terms" target="_blank"> important notes.</a>
                 </label>
               </div>
             </Col>

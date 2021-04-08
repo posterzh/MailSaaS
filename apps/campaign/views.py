@@ -467,7 +467,9 @@ class CampaignCreateView(APIView):
             # postdata._mutable = False
             campaign = json.loads(post_data['campaign'])
             campaign['assigned'] = request.user.id
-            campaign['csvfile_op1'] = post_data['csvfile']
+            if post_data['csvfile'] and len(post_data['csvfile']) > 0:
+                campaign['csvfile'] = post_data['csvfile']
+                campaign['csvfile_name'] = post_data['csvfile'].name
 
             camp = CampaignSerializer(data=campaign)
             if camp.is_valid():
@@ -484,8 +486,8 @@ class CampaignCreateView(APIView):
                 if len(campaign['drips']) > 0:
                     self.createDrips(new_camp, campaign['drips'])
 
-                if new_camp.csvfile_op1:
-                    self.createRecipients(new_camp, campaign)
+                if new_camp.csvfile:
+                    self.createRecipients(new_camp)
 
                 return Response({"message": "Created new campaign successfully", "success": True},
                                 status=status.HTTP_200_OK)
@@ -515,16 +517,14 @@ class CampaignCreateView(APIView):
             drip_email.save()
             email_order += 1
 
-    def createRecipients(self, new_camp, campaign):
+    def createRecipients(self, new_camp):
         campaign_id = new_camp.id
-        csv_path = str(new_camp.csvfile_op1)
-        from_email = new_camp.from_address_id
+        # read csv file
+        csv_content = new_camp.csvfile.read()
+        file_data = csv_content.decode("utf-8")
+        string_data = StringIO(file_data)
+        df_csv = pd.read_csv(string_data)
 
-        #
-        csv_content = new_camp.csvfile_op1.read()
-        #
-
-        df_csv = pd.read_csv('media/' + csv_path)
         df_csv.drop(df_csv.columns[df_csv.columns.str.contains('unnamed', case=False)], axis=1, inplace=True)
         csv_columns = df_csv.columns
 
