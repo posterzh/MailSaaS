@@ -113,6 +113,10 @@ def email_receiver():
                 if inbox.outbox:
                     inbox.recipient_email_id = inbox.outbox.recipient_id
                     inbox.from_email_id = inbox.outbox.from_email_id
+                else:
+                    # recipient
+                    continue
+
                 inbox.email_subject = msg.subject
                 inbox.email_body = msg.html
                 inbox.status = 0
