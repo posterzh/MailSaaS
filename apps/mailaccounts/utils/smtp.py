@@ -3,6 +3,7 @@ import json
 import re
 import smtplib
 import email
+import ssl
 import sys
 import time
 import pandas as pd
@@ -83,37 +84,35 @@ def check_imap(server, port, use_tls, user, password):
 def send_mail_with_smtp(host, port, username, password, use_tls, from_email, to_email,
                         subject, body, uuid, track_opens, track_linkclick):
     body = f'<html><body>{body}<table><tr><td style="opacity: {uuid};"></td></tr></table></body></html>'
-
     tracking_body = add_tracking(body, uuid, track_opens, track_linkclick)
 
     try:
-        con = mail.get_connection()
-        con.open()
-        print('Django connected to the SMTP server')
-
-        mail_obj = EmailBackend(
+        eb = EmailBackend(
             host=host,
             port=port,
             username=username,
             password=password,
             use_tls=use_tls,
             use_ssl=False,
-            timeout=10
+            timeout=20
         )
+        eb.open()
+        print('Django connected to the SMTP server')
+
         msg = mail.EmailMultiAlternatives(
             subject=subject,
             body=tracking_body,
             from_email=from_email,
             to=to_email,
-            connection=con,
         )
         msg.attach_alternative(tracking_body, "text/html");
 
-        mail_obj.send_messages([msg])
+        eb.send_messages([msg])
         print('Email has been sent.')
 
-        mail_obj.close()
+        eb.close()
         print('SMTP server closed')
+
         return True
 
     except Exception as _error:

@@ -306,7 +306,7 @@ def send_immediate_email(param):
                                  password=param['password'],
                                  use_tls=param['use_tls'],
                                  from_email=param['from_email'],
-                                 to_email=param['to_email'],
+                                 to_email=[param['to_email']],
                                  subject=param['subject'],
                                  body=param['body'],
                                  uuid=param['uuid'],
