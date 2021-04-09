@@ -144,8 +144,15 @@ def email_receiver():
                     # Filter out the warmup emails
                     if (msg.subject.endswith("mailerrize") or msg.subject.endswith("mailerrize?=")) \
                             and "Re:" not in msg.subject:
+
+                        template = WarmingMailTemplate.objects.order_by('?').first()
+                        if template:
+                            mail_content = template.content
+                        else:
+                            mail_content = gen.paragraph()
+
                         warm_reply_subject = "Re: " + msg.subject
-                        warm_reply_body = "Hi,\n\n" + gen.paragraph() + "\n\nYours truly,\n\n"
+                        warm_reply_body = "Hi,\n\n" + mail_content + "\n\nYours truly,\n\n"
                         if mail_account.first_name:
                             warm_reply_body += mail_account.first_name
                         elif mail_account.last_name:
@@ -171,6 +178,7 @@ def email_receiver():
             print(f"Mail account is invalid : {mail_account}")
         except ConnectionError:
             print(f"Connection aborted : {mail_account}")
+
 
 @shared_task
 def warming_trigger():
@@ -212,8 +220,16 @@ def warming_trigger():
         dest_account = random.choice(account_list).mail_account
 
         # print(f"Sending email to: ${dest_account.email}")
+        template = WarmingMailTemplate.objects.order_by('?').first()
+        if template:
+            mail_subject = template.subject
+            mail_content = template.content
+        else:
+            mail_subject = gen.sentence()
+            mail_content = gen.paragraph()
+
         # send email to dest_account
-        warmup_email_subject = gen.sentence() + " " + DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX
+        warmup_email_subject = mail_subject + " " + DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX
         warmup_email_body = "Dear "
         if dest_account.first_name:
             warmup_email_body += dest_account.first_name + ","
@@ -221,7 +237,7 @@ def warming_trigger():
             warmup_email_body += dest_account.last_name + ","
         else:
             warmup_email_body = "Hello,"
-        warmup_email_body += "\n\n" + gen.paragraph() + "\n\nYours sincerely,\n\n"
+        warmup_email_body += "\n\n" + mail_content + "\n\nYours sincerely,\n\n"
         if mail_account.first_name:
             warmup_email_body += mail_account.first_name
         elif mail_account.last_name:
