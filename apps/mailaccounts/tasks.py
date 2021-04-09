@@ -48,7 +48,8 @@ def email_sender():
         outbox.email_subject = sending_item['email_subject']
         outbox.email_body = sending_item['email_body']
         outbox.status = 0
-
+        outbox.sent_date = datetime.now(timezone.utc).date()
+        outbox.sent_time = datetime.now(timezone.utc).time()
         outbox.save()
 
         # Send email
@@ -77,8 +78,8 @@ def email_sender():
             calendar_sent(calendar_status)
 
             # Update EmailOutbox status
-            outbox.sent_date = datetime.now(timezone.utc).date()
-            outbox.sent_time = datetime.now(timezone.utc).time()
+            # outbox.sent_date = datetime.now(timezone.utc).date()
+            # outbox.sent_time = datetime.now(timezone.utc).time()
             outbox.status = 1
             outbox.save()
         else:
@@ -104,20 +105,23 @@ def email_receiver():
 
     for mail_account in mail_accounts:
         try:
-            with MailBox(host=mail_account.imap_host, port=mail_account.imap_port).login(mail_account.imap_username,
-                                                                                         mail_account.imap_password,
-                                                                                         'INBOX') as mailbox:
+            with MailBox(host=mail_account.imap_host, port=mail_account.imap_port)\
+                    .login(mail_account.imap_username,
+                     mail_account.imap_password, 'INBOX') as mailbox:
                 for msg in mailbox.fetch():
                     outbox_id = _prase_outbox_id(msg.html)
+                    if not outbox_id:
+                        continue
+                    try:
+                        outbox = EmailOutbox.objects.get(id=outbox_id)
+                    except Exception as e:
+                        print(e)
+                        continue
 
                     inbox = EmailInbox()
-                    inbox.outbox_id = outbox_id
-                    if inbox.outbox:
-                        inbox.recipient_email_id = inbox.outbox.recipient_id
-                        inbox.from_email_id = inbox.outbox.from_email_id
-                    else:
-                        # recipient
-                        continue
+                    inbox.outbox = outbox
+                    inbox.recipient_email_id = inbox.outbox.recipient_id
+                    inbox.from_email_id = inbox.outbox.from_email_id
 
                     inbox.email_subject = msg.subject
                     inbox.email_body = msg.html
@@ -162,8 +166,10 @@ def email_receiver():
                             "track_linkclick": False
                         }
                         send_immediate_email.delay(param)
-        except:
-            print(f"Sending mail failed : {mail_account}")
+        except OSError:
+            print(f"Mail account is invalid : {mail_account}")
+        except ConnectionError:
+            print(f"Connection aborted : {mail_account}")
 
 @shared_task
 def warming_trigger():
