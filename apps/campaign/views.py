@@ -164,127 +164,6 @@ class CreateCampaignMessageView(APIView):
         return Response({"message": "Saved Successfully"})
 
 
-class CampaignGetAllEmailsPreview(generics.ListAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get(self, request, pk, *args, **kwargs):
-        resp = {}
-        # getData = request.data
-        # try:
-        #     camp = Campaign.objects.get(id=pk)
-        # except:
-        #     return Response({"message": "No campiagn availabe for this id", "success": "false"})
-        #
-        # serializercamp = CampaignSerializer(camp)
-        #
-        #
-        # resp["campaign"] = serializercamp.data
-        #
-        # campEmaildatalist = []
-        # campEmail = CampaignRecipient.objects.filter(campaign=pk)
-        # for campemail in campEmail:
-        #     serializercampEmail = CampaignEmailSerializer(campemail)
-        #     campEmaildatalist.append(serializercampEmail.data)
-        # resp["campEmail"] = campEmaildatalist
-        #
-        # followupdatalist = []
-        # follow_up = FollowUpEmail.objects.filter(campaign=pk)
-        # for followup in follow_up:
-        #     serializerfollowup = FollowUpSerializer(followup)
-        #     followupdatalist.append(serializerfollowup.data)
-        # resp["follow_up"] = followupdatalist
-        #
-        # dripdatalist = []
-        # drip_email = DripEmailModel.objects.filter(campaign=pk)
-        # for dripemail in drip_email:
-        #     serilizedripmail = DripEmailSerilizer(dripemail)
-        #     dripdatalist.append(serilizedripmail.data)
-        # resp["drip"] = dripdatalist
-        #
-        # onclickdatalist = []
-        # on_click = EmailOnLinkClick.objects.filter(campaign=pk)
-        # for onclick in on_click:
-        #     serializeronclick = OnclickSerializer(onclick)
-        #     onclickdatalist.append(serializeronclick.data)
-        # resp["onLinkClick"] = onclickdatalist
-
-        return Response(resp)
-
-    def put(self, request, pk, *args, **kwargs):
-        # for campemail in request.data["campEmail"]:
-        #     campEmalOb = CampaignRecipient.objects.get(id=campemail["id"])
-        #     campEmailSave = CampaignEmailSerializer(campEmalOb, data=campemail)
-        #     if campEmailSave.is_valid():
-        #         campEmailSave.save()
-        #     else:
-        #         return Response({"message": "Campain Email Error"})
-        # for followup in request.data["follow_up"]:
-        #     followUpOb = FollowUpEmail.objects.get(id=followup["id"])
-        #     followUpSave = FollowUpSerializer(followUpOb, data=followup)
-        #     if followUpSave.is_valid():
-        #         followUpSave.save()
-        #     else:
-        #         return Response({"message": "Follow Up Email Error"})
-        # for drip in request.data["drip"]:
-        #     dripEmailOb = DripEmailModel.objects.get(id=drip["id"])
-        #     dripEmailSave = DripEmailSerilizer(dripEmailOb, data=drip)
-        #     if dripEmailSave.is_valid():
-        #         dripEmailSave.save()
-        #     else:
-        #         return Response({"message": "Drip Email Error"})
-        # for onLinkClick in request.data["onLinkClick"]:
-        #     onLinkClickOb = EmailOnLinkClick.objects.get(id=onLinkClick["id"])
-        #     onLinkClickSave = OnclickSerializer(onLinkClickOb, data=onLinkClick)
-        #     if onLinkClickSave.is_valid():
-        #         onLinkClickSave.save()
-        #     else:
-        #         return Response({"message": "On Link Click Email Error"})
-
-        return Response({"message": "Updated Successfully", "success": "True"})
-
-
-class CreateCampaignOptionView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def put(self, request, format=None):
-        # if request.data['terms_and_laws'] == True:
-        #     try:
-        #         queryset = Campaign.objects.get(id=request.data['campaign'])
-        #     except:
-        #         return Response({"message": "No campiagn availabe for this id", "success": "false"})
-        #     if queryset.csvfile_op1 == "":
-        #         csvfile_op1 = None
-        #     else:
-        #         csvfile_op1 = queryset.csvfile_op1
-        #     request.data["title"] = queryset.title
-        #     request.data["from_address"] = queryset.from_address.id
-        #     request.data["full_name"] = queryset.full_name
-        #     request.data["csvfile_op1"] = csvfile_op1
-        #     request.data["assigned"] = request.user.id
-        #     request.data["update_date_time"] = datetime.now()
-        #     request.data["created_date_time"] = queryset.created_date_time
-        #
-        #     if request.data["schedule_send"] and not (request.data["schedule_date"] or request.data["schedule_time"]):
-        #         return Response({"message": "Please Enter Date Time", "success": "false"})
-        #     if request.data["schedule_send"]:
-        #         req_date_list = request.data["schedule_date"].split("-")
-        #         req_time_list = request.data["schedule_time"].split(":")
-        #         request.data["schedule_date"] = date(int(req_date_list[0]), int(req_date_list[1]),
-        #                                              int(req_date_list[2]))
-        #         request.data["schedule_time"] = time(int(req_time_list[0]), int(req_time_list[1]),
-        #                                              int(req_time_list[2]))
-        #
-        #     else:
-        #         request.data["schedule_date"] = None
-        #         request.data["schedule_time"] = None
-        #     serilizer = CampaignSerializer(queryset, data=request.data)
-        #     if serilizer.is_valid():
-        #         serilizer.save()
-        #         return Response(serilizer.data)
-        #     return Response({'message': 'invalid serilizer', "success": "false"})
-        return Response({"message": "Please agree to the terms.", "success": "false"})
-
-
 class CreateCampaignSendView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -454,6 +333,127 @@ class CreateCampaignSendView(APIView):
         # else:
         #     return Response({"message": CampSerializer.errors, "success": True})
         return Response({"message": "Updated Successfully", "success": True})
+
+
+class CampaignGetAllEmailsPreview(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, pk, *args, **kwargs):
+        resp = {}
+        # getData = request.data
+        # try:
+        #     camp = Campaign.objects.get(id=pk)
+        # except:
+        #     return Response({"message": "No campiagn availabe for this id", "success": "false"})
+        #
+        # serializercamp = CampaignSerializer(camp)
+        #
+        #
+        # resp["campaign"] = serializercamp.data
+        #
+        # campEmaildatalist = []
+        # campEmail = CampaignRecipient.objects.filter(campaign=pk)
+        # for campemail in campEmail:
+        #     serializercampEmail = CampaignEmailSerializer(campemail)
+        #     campEmaildatalist.append(serializercampEmail.data)
+        # resp["campEmail"] = campEmaildatalist
+        #
+        # followupdatalist = []
+        # follow_up = FollowUpEmail.objects.filter(campaign=pk)
+        # for followup in follow_up:
+        #     serializerfollowup = FollowUpSerializer(followup)
+        #     followupdatalist.append(serializerfollowup.data)
+        # resp["follow_up"] = followupdatalist
+        #
+        # dripdatalist = []
+        # drip_email = DripEmailModel.objects.filter(campaign=pk)
+        # for dripemail in drip_email:
+        #     serilizedripmail = DripEmailSerilizer(dripemail)
+        #     dripdatalist.append(serilizedripmail.data)
+        # resp["drip"] = dripdatalist
+        #
+        # onclickdatalist = []
+        # on_click = EmailOnLinkClick.objects.filter(campaign=pk)
+        # for onclick in on_click:
+        #     serializeronclick = OnclickSerializer(onclick)
+        #     onclickdatalist.append(serializeronclick.data)
+        # resp["onLinkClick"] = onclickdatalist
+
+        return Response(resp)
+
+    def put(self, request, pk, *args, **kwargs):
+        # for campemail in request.data["campEmail"]:
+        #     campEmalOb = CampaignRecipient.objects.get(id=campemail["id"])
+        #     campEmailSave = CampaignEmailSerializer(campEmalOb, data=campemail)
+        #     if campEmailSave.is_valid():
+        #         campEmailSave.save()
+        #     else:
+        #         return Response({"message": "Campain Email Error"})
+        # for followup in request.data["follow_up"]:
+        #     followUpOb = FollowUpEmail.objects.get(id=followup["id"])
+        #     followUpSave = FollowUpSerializer(followUpOb, data=followup)
+        #     if followUpSave.is_valid():
+        #         followUpSave.save()
+        #     else:
+        #         return Response({"message": "Follow Up Email Error"})
+        # for drip in request.data["drip"]:
+        #     dripEmailOb = DripEmailModel.objects.get(id=drip["id"])
+        #     dripEmailSave = DripEmailSerilizer(dripEmailOb, data=drip)
+        #     if dripEmailSave.is_valid():
+        #         dripEmailSave.save()
+        #     else:
+        #         return Response({"message": "Drip Email Error"})
+        # for onLinkClick in request.data["onLinkClick"]:
+        #     onLinkClickOb = EmailOnLinkClick.objects.get(id=onLinkClick["id"])
+        #     onLinkClickSave = OnclickSerializer(onLinkClickOb, data=onLinkClick)
+        #     if onLinkClickSave.is_valid():
+        #         onLinkClickSave.save()
+        #     else:
+        #         return Response({"message": "On Link Click Email Error"})
+
+        return Response({"message": "Updated Successfully", "success": "True"})
+
+
+class CreateCampaignOptionView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def put(self, request, format=None):
+        # if request.data['terms_and_laws'] == True:
+        #     try:
+        #         queryset = Campaign.objects.get(id=request.data['campaign'])
+        #     except:
+        #         return Response({"message": "No campiagn availabe for this id", "success": "false"})
+        #     if queryset.csvfile_op1 == "":
+        #         csvfile_op1 = None
+        #     else:
+        #         csvfile_op1 = queryset.csvfile_op1
+        #     request.data["title"] = queryset.title
+        #     request.data["from_address"] = queryset.from_address.id
+        #     request.data["full_name"] = queryset.full_name
+        #     request.data["csvfile_op1"] = csvfile_op1
+        #     request.data["assigned"] = request.user.id
+        #     request.data["update_date_time"] = datetime.now()
+        #     request.data["created_date_time"] = queryset.created_date_time
+        #
+        #     if request.data["schedule_send"] and not (request.data["schedule_date"] or request.data["schedule_time"]):
+        #         return Response({"message": "Please Enter Date Time", "success": "false"})
+        #     if request.data["schedule_send"]:
+        #         req_date_list = request.data["schedule_date"].split("-")
+        #         req_time_list = request.data["schedule_time"].split(":")
+        #         request.data["schedule_date"] = date(int(req_date_list[0]), int(req_date_list[1]),
+        #                                              int(req_date_list[2]))
+        #         request.data["schedule_time"] = time(int(req_time_list[0]), int(req_time_list[1]),
+        #                                              int(req_time_list[2]))
+        #
+        #     else:
+        #         request.data["schedule_date"] = None
+        #         request.data["schedule_time"] = None
+        #     serilizer = CampaignSerializer(queryset, data=request.data)
+        #     if serilizer.is_valid():
+        #         serilizer.save()
+        #         return Response(serilizer.data)
+        #     return Response({'message': 'invalid serilizer', "success": "false"})
+        return Response({"message": "Please agree to the terms.", "success": "false"})
 
 
 class CampaignCreateView(APIView):

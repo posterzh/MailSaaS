@@ -4,10 +4,6 @@ import {
   Card,
   CardHeader,
   CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
-  UncontrolledDropdown,
   Pagination,
   PaginationItem,
   PaginationLink,
@@ -488,41 +484,6 @@ function Tables({
                                 </td>
                               );
                             })}
-                            {/* {showAction && (
-                            <td
-                              className="text-right"
-                              key={"header-actions" + index}
-                            >
-                              <UncontrolledDropdown>
-                                <DropdownToggle
-                                  className="btn-icon-only text-light"
-                                  color=""
-                                  role="button"
-                                  size="sm"
-                                >
-                                  <i className="fas fa-ellipsis-v" />
-                                </DropdownToggle>
-                                <DropdownMenu
-                                  className="dropdown-menu-arrow"
-                                  right
-                                >
-                                  {actionMenus.map((item) => {
-                                    return (
-                                      <DropdownItem
-                                        key={"dropdown-menu-" + item.key}
-                                        onClick={(e) =>
-                                          menuClicked(item.key, data)
-                                        }
-                                      >
-                                        {item.name}
-                                      </DropdownItem>
-                                    );
-                                  })}
-                                </DropdownMenu>
-                              </UncontrolledDropdown>
-                            </td>
-                          )} */}
-
                             <td className="table-actions">
                               {
                                 onEdit &&
