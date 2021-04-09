@@ -116,3 +116,4 @@ boto3
 pycurl
 celery[sqs]
 Collectfast
+chattingtransformer
