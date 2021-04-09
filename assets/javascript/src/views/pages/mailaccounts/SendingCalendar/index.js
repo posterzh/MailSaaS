@@ -48,7 +48,8 @@ function SendingCalendar({
   const [currentMailAccount, setCurrentMailAccount] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isLocal, setIsLocal] = useState(
-    window.location.href.indexOf("localhost") > -1
+    window.location.href.indexOf("localhost") > -1 ||
+      window.location.href.indexOf("127.0.0.1") > -1
   );
 
   useEffect(() => {
