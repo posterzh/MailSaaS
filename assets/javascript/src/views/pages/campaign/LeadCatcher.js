@@ -2,7 +2,23 @@ import React, { Component } from 'react'
 import LeadCatchermodel from "./components/LeadCatchermodel"
 import { connect } from 'react-redux'
 import { CampaignLeadViewAction, CampaignOverviewAction } from "../../../redux/action/CampaignAction";
-import { Container, Row, Col, Card, CardHeader, CardBody, Spinner, Modal, ModalHeader, ModalBody } from 'reactstrap'
+import { 
+  Container,
+  Button,
+  Row,
+  Col,
+  Card,
+  CardHeader,
+  CardBody,
+  Spinner,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown
+} from 'reactstrap'
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
 import Tables from "../../../components/Tables";
@@ -219,7 +235,7 @@ class LeadCatcher extends Component {
           </Container>
           <Modal isOpen={detailPanelVisible} toggle={this.hideDetails} size="lg" className="lead-detail-modal">
             <ModalHeader toggle={this.hideDetails}>{!!detailLead && detailLead.email}</ModalHeader>
-            <ModalBody>
+            <ModalBody className="pt-0">
               <div className="px-0 px-sm-5">
                 {
                   detailLoading &&
@@ -229,43 +245,97 @@ class LeadCatcher extends Component {
                   !detailLoading && timeline.length === 0 &&
                   <p className="text-muted text-center mb-0">Lead detail data doesn't exist for this lead.</p>
                 }
-                <div className="timeline timeline-one-side lead-timeline"
-                  data-timeline-axis-style="dashed"
-                  data-timeline-content="axis">
-                  {
-                    timeline.map((item, index) => {
-                      return (
-                        <div className="timeline-block" key={`${index}`}>
-                          <span className={`timeline-step ${item.badge_class} ${item.badge_cnt > 1 && 'has-badge'}`} data-badge={item.badge_cnt}>
-                            <i className={item.icon} />
-                          </span>
-                          <div className="timeline-content">
-                            <div>
-                              <span className="font-weight-bold">{item.label}</span>
-                              <small className="text-muted ml-2">
-                                {item.dt.format('MMM DD, YYYY hh:mm a')}
-                              </small>
-                            </div>
-                            {
-                              item.type === 'sent' && detailData &&
-                              <Card className="lead-initial-email mt-3">
-                                <CardHeader className="p-3">
-                                  <label>From:</label><span><strong>{this.getFullName(detailData.from_first_name, detailData.from_last_name)}</strong> {detailData.from_email_addr}</span><br />
-                                  <label>Subject:</label><span><strong>{ detailData.email_subject }</strong></span>
-                                </CardHeader>
+                {
+                  !detailLoading && !!timeline.length &&
+                  <>
+                    <div className="d-flex justify-content-center align-items-center">
+                      <Button className="btn-icon" color="warning" type="button" size="sm">
+                        <span className="btn-inner--icon">
+                          <i className="ni ni-chat-round" />
+                        </span>
+                        <span className="btn-inner--text">REPLY</span>
+                      </Button>
+                      <UncontrolledDropdown size="sm">
+                        <DropdownToggle caret color="secondary">
+                          STATUS
+                        </DropdownToggle>
+                        <DropdownMenu>
+                          <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                            Open
+                          </DropdownItem>
+                          <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                            Replied
+                          </DropdownItem>
+                          <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                            Won
+                          </DropdownItem>
+                          <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                            Lost
+                          </DropdownItem>
+                          <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                            Ignored
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </UncontrolledDropdown>
+                      <UncontrolledDropdown size="sm">
+                        <DropdownToggle caret color="secondary">
+                          ASSIGN
+                        </DropdownToggle>
+                        <DropdownMenu>
+                          <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                            Unassigned
+                          </DropdownItem>
+                          <DropdownItem href="#pablo" disabled onClick={e => e.preventDefault()}>
+                            Me
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </UncontrolledDropdown>
+                      <Button className="btn-icon" color="secondary" type="button" size="sm">
+                        <span className="btn-inner--icon">
+                          <i className="ni ni-curved-next" />
+                        </span>
+                        <span className="btn-inner--text">NEXT</span>
+                      </Button>
+                    </div>
+                    <div className="timeline timeline-one-side lead-timeline pt-4"
+                      data-timeline-axis-style="dashed"
+                      data-timeline-content="axis">
+                      {
+                        timeline.map((item, index) => {
+                          return (
+                            <div className="timeline-block" key={`${index}`}>
+                              <span className={`timeline-step ${item.badge_class} ${item.badge_cnt > 1 && 'has-badge'}`} data-badge={item.badge_cnt}>
+                                <i className={item.icon} />
+                              </span>
+                              <div className="timeline-content">
+                                <div>
+                                  <span className="font-weight-bold">{item.label}</span>
+                                  <small className="text-muted ml-2">
+                                    {item.dt.format('MMM DD, YYYY hh:mm a')}
+                                  </small>
+                                </div>
+                                {
+                                  item.type === 'sent' && detailData &&
+                                  <Card className="lead-initial-email mt-3">
+                                    <CardHeader className="p-3">
+                                      <label>From:</label><span><strong>{this.getFullName(detailData.from_first_name, detailData.from_last_name)}</strong> {detailData.from_email_addr}</span><br />
+                                      <label>Subject:</label><span><strong>{ detailData.email_subject }</strong></span>
+                                    </CardHeader>
 
-                                <CardBody className="p-3">
-                                  <div dangerouslySetInnerHTML={{__html: detailData.email_body}}>
-                                  </div>
-                                </CardBody>
-                              </Card>
-                            }
-                          </div>
-                        </div>
-                      )
-                    })
-                  }
-                </div>
+                                    <CardBody className="p-3">
+                                      <div dangerouslySetInnerHTML={{__html: detailData.email_body}}>
+                                      </div>
+                                    </CardBody>
+                                  </Card>
+                                }
+                              </div>
+                            </div>
+                          )
+                        })
+                      }
+                    </div>
+                  </>
+                }
               </div>
             </ModalBody>
           </Modal>
