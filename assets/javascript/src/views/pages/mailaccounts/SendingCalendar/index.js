@@ -47,7 +47,9 @@ function SendingCalendar({
   const [currentCalendar, setCurrentCalendar] = useState(null);
   const [currentMailAccount, setCurrentMailAccount] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [isLocal, setIsLocal] = useState(window.location.href.indexOf('localhost') > -1);
+  const [isLocal, setIsLocal] = useState(
+    window.location.href.indexOf("localhost") > -1
+  );
 
   useEffect(() => {
     getMailAccounts();
@@ -57,18 +59,19 @@ function SendingCalendar({
 
   useEffect(() => {
     if (mailAccounts.length > 0) {
-      setCurrentMailAccount(mailAccounts[0]);
+      setCurrentMailAccount(mailAccounts[0].id);
     }
   }, [mailAccounts]);
 
   useEffect(() => {
+    // console.log(currentMailAccount);
     if (currentMailAccount) {
       let calendar = sendingCalendars.find(
-        (item) => item.mail_account == currentMailAccount.id
+        (item) => item.mail_account == currentMailAccount
       );
       if (!calendar) {
         calendar = initialCalendar;
-        calendar.mail_account = currentMailAccount.id;
+        calendar.mail_account = currentMailAccount;
       }
 
       setCurrentCalendar(calendar);
@@ -76,10 +79,17 @@ function SendingCalendar({
   }, [currentMailAccount, sendingCalendars]);
 
   const saveCalendar = () => {
+    const data = {
+      ...currentCalendar,
+      mail_account: currentMailAccount,
+    };
+
     if (currentCalendar.id) {
-      updateSendingCalendar(currentCalendar.id, currentCalendar);
+      // console.log("updating cal");
+      updateSendingCalendar(currentCalendar.id, data);
     } else {
-      addSendingCalendar(currentCalendar);
+      // console.log("adding cal");
+      addSendingCalendar(data);
     }
 
     setIsEditing(false);
@@ -138,16 +148,29 @@ function SendingCalendar({
                 cancelEditing={() => setIsEditing(false)}
               />
             )}
-            {isLocal && <>
-              <Button className="float-right" color="danger" type="button" onClick={onSendTestEmail} outline>
-                Test sender
-              </Button>
+            {isLocal && (
+              <>
+                <Button
+                  className="float-right"
+                  color="danger"
+                  type="button"
+                  onClick={onSendTestEmail}
+                  outline
+                >
+                  Test sender
+                </Button>
 
-              <Button className="float-right" color="danger" type="button" onClick={onReceiveTestEmail} outline>
-                Test receiver
-              </Button>
-            </>}
-            
+                <Button
+                  className="float-right"
+                  color="danger"
+                  type="button"
+                  onClick={onReceiveTestEmail}
+                  outline
+                >
+                  Test receiver
+                </Button>
+              </>
+            )}
           </Col>
         </Row>
       </PageContainer>
