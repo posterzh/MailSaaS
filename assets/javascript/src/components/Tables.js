@@ -509,8 +509,10 @@ function Tables({
                               {
                                 onDelete &&
                                 <>
-                                  <span
+                                  <Badge
                                     className="table-action table-action-delete"
+                                    color="danger"
+                                    style={{color: '#f80031'}}
                                     id={`delete${index}`}
                                     onClick={(e) => {
                                       e.stopPropagation();
@@ -519,7 +521,7 @@ function Tables({
                                     }}
                                   >
                                     <i className="fas fa-trash" />
-                                  </span>
+                                  </Badge>
                                 </>
                               }
                               {

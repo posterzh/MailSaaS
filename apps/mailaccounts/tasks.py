@@ -10,7 +10,7 @@ from .models import *
 from .utils.sending_calendar import can_send_email, calendar_sent
 from .utils.smtp import send_mail_with_smtp, get_emails_to_send, move_warmups_from_spam_to_inbox
 from ..campaign.models import EmailInbox, Campaign, Recipient, EmailOutbox, Emails
-from mail.settings import DEFAULT_RAMPUP_INCREMENT, DEFAULT_WARMUP_MAX_CNT, DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX
+from mail.settings import DEFAULT_RAMPUP_INCREMENT, DEFAULT_WARMUP_MAX_CNT, DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX, DEFAULT_WARMUP_FOLDER
 from ..campaign.tasks import triggerLeadCatcher
 
 gen = DocumentGenerator()
@@ -140,37 +140,11 @@ def email_receiver():
                         triggerLeadCatcher(inbox.outbox.campaign_id, inbox.outbox.recipient_id)
 
                     print(f"Email received from {msg.from_} to {msg.to}")
-
-                    # Filter out the warmup emails
-                    if (msg.subject.endswith("mailerrize") or msg.subject.endswith("mailerrize?=")) \
-                            and "Re:" not in msg.subject:
-                        warm_reply_subject = "Re: " + msg.subject
-                        warm_reply_body = "Hi,\n\n" + gen.paragraph() + "\n\nYours truly,\n\n"
-                        if mail_account.first_name:
-                            warm_reply_body += mail_account.first_name
-                        elif mail_account.last_name:
-                            warm_reply_body += mail_account.last_name
-                        else:
-                            warm_reply_body = "Thank you"
-                        param = {
-                            "host": mail_account.smtp_host,
-                            "port": mail_account.smtp_port,
-                            "username": mail_account.smtp_username,
-                            "password": mail_account.smtp_password,
-                            "use_tls": mail_account.use_smtp_ssl,
-                            "from_email": mail_account.email,
-                            "to_email": [msg.from_],
-                            "subject": warm_reply_subject,
-                            "body": warm_reply_body,
-                            "uuid": None,
-                            "track_opens": False,
-                            "track_linkclick": False
-                        }
-                        send_immediate_email.delay(param)
         except OSError:
             print(f"Mail account is invalid : {mail_account}")
         except ConnectionError:
             print(f"Connection aborted : {mail_account}")
+
 
 @shared_task
 def warming_trigger():
@@ -212,8 +186,16 @@ def warming_trigger():
         dest_account = random.choice(account_list).mail_account
 
         # print(f"Sending email to: ${dest_account.email}")
+        template = WarmingMailTemplate.objects.order_by('?').first()
+        if template:
+            mail_subject = template.subject
+            mail_content = template.content
+        else:
+            mail_subject = gen.sentence()
+            mail_content = gen.paragraph()
+
         # send email to dest_account
-        warmup_email_subject = gen.sentence() + " " + DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX
+        warmup_email_subject = mail_subject + " " + DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX
         warmup_email_body = "Dear "
         if dest_account.first_name:
             warmup_email_body += dest_account.first_name + ","
@@ -221,7 +203,7 @@ def warming_trigger():
             warmup_email_body += dest_account.last_name + ","
         else:
             warmup_email_body = "Hello,"
-        warmup_email_body += "\n\n" + gen.paragraph() + "\n\nYours sincerely,\n\n"
+        warmup_email_body += "\n\n" + mail_content + "\n\nYours sincerely,\n\n"
         if mail_account.first_name:
             warmup_email_body += mail_account.first_name
         elif mail_account.last_name:
@@ -250,6 +232,64 @@ def warming_trigger():
 
 
 @shared_task
+def warming_replier():
+    print('Warming replier is called...')
+
+    mail_accounts = EmailAccount.objects.exclude(imap_username__exact='').exclude(imap_username__isnull=True)
+
+    for mail_account in mail_accounts:
+        if not mail_account.imap_host or not mail_account.imap_port or not mail_account.imap_username or not mail_account.imap_password:
+            continue
+        try:
+            move_warmups_from_spam_to_inbox(host=mail_account.imap_host,
+                                            port=mail_account.imap_port,
+                                            username=mail_account.imap_username,
+                                            password=mail_account.imap_password,
+                                            use_tls=mail_account.use_imap_ssl)
+            with MailBox(host=mail_account.imap_host, port=mail_account.imap_port)\
+                    .login(mail_account.imap_username,
+                     mail_account.imap_password, DEFAULT_WARMUP_FOLDER) as mailbox:
+                for msg in mailbox.fetch(AND(seen=False)):
+                    # Filter out the warmup emails
+                    if (msg.subject.endswith("mailerrize") or msg.subject.endswith("mailerrize?=")) \
+                            and "Re:" not in msg.subject:
+
+                        template = WarmingMailTemplate.objects.order_by('?').first()
+                        if template:
+                            mail_content = template.content
+                        else:
+                            mail_content = gen.paragraph()
+
+                        warm_reply_subject = "Re: " + msg.subject
+                        warm_reply_body = "Hi,\n\n" + mail_content + "\n\nYours truly,\n\n"
+                        if mail_account.first_name:
+                            warm_reply_body += mail_account.first_name
+                        elif mail_account.last_name:
+                            warm_reply_body += mail_account.last_name
+                        else:
+                            warm_reply_body = "Thank you"
+                        param = {
+                            "host": mail_account.smtp_host,
+                            "port": mail_account.smtp_port,
+                            "username": mail_account.smtp_username,
+                            "password": mail_account.smtp_password,
+                            "use_tls": mail_account.use_smtp_ssl,
+                            "from_email": mail_account.email,
+                            "to_email": [msg.from_],
+                            "subject": warm_reply_subject,
+                            "body": warm_reply_body,
+                            "uuid": None,
+                            "track_opens": False,
+                            "track_linkclick": False
+                        }
+                        send_immediate_email.delay(param)
+        except OSError:
+            print(f"Mail account is invalid : {mail_account}")
+        except ConnectionError:
+            print(f"Connection aborted : {mail_account}")
+
+
+@shared_task
 def warming_days_counter():
     # Get warming enabled accounts
     enabledAccounts = WarmingStatus.objects.filter(warming_enabled=True).select_related("mail_account")
@@ -266,7 +306,7 @@ def send_immediate_email(param):
                                  password=param['password'],
                                  use_tls=param['use_tls'],
                                  from_email=param['from_email'],
-                                 to_email=param['to_email'],
+                                 to_email=[param['to_email']],
                                  subject=param['subject'],
                                  body=param['body'],
                                  uuid=param['uuid'],
