@@ -243,7 +243,10 @@ def move_warmups_from_spam_to_inbox(host, port, username, password, use_tls):
 def get_emails_to_send(available_email_ids, email_limits):
     arr = []
     for email_id, limit in zip(available_email_ids, email_limits):
-        arr.append(schedule_per_email_account(email_id, limit))
+        try:
+            arr.append(schedule_per_email_account(email_id, limit))
+        except ValueError:
+            continue
 
     result = []
     if len(arr) != 0:
