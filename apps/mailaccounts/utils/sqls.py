@@ -1,6 +1,6 @@
 schedule_sql_template = '''
 SELECT
-    ce.campaign_id AS campaign_id,
+    ca.id AS campaign_id,
     ce.id AS email_id,
     ce.email_type,
     ce.email_subject,
@@ -25,12 +25,19 @@ FROM
     INNER JOIN
         campaign_emails ce
         ON ce.campaign_id = ca.id
-        AND ca.from_address_id = %s
-   INNER JOIN
+            AND ca.id = %s
+            AND ca.campaign_status = TRUE
+            AND ca.is_deleted = FALSE
+            AND ca.is_draft = FALSE
+    INNER JOIN
         campaign_recipient cr
         ON ce.campaign_id = cr.campaign_id
-   LEFT JOIN
+            AND ce.is_deleted = FALSE
+            AND cr.recipient_status = TRUE
+    LEFT JOIN
         campaign_emailoutbox ceo
         ON ce.campaign_id = ceo.campaign_id
-        AND ce.id = ceo.email_id
-        AND cr.id = ceo.recipient_id'''
+            AND ce.id = ceo.email_id
+            AND cr.id = ceo.recipient_id
+            AND ceo.status = 1
+'''

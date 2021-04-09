@@ -46,7 +46,7 @@ class Campaign(models.Model):
         return self.title
 
     def current_emails(self):
-        return Emails.objects.filter(is_deleted=False)
+        return Emails.objects.filter(is_deleted=False, campaign=self.id)
 
 
 class CampaignRecipient(models.Model):
