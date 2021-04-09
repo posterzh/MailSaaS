@@ -354,7 +354,7 @@ function Tables({
                                   className="form-control-label text-capitalize"
                                   htmlFor="exampleFormControlInput1"
                                 >
-                                  {item.key}
+                                  {item.label || item.key}
                                 </label>
                                 <Row>
                                   <Col>
