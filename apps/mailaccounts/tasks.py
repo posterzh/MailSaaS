@@ -103,6 +103,8 @@ def email_receiver():
     mail_accounts = EmailAccount.objects.exclude(imap_username__exact='').exclude(imap_username__isnull=True)
 
     for mail_account in mail_accounts:
+        if not mail_account.imap_host or not mail_account.imap_port or not mail_account.imap_username or not mail_account.imap_password:
+            continue
         try:
             with MailBox(host=mail_account.imap_host, port=mail_account.imap_port).login(mail_account.imap_username,
                                                                                          mail_account.imap_password,
