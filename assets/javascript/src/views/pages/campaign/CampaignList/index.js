@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 // nodejs library that concatenates classes
 import {
   Row,
@@ -90,8 +91,26 @@ class CampaignList extends Component {
 
   }
 
-  onDelete = (data) => {
-    console.log(data);
+  onDelete = async (itemToDelete) => {
+    const id = itemToDelete.id;
+
+    toggleTopLoader(true);
+    axios
+      .patch(`/campaign/delete/${id}/`, {"is_deleted": true})
+      .then((response) => {
+        const { data } = this.state;
+        this.setState({
+          data: data.filter(
+            (item, index) => item.id !== response.data.id
+          ),
+        })
+      })
+      .catch((error) => {
+        toastOnError(error);
+      })
+      .finally(() => {
+        toggleTopLoader(false);
+      });
   }
 
   render() {

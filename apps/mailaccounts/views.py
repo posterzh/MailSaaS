@@ -144,7 +144,10 @@ class MyOpenTrackingView(OpenTrackingView):
     def notify_tracking_event(self, tracking_result):
         uuid = tracking_result.metadata['uuid']
 
-        outbox = EmailOutbox.objects.get(id=uuid)
+        try:
+            outbox = EmailOutbox.objects.get(id=uuid)
+        except Exception as e:
+            return
         outbox.opened += 1
         outbox.opened_datetime = datetime.now(timezone.utc)
         outbox.save()
@@ -163,7 +166,11 @@ class MyClickTrackingView(ClickTrackingView):
     def notify_tracking_event(self, tracking_result):
         uuid = tracking_result.metadata['uuid']
 
-        outbox = EmailOutbox.objects.get(id=uuid)
+        try:
+            outbox = EmailOutbox.objects.get(id=uuid)
+        except Exception as e:
+            return
+
         outbox.clicked += 1
         outbox.clicked_datetime = datetime.now(timezone.utc)
         outbox.save()

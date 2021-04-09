@@ -45,7 +45,7 @@ export const campaignSend = (payload) => (dispatch) => {
 export const campaignUpdate = (payload) => (dispatch) => {
   toggleTopLoader(true);
   return axios
-    .post("/campaign/update/", payload)
+    .post("/campaign/sequence-update/", payload)
     .then((response) => {
       //TODO: reload page
       return response;

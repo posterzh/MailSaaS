@@ -31,6 +31,7 @@ export const addSendingCalendar = (sendingCalendar) => (dispatch) => {
         type: ADD_SENDING_CALENDAR,
         payload: response.data,
       });
+      toastOnSuccess("Calendar added successfully!");
     })
     .catch((error) => {
       toastOnError(error);
@@ -45,6 +46,7 @@ export const deleteSendingCalendar = (id) => (dispatch) => {
         type: DELETE_SENDING_CALENDAR,
         payload: id,
       });
+      toastOnSuccess("Calendar deleted successfully!");
     })
     .catch((error) => {
       toastOnError(error);
@@ -59,6 +61,7 @@ export const updateSendingCalendar = (id, sendingCalendar) => (dispatch) => {
         type: UPDATE_SENDING_CALENDAR,
         payload: response.data,
       });
+      toastOnSuccess("Calendar updated successfully!");
     })
     .catch((error) => {
       toastOnError(error);
