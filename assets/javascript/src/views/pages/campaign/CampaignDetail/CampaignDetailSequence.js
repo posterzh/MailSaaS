@@ -57,7 +57,9 @@ class CampaignDetailSequence extends Component {
   }
 
   onCancel = () => {
-
+    this.setState({
+      editing: false
+    });
   }
 
   render() {

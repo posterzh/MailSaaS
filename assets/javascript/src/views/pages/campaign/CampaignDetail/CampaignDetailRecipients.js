@@ -113,49 +113,32 @@ class CampaignDetailRecipients extends Component {
             <DetailHeader activeItem="RECIPIENTS" id={id} />
           </Row>
 
-          <Row className="mt-4 mx-3">
-            <Tables
-              titles={recipientsTable} // required
-              tablePropsData={recipients}   // required
-              showSelect={true}
-              showPagination={true}   // optional
-              showControl={true}
-              filters={recipientsFilters}   // optional to enable filter
-              controlCallback={this.updateRecipientStatus}
-              onClick={this.showRecipientDetailModal}
-              searchKeys={['email', 'name']}  // optional to enable search
-            />
+          <Row className="mx-3">
+            <Col md={12}>
+              <Row className="my-3">
+                <Col md={12} className="mx-auto text-right">
+                  <Button type="button" color="danger" className="mx-auto" size="sm" onClick={(e) => {
+                    e.preventDefault();
+                    this.showImportContactsModal();
+                  }}>
+                    ADD RECIPIENTS
+                  </Button>
+                </Col>
+              </Row>
+
+              <Tables
+                titles={recipientsTable} // required
+                tablePropsData={recipients}   // required
+                showSelect={true}
+                showPagination={true}   // optional
+                showControl={true}
+                filters={recipientsFilters}   // optional to enable filter
+                controlCallback={this.updateRecipientStatus}
+                onClick={this.showRecipientDetailModal}
+                searchKeys={['email', 'name']}  // optional to enable search
+              />
+            </Col>
           </Row>
-
-          <Button
-            className="btn-icon btn-2 rounded-circle fixed-bottom-right-btn mr-6"
-            color="secondary"
-            type="button"
-            style={{ zIndex: 5 }}
-            onClick={(e) => {
-              e.preventDefault();
-              this.showDownloadCSVModal();
-            }}
-          >
-            <span className="btn-inner--icon">
-              <i className="fa fa-download" />
-            </span>
-          </Button>
-
-          <Button
-            className="btn-icon btn-2 rounded-circle fixed-bottom-right-btn"
-            color="info"
-            type="button"
-            style={{ zIndex: 5 }}
-            onClick={(e) => {
-              e.preventDefault();
-              this.showImportContactsModal();
-            }}
-          >
-            <span className="btn-inner--icon">
-              <i className="fa fa-plus" />
-            </span>
-          </Button>
 
           <ImportContactsModal
             isOpen={importContactsModal}
@@ -189,7 +172,7 @@ const mapStateToProps = (state) => {
     recipients: state.campaignDetails.detailRecipients,
   };
 };
-export default connect( mapStateToProps, {
+export default connect(mapStateToProps, {
   getDetailRecipients,
   updateRecipientStatus,
 })(CampaignDetailRecipients);
