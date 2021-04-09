@@ -10,6 +10,7 @@ import PageContainer from "../../../../components/Containers/PageContainer";
 import Tables from "../../../../components/Tables";
 import { campaignListTable } from "../../../../components/TableHeader";
 import { toggleTopLoader, toastOnError, messages, toastOnSuccess } from '../../../../utils/Utils';
+import DeleteModal from "./components/DeleteModal";
 import axios from '../../../../utils/axios';
 
 class CampaignList extends Component {
@@ -17,6 +18,8 @@ class CampaignList extends Component {
     super(props);
     this.state = {
       data: [],
+      deleteModal: false,
+      deleteItem: null,
       filters: [{
         key: 'assigned',
         options: []
@@ -91,12 +94,20 @@ class CampaignList extends Component {
 
   }
 
-  onDelete = async (itemToDelete) => {
-    const id = itemToDelete.id;
+  showDeleteModal = (item) => {
+    // Save the item to delete
+    this.setState({ deleteItem: item });
+
+    // Show delete confirmation dialog
+    this.setState({ deleteModal: true });
+  };
+
+  deleteCampaign = () => {
+    const { deleteItem } = this.state;
 
     toggleTopLoader(true);
     axios
-      .patch(`/campaign/delete/${id}/`, {"is_deleted": true})
+      .patch(`/campaign/delete/${deleteItem.id}/`, {"is_deleted": true})
       .then((response) => {
         const { data } = this.state;
         this.setState({
@@ -111,10 +122,17 @@ class CampaignList extends Component {
       .finally(() => {
         toggleTopLoader(false);
       });
-  }
+
+    this.closeDeleteModal();
+  };
+
+  closeDeleteModal = () => {
+    this.setState({ deleteModal: false });
+    this.setState({ deleteItem: null });
+  };
 
   render() {
-    const { data, filters } = this.state;
+    const { data, filters, deleteModal } = this.state;
     
     return (
       <>
@@ -137,9 +155,15 @@ class CampaignList extends Component {
               paginationCallback={this.paginationCallback}     // get callback of page change.
               filters={filters}   // optional to enable filter
               searchKeys={['title']}  // optional to enable search
-              onDelete = {this.onDelete}
+              onDelete = {this.showDeleteModal}
             />
           </Row>
+
+          <DeleteModal
+            isOpen={deleteModal}
+            close={this.closeDeleteModal}
+            delete={this.deleteCampaign}
+          />
         </PageContainer>
       </>
     );
