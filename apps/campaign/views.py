@@ -559,7 +559,15 @@ class CampaignCreateView(APIView):
         return template
 
 
-class CampaignUpdateView(APIView):
+class CampaignDeleteView(generics.UpdateAPIView):
+    permissions = (permissions.IsAuthenticated,)
+    serializer_class = CampaignSerializer
+
+    def get_queryset(self):
+        return Campaign.objects.filter(assigned=self.request.user.id)
+
+
+class CampaignSequenceUpdateView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request):
@@ -590,7 +598,7 @@ class CampaignListView(generics.ListAPIView):
     pagination_class = None
 
     def get_queryset(self):
-        return super().get_queryset().filter(assigned=self.request.user.id).order_by('-id')
+        return super().get_queryset().filter(assigned=self.request.user.id, is_deleted=False).order_by('-id')
 
 
 class CampaignView(generics.ListAPIView):
