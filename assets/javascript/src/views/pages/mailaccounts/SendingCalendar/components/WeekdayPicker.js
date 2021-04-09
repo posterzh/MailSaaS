@@ -15,7 +15,7 @@ export default function WeekdayPicker({ block_days, setBlock_days, readonly }) {
     setBlock_days(block_days ^ (1 << index));
   };
 
-  console.log("block days: ", block_days);
+  // console.log("block days: ", block_days);
 
   return (
     <>

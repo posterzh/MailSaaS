@@ -4,7 +4,7 @@ import math
 import random
 from essential_generators import DocumentGenerator
 from celery import shared_task
-from imap_tools import MailBox
+from imap_tools import MailBox, AND
 
 from .models import *
 from .utils.sending_calendar import can_send_email, calendar_sent
@@ -109,7 +109,7 @@ def email_receiver():
             with MailBox(host=mail_account.imap_host, port=mail_account.imap_port)\
                     .login(mail_account.imap_username,
                      mail_account.imap_password, 'INBOX') as mailbox:
-                for msg in mailbox.fetch():
+                for msg in mailbox.fetch(AND(seen=False)):
                     outbox_id = _prase_outbox_id(msg.html)
                     if not outbox_id:
                         continue
