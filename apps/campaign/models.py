@@ -171,7 +171,7 @@ class Recipient(models.Model):
     bounces = models.PositiveSmallIntegerField(default=0)
     clicked = models.PositiveSmallIntegerField(default=0)
     lead_status = models.CharField(max_length=32, choices=LEAD_TYPE, default='none', null=True)
-    recipient_status = models.BooleanField(default=False)  # Start or Pause Recipient
+    recipient_status = models.BooleanField(default=True)  # Start or Pause Recipient
     is_unsubscribe = models.BooleanField(default=False)
     is_delete = models.BooleanField(default=False)
     created_date_time = models.DateTimeField(auto_now=True, blank=True, null=True)
