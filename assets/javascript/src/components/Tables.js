@@ -552,6 +552,7 @@ function Tables({
                                     className="table-action table-action-delete"
                                     id={`delete${index}`}
                                     onClick={(e) => {
+                                      e.stopPropagation();
                                       e.preventDefault();
                                       onDelete(data);
                                     }}

@@ -90,8 +90,8 @@ class CampaignList extends Component {
 
   }
 
-  getSelectedRecords = () => {
-
+  onDelete = (data) => {
+    console.log(data);
   }
 
   render() {
@@ -112,14 +112,13 @@ class CampaignList extends Component {
               tablePropsData={data}   // required
               onClick={this.showDetails}
               actionCallback={this.actionCallback}        // get call back for action select of row.
-              showSelect={true}    // optional
-              selectedCallback={this.getSelectedRecords}      // get call back for select object.
               showControl={true}   // optional
               controlCallback={this.controlCallback}
               showPagination={true}   // optional
               paginationCallback={this.paginationCallback}     // get callback of page change.
               filters={filters}   // optional to enable filter
               searchKeys={['title']}  // optional to enable search
+              onDelete = {this.onDelete}
             />
           </Row>
         </PageContainer>
