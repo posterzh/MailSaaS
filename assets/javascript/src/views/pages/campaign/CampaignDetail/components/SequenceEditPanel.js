@@ -123,10 +123,10 @@ class SequenceEditPanel extends Component {
     const main = this.state.main;
     const followups = this.state.followups
       .filter(followup => followup.id !== undefined || followup.is_deleted === false)
-      .map((followup, index) => { followup.email_order = index; return followup; });
+      .map((followup, index) => { followup.email_order = index; followup.ref = null; return followup; });
     const drips = this.state.drips
       .filter(drip => drip.id !== undefined || drip.is_deleted === false)
-      .map((drip, index) => { drip.email_order = index; return drip; });
+      .map((drip, index) => { drip.email_order = index; drip.ref = null; return drip; });
     const emails = [main].concat(followups).concat(drips);
 
     if (!main.email_subject) {

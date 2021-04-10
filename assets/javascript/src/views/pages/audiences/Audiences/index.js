@@ -182,7 +182,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.total}</div>
+											<div>{counts && counts.total ? counts.total : 0}</div>
 											<div>Total</div>
 										</h3>
 									</CardTitle>
@@ -194,7 +194,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.in_campaign}</div>
+											<div>{counts && counts.in_campaign ? counts.in_campaign : 0}</div>
 											<div>In Campaign</div>
 										</h3>
 									</CardTitle>
@@ -206,7 +206,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.engaged}</div>
+											<div>{counts && counts.engaged ? counts.engaged : 0}</div>
 											<div>Engaged</div>
 										</h3>
 									</CardTitle>
@@ -218,7 +218,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.leads}</div>
+											<div>{counts && counts.leads ? counts.leads : 0}</div>
 											<div>Leads</div>
 										</h3>
 									</CardTitle>
@@ -230,7 +230,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.bounces}</div>
+											<div>{counts && counts.bounces ? counts.bounces : 0}</div>
 											<div>Bounces</div>
 										</h3>
 									</CardTitle>
@@ -242,7 +242,7 @@ class Prospects extends Component {
 								<CardBody className="text-center p-3">
 									<CardTitle className="m-0">
 										<h3 className="text-white heading m-0">
-											<div>{counts && counts.unsubscribes}</div>
+											<div>{counts && counts.unsubscribes ? counts.unsubscribes : 0}</div>
 											<div>Unsubscribes</div>
 										</h3>
 									</CardTitle>
