@@ -10,6 +10,7 @@ import {
   Card,
   CardHeader,
   CardBody,
+  Input,
   Spinner,
   Modal,
   ModalHeader,
@@ -19,13 +20,14 @@ import {
   DropdownItem,
   UncontrolledDropdown
 } from 'reactstrap'
+import moment from "moment";
+import ReactQuill from "react-quill";
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
 import Tables from "../../../components/Tables";
 import FloatingPanel from "../../../components/FloatingPanel";
 import { toggleTopLoader, toastOnError, messages } from '../../../utils/Utils';
 import axios from '../../../utils/axios';
-import moment from "moment";
 
 class LeadCatcher extends Component {
   constructor() {
@@ -48,8 +50,15 @@ class LeadCatcher extends Component {
       detailLoading: false,
       detailPanelVisible: false,
       detailLeadId: null,
-      detailData: null
+      detailData: null,
+      detailReplyEnable: false,
+      detailReplySubject: '',
+      detailReplyBody: '',
     }
+  }
+
+  _emailBodyQuill = {
+    ref: null
   }
 
   async componentDidMount() {
@@ -99,7 +108,10 @@ class LeadCatcher extends Component {
       detailLoading: true,
       detailPanelVisible: true,
       detailLeadId: lead_id,
-      detailData: null
+      detailData: null,
+      detailReplyEnable: false,
+      detailReplySubject: '',
+      detailReplyBody: '',
     })
     try {
       toggleTopLoader(true);
@@ -138,6 +150,9 @@ class LeadCatcher extends Component {
     const { camp_id, id: lead_id } = lead
     try {
       toggleTopLoader(true);
+
+      this.cancelReplyLead();
+
       const { data: {success, content} } = await axios.post(`/campaign/lead/status/${lead_id}/`, {status});
       if (success) {
         const { detailData, data } = this.state;
@@ -179,6 +194,22 @@ class LeadCatcher extends Component {
     } finally {
       toggleTopLoader(false);
     }
+  }
+
+  replyLead = () => {
+    this.setState({
+      detailReplyEnable: true,
+      detailReplySubject: '',
+      detailReplyBody: '',
+    })
+  }
+
+  cancelReplyLead = () => {
+    this.setState({
+      detailReplyEnable: false,
+      detailReplySubject: '',
+      detailReplyBody: '',
+    })
   }
 
   getFullName = (first_name, last_name) => {
@@ -305,7 +336,8 @@ class LeadCatcher extends Component {
       }
     ];
 
-    const { filters, data, detailLeadId, detailData, detailPanelVisible, detailLoading } = this.state;
+    const { filters, data, detailLeadId, detailData, detailPanelVisible, detailLoading,
+      detailReplyEnable, detailReplySubject, detailReplyBody } = this.state;
     let detailLead = null;
     if (detailLeadId) {
       detailLead = data.filter(item => item.id == detailLeadId)
@@ -392,6 +424,7 @@ class LeadCatcher extends Component {
                   !detailLoading && timeline.length === 0 &&
                   <p className="text-muted text-center mb-0">Lead detail data doesn't exist for this lead.</p>
                 }
+
                 {
                   !detailLoading && !!timeline.length &&
                   <>
@@ -399,7 +432,7 @@ class LeadCatcher extends Component {
                       {
                         this.isLeadOpen(detailLead) ?
                         <>
-                          <Button className="btn-icon" color="warning" type="button" size="sm">
+                          <Button className="btn-icon" color="danger" type="button" size="sm" onClick={this.replyLead} disabled={detailReplyEnable}>
                             <span className="btn-inner--icon">
                               <i className="ni ni-chat-round" />
                             </span>
@@ -447,6 +480,55 @@ class LeadCatcher extends Component {
                         <span className="btn-inner--text">NEXT</span>
                       </Button>
                     </div>
+
+                    {
+                      !detailReplyEnable ||
+                      <div className="reply-container my-3">
+                        <Input
+                          type="text"
+                          className="form-control"
+                          name="subject"
+                          value={detailReplySubject}
+                          onChange={(e) => {
+                            this.setState({ detailReplySubject: e.target.value });
+                          }}
+                          size="sm"
+                          placeholder="Subject"
+                          required
+                        />
+                        <ReactQuill
+                          ref={ref => this._emailBodyQuill['ref'] = ref}
+                          onChange={(value) => {
+                            this.setState({ detailReplyBody: value });
+                          }}
+                          theme="snow"
+                          className="Quill_div mt-1"
+                          modules={{
+                            toolbar: [
+                              ["bold", "italic"],
+                              ["link", "blockquote", "code", "image"],
+                              [
+                                {
+                                  list: "ordered",
+                                },
+                                {
+                                  list: "bullet",
+                                },
+                              ],
+                            ],
+                          }}
+                        />
+                        <div className="mt-1 d-flex justify-content-end align-items-center">
+                          <Button color="danger" type="button" size="sm">
+                            SEND
+                          </Button>
+                          <Button color="secondary" type="button" size="sm" onClick={this.cancelReplyLead}>
+                            CANCEL
+                          </Button>
+                        </div>
+                      </div>
+                    }
+
                     <div className="timeline timeline-one-side lead-timeline pt-4"
                       data-timeline-axis-style="dashed"
                       data-timeline-content="axis">
