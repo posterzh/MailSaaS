@@ -378,8 +378,6 @@ CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_TIMEZONE = "UTC"
 
-
-
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'apps.users.serializer.UserDetailsSerializer',
 }
@@ -387,6 +385,8 @@ REST_AUTH_SERIALIZERS = {
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'apps.users.serializer.RegisterSerializer',
 }
+
+OLD_PASSWORD_FIELD_ENABLED = True
 
 # Pegasus config
 

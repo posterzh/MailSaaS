@@ -141,7 +141,7 @@ export class Profile extends Component {
                     </Row>
                     <div className="text-center">
                       <h5 className="h3">
-                        {`${user.first_name} ${user.last_name}`}
+                        {user.first_name && user.last_name && `${user.first_name} ${user.last_name}`}
                       </h5>
                       <div className="h5 font-weight-300">
                         <i className="ni location_pin mr-2" />
