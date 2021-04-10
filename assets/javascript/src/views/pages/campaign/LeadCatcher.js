@@ -58,7 +58,16 @@ class LeadCatcher extends Component {
       const { data } = await axios.get("/campaign/leads/");
       if (data.success) {
         const { filters } = this.state;
-        filters[1].options = data.res.map(item => item.campaign_title)
+
+        filters[1].options = []
+        const camp_ids = []
+        for (let item of data.res) {
+          if (camp_ids.indexOf(item.camp_id) === -1) {
+            camp_ids.push(item.camp_id)
+            filters[1].options.push(item.campaign_title)
+          }
+        }
+
         this.setState({
           data: data.res.map(item => {
             item.opened = moment(item.update_date_time).format('MMM DD, YYYY')
