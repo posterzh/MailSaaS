@@ -48,6 +48,7 @@ class CampaignLabelSerializer(serializers.ModelSerializer):
 
 class CampaignListSerializer(serializers.ModelSerializer):
     assigned = serializers.CharField(source='assigned.full_name')
+    from_address = serializers.CharField(source='from_address.email')
     created = serializers.DateTimeField(source='created_date_time', format="%B %d %Y")
     recipients = serializers.IntegerField(read_only=True)
     sent = serializers.IntegerField(read_only=True)
@@ -58,8 +59,8 @@ class CampaignListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Campaign
-        fields = ['id', 'title', 'created', 'campaign_status', 'assigned', 'recipients',
-                  'sent', 'opens', 'leads', 'replies', 'bounces']
+        fields = ['id', 'title', 'created', 'campaign_status', 'from_address', 'assigned',
+                  'recipients', 'sent', 'opens', 'leads', 'replies', 'bounces']
 
 
 class ProspectsSerializer(serializers.ModelSerializer):

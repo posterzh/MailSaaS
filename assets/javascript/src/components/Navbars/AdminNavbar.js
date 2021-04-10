@@ -174,7 +174,6 @@ class AdminNavbar extends React.Component {
                     </DropdownItem> */}
                     <DropdownItem divider />
                     <DropdownItem
-                      href="#pablo"
                       onClick={this.handleLogout}
                     >
                       <i className="ni ni-user-run" />
