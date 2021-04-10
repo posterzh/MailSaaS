@@ -38,7 +38,7 @@ export const register = (user) => (dispatch) => {
 };
 
 export const login = (user) => (dispatch) => {
-  toggleAuthLoader(true);
+  // toggleAuthLoader(true);
   axios.post("/rest-auth/login/", user)
   .then((response) => {
     const token = response.data.token;
@@ -53,10 +53,10 @@ export const login = (user) => (dispatch) => {
     window.location.reload();
   })
   .catch((error) => {
-    toastOnError(error);
+    // toastOnError(error);
   })
   .finally(() => {
-    toggleAuthLoader(false);
+    // toggleAuthLoader(false);
   });
 }
 

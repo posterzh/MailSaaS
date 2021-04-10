@@ -15,30 +15,17 @@
 /home/hr-01/project/MailSaaS/assets/javascript/src/components/Navbars/AdminNavbar.js
 */
 import React from "react";
-import classnames from "classnames";
-import AdminNavbar from "../../../../../javascript/src/components/Navbars/AdminNavbar";
-// node.js library that concatenates classes (strings)
-import CardHeader from "../../../components/Headers/PageHeader";
 // importing routing module
 import { Link } from "react-router-dom";
-import SimpleHeader from "../../../components/Headers/SimpleHeader.js";
 import {
   Button,
-  Container,
   Row,
   Col,
-  Card,
-  CardHeader as ReactstrapCardHeader,
-  CardTitle,
   CardText,
-  CardBody,
-  Nav,
-  Navbar,
 } from "reactstrap";
 import { connect } from "react-redux";
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
-import { CampaignTableAction } from "../../../redux/action/CampaignAction";
 
 // /home/hr-01/project/MailSaaS/assets/javascript/src/components/Headers/CardsHeader.js
 class Dashboard extends React.Component {
@@ -47,7 +34,6 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    this.props.CampaignTableAction();
   }
 
   render() {
@@ -95,9 +81,4 @@ const mapStateToProps = (state) => {
     campaigns: state.CampaignTableReducer.CampaignTableData,
   };
 };
-const mapDispatchToProps = (dispatch) => ({
-  CampaignTableAction: (mailGetData) => {
-    dispatch(CampaignTableAction(mailGetData));
-  },
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps)(Dashboard);
