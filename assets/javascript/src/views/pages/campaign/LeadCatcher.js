@@ -51,6 +51,7 @@ class LeadCatcher extends Component {
       detailData: null
     }
   }
+
   async componentDidMount() {
     // this.props.CampaignLeadViewAction()
     try {
@@ -84,9 +85,11 @@ class LeadCatcher extends Component {
       toggleTopLoader(false);
     }
   }
+
   toggle = () => {
     this.setState({ modal: !this.state.modal })
   }
+
   showDetails = async (data) => {
     // this.props.history.push(`/app/admin/lead/detail/${data.camp_id}/${data.id}`);
     const { camp_id, id: lead_id } = data
@@ -120,6 +123,7 @@ class LeadCatcher extends Component {
       })
     }
   }
+
   hideDetails = () => {
     this.setState({
       detailPanelVisible: false,
@@ -127,12 +131,62 @@ class LeadCatcher extends Component {
       detailLeadId: null
     })
   }
+
   getFullName = (first_name, last_name) => {
     const arr = [];
     if (first_name) arr.push(first_name)
     if (last_name) arr.push(last_name)
     return arr.join(" ");
   }
+
+  getLogIcon = ({lead_action}) => {
+    switch(lead_action) {
+      case 'opened':    { return "fas fa-eye"; }
+      case 'clicked':   { return "fas fa-mouse-pointer"; }
+      case 'replied':   { return "fas fa-comment-dots"; }
+      case 'sent':      { return "ni ni-send"; }
+      case 'me_replied':{ return "ni ni-send"; }
+      case 'open':      { return "fas fa-exclamation"; }
+      case 'reopen':    { return "ni ni-send"; }
+      case 'won':       { return "ni ni-send"; }
+      case 'lost':      { return "ni ni-send"; }
+      case 'ignored':   { return "ni ni-send"; }
+      default:          { return "ni ni-send"; }
+    }
+  }
+
+  getLogBadgeClass = ({lead_action}) => {
+    switch(lead_action) {
+      case 'opened':    { return "badge-secondary"; }
+      case 'clicked':   { return "badge-secondary"; }
+      case 'replied':   { return "badge-secondary"; }
+      case 'sent':      { return "badge-default"; }
+      case 'me_replied':{ return "badge-default"; }
+      case 'open':      { return "badge-success"; }
+      case 'reopen':    { return "badge-secondary"; }
+      case 'won':       { return "badge-secondary"; }
+      case 'lost':      { return "badge-secondary"; }
+      case 'ignored':   { return "badge-secondary"; }
+      default:          { return "badge-secondary"; }
+    }
+  }
+
+  getLogLabel = ({lead_action}) => {
+    switch(lead_action) {
+      case 'opened':    { return "Opened"; }
+      case 'clicked':   { return "Clicked"; }
+      case 'replied':   { return "Replied"; }
+      case 'sent':      { return "Sent"; }
+      case 'me_replied':{ return "You replied"; }
+      case 'open':      { return "Lead opened"; }
+      case 'reopen':    { return "Lead reopened"; }
+      case 'won':       { return "Lead won"; }
+      case 'lost':      { return "Lead lost"; }
+      case 'ignored':   { return "Lead ignored"; }
+      default:          { return ""; }
+    }
+  }
+
   render() {
     const tableTitle = [
       {
@@ -165,59 +219,45 @@ class LeadCatcher extends Component {
         detailLead = detailLead[0];
       }
     }
-    const timeline = [];
-    if (detailPanelVisible && detailData) {
-      const data = detailData;
-      timeline.push({
-        type: 'sent',
-        label: 'Sent',
-        dt: moment(data.sent_date + " " + data.sent_time),
-        icon: "ni ni-send",
-        badge_class: "badge-default"
-      })
-      timeline.push({
-        type: 'lead-opened',
-        label: 'Lead Opened',
-        dt: moment(),
-        icon: "fas fa-exclamation",
-        badge_class: "badge-success"
-      })
 
-      if (data.opened) {
-        timeline.push({
-          type: 'opened',
-          label: 'Opened',
-          dt: moment(data.opened_datetime),
-          icon: "fas fa-eye",
-          badge_class: "badge-secondary",
-          badge_cnt: data.opened
-        })
+    let timeline = [];
+    if (detailPanelVisible && detailData) {
+      if (detailData.logs) {
+        timeline = [...detailData.logs];
       }
-      if (data.clicked) {
-        timeline.push({
-          type: 'clicked',
-          label: 'Clicked',
-          dt: moment(data.clicked_datetime),
-          icon: "fas fa-mouse-pointer",
-          badge_class: "badge-secondary",
-          badge_cnt: data.clicked
-        })
-      }
-      if (data.replied) {
-        timeline.push({
-          type: 'replied',
-          label: 'Replied',
-          dt: moment(data.reply_datetime),
-          icon: "fas fa-comment-dots",
-          badge_class: "badge-secondary",
-          badge_cnt: data.replied
-        })
-      }
+
+      timeline.push({
+        lead_action: 'sent',
+        created_date_time: moment(detailData.sent_date + " " + detailData.sent_time),
+      })
       timeline.sort((a, b) => {
-        if (a.dt.isAfter(b.dt)) return -1;
-        if (a.dt.isBefore(b.dt)) return 1;
+        const ma = moment(a.created_date_time);
+        const mb = moment(b.created_date_time);
+        if (ma.isAfter(mb)) return 1;
+        if (ma.isBefore(mb)) return -1;
         return 0;
       })
+
+      const tmp = timeline;
+      tmp.push({})
+      timeline = [];
+      for (let i = 0, series_cnt = 0 ; i < tmp.length - 1 ; i ++) {
+        const item = tmp[i];
+        let duplicated = false;
+        if (item.lead_action === tmp[i+1].lead_action) {
+          if (item.lead_action === 'opened' || item.lead_action === 'clicked') {
+            duplicated = true;
+            series_cnt ++;
+          }
+        }
+        if (!duplicated) {
+          if (series_cnt > 0) {
+            item.badge_cnt = series_cnt + 1;
+          }
+          timeline.push(item);
+          series_cnt = 0;
+        }
+      }
     }
 
     return (
@@ -310,21 +350,21 @@ class LeadCatcher extends Component {
                       data-timeline-axis-style="dashed"
                       data-timeline-content="axis">
                       {
-                        timeline.map((item, index) => {
+                        timeline.reverse().map((item, index) => {
                           return (
                             <div className="timeline-block" key={`${index}`}>
-                              <span className={`timeline-step ${item.badge_class} ${item.badge_cnt > 1 && 'has-badge'}`} data-badge={item.badge_cnt}>
-                                <i className={item.icon} />
+                              <span className={`timeline-step ${this.getLogBadgeClass(item)} ${item.badge_cnt > 1 && 'has-badge'}`} data-badge={item.badge_cnt}>
+                                <i className={this.getLogIcon(item)} />
                               </span>
                               <div className="timeline-content">
                                 <div>
-                                  <span className="font-weight-bold">{item.label}</span>
+                                  <span className="font-weight-bold">{this.getLogLabel(item)}</span>
                                   <small className="text-muted ml-2">
-                                    {item.dt.format('MMM DD, YYYY hh:mm a')}
+                                    {moment(item.created_date_time).format('MMM DD, YYYY hh:mm a')}
                                   </small>
                                 </div>
                                 {
-                                  item.type === 'sent' && detailData &&
+                                  item.lead_action === 'sent' && detailData &&
                                   <Card className="lead-initial-email mt-3">
                                     <CardHeader className="p-3">
                                       <label>From:</label><span><strong>{this.getFullName(detailData.from_first_name, detailData.from_last_name)}</strong> {detailData.from_email_addr}</span><br />

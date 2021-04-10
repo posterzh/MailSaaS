@@ -27,12 +27,12 @@ from apps.integration.views import SendSlackMessage
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmailModel, Recipient,
-                     EmailOnLinkClick, FollowUpEmail, CampaignLabel, Emails, LeadSettings, EmailOutbox)
+                     EmailOnLinkClick, FollowUpEmail, CampaignLabel, Emails, LeadSettings, EmailOutbox, LeadsLog)
 from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
                           OnclickSerializer, CampaignLabelSerializer,
                           ProspectsSerializer, CampaignRecipientSerializer, CampaignListSerializer,
-                          LeadSettingsSerializer, EmailsSerializer)
+                          LeadSettingsSerializer, EmailsSerializer, LeadsLogSerializer)
 from ..unsubscribes.models import UnsubscribeEmail
 from apps.mailaccounts.models import EmailAccount
 
@@ -2177,6 +2177,10 @@ class LeadDetailView(APIView):
         outbound_email = outbound_email.values(from_email_addr=F("from_email__email"),
                                                from_first_name=F("from_email__first_name"),
                                                from_last_name=F("from_email__last_name")).values()[0]
+        logs = LeadsLog.objects.filter(recipient_id=lead_id).order_by('created_date_time')
+        outbound_email['logs'] = []
+        for log in logs:
+            outbound_email['logs'].append(LeadsLogSerializer(log).data)
 
         return Response({'success': True, 'content': outbound_email})
 
