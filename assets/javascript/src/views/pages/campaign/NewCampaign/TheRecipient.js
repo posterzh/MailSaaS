@@ -12,6 +12,8 @@ import { CSVReader } from "react-papaparse";
 import Tables from "../../../../components/Tables";
 import { showNotification } from "../../../../utils/Utils";
 import { campaignRecipient } from "../../../../redux/action/CampaignActions";
+import { toggleTopLoader, toastOnError, toastOnSuccess } from '../../../../utils/Utils';
+import axios from '../../../../utils/axios';
 
 Dropzone.autoDiscover = false;
 
@@ -42,6 +44,26 @@ class TheRecipient extends Component {
       first_row: this.state.first_row,
       csv_fields: this.state.csvFields
     };
+
+    // if (!e) return;
+
+    // toggleTopLoader(true);
+    // axios
+    //   .post(`/campaign/check-audiences/`, {status: e.control == 'play'})
+    //   .then((response) => {
+    //     toastOnSuccess("Updated successfully!");
+    //     if (response.data.success) {
+    //       const items = this.state.data;
+    //       this.setState({data: items});
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     toastOnError(error);
+    //   })
+    //   .finally(() => {
+    //     toggleTopLoader(false);
+    //   });
+
     this.props.campaignRecipient(recipientData);
     this.props.onNext();
   };
@@ -62,7 +84,11 @@ class TheRecipient extends Component {
     const fields = Object.keys(firstRow || {}).filter(key => !!key).map((key) => {
       if (
         key &&
-        (key.toLowerCase().indexOf("name") > -1 || key.toLowerCase().indexOf("email") > -1)
+        (key.toLowerCase().indexOf("name") > -1 || 
+          key.toLowerCase().indexOf("first") > -1 || 
+          key.toLowerCase().indexOf("last") > -1 || 
+          key.toLowerCase().indexOf("mail") > -1
+        )
       ) {
         tableHeaders.push({
           key: key,

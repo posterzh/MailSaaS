@@ -2,11 +2,7 @@ import React, { Component } from "react";
 import {
   Container,
   Row,
-  Col,
-  Form,
-  FormGroup,
-  Input,
-  Button,
+  Col
 } from "reactstrap";
 import { connect } from "react-redux";
 import PageHeader from "../../../../components/Headers/PageHeader";
