@@ -108,6 +108,8 @@ class LeadCatcher extends Component {
         this.setState({
           detailData: content
         })
+      } else {
+        toastOnError("Failed to fetch lead detail.");
       }
     } catch (e) {
       toastOnError(messages.api_failed);
@@ -132,6 +134,53 @@ class LeadCatcher extends Component {
     })
   }
 
+  updateLeadStatus = async (lead, status) => {
+    const { camp_id, id: lead_id } = lead
+    try {
+      toggleTopLoader(true);
+      const { data: {success, content} } = await axios.post(`/campaign/lead/status/${lead_id}/`, {status});
+      if (success) {
+        const { detailData, data } = this.state;
+
+        // Add log
+        if (content && content.log) {
+          this.setState({
+            detailData: {
+              ...detailData,
+              logs: [
+                ...detailData.logs || [],
+                content.log
+              ]
+            }
+          })
+        }
+
+        // Update lead status
+        let lead_status = status;
+        if (status === 'reopen') {
+          lead_status = 'open'
+        }
+        this.setState({
+          data: [
+            ...data.map(item => {
+              if (item.id == lead_id) {
+                item.lead_status = lead_status
+              }
+              return item;
+            })
+          ]
+        })
+      } else {
+        toastOnError("Failed to update lead status.");
+      }
+    } catch (e) {
+      console.log(e);
+      toastOnError(messages.api_failed);
+    } finally {
+      toggleTopLoader(false);
+    }
+  }
+
   getFullName = (first_name, last_name) => {
     const arr = [];
     if (first_name) arr.push(first_name)
@@ -147,10 +196,9 @@ class LeadCatcher extends Component {
       case 'sent':      { return "ni ni-send"; }
       case 'me_replied':{ return "ni ni-send"; }
       case 'open':      { return "fas fa-exclamation"; }
-      case 'reopen':    { return "ni ni-send"; }
-      case 'won':       { return "ni ni-send"; }
-      case 'lost':      { return "ni ni-send"; }
-      case 'ignored':   { return "ni ni-send"; }
+      case 'won':       { return "fas fa-thumbs-up"; }
+      case 'lost':      { return "fas fa-thumbs-down"; }
+      case 'ignored':   { return "fas fa-ban"; }
       default:          { return "ni ni-send"; }
     }
   }
@@ -163,10 +211,9 @@ class LeadCatcher extends Component {
       case 'sent':      { return "badge-default"; }
       case 'me_replied':{ return "badge-default"; }
       case 'open':      { return "badge-success"; }
-      case 'reopen':    { return "badge-secondary"; }
-      case 'won':       { return "badge-secondary"; }
-      case 'lost':      { return "badge-secondary"; }
-      case 'ignored':   { return "badge-secondary"; }
+      case 'won':       { return "badge-warning"; }
+      case 'lost':      { return "badge-light"; }
+      case 'ignored':   { return "badge-light"; }
       default:          { return "badge-secondary"; }
     }
   }
@@ -179,12 +226,59 @@ class LeadCatcher extends Component {
       case 'sent':      { return "Sent"; }
       case 'me_replied':{ return "You replied"; }
       case 'open':      { return "Lead opened"; }
-      case 'reopen':    { return "Lead reopened"; }
       case 'won':       { return "Lead won"; }
       case 'lost':      { return "Lead lost"; }
       case 'ignored':   { return "Lead ignored"; }
       default:          { return ""; }
     }
+  }
+
+  isLeadOpen = ({lead_status}) => {
+    return lead_status === 'open'
+  }
+
+  renderEmail = ({lead_action, inbox, outbox}) => {
+    let email = {};
+    const { detailData, detailLeadId, data } = this.state;
+    if (lead_action === 'sent' || lead_action === 'me_replied') {
+      email = {
+        ...outbox,
+          from_fullname: this.getFullName(detailData.from_first_name, detailData.from_last_name),
+          from_addr: detailData.from_email_addr
+      }
+    } else if (lead_action === 'replied') {
+      let detailLead = {};
+      if (detailLeadId) {
+        detailLead = data.filter(item => item.id == detailLeadId)
+        if (detailLead.length > 0) {
+          detailLead = detailLead[0];
+        }
+      }
+      email = {
+        ...inbox,
+        from_fullname: detailLead.full_name,
+        from_addr: detailLead.email,
+      }
+    } else {
+      return null;
+    }
+    return (
+      <Card className="lead-initial-email mt-3 mb-0">
+        <CardHeader className="p-3">
+          <label>From:</label>
+          <span>
+            {!email.from_fullname || <strong>{email.from_fullname} </strong>}
+            {email.from_addr}
+          </span><br />
+          <label>Subject:</label><span><strong>{ email.email_subject }</strong></span>
+        </CardHeader>
+
+        <CardBody className="p-3">
+          <div dangerouslySetInnerHTML={{__html: email.email_body}}>
+          </div>
+        </CardBody>
+      </Card>
+    )
   }
 
   render() {
@@ -229,6 +323,10 @@ class LeadCatcher extends Component {
       timeline.push({
         lead_action: 'sent',
         created_date_time: moment(detailData.sent_date + " " + detailData.sent_time),
+        outbox: {
+          email_subject: detailData.email_subject,
+          email_body: detailData.email_body
+        }
       })
       timeline.sort((a, b) => {
         const ma = moment(a.created_date_time);
@@ -298,47 +396,50 @@ class LeadCatcher extends Component {
                   !detailLoading && !!timeline.length &&
                   <>
                     <div className="d-flex justify-content-center align-items-center">
-                      <Button className="btn-icon" color="warning" type="button" size="sm">
-                        <span className="btn-inner--icon">
-                          <i className="ni ni-chat-round" />
-                        </span>
-                        <span className="btn-inner--text">REPLY</span>
-                      </Button>
-                      <UncontrolledDropdown size="sm">
-                        <DropdownToggle caret color="secondary">
-                          STATUS
-                        </DropdownToggle>
-                        <DropdownMenu>
-                          <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
-                            Open
-                          </DropdownItem>
-                          <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
-                            Replied
-                          </DropdownItem>
-                          <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
-                            Won
-                          </DropdownItem>
-                          <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
-                            Lost
-                          </DropdownItem>
-                          <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
-                            Ignored
-                          </DropdownItem>
-                        </DropdownMenu>
-                      </UncontrolledDropdown>
-                      <UncontrolledDropdown size="sm">
-                        <DropdownToggle caret color="secondary">
-                          ASSIGN
-                        </DropdownToggle>
-                        <DropdownMenu>
-                          <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
-                            Unassigned
-                          </DropdownItem>
-                          <DropdownItem href="#pablo" disabled onClick={e => e.preventDefault()}>
-                            Me
-                          </DropdownItem>
-                        </DropdownMenu>
-                      </UncontrolledDropdown>
+                      {
+                        this.isLeadOpen(detailLead) ?
+                        <>
+                          <Button className="btn-icon" color="warning" type="button" size="sm">
+                            <span className="btn-inner--icon">
+                              <i className="ni ni-chat-round" />
+                            </span>
+                            <span className="btn-inner--text">REPLY</span>
+                          </Button>
+                          <UncontrolledDropdown size="sm">
+                            <DropdownToggle caret color="secondary">
+                              STATUS
+                            </DropdownToggle>
+                            <DropdownMenu>
+                              <DropdownItem onClick={e => this.updateLeadStatus(detailLead, 'won')}>
+                                Won
+                              </DropdownItem>
+                              <DropdownItem onClick={e => this.updateLeadStatus(detailLead, 'lost')}>
+                                Lost
+                              </DropdownItem>
+                              <DropdownItem onClick={e => this.updateLeadStatus(detailLead, 'ignored')}>
+                                Ignore
+                              </DropdownItem>
+                            </DropdownMenu>
+                          </UncontrolledDropdown>
+                          <UncontrolledDropdown size="sm">
+                            <DropdownToggle caret color="secondary">
+                              ASSIGN
+                            </DropdownToggle>
+                            <DropdownMenu>
+                              <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                                Unassigned
+                              </DropdownItem>
+                              <DropdownItem href="#pablo" disabled onClick={e => e.preventDefault()}>
+                                Me
+                              </DropdownItem>
+                            </DropdownMenu>
+                          </UncontrolledDropdown>
+                        </>
+                        :
+                        <Button color="secondary" type="button" size="sm" onClick={e => this.updateLeadStatus(detailLead, 'reopen')}>
+                          RE-OPEN
+                        </Button>
+                      }
                       <Button className="btn-icon" color="secondary" type="button" size="sm">
                         <span className="btn-inner--icon">
                           <i className="ni ni-curved-next" />
@@ -364,18 +465,7 @@ class LeadCatcher extends Component {
                                   </small>
                                 </div>
                                 {
-                                  item.lead_action === 'sent' && detailData &&
-                                  <Card className="lead-initial-email mt-3">
-                                    <CardHeader className="p-3">
-                                      <label>From:</label><span><strong>{this.getFullName(detailData.from_first_name, detailData.from_last_name)}</strong> {detailData.from_email_addr}</span><br />
-                                      <label>Subject:</label><span><strong>{ detailData.email_subject }</strong></span>
-                                    </CardHeader>
-
-                                    <CardBody className="p-3">
-                                      <div dangerouslySetInnerHTML={{__html: detailData.email_body}}>
-                                      </div>
-                                    </CardBody>
-                                  </Card>
+                                  this.renderEmail(item)
                                 }
                               </div>
                             </div>

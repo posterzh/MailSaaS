@@ -27,7 +27,6 @@ LEAD_ACTION = (
     ("sent", "Initial mail sent"),
     ("me_replied", "Me: Replied"),
     ("open", "Status: Opened"),
-    ("reopen", "Status: Re-opened"),
     ("won", "Status: Won"),
     ("lost", "Status: Lost"),
     ("ignored", "Status: Not Interested")
