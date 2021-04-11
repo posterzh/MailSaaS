@@ -1,11 +1,12 @@
-import { SHOW_NOTIFICATION, HIDE_NOTIFICATION, TOP_LOADER } from "../actionType/actionType";
+import { SHOW_NOTIFICATION, HIDE_NOTIFICATION, TOP_LOADER, AUTH_LOADER } from "../actionType/actionType";
 
 const initialState = {
   showNotification: false,
   type: 0,
   title: "",
   message: "",
-  topLoader: false
+  topLoader: false,
+  authLoader: false,
 };
 
 export const notificationReducer = (state = initialState, action) => {
@@ -23,6 +24,11 @@ export const notificationReducer = (state = initialState, action) => {
       return {
         ...state,
         topLoader: action.payload.visible
+      }
+    case AUTH_LOADER:
+      return {
+          ...state,
+          authLoader: action.payload,
       }
     default:
       return state;
