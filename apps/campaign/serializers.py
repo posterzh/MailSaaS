@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, Emails,
-                     DripEmailModel, EmailOnLinkClick, FollowUpEmail, CampaignLabel, Recipient, LeadSettings)
+                     DripEmailModel, EmailOnLinkClick, FollowUpEmail, CampaignLabel, Recipient, LeadSettings, LeadsLog,
+                     EmailInbox, EmailOutbox)
 
 
 class CampaignSerializer(serializers.ModelSerializer):
@@ -48,6 +49,7 @@ class CampaignLabelSerializer(serializers.ModelSerializer):
 
 class CampaignListSerializer(serializers.ModelSerializer):
     assigned = serializers.CharField(source='assigned.full_name')
+    from_address = serializers.CharField(source='from_address.email')
     created = serializers.DateTimeField(source='created_date_time', format="%B %d %Y")
     recipients = serializers.IntegerField(read_only=True)
     sent = serializers.IntegerField(read_only=True)
@@ -58,8 +60,8 @@ class CampaignListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Campaign
-        fields = ['id', 'title', 'created', 'campaign_status', 'assigned', 'recipients',
-                  'sent', 'opens', 'leads', 'replies', 'bounces']
+        fields = ['id', 'title', 'created', 'campaign_status', 'from_address', 'assigned',
+                  'recipients', 'sent', 'opens', 'leads', 'replies', 'bounces']
 
 
 class ProspectsSerializer(serializers.ModelSerializer):
@@ -99,4 +101,25 @@ class CampaignRecipientSerializer(serializers.ModelSerializer):
 class LeadSettingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = LeadSettings
+        fields = '__all__'
+
+
+class EmailInboxSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmailInbox
+        fields = '__all__'
+
+
+class EmailOutboxSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmailOutbox
+        fields = '__all__'
+
+
+class LeadsLogSerializer(serializers.ModelSerializer):
+    inbox = EmailInboxSerializer(read_only=True, required=False)
+    outbox = EmailOutboxSerializer(read_only=True, required=False)
+
+    class Meta:
+        model = LeadsLog
         fields = '__all__'

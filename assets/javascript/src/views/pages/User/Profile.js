@@ -12,25 +12,94 @@ import {
   Form,
   Input,
 } from "reactstrap";
-import ReactQuill from "react-quill";
-import { connect } from 'react-redux';
-import { getProfile } from '../../../redux/action/ProfileAction';
-import { defaultProfilePic } from '../../../utils/Common';
+import { toggleTopLoader, toastOnError, toastOnSuccess, showNotification } from "../../../utils/Utils";
+import { defaultProfilePic } from "../../../utils/Common";
+import axios from "../../../utils/axios";
 
 import PageHeader from "../../../components/Headers/PageHeader";
 
 export class Profile extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      user: {},
+      old_password: null,
+      new_password: null,
+      confirm_password: null
+    };
   }
 
   componentDidMount() {
-    const { id, getProfile } = this.props;
-    getProfile(id);
+    this.readUserInfo();
+  }
+
+  readUserInfo = () => {
+    toggleTopLoader(true);
+    axios.get(`/rest-auth/user/`)
+    .then((response) => {
+      this.setState({
+        user: response.data
+      });
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+  }
+
+  saveUserInfo = () => {
+    const { user } = this.state;
+
+    toggleTopLoader(true);
+    axios.put(`/rest-auth/user/`, user)
+    .then((response) => {
+      toastOnSuccess("Successfully updated");
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+  }
+
+  savePassword = () => {
+    const { old_password, new_password, confirm_password } = this.state;
+
+    if (!old_password) {
+      showNotification("warning", "Please enter the old password");
+      return;
+    }
+
+    if (!new_password) {
+      showNotification("warning", "Please enter the new password");
+    }
+
+    if (new_password !== confirm_password) {
+      showNotification("warning", "New password and confirm password must be same");
+    }
+
+    toggleTopLoader(true);
+    axios.post(`/rest-auth/password/change/`, {
+      "new_password1": new_password,
+      "new_password2": confirm_password,
+      "old_password": old_password
+    })
+    .then((response) => {
+      toastOnSuccess("Successfully updated");
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
   }
 
   render() {
-    const { user } = this.props;
+    const { user, old_password, new_password, confirm_password } = this.state;
 
     return (
       <>
@@ -72,7 +141,7 @@ export class Profile extends Component {
                     </Row>
                     <div className="text-center">
                       <h5 className="h3">
-                        {`${user.first_name} ${user.last_name}`}
+                        {user.first_name && user.last_name && `${user.first_name} ${user.last_name}`}
                       </h5>
                       <div className="h5 font-weight-300">
                         <i className="ni location_pin mr-2" />
@@ -82,151 +151,114 @@ export class Profile extends Component {
                   </CardBody>
                 </Card>
               </Col>
-              <Col className="col-12">
+              <Col className="col-6">
                 <Card>
                   <CardHeader>
                     <h3 className="mb-0">User information</h3>
                   </CardHeader>
                   <CardBody>
                     <Form>
-                      <Row>
-                        <Col md={6}>
-                          <h6 className="heading-small text-muted mb-4">
-                            User information
-                      </h6>
-                          <div className="pl-lg-4">
-                            <Row>
-                              <Col lg="6">
-                                <FormGroup>
-                                  <label
-                                    className="form-control-label"
-                                    htmlFor="first-name"
-                                  >
-                                    First name
+                      <div className="pl-lg-4">
+                        <Row>
+                          <Col lg="6">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="first-name"
+                              >
+                                First name
                               </label>
-                                  <Input
-                                    id="first-name"
-                                    placeholder="First name"
-                                    type="text"
-                                    defaultValue={user.first_name}
-                                    name="firstName"
-                                  />
-                                </FormGroup>
-                              </Col>
-                              <Col lg="6">
-                                <FormGroup>
-                                  <label
-                                    className="form-control-label"
-                                    htmlFor="last-name"
-                                  >
-                                    Last name
+                              <Input
+                                id="first-name"
+                                placeholder="First name"
+                                type="text"
+                                value={user.first_name}
+                                onChange={e=>{
+                                  user.first_name = e.target.value;
+                                  this.setState({
+                                    user: user
+                                  });
+                                }}
+                                name="firstName"
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col lg="6">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="last-name"
+                              >
+                                Last name
+                          </label>
+                              <Input
+                                id="last-name"
+                                placeholder="Last name"
+                                type="text"
+                                value={user.last_name}
+                                onChange={e=>{
+                                  user.last_name = e.target.value;
+                                  this.setState({
+                                    user: user
+                                  });
+                                }}
+                                name="lastName"
+                              />
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col lg="12">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="companyName"
+                              >
+                                Company name
+                          </label>
+                              <Input
+                                id="company-name"
+                                placeholder="Company name"
+                                type="text"
+                                value={user.company_name}
+                                onChange={e=>{
+                                  user.company_name = e.target.value;
+                                  this.setState({
+                                    user: user
+                                  });
+                                }}
+                                name="companyName"
+                                autoComplete='off'
+                              />
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col lg="12">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="email"
+                              >
+                                Email address
                               </label>
-                                  <Input
-                                    id="last-name"
-                                    placeholder="Last name"
-                                    type="text"
-                                    defaultValue={user.last_name}
-                                    name="lastName"
-                                  />
-                                </FormGroup>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg="12">
-                                <FormGroup>
-                                  <label
-                                    className="form-control-label"
-                                    htmlFor="companyName"
-                                  >
-                                    Company name
-                              </label>
-                                  <Input
-                                    id="company-name"
-                                    placeholder="Company name"
-                                    type="text"
-                                    defaultValue={user.company_name}
-                                    name="companyName"
-                                    autoComplete='off'
-                                  />
-                                </FormGroup>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg="12">
-                                <FormGroup>
-                                  <label
-                                    className="form-control-label"
-                                    htmlFor="email"
-                                  >
-                                    Email address
-                              </label>
-                                  <Input
-                                    id="email"
-                                    placeholder="jesse@example.com"
-                                    type="email"
-                                    defaultValue={user.email}
-                                    name="email"
-                                  />
-                                </FormGroup>
-                              </Col>
-                            </Row>
-                          </div>
-                        </Col>
-                        <Col md={6}>
-                          <h6 className="heading-small text-muted mb-4">
-                            Change Password
-                      </h6>
-                          <div className="pl-lg-4">
-                            <Row>
-                              <Col md="12">
-                                <FormGroup>
-                                  <label
-                                    className="form-control-label"
-                                    htmlFor="old-password"
-                                  >
-                                    Old Password
-                              </label>
-                                  <Input
-                                    id="old-password"
-                                    placeholder="Old Password"
-                                    type="password"
-                                  />
-                                </FormGroup>
-                              </Col>
-                              <Col md="12">
-                                <FormGroup>
-                                  <label
-                                    className="form-control-label"
-                                    htmlFor="new-password"
-                                  >
-                                    New Password
-                              </label>
-                                  <Input
-                                    id="new-password"
-                                    placeholder="New Password"
-                                    type="password"
-                                  />
-                                </FormGroup>
-                              </Col>
-                              <Col md="12">
-                                <FormGroup>
-                                  <label
-                                    className="form-control-label"
-                                    htmlFor="confirm-password"
-                                  >
-                                    Confirm Password
-                              </label>
-                                  <Input
-                                    id="confirm-password"
-                                    placeholder="Confirm Password"
-                                    type="password"
-                                  />
-                                </FormGroup>
-                              </Col>
-                            </Row>
-                          </div>
-                        </Col>
-                      </Row>
+                              <Input
+                                id="email"
+                                placeholder="jesse@example.com"
+                                type="email"
+                                value={user.email}
+                                onChange={e=>{
+                                  user.email = e.target.value;
+                                  this.setState({
+                                    user: user
+                                  });
+                                }}
+                                name="email"
+                              />
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                      </div>
                     </Form>
                   </CardBody>
                   <CardFooter className="bg-transparent text-right">
@@ -234,8 +266,97 @@ export class Profile extends Component {
                       color="info"
                       type="submit"
                       className="text-uppercase"
+                      onClick={this.saveUserInfo}
                     >
-                      Save
+                      Save Profile
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </Col>
+              <Col className="col-6">
+                <Card>
+                  <CardHeader>
+                    <h3 className="mb-0">Password</h3>
+                  </CardHeader>
+                  <CardBody>
+                    <Form>
+                      <div className="pl-lg-4">
+                        <Row>
+                          <Col md="12">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="old-password"
+                              >
+                                Old Password
+                              </label>
+                              <Input
+                                id="old-password"
+                                placeholder="Old Password"
+                                type="password"
+                                value={old_password}
+                                onChange={e=>{
+                                  this.setState({
+                                    old_password: e.target.value
+                                  });
+                                }}
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col md="12">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="new-password"
+                              >
+                                New Password
+                              </label>
+                              <Input
+                                id="new-password"
+                                placeholder="New Password"
+                                type="password"
+                                value={new_password}
+                                onChange={e=>{
+                                  this.setState({
+                                    new_password: e.target.value
+                                  });
+                                }}
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col md="12">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="confirm-password"
+                              >
+                                Confirm Password
+                          </label>
+                              <Input
+                                id="confirm-password"
+                                placeholder="Confirm Password"
+                                type="password"
+                                value={confirm_password}
+                                onChange={e=>{
+                                  this.setState({
+                                    confirm_password: e.target.value
+                                  });
+                                }}
+                              />
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                      </div>
+                    </Form>
+                  </CardBody>
+                  <CardFooter className="bg-transparent text-right">
+                    <Button
+                      color="info"
+                      type="submit"
+                      className="text-uppercase"
+                      onClick={this.savePassword}
+                    >
+                      Save Password
                     </Button>
                   </CardFooter>
                 </Card>
@@ -248,13 +369,4 @@ export class Profile extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    id: state.auth.user.pk,
-    user: state.profile.user
-  }
-};
-
-export default connect(mapStateToProps, {
-  getProfile
-})(Profile);
+export default Profile;

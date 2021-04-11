@@ -210,7 +210,7 @@ class Login extends React.Component {
                     </div>
                   </Form>
                 </CardBody>
-                {this.props.isLoading &&
+                {this.props.authLoader &&
                   <div className="auth-loading-wrapper">
                     <i className="ml-2 fas fa-spinner fa-spin"></i>
                   </div>
@@ -238,7 +238,7 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  isLoading: state.auth.isLoading,
+  authLoader: state.notification.authLoader,
 });
 
 export default connect(mapStateToProps, {

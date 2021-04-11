@@ -27,12 +27,12 @@ from apps.integration.views import SendSlackMessage
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmailModel, Recipient,
-                     EmailOnLinkClick, FollowUpEmail, CampaignLabel, Emails, LeadSettings, EmailOutbox)
+                     EmailOnLinkClick, FollowUpEmail, CampaignLabel, Emails, LeadSettings, EmailOutbox, LeadsLog)
 from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer,
                           OnclickSerializer, CampaignLabelSerializer,
                           ProspectsSerializer, CampaignRecipientSerializer, CampaignListSerializer,
-                          LeadSettingsSerializer, EmailsSerializer)
+                          LeadSettingsSerializer, EmailsSerializer, LeadsLogSerializer)
 from ..unsubscribes.models import UnsubscribeEmail
 from apps.mailaccounts.models import EmailAccount
 
@@ -2071,7 +2071,7 @@ class CampaignLeadsView(generics.ListAPIView):
             queryset = queryset.filter(created_date_time__range=(from_date, to_date))
 
         # queryset = queryset.select_related('title')
-        res = queryset.values('id', 'email', 'lead_status', 'update_date_time', campaign_title=F('campaign__title'),
+        res = queryset.values('id', 'email', 'full_name', 'lead_status', 'update_date_time', campaign_title=F('campaign__title'),
                               assigned_name=F('campaign__assigned__full_name'), camp_id=F('campaign'))
         # campEmailserializer = CampaignEmailSerializer(queryset, many=True)
         return Response({'res': res, 'success': True})
@@ -2166,8 +2166,8 @@ class LeadDetailView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, camp_id, lead_id):
-        recipient = Recipient.objects.filter(id=lead_id)
-        if len(recipient) == 0:
+        recipient = Recipient.objects.filter(id=lead_id).first()
+        if recipient is None:
             return Response({'success': False})
 
         outbound_email = EmailOutbox.objects.filter(campaign_id=camp_id, recipient_id=lead_id, email__email_type=0).select_related('from_email', 'campaign')
@@ -2177,8 +2177,36 @@ class LeadDetailView(APIView):
         outbound_email = outbound_email.values(from_email_addr=F("from_email__email"),
                                                from_first_name=F("from_email__first_name"),
                                                from_last_name=F("from_email__last_name")).values()[0]
+        logs = LeadsLog.objects.filter(recipient_id=lead_id).order_by('created_date_time')
+        outbound_email['logs'] = []
+        for log in logs:
+            outbound_email['logs'].append(LeadsLogSerializer(log).data)
 
         return Response({'success': True, 'content': outbound_email})
+
+
+class LeadStatusUpdate(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, lead_id):
+        recipient = Recipient.objects.filter(id=lead_id).first()
+        if recipient is None:
+            return Response({'success': False, 'content': {}})
+
+        lead_status = request.data['status']
+        if lead_status == 'reopen':
+            recipient.lead_status = 'open'
+        else:
+            recipient.lead_status = lead_status
+        recipient.save()
+
+        if lead_status == 'reopen':
+            return Response({'success': True})
+
+        log = LeadsLog(lead_action=lead_status, recipient_id=lead_id)
+        log.save()
+
+        return Response({'success': True, 'content': {'log': LeadsLogSerializer(log).data}})
 
 
 class CampaignScheduleView(APIView):

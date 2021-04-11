@@ -21,14 +21,15 @@ LEAD_TYPE = (
 
 LEAD_ACTION = (
     ("none", "None"),
-    ("open", "Open"),
-    ("replied", "Replied"),
-    ("received", "Received"),
-    ("won", "Won"),
-    ("lost", "Lost"),
-    ("clicked", "Clicked"),
-    ("reopen", "Re Opened"),
-    ("ignored", "Not Interested")
+    ("opened", "Recipient: Opened Email"),
+    ("clicked", "Recipient: Clicked Link"),
+    ("replied", "Recipient: Replied"),
+    ("sent", "Initial mail sent"),
+    ("me_replied", "Me: Replied"),
+    ("open", "Status: Opened"),
+    ("won", "Status: Won"),
+    ("lost", "Status: Lost"),
+    ("ignored", "Status: Not Interested")
 )
 
 

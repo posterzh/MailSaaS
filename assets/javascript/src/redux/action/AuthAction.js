@@ -53,7 +53,7 @@ export const login = (user) => (dispatch) => {
     window.location.reload();
   })
   .catch((error) => {
-    toastOnError(error);
+    // toastOnError(error);
   })
   .finally(() => {
     toggleAuthLoader(false);

@@ -6,7 +6,7 @@ import { toastOnError, toastOnSuccess, toggleTopLoader, toggleAuthLoader } from 
 
 export const getProfile = () => (dispatch) => {
   toggleAuthLoader(true);
-  axios.get(`/users/profile/`)
+  axios.get(`/rest-auth/user/`)
     .then((response) => {
       dispatch({
         type: GET_PROFILE,
