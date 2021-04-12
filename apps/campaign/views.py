@@ -23,7 +23,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.campaignschedule.models import Email_schedule
-from apps.integration.views import SendSlackMessage
+# from apps.integration.views import SendSlackMessage
 from apps.unsubscribes.serializers import UnsubscribeEmailSerializers
 
 from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmailModel, Recipient,
@@ -1589,7 +1589,7 @@ class RecipientDetailView(generics.RetrieveUpdateDestroyAPIView):
         queryset.leads = True
         queryset.save()
         data_serializer = CampaignEmailSerializer(queryset)
-        SendSlackMessage(data_serializer.data)
+        # SendSlackMessage(data_serializer.data)
         return Response({"message": "Lead Updated successfully", "success": True})
 
     def delete(self, request, pk, format=None):

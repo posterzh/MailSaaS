@@ -6,6 +6,8 @@ from pathlib import Path  # Python 3.6+ only
 import sentry_sdk
 from .dbpass import get_secret, get_s3_secret,mailgun_key
 from sentry_sdk.integrations.django import DjangoIntegration
+import environ
+env = environ.Env()
 
 sentry_sdk.init(
     dsn="https://54a77e70d6ac40c9b834017e1c5d4df0@o423610.ingest.sentry.io/5701236",
@@ -33,10 +35,9 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = bool(os.environ.get("DEBUG", "False"))
-# DEBUG = False
-LIVE = bool(os.environ.get("LIVE", "True"))
-# LIVE = False
+DEBUG = env.bool('DEBUG', default=False)
+LIVE = env.bool('LIVE', default=False)
+STRIPE_LIVE_MODE = env.bool('STRIPE_LIVE_MODE', default=False)
 
 ALLOWED_HOSTS = ['*']
 # CORS_ALLOWED_ORIGINS = ['*']
@@ -75,7 +76,7 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     # stripe integration
     'djstripe',
-    'salesforce',
+    # 'salesforce',
 
 ]
 
@@ -411,7 +412,7 @@ STRIPE_LIVE_PUBLIC_KEY = os.environ.get("STRIPE_LIVE_PUBLIC_KEY", "pk_live_51IVf
 STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY", "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")
 STRIPE_TEST_PUBLIC_KEY = "pk_test_51IVficFbQLoSmd7vg9rB8RNwKCcFybomiLqNuF4mQ7GuYDdYUPMBLt56fYXIuzwWmV9HCnTTx4KkboentixP32AQ00xfnQvGN2"  # , "pk_test_<your publishable key>")
 STRIPE_TEST_SECRET_KEY = "sk_test_51IVficFbQLoSmd7vvOga0aBn2Ad8yvK9M3JtK16iTnu0mBgRBQFhfCBNTnE82WTYTVTMh5BmYdxLk0ZOviWOVotc00LqbiZSSn"  # os.environ.get("STRIPE_TEST_SECRET_KEY", "sk_test_<your secret key>")
-STRIPE_LIVE_MODE = False  # Change to True in production
+# Change to True in production
 
 # Get it from the section in the Stripe dashboard where you added the webhook endpoint
 # or from the stripe CLI when testing
