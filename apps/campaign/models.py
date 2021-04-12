@@ -117,7 +117,7 @@ class EmailOutbox(models.Model):
     email_body = models.TextField(blank=True, null=True)
     is_campaign = models.BooleanField(default=True)
 
-    # 0: not-sent, 1: sent
+    # 0: need to send, 1: sent successfully, 2: failed to send
     status = models.PositiveSmallIntegerField(default=0, null=True)
 
     sent_date = models.DateField(auto_now=False, blank=True, null=True)

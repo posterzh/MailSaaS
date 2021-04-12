@@ -17,7 +17,7 @@ app.conf.beat_schedule = {
     },
     'receiver': {
         'task': 'apps.mailaccounts.tasks.email_receiver',
-        'schedule': 30.0,
+        'schedule': 60.0,
     },
     'warming_up': {
         'task': 'apps.mailaccounts.tasks.warming_trigger',
