@@ -10,6 +10,4 @@ RUN pip3 install -r requirements.txt
 RUN npm i
 RUN npm run build
 RUN python3 manage.py collectstatic --no-input
-RUN rm -rf /static/
-RUN rm -rf /assets/
 CMD ${run}
