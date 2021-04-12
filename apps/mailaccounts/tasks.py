@@ -37,7 +37,9 @@ def email_sender():
 
     # Fetch sending objects
     sending_objects = get_emails_to_send(available_mail_ids, available_mail_limits)
+    print(f'Get {len(sending_objects)} sending objects.')
 
+    # Update the EmailOutbox table
     for sending_item in sending_objects:
         # Save to EmailOutbox
         outbox = EmailOutbox()
@@ -49,8 +51,14 @@ def email_sender():
         outbox.email_body = sending_item['email_body']
         outbox.status = 0
 
-        outbox.save()
+        try:
+            outbox.save()
+        except Exception as e:
+            print(f'Ignore a duplicated sending object: campaign_id={outbox.campaign_id}, from={outbox.from_email}, to={outbox.recipient}')
+            continue
 
+    outboxes = EmailOutbox.objects.filter(status__exact=0)
+    for outbox in outboxes:
         # Send email
         result = send_mail_with_smtp(host=outbox.from_email.smtp_host,
                                      port=outbox.from_email.smtp_port,
@@ -85,7 +93,8 @@ def email_sender():
             print(f"Failed to send from {outbox.from_email.email} to {outbox.recipient.email}")
 
             # Delete the EmailOutbox entry that fails
-            outbox.delete()
+            outbox.status = 2
+            outbox.save()
 
 
 def _prase_outbox_id(html):

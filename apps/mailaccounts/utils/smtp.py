@@ -9,6 +9,7 @@ import time
 import pandas as pd
 from datetime import timedelta, datetime
 
+from django.conf import settings
 from django.core import mail
 from django.core.mail.backends.smtp import EmailBackend
 from django.db import connection
@@ -249,7 +250,8 @@ def get_emails_to_send(available_email_ids, email_limits):
 
     result = []
     if len(arr) != 0:
-        emails = pd.concat(arr)
+        email_sending_limit = getattr(settings, "EMAIL_SENDING_LIMIT", 10)
+        emails = pd.concat(arr).head(email_sending_limit)
         result = json.loads(emails.to_json(orient='records'))
 
     return result
