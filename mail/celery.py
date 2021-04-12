@@ -13,11 +13,11 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'sender': {
         'task': 'apps.mailaccounts.tasks.email_sender',
-        'schedule': 60.0,
+        'schedule': 300.0,
     },
     'receiver': {
         'task': 'apps.mailaccounts.tasks.email_receiver',
-        'schedule': 60.0,
+        'schedule': 300.0,
     },
     'warming_up': {
         'task': 'apps.mailaccounts.tasks.warming_trigger',

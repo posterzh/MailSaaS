@@ -41,6 +41,22 @@ def check_email(request):
                               user=request.data['imap_username'],
                               password=request.data['imap_password']):
                 return False, "IMAP test failed."
+    elif request.data['email_provider'] == 'Google':
+        if not check_smtp(server=request.data['smtp_host'],
+                          port=request.data['smtp_port'],
+                          use_tls=request.data['use_smtp_ssl'],
+                          user=request.data['smtp_username'],
+                          password=request.data['smtp_password']):
+            return False, "SMTP test failed."
+        return True, "Success"
+    elif request.data['email_provider'] == 'Microsoft':
+        if not check_smtp(server=request.data['smtp_host'],
+                          port=request.data['smtp_port'],
+                          use_tls=request.data['use_smtp_ssl'],
+                          user=request.data['smtp_username'],
+                          password=request.data['smtp_password']):
+            return False, "SMTP test failed."
+        return True, "Success"
 
     return True, "Success"
 
