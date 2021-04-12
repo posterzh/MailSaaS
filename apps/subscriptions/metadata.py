@@ -3,10 +3,9 @@ from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 from djstripe.enums import PlanInterval
 from djstripe.models import Product, Plan
-
 from .exceptions import SubscriptionConfigError
 from .serializers import PlanSerializer, ProductSerializer
-
+from django.conf import settings
 
 @attr.s
 class ProductMetadata(object):
@@ -122,10 +121,19 @@ ACTIVE_PLAN_INTERVALS = [
 
 # These are the products that will be shown to users in the UI and allowed to be associated
 # with plans on your side
-ACTIVE_PRODUCTS = [
-    ProductMetadata(stripe_id='prod_JI2GDl9H3qsN1H', name='User', features=['User Feature 1', 'User Feature 2', 'User Feature 3'], description='The User plan', is_default=True),
-    ProductMetadata(stripe_id='prod_JI2GrVLZMU6Wmk', name='Email Account', features=['Email Account Feature 1', 'Email Account Feature 2', 'Email Account Feature 3'], description='The Email Account plan', is_default=False),
-]
+if settings.STRIPE_LIVE_MODE == False:
+    ACTIVE_PRODUCTS = [
+        ProductMetadata(stripe_id='prod_JI2GDl9H3qsN1H', name='User', features=['User Feature 1', 'User Feature 2', 'User Feature 3'], description='The User plan', is_default=True),
+        ProductMetadata(stripe_id='prod_JI2GrVLZMU6Wmk', name='Email Account', features=['Email Account Feature 1', 'Email Account Feature 2', 'Email Account Feature 3'], description='The Email Account plan', is_default=False),
+    ]
+
+
+if settings.STRIPE_LIVE_MODE == True: 
+    ACTIVE_PRODUCTS = [
+        ProductMetadata(stripe_id='prod_JI3BVQyGSyVhjL', name='Email Account', features=['Email Account Feature 1', 'Email Account Feature 2', 'Email Account Feature 3'], description='The Email Account plan', is_default=True),
+        ProductMetadata(stripe_id='prod_JI3BtCb5apsch2', name='User', features=['User Feature 1', 'User Feature 2', 'User Feature 3'], description='The User plan', is_default=False),
+    ]
+
 
 ACTIVE_PRODUCTS_BY_ID = {
     p.stripe_id: p for p in ACTIVE_PRODUCTS
