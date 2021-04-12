@@ -173,11 +173,11 @@ if DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'USER': 'doadmin',
-            'PASSWORD': 'k6sehj7ohh30gjfy',
-            'HOST': 'db-postgresql-sfo2-27945-do-user-8602625-0.b.db.ondigitalocean.com',
-            'PORT': '25060',
-            'NAME': 'mail'
+            'USER': 'postgres',
+            'PASSWORD': 'U3KhQu1fASewbBz4xNIg',
+            'HOST': 'mailerrize-test.cluster-cti2gmro8z63.us-east-2.rds.amazonaws.com',
+            'PORT': '5432',
+            'NAME': 'mailtest'
 
         }
     }
@@ -409,8 +409,8 @@ GOOGLE_ANALYTICS_ID = ''  # replace with your google analytics ID to connect to 
 # modeled to be the same as https://github.com/dj-stripe/dj-stripe
 STRIPE_LIVE_PUBLIC_KEY = os.environ.get("STRIPE_LIVE_PUBLIC_KEY", "<your publishable key>")
 STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY", "<your secret key>")
-STRIPE_TEST_PUBLIC_KEY = "pk_test_51IBszEBZVXmQYn2L10zhEROWJZIExUWXwFdIg47Sgv8VX064fmyOLaBS6wFysLJuvkTXiBpeqWmaljbmTzYgalys00VCRN4C5p"  # , "pk_test_<your publishable key>")
-STRIPE_TEST_SECRET_KEY = "sk_test_51IBszEBZVXmQYn2LG0WRyPwcYrV6O3D83lD55hjDuuNkdjcawOJhYjVZ8K2mujFZlkD4x53UTbAxGoz8JSWeFa2l003KGHQZmq"  # os.environ.get("STRIPE_TEST_SECRET_KEY", "sk_test_<your secret key>")
+STRIPE_TEST_PUBLIC_KEY = "pk_test_51IVficFbQLoSmd7vg9rB8RNwKCcFybomiLqNuF4mQ7GuYDdYUPMBLt56fYXIuzwWmV9HCnTTx4KkboentixP32AQ00xfnQvGN2"  # , "pk_test_<your publishable key>")
+STRIPE_TEST_SECRET_KEY = "sk_test_51IVficFbQLoSmd7vvOga0aBn2Ad8yvK9M3JtK16iTnu0mBgRBQFhfCBNTnE82WTYTVTMh5BmYdxLk0ZOviWOVotc00LqbiZSSn"  # os.environ.get("STRIPE_TEST_SECRET_KEY", "sk_test_<your secret key>")
 STRIPE_LIVE_MODE = False  # Change to True in production
 
 # Get it from the section in the Stripe dashboard where you added the webhook endpoint

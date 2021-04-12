@@ -115,7 +115,7 @@ def get_active_plan_interval_metadata():
 # Remove one of them to only allow monthly/annual pricing.
 # The first element is considered the default
 ACTIVE_PLAN_INTERVALS = [
-    PlanInterval.year,
+    # PlanInterval.year,
     PlanInterval.month,
 ]
 
@@ -123,8 +123,8 @@ ACTIVE_PLAN_INTERVALS = [
 # These are the products that will be shown to users in the UI and allowed to be associated
 # with plans on your side
 ACTIVE_PRODUCTS = [
-    ProductMetadata(stripe_id='prod_J2MnL4qup3qNCY', name='Email Warmup', features=['Email Warmup Feature 1', 'Email Warmup Feature 2', 'Email Warmup Feature 3'], description='The Email Warmup plan', is_default=True),
-    ProductMetadata(stripe_id='prod_J2Mnq82J87lv9k', name='Email Automation', features=['Email Automation Feature 1', 'Email Automation Feature 2', 'Email Automation Feature 3'], description='The Email Automation plan', is_default=False),
+    ProductMetadata(stripe_id='prod_JI2GDl9H3qsN1H', name='User', features=['User Feature 1', 'User Feature 2', 'User Feature 3'], description='The User plan', is_default=True),
+    ProductMetadata(stripe_id='prod_JI2GrVLZMU6Wmk', name='Email Account', features=['Email Account Feature 1', 'Email Account Feature 2', 'Email Account Feature 3'], description='The Email Account plan', is_default=False),
 ]
 
 ACTIVE_PRODUCTS_BY_ID = {
