@@ -6,6 +6,8 @@ from pathlib import Path  # Python 3.6+ only
 import sentry_sdk
 from .dbpass import get_secret, get_s3_secret,mailgun_key
 from sentry_sdk.integrations.django import DjangoIntegration
+import environ
+env = environ.Env()
 
 sentry_sdk.init(
     dsn="https://54a77e70d6ac40c9b834017e1c5d4df0@o423610.ingest.sentry.io/5701236",
@@ -33,10 +35,9 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
-# DEBUG = bool(os.environ.get("DEBUG", "True"))
-DEBUG = True
-# LIVE = bool(os.environ.get("LIVE", "True"))
-LIVE = False
+DEBUG = env.bool('DEBUG', default=True)
+LIVE = env.bool('LIVE', default=False)
+STRIPE_LIVE_MODE = env.bool('STRIPE_LIVE_MODE', default=False)
 
 ALLOWED_HOSTS = ['*']
 # CORS_ALLOWED_ORIGINS = ['*']
@@ -75,7 +76,7 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     # stripe integration
     'djstripe',
-    'salesforce',
+    # 'salesforce',
 
 ]
 
@@ -173,11 +174,11 @@ if DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'USER': 'doadmin',
-            'PASSWORD': 'k6sehj7ohh30gjfy',
-            'HOST': 'db-postgresql-sfo2-27945-do-user-8602625-0.b.db.ondigitalocean.com',
-            'PORT': '25060',
-            'NAME': 'mail'
+            'USER': 'postgres',
+            'PASSWORD': 'U3KhQu1fASewbBz4xNIg',
+            'HOST': 'mailerrize-test.cluster-cti2gmro8z63.us-east-2.rds.amazonaws.com',
+            'PORT': '5432',
+            'NAME': 'mailtest'
 
         }
     }
@@ -407,11 +408,11 @@ GOOGLE_ANALYTICS_ID = ''  # replace with your google analytics ID to connect to 
 # Stripe config
 
 # modeled to be the same as https://github.com/dj-stripe/dj-stripe
-STRIPE_LIVE_PUBLIC_KEY = os.environ.get("STRIPE_LIVE_PUBLIC_KEY", "<your publishable key>")
-STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY", "<your secret key>")
-STRIPE_TEST_PUBLIC_KEY = "pk_test_51IBszEBZVXmQYn2L10zhEROWJZIExUWXwFdIg47Sgv8VX064fmyOLaBS6wFysLJuvkTXiBpeqWmaljbmTzYgalys00VCRN4C5p"  # , "pk_test_<your publishable key>")
-STRIPE_TEST_SECRET_KEY = "sk_test_51IBszEBZVXmQYn2LG0WRyPwcYrV6O3D83lD55hjDuuNkdjcawOJhYjVZ8K2mujFZlkD4x53UTbAxGoz8JSWeFa2l003KGHQZmq"  # os.environ.get("STRIPE_TEST_SECRET_KEY", "sk_test_<your secret key>")
-STRIPE_LIVE_MODE = False  # Change to True in production
+STRIPE_LIVE_PUBLIC_KEY = os.environ.get("STRIPE_LIVE_PUBLIC_KEY", "pk_live_51IVficFbQLoSmd7v2o3qLmlOIpoCN7cKDIHPN8Z26DHhWJvQAIlTQDIUXvZxBuCVb0fLwOZBYKeM4PqGvLWPKJSm000m6X58zR")
+STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY", "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")
+STRIPE_TEST_PUBLIC_KEY = "pk_test_51IVficFbQLoSmd7vg9rB8RNwKCcFybomiLqNuF4mQ7GuYDdYUPMBLt56fYXIuzwWmV9HCnTTx4KkboentixP32AQ00xfnQvGN2"  # , "pk_test_<your publishable key>")
+STRIPE_TEST_SECRET_KEY = "sk_test_51IVficFbQLoSmd7vvOga0aBn2Ad8yvK9M3JtK16iTnu0mBgRBQFhfCBNTnE82WTYTVTMh5BmYdxLk0ZOviWOVotc00LqbiZSSn"  # os.environ.get("STRIPE_TEST_SECRET_KEY", "sk_test_<your secret key>")
+# Change to True in production
 
 # Get it from the section in the Stripe dashboard where you added the webhook endpoint
 # or from the stripe CLI when testing
@@ -455,11 +456,6 @@ JWT_AUTH = {
     'JWT_AUTH_HEADER_PREFIX': 'jwt',
     'JWT_AUTH_COOKIE': None,
 }
-
-# Mail_configuration
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'sg3plcpnl0063.prod.sin3.secureserver.net'
-
 
 
 # Google configuration
