@@ -75,7 +75,8 @@ class CampaignDetailOverview extends Component {
           </Row>
           <Row className="mx-3 mt-5">
             <Col md={12}>
-              <Nav tabs>
+              <OverviewSummery />
+              {/* <Nav tabs>
                 {tabs.map(({ to, title }, index) => (
                   <Col key={index} md={3}>
                     <NavItem>
@@ -109,7 +110,7 @@ class CampaignDetailOverview extends Component {
                     </Col>
                   </Row>
                 </TabPane>
-              </TabContent>
+              </TabContent> */}
             </Col>
           </Row>
         </PageContainer>
