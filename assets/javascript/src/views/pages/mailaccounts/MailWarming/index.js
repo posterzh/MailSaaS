@@ -20,6 +20,8 @@ import {
   updateWarmings,
 } from "../../../../redux/action/WarmingActions";
 
+import { toastOnError, toastOnSuccess, toggleTopLoader } from "../../../../utils/Utils";
+
 const tableTitle = [
   {
     key: "email_provider",
@@ -88,10 +90,16 @@ class WarmList extends Component {
 
       // Call API
       try {
-        await this.props.updateWarmings(account_changed[0].id, {
+        const response = await this.props.updateWarmings(account_changed[0].id, {
           warming_enabled: value
         })
+        if (response.success) {
+          toastOnSuccess("Updated successfully!");
+        } else {
+          throw response.message || "Failed to update warming setting!";
+        }
       } catch (e) {
+        toastOnError(e);
         account_changed[0][field] = origin_value;
         this.setState({
           data: [...data]

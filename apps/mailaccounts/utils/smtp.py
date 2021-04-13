@@ -207,6 +207,12 @@ def move_warmups_from_spam_to_inbox(host, port, username, password, use_tls):
     except Exception as e:
         return False
 
+    # Check if mailerrize folder exists
+    mail.select(DEFAULT_WARMUP_FOLDER)
+    if mail.state == 'AUTH':
+        mail.create(DEFAULT_WARMUP_FOLDER)
+
+    # Select spam folder
     mail.select('spam')
     if mail.state == 'AUTH':
         mail.select('junk')
@@ -240,11 +246,13 @@ def move_warmups_from_spam_to_inbox(host, port, username, password, use_tls):
             resp, data = mail.fetch(num, "(UID)")
             msg_uid = parse_uid(f"{data[0]}")
 
-            result = mail.uid('COPY', msg_uid, DEFAULT_WARMUP_FOLDER)
-
-            if result[0] == 'OK':
-                mov, data = mail.uid('STORE', msg_uid, '+FLAGS', '(\Deleted)')
-                mail.expunge()
+            try:
+                result = mail.uid('COPY', msg_uid, DEFAULT_WARMUP_FOLDER)
+                if result[0] == 'OK':
+                    mov, data = mail.uid('STORE', msg_uid, '+FLAGS', '(\Deleted)')
+                    mail.expunge()
+            except Exception as e:
+                None
 
 
 # Parameter
