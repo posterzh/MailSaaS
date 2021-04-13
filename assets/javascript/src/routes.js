@@ -18,15 +18,18 @@ import Api from "./views/pages/Extension/Api";
 import AppsandCrm from "./views/pages/Extension/Apps&Crm";
 import Billing from "./views/pages/TeamSettings/Billing";
 import Dashboard from "./views/pages/dashboards/Dashboard.js";
-import Login from "./views/pages/examples/Login.js";
 import Redeem from "./views/pages/TeamSettings/Redeem";
-import Register from "./views/pages/examples/Register.js";
 import Setting from "./views/pages/TeamSettings/Setting";
 import Teammates from "./views/pages/TeamSettings/Teammates";
 import Unsubscribes from "./views/pages/audiences/Unsubscribes/Unsubscribes";
 import ConversionTracking from "./views/pages/Extension/ConversionTracking";
-import ForgetPassword from "./views/pages/examples/ForgetPassword";
 import Profile from "./views/pages/User/Profile";
+
+// Auth pages
+import Login from "./views/pages/examples/Login.js";
+import Register from "./views/pages/examples/Register.js";
+import ForgetPassword from "./views/pages/examples/ForgetPassword";
+import ResetPassword  from "./views/pages/examples/ResetPassword";
 
 // Mail Account
 import MailAccounts from "./views/pages/mailaccounts/MailAccounts";
@@ -258,6 +261,15 @@ const routes = [
     path: "/forgetPassword",
     layout: "/app/auth",
     component: ForgetPassword,
+    redirect: true,
+  },
+  {
+    name: "ResetPassword",
+    // icon: "fa fa-home text-dark",
+    // state: "dashboardsCollapse",
+    path: "/resetPassword/:uid/:token",
+    layout: "/app/auth",
+    component: ResetPassword,
     redirect: true,
   },
 

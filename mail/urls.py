@@ -51,6 +51,8 @@ urlpatterns = [
 
     path('mailaccounts/', include('apps.mailaccounts.urls')),
 
+    path(r'^', include('django.contrib.auth.urls')),
+
     # Front-end
     path('', include('apps.web.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

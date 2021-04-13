@@ -39,5 +39,5 @@ FROM
         ON ce.campaign_id = ceo.campaign_id
             AND ce.id = ceo.email_id
             AND cr.id = ceo.recipient_id
-            AND ceo.status = 1
+            AND ceo.status <> 2
 '''

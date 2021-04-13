@@ -190,7 +190,7 @@ export class Profile extends Component {
                                 htmlFor="last-name"
                               >
                                 Last name
-                          </label>
+                              </label>
                               <Input
                                 id="last-name"
                                 placeholder="Last name"
@@ -215,7 +215,7 @@ export class Profile extends Component {
                                 htmlFor="companyName"
                               >
                                 Company name
-                          </label>
+                              </label>
                               <Input
                                 id="company-name"
                                 placeholder="Company name"
@@ -331,7 +331,7 @@ export class Profile extends Component {
                                 htmlFor="confirm-password"
                               >
                                 Confirm Password
-                          </label>
+                              </label>
                               <Input
                                 id="confirm-password"
                                 placeholder="Confirm Password"
