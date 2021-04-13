@@ -8,6 +8,7 @@ from .dbpass import get_secret, get_s3_secret,mailgun_key
 from sentry_sdk.integrations.django import DjangoIntegration
 import environ
 env = environ.Env()
+environ.Env.read_env()
 
 sentry_sdk.init(
     dsn="https://54a77e70d6ac40c9b834017e1c5d4df0@o423610.ingest.sentry.io/5701236",
@@ -410,8 +411,8 @@ GOOGLE_ANALYTICS_ID = ''  # replace with your google analytics ID to connect to 
 # modeled to be the same as https://github.com/dj-stripe/dj-stripe
 STRIPE_LIVE_PUBLIC_KEY = os.environ.get("STRIPE_LIVE_PUBLIC_KEY", "pk_live_51IVficFbQLoSmd7v2o3qLmlOIpoCN7cKDIHPN8Z26DHhWJvQAIlTQDIUXvZxBuCVb0fLwOZBYKeM4PqGvLWPKJSm000m6X58zR")
 STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY", "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")
-STRIPE_TEST_PUBLIC_KEY = "pk_test_51IVficFbQLoSmd7vg9rB8RNwKCcFybomiLqNuF4mQ7GuYDdYUPMBLt56fYXIuzwWmV9HCnTTx4KkboentixP32AQ00xfnQvGN2"  # , "pk_test_<your publishable key>")
-STRIPE_TEST_SECRET_KEY = "sk_test_51IVficFbQLoSmd7vvOga0aBn2Ad8yvK9M3JtK16iTnu0mBgRBQFhfCBNTnE82WTYTVTMh5BmYdxLk0ZOviWOVotc00LqbiZSSn"  # os.environ.get("STRIPE_TEST_SECRET_KEY", "sk_test_<your secret key>")
+STRIPE_TEST_PUBLIC_KEY = os.environ.get("STRIPE_TEST_PUBLIC_KEY", "pk_test_51IVficFbQLoSmd7vg9rB8RNwKCcFybomiLqNuF4mQ7GuYDdYUPMBLt56fYXIuzwWmV9HCnTTx4KkboentixP32AQ00xfnQvGN2")
+STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY", "sk_test_51IVficFbQLoSmd7vvOga0aBn2Ad8yvK9M3JtK16iTnu0mBgRBQFhfCBNTnE82WTYTVTMh5BmYdxLk0ZOviWOVotc00LqbiZSSn")
 # Change to True in production
 
 # Get it from the section in the Stripe dashboard where you added the webhook endpoint
