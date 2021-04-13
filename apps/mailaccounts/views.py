@@ -74,24 +74,32 @@ class EmailAccountWarmingView(APIView):
 
     def post(self, request, mail_account_id):
         warming_enabled = request.data['warming_enabled']
+
+        if warming_enabled:
+            # Create 'mailerrize' folder in the email account
+            email_account = EmailAccount.objects.get(pk=mail_account_id)
+            if not email_account.imap_host or not email_account.imap_port or not email_account.imap_username or not email_account.imap_password:
+                return Response({"message": "IMAP setting is not found.", "success": False})
+            try:
+                mail = imaplib.IMAP4_SSL(email_account.imap_host, email_account.imap_port)
+                mail.login(email_account.imap_username, email_account.imap_password)
+                mail.create(DEFAULT_WARMUP_FOLDER)
+                # if email_account.email_provider == 'Google':
+                #     host = "imap.gmail.com"
+                #     port = 993
+                #     mail = imaplib.IMAP4_SSL(host, port)
+                #     mail.login(email_account.email, email_account.password)
+                #     mail.create(DEFAULT_WARMUP_FOLDER)
+            except Exception as e:
+                return Response({"message": e, "success": False})
+
         warming = WarmingStatus.objects.filter(mail_account_id=mail_account_id)
         if len(warming) > 0:
             warming.update(warming_enabled=warming_enabled, status_updated_at=datetime.now())
         else:
             WarmingStatus.objects.create(mail_account_id=mail_account_id, warming_enabled=warming_enabled)
 
-            # Create 'mailerrize' folder in the email account
-            email_account = EmailAccount.objects.get(pk=mail_account_id)
-            if email_account.email_provider == 'SMTP':
-                mail = imaplib.IMAP4_SSL(email_account.imap_host, email_account.imap_port)
-                mail.login(email_account.imap_username, email_account.imap_password)
-                mail.create(DEFAULT_WARMUP_FOLDER)
-            if email_account.email_provider == 'Google':
-                host = "imap.gmail.com"
-                mail = imaplib.IMAP4_SSL(host)
-                mail.login(email_account.email, email_account.password)
-                mail.create(DEFAULT_WARMUP_FOLDER)
-        return Response(True)
+        return Response({"success": True})
 
 
 class SendingCalendarListView(generics.ListCreateAPIView):

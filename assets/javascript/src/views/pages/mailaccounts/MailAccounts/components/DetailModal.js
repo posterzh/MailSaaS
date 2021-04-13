@@ -149,24 +149,63 @@ export default class DetailModal extends Component {
                           />
                         </FormGroup>
 
-                        {(this.state.email_provider == "Google" ||
-                          this.state.email_provider == "Microsoft") && (
-                          <FormGroup className="mb-2">
-                            <label
-                              className="form-control-label"
-                              htmlFor="password"
-                            >
-                              Password
-                            </label>
-                            <Input
-                              id="password"
-                              name="password"
-                              type="password"
-                              className="form-control-sm"
-                              onChange={this.handleChange}
-                              value={this.state.password}
-                            />
-                          </FormGroup>
+                        {this.state.email_provider == "Google" && (
+                          <>
+                            <FormGroup className="mb-2">
+                              <label
+                                className="form-control-label"
+                                htmlFor="password"
+                              >
+                                Password
+                              </label>
+                              <Input
+                                id="password"
+                                name="password"
+                                type="password"
+                                className="form-control-sm"
+                                onChange={this.handleChange}
+                                value={this.state.password}
+                              />
+                            </FormGroup>
+
+                            <FormGroup className="mb-2">
+                              <label
+                                className="form-control-label"
+                                htmlFor="smtp_password"
+                              >
+                                App Password
+                              </label>
+                              <Input
+                                id="smtp_password"
+                                name="smtp_password"
+                                type="password"
+                                className="form-control-sm"
+                                onChange={this.handleChange}
+                                value={this.state.smtp_password}
+                              />
+                            </FormGroup>
+                          </>
+                        )}
+
+                        {this.state.email_provider == "Microsoft" && (
+                          <>
+                            <FormGroup className="mb-2">
+                              <label
+                                className="form-control-label"
+                                htmlFor="password"
+                              >
+                                Password
+                              </label>
+                              <Input
+                                id="password"
+                                name="password"
+                                type="password"
+                                className="form-control-sm"
+                                onChange={this.handleChange}
+                                value={this.state.password}
+                              />
+                            </FormGroup>
+                          </>
                         )}
 
                         <FormGroup className="mb-2">

@@ -23,24 +23,64 @@ from .sqls import schedule_sql_template
 
 pattern_uid = re.compile('.*\d+ \(UID (?P<uid>\d+)\).*')
 
+GOOGLE_SMTP_HOST = 'smtp.gmail.com'
+GOOGLE_SMTP_PORT = '587'
+GOOGLE_SMTP_USE_TLS = True
+GOOGLE_IMAP_HOST = 'imap.gmail.com'
+GOOGLE_IMAP_PORT = '993'
+GOOGLE_IMAP_USE_TLS = True
+
+MICROSOFT_SMTP_HOST = 'smtp.office365.com'
+MICROSOFT_SMTP_PORT = '587'
+MICROSOFT_SMTP_USE_TLS = True
+MICROSOFT_IMAP_HOST = 'outlook.office365.com'
+MICROSOFT_IMAP_PORT = '993'
+MICROSOFT_IMAP_USE_TLS = True
+
 
 def check_email(request):
-    if request.data['email_provider'] == 'SMTP':
-        if request.data['smtp_host']:
-            if not check_smtp(server=request.data['smtp_host'],
-                              port=request.data['smtp_port'],
-                              use_tls=request.data['use_smtp_ssl'],
-                              user=request.data['smtp_username'],
-                              password=request.data['smtp_password']):
-                return False, "SMTP test failed."
+    if request.data['email_provider'] == 'Google':
+        request.data['smtp_host'] = GOOGLE_SMTP_HOST
+        request.data['smtp_port'] = GOOGLE_SMTP_PORT
+        request.data['use_smtp_ssl'] = GOOGLE_SMTP_USE_TLS
+        request.data['smtp_username'] = request.data['email']
+        # request.data['smtp_password']
 
-        if request.data['imap_host']:
-            if not check_imap(server=request.data['imap_host'],
-                              port=request.data['imap_port'],
-                              use_tls=request.data['use_imap_ssl'],
-                              user=request.data['imap_username'],
-                              password=request.data['imap_password']):
-                return False, "IMAP test failed."
+        request.data['imap_host'] = GOOGLE_IMAP_HOST
+        request.data['imap_port'] = GOOGLE_IMAP_PORT
+        request.data['use_imap_ssl'] = GOOGLE_IMAP_USE_TLS
+        request.data['imap_username'] = request.data['email']
+        request.data['imap_password'] = request.data['password']
+    elif request.data['email_provider'] == 'Microsoft':
+        request.data['smtp_host'] = MICROSOFT_SMTP_HOST
+        request.data['smtp_port'] = MICROSOFT_SMTP_PORT
+        request.data['use_smtp_ssl'] = MICROSOFT_SMTP_USE_TLS
+        request.data['smtp_username'] = request.data['email']
+        request.data['smtp_password'] = request.data['password']
+
+        request.data['imap_host'] = MICROSOFT_IMAP_HOST
+        request.data['imap_port'] = MICROSOFT_IMAP_PORT
+        request.data['use_imap_ssl'] = MICROSOFT_IMAP_USE_TLS
+        request.data['imap_username'] = request.data['email']
+        request.data['imap_password'] = request.data['password']
+
+    # Check SMTP
+    if request.data['smtp_host']:
+        if not check_smtp(server=request.data['smtp_host'],
+                          port=request.data['smtp_port'],
+                          use_tls=request.data['use_smtp_ssl'],
+                          user=request.data['smtp_username'],
+                          password=request.data['smtp_password']):
+            return False, "SMTP test failed."
+
+    # Check IMAP
+    if request.data['imap_host']:
+        if not check_imap(server=request.data['imap_host'],
+                          port=request.data['imap_port'],
+                          use_tls=request.data['use_imap_ssl'],
+                          user=request.data['imap_username'],
+                          password=request.data['imap_password']):
+            return False, "IMAP test failed."
 
     return True, "Success"
 
@@ -191,6 +231,12 @@ def move_warmups_from_spam_to_inbox(host, port, username, password, use_tls):
     except Exception as e:
         return False
 
+    # Check if mailerrize folder exists
+    mail.select(DEFAULT_WARMUP_FOLDER)
+    if mail.state == 'AUTH':
+        mail.create(DEFAULT_WARMUP_FOLDER)
+
+    # Select spam folder
     mail.select('spam')
     if mail.state == 'AUTH':
         mail.select('junk')
@@ -224,11 +270,13 @@ def move_warmups_from_spam_to_inbox(host, port, username, password, use_tls):
             resp, data = mail.fetch(num, "(UID)")
             msg_uid = parse_uid(f"{data[0]}")
 
-            result = mail.uid('COPY', msg_uid, DEFAULT_WARMUP_FOLDER)
-
-            if result[0] == 'OK':
-                mov, data = mail.uid('STORE', msg_uid, '+FLAGS', '(\Deleted)')
-                mail.expunge()
+            try:
+                result = mail.uid('COPY', msg_uid, DEFAULT_WARMUP_FOLDER)
+                if result[0] == 'OK':
+                    mov, data = mail.uid('STORE', msg_uid, '+FLAGS', '(\Deleted)')
+                    mail.expunge()
+            except Exception as e:
+                None
 
 
 # Parameter

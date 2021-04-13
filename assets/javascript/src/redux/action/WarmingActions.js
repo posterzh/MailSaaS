@@ -32,9 +32,6 @@ export const updateWarmings = (id, data) => (dispatch) => {
       //   type: UPDATE_MAILACCOUNT,
       //   payload: response.data,
       // });
-
-      toastOnSuccess("Updated successfully!");
-
       return response.data;
     })
     .catch((error) => {
