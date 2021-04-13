@@ -27,12 +27,6 @@ class OverviewSummery extends Component {
             <Col>
               <label>
                 <h1 className="display-4">FUNNEL</h1>
-                <span>
-                  <a href="#" className="explain_number">
-                    <i className="fa fa-question-circle-o" aria-hidden="true"></i>{" "}
-                    Explain these numbers
-                  </a>
-                </span>
               </label>
               <div style={{position: 'absolute', top: 20, right: 20}}>
                 <Input
@@ -49,7 +43,6 @@ class OverviewSummery extends Component {
                 </Input>
               </div>
             </Col>
-            
           </Row>
 
           <Row>

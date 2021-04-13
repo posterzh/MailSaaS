@@ -14,11 +14,11 @@ import {
 } from "reactstrap";
 import { getMailAccounts } from "../../../../redux/action/MailAccountsActions"
 import { getDetailsSettings, getLeadSettings, updateLeadSettings, updateSendingAddress } from "../../../../redux/action/CampaignDetailsActions"
+import { showNotification } from "../../../../utils/Utils";
+import { CAMPAIGN_LEAD_CATCHER_ITEM_TYPE } from "../../../../utils/Common";
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
 import DetailHeader from "./components/DetailHeader";
-import { showNotification } from "../../../../utils/Utils";
-import { CAMPAIGN_LEAD_CATCHER_ITEM_TYPE } from "../../../../utils/Common";
 
 export class CampaignDetailSettings extends Component {
   constructor(props) {

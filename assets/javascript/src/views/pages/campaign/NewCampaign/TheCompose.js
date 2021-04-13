@@ -7,11 +7,11 @@ import {
   Form
 } from "reactstrap";
 import { connect } from "react-redux";
+import { campaignCompose } from "../../../../redux/action/CampaignActions";
+import { formatHeader, showNotification } from "../../../../utils/Utils";
 import ReactQuill from "react-quill";
 import FollowUpPanel from "./components/FollowUpPanel";
 import DripPanel from "./components/DripPanel";
-import { campaignCompose } from "../../../../redux/action/CampaignActions";
-import { formatHeader, showNotification } from "../../../../utils/Utils";
 
 class TheCompose extends Component {
   constructor(props) {
