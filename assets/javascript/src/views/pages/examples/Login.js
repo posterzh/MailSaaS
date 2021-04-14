@@ -40,6 +40,7 @@ import {
   login,
   googleLogin,
 } from "../../../redux/action/AuthAction";
+import { ToastContainer, toast } from 'react-toastify';
 import { connect } from "react-redux";
 import { history } from "../../../index";
 
@@ -113,7 +114,7 @@ class Login extends React.Component {
                       buttonText="Register"
                       onSuccess={this.onGoogleAuthSuccess}
                       onFailure={this.onGoogleAuthFailure}
-                      autoLoad = {false}
+                      autoLoad={false}
                       isSignedIn={false}
                       cookiePolicy={'single_host_origin'}
                       render={({ onClick }) => {

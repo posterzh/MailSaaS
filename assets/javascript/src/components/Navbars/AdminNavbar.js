@@ -48,7 +48,6 @@ import {
 import { getProfile } from '../../redux/action/ProfileAction';
 import { logout } from '../../redux/action/AuthAction'
 import { connect } from 'react-redux'
-import { defaultProfilePic } from '../../utils/Common';
 
 class AdminNavbar extends React.Component {
   componentDidMount() {
@@ -145,7 +144,7 @@ class AdminNavbar extends React.Component {
                   <DropdownToggle className="nav-link pr-0" color="" tag="a">
                     <Media className="align-items-center">
                       <span className="avatar avatar-sm rounded-circle">
-                        <img alt="..." src={this.props.user.avatar_url ? this.props.user.avatar_url : defaultProfilePic}
+                        <img alt="..." src={this.props.user.avatar_url ? this.props.user.avatar_url : STATIC_FILES.default_avatar}
                           style={{ background: "ghostwhite" }} />
                       </span>
                       <Media className="ml-2 d-none d-sm-block">
@@ -202,7 +201,7 @@ AdminNavbar.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.profile.user,
+    user: state.auth.user,
     socialType: state.auth.socialType,
     isLogin: state.auth.isLogin,
   }
