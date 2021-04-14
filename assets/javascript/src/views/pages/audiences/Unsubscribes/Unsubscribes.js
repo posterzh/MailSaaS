@@ -138,7 +138,9 @@ class Unsubscribes extends Component {
           parent="Unsubscribes"
           showStatus={false}
         />
-        <PageContainer title="Unsubscribes" showHelper={true}>
+        <PageContainer title="Unsubscribes" showHelper={true} newButton="Add Unsubscribes" newAction={() => {
+          this.setState({ unsubscribeModal: !this.state.unsubscribeModal });
+        }}>
           <Row>
             <Col lg="5" md="12" sm="12" className="mb-2">
               <InputGroup className="input-group-merge">
@@ -227,7 +229,7 @@ class Unsubscribes extends Component {
               />
             </TabPane>
           </TabContent>
-          <Button
+          {/* <Button
             className="btn-icon btn-2 rounded-circle fixed-bottom-right-btn mr-6"
             color="danger"
             type="button"
@@ -252,7 +254,7 @@ class Unsubscribes extends Component {
             <span className="btn-inner--icon">
               <i className="fa fa-plus" />
             </span>
-          </Button>
+          </Button> */}
           <UnsubscribesModal
             isOpen={this.state.unsubscribeModal}
             unsubscribeEmail={this.unsubscribeEmail}

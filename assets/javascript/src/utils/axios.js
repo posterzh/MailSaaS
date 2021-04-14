@@ -1,5 +1,6 @@
 import axios from "axios";
 import { store } from "../redux/store/store";
+import { history } from "../index";
 import { makeTokenKeyword } from "../utils/Utils";
 
 const TOKEN_KEY = "access_token";
@@ -10,6 +11,8 @@ class Api {
 
     const token = localStorage.getItem(TOKEN_KEY);
     this.setToken(token);
+
+    this.validateResponse();
   }
 
   setToken(token) {
@@ -23,6 +26,17 @@ class Api {
       delete axios.defaults.headers.common["Authorization"];
       localStorage.removeItem(TOKEN_KEY);
     }
+  }
+
+  validateResponse() {
+    this.api.interceptors.response.use(undefined, function (err) {
+      if (err.response.status === 401) {
+        delete axios.defaults.headers.common["Authorization"];
+        localStorage.removeItem(TOKEN_KEY);
+        location.href = "/app/auth/login";
+        return Promise.reject(err);
+      }
+    });
   }
 
   get(url, params) {

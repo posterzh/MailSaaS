@@ -143,7 +143,7 @@ class Register extends React.Component {
                             }}
                           >
                             <span className="btn-inner--icon mr-1">
-                              <img alt="..." src={'/static/images/img/icons/common/google.svg'} />
+                              <img alt="..." src={STATIC_FILES.google} />
                             </span>
                             <span className="btn-inner--text">Sign up with Google</span>
                           </Button>

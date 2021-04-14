@@ -19,40 +19,39 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.documentation import include_docs_urls, get_schemajs_view
 
-
 schemajs_view = get_schemajs_view(title="API")
 
+urlpatterns = \
+    [
+        path('admin/', admin.site.urls),
+        path('accounts/', include('allauth.urls')),
+        path('users/', include('apps.users.urls')),
+        path('unsubscribes/', include('apps.unsubscribes.urls')),
+        path('subscriptions/', include('apps.subscriptions.urls')),
+        path('campaignschedule/', include('apps.campaignschedule.urls')),
+        path('campaign/', include('apps.campaign.urls')),
+        path('teams/', include('apps.teams.urls')),
+        path('intigration/', include('apps.integration.urls')),
+        path('app/', include('apps.pegasus.urls')),
+        path('celery-progress/', include('celery_progress.urls')),
+        # API docs
+        # these are needed for schema.js
+        path('docs/', include_docs_urls(title='API Docs')),
+        path('schemajs/', schemajs_view, name='api_schemajs'),
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),
-    path('users/', include('apps.users.urls')),
-    path('unsubscribes/', include('apps.unsubscribes.urls')),
-    path('subscriptions/', include('apps.subscriptions.urls')),
-    path('campaignschedule/',include('apps.campaignschedule.urls')),
-    path('campaign/', include('apps.campaign.urls')),
-    path('teams/', include('apps.teams.urls')),
-    path('intigration/', include('apps.integration.urls')),
-    path('app/', include('apps.pegasus.urls')),
-    path('celery-progress/', include('celery_progress.urls')),
-    # API docs
-    # these are needed for schema.js
-    path('docs/', include_docs_urls(title='API Docs')),
-    path('schemajs/', schemajs_view, name='api_schemajs'),
+        path('rest-auth/', include('rest_auth.urls')),
+        path('rest-auth/registration/', include('rest_auth.registration.urls')),
 
-    path('rest-auth/', include('rest_auth.urls')),
-    path('rest-auth/registration/', include('rest_auth.registration.urls')),
+        path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+        path(r'auth/', include('rest_framework_social_oauth2.urls')),
 
-    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    path(r'auth/', include('rest_framework_social_oauth2.urls')),
+        # djstripe urls - for webhooks
+        path("stripe/", include("djstripe.urls", namespace="djstripe")),
 
-    # djstripe urls - for webhooks
-    path("stripe/", include("djstripe.urls", namespace="djstripe")),
+        path('mailaccounts/', include('apps.mailaccounts.urls')),
 
-    path('mailaccounts/', include('apps.mailaccounts.urls')),
+        path(r'^', include('django.contrib.auth.urls')),
 
-    path(r'^', include('django.contrib.auth.urls')),
-
-    # Front-end
-    path('', include('apps.web.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+        # Front-end
+        path('', include('apps.web.urls')),
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -15,7 +15,7 @@ export const toastOnError = (error) => {
   } else if (error.message) {
     errMessage = JSON.stringify(error.message);
   } else if (typeof error !== 'string') {
-    errMessage = JSON.stringify(error);
+    errMessage = messages.api_failed;
   } else {
     errMessage = error;
   }
