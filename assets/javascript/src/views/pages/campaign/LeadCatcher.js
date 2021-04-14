@@ -10,6 +10,7 @@ import {
   Card,
   CardHeader,
   CardBody,
+  Form,
   Input,
   Spinner,
   Modal,
@@ -26,7 +27,7 @@ import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
 import Tables from "../../../components/Tables";
 import FloatingPanel from "../../../components/FloatingPanel";
-import { toggleTopLoader, toastOnError, messages } from '../../../utils/Utils';
+import { formatHeader, toggleTopLoader, toastOnSuccess, toastOnError, messages } from '../../../utils/Utils';
 import axios from '../../../utils/axios';
 
 class LeadCatcher extends Component {
@@ -54,6 +55,7 @@ class LeadCatcher extends Component {
       detailReplyEnable: false,
       detailReplySubject: '',
       detailReplyBody: '',
+      detailReplyProgress: false,
     }
   }
 
@@ -268,6 +270,59 @@ class LeadCatcher extends Component {
     return lead_status === 'open'
   }
 
+  handleRely = async (e) => {
+    e.preventDefault();
+    const { data, detailLeadId, detailReplySubject, detailReplyBody, detailData } = this.state;
+    let detailLead = null;
+    if (detailLeadId) {
+      detailLead = data.filter(item => item.id == detailLeadId)
+      if (detailLead.length > 0) {
+        detailLead = detailLead[0];
+      }
+    }
+
+    const { camp_id, id: lead_id } = detailLead
+
+    try {
+      toggleTopLoader(true);
+      this.setState({
+        detailReplyProgress: true
+      })
+
+      const { data: {success, content} } = await axios.post(`/campaign/lead/reply/${camp_id}/${lead_id}/`, {
+        subject: detailReplySubject,
+        body: detailReplyBody
+      });
+      if (success) {
+        // Add log
+        if (content && content.log) {
+          this.setState({
+            detailData: {
+              ...detailData,
+              logs: [
+                ...detailData.logs || [],
+                content.log
+              ]
+            }
+          })
+        }
+
+        toastOnSuccess("Email sent successfully!");
+      } else {
+        toastOnError("Failed to reply.");
+      }
+    } catch (err) {
+      console.log(err);
+      toastOnError(messages.api_failed);
+    } finally {
+      toggleTopLoader(false);
+      this.setState({
+        detailReplyProgress: false,
+        detailReplyEnable: false
+      })
+    }
+  }
+
   renderEmail = ({lead_action, inbox, outbox}) => {
     let email = {};
     const { detailData, detailLeadId, data } = this.state;
@@ -312,6 +367,33 @@ class LeadCatcher extends Component {
     )
   }
 
+  getDNDSource = (keys) => {
+    return (
+      <div className="d-flex flex-wrap mt-2">
+        {
+          keys.map((field, index) => {
+            return (
+              <div className="keyword-item text-danger px-1 mr-2 my-1" key={`template ${index}`} draggable="true" onDragStart={(e) => {
+                const dataTransfer = e.dataTransfer;
+                dataTransfer.setData('text/html', `<span class="keyword-item p-1 mr-2 my-1">{{${field}}}</span>`);
+                dataTransfer.setData('text', `{{${field}}}`);
+              }} onDoubleClick={() => {
+                const { ref: _quillRef } = this._emailBodyQuill;
+                if (_quillRef) {
+                  const currentLen = _quillRef.getEditor().getLength();
+                  _quillRef.getEditor().insertText(currentLen - 1, `{{${field}}}`)
+                }
+              }}>
+                <i className="fas fa-bars text-danger mr-1"></i>
+                { formatHeader(field) }
+              </div>
+            )
+          })
+        } 
+      </div>
+    )
+  }
+
   render() {
     const tableTitle = [
       {
@@ -337,7 +419,7 @@ class LeadCatcher extends Component {
     ];
 
     const { filters, data, detailLeadId, detailData, detailPanelVisible, detailLoading,
-      detailReplyEnable, detailReplySubject, detailReplyBody } = this.state;
+      detailReplyEnable, detailReplySubject, detailReplyBody, detailReplyProgress } = this.state;
     let detailLead = null;
     if (detailLeadId) {
       detailLead = data.filter(item => item.id == detailLeadId)
@@ -347,6 +429,7 @@ class LeadCatcher extends Component {
     }
 
     let timeline = [];
+    let DNDkeys = [];
     if (detailPanelVisible && detailData) {
       if (detailData.logs) {
         timeline = [...detailData.logs];
@@ -387,6 +470,13 @@ class LeadCatcher extends Component {
           timeline.push(item);
           series_cnt = 0;
         }
+      }
+
+      try {
+        const replacement = JSON.parse(detailLead.replacement);
+        DNDkeys = Object.keys(replacement);
+      } catch (e) {
+        DNDkeys = []
       }
     }
 
@@ -483,7 +573,7 @@ class LeadCatcher extends Component {
 
                     {
                       !detailReplyEnable ||
-                      <div className="reply-container my-3">
+                      <Form onSubmit={this.handleRely} className="reply-container my-3">
                         <Input
                           type="text"
                           className="form-control"
@@ -518,15 +608,16 @@ class LeadCatcher extends Component {
                             ],
                           }}
                         />
+                        {this.getDNDSource(DNDkeys)}
                         <div className="mt-1 d-flex justify-content-end align-items-center">
-                          <Button color="danger" type="button" size="sm">
+                          <Button color="danger" type="submit" size="sm" disabled={detailReplyProgress}>
                             SEND
                           </Button>
                           <Button color="secondary" type="button" size="sm" onClick={this.cancelReplyLead}>
                             CANCEL
                           </Button>
                         </div>
-                      </div>
+                      </Form>
                     }
 
                     <div className="timeline timeline-one-side lead-timeline pt-4"

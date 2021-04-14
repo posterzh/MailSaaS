@@ -35,6 +35,7 @@ from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer
                           LeadSettingsSerializer, EmailsSerializer, LeadsLogSerializer)
 from ..unsubscribes.models import UnsubscribeEmail
 from apps.mailaccounts.models import EmailAccount
+from apps.mailaccounts.utils.smtp import send_mail_with_smtp,convert_template
 
 
 class CreateCampaignStartView(APIView):
@@ -2071,7 +2072,7 @@ class CampaignLeadsView(generics.ListAPIView):
             queryset = queryset.filter(created_date_time__range=(from_date, to_date))
 
         # queryset = queryset.select_related('title')
-        res = queryset.values('id', 'email', 'full_name', 'lead_status', 'update_date_time', campaign_title=F('campaign__title'),
+        res = queryset.values('id', 'email', 'full_name', 'replacement', 'lead_status', 'update_date_time', campaign_title=F('campaign__title'),
                               assigned_name=F('campaign__assigned__full_name'), camp_id=F('campaign'))
         # campEmailserializer = CampaignEmailSerializer(queryset, many=True)
         return Response({'res': res, 'success': True})
@@ -2170,7 +2171,7 @@ class LeadDetailView(APIView):
         if recipient is None:
             return Response({'success': False})
 
-        outbound_email = EmailOutbox.objects.filter(campaign_id=camp_id, recipient_id=lead_id, email__email_type=0).select_related('from_email', 'campaign')
+        outbound_email = EmailOutbox.objects.filter(campaign_id=camp_id, recipient_id=lead_id, email__email_type=0).select_related('from_email', 'campaign').order_by('id')
         if len(outbound_email) == 0:
             return Response({'success': False})
 
@@ -2204,6 +2205,60 @@ class LeadStatusUpdate(APIView):
             return Response({'success': True})
 
         log = LeadsLog(lead_action=lead_status, recipient_id=lead_id)
+        log.save()
+
+        return Response({'success': True, 'content': {'log': LeadsLogSerializer(log).data}})
+
+
+class LeadReply(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, camp_id, lead_id):
+        campaign = Campaign.objects.filter(id=camp_id).first()
+        recipient = Recipient.objects.filter(id=lead_id).first()
+        if recipient is None or campaign is None:
+            return Response({'success': False, 'content': {}})
+
+        email_account = EmailAccount.objects.filter(id=campaign.from_address_id).first()
+        if email_account is None:
+            return Response({'success': False, 'content': {}})
+
+        template_subject = request.data['subject']
+        template_body = request.data['body']
+        subject = convert_template(template_subject, recipient.replacement)
+        body = convert_template(template_body, recipient.replacement)
+
+        email = Emails()
+        email.email_type = 3
+        email.campaign_id = camp_id
+        email.email_subject = template_subject
+        email.email_body = template_body
+        email.save()
+
+        outbox = EmailOutbox()
+        outbox.email_id = email.id
+        outbox.campaign_id = camp_id
+        outbox.from_email_id = email_account.id
+        outbox.recipient_id = recipient.id
+        outbox.email_subject = subject
+        outbox.email_body = body
+        outbox.status = 0
+        outbox.save()
+
+        send_mail_with_smtp(host=email_account.smtp_host,
+                            port=email_account.smtp_port,
+                            username=email_account.smtp_username,
+                            password=email_account.smtp_password,
+                            use_tls=email_account.use_smtp_ssl,
+                            from_email=email_account.email,
+                            to_email=[recipient.email],
+                            subject=subject,
+                            body=body,
+                            uuid=outbox.id,
+                            track_opens=None,
+                            track_linkclick=None)
+
+        log = LeadsLog(lead_action='me_replied', recipient_id=lead_id, outbox_id=outbox.id)
         log.save()
 
         return Response({'success': True, 'content': {'log': LeadsLogSerializer(log).data}})

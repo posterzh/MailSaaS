@@ -41,5 +41,6 @@ urlpatterns = [
     path('settings-lead/<int:campaign_id>/', views.CampaignLeadSettingView.as_view(), name='lead-settings'),
     path('lead-detail/<int:camp_id>/<int:lead_id>/', views.LeadDetailView.as_view(), name='lead-detail'),
     path('lead/status/<int:lead_id>/', views.LeadStatusUpdate.as_view(), name='lead-update-status'),
+    path('lead/reply/<int:camp_id>/<int:lead_id>/', views.LeadReply.as_view(), name='lead-reply'),
     path('update-status/<int:pk>', views.CampaignUpdateStatus.as_view(), name='campaign_update_status')
 ]
