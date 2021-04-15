@@ -267,11 +267,36 @@ def team_subscription_gated_page(request, team_slug):
 @permission_classes([permissions.IsAuthenticated])
 def subscription_details(request):
     subscription_holder = request.user
-    if subscription_holder.has_active_subscription():
-        return _view_subscription(request, subscription_holder)
-    else:
-        return _upgrade_subscription(request, subscription_holder)
 
+    has_active_subscription = subscription_holder.has_active_subscription()
+
+    if not has_active_subscription:
+        data = {
+            'has_active_subscription': has_active_subscription,
+        }
+        return JsonResponse(data=data)
+
+    active_subscription = subscription_holder.active_stripe_subscription
+    subscription_urls = _get_subscription_urls(subscription_holder)
+    friendly_payment_amount = get_friendly_currency_amount(
+            subscription_holder.active_stripe_subscription.plan.amount,
+            subscription_holder.active_stripe_subscription.plan.currency,
+        )
+    product = get_product_and_metadata_for_subscription(subscription_holder.active_stripe_subscription)
+
+    data = {
+        'has_active_subscription': has_active_subscription,
+        'active_subscription': active_subscription,
+        'friendly_payment_amount': friendly_payment_amount,
+        'product': product
+    }
+    return JsonResponse(data = data)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def upgrade_subscription(request):
+    pass
 
 def _view_subscription(request, subscription_holder):
     """

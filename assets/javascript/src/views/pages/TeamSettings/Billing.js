@@ -56,7 +56,9 @@ const Billing = (props) => {
     try {
       toggleTopLoader(true);
 
-      const { data } = await axios.get("/subscriptions/api/");
+      const { data } = await axios.get(
+        "/subscriptions/api/subscription-details/"
+      );
       console.log(data);
     } catch (e) {
       toastOnError(messages.api_failed);
