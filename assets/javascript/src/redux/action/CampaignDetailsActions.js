@@ -16,18 +16,10 @@ export const getOverviewSummary = (id) => (dispatch) => {
   axios
     .get(`/campaign/overview-summary/${id}/`)
     .then((response) => {
-      if (response.data.success) {
-        dispatch({
-          type: GET_OVERVIEW_SUMMARY,
-          payload: response.data.result,
-        });
-      } else {
-        toastOnError(response.data.message);
-        setTimeout(() => {
-          history.push("/app/admin/campaign/create");
-        }, 2000)
-      }
-      
+      dispatch({
+        type: GET_OVERVIEW_SUMMARY,
+        payload: response.data,
+      });
     })
     .catch((error) => {
       toastOnError(error);

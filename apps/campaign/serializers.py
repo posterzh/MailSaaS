@@ -77,6 +77,21 @@ class ProspectsSerializer(serializers.ModelSerializer):
         fields = ['email', 'sent_count', 'open_count', 'click_count', 'reply_count', 'lead_count', 'status']
 
 
+class CampaignOverviewSerializer(serializers.ModelSerializer):
+    recipient_count = serializers.IntegerField(read_only=True)
+    opened_count = serializers.IntegerField(read_only=True)
+    clicked_count = serializers.IntegerField(read_only=True)
+    replied_count = serializers.IntegerField(read_only=True)
+    bounced_count = serializers.IntegerField(read_only=True)
+    test = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = Emails
+        fields = ['id', 'email_type', 'email_order', 'email_subject', 'recipient_count', 'opened_count',
+                  'clicked_count', 'replied_count', 'bounced_count', 'test']
+        ordering = ['email_type', 'email_order']
+
+
 class EmailsSerializer(serializers.ModelSerializer):
 
     class Meta:

@@ -174,13 +174,18 @@ FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 if DEBUG:
     DATABASES = {
         'default': {
+            # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            # 'USER': 'postgres',
+            # 'PASSWORD': 'U3KhQu1fASewbBz4xNIg',
+            # 'HOST': 'mailerrize-test.cluster-cti2gmro8z63.us-east-2.rds.amazonaws.com',
+            # 'PORT': '5432',
+            # 'NAME': 'mailtest'
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'USER': 'postgres',
-            'PASSWORD': 'U3KhQu1fASewbBz4xNIg',
-            'HOST': 'mailerrize-test.cluster-cti2gmro8z63.us-east-2.rds.amazonaws.com',
-            'PORT': '5432',
-            'NAME': 'mailtest'
-
+            'USER': 'doadmin',
+            'PASSWORD': 'k6sehj7ohh30gjfy',
+            'HOST': 'db-postgresql-sfo2-27945-do-user-8602625-0.b.db.ondigitalocean.com',
+            'PORT': '25060',
+            'NAME': 'mail'
         }
     }
 
