@@ -14,7 +14,6 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import EditCardDetailModal from "./EditCardDetailModal";
 
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
@@ -33,14 +32,16 @@ import {
   messages,
 } from "../../../utils/Utils";
 import axios from "../../../utils/axios";
+import ViewSubscription from "./components/ViewSubscription";
+import UpgradeSubscription from "./components/UpgradeSubscription";
 
 const stripePromise = loadStripe("pk_test_4avw1EQzI75q76v5OZJ0gpXn00znlGWXyl");
 
 const Billing = (props) => {
   const [modal, setModal] = useState(false);
+  const [hasActiveSubscription, setHasActiveSubscription] = useState(false);
 
   const handleClose = () => setModal(false);
-
   const receipts = [
     {
       date: "Feb 11, 2021",
@@ -56,8 +57,12 @@ const Billing = (props) => {
     try {
       toggleTopLoader(true);
 
-      const { data } = await axios.get("/subscriptions/api/");
-      console.log(data);
+      const { data } = await axios.get(
+        "/subscriptions/api/subscription-details/"
+      );
+      // console.log(data);
+
+      setHasActiveSubscription(data.has_active_subscription);
     } catch (e) {
       toastOnError(messages.api_failed);
     } finally {
@@ -72,6 +77,12 @@ const Billing = (props) => {
       <PageHeader current="Billing" parent="Team settings" showStatus={false} />
 
       <PageContainer title="Billing">
+        <Container>
+          <Row>
+            {hasActiveSubscription && <ViewSubscription />}
+            {!hasActiveSubscription && <UpgradeSubscription />}
+          </Row>
+        </Container>
         <Container>
           <Row className="mt-3">
             <Col lg="5" md="6" sm="12" className="mobile-p-0">
@@ -186,10 +197,6 @@ const Billing = (props) => {
             </Col>
           </Row>
         </Container>
-
-        <Elements stripe={stripePromise}>
-          <EditCardDetailModal isOpen={modal} handleClose={handleClose} />
-        </Elements>
       </PageContainer>
     </>
   );

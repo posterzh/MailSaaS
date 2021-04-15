@@ -267,10 +267,30 @@ def team_subscription_gated_page(request, team_slug):
 @permission_classes([permissions.IsAuthenticated])
 def subscription_details(request):
     subscription_holder = request.user
-    if subscription_holder.has_active_subscription():
-        return _view_subscription(request, subscription_holder)
-    else:
-        return _upgrade_subscription(request, subscription_holder)
+
+    has_active_subscription = subscription_holder.has_active_subscription()
+
+    if not has_active_subscription:
+        data = {
+            'has_active_subscription': has_active_subscription,
+        }
+        return JsonResponse(data=data)
+
+    active_subscription = subscription_holder.active_stripe_subscription
+    subscription_urls = _get_subscription_urls(subscription_holder)
+    friendly_payment_amount = get_friendly_currency_amount(
+            subscription_holder.active_stripe_subscription.plan.amount,
+            subscription_holder.active_stripe_subscription.plan.currency,
+        )
+    product = get_product_and_metadata_for_subscription(subscription_holder.active_stripe_subscription)
+
+    data = {
+        'has_active_subscription': has_active_subscription,
+        'active_subscription': active_subscription,
+        'friendly_payment_amount': friendly_payment_amount,
+        'product': product
+    }
+    return JsonResponse(data = data)
 
 
 def _view_subscription(request, subscription_holder):
@@ -290,12 +310,9 @@ def _view_subscription(request, subscription_holder):
     return JsonResponse(data=data)
 
 
-def _upgrade_subscription(request, subscription_holder):
-    """
-    Show subscription upgrade form / options.
-    """
-    assert not subscription_holder.has_active_subscription()
-
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def upgrade_subscription(request):
     active_products = list(get_active_products_with_metadata())
     default_products = [p for p in active_products if p.metadata.is_default]
     default_product = default_products[0] if default_products else active_products[0]

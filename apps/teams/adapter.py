@@ -1,11 +1,11 @@
 from django.urls import reverse
 
-from apps.users.adapter import CustomUserAccountAdapter
+from apps.users.adapter import EmailAsUsernameAdapter
 from .invitations import clear_invite_from_session
 
 
 
-class AcceptInvitationAdapter(CustomUserAccountAdapter):
+class AcceptInvitationAdapter(EmailAsUsernameAdapter):
     """
     Adapter that checks for an invitation id in the session and redirects
     to accepting it after login.
