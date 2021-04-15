@@ -94,8 +94,8 @@ const UpgradeSubscription = (props) => {
                 <Row className="mt-3">
                   <Col>
                     <span className="h5 surtitle">Features</span>
-                    <span class="d-block mt-2 ml-4 text">
-                      <i class="fa fa-check"></i> 1 User
+                    <span className="d-block mt-2 ml-4 text">
+                      <i className="fa fa-check"></i> 1 User
                     </span>
                   </Col>
                 </Row>

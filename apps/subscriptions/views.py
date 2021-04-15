@@ -24,7 +24,8 @@ from apps.web.meta import absolute_url
 from .decorators import redirect_subscription_errors
 from .helpers import get_friendly_currency_amount
 from .metadata import get_active_products_with_metadata, \
-    get_product_and_metadata_for_subscription, ACTIVE_PLAN_INTERVALS, get_active_plan_interval_metadata
+    get_product_and_metadata_for_subscription, ACTIVE_PLAN_INTERVALS, get_active_plan_interval_metadata, \
+    get_product_with_metadata, TEAMMATE_PRODUCT, EMAIL_PRODUCT
 
 from apps.teams.decorators import team_admin_required, login_and_team_required
 from apps.teams.models import Team
@@ -61,6 +62,7 @@ def _get_payment_metadata_from_request(request):
 def subscription_success(request):
     return _subscription_success(request, request.user)
 
+
 def _subscription_success(request, subscription_holder):
     stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
     if not subscription_holder.has_active_subscription():
@@ -68,8 +70,8 @@ def _subscription_success(request, subscription_holder):
         if not subscription:
             messages.error(
                 request,
-               "Oops, it looks like there was a problem processing your payment. "
-               "Please try again, or get in touch if you think this is a mistake."
+                "Oops, it looks like there was a problem processing your payment. "
+                "Please try again, or get in touch if you think this is a mistake."
             )
         else:
             # 3D-Secure workflow hopefully completed successfully,
@@ -88,10 +90,10 @@ def _subscription_success(request, subscription_holder):
             message="Email: {}".format(request.user.email),
             fail_silently=True,
         )
-    
+
     assert isinstance(subscription_holder, Team)
     redirect = reverse('subscriptions:team_subscription_details', args=[subscription_holder.slug])
-    
+
     return HttpResponseRedirect(redirect)
 
 
@@ -107,8 +109,8 @@ def create_stripe_portal_session(request, subscription_holder=None):
         return HttpResponseRedirect(subscription_urls['subscription_details'])
 
     session = stripe.billing_portal.Session.create(
-      customer=subscription_holder.subscription.customer.id,
-      return_url=absolute_url(subscription_urls['subscription_details']),
+        customer=subscription_holder.subscription.customer.id,
+        return_url=absolute_url(subscription_urls['subscription_details']),
     )
     return HttpResponseRedirect(session.url)
 
@@ -135,11 +137,9 @@ def create_customer(request, subscription_holder=None):
     assert request.user.id == user_id
     assert request.user.email == email
 
-    
     assert isinstance(subscription_holder, Team)
     team_id = int(request_body['team_id'])
     assert request.team.id == team_id
-    
 
     payment_method = request_body['payment_method']
     plan_id = request_body['plan_id']
@@ -152,11 +152,11 @@ def create_customer(request, subscription_holder=None):
     # create customer objects
     # This creates a new Customer in stripe and attaches the default PaymentMethod in one API call.
     customer = stripe.Customer.create(
-      payment_method=payment_method,
-      email=email,
-      invoice_settings={
-        'default_payment_method': payment_method,
-      },
+        payment_method=payment_method,
+        email=email,
+        invoice_settings={
+            'default_payment_method': payment_method,
+        },
     )
 
     # create the local customer object in the DB so the subscription can use it
@@ -164,13 +164,13 @@ def create_customer(request, subscription_holder=None):
 
     # create subscription
     subscription = stripe.Subscription.create(
-      customer=customer.id,
-      items=[
-        {
-          'plan': plan_id,
-        },
-      ],
-      expand=['latest_invoice.payment_intent', 'pending_setup_intent'],
+        customer=customer.id,
+        items=[
+            {
+                'plan': plan_id,
+            },
+        ],
+        expand=['latest_invoice.payment_intent', 'pending_setup_intent'],
     )
     djstripe_subscription = djstripe.models.Subscription.sync_from_stripe_data(subscription)
 
@@ -190,17 +190,12 @@ def create_customer(request, subscription_holder=None):
 def _get_subscription_urls(subscription_holder):
     # get URLs for subscription helpers
     url_bases = [
-        'subscription_details',
         'create_customer',
         'create_stripe_portal_session',
-        'subscription_success',
-        'subscription_demo',
-        'subscription_gated_page',
     ]
 
     def _construct_url(base):
-        return reverse(f'subscriptions:team_{base}', args=[subscription_holder.slug])
-        
+        return reverse(f'subscriptions:{base}')
 
     return {
         url_base: _construct_url(url_base) for url_base in url_bases
@@ -227,7 +222,6 @@ def subscription_gated_page(request, subscription_holder=None):
         return render(request, 'subscriptions/subscription_required.html')
     else:
         return render(request, 'subscriptions/subscription_gated_page.html')
-
 
 
 @team_admin_required
@@ -283,29 +277,26 @@ def stripe_info(request):
 def subscription_details(request):
     subscription_holder: CustomUser = request.user
 
-    has_active_subscription = subscription_holder.has_active_subscription()
-
-    if not has_active_subscription:
+    if not subscription_holder.has_active_subscription():
         data = {
-            'has_active_subscription': has_active_subscription,
+            'error': 'No active subscription.'
         }
         return JsonResponse(data=data)
 
     active_subscription = subscription_holder.active_stripe_subscription
     subscription_urls = _get_subscription_urls(subscription_holder)
     friendly_payment_amount = get_friendly_currency_amount(
-            subscription_holder.active_stripe_subscription.plan.amount,
-            subscription_holder.active_stripe_subscription.plan.currency,
-        )
+        subscription_holder.active_stripe_subscription.plan.amount,
+        subscription_holder.active_stripe_subscription.plan.currency,
+    )
     product = get_product_and_metadata_for_subscription(subscription_holder.active_stripe_subscription)
 
     data = {
-        'has_active_subscription': has_active_subscription,
         'active_subscription': active_subscription,
         'friendly_payment_amount': friendly_payment_amount,
         'product': product
     }
-    return JsonResponse(data = data)
+    return JsonResponse(data=data)
 
 
 def _view_subscription(request, subscription_holder):
@@ -328,6 +319,11 @@ def _view_subscription(request, subscription_holder):
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
 def upgrade_subscription(request):
+    subscription_holder: CustomUser = request.user
+
+    teammate_product = get_product_with_metadata(TEAMMATE_PRODUCT)
+    email_product = get_product_with_metadata(EMAIL_PRODUCT)
+
     active_products = list(get_active_products_with_metadata())
     default_products = [p for p in active_products if p.metadata.is_default]
     default_product = default_products[0] if default_products else active_products[0]
@@ -358,13 +354,15 @@ def upgrade_subscription(request):
         return product_data
 
     data = {
-        'stripe_api_key': djstripe_settings.STRIPE_PUBLIC_KEY,
-        'active_products_json': {str(p.stripe_id): _to_dict(p) for p in active_products},
+        'teammate_product': teammate_product.to_dict(),
+        'email_product': email_product.to_dict(),
+        'subscription_urls': _get_subscription_urls(subscription_holder),
+        'payment_metadata': _get_payment_metadata_from_request(request),
+
+        # 'active_products_json': {str(p.stripe_id): _to_dict(p) for p in active_products},
         # 'active_plan_intervals': active_plans,
         # 'default_product': default_product,
         # 'default_to_annual': ACTIVE_PLAN_INTERVALS[0] == PlanInterval.year,
-        # 'subscription_urls': _get_subscription_urls(subscription_holder),
-        # 'payment_metadata': _get_payment_metadata_from_request(request),
     }
 
     return JsonResponse(data=data)
