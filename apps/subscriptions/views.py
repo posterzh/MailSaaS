@@ -14,6 +14,8 @@ from django.views.decorators.http import require_POST
 from djstripe.enums import PlanInterval
 from djstripe.models import Product
 from djstripe import settings as djstripe_settings
+from rest_framework import permissions
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -47,74 +49,10 @@ def subscription(request, subscription_holder=None):
         return _upgrade_subscription(request, subscription_holder)
 
 
-def _view_subscription(request, subscription_holder):
-    """
-    Show user's active subscription
-    """
-    assert subscription_holder.has_active_subscription()
-    return render(request, 'subscriptions/view_subscription.html', {
-        'active_tab': 'subscription',
-        'subscription': subscription_holder.active_stripe_subscription,
-        'subscription_urls': _get_subscription_urls(subscription_holder),
-        'friendly_payment_amount': get_friendly_currency_amount(
-            subscription_holder.active_stripe_subscription.plan.amount,
-            subscription_holder.active_stripe_subscription.plan.currency,
-        ),
-        'product': get_product_and_metadata_for_subscription(subscription_holder.active_stripe_subscription),
-    })
-
-
-def _upgrade_subscription(request, subscription_holder):
-    """
-    Show subscription upgrade form / options.
-    """
-    assert not subscription_holder.has_active_subscription()
-
-    active_products = list(get_active_products_with_metadata())
-    default_products = [p for p in active_products if p.metadata.is_default]
-    default_product = default_products[0] if default_products else active_products[0]
-
-    def _to_dict(product_with_metadata):
-        # for now, just serialize the minimum amount of data needed for the front-end
-        product_data = {}
-        if PlanInterval.year in ACTIVE_PLAN_INTERVALS:
-            product_data['annual_plan'] = {
-                'stripe_id': product_with_metadata.annual_plan.id,
-                'payment_amount': get_friendly_currency_amount(product_with_metadata.annual_plan.amount,
-                                                               product_with_metadata.annual_plan.currency),
-                'monthly_amount': get_friendly_currency_amount(product_with_metadata.annual_plan.amount / 12,
-                                                               product_with_metadata.annual_plan.currency),
-                'interval': PlanInterval.year,  # set to month because we're dividing price by 12
-            }
-        if PlanInterval.month in ACTIVE_PLAN_INTERVALS:
-            product_data['monthly_plan'] = {
-                'stripe_id': product_with_metadata.monthly_plan.id,
-                'payment_amount': get_friendly_currency_amount(product_with_metadata.monthly_plan.amount,
-                                                               product_with_metadata.monthly_plan.currency),
-                'monthly_amount': get_friendly_currency_amount(product_with_metadata.monthly_plan.amount,
-                                                               product_with_metadata.monthly_plan.currency),
-                'interval': PlanInterval.month,
-            }
-        return product_data
-
-    return render(request, 'subscriptions/upgrade_subscription.html', {
-        'active_tab': 'subscription',
-        'stripe_api_key': djstripe_settings.STRIPE_PUBLIC_KEY,
-        'default_product': default_product,
-        'active_products': active_products,
-        'active_products_json': {str(p.stripe_id): _to_dict(p) for p in active_products},
-        'active_plan_intervals': get_active_plan_interval_metadata(),
-        'default_to_annual': ACTIVE_PLAN_INTERVALS[0] == PlanInterval.year,
-        'subscription_urls': _get_subscription_urls(subscription_holder),
-        'payment_metadata': _get_payment_metadata_from_request(request),
-    })
-
-
 def _get_payment_metadata_from_request(request):
     return {
         'user_id': request.user.id,
         'user_email': request.user.email,
-        'team_id': request.team.id,
     }
 
 
@@ -324,3 +262,77 @@ def team_subscription_demo(request, team_slug):
 def team_subscription_gated_page(request, team_slug):
     return subscription_gated_page(request, subscription_holder=request.team)
 
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def subscription_details(request):
+    subscription_holder = request.user
+    if subscription_holder.has_active_subscription():
+        return _view_subscription(request, subscription_holder)
+    else:
+        return _upgrade_subscription(request, subscription_holder)
+
+
+def _view_subscription(request, subscription_holder):
+    """
+    Show user's active subscription
+    """
+    assert subscription_holder.has_active_subscription()
+    data = {
+        'subscription': subscription_holder.active_stripe_subscription,
+        'subscription_urls': _get_subscription_urls(subscription_holder),
+        'friendly_payment_amount': get_friendly_currency_amount(
+            subscription_holder.active_stripe_subscription.plan.amount,
+            subscription_holder.active_stripe_subscription.plan.currency,
+        ),
+        'product': get_product_and_metadata_for_subscription(subscription_holder.active_stripe_subscription),
+    }
+    return JsonResponse(data=data)
+
+
+def _upgrade_subscription(request, subscription_holder):
+    """
+    Show subscription upgrade form / options.
+    """
+    assert not subscription_holder.has_active_subscription()
+
+    active_products = list(get_active_products_with_metadata())
+    default_products = [p for p in active_products if p.metadata.is_default]
+    default_product = default_products[0] if default_products else active_products[0]
+
+    active_plans = get_active_plan_interval_metadata()
+
+    def _to_dict(product_with_metadata):
+        # for now, just serialize the minimum amount of data needed for the front-end
+        product_data = {}
+        if PlanInterval.year in ACTIVE_PLAN_INTERVALS:
+            product_data['annual_plan'] = {
+                'stripe_id': product_with_metadata.annual_plan.id,
+                'payment_amount': get_friendly_currency_amount(product_with_metadata.annual_plan.amount,
+                                                               product_with_metadata.annual_plan.currency),
+                'monthly_amount': get_friendly_currency_amount(product_with_metadata.annual_plan.amount / 12,
+                                                               product_with_metadata.annual_plan.currency),
+                'interval': PlanInterval.year,  # set to month because we're dividing price by 12
+            }
+        if PlanInterval.month in ACTIVE_PLAN_INTERVALS:
+            product_data['monthly_plan'] = {
+                'stripe_id': product_with_metadata.monthly_plan.id,
+                'payment_amount': get_friendly_currency_amount(product_with_metadata.monthly_plan.amount,
+                                                               product_with_metadata.monthly_plan.currency),
+                'monthly_amount': get_friendly_currency_amount(product_with_metadata.monthly_plan.amount,
+                                                               product_with_metadata.monthly_plan.currency),
+                'interval': PlanInterval.month,
+            }
+        return product_data
+
+    data = {
+        'stripe_api_key': djstripe_settings.STRIPE_PUBLIC_KEY,
+        'active_products_json': {str(p.stripe_id): _to_dict(p) for p in active_products},
+        # 'active_plan_intervals': active_plans,
+        # 'default_product': default_product,
+        # 'default_to_annual': ACTIVE_PLAN_INTERVALS[0] == PlanInterval.year,
+        # 'subscription_urls': _get_subscription_urls(subscription_holder),
+        # 'payment_metadata': _get_payment_metadata_from_request(request),
+    }
+
+    return JsonResponse(data=data)

@@ -123,8 +123,12 @@ ACTIVE_PLAN_INTERVALS = [
 # with plans on your side
 if settings.STRIPE_LIVE_MODE == False:
     ACTIVE_PRODUCTS = [
-        ProductMetadata(stripe_id='prod_JI2GDl9H3qsN1H', name='User', features=['User Feature 1', 'User Feature 2', 'User Feature 3'], description='The User plan', is_default=True),
-        ProductMetadata(stripe_id='prod_JI2GrVLZMU6Wmk', name='Email Account', features=['Email Account Feature 1', 'Email Account Feature 2', 'Email Account Feature 3'], description='The Email Account plan', is_default=False),
+        ProductMetadata(stripe_id='prod_JIUKMaC01HeQLS', name='EmailAccount',
+                        features=['EmailAccount Feature 1', 'EmailAccount Feature 2', 'EmailAccount Feature 3'],
+                        description='The EmailAccount plan', is_default=False),
+        ProductMetadata(stripe_id='prod_JIUJQ1cR7OkqXf', name='TeamMember',
+                        features=['TeamMember Feature 1', 'TeamMember Feature 2', 'TeamMember Feature 3'],
+                        description='The TeamMember plan', is_default=False),
     ]
 
 

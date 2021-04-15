@@ -18,6 +18,23 @@ import EditCardDetailModal from "./EditCardDetailModal";
 
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
+import { loadStripe } from "@stripe/stripe-js";
+import {
+  CardElement,
+  Elements,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+import {
+  formatHeader,
+  toggleTopLoader,
+  toastOnSuccess,
+  toastOnError,
+  messages,
+} from "../../../utils/Utils";
+import axios from "../../../utils/axios";
+
+const stripePromise = loadStripe("pk_test_4avw1EQzI75q76v5OZJ0gpXn00znlGWXyl");
 
 const Billing = (props) => {
   const [modal, setModal] = useState(false);
@@ -34,6 +51,21 @@ const Billing = (props) => {
       amount: "$60.00",
     },
   ];
+
+  useEffect(async () => {
+    try {
+      toggleTopLoader(true);
+
+      const { data } = await axios.get("/subscriptions/api/");
+      console.log(data);
+    } catch (e) {
+      toastOnError(messages.api_failed);
+    } finally {
+      toggleTopLoader(false);
+    }
+  });
+
+  const upgrade = () => {};
 
   return (
     <>
@@ -80,6 +112,7 @@ const Billing = (props) => {
                     color="primary"
                     type="submit"
                     className="text-uppercase"
+                    onClick={upgrade}
                   >
                     Upgrade
                   </Button>
@@ -94,7 +127,7 @@ const Billing = (props) => {
                       <DropdownItem
                         onClick={(e) => {
                           e.preventDefault();
-                          this.setState({ modal: !this.state.modal });
+                          setModal(!modal);
                         }}
                       >
                         Change Credit Card, etc.
@@ -153,10 +186,10 @@ const Billing = (props) => {
             </Col>
           </Row>
         </Container>
-        <EditCardDetailModal
-          isOpen={this.state.modal}
-          handleClose={this.handleClose}
-        />
+
+        <Elements stripe={stripePromise}>
+          <EditCardDetailModal isOpen={modal} handleClose={handleClose} />
+        </Elements>
       </PageContainer>
     </>
   );
