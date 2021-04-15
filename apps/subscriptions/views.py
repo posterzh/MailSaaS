@@ -293,11 +293,6 @@ def subscription_details(request):
     return JsonResponse(data = data)
 
 
-@api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
-def upgrade_subscription(request):
-    pass
-
 def _view_subscription(request, subscription_holder):
     """
     Show user's active subscription
@@ -315,12 +310,9 @@ def _view_subscription(request, subscription_holder):
     return JsonResponse(data=data)
 
 
-def _upgrade_subscription(request, subscription_holder):
-    """
-    Show subscription upgrade form / options.
-    """
-    assert not subscription_holder.has_active_subscription()
-
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def upgrade_subscription(request):
     active_products = list(get_active_products_with_metadata())
     default_products = [p for p in active_products if p.metadata.is_default]
     default_product = default_products[0] if default_products else active_products[0]
