@@ -22,7 +22,8 @@ urlpatterns = [
          views.team_create_customer, name='team_create_customer'),
 
     # Team admin subscription
-    path('api/subscription-details/', views.subscription_details, name='subscription_details'),
+    path('api/stripe-info/', views.stripe_info, name='stripe-info'),
+    path('api/subscription-details/', views.subscription_details, name='subscription-details'),
     path('api/upgrade-subscription/', views.upgrade_subscription, name='upgrade-subscription'),
 
     path('stripe-portal/', views.create_stripe_portal_session, name='create_stripe_portal_session'),

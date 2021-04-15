@@ -28,6 +28,7 @@ from .metadata import get_active_products_with_metadata, \
 
 from apps.teams.decorators import team_admin_required, login_and_team_required
 from apps.teams.models import Team
+from ..users.models import CustomUser
 
 
 class ProductWithMetadataAPI(APIView):
@@ -265,8 +266,22 @@ def team_subscription_gated_page(request, team_slug):
 
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
+def stripe_info(request):
+    subscription_holder: CustomUser = request.user
+
+    has_active_subscription = subscription_holder.has_active_subscription()
+
+    data = {
+        'stripe_api_key': djstripe_settings.STRIPE_PUBLIC_KEY,
+        'has_active_subscription': has_active_subscription,
+    }
+    return JsonResponse(data=data)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
 def subscription_details(request):
-    subscription_holder = request.user
+    subscription_holder: CustomUser = request.user
 
     has_active_subscription = subscription_holder.has_active_subscription()
 
