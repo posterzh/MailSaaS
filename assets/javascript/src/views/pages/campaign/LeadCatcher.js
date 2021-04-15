@@ -26,7 +26,6 @@ import ReactQuill from "react-quill";
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
 import Tables from "../../../components/Tables";
-import FloatingPanel from "../../../components/FloatingPanel";
 import { formatHeader, toggleTopLoader, toastOnSuccess, toastOnError, messages } from '../../../utils/Utils';
 import axios from '../../../utils/axios';
 
@@ -563,12 +562,12 @@ class LeadCatcher extends Component {
                           RE-OPEN
                         </Button>
                       }
-                      <Button className="btn-icon" color="secondary" type="button" size="sm">
+                      {/* <Button className="btn-icon" color="secondary" type="button" size="sm">
                         <span className="btn-inner--icon">
                           <i className="ni ni-curved-next" />
                         </span>
                         <span className="btn-inner--text">NEXT</span>
-                      </Button>
+                      </Button> */}
                     </div>
 
                     {

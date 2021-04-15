@@ -13,7 +13,7 @@ from .tasks import email_receiver, email_sender
 from ..campaign.models import EmailOutbox
 from .utils.smtp import check_email
 from mail.settings import DEFAULT_WARMUP_FOLDER
-from ..campaign.tasks import triggerLeadCatcher
+from ..campaign.tasks import triggerLeadCatcher, updateLeadsLog
 
 
 class EmailAccountListView(generics.ListCreateAPIView):
@@ -165,6 +165,7 @@ class MyOpenTrackingView(OpenTrackingView):
 
         # Lead checking
         triggerLeadCatcher(outbox.campaign_id, outbox.recipient_id)
+        updateLeadsLog(outbox.recipient_id, "opened")
 
         print(f'Tracking: Email {outbox.recipient.email} is opened.')
 
@@ -188,5 +189,6 @@ class MyClickTrackingView(ClickTrackingView):
 
         # Lead checking
         triggerLeadCatcher(outbox.campaign_id, outbox.recipient_id)
+        updateLeadsLog(outbox.recipient_id, "clicked")
 
         print(f'Tracking: Email {outbox.recipient.email} is clicked.')

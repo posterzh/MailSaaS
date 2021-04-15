@@ -6,6 +6,7 @@ import {
   Button,
   Card,
   CardBody,
+  Modal
 } from "reactstrap";
 import Dropzone from "dropzone";
 import { CSVReader } from "react-papaparse";
@@ -23,12 +24,18 @@ class TheRecipient extends Component {
     this.state = {
       show: false,
       csvFile: null,
+      tmpFile: null,
       first_row: null,
       csvFields: null,
       csvMappingContent: {
         title: [],
         data: [],
-      }
+      },
+      duplicates: {
+        title: [],
+        data: []
+      },
+      isOpen: false
     };
   }
 
@@ -45,30 +52,37 @@ class TheRecipient extends Component {
       csv_fields: this.state.csvFields
     };
 
-    // if (!e) return;
+    this.props.campaignRecipient(recipientData);
+    this.props.onNext();
 
+    // if (!e) return;
+    // const formData = new FormData();
+    // formData.append('csvfile', payload.csvfile);
     // toggleTopLoader(true);
     // axios
-    //   .post(`/campaign/check-audiences/`, {status: e.control == 'play'})
+    //   .post("/campaign/check-recipients", formData)
     //   .then((response) => {
-    //     toastOnSuccess("Updated successfully!");
-    //     if (response.data.success) {
-    //       const items = this.state.data;
-    //       this.setState({data: items});
+    //     if (response.success) {
+    //       if (response.result.length > 0) {
+    //         this.setState({isOpen: true});
+    //       } else {
+    //         this.props.campaignRecipient(recipientData);
+    //         this.props.onNext();
+    //       }
+    //     } else {
+
     //     }
+    //     history.push("/app/admin/campaign/list");
     //   })
     //   .catch((error) => {
     //     toastOnError(error);
     //   })
     //   .finally(() => {
     //     toggleTopLoader(false);
-    //   });
-
-    this.props.campaignRecipient(recipientData);
-    this.props.onNext();
+    //   });    
   };
 
-  handleOnDrop = (data, file) => {
+  handleOnDrop = async (data, file) => {
     if (!data || data.length == 0) {
       this.setState({
         csvFile: null,
@@ -103,6 +117,17 @@ class TheRecipient extends Component {
       return;
     }
 
+    const duplication = await this.checkDuplication(file);
+    if (duplication && duplication.length > 0) {
+      this.setState({
+        duplicates: {
+          title: [{key: 'email', value: 'email'}],
+          data: duplication
+        },
+        isOpen: true
+      });
+    }
+
     if (tableHeaders.length > 0) {
       data.forEach((row, index) => {
         if (index > 10) return;
@@ -116,14 +141,15 @@ class TheRecipient extends Component {
     }
 
     this.setState({
-      csvFile: file,
+      tmpFile: file,
       csvMappingContent: {
         title: tableHeaders,
         data: tableBody,
       },
       first_row: firstRow,
       show: true,
-      csvFields: fields.join(',')
+      csvFields: fields.join(','),
+      csvFile: null
     });
   };
 
@@ -133,6 +159,10 @@ class TheRecipient extends Component {
       csvFile: null,
       show: true,
       csvMappingContent: {
+        title: [],
+        data: [],
+      },
+      duplicates: {
         title: [],
         data: [],
       }
@@ -147,17 +177,48 @@ class TheRecipient extends Component {
         title: [],
         data: [],
       },
+      isOpen: false
     });
   };
+
+  setCSVFile = () => {
+    const f = this.state.tmpFile;
+    this.setState({
+      csvFile: f,
+      isOpen: false
+    });
+  }
 
   onPrev = () => {
     // call parent method
     this.props.onPrev();
   };
 
+  checkDuplication = (csvfile) => {
+    const formData = new FormData();
+    formData.append('csvfile', csvfile);
+    toggleTopLoader(true);
+    return axios
+      .post("/campaign/check-recipients", formData)
+      .then((response) => {
+        const { data } = response;
+        if (data.success) {
+          return data.result;
+        } else {
+          return false;
+        }
+      })
+      .catch((error) => {
+        toastOnError({'error': error});
+      })
+      .finally(() => {
+        toggleTopLoader(false);
+      });   
+  }
+
   render() {
     const { onPrev, onNext } = this.props;
-    const { show, csvMappingContent } = this.state;
+    const { show, csvMappingContent, duplicates } = this.state;
 
     return (
       <>
@@ -235,6 +296,48 @@ class TheRecipient extends Component {
             )}
           </Col>
         </Row>
+        <Modal
+          className="modal-dialog-centered"
+          isOpen={this.state.isOpen}
+          toggle={this.state.close}
+        >
+          <div className="modal-header">
+            <h5 className="modal-title" id="exampleModalLabel">
+              Duplicated Recipients
+            </h5>
+            <button
+              aria-label="Close"
+              className="close"
+              data-dismiss="modal"
+              type="button"
+              onClick={this.state.close}
+            >
+              <span aria-hidden={true}>×</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            {duplicates.title.length > 0 &&
+              duplicates.data.length > 0 && (
+                <Tables
+                  titles={duplicates.title} // required
+                  tablePropsData={duplicates.data} // required
+                />
+              )}
+          </div>
+          <div className="modal-footer">
+            <Button
+              color="secondary"
+              data-dismiss="modal"
+              type="button"
+              onClick={this.handleOnRemoveFile}
+            >
+              Cancel
+            </Button>
+            <Button color="danger" type="button" onClick={this.setCSVFile}>
+              Continue
+            </Button>
+          </div>
+        </Modal>
       </>
     );
   }

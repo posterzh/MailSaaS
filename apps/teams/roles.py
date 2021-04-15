@@ -1,11 +1,19 @@
-
 ROLE_ADMIN = 'admin'
 ROLE_MEMBER = 'member'
+PERMISSION_READ = 'read'
+PERMISSION_CREATE = 'create'
+PERMISSION_UPDATE = 'update'
 
 ROLE_CHOICES = (
     # customize roles here
     (ROLE_ADMIN, 'Administrator'),
     (ROLE_MEMBER, 'Member'),
+)
+
+MEMBER_PERMISSION = (
+    ('read', 'Read Campaign'),
+    ('create', 'Create Campaign'),
+    ('update', 'Update Campaign')
 )
 
 
@@ -24,3 +32,9 @@ def is_member(user, team):
 def is_admin(user, team):
     from .models import Membership
     return Membership.objects.filter(team=team, user=user, role=ROLE_ADMIN).exists()
+
+
+# def has_permission_read(user, team):
+#     return is_admin(user, team) or Membership.objects.filter(team=team, user=user, role=ROLE_MEMBER, \
+#     permission=PERMISSION_READ).exists()
+

@@ -10,19 +10,19 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
-sentry_sdk.init(
-    dsn="https://54a77e70d6ac40c9b834017e1c5d4df0@o423610.ingest.sentry.io/5701236",
-    integrations=[DjangoIntegration()],
-
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production.
-    traces_sample_rate=1.0,
-
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True
-)
+# sentry_sdk.init(
+#     dsn="https://54a77e70d6ac40c9b834017e1c5d4df0@o423610.ingest.sentry.io/5701236",
+#     integrations=[DjangoIntegration()],
+#
+#     # Set traces_sample_rate to 1.0 to capture 100%
+#     # of transactions for performance monitoring.
+#     # We recommend adjusting this value in production.
+#     traces_sample_rate=1.0,
+#
+#     # If you wish to associate users to errors (assuming you are using
+#     # django.contrib.auth) you may enable sending PII data.
+#     send_default_pii=True
+# )
 
 env_path = Path('.') / '.env'
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -37,7 +37,7 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = env.bool('DEBUG', default=True)
-LIVE = env.bool('LIVE', default=False)
+LIVE = env.bool('LIVE', default=True)
 STRIPE_LIVE_MODE = env.bool('STRIPE_LIVE_MODE', default=False)
 
 ALLOWED_HOSTS = ['*']
@@ -88,7 +88,7 @@ PEGASUS_APPS = [
 
 # Put your project-specific apps here
 PROJECT_APPS = [
-    'apps.subscriptions.apps.SubscriptionConfig',
+    # 'apps.subscriptions.apps.SubscriptionConfig',
     'apps.users.apps.UserConfig',
     'apps.web',
     'apps.campaign',
@@ -98,6 +98,7 @@ PROJECT_APPS = [
     "apps.unsubscribes",
 
     'apps.mailaccounts',
+    'apps.subscriptions',
     'apps.dashbaord',
 
     'rest_framework',
@@ -191,6 +192,7 @@ if DEBUG:
 
 if not DEBUG:
     dbpassw = get_secret()['password']
+    print(dbpassw)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',

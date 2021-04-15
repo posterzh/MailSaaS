@@ -5,9 +5,10 @@ from django.db import models
 
 from .storage import OverwriteStorage
 from .managers import UserManager
+from ..subscriptions.helpers import SubscriptionModelMixin
 
 
-class CustomUser(AbstractUser):
+class CustomUser(SubscriptionModelMixin, AbstractUser):
     """
     Add additional fields to the user model here.
     """

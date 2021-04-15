@@ -43,3 +43,13 @@ def triggerLeadCatcher(campaign_id, recipient_id):
         recipient.lead_status = 'open'
         recipient.save()
 
+
+@shared_task
+def updateLeadsLog(recipient_id, action, inbox_id=None, outbox_id=None):
+    if recipient_id is None or not recipient_id:
+        return
+    try:
+        log = LeadsLog(recipient_id=recipient_id, lead_action=action, inbox_id=inbox_id, outbox_id=outbox_id)
+        log.save()
+    except Exception as e:
+        return
