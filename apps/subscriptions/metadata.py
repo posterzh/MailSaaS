@@ -81,7 +81,7 @@ class ProductWithMetadata(object):
         return {
             'product': ProductSerializer(self.product).data,
             'metadata': attr.asdict(self.metadata),
-            'default_plan': _serialized_plan_or_none(self.default_plan),
+            # 'default_plan': _serialized_plan_or_none(self.default_plan),
             # 'annual_plan': _serialized_plan_or_none(self.annual_plan),
             'monthly_plan': _serialized_plan_or_none(self.monthly_plan),
         }

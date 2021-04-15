@@ -63,6 +63,12 @@ const UpgradeSubscription = (props) => {
     });
   };
 
+  const [teammateProduct, setTeammateProduct] = useState(null);
+  const [paymentMetaData, setPaymentMetaData] = useState(null);
+  const [subscriptionUrls, setSubscriptionUrls] = useState(null);
+
+  const [currencyAmount, setCurrencyAmount] = useState("-");
+
   useEffect(async () => {
     try {
       toggleTopLoader(true);
@@ -70,13 +76,23 @@ const UpgradeSubscription = (props) => {
       const { data } = await axios.get(
         "/subscriptions/api/upgrade-subscription/"
       );
-      console.log(data);
+      console.log("upgrade-subscription: ", data);
+
+      setTeammateProduct(data.teammate_product);
+      setPaymentMetaData(data.payment_metadata);
+      setSubscriptionUrls(data.subscription_urls);
     } catch (e) {
       toastOnError(messages.api_failed);
     } finally {
       toggleTopLoader(false);
     }
   }, []);
+
+  useEffect(() => {
+    if (teammateProduct) {
+      setCurrencyAmount(teammateProduct.monthly_plan.currency_amount);
+    }
+  }, [teammateProduct]);
 
   return (
     <>
@@ -88,7 +104,9 @@ const UpgradeSubscription = (props) => {
                 <Row className="mt-3">
                   <Col>
                     <span className="h5 surtitle">Plan</span>
-                    <span className="d-block h2 ml-4">$39.00/month</span>
+                    <span className="d-block h2 ml-4">
+                      {currencyAmount} / month
+                    </span>
                   </Col>
                 </Row>
                 <Row className="mt-3">
@@ -117,7 +135,8 @@ const UpgradeSubscription = (props) => {
                   Upgrade
                 </Button>
                 <span className="text-sm d-block mt-3">
-                  Your card will be charged $39.00 for your first month.
+                  Your card will be charged {currencyAmount} for your first
+                  month.
                 </span>
               </CardFooter>
             </Card>
