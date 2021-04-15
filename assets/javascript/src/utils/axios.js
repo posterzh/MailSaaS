@@ -34,8 +34,8 @@ class Api {
         delete axios.defaults.headers.common["Authorization"];
         localStorage.removeItem(TOKEN_KEY);
         location.href = "/app/auth/login";
-        return Promise.reject(err);
       }
+      return Promise.reject(err);
     });
   }
 
