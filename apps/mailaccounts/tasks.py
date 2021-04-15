@@ -9,9 +9,9 @@ from imap_tools import MailBox, AND
 from .models import *
 from .utils.sending_calendar import can_send_email, calendar_sent
 from .utils.smtp import send_mail_with_smtp, get_emails_to_send, move_warmups_from_spam_to_inbox
-from ..campaign.models import EmailInbox, Campaign, Recipient, EmailOutbox, Emails
+from ..campaign.models import EmailInbox, Campaign, Recipient, EmailOutbox, Emails, LeadsLog
 from mail.settings import DEFAULT_RAMPUP_INCREMENT, DEFAULT_WARMUP_MAX_CNT, DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX, DEFAULT_WARMUP_FOLDER
-from ..campaign.tasks import triggerLeadCatcher
+from ..campaign.tasks import triggerLeadCatcher, updateLeadsLog
 
 gen = DocumentGenerator()
 
@@ -37,7 +37,9 @@ def email_sender():
 
     # Fetch sending objects
     sending_objects = get_emails_to_send(available_mail_ids, available_mail_limits)
-    print(f'Get {len(sending_objects)} sending objects.')
+    if len(sending_objects) == 0:
+        print(f'Get {len(sending_objects)} sending objects.')
+        return
 
     # Update the EmailOutbox table
     for sending_item in sending_objects:
@@ -89,6 +91,7 @@ def email_sender():
             outbox.sent_time = datetime.now(timezone.utc).time()
             outbox.status = 1
             outbox.save()
+
         else:
             print(f"Failed to send from {outbox.from_email.email} to {outbox.recipient.email}")
 
@@ -147,6 +150,7 @@ def email_receiver():
                     # Lead checking
                     if inbox.outbox:
                         triggerLeadCatcher(inbox.outbox.campaign_id, inbox.outbox.recipient_id)
+                        updateLeadsLog(inbox.outbox.recipient_id, "replied")
 
                     print(f"Email received from {msg.from_} to {msg.to}")
         except OSError:

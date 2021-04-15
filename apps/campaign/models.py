@@ -25,7 +25,7 @@ LEAD_ACTION = (
     ("clicked", "Recipient: Clicked Link"),
     ("replied", "Recipient: Replied"),
     ("sent", "Initial mail sent"),
-    ("me_replied", "Me: Replied"),
+    ("me_replied", "You: Replied"),
     ("open", "Status: Opened"),
     ("won", "Status: Won"),
     ("lost", "Status: Lost"),

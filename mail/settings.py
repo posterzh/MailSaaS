@@ -186,6 +186,7 @@ if DEBUG:
 
 if not DEBUG:
     dbpassw = get_secret()['password']
+    print(dbpassw)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',

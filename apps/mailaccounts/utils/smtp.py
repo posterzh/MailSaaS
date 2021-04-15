@@ -21,7 +21,7 @@ from mail.settings import DEFAULT_WARMUP_MAIL_SUBJECT_SUFFIX, DEFAULT_WARMUP_FOL
 
 from .sqls import schedule_sql_template
 
-pattern_uid = re.compile('.*\d+ \(UID (?P<uid>\d+)\).*')
+pattern_uid = re.compile(r'.*\d+ \(UID (?P<uid>\d+)\).*')
 
 GOOGLE_SMTP_HOST = 'smtp.gmail.com'
 GOOGLE_SMTP_PORT = '587'

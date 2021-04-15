@@ -2270,3 +2270,39 @@ class CampaignScheduleView(APIView):
     def post(self, request, format=None):
         # Moved to mailaccounts > tasks.py
         return Response()
+
+
+class RecipientsCheck(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, format=None):
+
+        post_data = request.data
+        if post_data['csvfile'] and len(post_data['csvfile']) > 0:
+            csv_file = post_data['csvfile']
+            file_data = csv_file.read().decode("utf-8")
+            string_data = StringIO(file_data)
+            df_csv = pd.read_csv(string_data)
+
+            # read csv file
+            # csv_content = new_camp.csvfile.read()
+            # file_data = csv_content.decode("utf-8")
+            # string_data = StringIO(file_data)
+            # df_csv = pd.read_csv(string_data)
+
+            df_csv.drop(df_csv.columns[df_csv.columns.str.contains('unnamed', case=False)], axis=1, inplace=True)
+            csv_columns = df_csv.columns
+
+            if "Email" in csv_columns:
+                df_csv.rename(columns={'Email': 'email'}, inplace=True)
+            df_csv.dropna(subset=["email"], inplace=True)
+            df_csv.drop_duplicates(subset=["email"], inplace=True)
+
+            res_emails = df_csv['email'].to_list()
+
+            resp = Recipient.objects.filter(email__in=res_emails).values('email')
+
+            return Response({"result": resp, "success": True})
+
+        else:
+            return Response({"result": 'CSV not uploaded', "success": False})
