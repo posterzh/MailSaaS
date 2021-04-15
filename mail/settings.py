@@ -10,19 +10,19 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
-# sentry_sdk.init(
-#     dsn="https://54a77e70d6ac40c9b834017e1c5d4df0@o423610.ingest.sentry.io/5701236",
-#     integrations=[DjangoIntegration()],
-#
-#     # Set traces_sample_rate to 1.0 to capture 100%
-#     # of transactions for performance monitoring.
-#     # We recommend adjusting this value in production.
-#     traces_sample_rate=1.0,
-#
-#     # If you wish to associate users to errors (assuming you are using
-#     # django.contrib.auth) you may enable sending PII data.
-#     send_default_pii=True
-# )
+sentry_sdk.init(
+    dsn="https://54a77e70d6ac40c9b834017e1c5d4df0@o423610.ingest.sentry.io/5701236",
+    integrations=[DjangoIntegration()],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)
 
 env_path = Path('.') / '.env'
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -175,18 +175,12 @@ FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 if DEBUG:
     DATABASES = {
         'default': {
-            # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            # 'USER': 'postgres',
-            # 'PASSWORD': 'U3KhQu1fASewbBz4xNIg',
-            # 'HOST': 'mailerrize-test.cluster-cti2gmro8z63.us-east-2.rds.amazonaws.com',
-            # 'PORT': '5432',
-            # 'NAME': 'mailtest'
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'USER': 'doadmin',
-            'PASSWORD': 'k6sehj7ohh30gjfy',
-            'HOST': 'db-postgresql-sfo2-27945-do-user-8602625-0.b.db.ondigitalocean.com',
-            'PORT': '25060',
-            'NAME': 'mail'
+            'USER': 'postgres',
+            'PASSWORD': 'U3KhQu1fASewbBz4xNIg',
+            'HOST': 'mailerrize-test.cluster-cti2gmro8z63.us-east-2.rds.amazonaws.com',
+            'PORT': '5432',
+            'NAME': 'mailtest'
         }
     }
 
