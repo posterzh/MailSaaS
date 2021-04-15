@@ -23,15 +23,14 @@ class OverviewSummery extends Component {
   }
 
   render() {
-    const { overviewSummary: { funnel, totals } } = this.props;
+    let { overviewSummary: { funnel, totals } } = this.props;
+
+    funnel = funnel || [];
+    totals = totals || [];
 
     const initial_funnel = funnel.filter((item) => item.email_type === 0);
     const followup_funnel = funnel.filter((item) => item.email_type === 1);
     const drip_funnel = funnel.filter((item) => item.email_type === 2);
-
-    console.log(initial_funnel);
-    console.log(followup_funnel);
-    console.log(drip_funnel);
 
     return (
       <>

@@ -10,12 +10,12 @@ import {
   UPDATE_RECIPIENT_STATUS,
 } from "../actionType/actionType";
 
-
 export const getOverviewSummary = (id) => (dispatch) => {
   toggleTopLoader(true);
   axios
     .get(`/campaign/overview-summary/${id}/`)
     .then((response) => {
+      console.log(response);
       dispatch({
         type: GET_OVERVIEW_SUMMARY,
         payload: response.data,
