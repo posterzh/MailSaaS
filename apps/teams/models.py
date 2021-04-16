@@ -25,7 +25,7 @@ class Team(SubscriptionModelMixin, BaseModel):
                                      help_text=_("The team's Stripe Subscription object, if it exists"))
 
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='teams', through='Membership')
-    # your team customizations go here.
+    # mailerrize team customizations go here.
 
     def __str__(self):
         return self.name

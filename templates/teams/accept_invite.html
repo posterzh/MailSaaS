@@ -5,50 +5,54 @@
 <section class="section container">
     <div class="columns">
         <div class="column is-one-third">
-            <img src="{% static 'images/undraw/undraw_lighthouse.svg' %}" alt="Welcome!">
+            <img src="{% static 'images/favicons/android-chrome-512x512.png' %}" alt="Welcome!">
         </div>
-      {% if not invitation.is_accepted %}
+        {% if not invitation.is_accepted %}
         <div id="tagline" class="column">
             <h1 class="title is-size-2">Accept Invitation?</h1>
             <h2 class="subtitle is-size-4">
-                You've been invited to join {{ invitation.team.name }}
-                by {{ invitation.invited_by.get_display_name }}.
+                You've been invited to join {{ invitation.team.name }} of Mailerrize
+                by {{ invitation.invited_by.first_name }}.
             </h2>
             {% if request.user.is_authenticated %}
-              <form action="{% url 'teams:accept_invitation_confirm' invitation.id %}" method="post">
-              {% csrf_token %}
-            {% if request.user.email == invitation.email %}
-              <input type="submit" class="button is-primary is-large" value="Accept Invitation" />
-            {% else %}
+            <form action="{% url 'teams:accept_invitation_confirm' invitation.id %}" method="post">
+                {% csrf_token %}
+                {% if request.user.email == invitation.email %}
+                <input type="submit" class="button is-primary is-large" value="Accept Invitation" />
+                {% else %}
                 <p class="warning">
-                     This invitation was sent to {{ invitation.email }} but you're logged in as {{ request.user.email }}.
-                     What would you like to do?
+                    This invitation was sent to {{ invitation.email }} but you're logged in as {{ request.user.email }}.
+                    What would you like to do?
                 </p>
                 <p class="buttons">
-                  <input type="submit" class="button is-primary is-large" value="Accept as {{ request.user.email }}" />
-                  <a class="button is-primary is-large is-outlined" href="{% if request.is_secure %}HTTPS{% else %}HTTP{% endif %}://{{ request.META.HTTP_HOST }}/app/auth/register?invitation_id={{ invitation.id }}">
-                    Sign out
-                  </a>
-                </p>
-              {% endif %}
-              </form>
-            {% else %}
-                <p class="buttons">
-                    <a class="button is-primary is-large" href="{% if request.is_secure %}HTTPS{% else %}HTTP{% endif %}://{{ request.META.HTTP_HOST }}/app/auth/register?invitation_id={{ invitation.id }}">
-                        Create Account to Accept
+                    <input type="submit" class="button is-primary is-large"
+                        value="Accept as {{ request.user.email }}" />
+                    <a class="button is-primary is-large is-outlined"
+                        href="{% if request.is_secure %}HTTPS{% else %}HTTP{% endif %}://{{ request.META.HTTP_HOST }}/app/auth/register?invitation_id={{ invitation.id }}">
+                        Sign out
                     </a>
                 </p>
+                {% endif %}
+            </form>
+            {% else %}
+            <p class="buttons">
+                <a class="button is-primary is-large"
+                    href="{% if request.is_secure %}HTTPS{% else %}HTTP{% endif %}://{{ request.META.HTTP_HOST }}/app/auth/register?invitation_id={{ invitation.id }}">
+                    Create Account to Accept
+                </a>
+            </p>
             {% endif %}
         </div>
-      {% else %}
+        {% else %}
         <div class="column" id="tagline">
-          <h2 class="subtitle is-size-5">
-            Sorry, it looks like that invitation has already been accepted or expired.
-          </h2>
-          <h2 class="subtitle is-size-5">
-            If you think this is a mistake, ask your team administrator to invite you again!
-          </h2>
-      {% endif %}
+            <h2 class="subtitle is-size-5">
+                Sorry, it looks like that invitation has already been accepted or expired.
+            </h2>
+            <h2 class="subtitle is-size-5">
+                If you think this is a mistake, ask your team administrator to invite you again!
+            </h2>
+        </div>
+        {% endif %}
     </div>
 </section>
 {% endblock %}
