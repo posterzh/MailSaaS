@@ -1391,11 +1391,17 @@ class CampaignOverviewSummary(APIView):
                        replied_count=Sum('replied'),
                        bounced_count=Sum('bounced'))
 
-        return Response({
-            "funnel": funnel,
-            "totals": totals
-        })
+        try:
+            campaign = Campaign.objects.get(pk=pk)
+        except:
+            return Response("Bad request", status=status.HTTP_400_BAD_REQUEST)
 
+        return Response({
+            "id": campaign.id,
+            "title": campaign.title,
+            "funnel": funnel,
+            "totals": totals,
+        })
 
     # permission_classes = (permissions.IsAuthenticated,)
     #
