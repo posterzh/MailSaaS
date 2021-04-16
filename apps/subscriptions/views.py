@@ -97,24 +97,6 @@ def _subscription_success(request, subscription_holder):
     return HttpResponseRedirect(redirect)
 
 
-@login_required
-@require_POST
-def create_stripe_portal_session(request, subscription_holder=None):
-    subscription_holder = subscription_holder if subscription_holder else request.user
-    subscription_urls = _get_subscription_urls(subscription_holder)
-
-    stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
-    if not subscription_holder.subscription or not subscription_holder.subscription.customer:
-        messages.error(request, _("Whoops, we couldn't find a subscription associated with your account!"))
-        return HttpResponseRedirect(subscription_urls['subscription_details'])
-
-    session = stripe.billing_portal.Session.create(
-        customer=subscription_holder.subscription.customer.id,
-        return_url=absolute_url(subscription_urls['subscription_details']),
-    )
-    return HttpResponseRedirect(session.url)
-
-
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 # @catch_stripe_errors
@@ -280,17 +262,19 @@ def subscription_details(request):
         return JsonResponse(data=data)
 
     active_subscription: Subscription = subscription_holder.active_stripe_subscription
-    subscription_urls = _get_subscription_urls(subscription_holder)
-    # friendly_payment_amount = get_friendly_currency_amount(
-    #     subscription_holder.active_stripe_subscription.plan.amount,
-    #     subscription_holder.active_stripe_subscription.plan.currency,
-    # )
-    # product = get_product_and_metadata_for_subscription(subscription_holder.active_stripe_subscription)
+
+    # To make it work without webhook in localhost
+    active_subscription = djstripe.models.Subscription.sync_from_stripe_data(active_subscription.api_retrieve())
 
     data = {
-        'active_subscription': active_subscription,
-        # 'friendly_payment_amount': friendly_payment_amount,
-        # 'product': product
+        'friendly_payment_amount': get_friendly_currency_amount(
+            active_subscription.plan.amount * active_subscription.quantity,
+            active_subscription.plan.currency
+        ),
+        'quantity': active_subscription.quantity,
+        'start_date': active_subscription.start_date.strftime('%B %d, %Y'),
+        'current_period_end': active_subscription.current_period_end.strftime('%B %d, %Y'),
+        'subscription_urls': _get_subscription_urls(subscription_holder),
     }
     return JsonResponse(data=data)
 
@@ -320,45 +304,37 @@ def upgrade_subscription(request):
     teammate_product = get_product_with_metadata(TEAMMATE_PRODUCT)
     email_product = get_product_with_metadata(EMAIL_PRODUCT)
 
-    active_products = list(get_active_products_with_metadata())
-    default_products = [p for p in active_products if p.metadata.is_default]
-    default_product = default_products[0] if default_products else active_products[0]
-
-    active_plans = get_active_plan_interval_metadata()
-
-    def _to_dict(product_with_metadata):
-        # for now, just serialize the minimum amount of data needed for the front-end
-        product_data = {}
-        if PlanInterval.year in ACTIVE_PLAN_INTERVALS:
-            product_data['annual_plan'] = {
-                'stripe_id': product_with_metadata.annual_plan.id,
-                'payment_amount': get_friendly_currency_amount(product_with_metadata.annual_plan.amount,
-                                                               product_with_metadata.annual_plan.currency),
-                'monthly_amount': get_friendly_currency_amount(product_with_metadata.annual_plan.amount / 12,
-                                                               product_with_metadata.annual_plan.currency),
-                'interval': PlanInterval.year,  # set to month because we're dividing price by 12
-            }
-        if PlanInterval.month in ACTIVE_PLAN_INTERVALS:
-            product_data['monthly_plan'] = {
-                'stripe_id': product_with_metadata.monthly_plan.id,
-                'payment_amount': get_friendly_currency_amount(product_with_metadata.monthly_plan.amount,
-                                                               product_with_metadata.monthly_plan.currency),
-                'monthly_amount': get_friendly_currency_amount(product_with_metadata.monthly_plan.amount,
-                                                               product_with_metadata.monthly_plan.currency),
-                'interval': PlanInterval.month,
-            }
-        return product_data
-
     data = {
         'teammate_product': teammate_product.to_dict(),
         'email_product': email_product.to_dict(),
         'subscription_urls': _get_subscription_urls(subscription_holder),
         'payment_metadata': _get_payment_metadata_from_request(request),
-
-        # 'active_products_json': {str(p.stripe_id): _to_dict(p) for p in active_products},
-        # 'active_plan_intervals': active_plans,
-        # 'default_product': default_product,
-        # 'default_to_annual': ACTIVE_PLAN_INTERVALS[0] == PlanInterval.year,
     }
 
+    return JsonResponse(data=data)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def create_stripe_portal_session(request, subscription_holder=None):
+    subscription_holder = subscription_holder if subscription_holder else request.user
+
+    current_url = request.data['current_url']
+
+    stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
+    if not subscription_holder.subscription or not subscription_holder.subscription.customer:
+        messages.error(request, _("Whoops, we couldn't find a subscription associated with your account!"))
+        data = {
+            'error': "Whoops, we couldn't find a subscription associated with your account!"
+        }
+        return JsonResponse(data=data)
+
+    session = stripe.billing_portal.Session.create(
+        customer=subscription_holder.subscription.customer.id,
+        return_url=request.build_absolute_uri(current_url),
+    )
+
+    data = {
+        'session_url': session.url
+    }
     return JsonResponse(data=data)
