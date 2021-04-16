@@ -543,7 +543,7 @@ class LeadCatcher extends Component {
                               </DropdownItem>
                             </DropdownMenu>
                           </UncontrolledDropdown>
-                          <UncontrolledDropdown size="sm">
+                          {/* <UncontrolledDropdown size="sm">
                             <DropdownToggle caret color="secondary">
                               ASSIGN
                             </DropdownToggle>
@@ -555,7 +555,7 @@ class LeadCatcher extends Component {
                                 Me
                               </DropdownItem>
                             </DropdownMenu>
-                          </UncontrolledDropdown>
+                          </UncontrolledDropdown> */}
                         </>
                         :
                         <Button color="secondary" type="button" size="sm" onClick={e => this.updateLeadStatus(detailLead, 'reopen')}>

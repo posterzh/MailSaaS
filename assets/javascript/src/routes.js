@@ -188,10 +188,11 @@ const routes = [
         miniName: " ",
         component: Setting,
         layout: "/app/admin",
+        redirect: true,
       },
       {
         path: "/teammates",
-        name: "Teammates",
+        name: "Team Setting",
         miniName: " ",
         component: Teammates,
         layout: "/app/admin",

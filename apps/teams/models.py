@@ -59,7 +59,7 @@ class Invitation(BaseModel):
     email = models.EmailField()
     role = models.CharField(max_length=100, choices=roles.ROLE_CHOICES, default=roles.ROLE_MEMBER)
     invited_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
-                                   related_name='sent_invitations')
+                                   related_name='sent_invitations', null=True, blank=True)
     is_accepted = models.BooleanField(default=False)
     accepted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                                     related_name='accepted_invitations', null=True, blank=True)
