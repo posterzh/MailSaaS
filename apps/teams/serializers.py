@@ -5,6 +5,10 @@ from .util import get_next_unique_team_slug
 from .models import Team, Membership, Invitation
 
 
+# class TeamSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Team
+
 
 class MembershipSerializer(serializers.ModelSerializer):
     first_name = serializers.ReadOnlyField(source='user.first_name')
@@ -17,8 +21,8 @@ class MembershipSerializer(serializers.ModelSerializer):
 
 
 class InvitationSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField()
-    invited_by = serializers.ReadOnlyField(source='invited_by.get_display_name')
+    # id = serializers.ReadOnlyField()
+    # invited_by = serializers.ReadOnlyField(source='invited_by.get_display_name')
 
     class Meta:
         model = Invitation

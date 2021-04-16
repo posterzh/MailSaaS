@@ -5,13 +5,73 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_POST
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
 
 from apps.teams.decorators import login_and_team_required, team_admin_required
 from .invitations import send_invitation, process_invitation, clear_invite_from_session
 from .forms import TeamChangeForm
 from .models import Team, Invitation
 from .serializers import TeamSerializer, InvitationSerializer
+
+
+@login_required
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def create_team(request):
+
+    new_team = TeamSerializer(data=request.data)
+    if new_team.is_valid(raise_exception=True):
+        new_team.save()
+        return Response({'result': 'created successfully', 'success': True}, status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@login_required
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def create_invite(request):
+    data = request.data
+    data['invited_by'] = request.user.id
+    data['team'] = 1
+
+    new_invite = InvitationSerializer(data=data)
+    if new_invite.is_valid(raise_exception=True):
+        invite = new_invite.save()
+        send_invitation(invite)
+        return Response({'success': True}, status=status.HTTP_200_OK)
+
+    else:
+        return Response({'success': False}, status=status.HTTP_400_BAD_REQUEST)
+
+    # form = TeamChangeForm(request.POST)
+    # if request.method == 'POST':
+    #
+    #     if form.is_valid():
+    #         team = form.save()
+    #         team.members.add(request.user, through_defaults={'role': 'admin'})
+    #         team.save()
+    #         return HttpResponseRedirect(reverse('teams:list_teams'))
+    # else:
+    #     form = TeamChangeForm()
+    # return render(request, 'teams/manage_team.html', {
+    #     'form': form,
+    #     'create': True,
+    # })
+
+
+# @login_required
+# @api_view(['GET'])
+# @permission_classes([permissions.IsAuthenticated])
+# def list_teams(request):
+#
+#     teams = request.user.team.all()
+#     return Response(teams)
+#     # return render(request, 'teams/list_teams.html', {
+#     #     'teams': teams,
+#     # })
 
 
 @login_required
@@ -28,7 +88,7 @@ def list_teams(request):
 
 
 @login_required
-def create_team(request):
+def create_team_demo(request):
     if request.method == 'POST':
         form = TeamChangeForm(request.POST)
         if form.is_valid():

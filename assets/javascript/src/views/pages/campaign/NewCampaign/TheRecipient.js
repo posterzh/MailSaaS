@@ -124,7 +124,14 @@ class TheRecipient extends Component {
           title: [{key: 'email', value: 'email'}],
           data: duplication
         },
-        isOpen: true
+        isOpen: true,
+        tmpFile: file,
+        csvFile: null
+      });
+    } else {
+      this.setState({
+        tmpFile: file,
+        csvFile: file
       });
     }
 
@@ -141,15 +148,13 @@ class TheRecipient extends Component {
     }
 
     this.setState({
-      tmpFile: file,
       csvMappingContent: {
         title: tableHeaders,
         data: tableBody,
       },
       first_row: firstRow,
       show: true,
-      csvFields: fields.join(','),
-      csvFile: null
+      csvFields: fields.join(',')
     });
   };
 

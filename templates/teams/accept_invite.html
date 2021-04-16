@@ -26,7 +26,7 @@
                 </p>
                 <p class="buttons">
                   <input type="submit" class="button is-primary is-large" value="Accept as {{ request.user.email }}" />
-                  <a class="button is-primary is-large is-outlined" href="{% url 'account_signup' %}?invitation_id={{ invitation.id }}">
+                  <a class="button is-primary is-large is-outlined" href="{% if request.is_secure %}HTTPS{% else %}HTTP{% endif %}://{{ request.META.HTTP_HOST }}/app/auth/register?invitation_id={{ invitation.id }}">
                     Sign out
                   </a>
                 </p>
@@ -34,7 +34,7 @@
               </form>
             {% else %}
                 <p class="buttons">
-                    <a class="button is-primary is-large" href="{% url 'account_signup' %}?invitation_id={{ invitation.id }}">
+                    <a class="button is-primary is-large" href="{% if request.is_secure %}HTTPS{% else %}HTTP{% endif %}://{{ request.META.HTTP_HOST }}/app/auth/register?invitation_id={{ invitation.id }}">
                         Create Account to Accept
                     </a>
                 </p>
