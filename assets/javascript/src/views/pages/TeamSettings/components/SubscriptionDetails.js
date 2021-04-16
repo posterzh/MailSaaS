@@ -58,8 +58,44 @@ const SubscriptionDetails = (props) => {
     } else {
       console.log("go to : ", session_url);
       // history.push(session_url);
-      window.location.href = session_url;
+      // window.location.href = session_url;
+      popupWindow(session_url, "Manage billing");
     }
+  };
+
+  const popupWindow = (url, title, w, h) => {
+    // Fixes dual-screen position most browsers
+    const dualScreenLeft =
+      window.screenLeft !== undefined ? window.screenLeft : window.screenX;
+    const dualScreenTop =
+      window.screenTop !== undefined ? window.screenTop : window.screenY;
+    const width = window.innerWidth
+      ? window.innerWidth
+      : document.documentElement.clientWidth
+      ? document.documentElement.clientWidth
+      : screen.width;
+    const height = window.innerHeight
+      ? window.innerHeight
+      : document.documentElement.clientHeight
+      ? document.documentElement.clientHeight
+      : screen.height;
+    if (!w) {
+      w = width / 2;
+    }
+    if (!h) {
+      h = height / 2;
+    }
+    const systemZoom = width / window.screen.availWidth;
+    const left = (width - w) / 2 / systemZoom + dualScreenLeft;
+    const top = (height - h) / 2 / systemZoom + dualScreenTop;
+    const newWindow = window.open(
+      url,
+      title,
+      `scrollbars=yes, width=${w / systemZoom}, height=${
+        h / systemZoom
+      }, top=${top}, left=${left}`
+    );
+    if (window.focus) newWindow.focus();
   };
 
   const handleError = async (errorMessage) => {
