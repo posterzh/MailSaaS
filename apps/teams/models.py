@@ -19,6 +19,7 @@ class Team(SubscriptionModelMixin, BaseModel):
     A Team, with members.
     """
     name = models.CharField(max_length=100)
+    bcc_email = models.CharField(max_length=100, null=True, blank=True)
     slug = models.SlugField(unique=True)
 
     subscription = models.ForeignKey('djstripe.Subscription', null=True, blank=True, on_delete=models.SET_NULL,

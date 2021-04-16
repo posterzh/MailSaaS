@@ -26,6 +26,7 @@ import {
 import axios from "../../../utils/axios";
 
 export function Teammates(props) {
+  const [teamId, setTeamId] = useState(null);
   const [teamname, setTeamname] = useState("");
   const [bccEmail, setBccEmail] = useState("");
   const [otherFullname, setOtherFullname] = useState("");
@@ -55,28 +56,19 @@ export function Teammates(props) {
       });
   };
 
-  const createTeam = () => {
-    toggleTopLoader(true);
-    axios
-      .post("/teams/api/teams/", {
+  const createTeam = async () => {
+    try {
+      toggleTopLoader(true);
+      const result = await axios.post("/teams/api/teams/", {
         name: teamname,
         bccEmail: bccEmail,
-      })
-      .then((response) => {
-        debugger;
-        const { data } = response;
-        if (data.success) {
-          return data.result;
-        } else {
-          return false;
-        }
-      })
-      .catch((error) => {
-        toastOnError({ error: error });
-      })
-      .finally(() => {
-        toggleTopLoader(false);
       });
+      console.log("Create team: ", result);
+    } catch (e) {
+      toastOnError(messages.api_failed);
+    } finally {
+      toggleTopLoader(false);
+    }
   };
 
   const saveTeam = () => {};
@@ -144,7 +136,7 @@ export function Teammates(props) {
                     </FormGroup>
                   </CardBody>
                   <CardFooter className="bg-transparent">
-                    {!teamname && (
+                    {!teamId && (
                       <Button
                         color="info"
                         type="button"
@@ -155,7 +147,7 @@ export function Teammates(props) {
                         Create
                       </Button>
                     )}
-                    {teamname && (
+                    {teamId && (
                       <Button
                         color="info"
                         type="button"

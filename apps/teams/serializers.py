@@ -40,7 +40,7 @@ class TeamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Team
-        fields = ('id', 'name', 'slug', 'members', 'invitations', 'dashboard_url')
+        fields = ('id', 'name', 'bcc_email', 'slug', 'members', 'invitations', 'dashboard_url')
 
     def create(self, validated_data):
         team_name = validated_data.get("name", None)
