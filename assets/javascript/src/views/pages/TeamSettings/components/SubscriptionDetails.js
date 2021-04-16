@@ -28,14 +28,38 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { useHistory, useLocation } from "react-router-dom";
 
 const SubscriptionDetails = (props) => {
-  const stripe = useStripe();
+  const history = useHistory();
+  const location = useLocation();
 
   const [subscription, setSubscription] = useState(null);
 
   const handleUpgrade = async () => {
     console.log("manage billing...");
+
+    // if (subscription) {
+    //   history.push(subscription.subscription_urls.create_stripe_portal_session);
+    // }
+
+    const result = await axios.post(
+      "/subscriptions/api/create_stripe_portal_session/",
+      {
+        current_url: location.pathname,
+      }
+    );
+
+    console.log("api/create_stripe_portal_session: ", result);
+
+    const { error, session_url } = result.data;
+    if (error) {
+      await handleError(error);
+    } else {
+      console.log("go to : ", session_url);
+      // history.push(session_url);
+      window.location.href = session_url;
+    }
   };
 
   const handleError = async (errorMessage) => {
@@ -120,7 +144,6 @@ const SubscriptionDetails = (props) => {
                   color="primary"
                   className="text-uppercase"
                   onClick={handleUpgrade}
-                  disabled={!stripe}
                   outline
                 >
                   Manage billing

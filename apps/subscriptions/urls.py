@@ -26,5 +26,5 @@ urlpatterns = [
     path('api/subscription-details/', views.subscription_details, name='subscription-details'),
     path('api/upgrade-subscription/', views.upgrade_subscription, name='upgrade-subscription'),
     path('api/create_customer/', views.create_customer, name='create_customer'),
-    path('stripe-portal/', views.create_stripe_portal_session, name='create_stripe_portal_session'),
+    path('api/create_stripe_portal_session/', views.create_stripe_portal_session, name='create_stripe_portal_session'),
 ]
