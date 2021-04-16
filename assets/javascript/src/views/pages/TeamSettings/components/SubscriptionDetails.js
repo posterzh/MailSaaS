@@ -31,95 +31,11 @@ import {
 
 const SubscriptionDetails = (props) => {
   const stripe = useStripe();
-  const elements = useElements();
 
-  const [teammateProduct, setTeammateProduct] = useState(null);
-  const [paymentMetadata, setPaymentMetadata] = useState(null);
-  const [subscriptionUrls, setSubscriptionUrls] = useState(null);
-  const [currencyAmount, setCurrencyAmount] = useState("-");
-  const [submissionPending, setSubmissionPending] = useState(false);
+  const [subscription, setSubscription] = useState(null);
 
   const handleUpgrade = async () => {
-    console.log("upgrading...");
-    setSubmissionPending(true);
-
-    const result = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardElement),
-    });
-    console.log("createPaymentMethod: ", result);
-
-    const { error, paymentMethod } = result;
-
-    try {
-      await handlePaymentMethodCreated(error, paymentMethod);
-    } catch (e) {
-      handleError(
-        "Sorry, there was an unexpected error processing your payment. Please contact us for support."
-      );
-
-      console.log(e);
-
-      setSubmissionPending(false);
-    }
-  };
-
-  const handlePaymentMethodCreated = async (error, paymentMethod) => {
-    if (error) {
-      handleError(error.message);
-      setSubmissionPending(false);
-    } else {
-      const paymentParams = { ...paymentMetadata };
-      paymentParams.plan_id = teammateProduct.monthly_plan.id;
-      paymentParams.payment_method = paymentMethod.id;
-
-      const { data: result } = await axios.post(
-        subscriptionUrls.create_customer,
-        paymentParams
-      );
-      console.log("create_customer result: ", result);
-
-      if (result.error) {
-        handleError(result.error.message);
-        setSubmissionPending(false);
-      } else {
-        const subscription = result.subscription;
-        const { latest_invoice } = subscription;
-        const { payment_intent } = latest_invoice;
-        if (payment_intent) {
-          const { client_secret, status } = payment_intent;
-          if (status === "requires_action") {
-            // trigger 3D-secure workflow
-            stripe.confirmCardPayment(client_secret).then(function (result) {
-              if (result.error) {
-                // The card was declined (i.e. insufficient funds, card has expired, etc)
-                handleError(result.error.message);
-                setSubmissionPending(false);
-              } else {
-                handleSubscriptionSuccess();
-              }
-            });
-          } else {
-            // No additional information was needed
-            handleSubscriptionSuccess();
-          }
-        } else if (subscription.pending_setup_intent) {
-          const { client_secret, status } = subscription.pending_setup_intent;
-          if (status === "requires_action") {
-            stripe.confirmCardSetup(client_secret).then(function (result) {
-              if (result.error) {
-                handleError(result.error.message);
-                setSubmissionPending(false);
-              } else {
-                handleSubscriptionSuccess();
-              }
-            });
-          }
-        } else {
-          handleSubscriptionSuccess();
-        }
-      }
-    }
+    console.log("manage billing...");
   };
 
   const handleError = async (errorMessage) => {
@@ -128,37 +44,22 @@ const SubscriptionDetails = (props) => {
     toastOnError(errorMessage);
   };
 
-  const handleSubscriptionSuccess = async () => {
-    setSubmissionPending(false);
-    // location.href = subscriptionSuccessUrl;
+  useEffect(async () => {
+    try {
+      toggleTopLoader(true);
 
-    toastOnSuccess("Subscribed successfully!");
-  };
+      const { data } = await axios.get(
+        "/subscriptions/api/subscription-details/"
+      );
 
-  // useEffect(async () => {
-  //   try {
-  //     toggleTopLoader(true);
-
-  //     const { data } = await axios.get(
-  //       "/subscriptions/api/upgrade-subscription/"
-  //     );
-  //     console.log("upgrade-subscription: ", data);
-
-  //     setTeammateProduct(data.teammate_product);
-  //     setPaymentMetadata(data.payment_metadata);
-  //     setSubscriptionUrls(data.subscription_urls);
-  //   } catch (e) {
-  //     toastOnError(messages.api_failed);
-  //   } finally {
-  //     toggleTopLoader(false);
-  //   }
-  // }, []);
-
-  useEffect(() => {
-    if (teammateProduct) {
-      setCurrencyAmount(teammateProduct.monthly_plan.currency_amount);
+      console.log("subscription-details: ", data);
+      setSubscription(data);
+    } catch (e) {
+      toastOnError(messages.api_failed);
+    } finally {
+      toggleTopLoader(false);
     }
-  }, [teammateProduct]);
+  }, []);
 
   return (
     <>
@@ -176,15 +77,41 @@ const SubscriptionDetails = (props) => {
                 </Row>
                 <Row className="mt-3">
                   <Col>
-                    <span className="h5 surtitle">Current Subscription</span>
-                    <span className="d-block h2 ml-4">$9.00 / month</span>
-                    <span className="d-block mt-2 ml-4 text">1 User</span>
-                    <span className="d-block mt-2 ml-4 text">
-                      Auto-Renew Every month
-                    </span>
-                    <span className="d-block mt-2 ml-4 text">
-                      Next payment: $9.00 on May 16, 2021
-                    </span>
+                    {subscription && (
+                      <>
+                        <div>
+                          <span className="h5 surtitle mt-5">
+                            Current Subscription
+                          </span>
+                          <span className="d-block h2 ml-4">
+                            {subscription.friendly_payment_amount} / month
+                          </span>
+                        </div>
+                        <div>
+                          <span className="h5 surtitle mt-5">Quantity</span>
+                          <span className="d-block ml-4 text">
+                            {subscription.quantity} User
+                          </span>
+                        </div>
+                        <div>
+                          <span className="h5 surtitle mt-5">Auto-Renew</span>
+                          <span className="d-block ml-4 text">Every month</span>
+                        </div>
+                        <div>
+                          <span className="h5 surtitle mt-5">Since</span>
+                          <span className="d-block ml-4 text">
+                            {subscription.start_date}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="h5 surtitle mt-5">Next payment</span>
+                          <span className="d-block ml-4 text">
+                            {subscription.friendly_payment_amount} on{" "}
+                            {subscription.current_period_end}
+                          </span>
+                        </div>
+                      </>
+                    )}
                   </Col>
                 </Row>
               </CardBody>
@@ -193,7 +120,7 @@ const SubscriptionDetails = (props) => {
                   color="primary"
                   className="text-uppercase"
                   onClick={handleUpgrade}
-                  disabled={!stripe && !submissionPending}
+                  disabled={!stripe}
                   outline
                 >
                   Manage billing

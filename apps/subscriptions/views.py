@@ -288,7 +288,15 @@ def subscription_details(request):
     # product = get_product_and_metadata_for_subscription(subscription_holder.active_stripe_subscription)
 
     data = {
-        'active_subscription': active_subscription,
+        # 'active_subscription': active_subscription,
+        'friendly_payment_amount': get_friendly_currency_amount(
+            active_subscription.plan.amount * active_subscription.quantity,
+            active_subscription.plan.currency
+        ),
+        'quantity': active_subscription.quantity,
+        'start_date': active_subscription.start_date.strftime('%B %d, %Y'),
+        'current_period_end': active_subscription.current_period_end.strftime('%B %d, %Y'),
+
         # 'friendly_payment_amount': friendly_payment_amount,
         # 'product': product
     }
