@@ -150,13 +150,14 @@ class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = TeamSerializer
     pagination_class = None
 
-    # def get_queryset(self):
-    #     # filter queryset based on logged in user
-    #     return self.request.user.teams.all()
+    def get_queryset(self):
+        # filter queryset based on logged in user
+        queryset = self.request.user.teams.all()
 
-    def create(self, request):
-        # do your thing here
-        return super().create(request)
+        role = self.request.query_params.get('role')
+        if role:
+            queryset = queryset.filter(membership__role__exact=role)
+        return queryset
 
     def perform_create(self, serializer):
         # ensure logged in user is set on the model during creation

@@ -26,9 +26,11 @@ import {
 import axios from "../../../utils/axios";
 
 export function Teammates(props) {
-  const [teamId, setTeamId] = useState(null);
-  const [teamname, setTeamname] = useState("");
-  const [bccEmail, setBccEmail] = useState("");
+  const [team, setTeam] = useState({
+    name: "",
+    bcc_email: "",
+  });
+
   const [otherFullname, setOtherFullname] = useState("");
   const [otherEmail, setOtherEmail] = useState("");
   const [permission, setPermission] = useState("read");
@@ -57,27 +59,52 @@ export function Teammates(props) {
   };
 
   const createTeam = async () => {
+    console.log("Create team : ", team);
     try {
       toggleTopLoader(true);
-      const result = await axios.post("/teams/api/teams/", {
-        name: teamname,
-        bccEmail: bccEmail,
-      });
-      console.log("Create team: ", result);
+      const { data } = await axios.post("/teams/api/teams/", { ...team });
+      console.log("Created team: ", data);
+      setTeam(data);
     } catch (e) {
       toastOnError(messages.api_failed);
+      return;
     } finally {
       toggleTopLoader(false);
     }
+
+    toastOnSuccess("Created a team successfully!");
   };
 
-  const saveTeam = () => {};
+  const saveTeam = async () => {
+    console.log("Update team : ", team);
+    try {
+      toggleTopLoader(true);
+      const { data } = await axios.put(`/teams/api/teams/${team.id}/`, {
+        ...team,
+      });
+      console.log("Updated team: ", data);
+      setTeam(data);
+    } catch (e) {
+      toastOnError(messages.api_failed);
+      return;
+    } finally {
+      toggleTopLoader(false);
+    }
+
+    toastOnSuccess("Updated team successfully!");
+  };
 
   useEffect(async () => {
     try {
       toggleTopLoader(true);
-      const { data } = await axios.get("/teams/api/teams/");
+      const { data } = await axios.get("/teams/api/teams/", {
+        role: "admin",
+      });
       console.log("Teammates: ", data);
+      if (data.length > 0) {
+        setTeam(data[0]);
+        console.log(team);
+      }
     } catch (e) {
       toastOnError(messages.api_failed);
     } finally {
@@ -122,21 +149,32 @@ export function Teammates(props) {
                         placeholder="Team Name"
                         required
                         type="text"
-                        value={teamname}
-                        onChange={(e) => setTeamname(e.target.value)}
+                        value={team.name}
+                        onChange={(e) =>
+                          setTeam({
+                            ...team,
+                            name: e.target.value,
+                          })
+                        }
                       />
                     </FormGroup>
                     <FormGroup>
                       <Input
                         id="bcc-email"
                         placeholder="Bcc every email"
-                        required
                         type="text"
+                        value={team.bcc_email}
+                        onChange={(e) => {
+                          setTeam({
+                            ...team,
+                            bcc_email: e.target.value,
+                          });
+                        }}
                       />
                     </FormGroup>
                   </CardBody>
                   <CardFooter className="bg-transparent">
-                    {!teamId && (
+                    {!team.id && (
                       <Button
                         color="info"
                         type="button"
@@ -147,7 +185,7 @@ export function Teammates(props) {
                         Create
                       </Button>
                     )}
-                    {teamId && (
+                    {team.id && (
                       <Button
                         color="info"
                         type="button"
