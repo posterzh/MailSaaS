@@ -148,10 +148,15 @@ def accept_invitation_confirm(request, invitation_id):
 class TeamViewSet(viewsets.ModelViewSet):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
+    pagination_class = None
 
-    def get_queryset(self):
-        # filter queryset based on logged in user
-        return self.request.user.teams.all()
+    # def get_queryset(self):
+    #     # filter queryset based on logged in user
+    #     return self.request.user.teams.all()
+
+    def create(self, request):
+        # do your thing here
+        return super().create(request)
 
     def perform_create(self, serializer):
         # ensure logged in user is set on the model during creation

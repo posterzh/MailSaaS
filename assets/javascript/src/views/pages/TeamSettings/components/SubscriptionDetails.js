@@ -83,7 +83,7 @@ const SubscriptionDetails = (props) => {
       w = width / 2;
     }
     if (!h) {
-      h = height / 2;
+      h = height * 0.8;
     }
     const systemZoom = width / window.screen.availWidth;
     const left = (width - w) / 2 / systemZoom + dualScreenLeft;
