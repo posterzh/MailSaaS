@@ -32,12 +32,13 @@ import {
   messages,
 } from "../../../utils/Utils";
 import axios from "../../../utils/axios";
-import ViewSubscription from "./components/ViewSubscription";
+import SubscriptionDetails from "./components/SubscriptionDetails";
 import UpgradeSubscription from "./components/UpgradeSubscription";
 
 const Billing = (props) => {
   const [stripeApiKey, setStripeApiKey] = useState(null);
-  const [hasActiveSubscription, setHasActiveSubscription] = useState(false);
+  const [hasActiveSubscription, setHasActiveSubscription] = useState(null);
+  const [stripePromise, setStripePromise] = useState(null);
 
   const receipts = [
     {
@@ -57,7 +58,9 @@ const Billing = (props) => {
       const { data } = await axios.get("/subscriptions/api/stripe-info/");
       console.log("stripe-info: ", data);
 
-      setStripeApiKey(data.stripe_api_key);
+      // setStripeApiKey(data.stripe_api_key);
+      setStripePromise(loadStripe(data.stripe_api_key));
+
       setHasActiveSubscription(data.has_active_subscription);
     } catch (e) {
       toastOnError(messages.api_failed);
@@ -73,10 +76,10 @@ const Billing = (props) => {
       <PageContainer title="Billing">
         <Container>
           <Row>
-            {stripeApiKey && (
-              <Elements stripe={loadStripe(stripeApiKey)}>
-                {hasActiveSubscription && <ViewSubscription />}
-                {!hasActiveSubscription && <UpgradeSubscription />}
+            {stripePromise && (
+              <Elements stripe={stripePromise}>
+                {hasActiveSubscription === true && <SubscriptionDetails />}
+                {hasActiveSubscription === false && <UpgradeSubscription />}
               </Elements>
             )}
           </Row>

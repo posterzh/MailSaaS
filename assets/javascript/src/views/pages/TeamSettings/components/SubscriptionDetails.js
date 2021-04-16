@@ -29,7 +29,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 
-const UpgradeSubscription = (props) => {
+const SubscriptionDetails = (props) => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -135,24 +135,24 @@ const UpgradeSubscription = (props) => {
     toastOnSuccess("Subscribed successfully!");
   };
 
-  useEffect(async () => {
-    try {
-      toggleTopLoader(true);
+  // useEffect(async () => {
+  //   try {
+  //     toggleTopLoader(true);
 
-      const { data } = await axios.get(
-        "/subscriptions/api/upgrade-subscription/"
-      );
-      console.log("upgrade-subscription: ", data);
+  //     const { data } = await axios.get(
+  //       "/subscriptions/api/upgrade-subscription/"
+  //     );
+  //     console.log("upgrade-subscription: ", data);
 
-      setTeammateProduct(data.teammate_product);
-      setPaymentMetadata(data.payment_metadata);
-      setSubscriptionUrls(data.subscription_urls);
-    } catch (e) {
-      toastOnError(messages.api_failed);
-    } finally {
-      toggleTopLoader(false);
-    }
-  }, []);
+  //     setTeammateProduct(data.teammate_product);
+  //     setPaymentMetadata(data.payment_metadata);
+  //     setSubscriptionUrls(data.subscription_urls);
+  //   } catch (e) {
+  //     toastOnError(messages.api_failed);
+  //   } finally {
+  //     toggleTopLoader(false);
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (teammateProduct) {
@@ -167,26 +167,24 @@ const UpgradeSubscription = (props) => {
           <Col md="6" sm="12" className="mobile-p-0">
             <Card>
               <CardBody>
-                <Row className="mt-3">
+                <Row>
                   <Col>
-                    <span className="h5 surtitle">Plan</span>
-                    <span className="d-block h2 ml-4">
-                      {currencyAmount} / month
-                    </span>
+                    <h3 className="mx-auto text-center">
+                      You're subscribed to a plan. Thanks for the support!
+                    </h3>
                   </Col>
                 </Row>
                 <Row className="mt-3">
                   <Col>
-                    <span className="h5 surtitle">Features</span>
+                    <span className="h5 surtitle">Current Subscription</span>
+                    <span className="d-block h2 ml-4">$9.00 / month</span>
+                    <span className="d-block mt-2 ml-4 text">1 User</span>
                     <span className="d-block mt-2 ml-4 text">
-                      <i className="fa fa-check"></i> 1 User
+                      Auto-Renew Every month
                     </span>
-                  </Col>
-                </Row>
-
-                <Row className="mt-5">
-                  <Col>
-                    <CardElement className="w-100" />
+                    <span className="d-block mt-2 ml-4 text">
+                      Next payment: $9.00 on May 16, 2021
+                    </span>
                   </Col>
                 </Row>
               </CardBody>
@@ -196,13 +194,10 @@ const UpgradeSubscription = (props) => {
                   className="text-uppercase"
                   onClick={handleUpgrade}
                   disabled={!stripe && !submissionPending}
+                  outline
                 >
-                  Upgrade
+                  Manage billing
                 </Button>
-                <span className="text-sm d-block mt-3">
-                  Your card will be charged {currencyAmount} for your first
-                  month.
-                </span>
               </CardFooter>
             </Card>
           </Col>
@@ -212,4 +207,4 @@ const UpgradeSubscription = (props) => {
   );
 };
 
-export default UpgradeSubscription;
+export default SubscriptionDetails;

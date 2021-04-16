@@ -12,7 +12,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_POST
 from djstripe.enums import PlanInterval
-from djstripe.models import Product
+from djstripe.models import Product, Subscription
 from djstripe import settings as djstripe_settings
 from rest_framework import permissions
 from rest_framework.decorators import api_view, permission_classes
@@ -279,18 +279,18 @@ def subscription_details(request):
         }
         return JsonResponse(data=data)
 
-    active_subscription = subscription_holder.active_stripe_subscription
+    active_subscription: Subscription = subscription_holder.active_stripe_subscription
     subscription_urls = _get_subscription_urls(subscription_holder)
-    friendly_payment_amount = get_friendly_currency_amount(
-        subscription_holder.active_stripe_subscription.plan.amount,
-        subscription_holder.active_stripe_subscription.plan.currency,
-    )
-    product = get_product_and_metadata_for_subscription(subscription_holder.active_stripe_subscription)
+    # friendly_payment_amount = get_friendly_currency_amount(
+    #     subscription_holder.active_stripe_subscription.plan.amount,
+    #     subscription_holder.active_stripe_subscription.plan.currency,
+    # )
+    # product = get_product_and_metadata_for_subscription(subscription_holder.active_stripe_subscription)
 
     data = {
         'active_subscription': active_subscription,
-        'friendly_payment_amount': friendly_payment_amount,
-        'product': product
+        # 'friendly_payment_amount': friendly_payment_amount,
+        # 'product': product
     }
     return JsonResponse(data=data)
 
