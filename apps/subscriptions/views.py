@@ -115,10 +115,10 @@ def create_stripe_portal_session(request, subscription_holder=None):
     return HttpResponseRedirect(session.url)
 
 
-@login_required
-@require_POST
-@catch_stripe_errors
-@transaction.atomic
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+# @catch_stripe_errors
+# @transaction.atomic
 def create_customer(request, subscription_holder=None):
     """
     Create a Stripe Customer and Subscription object and map them onto the subscription_holder
@@ -137,10 +137,6 @@ def create_customer(request, subscription_holder=None):
     assert request.user.id == user_id
     assert request.user.email == email
 
-    assert isinstance(subscription_holder, Team)
-    team_id = int(request_body['team_id'])
-    assert request.team.id == team_id
-
     payment_method = request_body['payment_method']
     plan_id = request_body['plan_id']
     stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
@@ -152,11 +148,11 @@ def create_customer(request, subscription_holder=None):
     # create customer objects
     # This creates a new Customer in stripe and attaches the default PaymentMethod in one API call.
     customer = stripe.Customer.create(
-        payment_method=payment_method,
-        email=email,
-        invoice_settings={
-            'default_payment_method': payment_method,
-        },
+      payment_method=payment_method,
+      email=email,
+      invoice_settings={
+        'default_payment_method': payment_method,
+      },
     )
 
     # create the local customer object in the DB so the subscription can use it
@@ -164,13 +160,13 @@ def create_customer(request, subscription_holder=None):
 
     # create subscription
     subscription = stripe.Subscription.create(
-        customer=customer.id,
-        items=[
-            {
-                'plan': plan_id,
-            },
-        ],
-        expand=['latest_invoice.payment_intent', 'pending_setup_intent'],
+      customer=customer.id,
+      items=[
+        {
+          'plan': plan_id,
+        },
+      ],
+      expand=['latest_invoice.payment_intent', 'pending_setup_intent'],
     )
     djstripe_subscription = djstripe.models.Subscription.sync_from_stripe_data(subscription)
 

@@ -22,7 +22,6 @@ import {
   messages,
 } from "../../../../utils/Utils";
 import axios from "../../../../utils/axios";
-import { loadStripe } from "@stripe/stripe-js";
 import {
   CardElement,
   Elements,
@@ -30,44 +29,111 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 
-const CheckoutForm = () => {
-  const stripe = useStripe();
-  const elements = useElements();
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardElement),
-    });
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <CardElement />
-      <button type="submit" disabled={!stripe}>
-        Upgrade
-      </button>
-    </form>
-  );
-};
-
 const UpgradeSubscription = (props) => {
   const stripe = useStripe();
   const elements = useElements();
 
+  const [teammateProduct, setTeammateProduct] = useState(null);
+  const [paymentMetadata, setPaymentMetadata] = useState(null);
+  const [subscriptionUrls, setSubscriptionUrls] = useState(null);
+  const [currencyAmount, setCurrencyAmount] = useState("-");
+  const [submissionPending, setSubmissionPending] = useState(false);
+
   const handleUpgrade = async () => {
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
+    console.log("upgrading...");
+    setSubmissionPending(true);
+
+    const result = await stripe.createPaymentMethod({
       type: "card",
       card: elements.getElement(CardElement),
     });
+    console.log("createPaymentMethod: ", result);
+
+    const { error, paymentMethod } = result;
+
+    try {
+      await handlePaymentMethodCreated(error, paymentMethod);
+    } catch (e) {
+      handleError(
+        "Sorry, there was an unexpected error processing your payment. Please contact us for support."
+      );
+
+      console.log(e);
+
+      setSubmissionPending(false);
+    }
   };
 
-  const [teammateProduct, setTeammateProduct] = useState(null);
-  const [paymentMetaData, setPaymentMetaData] = useState(null);
-  const [subscriptionUrls, setSubscriptionUrls] = useState(null);
+  const handlePaymentMethodCreated = async (error, paymentMethod) => {
+    if (error) {
+      handleError(error.message);
+      setSubmissionPending(false);
+    } else {
+      const paymentParams = { ...paymentMetadata };
+      paymentParams.plan_id = teammateProduct.monthly_plan.id;
+      paymentParams.payment_method = paymentMethod.id;
 
-  const [currencyAmount, setCurrencyAmount] = useState("-");
+      const { data: result } = await axios.post(
+        subscriptionUrls.create_customer,
+        paymentParams
+      );
+      console.log("create_customer result: ", result);
+
+      if (result.error) {
+        handleError(result.error.message);
+        setSubmissionPending(false);
+      } else {
+        const subscription = result.subscription;
+        const { latest_invoice } = subscription;
+        const { payment_intent } = latest_invoice;
+        if (payment_intent) {
+          const { client_secret, status } = payment_intent;
+          if (status === "requires_action") {
+            // trigger 3D-secure workflow
+            stripe.confirmCardPayment(client_secret).then(function (result) {
+              if (result.error) {
+                // The card was declined (i.e. insufficient funds, card has expired, etc)
+                handleError(result.error.message);
+                setSubmissionPending(false);
+              } else {
+                handleSubscriptionSuccess();
+              }
+            });
+          } else {
+            // No additional information was needed
+            handleSubscriptionSuccess();
+          }
+        } else if (subscription.pending_setup_intent) {
+          const { client_secret, status } = subscription.pending_setup_intent;
+          if (status === "requires_action") {
+            stripe.confirmCardSetup(client_secret).then(function (result) {
+              if (result.error) {
+                handleError(result.error.message);
+                setSubmissionPending(false);
+              } else {
+                handleSubscriptionSuccess();
+              }
+            });
+          }
+        } else {
+          handleSubscriptionSuccess();
+        }
+      }
+    }
+  };
+
+  const handleError = async (errorMessage) => {
+    console.log(errorMessage);
+
+    toastOnError(errorMessage);
+  };
+
+  const handleSubscriptionSuccess = async () => {
+    setSubmissionPending(false);
+    // location.href = subscriptionSuccessUrl;
+
+    toastOnSuccess("Subscribed successfully!");
+  };
 
   useEffect(async () => {
     try {
@@ -79,7 +145,7 @@ const UpgradeSubscription = (props) => {
       console.log("upgrade-subscription: ", data);
 
       setTeammateProduct(data.teammate_product);
-      setPaymentMetaData(data.payment_metadata);
+      setPaymentMetadata(data.payment_metadata);
       setSubscriptionUrls(data.subscription_urls);
     } catch (e) {
       toastOnError(messages.api_failed);
@@ -127,10 +193,9 @@ const UpgradeSubscription = (props) => {
               <CardFooter className="bg-transparent">
                 <Button
                   color="primary"
-                  type="submit"
                   className="text-uppercase"
                   onClick={handleUpgrade}
-                  disabled={!stripe}
+                  disabled={!stripe && !submissionPending}
                 >
                   Upgrade
                 </Button>
