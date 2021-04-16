@@ -31,7 +31,7 @@ from .models import (Campaign, CampaignLeadCatcher, CampaignRecipient, DripEmail
 from .serializers import (CampaignEmailSerializer, CampaignLeadCatcherSerializer, CampaignSerializer,
                           DripEmailSerilizer, FollowUpSerializer, CampaignDetailsSerializer, OnclickSerializer,
                           CampaignLabelSerializer, ProspectsSerializer, CampaignOverviewSerializer,
-                          CampaignRecipientSerializer, CampaignListSerializer, LeadSettingsSerializer, EmailsSerializer,
+                          RecipientSerializer, CampaignListSerializer, LeadSettingsSerializer, EmailsSerializer,
                           LeadsLogSerializer)
 from ..unsubscribes.models import UnsubscribeEmail
 from apps.mailaccounts.models import EmailAccount
@@ -545,7 +545,7 @@ class CampaignCreateView(APIView):
                 'replacement': json.dumps(replacement)
             }
 
-            res = CampaignRecipientSerializer(data=res_data)
+            res = RecipientSerializer(data=res_data)
             if res.is_valid():
                 res.save()
             else:
@@ -1372,8 +1372,11 @@ class CampaignOverviewSummary(APIView):
         for the currently authenticated user.
         """
         funnel_queryset = Emails.objects \
-            .filter(campaign=pk) \
-            .annotate(recipient_count=Count('emailoutbox__recipient'),
+            .filter(campaign=pk, campaign__assigned=self.request.user.id) \
+            .annotate(recipient_count=Count(Case(When(emailoutbox__status=1,
+                                                      then='emailoutbox__recipient'),
+                                                 default=None,
+                                                 output_field=IntegerField()), distinct=True),
                       opened_count=Sum('emailoutbox__opened'),
                       clicked_count=Sum('emailoutbox__clicked'),
                       replied_count=Sum('emailoutbox__replied'),
@@ -1383,9 +1386,9 @@ class CampaignOverviewSummary(APIView):
         funnel = funnel_serializer.data
 
         totals = EmailOutbox.objects \
-            .filter(status=1) \
-            .aggregate(recipient_count=Count('recipient'),
-                       in_campaign_count=Count('is_campaign'),
+            .filter(campaign=pk, campaign__assigned=self.request.user.id, status=1) \
+            .aggregate(recipient_count=Count('recipient', distinct=True),
+                       in_campaign_count=Count('recipient', distinct=True),
                        opened_count=Sum('opened'),
                        clicked_count=Sum('clicked'),
                        replied_count=Sum('replied'),
@@ -1769,6 +1772,7 @@ class CampaignMessages(generics.RetrieveUpdateAPIView):
 class ProspectsView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ProspectsSerializer
+    pagination_class = None
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['leads', 'bounces', 'is_unsubscribe']
 
@@ -1798,9 +1802,10 @@ class ProspectsView(generics.ListAPIView):
         return Response({"message": "Successfully Deleted", "success": True})
 
 
-class ProspectsDetailView(generics.RetrieveAPIView):
+class ProspectsDetailView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = ProspectsSerializer
+    serializer_class = RecipientSerializer
+    pagination_class = None
 
     def get_queryset(self):
         """
@@ -1808,7 +1813,8 @@ class ProspectsDetailView(generics.RetrieveAPIView):
         for the currently authenticated user.
         """
         user = self.request.user
-        return CampaignRecipient.objects.filter(campaign__assigned=user.id, is_delete=False)
+        email = self.request.query_params.get('email')
+        return Recipient.objects.filter(campaign__assigned=user.id, is_delete=False, email__iexact=email)
 
 
 class ProspectsCountView(APIView):
@@ -1836,7 +1842,7 @@ class ProspectsCountView(APIView):
         })
 
 
-class ProspectsCampaignView(generics.ListAPIView):
+class ProspectsCampaignView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, pk, *args, **kwargs):
@@ -1945,7 +1951,7 @@ class CampaignDetailsSequenceView(generics.RetrieveAPIView):
 
 class CampaignDetailsRecipientsView(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = CampaignRecipientSerializer
+    serializer_class = RecipientSerializer
 
     def get_queryset(self):
         pk = self.kwargs['pk']
@@ -1982,7 +1988,7 @@ class CampaignDetailsRecipientsAddView(APIView):
                 'replacement': json.dumps(replacement)
             }
 
-            serializer = CampaignRecipientSerializer(data=data)
+            serializer = RecipientSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
                 recipients.append(serializer.data)
@@ -1992,7 +1998,7 @@ class CampaignDetailsRecipientsAddView(APIView):
 
 class CampaignDetailsRecipientsUpdateView(generics.UpdateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = CampaignRecipientSerializer
+    serializer_class = RecipientSerializer
 
     def get_queryset(self):
         user = self.request.user

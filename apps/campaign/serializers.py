@@ -107,7 +107,11 @@ class CampaignDetailsSerializer(serializers.ModelSerializer):
         exclude = ('csvfile',)
 
 
-class CampaignRecipientSerializer(serializers.ModelSerializer):
+class RecipientSerializer(serializers.ModelSerializer):
+    campaign_id = serializers.IntegerField(source='campaign.id')
+    campaign_title = serializers.CharField(source='campaign.title')
+    created = serializers.DateTimeField(source='created_date_time', format="%B %d %Y")
+
     class Meta:
         model = Recipient
         fields = '__all__'

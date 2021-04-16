@@ -37,7 +37,7 @@ SECRET_KEY = 'atKdSovwyebchqILGtQCobosgFuyZZqQVNMjRpZb'
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = env.bool('DEBUG', default=True)
-LIVE = env.bool('LIVE', default=True)
+LIVE = env.bool('LIVE', default=False)
 STRIPE_LIVE_MODE = env.bool('STRIPE_LIVE_MODE', default=False)
 
 ALLOWED_HOSTS = ['*']

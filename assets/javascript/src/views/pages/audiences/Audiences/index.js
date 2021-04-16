@@ -29,7 +29,8 @@ import DetailModal from "./components/DetailModal"
 import {
   filterRecipients,
 } from "../../../../redux/action/ProspectsAction";
-import { showNotification } from "../../../../utils/Utils";
+import { showNotification, toastOnError, toggleTopLoader } from "../../../../utils/Utils";
+import axios from "../../../../utils/axios";
 
 const tableTitle = [
   {
@@ -65,7 +66,7 @@ const tableTitle = [
 let filters = [
   {
     key: 'status',
-    options: []
+    options: ['Contacted', 'Not contacted']
   }
 ];
 
@@ -75,6 +76,7 @@ class Prospects extends Component {
     this.state = {
       selected: 'total',
       detailItem: null,
+      detailLoading: false,
       importContactsModal: false,
       detailModal: false,
     };
@@ -86,8 +88,7 @@ class Prospects extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.recipients !== this.props.recipients) {
-      const getUniqueArray = (array, field) => array.map(x => x[field]).filter((v, i, a) => a.indexOf(v) === i);
-      filters[0].options = getUniqueArray(nextProps.recipients, 'status');
+
     }
   }
 
@@ -112,9 +113,28 @@ class Prospects extends Component {
   }
 
   showDetailModal = (item) => {
-    this.setState({ detailItem: item });
+    this.setState({ 
+      detailItem: null,
+      detailLoading: true,
+      detailModal: true
+    });
 
-    this.setState({ detailModal: true });
+    const email = item.email;
+
+    toggleTopLoader(true);
+    axios.get('/campaign/prospects/detail/', {'email': email})
+      .then((response) => {
+        this.setState({ detailItem: response.data });
+      })
+      .catch((error) => {
+        toastOnError(error);
+      })
+      .finally(() => {
+        toggleTopLoader(false);
+        this.setState({
+          detailLoading: false
+        });
+      });
   }
 
   closeDetailModal = () => {
@@ -207,6 +227,7 @@ class Prospects extends Component {
 
           <DetailModal
             isOpen={detailModal}
+            isLoading={this.state.detailLoading}
             data={this.state.detailItem}
             close={this.closeDetailModal}
           />

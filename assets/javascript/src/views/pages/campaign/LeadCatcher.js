@@ -507,7 +507,9 @@ class LeadCatcher extends Component {
               <div className="px-0 px-sm-5">
                 {
                   detailLoading &&
-                  <Spinner color="primary" />
+                  <div className="d-flex">
+                    <Spinner color="primary" className="m-auto"/>
+                  </div>
                 }
                 {
                   !detailLoading && timeline.length === 0 &&

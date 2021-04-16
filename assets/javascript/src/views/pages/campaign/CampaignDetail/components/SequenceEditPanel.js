@@ -257,7 +257,7 @@ class SequenceEditPanel extends Component {
                     defaultValue={this.state.main.email_body}
                     onChange={(value) => {
                       const { main } = this.state;
-                      main.email_body = e.target.value;
+                      main.email_body = value;
                       this.setState({
                         ...this.state,
                         main
