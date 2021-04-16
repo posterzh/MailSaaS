@@ -20,7 +20,6 @@ from .serializers import TeamSerializer, InvitationSerializer
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def create_team(request):
-
     new_team = TeamSerializer(data=request.data)
     if new_team.is_valid(raise_exception=True):
         new_team.save()

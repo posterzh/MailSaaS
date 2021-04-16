@@ -21,8 +21,8 @@ class MembershipSerializer(serializers.ModelSerializer):
 
 
 class InvitationSerializer(serializers.ModelSerializer):
-    # id = serializers.ReadOnlyField()
-    # invited_by = serializers.ReadOnlyField(source='invited_by.get_display_name')
+    id = serializers.ReadOnlyField()
+    # invited_by = serializers.ReadOnlyField(source='invited_by.first_name')
 
     class Meta:
         model = Invitation

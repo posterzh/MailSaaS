@@ -48,8 +48,7 @@ export class Teammates extends Component {
     toggleTopLoader(true);
     axios
       .post("/teams/create/", {
-        name: 'testing team3',
-        slug: 'testing-team3'
+        name: 'testing team'
       })
       .then((response) => {
         debugger;
