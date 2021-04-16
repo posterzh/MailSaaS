@@ -50,9 +50,9 @@ class ProductWithMetadata(object):
             raise SubscriptionConfigError(_('At least one plan interval (year or month) must be set!'))
         return self.monthly_plan if ACTIVE_PLAN_INTERVALS[0] == PlanInterval.month else self.annual_plan
 
-    @cached_property
-    def annual_plan(self):
-        return self._get_plan(PlanInterval.year)
+    # @cached_property
+    # def annual_plan(self):
+    #     return self._get_plan(PlanInterval.year)
 
     @cached_property
     def monthly_plan(self):
@@ -81,8 +81,8 @@ class ProductWithMetadata(object):
         return {
             'product': ProductSerializer(self.product).data,
             'metadata': attr.asdict(self.metadata),
-            'default_plan': _serialized_plan_or_none(self.default_plan),
-            'annual_plan': _serialized_plan_or_none(self.annual_plan),
+            # 'default_plan': _serialized_plan_or_none(self.default_plan),
+            # 'annual_plan': _serialized_plan_or_none(self.annual_plan),
             'monthly_plan': _serialized_plan_or_none(self.monthly_plan),
         }
 
@@ -131,12 +131,31 @@ if settings.STRIPE_LIVE_MODE == False:
                         description='The TeamMember plan', is_default=False),
     ]
 
+    TEAMMATE_PRODUCT = ProductMetadata(stripe_id='prod_JIUJQ1cR7OkqXf', name='TeamMember',
+                        features=['TeamMember Feature 1', 'TeamMember Feature 2', 'TeamMember Feature 3'],
+                        description='The TeamMember plan', is_default=False)
+
+
+    EMAIL_PRODUCT = ProductMetadata(stripe_id='prod_JIUKMaC01HeQLS', name='EmailAccount',
+                        features=['EmailAccount Feature 1', 'EmailAccount Feature 2', 'EmailAccount Feature 3'],
+                        description='The EmailAccount plan', is_default=False)
+
 
 if settings.STRIPE_LIVE_MODE == True: 
     ACTIVE_PRODUCTS = [
         ProductMetadata(stripe_id='prod_JI3BVQyGSyVhjL', name='Email Account', features=['Email Account Feature 1', 'Email Account Feature 2', 'Email Account Feature 3'], description='The Email Account plan', is_default=True),
         ProductMetadata(stripe_id='prod_JI3BtCb5apsch2', name='User', features=['User Feature 1', 'User Feature 2', 'User Feature 3'], description='The User plan', is_default=False),
     ]
+
+    TEAMMATE_PRODUCT = ProductMetadata(stripe_id='prod_JIUJQ1cR7OkqXf', name='TeamMember',
+                                       features=['TeamMember Feature 1', 'TeamMember Feature 2',
+                                                 'TeamMember Feature 3'],
+                                       description='The TeamMember plan', is_default=False)
+
+    EMAIL_PRODUCT = ProductMetadata(stripe_id='prod_JIUKMaC01HeQLS', name='EmailAccount',
+                                    features=['EmailAccount Feature 1', 'EmailAccount Feature 2',
+                                              'EmailAccount Feature 3'],
+                                    description='The EmailAccount plan', is_default=False)
 
 
 ACTIVE_PRODUCTS_BY_ID = {
@@ -176,17 +195,31 @@ def get_active_products_with_metadata():
             ))
 
 
-def get_product_with_metadata(djstripe_product):
-    if djstripe_product.id in ACTIVE_PRODUCTS_BY_ID:
+def get_product_with_metadata(product):
+    # if djstripe_product.id in ACTIVE_PRODUCTS_BY_ID:
+    #     return ProductWithMetadata(
+    #         product=djstripe_product,
+    #         metadata=ACTIVE_PRODUCTS_BY_ID[djstripe_product.id]
+    #     )
+    # else:
+    #     return ProductWithMetadata(
+    #         product=djstripe_product,
+    #         metadata=ProductMetadata.from_stripe_product(djstripe_product)
+    #     )
+    try:
         return ProductWithMetadata(
-            product=djstripe_product,
-            metadata=ACTIVE_PRODUCTS_BY_ID[djstripe_product.id]
+            product=Product.objects.get(id=product.stripe_id),
+            metadata=product,
         )
-    else:
-        return ProductWithMetadata(
-            product=djstripe_product,
-            metadata=ProductMetadata.from_stripe_product(djstripe_product)
-        )
+    except Product.DoesNotExist:
+        raise SubscriptionConfigError(_(
+            f'No Product with ID "{product.stripe_id}" found! '
+            f'This is coming from the "{product.name}" Product in the ACTIVE_PRODUCTS variable '
+            f'in metadata.py. '
+            f'Please make sure that all products in ACTIVE_PRODUCTS have a valid stripe_id and that '
+            f'you have synced your Product database with Stripe.'
+        ))
+
 
 def get_product_and_metadata_for_subscription(subscription):
     if not subscription:

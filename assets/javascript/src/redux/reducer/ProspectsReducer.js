@@ -13,7 +13,7 @@ export const prospectsReducer = (state = initialState, action) => {
     case FILTER_RECIPIENTS:
       return {
         ...state,
-        recipients: action.payload.results,
+        recipients: action.payload,
       };
     case COUNT_RECIPIENTS:
       return {

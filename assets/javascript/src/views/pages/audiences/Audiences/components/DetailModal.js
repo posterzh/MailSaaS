@@ -15,161 +15,97 @@ import {
   Nav,
   NavItem,
   NavLink,
+  Spinner
 } from "reactstrap";
 import { CSVReader } from 'react-papaparse';
 import Tables from "../../../../../components/Tables";
 
-const initialState = {
+const tableTitle = [
+  {
+    key: 'campaign_title',
+    value: 'CAMPAIGN',
+  },
+  {
+    key: 'created',
+    value: 'ADDED',
+  },
+  {
+    key: 'status',
+    value: 'STATUS',
+  },
+  {
+    key: 'sent',
+    value: 'SENT',
+  },
+  {
+    key: 'opens',
+    value: 'OPENS',
+  },
+  {
+    key: 'clicked',
+    value: 'CLICKS',
+  },
+  {
+    key: 'replies',
+    value: 'REPLIES',
+  },
+];
 
-};
+const initialData = [];
 
-export class ImportContactsModal extends Component {
+export class DetailModal extends Component {
   constructor(props) {
     super(props);
-    this.state = initialState;
+    this.state = {
+      data: initialData
+    };
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.data != prevProps.data) {
       if (this.props.data) {
-        this.setState({ ...this.props.data });
+        this.setState({ data: this.props.data });
       } else {
-        this.setState({ ...initialState });
+        this.setState({ data: initialData });
       }
-
-      console.log(this.props.data);
     }
   }
 
   render() {
-    const tableTitle = [
-			{
-				key: 'campaign_title',
-				value: 'CAMPAIGN',
-			},
-			{
-				key: 'created',
-				value: 'ADDED',
-			},
-			{
-				key: 'status',
-				value: 'STATUS',
-			},
-			{
-				key: 'sent_count',
-				value: 'SENT',
-			},
-			{
-				key: 'open_count',
-				value: 'OPENS',
-			},
-			{
-				key: 'click_count',
-				value: 'CLICKS',
-			},
-			{
-				key: 'reply_count',
-				value: 'REPLIES',
-			},
-		];
+    let { data } = this.state;
+    let { isLoading } = this.props;
+
+    data = data.map((item) => {
+      item.status = item.sent > 0 ? 'Contacted' : 'Not contacted'
+      return item;
+    });
 
     return (
-      <>
-        <Modal isOpen={this.props.isOpen} toggle={this.props.close} size="xl">
-          <Form onSubmit={this.handleSubmit}>
-            <Card className="no-shadow">
-              <CardHeader className="pb-0">
-                <h2>Campaigns</h2>
-              </CardHeader>
-              <CardBody className="pt-4 pb-0">
-                <Row>
-                  <Col md="2" sm="4" className="sidenav-toggler">
-                    <Card className="bg-light">
-                      <CardBody className="text-center p-3">
-                        <CardTitle className="m-0">
-                          <h3 className="text-white heading m-0">
-                            <div>{/*this.state.campaign_count*/0}</div>
-                            <div>CAMPS</div>
-                          </h3>
-                        </CardTitle>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  <Col md="2" sm="4" className="sidenav-toggler">
-                    <Card className="bg-light">
-                      <CardBody className="text-center p-3">
-                        <CardTitle className="m-0">
-                          <h3 className="text-white heading m-0">
-                            <div>{this.state.sent_count}</div>
-                            <div>SENDS</div>
-                          </h3>
-                        </CardTitle>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  <Col md="2" sm="4" className="sidenav-toggler">
-                    <Card className="bg-light">
-                      <CardBody className="text-center p-3">
-                        <CardTitle className="m-0">
-                          <h3 className="text-white heading m-0">
-                            <div>{this.state.open_count}</div>
-                            <div>OPENS</div>
-                          </h3>
-                        </CardTitle>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  <Col md="2" sm="4" className="sidenav-toggler">
-                    <Card className="bg-light">
-                      <CardBody className="text-center p-3">
-                        <CardTitle className="m-0">
-                          <h3 className="text-white heading m-0">
-                            <div>{this.state.click_count}</div>
-                            <div>CLICKS</div>
-                          </h3>
-                        </CardTitle>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  <Col md="2" sm="4" className="sidenav-toggler">
-                    <Card className="bg-light">
-                      <CardBody className="text-center p-3">
-                        <CardTitle className="m-0">
-                          <h3 className="text-white heading m-0">
-                            <div>{this.state.reply_count}</div>
-                            <div>REPLIES</div>
-                          </h3>
-                        </CardTitle>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  <Col md="2" sm="4" className="sidenav-toggler">
-                    <Card className="bg-light">
-                      <CardBody className="text-center p-3">
-                        <CardTitle className="m-0">
-                          <h3 className="text-white heading m-0">
-                            <div>{this.state.lead_count}</div>
-                            <div>LEADS</div>
-                          </h3>
-                        </CardTitle>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                </Row>
+      <Modal isOpen={this.props.isOpen} toggle={this.props.close} size="xl">
+        <Form onSubmit={this.handleSubmit}>
+          <Card className="no-shadow">
+            <CardHeader className="pb-0">
+              <h2>Campaigns</h2>
+            </CardHeader>
+            <CardBody className="pt-4 pb-0 d-flex">
 
-                <Row>
-                  <Tables
-                    titles={tableTitle} // required
-                    tablePropsData={[this.state]}   // required
-                  />
-                </Row>
-              </CardBody>
-            </Card>
-          </Form>
-        </Modal>
-      </>
+              {
+                isLoading &&
+                <Spinner color="primary" className="m-auto" />
+              }
+              {
+                isLoading ||
+                <Tables
+                  titles={tableTitle} // required
+                  tablePropsData={data}   // required
+                />
+              }
+            </CardBody>
+          </Card>
+        </Form>
+      </Modal>
     );
   }
 }
 
-export default ImportContactsModal;
+export default DetailModal;

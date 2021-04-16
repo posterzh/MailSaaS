@@ -507,7 +507,9 @@ class LeadCatcher extends Component {
               <div className="px-0 px-sm-5">
                 {
                   detailLoading &&
-                  <Spinner color="primary" />
+                  <div className="d-flex">
+                    <Spinner color="primary" className="m-auto"/>
+                  </div>
                 }
                 {
                   !detailLoading && timeline.length === 0 &&
@@ -543,7 +545,7 @@ class LeadCatcher extends Component {
                               </DropdownItem>
                             </DropdownMenu>
                           </UncontrolledDropdown>
-                          <UncontrolledDropdown size="sm">
+                          {/* <UncontrolledDropdown size="sm">
                             <DropdownToggle caret color="secondary">
                               ASSIGN
                             </DropdownToggle>
@@ -555,7 +557,7 @@ class LeadCatcher extends Component {
                                 Me
                               </DropdownItem>
                             </DropdownMenu>
-                          </UncontrolledDropdown>
+                          </UncontrolledDropdown> */}
                         </>
                         :
                         <Button color="secondary" type="button" size="sm" onClick={e => this.updateLeadStatus(detailLead, 'reopen')}>

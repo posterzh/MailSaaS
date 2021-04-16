@@ -61,12 +61,14 @@ class OverviewSummery extends Component {
             <Col>
               <Card className="card-summary-funnel mb-0">
                 <div className="funnel-item-header px-4 pt-3 mb-2 d-flex">
-                  <span className="mr-3">INITIAL EMAIL</span>
-                  <Badge color="danger" className="ml-auto" pill>
-                    {initial_funnel.length > 0 ? initial_funnel[0].recipient_count : 0} Recipients
-                  </Badge>
+                  <span className="m-auto">INITIAL EMAIL</span>
                 </div>
                 <CardBody className="pt-0 pb-3">
+                  <Row>
+                    <Badge className="ml-2" color="danger" pill>
+                      {initial_funnel.length > 0 ? initial_funnel[0].recipient_count : 0} Recipients
+                    </Badge>
+                  </Row>
                   <Row className="py-2">
                     <Col className="detail-item px-1 px-md-2">
                       <FunnelCard count={initial_funnel.length > 0 ? initial_funnel[0].opened_count : 0} text={"OPENED"} />
@@ -93,30 +95,34 @@ class OverviewSummery extends Component {
             <Col>
               <Card className="card-summary-funnel mb-0 mt-3">
                 <div className="funnel-item-header px-4 pt-3 mb-2 d-flex">
-                  <span className="mr-3">FOLLOW UP</span>
-                  <Badge color="danger ml-auto" pill>
-                    {0} Recipients
-                  </Badge>
+                  <span className="m-auto">FOLLOW UP</span>
                 </div>
                 <CardBody className="pt-0 pb-3">
                   {followup_funnel.map((item, index) => (
-                    <Row key={`item_${index}`} className="py-2">
-                      <Col className="detail-item px-1 px-md-2">
-                        <FunnelCard count={item.opened_count} text={"OPENED"} />
-                      </Col>
-                      <Col className="detail-item px-1 px-md-2">
-                        <FunnelCard count={item.clicked_count} text={"CLICKED"} />
-                      </Col>
-                      <Col className="detail-item px-1 px-md-2">
-                        <FunnelCard count={item.replied_count} text={"REPLIED"} />
-                      </Col>
-                      <Col className="detail-item px-1 px-md-2">
-                        <FunnelCard count={item.bounced_count} text={"BOUNCED"} />
-                      </Col>
-                      <Col className="detail-item px-1 px-md-2">
-                        <FunnelCard count={0} text={"UNSUBSCRIBED"} />
-                      </Col>
-                    </Row>
+                    <div key={`item_${index}`}>
+                      <Row>
+                        <Badge className="ml-2" color="danger" pill>
+                          {item.recipient_count} Recipients
+                        </Badge>
+                      </Row>
+                      <Row className="py-2">
+                        <Col className="detail-item px-1 px-md-2">
+                          <FunnelCard count={item.opened_count} text={"OPENED"} />
+                        </Col>
+                        <Col className="detail-item px-1 px-md-2">
+                          <FunnelCard count={item.clicked_count} text={"CLICKED"} />
+                        </Col>
+                        <Col className="detail-item px-1 px-md-2">
+                          <FunnelCard count={item.replied_count} text={"REPLIED"} />
+                        </Col>
+                        <Col className="detail-item px-1 px-md-2">
+                          <FunnelCard count={item.bounced_count} text={"BOUNCED"} />
+                        </Col>
+                        <Col className="detail-item px-1 px-md-2">
+                          <FunnelCard count={0} text={"UNSUBSCRIBED"} />
+                        </Col>
+                      </Row>
+                    </div>
                   ))}
                 </CardBody>
               </Card>
@@ -127,30 +133,34 @@ class OverviewSummery extends Component {
             <Col>
               <Card className="card-summary-funnel mb-0 mt-3">
                 <div className="funnel-item-header px-4 pt-3 mb-2 d-flex">
-                  <span className="mr-3">DRIP</span>
-                  <Badge color="danger ml-auto" pill>
-                    {0} Recipients
-                  </Badge>
+                  <span className="m-auto">DRIP</span>
                 </div>
                 <CardBody className="pt-0 pb-2">
                   {drip_funnel.map((item, index) => (
-                    <Row key={`item_${index}`} className="py-2">
-                      <Col className="detail-item px-1 px-md-2">
-                        <FunnelCard count={item.opened_count} text={"OPENED"} />
-                      </Col>
-                      <Col className="detail-item px-1 px-md-2">
-                        <FunnelCard count={item.clicked_count} text={"CLICKED"} />
-                      </Col>
-                      <Col className="detail-item px-1 px-md-2">
-                        <FunnelCard count={item.replied_count} text={"REPLIED"} />
-                      </Col>
-                      <Col className="detail-item px-1 px-md-2">
-                        <FunnelCard count={item.bounced_count} text={"BOUNCED"} />
-                      </Col>
-                      <Col className="detail-item px-1 px-md-2">
-                        <FunnelCard count={0} text={"UNSUBSCRIBED"} />
-                      </Col>
-                    </Row>
+                    <div key={`item_${index}`}>
+                      <Row>
+                        <Badge className="ml-2" color="danger" pill>
+                          {item.recipient_count} Recipients
+                        </Badge>
+                      </Row>
+                      <Row className="py-2">
+                        <Col className="detail-item px-1 px-md-2">
+                          <FunnelCard count={item.opened_count} text={"OPENED"} />
+                        </Col>
+                        <Col className="detail-item px-1 px-md-2">
+                          <FunnelCard count={item.clicked_count} text={"CLICKED"} />
+                        </Col>
+                        <Col className="detail-item px-1 px-md-2">
+                          <FunnelCard count={item.replied_count} text={"REPLIED"} />
+                        </Col>
+                        <Col className="detail-item px-1 px-md-2">
+                          <FunnelCard count={item.bounced_count} text={"BOUNCED"} />
+                        </Col>
+                        <Col className="detail-item px-1 px-md-2">
+                          <FunnelCard count={0} text={"UNSUBSCRIBED"} />
+                        </Col>
+                      </Row>
+                    </div>
                   ))}
                 </CardBody>
               </Card>
