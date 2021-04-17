@@ -124,6 +124,7 @@ class TeamViewSet(viewsets.ModelViewSet):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
     pagination_class = None
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
         # filter queryset based on logged in user
@@ -138,6 +139,7 @@ class TeamViewSet(viewsets.ModelViewSet):
         # ensure logged in user is set on the model during creation
         team = serializer.save()
         team.members.add(self.request.user, through_defaults={'role': 'admin', 'permission': 'update'})
+
 
 @team_admin_required
 def resend_invitation(request, team, invitation_id):
