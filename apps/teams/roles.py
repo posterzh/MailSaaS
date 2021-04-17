@@ -1,5 +1,6 @@
 ROLE_ADMIN = 'admin'
 ROLE_MEMBER = 'member'
+
 PERMISSION_READ = 'read'
 PERMISSION_CREATE = 'create'
 PERMISSION_UPDATE = 'update'
@@ -11,9 +12,9 @@ ROLE_CHOICES = (
 )
 
 MEMBER_PERMISSION = (
-    ('read', 'Read Campaign'),
-    ('create', 'Create Campaign'),
-    ('update', 'Update Campaign')
+    (PERMISSION_READ, 'Read Campaign'),
+    (PERMISSION_CREATE, 'Create Campaign'),
+    (PERMISSION_UPDATE, 'Update Campaign')
 )
 
 

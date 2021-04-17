@@ -11,7 +11,7 @@ class MembershipAdmin(admin.ModelAdmin):
 
 @admin.register(Invitation)
 class InvitationAdmin(admin.ModelAdmin):
-    list_display = ['id', 'team', 'email', 'role', 'is_accepted']
+    list_display = ['id', 'team', 'email', 'permission', 'is_accepted']
     list_filter = ['team', 'is_accepted']
 
 
