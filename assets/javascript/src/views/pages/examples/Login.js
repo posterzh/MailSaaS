@@ -53,7 +53,7 @@ class Login extends React.Component {
     const email = params.get("email");
 
     this.state = {
-      email: email,
+      email: email || "",
       password: "",
       focusedEmail: false,
       focusedPassword: false,
