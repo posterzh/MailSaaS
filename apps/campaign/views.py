@@ -2332,7 +2332,7 @@ class RecipientsCheck(APIView):
 
             res_emails = df_csv['email'].to_list()
 
-            resp = Recipient.objects.filter(email__in=res_emails).values('email')
+            resp = Recipient.objects.filter(email__in=res_emails).values('email', 'replacement').distinct()
 
             return Response({"result": resp, "success": True})
 

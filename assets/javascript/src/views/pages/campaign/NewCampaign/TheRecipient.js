@@ -6,7 +6,11 @@ import {
   Button,
   Card,
   CardBody,
-  Modal
+  Modal,
+  ModalFooter,
+  ModalBody,
+  ModalHeader,
+  Spinner
 } from "reactstrap";
 import Dropzone from "dropzone";
 import { CSVReader } from "react-papaparse";
@@ -35,7 +39,8 @@ class TheRecipient extends Component {
         title: [],
         data: []
       },
-      isOpen: false
+      isOpen: false,
+      checkLoading: false
     };
   }
 
@@ -82,6 +87,49 @@ class TheRecipient extends Component {
     //   });    
   };
 
+  extractFieldData (data) {
+    const firstRow = data[0];
+    const tableHeaders = [];
+    const tableBody = [];
+    const fields = Object.keys(firstRow || {}).filter(key => !!key).map((key) => {
+      if (
+        key &&
+        (key.toLowerCase().indexOf("name") > -1 || 
+          key.toLowerCase().indexOf("first") > -1 || 
+          key.toLowerCase().indexOf("last") > -1
+        )
+      ) {
+        tableHeaders.push({
+          key: key,
+          value: key,
+        });
+      } else if (key.toLowerCase().indexOf("mail") > -1) {
+        tableHeaders.unshift({
+          key: key,
+          value: key,
+        });
+      }
+      return key;
+    });
+
+    if (tableHeaders.length > 0) {
+      data.forEach((rowData, index) => {
+        if (index > 10) return;
+        let obj = {};
+        tableHeaders.forEach((header) => {
+          obj[header.key] = rowData[header.key];
+        });
+        tableBody.push(obj);
+      });
+    }
+
+    return {
+      fields,
+      tableHeaders,
+      tableBody
+    }
+  }
+
   handleOnDrop = async (data, file) => {
     if (!data || data.length == 0) {
       this.setState({
@@ -92,25 +140,27 @@ class TheRecipient extends Component {
       return;
     }
 
+    const { fields, tableHeaders, tableBody } = this.extractFieldData(data.map((row) => row.data));
+
     const firstRow = data[0].data;
-    const tableHeaders = [];
-    const tableBody = [];
-    const fields = Object.keys(firstRow || {}).filter(key => !!key).map((key) => {
-      if (
-        key &&
-        (key.toLowerCase().indexOf("name") > -1 || 
-          key.toLowerCase().indexOf("first") > -1 || 
-          key.toLowerCase().indexOf("last") > -1 || 
-          key.toLowerCase().indexOf("mail") > -1
-        )
-      ) {
-        tableHeaders.push({
-          key: key,
-          value: key,
-        });
-      }
-      return key;
-    });
+    // const tableHeaders = [];
+    // const tableBody = [];
+    // const fields = Object.keys(firstRow || {}).filter(key => !!key).map((key) => {
+    //   if (
+    //     key &&
+    //     (key.toLowerCase().indexOf("name") > -1 || 
+    //       key.toLowerCase().indexOf("first") > -1 || 
+    //       key.toLowerCase().indexOf("last") > -1 || 
+    //       key.toLowerCase().indexOf("mail") > -1
+    //     )
+    //   ) {
+    //     tableHeaders.push({
+    //       key: key,
+    //       value: key,
+    //     });
+    //   }
+    //   return key;
+    // });
 
     if (fields.indexOf("email") == -1 && fields.indexOf("Email") == -1) {
       showNotification("warning", "Invalid CSV uploading", "CSV file should contain 'email' column.");
@@ -119,33 +169,34 @@ class TheRecipient extends Component {
 
     const duplication = await this.checkDuplication(file);
     if (duplication && duplication.length > 0) {
+      const { tableHeaders: dupHeaders, tableBody: dupBody } = this.extractFieldData(duplication.map((r) => JSON.parse(r.replacement || '{}')));
       this.setState({
         duplicates: {
-          title: [{key: 'email', value: 'email'}],
-          data: duplication
+          title: dupHeaders,
+          data: dupBody
         },
-        isOpen: true,
         tmpFile: file,
         csvFile: null
       });
     } else {
       this.setState({
         tmpFile: file,
-        csvFile: file
+        csvFile: file,
+        isOpen: false
       });
     }
 
-    if (tableHeaders.length > 0) {
-      data.forEach((row, index) => {
-        if (index > 10) return;
-        let obj = {};
-        const rowData = row.data;
-        tableHeaders.forEach((header) => {
-          obj[header.key] = rowData[header.key];
-        });
-        tableBody.push(obj);
-      });
-    }
+    // if (tableHeaders.length > 0) {
+    //   data.forEach((row, index) => {
+    //     if (index > 10) return;
+    //     let obj = {};
+    //     const rowData = row.data;
+    //     tableHeaders.forEach((header) => {
+    //       obj[header.key] = rowData[header.key];
+    //     });
+    //     tableBody.push(obj);
+    //   });
+    // }
 
     this.setState({
       csvMappingContent: {
@@ -202,6 +253,11 @@ class TheRecipient extends Component {
   checkDuplication = (csvfile) => {
     const formData = new FormData();
     formData.append('csvfile', csvfile);
+    this.setState({
+      checkLoading: true,
+      isOpen: true
+    });
+
     toggleTopLoader(true);
     return axios
       .post("/campaign/check-recipients", formData)
@@ -218,12 +274,13 @@ class TheRecipient extends Component {
       })
       .finally(() => {
         toggleTopLoader(false);
+        this.setState({checkLoading: false});
       });   
   }
 
   render() {
     const { onPrev, onNext } = this.props;
-    const { show, csvMappingContent, duplicates } = this.state;
+    const { show, csvMappingContent, duplicates, isOpen, checkLoading } = this.state;
 
     return (
       <>
@@ -263,7 +320,7 @@ class TheRecipient extends Component {
                 <h3 className="text-left my-4">
                   Map CSV Special Columns
                 </h3>
-                <span>(top 10 rows and special columns)</span>
+                <p>(top 10 rows and special columns)</p>
               </Col>
             </Row>
             <Row>
@@ -302,11 +359,12 @@ class TheRecipient extends Component {
           </Col>
         </Row>
         <Modal
-          className="modal-dialog-centered"
-          isOpen={this.state.isOpen}
-          toggle={this.state.close}
+          className="modal-dialog-centered scroll-modal"
+          isOpen={isOpen}
+          size="lg" 
         >
-          <div className="modal-header">
+          <ModalHeader>Duplicated Recipients</ModalHeader>
+          {/* <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLabel">
               Duplicated Recipients
             </h5>
@@ -315,21 +373,34 @@ class TheRecipient extends Component {
               className="close"
               data-dismiss="modal"
               type="button"
-              onClick={this.state.close}
+              onClick={this.props.close}
             >
               <span aria-hidden={true}>×</span>
             </button>
-          </div>
-          <div className="modal-body">
-            {duplicates.title.length > 0 &&
-              duplicates.data.length > 0 && (
-                <Tables
-                  titles={duplicates.title} // required
-                  tablePropsData={duplicates.data} // required
-                />
-              )}
-          </div>
-          <div className="modal-footer">
+          </div> */}
+          <ModalBody className="pt-0">
+            {
+              checkLoading &&
+              <div className="d-flex">
+                <Spinner color="primary" className="m-auto"/>
+              </div>
+            }
+            {
+              !checkLoading && duplicates.data.length === 0 &&
+              <p className="text-muted text-center mb-0">There is no duplicated recipient.</p>
+            }
+            {
+              !checkLoading && duplicates.data.length > 0 && (
+                <>
+                  <Tables
+                    titles={duplicates.title} // required
+                    tablePropsData={duplicates.data} // required
+                  />
+                </>
+              )
+            }
+          </ModalBody>
+          <ModalFooter>
             <Button
               color="secondary"
               data-dismiss="modal"
@@ -341,7 +412,7 @@ class TheRecipient extends Component {
             <Button color="danger" type="button" onClick={this.setCSVFile}>
               Continue
             </Button>
-          </div>
+          </ModalFooter>
         </Modal>
       </>
     );
