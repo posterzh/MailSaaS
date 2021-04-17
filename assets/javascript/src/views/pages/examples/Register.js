@@ -52,6 +52,8 @@ class Register extends React.Component {
 
     const params = new URLSearchParams(props.location.search);
     const email = params.get("email");
+    const invitation_id = params.get("invitation_id");
+    console.log("invitation id: ", invitation_id);
 
     this.state = {
       FirstName: "",
@@ -68,6 +70,8 @@ class Register extends React.Component {
       focusedCompany: false,
       loading: false,
       error: false,
+
+      invitation_id: invitation_id,
     };
   }
 
@@ -118,6 +122,7 @@ class Register extends React.Component {
       email: email,
       first_name: givenName,
       last_name: familyName,
+      invitation_id: this.state.invitation_id,
     };
     const token = response.tokenObj.access_token;
     console.log(response);
