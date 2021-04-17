@@ -28,14 +28,10 @@ def create_team(request):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-@login_required
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
-def create_invite(request):
+def send_invite(request):
     data = request.data
-    data['invited_by'] = request.user.id
-    data['team'] = 1
-
     new_invite = InvitationSerializer(data=data)
     if new_invite.is_valid(raise_exception=True):
         invite = new_invite.save()
@@ -44,34 +40,6 @@ def create_invite(request):
 
     else:
         return Response({'success': False}, status=status.HTTP_400_BAD_REQUEST)
-
-    # form = TeamChangeForm(request.POST)
-    # if request.method == 'POST':
-    #
-    #     if form.is_valid():
-    #         team = form.save()
-    #         team.members.add(request.user, through_defaults={'role': 'admin'})
-    #         team.save()
-    #         return HttpResponseRedirect(reverse('teams:list_teams'))
-    # else:
-    #     form = TeamChangeForm()
-    # return render(request, 'teams/manage_team.html', {
-    #     'form': form,
-    #     'create': True,
-    # })
-
-
-# @login_required
-# @api_view(['GET'])
-# @permission_classes([permissions.IsAuthenticated])
-# def list_teams(request):
-#
-#     teams = request.user.team.all()
-#     return Response(teams)
-#     # return render(request, 'teams/list_teams.html', {
-#     #     'teams': teams,
-#     # })
-
 
 @login_required
 def manage_teams(request):

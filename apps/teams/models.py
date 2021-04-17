@@ -58,7 +58,7 @@ class Invitation(BaseModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='invitations')
     email = models.EmailField()
-    role = models.CharField(max_length=100, choices=roles.ROLE_CHOICES, default=roles.ROLE_MEMBER)
+    permission = models.CharField(max_length=100, choices=roles.MEMBER_PERMISSION, default=roles.PERMISSION_READ)
     invited_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                                    related_name='sent_invitations', null=True, blank=True)
     is_accepted = models.BooleanField(default=False)

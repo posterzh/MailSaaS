@@ -13,7 +13,7 @@ import {
   FormGroup,
   Input,
 } from "reactstrap";
-
+import { useSelector } from "react-redux";
 import PageHeader from "../../../components/Headers/PageHeader";
 import PageContainer from "../../../components/Containers/PageContainer";
 
@@ -30,32 +30,33 @@ export function Teammates(props) {
     name: "",
     bcc_email: "",
   });
+  const [invitee, setInvitee] = useState({
+    email: "",
+    role: "read",
+  });
 
-  const [otherFullname, setOtherFullname] = useState("");
-  const [otherEmail, setOtherEmail] = useState("");
-  const [permission, setPermission] = useState("read");
+  const user = useSelector((state) => state.auth.user);
 
-  const sendInvite = () => {
-    toggleTopLoader(true);
-    axios
-      .post("/teams/send-invite/", {
-        email: "alexmailsaas2021@gmail.com",
-        slug: "testing-team3",
-      })
-      .then((response) => {
-        const { data } = response;
-        if (data.success) {
-          return data.result;
-        } else {
-          return false;
-        }
-      })
-      .catch((error) => {
-        toastOnError({ error: error });
-      })
-      .finally(() => {
-        toggleTopLoader(false);
-      });
+  const sendInvite = async () => {
+    console.log("Sending invitation : ", invitee);
+    const data = {
+      team: team.id,
+      email: invitee.email,
+      permission: invitee.permission,
+      invited_by: user.pk,
+    };
+    try {
+      toggleTopLoader(true);
+      const result = await axios.post("/teams/api/send-invite/", data);
+      console.log("Invitation result: ", result.data);
+    } catch (e) {
+      toastOnError(messages.api_failed);
+      return;
+    } finally {
+      toggleTopLoader(false);
+    }
+
+    toastOnSuccess("Sent invitation successfully!");
   };
 
   const createTeam = async () => {
@@ -200,74 +201,69 @@ export function Teammates(props) {
                 </Form>
               </Card>
             </Col>
-            <Col lg="6" md="6" sm="12" className="mobile-p-0">
-              <Card>
-                <CardHeader>
-                  <h3 className="mb-0">Add teammate</h3>
-                </CardHeader>
-                <Form className="needs-validation">
-                  <CardBody>
-                    <FormGroup>
-                      <Input
-                        id="full-name"
-                        placeholder="Full Name"
-                        required
-                        type="text"
-                      />
-                    </FormGroup>
-                    <FormGroup>
-                      <Input
-                        id="email-address"
-                        placeholder="Email Address"
-                        required
-                        type="email"
-                      />
-                    </FormGroup>
-                    <FormGroup>
-                      <label
-                        className="form-control-label"
-                        htmlFor="selectFromAddress"
-                      >
-                        Permission
-                      </label>
-                      <Input
-                        id="selectFromAddress"
-                        type="select"
-                        className="form-control-sm"
-                        value={permission}
-                        onChange={(e) => setPermission(e.target.value)}
-                      >
-                        <option value="read">Read Campaign</option>
-                        <option value="create">Create Campaign</option>
-                        <option value="update">Update Campaign</option>
-                      </Input>
-                    </FormGroup>
-                    {/* <FormGroup className="d-flex">
-                      <label className="custom-toggle mr-2">
-                        <input id="is-admin" type="checkbox" />
-                        <span
-                          className="custom-toggle-slider rounded-circle"
-                          data-label-off="No"
-                          data-label-on="Yes"
-                        />
-                      </label>
-                      <label htmlFor="is-admin">Make administrator</label>
-                    </FormGroup> */}
-                  </CardBody>
-                  <CardFooter className="bg-transparent">
-                    <Button
-                      color="info"
-                      size="sm"
-                      type="submit"
-                      className="text-uppercase"
-                      onClick={sendInvite}
-                    >
-                      Send Invite
-                    </Button>
-                  </CardFooter>
-                </Form>
-              </Card>
-            </Col>
+            {team.id && (
+              <>
+                <Col lg="6" md="6" sm="12" className="mobile-p-0">
+                  <Card>
+                    <CardHeader>
+                      <h3 className="mb-0">Add teammate</h3>
+                    </CardHeader>
+                    <Form className="needs-validation">
+                      <CardBody>
+                        <FormGroup>
+                          <Input
+                            id="email-address"
+                            placeholder="Email Address"
+                            required
+                            type="email"
+                            value={invitee.email}
+                            onChange={(e) => {
+                              setInvitee({
+                                ...invitee,
+                                email: e.target.value,
+                              });
+                            }}
+                          />
+                        </FormGroup>
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="selectFromAddress"
+                          >
+                            Permission
+                          </label>
+                          <Input
+                            id="selectFromAddress"
+                            type="select"
+                            value={invitee.permission}
+                            onChange={(e) =>
+                              setInvitee({
+                                ...invitee,
+                                permission: e.target.value,
+                              })
+                            }
+                          >
+                            <option value="read">Read Campaign</option>
+                            <option value="create">Create Campaign</option>
+                            <option value="update">Update Campaign</option>
+                          </Input>
+                        </FormGroup>
+                      </CardBody>
+                      <CardFooter className="bg-transparent">
+                        <Button
+                          color="info"
+                          size="sm"
+                          className="text-uppercase"
+                          onClick={sendInvite}
+                        >
+                          Send Invite
+                        </Button>
+                      </CardFooter>
+                    </Form>
+                  </Card>
+                </Col>
+              </>
+            )}
           </Row>
           <Row>
             <Col sm="12" className="mb-5 mobile-p-0">
