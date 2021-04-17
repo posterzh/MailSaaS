@@ -17,7 +17,7 @@
 import React from "react";
 // nodejs library that concatenates classes
 import classnames from "classnames";
-import axios from 'axios'
+import axios from "axios";
 // reactstrap components
 import {
   Button,
@@ -33,32 +33,33 @@ import {
   Container,
   Row,
   Col,
-  UncontrolledAlert
+  UncontrolledAlert,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 // core components
-import AuthHeader from "../../../components/Headers/AuthHeader"
-import {
-  register,
-  googleLogin,
-} from "../../../redux/action/AuthAction"
-import { connect } from "react-redux"
-import { history } from "../../../index"
-import { Alert } from 'reactstrap';
+import AuthHeader from "../../../components/Headers/AuthHeader";
+import { register, googleLogin } from "../../../redux/action/AuthAction";
+import { connect } from "react-redux";
+import { history } from "../../../index";
+import { Alert } from "reactstrap";
 
-import GoogleLogin from 'react-google-login';
+import GoogleLogin from "react-google-login";
 import Label from "reactstrap/lib/Label";
 
 class Register extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
+
+    const params = new URLSearchParams(props.location.search);
+    const email = params.get("email");
+
     this.state = {
-      FirstName: '',
-      LastName: '',
-      Email: '',
-      CompanyName: '',
-      Password: '',
-      mailsaas_type: 'Sales',
+      FirstName: "",
+      LastName: "",
+      Email: email,
+      CompanyName: "",
+      Password: "",
+      mailsaas_type: "Sales",
       isOpen: false,
       show: true,
       focusedFirstName: false,
@@ -67,8 +68,7 @@ class Register extends React.Component {
       focusedCompany: false,
       loading: false,
       error: false,
-    }
-
+    };
   }
 
   handleChange = (e) => {
@@ -76,7 +76,7 @@ class Register extends React.Component {
       [e.target.name]: e.target.value,
     });
     // this.setState({show:!this.state.show})
-  }
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -88,11 +88,12 @@ class Register extends React.Component {
       email: this.state.Email,
       company_name: this.state.CompanyName,
       password1: this.state.Password,
-      mailsaas_type: this.state.mailsaas_type
+      mailsaas_type: this.state.mailsaas_type,
     };
 
     this.setState({ loading: true, error: false });
-    axios.post("/rest-auth/registration/", user)
+    axios
+      .post("/rest-auth/registration/", user)
       .then((response) => {
         const token = response.data.token;
         localStorage.setItem("access_token", token);
@@ -108,7 +109,7 @@ class Register extends React.Component {
       .finally(() => {
         this.setState({ loading: false });
       });
-  }
+  };
 
   onGoogleAuthSuccess = (response) => {
     const { email, name, givenName, familyName } = response.profileObj;
@@ -117,37 +118,46 @@ class Register extends React.Component {
       email: email,
       first_name: givenName,
       last_name: familyName,
-    }
-    const token = response.tokenObj.access_token; console.log(response);
+    };
+    const token = response.tokenObj.access_token;
+    console.log(response);
     this.props.googleLogin(user, token);
   };
 
-  onGoogleAuthFailure = (response) => {
-  }
+  onGoogleAuthFailure = (response) => {};
 
   render() {
-    const { focusedFirstName, focusedLastName, focusedEmail, focusedCompany, focusedPassword, loading, error } = this.state
+    const {
+      focusedFirstName,
+      focusedLastName,
+      focusedEmail,
+      focusedCompany,
+      focusedPassword,
+      loading,
+      error,
+    } = this.state;
     return (
       <>
         <AuthHeader
           title="Create an account"
           lead="Use these awesome forms to login or create new account in your project for free."
         />
-        <Container className="mt--8 pb-5" >
+        <Container className="mt--8 pb-5">
           <Row className="justify-content-center">
             <Col lg="6" md="8">
               <Card className="bg-secondary border-0">
                 <CardHeader className="bg-transparent pb-5">
-                  {error &&
+                  {error && (
                     <UncontrolledAlert color="danger" fade={false}>
                       <span className="alert-inner--icon">
                         <i className="ni ni-bell-55" />
                       </span>{" "}
                       <span className="alert-inner--text">
-                        <strong>Error!</strong> Unable to register with provided credentials.
+                        <strong>Error!</strong> Unable to register with provided
+                        credentials.
                       </span>
                     </UncontrolledAlert>
-                  }
+                  )}
                   <div className="text-muted text-center mt-3 mb-4">
                     <small style={{ fontSize: 18 }}>Sign up with</small>
                   </div>
@@ -157,7 +167,7 @@ class Register extends React.Component {
                       buttonText="Register"
                       onSuccess={this.onGoogleAuthSuccess}
                       onFailure={this.onGoogleAuthFailure}
-                      cookiePolicy={'single_host_origin'}
+                      cookiePolicy={"single_host_origin"}
                       render={({ onClick }) => {
                         return (
                           <Button
@@ -170,7 +180,9 @@ class Register extends React.Component {
                             <span className="btn-inner--icon mr-1">
                               <img alt="..." src={STATIC_FILES.google} />
                             </span>
-                            <span className="btn-inner--text">Sign up with Google</span>
+                            <span className="btn-inner--text">
+                              Sign up with Google
+                            </span>
                           </Button>
                         );
                       }}
@@ -179,14 +191,16 @@ class Register extends React.Component {
                 </CardHeader>
                 <CardBody className="px-lg-5 py-lg-5">
                   <div className="text-center text-muted mb-4">
-                    <small style={{ fontSize: 18 }}>Or sign up with credentials</small>
+                    <small style={{ fontSize: 18 }}>
+                      Or sign up with credentials
+                    </small>
                   </div>
                   <Form onSubmit={this.handleSubmit} role="form">
                     <Row>
                       <Col>
                         <FormGroup
                           className={classnames({
-                            focused: focusedFirstName
+                            focused: focusedFirstName,
                           })}
                         >
                           <InputGroup className="input-group-merge input-group-alternative mb-3">
@@ -201,9 +215,13 @@ class Register extends React.Component {
                               name="FirstName"
                               value={this.state.FirstName}
                               onChange={this.handleChange}
-                              onFocus={() => { this.setState({ focusedFirstName: true }) }}
-                              onBlur={() => { this.setState({ focusedFirstName: false }) }}
-                              autoComplete='off'
+                              onFocus={() => {
+                                this.setState({ focusedFirstName: true });
+                              }}
+                              onBlur={() => {
+                                this.setState({ focusedFirstName: false });
+                              }}
+                              autoComplete="off"
                               required
                             />
                           </InputGroup>
@@ -212,7 +230,7 @@ class Register extends React.Component {
                       <Col>
                         <FormGroup
                           className={classnames({
-                            focused: focusedLastName
+                            focused: focusedLastName,
                           })}
                         >
                           <InputGroup className="input-group-merge input-group-alternative mb-3">
@@ -227,9 +245,13 @@ class Register extends React.Component {
                               name="LastName"
                               value={this.state.LastName}
                               onChange={this.handleChange}
-                              onFocus={() => { this.setState({ focusedLastName: true }) }}
-                              onBlur={() => { this.setState({ focusedLastName: false }) }}
-                              autoComplete='off'
+                              onFocus={() => {
+                                this.setState({ focusedLastName: true });
+                              }}
+                              onBlur={() => {
+                                this.setState({ focusedLastName: false });
+                              }}
+                              autoComplete="off"
                               required
                             />
                           </InputGroup>
@@ -238,7 +260,7 @@ class Register extends React.Component {
                     </Row>
                     <FormGroup
                       className={classnames({
-                        focused: focusedEmail
+                        focused: focusedEmail,
                       })}
                     >
                       <InputGroup className="input-group-merge input-group-alternative mb-3">
@@ -250,19 +272,19 @@ class Register extends React.Component {
                         <Input
                           placeholder="Email"
                           type="email"
-                          name='Email'
+                          name="Email"
                           value={this.state.Email}
                           onChange={this.handleChange}
                           onFocus={() => this.setState({ focusedEmail: true })}
                           onBlur={() => this.setState({ focusedEmail: false })}
-                          autoComplete='off'
+                          autoComplete="off"
                           required
                         />
                       </InputGroup>
                     </FormGroup>
                     <FormGroup
                       className={classnames({
-                        focused: focusedCompany
+                        focused: focusedCompany,
                       })}
                     >
                       <InputGroup className="input-group-merge input-group-alternative mb-3">
@@ -276,15 +298,19 @@ class Register extends React.Component {
                           type="text"
                           name="CompanyName"
                           onChange={this.handleChange}
-                          onFocus={() => this.setState({ focusedCompany: true })}
-                          onBlur={() => this.setState({ focusedCompany: false })}
-                          autoComplete='off'
+                          onFocus={() =>
+                            this.setState({ focusedCompany: true })
+                          }
+                          onBlur={() =>
+                            this.setState({ focusedCompany: false })
+                          }
+                          autoComplete="off"
                         />
                       </InputGroup>
                     </FormGroup>
                     <FormGroup
                       className={classnames({
-                        focused: focusedPassword
+                        focused: focusedPassword,
                       })}
                     >
                       <InputGroup className="input-group-merge input-group-alternative">
@@ -297,7 +323,9 @@ class Register extends React.Component {
                           placeholder="Password"
                           type="password"
                           name="Password"
-                          onClick={() => { this.setState({ show: !this.state.show }) }}
+                          onClick={() => {
+                            this.setState({ show: !this.state.show });
+                          }}
                           onChange={this.handleChange}
                           onFocus={() =>
                             this.setState({ focusedPassword: true })
@@ -308,36 +336,50 @@ class Register extends React.Component {
                           required
                         />
                       </InputGroup>
-                      <div >
-                        {!this.state.show && <span className='password-message'> A minimum 8 characters password contains a combination of uppercase and lowercase letter and number are required.</span>}
+                      <div>
+                        {!this.state.show && (
+                          <span className="password-message">
+                            {" "}
+                            A minimum 8 characters password contains a
+                            combination of uppercase and lowercase letter and
+                            number are required.
+                          </span>
+                        )}
                       </div>
-                      <FormGroup className='mt-4'>
-                        <Label for="mailsaas_type">What are you using this for?</Label>
-                        <Input id="mailsaas_type" type="select" name="mailsaas_type" value={this.state.mailsaas_type} onChange={this.handleChange} id="exampleSelect">
-                          <option value='Sales'>Sales</option>
-                          <option value='Marketing'>Marketing/PR</option>
-                          <option value='Recruiting'>Recruiting</option>
+                      <FormGroup className="mt-4">
+                        <Label for="mailsaas_type">
+                          What are you using this for?
+                        </Label>
+                        <Input
+                          id="mailsaas_type"
+                          type="select"
+                          name="mailsaas_type"
+                          value={this.state.mailsaas_type}
+                          onChange={this.handleChange}
+                          id="exampleSelect"
+                        >
+                          <option value="Sales">Sales</option>
+                          <option value="Marketing">Marketing/PR</option>
+                          <option value="Recruiting">Recruiting</option>
                           {/* <option value='other'>Other</option> */}
                         </Input>
                       </FormGroup>
                     </FormGroup>
                     <div className="text-center">
-                      <Button className="mt-4 mb-4" color="info" type="submit" >
+                      <Button className="mt-4 mb-4" color="info" type="submit">
                         Create account
-                        {
-                          false && (
-                            <i className="ml-2 fas fa-spinner fa-spin"></i>
-                          )
-                        }
+                        {false && (
+                          <i className="ml-2 fas fa-spinner fa-spin"></i>
+                        )}
                       </Button>
                     </div>
                   </Form>
                 </CardBody>
-                {loading &&
+                {loading && (
                   <div className="auth-loading-wrapper">
                     <i className="ml-2 fas fa-spinner fa-spin"></i>
                   </div>
-                }
+                )}
               </Card>
               <Row className="mt-3">
                 <Col xs="6">
@@ -349,10 +391,26 @@ class Register extends React.Component {
             </Col>
           </Row>
         </Container>
-        <div style={{ display: 'flex', justifyContent: 'center', position: 'fixed', bottom: 0, right: 0, left: 0 }}>
-          <Alert className="alert_" toggle={() => {
-            this.setState({ isOpen: true })
-          }} isOpen={false} color="warning">{ }</Alert>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            position: "fixed",
+            bottom: 0,
+            right: 0,
+            left: 0,
+          }}
+        >
+          <Alert
+            className="alert_"
+            toggle={() => {
+              this.setState({ isOpen: true });
+            }}
+            isOpen={false}
+            color="warning"
+          >
+            {}
+          </Alert>
         </div>
       </>
     );

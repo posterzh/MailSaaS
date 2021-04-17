@@ -134,14 +134,13 @@ export function Teammates(props) {
           <Row>
             <Col lg={6} md={6} sm={12} className="mobile-p-0">
               <Card>
-                <CardHeader>
+                <CardHeader className="pb-0">
                   <h3 className="mb-0">Team information</h3>
                 </CardHeader>
                 <Form className="needs-validation" noValidate>
-                  <CardBody>
+                  <CardBody className="pb-0">
                     <FormGroup>
                       <Input
-                        id="team-name"
                         placeholder="Team Name"
                         required
                         type="text"
@@ -155,8 +154,8 @@ export function Teammates(props) {
                       />
                     </FormGroup>
                     <FormGroup>
+                      <label className="form-control-label">Bcc Email</label>
                       <Input
-                        id="bcc-email"
                         placeholder="Bcc every email"
                         type="text"
                         value={team.bcc_email}
@@ -200,14 +199,13 @@ export function Teammates(props) {
               <>
                 <Col lg="6" md="6" sm="12" className="mobile-p-0">
                   <Card>
-                    <CardHeader>
+                    <CardHeader className="pb-0">
                       <h3 className="mb-0">Add teammate</h3>
                     </CardHeader>
                     <Form className="needs-validation">
-                      <CardBody>
+                      <CardBody className="pb-0">
                         <FormGroup>
                           <Input
-                            id="email-address"
                             placeholder="Email Address"
                             required
                             type="email"
@@ -221,14 +219,10 @@ export function Teammates(props) {
                           />
                         </FormGroup>
                         <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="selectFromAddress"
-                          >
+                          <label className="form-control-label">
                             Permission
                           </label>
                           <Input
-                            id="selectFromAddress"
                             type="select"
                             value={invitee.permission}
                             onChange={(e) =>
@@ -260,40 +254,42 @@ export function Teammates(props) {
               </>
             )}
           </Row>
-          <Row>
-            <Col sm="12" className="mb-5 mobile-p-0">
-              <p>
-                Administrators can update billing, connect new mail accounts,
-                and invite people.
-              </p>
-              <Table
-                className="align-items-center table-flush"
-                responsive
-                hover
-              >
-                <thead className="thead-light">
-                  <tr>
-                    <th>NAME</th>
-                    <th>EMAIL</th>
-                    <th>IS ADMIN</th>
-                    <th>PERMISSION</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {members.map((member, index) => (
-                    <tr key={index}>
-                      <td>{member.first_name}</td>
-                      <td>{member.email}</td>
-                      <td>{member.role === "admin" ? "Admin" : ""}</td>
-                      <td>
-                        {member.role === "admin" ? "" : member.permission}
-                      </td>
+          {team.id && (
+            <Row>
+              <Col sm="12" className="mb-5 mobile-p-0">
+                <p>
+                  Administrator can update billing, connect new mail accounts,
+                  and invite people.
+                </p>
+                <Table
+                  className="align-items-center table-flush"
+                  responsive
+                  hover
+                >
+                  <thead className="thead-light">
+                    <tr>
+                      <th>NAME</th>
+                      <th>EMAIL</th>
+                      <th>IS ADMIN</th>
+                      <th>PERMISSION</th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Col>
-          </Row>
+                  </thead>
+                  <tbody>
+                    {members.map((member, index) => (
+                      <tr key={index}>
+                        <td>{member.first_name}</td>
+                        <td>{member.email}</td>
+                        <td>{member.role === "admin" ? "Admin" : ""}</td>
+                        <td>
+                          {member.role === "admin" ? "" : member.permission}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </Col>
+            </Row>
+          )}
         </Container>
       </PageContainer>
     </>

@@ -20,6 +20,10 @@ def send_invitation(request, invitation):
 
 
 def process_invitation(invitation, user):
+    if invitation.email != user.email:
+        print("The user email is different with the email in the invitation.")
+        return
+
     invitation.team.members.add(user, through_defaults={'permission': invitation.permission})
     invitation.is_accepted = True
     invitation.accepted_by = user

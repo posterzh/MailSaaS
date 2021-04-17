@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -14,6 +15,7 @@ from .invitations import send_invitation, process_invitation, clear_invite_from_
 from .forms import TeamChangeForm
 from .models import Team, Invitation
 from .serializers import TeamSerializer, InvitationSerializer
+from ..users.models import CustomUser
 
 
 @login_required
@@ -94,8 +96,13 @@ def accept_invitation(request, invitation_id):
         request.session['invitation_id'] = invitation_id
     else:
         clear_invite_from_session(request)
+
+    account_exists = CustomUser.objects.filter(email__exact=invitation.email).exists()
+
+
     return render(request, 'teams/accept_invite.html', {
         'invitation': invitation,
+        'account_exists': account_exists,
     })
 
 

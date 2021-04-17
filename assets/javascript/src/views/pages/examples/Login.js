@@ -33,26 +33,27 @@ import {
   Row,
   Col,
   Spinner,
-  UncontrolledAlert
+  UncontrolledAlert,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import AuthHeader from "../../../components/Headers/AuthHeader.js";
-import {
-  login,
-  googleLogin,
-} from "../../../redux/action/AuthAction";
+import { login, googleLogin } from "../../../redux/action/AuthAction";
 import { connect } from "react-redux";
 import { history } from "../../../index";
 
 import axios from "../../../utils/axios";
 
-import GoogleLogin from 'react-google-login';
+import GoogleLogin from "react-google-login";
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
+
+    const params = new URLSearchParams(props.location.search);
+    const email = params.get("email");
+
     this.state = {
-      email: "",
+      email: email,
       password: "",
       focusedEmail: false,
       focusedPassword: false,
@@ -76,7 +77,8 @@ class Login extends React.Component {
     // this.props.login(user);
 
     this.setState({ loading: true, error: false });
-    axios.post("/rest-auth/login/", user)
+    axios
+      .post("/rest-auth/login/", user)
       .then((response) => {
         const token = response.data.token;
         localStorage.setItem("access_token", token);
@@ -101,13 +103,12 @@ class Login extends React.Component {
       email: email,
       first_name: givenName,
       last_name: familyName,
-    }
+    };
     const token = response.tokenObj.access_token;
     this.props.googleLogin(user, token);
   };
 
-  onGoogleAuthFailure = (response) => {
-  }
+  onGoogleAuthFailure = (response) => {};
 
   render() {
     const { loading, error } = this.state;
@@ -122,16 +123,17 @@ class Login extends React.Component {
             <Col lg="6" md="7">
               <Card className="bg-secondary border-0 mb-0">
                 <CardHeader className="bg-transparent pb-5">
-                  {error &&
+                  {error && (
                     <UncontrolledAlert color="danger" fade={false}>
                       <span className="alert-inner--icon">
                         <i className="ni ni-bell-55" />
                       </span>{" "}
                       <span className="alert-inner--text">
-                        <strong>Error!</strong> Unable to log in with provided credentials.
+                        <strong>Error!</strong> Unable to log in with provided
+                        credentials.
                       </span>
                     </UncontrolledAlert>
-                  }
+                  )}
                   <div className="text-muted text-center mt-3 mb-4">
                     <small style={{ fontSize: 18 }}>Sign in with</small>
                   </div>
@@ -141,7 +143,7 @@ class Login extends React.Component {
                       buttonText="Register"
                       onSuccess={this.onGoogleAuthSuccess}
                       onFailure={this.onGoogleAuthFailure}
-                      cookiePolicy={'single_host_origin'}
+                      cookiePolicy={"single_host_origin"}
                       render={({ onClick }) => {
                         return (
                           <Button
@@ -154,7 +156,9 @@ class Login extends React.Component {
                             <span className="btn-inner--icon mr-1">
                               <img alt="..." src={STATIC_FILES.google} />
                             </span>
-                            <span className="btn-inner--text">Sign in with Google</span>
+                            <span className="btn-inner--text">
+                              Sign in with Google
+                            </span>
                           </Button>
                         );
                       }}
@@ -163,7 +167,9 @@ class Login extends React.Component {
                 </CardHeader>
                 <CardBody className="px-lg-5 py-lg-5">
                   <div className="text-center text-muted mb-4">
-                    <small style={{ fontSize: 18 }}>Or sign in with credentials</small>
+                    <small style={{ fontSize: 18 }}>
+                      Or sign in with credentials
+                    </small>
                   </div>
                   <Form onSubmit={this.handleSubmit} role="form">
                     <FormGroup
@@ -235,11 +241,11 @@ class Login extends React.Component {
                     </div>
                   </Form>
                 </CardBody>
-                {loading &&
+                {loading && (
                   <div className="auth-loading-wrapper">
                     <i className="ml-2 fas fa-spinner fa-spin"></i>
                   </div>
-                }
+                )}
               </Card>
               <Row className="mt-3">
                 <Col xs="6">
