@@ -129,8 +129,18 @@ class Login extends React.Component {
 
         this.props.googleLogin(user);
   
-        history.push("/app/admin/dashboard");
-        // window.location.reload();
+        if (this.state.invitation_id) {
+          axios.setToken(token);
+          axios
+            .post(`/teams/invitation/${this.state.invitation_id}/confirm/`)
+            .finally(() => {
+              history.push("/app/admin/dashboard");
+              window.location.reload();
+            });
+        } else {
+          history.push("/app/admin/dashboard");
+          window.location.reload();
+        }
       })
       .catch((error) => {
         console.log(error);

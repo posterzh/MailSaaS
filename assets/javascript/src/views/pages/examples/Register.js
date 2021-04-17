@@ -17,7 +17,7 @@
 import React from "react";
 // nodejs library that concatenates classes
 import classnames from "classnames";
-import axios from "axios";
+import axios from "../../../utils/axios";
 // reactstrap components
 import {
   Button,
@@ -144,9 +144,19 @@ class Register extends React.Component {
         localStorage.setItem("access_token", token);
 
         this.props.googleLogin(user);
-  
-        history.push("/app/admin/dashboard");
-        window.location.reload();
+
+        if (this.state.invitation_id) {
+          axios.setToken(token);
+          axios
+            .post(`/teams/invitation/${this.state.invitation_id}/confirm/`)
+            .finally(() => {
+              history.push("/app/admin/dashboard");
+              window.location.reload();
+            });
+        } else {
+          history.push("/app/admin/dashboard");
+          window.location.reload();
+        }
       })
       .catch((error) => {
         console.log(error);
