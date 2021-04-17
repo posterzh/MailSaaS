@@ -197,7 +197,7 @@ class Prospects extends Component {
           parent="Prospects"
           showStatus={false}
         />
-        <PageContainer title={"Audiences"} showHelper={true}>
+        <PageContainer title={"Audiences"} showHelper={true} newButton="New Audience" newAction={this.importContacts}>
           <Row>
             <Tables
               titles={tableTitle} // required

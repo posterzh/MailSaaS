@@ -15,48 +15,16 @@ import {
 } from "../../utils/Common";
 
 export const register = (user) => (dispatch) => {
-  toggleAuthLoader(true);
-  axios.post("/rest-auth/registration/", user)
-    .then((response) => {
-      const token = response.data.token;
-      localStorage.setItem("access_token", token);
-
-      dispatch({
-        type: REGISTER_USER,
-        payload: response.data.user,
-      });
-
-      history.push("/app/admin/dashboard");
-      window.location.reload();
-    })
-    .catch((error) => {
-      toastOnError(error);
-    })
-    .finally(() => {
-      toggleAuthLoader(false);
-    });
+  dispatch({
+    type: REGISTER_USER,
+    payload: user,
+  });
 };
 
 export const login = (user) => (dispatch) => {
-  toggleAuthLoader(true);
-  axios.post("/rest-auth/login/", user)
-  .then((response) => {
-    const token = response.data.token;
-    localStorage.setItem("access_token", token);
-
-    dispatch({
-      type: LOGIN_USER,
-      payload: response.data.user,
-    });
-
-    history.push("/app/admin/dashboard");
-    window.location.reload();
-  })
-  .catch((error) => {
-    // toastOnError(error);
-  })
-  .finally(() => {
-    toggleAuthLoader(false);
+  dispatch({
+    type: LOGIN_USER,
+    payload: user,
   });
 }
 

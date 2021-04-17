@@ -1955,7 +1955,7 @@ class CampaignDetailsRecipientsView(generics.ListAPIView):
 
     def get_queryset(self):
         pk = self.kwargs['pk']
-        return Recipient.objects.filter(campaign=pk)
+        return Recipient.objects.filter(campaign=pk, is_delete=False)
 
 
 class CampaignDetailsRecipientsAddView(APIView):
@@ -1977,14 +1977,21 @@ class CampaignDetailsRecipientsAddView(APIView):
         df_data.dropna(subset=["email"], inplace=True)
         df_data.drop_duplicates(subset=["email"], inplace=True)
 
-        emails = df_data[['email']].values
+        emails = df_data['email'].values
         replacements = json.loads(df_data.to_json(orient="records"))
+
+        duplicated_emails = Recipient.objects \
+            .filter(email__in=emails, campaign=pk, is_delete=False) \
+            .values_list('email', flat=True)
 
         recipients = []
         for email, replacement in zip(emails, replacements):
+            if email in duplicated_emails:
+                continue
+
             data = {
                 'campaign': pk,
-                'email': email[0],
+                'email': email,
                 'replacement': json.dumps(replacement)
             }
 
@@ -2002,7 +2009,7 @@ class CampaignDetailsRecipientsUpdateView(generics.UpdateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Recipient.objects.filter(campaign__assigned=user.id)
+        return Recipient.objects.filter(campaign__assigned=user.id, is_delete=False)
 
 
 class CampaignDetailsSettingsView(generics.RetrieveAPIView):
