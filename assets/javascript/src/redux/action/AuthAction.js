@@ -1,17 +1,22 @@
-import axios from "axios";
-import { history } from "../.."
+import axios from "../../utils/axios";
+import { history } from "../..";
 import {
   REGISTER_USER,
   LOGIN_USER,
   LOGOUT_USER,
   GOOGLE_LOGIN_USER,
-} from "../actionType/actionType"
-import { toastOnError, toastOnSuccess, toggleTopLoader, toggleAuthLoader } from "../../utils/Utils";
+} from "../actionType/actionType";
+import {
+  toastOnError,
+  toastOnSuccess,
+  toggleTopLoader,
+  toggleAuthLoader,
+} from "../../utils/Utils";
 
-import Api from "../api/api"
+import Api from "../api/api";
 import {
   DJANGO_OAUTH_CLIENT_ID,
-  DJANGO_OAUTH_CLIENT_SECRET
+  DJANGO_OAUTH_CLIENT_SECRET,
 } from "../../utils/Common";
 
 export const register = (user) => (dispatch) => {
@@ -26,11 +31,12 @@ export const login = (user) => (dispatch) => {
     type: LOGIN_USER,
     payload: user,
   });
-}
+};
 
 export const logout = () => (dispatch) => {
   toggleTopLoader(true);
-  axios.post("/rest-auth/logout/")
+  axios
+    .post("/rest-auth/logout/")
     .then((response) => {
       localStorage.removeItem("access_token");
 
@@ -44,7 +50,7 @@ export const logout = () => (dispatch) => {
     .finally(() => {
       toggleTopLoader(false);
     });
-}
+};
 
 export const googleLogin = (user) => (dispatch) => {
   dispatch({
