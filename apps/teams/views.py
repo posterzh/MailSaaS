@@ -99,15 +99,14 @@ def accept_invitation(request, invitation_id):
 
     account_exists = CustomUser.objects.filter(email__exact=invitation.email).exists()
 
-
     return render(request, 'teams/accept_invite.html', {
         'invitation': invitation,
         'account_exists': account_exists,
     })
 
 
-@login_required
-@require_POST
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
 def accept_invitation_confirm(request, invitation_id):
     invitation = get_object_or_404(Invitation, id=invitation_id)
     if invitation.is_accepted:
@@ -118,6 +117,18 @@ def accept_invitation_confirm(request, invitation_id):
         clear_invite_from_session(request)
         messages.success(request, _('You successfully joined {}').format(invitation.team.name))
         return HttpResponseRedirect(reverse('web:team_home', args=[invitation.team.slug]))
+
+
+@team_admin_required
+def resend_invitation(request, team, invitation_id):
+    invitation = get_object_or_404(Invitation, id=invitation_id)
+    if invitation.team != request.team:
+        raise ValueError(_('Request team {team} did not match invitation team {invite_team}').format(
+            team=request.team.slug,
+            invite_team=invitation.team.slug,
+        ))
+    send_invitation(request, invitation)
+    return HttpResponse('Ok')
 
 
 class TeamViewSet(viewsets.ModelViewSet):
@@ -141,13 +152,15 @@ class TeamViewSet(viewsets.ModelViewSet):
         team.members.add(self.request.user, through_defaults={'role': 'admin', 'permission': 'update'})
 
 
-@team_admin_required
-def resend_invitation(request, team, invitation_id):
-    invitation = get_object_or_404(Invitation, id=invitation_id)
-    if invitation.team != request.team:
-        raise ValueError(_('Request team {team} did not match invitation team {invite_team}').format(
-            team=request.team.slug,
-            invite_team=invitation.team.slug,
-        ))
-    send_invitation(request, invitation)
-    return HttpResponse('Ok')
+class InvitationViewSet(viewsets.ModelViewSet):
+    queryset = Invitation.objects.all()
+    serializer_class = InvitationSerializer
+
+    def get_queryset(self):
+        # filter queryset based on logged in user
+        return self.queryset.filter(team__in=self.request.user.teams.all())
+
+    def perform_create(self, serializer):
+        # ensure logged in user is set on the model during creation
+        invitation = serializer.save(invited_by=self.request.user)
+        send_invitation(invitation)
