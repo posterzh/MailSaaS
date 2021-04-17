@@ -49,7 +49,7 @@ class Membership(BaseModel):
     """
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    role = models.CharField(max_length=100, choices=roles.ROLE_CHOICES)
+    role = models.CharField(max_length=100, choices=roles.ROLE_CHOICES, default=roles.ROLE_MEMBER)
     permission = models.CharField(max_length=100, choices=roles.MEMBER_PERMISSION, null=True, blank=True)
     # your additional membership fields go here.
 

@@ -113,19 +113,6 @@ export function Teammates(props) {
     }
   }, []);
 
-  const teamMates = [
-    {
-      name: "Omaid Faizyar",
-      email: "omaid@faizyar.com",
-      isAdmin: "Yes",
-    },
-    {
-      name: "Test User",
-      email: "test@faizyar.com",
-      isAdmin: "No",
-    },
-  ];
-
   return (
     <>
       <PageHeader
@@ -284,12 +271,13 @@ export function Teammates(props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {teamMates &&
-                    teamMates.map((member, index) => (
+                  {team &&
+                    team.members &&
+                    team.members.map((member, index) => (
                       <tr key={index}>
-                        <td>{member.name}</td>
+                        <td>{member.first_name}</td>
                         <td>{member.email}</td>
-                        <td>{member.isAdmin}</td>
+                        <td>{member.role === "admin" ? "True" : "False"}</td>
                       </tr>
                     ))}
                 </tbody>

@@ -14,10 +14,11 @@ class MembershipSerializer(serializers.ModelSerializer):
     first_name = serializers.ReadOnlyField(source='user.first_name')
     last_name = serializers.ReadOnlyField(source='user.last_name')
     display_name = serializers.ReadOnlyField(source='user.get_display_name')
+    email = serializers.ReadOnlyField(source='user.email')
 
     class Meta:
         model = Membership
-        fields = ('id', 'first_name', 'last_name', 'display_name', 'role')
+        fields = ('id', 'first_name', 'last_name', 'email', 'display_name', 'role')
 
 
 class InvitationSerializer(serializers.ModelSerializer):

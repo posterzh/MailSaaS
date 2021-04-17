@@ -130,7 +130,7 @@ class TeamViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # ensure logged in user is set on the model during creation
         team = serializer.save()
-        team.members.add(self.request.user, through_defaults={'role': 'admin'})
+        team.members.add(self.request.user, through_defaults={'role': 'admin', 'permission': 'update'})
 
 
 class InvitationViewSet(viewsets.ModelViewSet):

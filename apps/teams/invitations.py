@@ -18,7 +18,7 @@ def send_invitation(invitation):
 
 
 def process_invitation(invitation, user):
-    invitation.team.members.add(user, through_defaults={'role': invitation.role})
+    invitation.team.members.add(user, through_defaults={'permission': invitation.permission})
     invitation.is_accepted = True
     invitation.accepted_by = user
     invitation.save()
