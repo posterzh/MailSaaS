@@ -16,13 +16,14 @@ import {
   Col,
 } from "reactstrap";
 
-export default class DeleteModal extends React.Component {
+export default class RecipientDeleteModal extends React.Component {
   render() {
     return (
       <>
         <Modal
           className="modal-dialog-centered"
           isOpen={this.props.isOpen}
+          toggle={this.props.close}
         >
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLabel">
@@ -38,7 +39,7 @@ export default class DeleteModal extends React.Component {
               <span aria-hidden={true}>×</span>
             </button>
           </div>
-          <div className="modal-body">Are you sure to delete this unsubscribe?</div>
+          <div className="modal-body">Are you sure to delete this recipient?</div>
           <div className="modal-footer">
             <Button
               color="secondary"

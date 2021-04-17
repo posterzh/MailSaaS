@@ -12,6 +12,7 @@ import {
   InputGroupText,
   Button,
   Col,
+  CardBody
 } from "reactstrap";
 import Domainpage from "./components/Domainpage";
 import Addresstable from "./components/Addresstable";
@@ -21,6 +22,7 @@ import { connect } from "react-redux";
 import UnsubscribesModal from "./components/UnsubscribesModal";
 import CSVDownloadModal from "./components/CSVDownloadModal";
 import DeleteModal from "./components/DeleteModal";
+import Tables from "../../../../components/Tables";
 
 import PageHeader from "../../../../components/Headers/PageHeader";
 import PageContainer from "../../../../components/Containers/PageContainer";
@@ -32,13 +34,24 @@ import {
   deleteUnsubscribeEmails,
 } from "../../../../redux/action/UnsubscribeActions";
 
+const tableTitle = [
+  {
+    key: 'email',
+    value: 'Email',
+  },
+  {
+    key: 'date',
+    value: 'UNSUBSCRIBE DATE'
+  },
+];
+
 class Unsubscribes extends Component {
   constructor(props) {
     super(props);
     this.state = {
       search: undefined,
       activeTab: "addressTab",
-      selectedId: [],
+      deleteItem: null,
       unsubscribeModal: false,
       downloadCSVModal: false,
       deleteModal: false,
@@ -63,10 +76,16 @@ class Unsubscribes extends Component {
     this.props.addUnsubscribeCSV(file);
   }
 
-  deleteUnsubscribes = (selectedId) => {
-    this.props.deleteUnsubscribeEmails(selectedId);
-    this.setState({ deleteModal: false });
-    this.setState({ selectedId: [] });
+  deleteUnsubscribes = (deleteItem) => {
+    if (!deleteItem) {
+      return;
+    }
+
+    this.props.deleteUnsubscribeEmails([deleteItem.id]);
+    this.setState({ 
+      deleteModal: false,
+      deleteItem: null
+    });
   };
 
   closeUnsubscribeModal = () => {
@@ -76,6 +95,14 @@ class Unsubscribes extends Component {
   closeDownloadCSVModal = () => {
     this.setState({ downloadCSVModal: false });
   }
+
+  showDeleteModal = (item) => {
+    // Save the item to delete
+    this.setState({ deleteItem: item });
+
+    // Show delete confirmation dialog
+    this.setState({ deleteModal: true });
+  };
 
   closeDeleteModal = () => {
     this.setState({ deleteModal: false });
@@ -89,38 +116,10 @@ class Unsubscribes extends Component {
 
   switchTab = (tab) => {
     if (this.state.activeTab !== tab)
-      this.setState({ activeTab: tab, selectedId: [] });
-  };
-
-  selectRow = (id, e) => {
-    const { selectedId } = this.state;
-    let newSelectedId = [...selectedId];
-    if (e.target.checked) {
-      newSelectedId.push(id);
-    } else {
-      newSelectedId = newSelectedId.filter((item) => item != id);
-    }
-    this.setState({ selectedId: newSelectedId });
-  };
-
-  selectAll = (e) => {
-    let newSelectedId = [];
-    if (e.target.checked) {
-      if (this.state.activeTab === 'addressTab') {
-        newSelectedId = this.props.unsubscribes
-          .filter(e => !e['email'].startsWith('*@'))
-          .map((item) => item.id);
-      } else if (this.state.activeTab === 'domainTab') {
-        newSelectedId = this.props.unsubscribes
-          .filter(e => e['email'].startsWith('*@'))
-          .map((item) => item.id);
-      }
-    }
-    this.setState({ selectedId: newSelectedId });
+      this.setState({ activeTab: tab });
   };
 
   render() {
-    const { selectedId } = this.state;
     const { unsubscribes } = this.props;
 
     const unsubscribesAddress = unsubscribes
@@ -128,8 +127,6 @@ class Unsubscribes extends Component {
     const unsubscribesDomain = unsubscribes
       .filter(e => e['email'].startsWith('*@'))
       .map(e => ({ ...e, 'domain': e['email'].substring(2) }));
-    const selectedUnsubscribes = unsubscribes
-      .filter(e => selectedId.includes(e.id));
 
     return (
       <>
@@ -213,48 +210,26 @@ class Unsubscribes extends Component {
           </div>
           <TabContent activeTab={this.state.activeTab}>
             <TabPane tabId="addressTab">
-              <Addresstable
-                selectAll={this.selectAll}
-                selectRow={this.selectRow}
-                data={unsubscribesAddress}
-                selectedId={selectedId}
-              />
+              <Row>
+                <Tables
+                  titles={tableTitle} // required
+                  tablePropsData={unsubscribesAddress}   // required
+                  onDelete = {this.showDeleteModal}
+                  showPagination={true}   // optional
+                />
+              </Row>
             </TabPane>
             <TabPane tabId="domainTab">
-              <Domainpage
-                selectAll={this.selectAll}
-                selectRow={this.selectRow}
-                data={unsubscribesDomain}
-                selectedId={selectedId}
-              />
+              <Row>
+                <Tables
+                  titles={tableTitle} // required
+                  tablePropsData={unsubscribesDomain}   // required
+                  onDelete = {this.showDeleteModal}
+                  showPagination={true}   // optional
+                />
+              </Row>
             </TabPane>
           </TabContent>
-          {/* <Button
-            className="btn-icon btn-2 rounded-circle fixed-bottom-right-btn mr-6"
-            color="danger"
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              this.setState({ deleteModal: !this.state.deleteModal });
-            }}
-          >
-            <span className="btn-inner--icon">
-              <i className="fa fa-minus" />
-            </span>
-          </Button>
-          <Button
-            className="btn-icon btn-2 rounded-circle fixed-bottom-right-btn"
-            color="info"
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              this.setState({ unsubscribeModal: !this.state.unsubscribeModal });
-            }}
-          >
-            <span className="btn-inner--icon">
-              <i className="fa fa-plus" />
-            </span>
-          </Button> */}
           <UnsubscribesModal
             isOpen={this.state.unsubscribeModal}
             unsubscribeEmail={this.unsubscribeEmail}
@@ -262,14 +237,14 @@ class Unsubscribes extends Component {
             close={this.closeUnsubscribeModal}
           />
           <CSVDownloadModal
-            data={selectedUnsubscribes}
+            data={unsubscribes}
             isOpen={this.state.downloadCSVModal}
             close={this.closeDownloadCSVModal}
           />
           <DeleteModal
             isOpen={this.state.deleteModal}
             close={this.closeDeleteModal}
-            delete={() => this.deleteUnsubscribes(this.state.selectedId)}
+            delete={() => this.deleteUnsubscribes(this.state.deleteItem)}
           />
         </PageContainer>
       </>
@@ -290,25 +265,3 @@ export default connect(mapStateToProps, {
   addUnsubscribeCSV,
   deleteUnsubscribeEmails,
 })(Unsubscribes);
-
-// const mapStateToProps = (state) => {
-//   return {
-//     data: state.UnsubscribeReducer.unsubscribeData,
-//     loading: state.UnsubscribeReducer.loading,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => ({
-//   fetchUnsbcribed: () => {
-//     dispatch(fetchUnsubscribeAction());
-//   },
-//   deleteUnsubscribeUsers: (data) => {
-//     dispatch(deleteUnsubscribeUsersAction(data));
-//   },
-//   unsubscribeUsersWithCsvAction: (data) => {
-//     dispatch(unsubscribeUsersWithCsvAction(data));
-//   },
-//   unsubscribeUsersWithEmailAction: (data) => {
-//     dispatch(unsubscribeUsersWithEmailAction(data));
-//   },
-// });

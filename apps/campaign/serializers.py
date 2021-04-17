@@ -108,9 +108,9 @@ class CampaignDetailsSerializer(serializers.ModelSerializer):
 
 
 class RecipientSerializer(serializers.ModelSerializer):
-    campaign_id = serializers.IntegerField(source='campaign.id')
-    campaign_title = serializers.CharField(source='campaign.title')
-    created = serializers.DateTimeField(source='created_date_time', format="%B %d %Y")
+    campaign_id = serializers.IntegerField(source='campaign.id', required=False)
+    campaign_title = serializers.CharField(source='campaign.title', required=False)
+    created = serializers.DateTimeField(source='created_date_time', format="%B %d %Y", required=False)
 
     class Meta:
         model = Recipient

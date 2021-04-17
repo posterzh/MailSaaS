@@ -5,6 +5,7 @@ import {
   GET_DETAILS_RECIPIENTS,
   IMPORT_CONTACTS_FROM_CSV,
   UPDATE_RECIPIENT_STATUS,
+  DELETE_RECIPIENT,
 } from "../actionType/actionType";
 
 const initialState = {
@@ -56,13 +57,19 @@ export const campaignDetailsReducer = (state = initialState, action) => {
       recipients[index] = {
         ...updatedRecipient
       };
-
-      console.log(recipients);
-
       return {
         ...state,
         detailRecipients: [
           ...recipients
+        ]
+      }
+    case DELETE_RECIPIENT:
+      const deletedRecipient = action.payload;
+      const remainedRecipients = state.detailRecipients.filter(e => e.id !== deletedRecipient.id);
+      return {
+        ...state,
+        detailRecipients: [
+          ...remainedRecipients
         ]
       }
     default:

@@ -8,6 +8,7 @@ import {
   GET_DETAILS_SETTINGS,
   IMPORT_CONTACTS_FROM_CSV,
   UPDATE_RECIPIENT_STATUS,
+  DELETE_RECIPIENT,
 } from "../actionType/actionType";
 
 export const getOverviewSummary = (id) => (dispatch) => {
@@ -75,6 +76,26 @@ export const updateRecipientStatus = (id, status) => (dispatch) => {
         payload: response.data
       });
       toastOnSuccess("Updated successfully!");
+      return response.data;
+    })
+    .catch((error) => {
+      toastOnError(error);
+    })
+    .finally(() => {
+      toggleTopLoader(false);
+    });
+}
+
+export const deleteRecipient = (id) => (dispatch) => {
+  toggleTopLoader(true);
+  return axios
+    .patch(`/campaign/details-recipients-update/${id}/`, {"is_delete": true})
+    .then((response) => {
+      dispatch({
+        type: DELETE_RECIPIENT,
+        payload: response.data
+      });
+      toastOnSuccess("Deleted successfully!");
       return response.data;
     })
     .catch((error) => {

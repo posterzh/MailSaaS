@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 
 
-import { getDetailRecipients, updateRecipientStatus } from "../../../../redux/action/CampaignDetailsActions";
+import { getDetailRecipients, deleteRecipient, updateRecipientStatus } from "../../../../redux/action/CampaignDetailsActions";
 import { connect } from "react-redux";
 
 import PageHeader from "../../../../components/Headers/PageHeader";
@@ -21,6 +21,7 @@ import PageContainer from "../../../../components/Containers/PageContainer";
 import DetailHeader from "./components/DetailHeader";
 import ImportContactsModal from "./components/ImportContactsModal";
 import RecipientDetailModal from "./components/RecipientDetailModal";
+import RecipientDeleteModal from "./components/RecipientDeleteModal";
 import CSVDownloadModal from "./components/CSVDownloadModal";
 import { recipientsFilters, recipientsTable } from "../../../../components/TableHeader";
 import Tables from "../../../../components/Tables";
@@ -29,10 +30,12 @@ class CampaignDetailRecipients extends Component {
   constructor() {
     super();
     this.state = {
-      recipientDetailItem: null,
       recipientsFilters: recipientsFilters,
       importContactsModal: false,
+      recipientDetailItem: null,
       recipientDetailModal: false,
+      recipientDeleteItem: null,
+      recipientDeleteModal: false,
       downloadCSVModal: false,
     };
   }
@@ -65,13 +68,25 @@ class CampaignDetailRecipients extends Component {
   }
 
   showRecipientDetailModal = (item) => {
-    this.setState({ recipientDetailItem: item });
-
-    this.setState({ recipientDetailModal: true });
+    this.setState({ 
+      recipientDetailItem: item, 
+      recipientDetailModal: true 
+    });
   }
 
   closeRecipientDetailModal = () => {
     this.setState({ recipientDetailModal: false })
+  }
+
+  showRecipientDeleteModal = (item) => {
+    this.setState({
+      recipientDeleteItem: item,
+      recipientDeleteModal: true 
+    });
+  }
+
+  closeRecipientDeleteModal = () => {
+    this.setState({ recipientDeleteModal: false });
   }
 
   showDownloadCSVModal = () => {
@@ -82,15 +97,20 @@ class CampaignDetailRecipients extends Component {
     this.setState({ downloadCSVModal: false });
   }
 
-  updateRecipientStatus = (data, index) => {
+  updateRecipientStatus = (data) => {
     this.props.updateRecipientStatus(data.id, !data.recipient_status)
+  }
+
+  deleteRecipient = (data) => {
+    this.props.deleteRecipient(data.id);
+    this.setState({ recipientDeleteModal: false });
   }
 
   render() {
     const { id, title } = this.props;
     const campTitle = title ? title : "Date Outreach";
 
-    const { importContactsModal, recipientDetailModal } = this.state;
+    const { importContactsModal, recipientDetailModal, recipientDeleteModal } = this.state;
     const { recipientsFilters } = this.state;
     let { recipients } = this.props;
 
@@ -129,12 +149,12 @@ class CampaignDetailRecipients extends Component {
               <Tables
                 titles={recipientsTable} // required
                 tablePropsData={recipients}   // required
-                showSelect={true}
                 showPagination={true}   // optional
                 showControl={true}
                 filters={recipientsFilters}   // optional to enable filter
                 controlCallback={this.updateRecipientStatus}
                 onClick={this.showRecipientDetailModal}
+                onDelete = {this.showRecipientDeleteModal}
                 searchKeys={['email', 'name']}  // optional to enable search
               />
             </Col>
@@ -142,16 +162,19 @@ class CampaignDetailRecipients extends Component {
 
           <ImportContactsModal
             isOpen={importContactsModal}
-            // data={this.state.editItem}
             close={this.closeImportContactsModal}
-          // create={this.createMailAccount}
-          // update={this.updateMailAccount}
           />
 
           <RecipientDetailModal
             isOpen={recipientDetailModal}
             data={this.state.recipientDetailItem}
             close={this.closeRecipientDetailModal}
+          />
+
+          <RecipientDeleteModal
+            isOpen={recipientDeleteModal}
+            close={this.closeRecipientDeleteModal}
+            delete={() => this.deleteRecipient(this.state.recipientDeleteItem)}
           />
 
           <CSVDownloadModal
@@ -174,5 +197,6 @@ const mapStateToProps = (state) => {
 };
 export default connect(mapStateToProps, {
   getDetailRecipients,
+  deleteRecipient,
   updateRecipientStatus,
 })(CampaignDetailRecipients);
