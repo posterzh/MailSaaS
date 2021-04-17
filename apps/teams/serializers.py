@@ -18,7 +18,7 @@ class MembershipSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Membership
-        fields = ('id', 'first_name', 'last_name', 'email', 'display_name', 'role')
+        fields = ('id', 'first_name', 'last_name', 'email', 'display_name', 'role', 'permission')
 
 
 class InvitationSerializer(serializers.ModelSerializer):

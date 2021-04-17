@@ -30,6 +30,8 @@ export function Teammates(props) {
     name: "",
     bcc_email: "",
   });
+  const [members, setMembers] = useState([]);
+
   const [invitee, setInvitee] = useState({
     email: "",
     role: "read",
@@ -104,7 +106,6 @@ export function Teammates(props) {
       console.log("Teammates: ", data);
       if (data.length > 0) {
         setTeam(data[0]);
-        console.log(team);
       }
     } catch (e) {
       toastOnError(messages.api_failed);
@@ -112,6 +113,13 @@ export function Teammates(props) {
       toggleTopLoader(false);
     }
   }, []);
+
+  useEffect(() => {
+    if (team && team.members) {
+      const sorted = team.members.sort((a, b) => (a.role > b.role ? 1 : -1));
+      setMembers(sorted);
+    }
+  }, [team]);
 
   return (
     <>
@@ -268,18 +276,20 @@ export function Teammates(props) {
                     <th>NAME</th>
                     <th>EMAIL</th>
                     <th>IS ADMIN</th>
+                    <th>PERMISSION</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {team &&
-                    team.members &&
-                    team.members.map((member, index) => (
-                      <tr key={index}>
-                        <td>{member.first_name}</td>
-                        <td>{member.email}</td>
-                        <td>{member.role === "admin" ? "True" : "False"}</td>
-                      </tr>
-                    ))}
+                  {members.map((member, index) => (
+                    <tr key={index}>
+                      <td>{member.first_name}</td>
+                      <td>{member.email}</td>
+                      <td>{member.role === "admin" ? "Admin" : ""}</td>
+                      <td>
+                        {member.role === "admin" ? "" : member.permission}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </Table>
             </Col>

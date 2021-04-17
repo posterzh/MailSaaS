@@ -3,8 +3,10 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
 
-def send_invitation(invitation):
+def send_invitation(request, invitation):
+    invitation_url = invitation.get_url(request)
     email_context = {
+        'invitation_url': invitation_url,
         'invitation': invitation,
     }
     send_mail(

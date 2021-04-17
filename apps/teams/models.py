@@ -65,9 +65,9 @@ class Invitation(BaseModel):
     accepted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                                     related_name='accepted_invitations', null=True, blank=True)
 
-    def get_url(self):
-        return absolute_url(reverse('teams:accept_invitation', args=[self.id]))
+    def get_url(self, request):
+        return request.build_absolute_uri(reverse('teams:accept_invitation', args=[self.id]))
 
-    class Meta:
-        unique_together = ('team', 'email')
+    # class Meta:
+    #     unique_together = ('team', 'email')
 

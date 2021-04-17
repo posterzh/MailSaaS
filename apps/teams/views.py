@@ -35,7 +35,7 @@ def send_invite(request):
     new_invite = InvitationSerializer(data=data)
     if new_invite.is_valid(raise_exception=True):
         invite = new_invite.save()
-        send_invitation(invite)
+        send_invitation(request, invite)
         return Response({'success': True}, status=status.HTTP_200_OK)
 
     else:
@@ -132,21 +132,6 @@ class TeamViewSet(viewsets.ModelViewSet):
         team = serializer.save()
         team.members.add(self.request.user, through_defaults={'role': 'admin', 'permission': 'update'})
 
-
-class InvitationViewSet(viewsets.ModelViewSet):
-    queryset = Invitation.objects.all()
-    serializer_class = InvitationSerializer
-
-    def get_queryset(self):
-        # filter queryset based on logged in user
-        return self.queryset.filter(team__in=self.request.user.teams.all())
-
-    def perform_create(self, serializer):
-        # ensure logged in user is set on the model during creation
-        invitation = serializer.save(invited_by=self.request.user)
-        send_invitation(invitation)
-
-
 @team_admin_required
 def resend_invitation(request, team, invitation_id):
     invitation = get_object_or_404(Invitation, id=invitation_id)
@@ -155,5 +140,5 @@ def resend_invitation(request, team, invitation_id):
             team=request.team.slug,
             invite_team=invitation.team.slug,
         ))
-    send_invitation(invitation)
+    send_invitation(request, invitation)
     return HttpResponse('Ok')
