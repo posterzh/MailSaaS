@@ -33,6 +33,7 @@ import {
   Row,
   Col,
   Spinner,
+  UncontrolledAlert
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import AuthHeader from "../../../components/Headers/AuthHeader.js";
@@ -40,11 +41,9 @@ import {
   login,
   googleLogin,
 } from "../../../redux/action/AuthAction";
-import { ToastContainer, toast } from 'react-toastify';
 import { connect } from "react-redux";
 import { history } from "../../../index";
 
-import Api from "../../../../src/redux/api/api";
 import axios from "../../../utils/axios";
 
 import GoogleLogin from 'react-google-login';
@@ -57,7 +56,8 @@ class Login extends React.Component {
       password: "",
       focusedEmail: false,
       focusedPassword: false,
-      loginPending: false,
+      loading: false,
+      error: false,
     };
   }
 
@@ -73,10 +73,30 @@ class Login extends React.Component {
       email: this.state.email,
       password: this.state.password,
     };
-    this.props.login(user);
+    // this.props.login(user);
+
+    this.setState({ loading: true, error: false });
+    axios.post("/rest-auth/login/", user)
+      .then((response) => {
+        const token = response.data.token;
+        localStorage.setItem("access_token", token);
+
+        this.props.login(response.data.user);
+
+        history.push("/app/admin/dashboard");
+        window.location.reload();
+      })
+      .catch((error) => {
+        this.setState({ error: true });
+      })
+      .finally(() => {
+        this.setState({ loading: false });
+      });
   };
 
   onGoogleAuthSuccess = (response) => {
+    this.setState({ error: false });
+
     const { email, name, givenName, familyName } = response.profileObj;
     const user = {
       username: name,
@@ -84,16 +104,16 @@ class Login extends React.Component {
       first_name: givenName,
       last_name: familyName,
     }
-    const token = response.tokenObj.access_token; console.log(response);
+    const token = response.tokenObj.access_token;
     this.props.googleLogin(user, token);
   };
 
   onGoogleAuthFailure = (response) => {
-
+    this.setState({ error: true });
   }
 
   render() {
-    const { Loginuser, isLogin, loginResponse } = this.props;
+    const { loading, error } = this.state;
     return (
       <>
         <AuthHeader
@@ -105,7 +125,17 @@ class Login extends React.Component {
             <Col lg="6" md="7">
               <Card className="bg-secondary border-0 mb-0">
                 <CardHeader className="bg-transparent pb-5">
-                  <div className="text-muted text-center mt-2 mb-4">
+                  {error &&
+                    <UncontrolledAlert color="danger" fade={false}>
+                      <span className="alert-inner--icon">
+                        <i className="ni ni-bell-55" />
+                      </span>{" "}
+                      <span className="alert-inner--text">
+                        <strong>Error!</strong> Unable to log in with provided credentials.
+                      </span>
+                    </UncontrolledAlert>
+                  }
+                  <div className="text-muted text-center mt-3 mb-4">
                     <small style={{ fontSize: 18 }}>Sign in with</small>
                   </div>
                   <div className="btn-wrapper text-center">
@@ -211,7 +241,7 @@ class Login extends React.Component {
                     </div>
                   </Form>
                 </CardBody>
-                {this.props.authLoader &&
+                {loading &&
                   <div className="auth-loading-wrapper">
                     <i className="ml-2 fas fa-spinner fa-spin"></i>
                   </div>
@@ -238,11 +268,7 @@ class Login extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  authLoader: state.notification.authLoader,
-});
-
-export default connect(mapStateToProps, {
+export default connect(null, {
   login,
   googleLogin,
 })(Login);

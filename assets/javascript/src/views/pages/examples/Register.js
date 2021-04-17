@@ -32,7 +32,8 @@ import {
   InputGroup,
   Container,
   Row,
-  Col
+  Col,
+  UncontrolledAlert
 } from "reactstrap";
 import { Link } from "react-router-dom";
 // core components
@@ -64,6 +65,8 @@ class Register extends React.Component {
       focusedEmail: false,
       focusedPassword: false,
       focusedCompany: false,
+      loading: false,
+      error: false,
     }
 
   }
@@ -87,11 +90,29 @@ class Register extends React.Component {
       password1: this.state.Password,
       mailsaas_type: this.state.mailsaas_type
     };
-    console.log(this.props.register);
-    this.props.register(user);
+
+    this.setState({ loading: true, error: false });
+    axios.post("/rest-auth/registration/", user)
+      .then((response) => {
+        const token = response.data.token;
+        localStorage.setItem("access_token", token);
+
+        this.props.register(response.data.user);
+
+        history.push("/app/admin/dashboard");
+        window.location.reload();
+      })
+      .catch((error) => {
+        this.setState({ error: true });
+      })
+      .finally(() => {
+        this.setState({ loading: false });
+      });
   }
 
   onGoogleAuthSuccess = (response) => {
+    this.setState({ error: false });
+
     const { email, name, givenName, familyName } = response.profileObj;
     const user = {
       username: name,
@@ -104,11 +125,11 @@ class Register extends React.Component {
   };
 
   onGoogleAuthFailure = (response) => {
-
+    this.setState({ error: true });
   }
 
   render() {
-    const { focusedFirstName, focusedLastName, focusedEmail, focusedCompany, focusedPassword } = this.state
+    const { focusedFirstName, focusedLastName, focusedEmail, focusedCompany, focusedPassword, loading, error } = this.state
     return (
       <>
         <AuthHeader
@@ -120,7 +141,17 @@ class Register extends React.Component {
             <Col lg="6" md="8">
               <Card className="bg-secondary border-0">
                 <CardHeader className="bg-transparent pb-5">
-                  <div className="text-muted text-center mt-2 mb-4">
+                  {error &&
+                    <UncontrolledAlert color="danger" fade={false}>
+                      <span className="alert-inner--icon">
+                        <i className="ni ni-bell-55" />
+                      </span>{" "}
+                      <span className="alert-inner--text">
+                        <strong>Error!</strong> Unable to register with provided credentials.
+                      </span>
+                    </UncontrolledAlert>
+                  }
+                  <div className="text-muted text-center mt-3 mb-4">
                     <small style={{ fontSize: 18 }}>Sign up with</small>
                   </div>
                   <div className="text-center">
@@ -308,7 +339,7 @@ class Register extends React.Component {
                     </div>
                   </Form>
                 </CardBody>
-                {this.props.authLoader &&
+                {loading &&
                   <div className="auth-loading-wrapper">
                     <i className="ml-2 fas fa-spinner fa-spin"></i>
                   </div>
@@ -334,11 +365,7 @@ class Register extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  authLoader: state.notification.authLoader,
-});
-
-export default connect(mapStateToProps, {
+export default connect(null, {
   register,
   googleLogin,
 })(Register);

@@ -147,6 +147,15 @@ class LeadCatcher extends Component {
     })
   }
 
+  showDetailByID = (lead_id) => {
+    const { data } = this.state;
+    const detailData = data.filter(item => item.id == lead_id);
+    if (!detailData.length) {
+      return false;
+    }
+    this.showDetails(detailData[0]);
+  }
+
   updateLeadStatus = async (lead, status) => {
     const { camp_id, id: lead_id } = lead
     try {
@@ -393,6 +402,34 @@ class LeadCatcher extends Component {
     )
   }
 
+  getNextDetailId = () => {
+    const { data, detailLeadId } = this.state;
+    let nextId = null;
+    // TODO: use filtered data instead of 'data'
+    const items = data || [];
+    for (let i = 0 ; i < items.length - 1 ; i ++) {
+      if (items[i].id == detailLeadId) {
+        nextId = items[i+1].id;
+        break;
+      }
+    }
+    return nextId;
+  }
+
+  getPrevDetailId = () => {
+    const { data, detailLeadId } = this.state;
+    let nextId = null;
+    // TODO: use filtered data instead of 'data'
+    const items = data || [];
+    for (let i = 1 ; i < items.length ; i ++) {
+      if (items[i].id == detailLeadId) {
+        nextId = items[i-1].id;
+        break;
+      }
+    }
+    return nextId;
+  }
+
   render() {
     const tableTitle = [
       {
@@ -564,12 +601,20 @@ class LeadCatcher extends Component {
                           RE-OPEN
                         </Button>
                       }
-                      {/* <Button className="btn-icon" color="secondary" type="button" size="sm">
+                      <Button className="btn-icon" color="secondary" type="button" size="sm"
+                        disabled={!this.getPrevDetailId()} onClick={() => this.showDetailByID(this.getPrevDetailId())}>
+                        <span className="btn-inner--icon">
+                          <i className="ni ni-curved-next" style={{transform: 'scaleX(-1)'}} />
+                        </span>
+                        <span className="btn-inner--text">PREV</span>
+                      </Button>
+                      <Button className="btn-icon" color="secondary" type="button" size="sm"
+                        disabled={!this.getNextDetailId()} onClick={() => this.showDetailByID(this.getNextDetailId())}>
                         <span className="btn-inner--icon">
                           <i className="ni ni-curved-next" />
                         </span>
                         <span className="btn-inner--text">NEXT</span>
-                      </Button> */}
+                      </Button>
                     </div>
 
                     {
