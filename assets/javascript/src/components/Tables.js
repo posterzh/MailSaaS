@@ -138,6 +138,7 @@ function Tables({
   showPagination = false,
   paginationCallback = null,
   perpageRecords = 10,
+  paginationCnt = 10,
   activePage = 1,
   totalPages = null,
   filters = [],
@@ -157,6 +158,7 @@ function Tables({
   const [active, setActive] = React.useState(activePage);
   const [selectAll, setSelectAll] = React.useState(false);
   const [filterParams, setfilterParams] = React.useState([]);
+  const [currentPage, setCurrentPage] = React.useState(0);
 
   const sortData = (item) => {
     let data = [];
@@ -181,6 +183,18 @@ function Tables({
     paginationCallback && paginationCallback(page, type);
   };
 
+  const pagePrev = (page, type) => {
+    if (page < 0) page = 0;
+    setActive(page + 1);
+    setCurrentPage(page);
+  };
+
+  const pageNext = (page, maxLength) => {
+    if (page > maxLength) page = maxLength;
+    setActive(page + 1);
+    setCurrentPage(page);
+  };
+
   const menuClicked = (type, item) => {
     actionCallback && actionCallback(type, item);
   };
@@ -203,26 +217,27 @@ function Tables({
         className="pagination justify-content-end mb-0"
         listClassName="justify-content-end mb-0"
       >
-        <PaginationItem className={active === 1 ? "disabled" : ""}>
-          <PaginationLink onClick={(e) => pageChange(1)} tabIndex="-1">
+        <PaginationItem className={active < paginationCnt ? "disabled" : ""}>
+          <PaginationLink onClick={(e) => pagePrev(currentPage - paginationCnt)} tabIndex="-1">
             <i className="fas fa-angle-left" />
             <span className="sr-only">Previous</span>
           </PaginationLink>
         </PaginationItem>
-        {pages.map((item, index) => {
+        {pages.slice(currentPage, currentPage + paginationCnt).map((item, index) => {
+          const currentIndex = currentPage + index + 1;
           return (
             <PaginationItem
-              key={"page" + (index + 1)}
-              className={index + 1 === active ? "active" : ""}
+              key={"page" + (currentIndex)}
+              className={currentIndex === active ? "active" : ""}
             >
-              <PaginationLink onClick={(e) => pageChange(index + 1)}>
-                {index + 1}
+              <PaginationLink onClick={(e) => pageChange(currentIndex)}>
+                {currentIndex}
               </PaginationLink>
             </PaginationItem>
           );
         })}
-        <PaginationItem className={active === pages.length ? "disabled" : ""}>
-          <PaginationLink onClick={(e) => pageChange(pages.length)}>
+        <PaginationItem className={active > pages.length - paginationCnt ? "disabled" : ""}>
+          <PaginationLink onClick={(e) => pageNext(currentPage + paginationCnt, pages.length)}>
             <i className="fas fa-angle-right" />
             <span className="sr-only">Next</span>
           </PaginationLink>

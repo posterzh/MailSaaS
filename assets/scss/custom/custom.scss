@@ -2231,3 +2231,10 @@ input::-webkit-inner-spin-button {
   -webkit-animation: spinner-border .75s linear infinite;
   animation: spinner-border .75s linear infinite;
 }
+
+.scroll-modal .modal-content {
+  max-height: calc(100vh - 100px);
+  .modal-body {
+    overflow-y: auto;
+  }
+}
