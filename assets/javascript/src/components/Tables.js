@@ -217,7 +217,7 @@ function Tables({
         className="pagination justify-content-end mb-0"
         listClassName="justify-content-end mb-0"
       >
-        <PaginationItem className={active < paginationCnt ? "disabled" : ""}>
+        <PaginationItem className={currentPage < paginationCnt ? "disabled" : ""}>
           <PaginationLink onClick={(e) => pagePrev(currentPage - paginationCnt)} tabIndex="-1">
             <i className="fas fa-angle-left" />
             <span className="sr-only">Previous</span>
@@ -236,7 +236,7 @@ function Tables({
             </PaginationItem>
           );
         })}
-        <PaginationItem className={active > pages.length - paginationCnt ? "disabled" : ""}>
+        <PaginationItem className={currentPage + paginationCnt > pages.length ? "disabled" : ""}>
           <PaginationLink onClick={(e) => pageNext(currentPage + paginationCnt, pages.length)}>
             <i className="fas fa-angle-right" />
             <span className="sr-only">Next</span>
