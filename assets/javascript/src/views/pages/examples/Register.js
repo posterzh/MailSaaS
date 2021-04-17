@@ -111,8 +111,6 @@ class Register extends React.Component {
   }
 
   onGoogleAuthSuccess = (response) => {
-    this.setState({ error: false });
-
     const { email, name, givenName, familyName } = response.profileObj;
     const user = {
       username: name,
@@ -125,7 +123,6 @@ class Register extends React.Component {
   };
 
   onGoogleAuthFailure = (response) => {
-    this.setState({ error: true });
   }
 
   render() {
@@ -160,15 +157,12 @@ class Register extends React.Component {
                       buttonText="Register"
                       onSuccess={this.onGoogleAuthSuccess}
                       onFailure={this.onGoogleAuthFailure}
-                      autoLoad={false}
-                      isSignedIn={false}
                       cookiePolicy={'single_host_origin'}
                       render={({ onClick }) => {
                         return (
                           <Button
                             className="btn-neutral btn-icon"
                             color="default"
-                            href="#pablo"
                             onClick={() => {
                               onClick();
                             }}
