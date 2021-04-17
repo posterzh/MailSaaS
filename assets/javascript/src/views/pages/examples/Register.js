@@ -44,6 +44,10 @@ import { history } from "../../../index";
 import { Alert } from "reactstrap";
 
 import GoogleLogin from "react-google-login";
+import {
+  DJANGO_OAUTH_CLIENT_ID,
+  DJANGO_OAUTH_CLIENT_SECRET
+} from "../../../utils/Common";
 import Label from "reactstrap/lib/Label";
 
 class Register extends React.Component {
@@ -120,8 +124,32 @@ class Register extends React.Component {
       last_name: familyName,
     };
     const token = response.tokenObj.access_token;
-    console.log(response);
-    this.props.googleLogin(user, token);
+    
+    const data = {
+      "grant_type": "convert_token",
+      "client_id": DJANGO_OAUTH_CLIENT_ID,
+      "client_secret": DJANGO_OAUTH_CLIENT_SECRET,
+      "backend": "google-oauth2",
+      "token": token
+    }
+    this.setState({ loading: true, error: false });
+    axios.post("/auth/convert-token", data)
+      .then((response) => {
+        const token = response.data.access_token;
+        localStorage.setItem("access_token", token);
+
+        this.props.googleLogin(user);
+  
+        history.push("/app/admin/dashboard");
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({ 
+          error: true,
+          loading: false
+        });
+      });
   };
 
   onGoogleAuthFailure = (response) => {};

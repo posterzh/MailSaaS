@@ -46,32 +46,9 @@ export const logout = () => (dispatch) => {
     });
 }
 
-export const googleLogin = (user, token) => (dispatch) => {
-  const data = {
-    "grant_type": "convert_token",
-    "client_id": DJANGO_OAUTH_CLIENT_ID,
-    "client_secret": DJANGO_OAUTH_CLIENT_SECRET,
-    "backend": "google-oauth2",
-    "token": token
-  }
-  toggleAuthLoader(true);
-  axios.post("/auth/convert-token", data)
-    .then((response) => {
-      const token = response.data.access_token;
-      localStorage.setItem("access_token", token);
-
-      dispatch({
-        type: GOOGLE_LOGIN_USER,
-        payload: user
-      });
-
-      history.push("/app/admin/dashboard");
-      window.location.reload();
-    })
-    .catch((error) => {
-      toastOnError(error);
-    })
-    .finally(() => {
-      toggleAuthLoader(false);
-    });
+export const googleLogin = (user) => (dispatch) => {
+  dispatch({
+    type: GOOGLE_LOGIN_USER,
+    payload: user
+  });
 }

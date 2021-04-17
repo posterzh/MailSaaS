@@ -45,6 +45,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { gapi } from "gapi-script";
 import { getProfile } from '../../redux/action/ProfileAction';
 import { logout } from '../../redux/action/AuthAction'
 import { connect } from 'react-redux'
@@ -85,6 +86,12 @@ class AdminNavbar extends React.Component {
   // handle logout
   handleLogout = (event) => {
     event.preventDefault();
+    // const auth2 = gapi.auth2.getAuthInstance();
+    // if (auth2 != null) {
+    //   auth2.signOut().then(
+    //     auth2.disconnect().then(console.log('LOGOUT SUCCESSFUL'))
+    //   )
+    // }
     this.props.logout();
   }
 
